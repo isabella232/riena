@@ -68,14 +68,14 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 		renderer.paint(gc, null);
 		assertEquals(new Rectangle(1, 1, 1, 1), renderer.getImageBounds());
 		Rectangle[] btnBounds = renderer.getButtonsBounds();
-		for (Rectangle rectangle : btnBounds) {
+		for (final Rectangle rectangle : btnBounds) {
 			assertFalse(new Rectangle(0, 0, 0, 0).equals(rectangle));
 		}
 
 		ReflectionUtils.invokeHidden(renderer, "resetBounds");
 		assertEquals(new Rectangle(0, 0, 0, 0), renderer.getImageBounds());
 		btnBounds = renderer.getButtonsBounds();
-		for (Rectangle rectangle : btnBounds) {
+		for (final Rectangle rectangle : btnBounds) {
 			assertEquals(new Rectangle(0, 0, 0, 0), rectangle);
 		}
 
@@ -85,10 +85,10 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 	 * Tests the method {@code paintButton}.
 	 */
 	public void testPaintButton() {
-		RienaDefaultLnf originaLnf = LnfManager.getLnf();
+		final RienaDefaultLnf originaLnf = LnfManager.getLnf();
 		try {
-			Image image = ImageStore.getInstance().getImage(ICON_ECLIPSE);
-			Rectangle imageBounds = image.getBounds();
+			final Image image = ImageStore.getInstance().getImage(ICON_ECLIPSE);
+			final Rectangle imageBounds = image.getBounds();
 
 			LnfManager.setLnf(new TitleBarLnf());
 			renderer.setCloseable(true);
@@ -149,16 +149,16 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 		}
 
 		@Override
-		protected void paintBackground(GC gc) {
+		protected void paintBackground(final GC gc) {
 		}
 
 		@Override
-		protected Rectangle paintImage(GC gc) {
+		protected Rectangle paintImage(final GC gc) {
 			return new Rectangle(1, 1, 1, 1);
 		}
 
 		@Override
-		protected Rectangle paintTitle(GC gc) {
+		protected Rectangle paintTitle(final GC gc) {
 			return new Rectangle(1, 1, 1, 1);
 		}
 
@@ -173,7 +173,7 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 		}
 
 		@Override
-		public void paintButton(GC gc, int btnIndex) {
+		public void paintButton(final GC gc, final int btnIndex) {
 			super.paintButton(gc, btnIndex);
 		}
 

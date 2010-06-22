@@ -47,7 +47,7 @@ public abstract class SWTControlFinder {
 
 	private Composite start;
 
-	public SWTControlFinder(Composite composite) {
+	public SWTControlFinder(final Composite composite) {
 		Assert.isNotNull(composite);
 		start = composite;
 	}
@@ -78,7 +78,7 @@ public abstract class SWTControlFinder {
 	 * @param control
 	 *            the control; never null
 	 */
-	public boolean skip(Control control) {
+	public boolean skip(final Control control) {
 		return false;
 	}
 
@@ -90,7 +90,7 @@ public abstract class SWTControlFinder {
 	 * @param control
 	 *            the control; never null
 	 */
-	public void handleControl(Control control) {
+	public void handleControl(final Control control) {
 		if ((control instanceof Composite) && !(control instanceof IComplexComponent)) {
 			addUIControls((Composite) control);
 		}
@@ -113,10 +113,10 @@ public abstract class SWTControlFinder {
 	// protected methods
 	////////////////////
 
-	private void addUIControls(Composite composite) {
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		for (Control control : composite.getChildren()) {
-			String bindingProperty = locator.locateBindingProperty(control);
+	private void addUIControls(final Composite composite) {
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		for (final Control control : composite.getChildren()) {
+			final String bindingProperty = locator.locateBindingProperty(control);
 			if (StringUtils.isGiven(bindingProperty) && !skip(control)) {
 				handleBoundControl(control, bindingProperty);
 			}

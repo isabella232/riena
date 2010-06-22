@@ -32,12 +32,12 @@ final class FacadeFactory {
 	 *             if no matching instance could be found
 	 */
 	static Object newFacade(final Class<?> type) {
-		String suffix = "rap".equals(SWT.getPlatform()) ? "RAP" : "RCP"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		String name = type.getName() + suffix;
+		final String suffix = "rap".equals(SWT.getPlatform()) ? "RAP" : "RCP"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final String name = type.getName() + suffix;
 		try {
 			return type.getClassLoader().loadClass(name).newInstance();
-		} catch (Throwable throwable) {
-			String msg = NLS.bind("Could not load {0}", name); //$NON-NLS-1$
+		} catch (final Throwable throwable) {
+			final String msg = NLS.bind("Could not load {0}", name); //$NON-NLS-1$
 			throw new RuntimeException(msg, throwable);
 		}
 	}

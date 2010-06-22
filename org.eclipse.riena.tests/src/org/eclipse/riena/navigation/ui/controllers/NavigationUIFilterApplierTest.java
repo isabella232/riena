@@ -46,8 +46,8 @@ public class NavigationUIFilterApplierTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		Display display = Display.getDefault();
-		Realm realm = SWTObservables.getRealm(display);
+		final Display display = Display.getDefault();
+		final Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 	}
@@ -57,16 +57,16 @@ public class NavigationUIFilterApplierTest extends TestCase {
 	 */
 	public void testCollectFilters() {
 
-		NavigationUIFilterApplier<SubModuleNode> applier = new NavigationUIFilterApplier<SubModuleNode>();
+		final NavigationUIFilterApplier<SubModuleNode> applier = new NavigationUIFilterApplier<SubModuleNode>();
 
-		Collection<IUIFilter> filters = new ArrayList<IUIFilter>();
-		NavigationNodeId id = new NavigationNodeId("4711");
-		SubModuleNode node = new SubModuleNode(id);
+		final Collection<IUIFilter> filters = new ArrayList<IUIFilter>();
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final SubModuleNode node = new SubModuleNode(id);
 
 		ReflectionUtils.invokeHidden(applier, "collectFilters", node, filters);
 		assertTrue(filters.isEmpty());
 
-		UIFilter filter = new UIFilter();
+		final UIFilter filter = new UIFilter();
 		node.addFilter(filter);
 
 		ReflectionUtils.invokeHidden(applier, "collectFilters", node, filters);
@@ -74,10 +74,10 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		assertSame(filter, filters.iterator().next());
 
 		filters.clear();
-		NavigationNodeId id2 = new NavigationNodeId("parent");
-		SubModuleNode node2 = new SubModuleNode(id2);
+		final NavigationNodeId id2 = new NavigationNodeId("parent");
+		final SubModuleNode node2 = new SubModuleNode(id2);
 		node2.addChild(node);
-		UIFilter filter2 = new UIFilter();
+		final UIFilter filter2 = new UIFilter();
 		node2.addFilter(filter2);
 		ReflectionUtils.invokeHidden(applier, "collectFilters", node, filters);
 		assertTrue(filters.size() == 2);
@@ -85,10 +85,10 @@ public class NavigationUIFilterApplierTest extends TestCase {
 		assertTrue(filters.contains(filter2));
 
 		filters.clear();
-		NavigationNodeId id3 = new NavigationNodeId("child");
-		SubModuleNode node3 = new SubModuleNode(id3);
+		final NavigationNodeId id3 = new NavigationNodeId("child");
+		final SubModuleNode node3 = new SubModuleNode(id3);
 		node.addChild(node3);
-		UIFilter filter3 = new UIFilter();
+		final UIFilter filter3 = new UIFilter();
 		node3.addFilter(filter3);
 		ReflectionUtils.invokeHidden(applier, "collectFilters", node, filters);
 		assertTrue(filters.size() == 2);
@@ -101,19 +101,19 @@ public class NavigationUIFilterApplierTest extends TestCase {
 	 */
 	public void testApplyFilters() {
 
-		NavigationUIFilterApplier<SubModuleNode> applier = new NavigationUIFilterApplier<SubModuleNode>();
+		final NavigationUIFilterApplier<SubModuleNode> applier = new NavigationUIFilterApplier<SubModuleNode>();
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		SubModuleNode node = new SubModuleNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final SubModuleNode node = new SubModuleNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
 
-		Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
+		final Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(1);
 		attributes.add(new UIFilterRuleNavigationDisabledMarker("*" + node.getNodeId().getTypeId()));
-		IUIFilter filter = new UIFilter(attributes);
+		final IUIFilter filter = new UIFilter(attributes);
 		node.addFilter(filter);
-		Collection<IUIFilterRule> attributes2 = new ArrayList<IUIFilterRule>(1);
+		final Collection<IUIFilterRule> attributes2 = new ArrayList<IUIFilterRule>(1);
 		attributes2.add(new UIFilterRuleNavigationHiddenMarker("*" + node.getNodeId().getTypeId()));
-		IUIFilter filter2 = new UIFilter(attributes2);
+		final IUIFilter filter2 = new UIFilter(attributes2);
 		node.addFilter(filter2);
 		ReflectionUtils.invokeHidden(applier, "applyFilters", node);
 		assertFalse(node.getMarkersOfType(DisabledMarker.class).isEmpty());
@@ -126,20 +126,20 @@ public class NavigationUIFilterApplierTest extends TestCase {
 	 */
 	public void testApplyFilter() {
 
-		NavigationUIFilterApplier<SubModuleNode> applier = new NavigationUIFilterApplier<SubModuleNode>();
+		final NavigationUIFilterApplier<SubModuleNode> applier = new NavigationUIFilterApplier<SubModuleNode>();
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		SubModuleNode node = new SubModuleNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final SubModuleNode node = new SubModuleNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
 
-		NavigationNodeId id2 = new NavigationNodeId("0815");
-		SubModuleNode node2 = new SubModuleNode(id2);
+		final NavigationNodeId id2 = new NavigationNodeId("0815");
+		final SubModuleNode node2 = new SubModuleNode(id2);
 		node.addChild(node2);
 
-		Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(2);
+		final Collection<IUIFilterRule> attributes = new ArrayList<IUIFilterRule>(2);
 		attributes.add(new UIFilterRuleNavigationDisabledMarker("*" + node.getNodeId().getTypeId()));
 		attributes.add(new UIFilterRuleNavigationHiddenMarker("*" + node.getNodeId().getTypeId()));
-		IUIFilter filter = new UIFilter(attributes);
+		final IUIFilter filter = new UIFilter(attributes);
 		IUIFilterRuleClosure closure = ReflectionUtils.getHidden(applier, "APPLY_CLOSURE");
 		ReflectionUtils.invokeHidden(applier, "applyFilter", node, filter, closure);
 		assertFalse(node.getMarkersOfType(DisabledMarker.class).isEmpty());
@@ -161,24 +161,24 @@ public class NavigationUIFilterApplierTest extends TestCase {
 	 */
 	public void testApplyFilterRule() {
 
-		NavigationUIFilterApplier<SubModuleNode> applier = new NavigationUIFilterApplier<SubModuleNode>();
+		final NavigationUIFilterApplier<SubModuleNode> applier = new NavigationUIFilterApplier<SubModuleNode>();
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		SubModuleNode node = new SubModuleNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final SubModuleNode node = new SubModuleNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
 
 		IUIFilterRule attribute = new UIFilterRuleNavigationDisabledMarker("*" + node.getNodeId().getTypeId());
-		IUIFilterRuleClosure closure = ReflectionUtils.getHidden(applier, "APPLY_CLOSURE");
+		final IUIFilterRuleClosure closure = ReflectionUtils.getHidden(applier, "APPLY_CLOSURE");
 		ReflectionUtils.invokeHidden(applier, "applyFilterRule", node, attribute, closure);
 		assertFalse(node.getMarkersOfType(DisabledMarker.class).isEmpty());
 
-		SubModuleController controller = new SubModuleController();
+		final SubModuleController controller = new SubModuleController();
 		node.setNavigationNodeController(controller);
 		controller.setNavigationNode(node);
-		Shell shell = new Shell();
-		Label label = new Label(shell, SWT.NONE);
+		final Shell shell = new Shell();
+		final Label label = new Label(shell, SWT.NONE);
 		label.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "0815");
-		LabelRidget ridget = new LabelRidget(label);
+		final LabelRidget ridget = new LabelRidget(label);
 		controller.addRidget("0815", ridget);
 
 		attribute = new UIFilterRuleRidgetHiddenMarker("*0815");

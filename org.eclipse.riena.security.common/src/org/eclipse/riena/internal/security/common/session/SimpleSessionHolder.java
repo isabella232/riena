@@ -33,14 +33,14 @@ public class SimpleSessionHolder implements ISessionHolder {
 	/**
 	 * @see org.eclipse.riena.security.common.session.ISessionHolder#setSession(org.eclipse.riena.security.common.session.ISession)
 	 */
-	public void setSession(Session session) {
+	public void setSession(final Session session) {
 		this.session = session;
 	}
 
 	/**
 	 * @see org.eclipse.riena.security.common.session.ISessionHolder#setJSessionCookieValue(java.lang.String)
 	 */
-	public void setJSessionCookieValue(String value) {
+	public void setJSessionCookieValue(final String value) {
 		this.jSessionCookieValue = value;
 	}
 

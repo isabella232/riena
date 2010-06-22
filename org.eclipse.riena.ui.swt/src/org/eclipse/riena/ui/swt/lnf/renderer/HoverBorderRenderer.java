@@ -33,28 +33,28 @@ public class HoverBorderRenderer extends AbstractLnfRenderer {
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void paint(GC gc, Object value) {
+	public void paint(final GC gc, final Object value) {
 
 		//		int oldAntialias = gc.getAntialias();
 		//		gc.setAntialias(SWT.OFF);
 
-		RienaDefaultLnf lnf = LnfManager.getLnf();
-		int margin = lnf.getIntegerSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_MARGIN, DEFAULT_MARGIN);
-		int x = getBounds().x + margin;
-		int y = getBounds().y + margin;
-		int width = getBounds().width - 2 * margin;
-		int height = getBounds().height - 2 * margin;
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
+		final int margin = lnf.getIntegerSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_MARGIN, DEFAULT_MARGIN);
+		final int x = getBounds().x + margin;
+		final int y = getBounds().y + margin;
+		final int width = getBounds().width - 2 * margin;
+		final int height = getBounds().height - 2 * margin;
 
 		// top
-		Color topColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_TOP_COLOR);
+		final Color topColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_TOP_COLOR);
 		gc.setForeground(topColor);
 		gc.drawLine(x + 1, y, x + width - 2, y);
-		Color startColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_START_COLOR);
+		final Color startColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_START_COLOR);
 		gc.setForeground(startColor);
 		gc.drawLine(x, y + 1, x + width - 1, y + 1);
 
 		// left
-		Color endColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_END_COLOR);
+		final Color endColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_END_COLOR);
 		gc.setBackground(endColor);
 		gc.fillGradientRectangle(x, y + 1, 2, height - 1, true);
 
@@ -64,7 +64,7 @@ public class HoverBorderRenderer extends AbstractLnfRenderer {
 		// bottom
 		gc.setForeground(endColor);
 		gc.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
-		Color bottomColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_BOTTOM_COLOR);
+		final Color bottomColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_BOTTOM_COLOR);
 		gc.setForeground(bottomColor);
 		gc.drawLine(x + 1, y + height, x + width - 2, y + height);
 

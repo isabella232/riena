@@ -35,7 +35,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	private Item item;
 	private String text;
 	private String iconID;
-	private ActionObserver actionObserver;
+	private final ActionObserver actionObserver;
 	private boolean textAlreadyInitialized;
 	private boolean useRidgetIcon;
 	private AbstractItemProperties itemProperties;
@@ -59,7 +59,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 
 	@Override
 	protected void bindUIControl() {
-		Item control = getUIControl();
+		final Item control = getUIControl();
 		if (control != null) {
 			item = control;
 			itemId = super.getID();
@@ -105,18 +105,19 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 		return (Item) super.getUIControl();
 	}
 
-	public final void addListener(IActionListener listener) {
+	public final void addListener(final IActionListener listener) {
 		getActionObserver().addListener(listener);
 	}
 
 	/**
 	 * @deprecated use {@link #addListener(IActionListener)}
 	 */
-	public final void addListener(Object target, String action) {
+	@Deprecated
+	public final void addListener(final Object target, final String action) {
 		addListener(EventHandler.create(IActionListener.class, target, action));
 	}
 
-	public final void removeListener(IActionListener listener) {
+	public final void removeListener(final IActionListener listener) {
 		getActionObserver().removeListener(listener);
 	}
 
@@ -133,15 +134,15 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 		return this.iconID;
 	}
 
-	public void setIcon(String icon) {
+	public void setIcon(final String icon) {
 		setIcon(icon, IconSize.NONE);
 	}
 
-	public void setIcon(String icon, IconSize size) {
-		boolean oldUseRidgetIcon = useRidgetIcon;
+	public void setIcon(final String icon, final IconSize size) {
+		final boolean oldUseRidgetIcon = useRidgetIcon;
 		useRidgetIcon = true;
-		String oldIconID = this.iconID;
-		IIconManager manager = IconManagerProvider.getInstance().getIconManager();
+		final String oldIconID = this.iconID;
+		final IIconManager manager = IconManagerProvider.getInstance().getIconManager();
 		this.iconID = manager.getIconID(icon, size);
 		if (hasChanged(oldIconID, iconID) || !oldUseRidgetIcon) {
 			updateUIIcon();
@@ -152,8 +153,8 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 		return text;
 	}
 
-	public final void setText(String newText) {
-		String oldText = this.text;
+	public final void setText(final String newText) {
+		final String oldText = this.text;
 		this.text = newText;
 		updateUIText();
 		firePropertyChange(IActionRidget.PROPERTY_TEXT, oldText, this.text);
@@ -167,7 +168,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	 */
 	protected CommandContributionItem getContributionItem() {
 
-		Item uiItem = getUIControl();
+		final Item uiItem = getUIControl();
 		if ((uiItem == null) || uiItem.isDisposed()) {
 			return null;
 		}
@@ -197,7 +198,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	public boolean isEnabled() {
 
 		boolean enabled = super.isEnabled();
-		CommandContributionItem commandItem = getContributionItem();
+		final CommandContributionItem commandItem = getContributionItem();
 		if (commandItem != null) {
 			enabled = enabled && commandItem.isEnabled();
 		}
@@ -224,7 +225,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	 *         .
 	 */
 	protected boolean updateUIIcon() {
-		Item control = getUIControl();
+		final Item control = getUIControl();
 		if (control != null) {
 			Image image = null;
 			if (getIcon() != null) {
@@ -250,7 +251,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 		return actionObserver;
 	}
 
-	private void setItemProperties(AbstractItemProperties itemProperties) {
+	private void setItemProperties(final AbstractItemProperties itemProperties) {
 		this.itemProperties = itemProperties;
 	}
 
@@ -262,7 +263,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	 * Creates a new item on base of the stored item properties.
 	 */
 	void createItem() {
-		Item uiItem = getUIControl();
+		final Item uiItem = getUIControl();
 		if ((uiItem == null) || (uiItem.isDisposed())) {
 			getItemProperties().createItem();
 		}

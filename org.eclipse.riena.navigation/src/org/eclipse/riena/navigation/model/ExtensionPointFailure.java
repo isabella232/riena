@@ -25,7 +25,7 @@ public class ExtensionPointFailure extends Failure {
 	/**
 	 * @param msg
 	 */
-	public ExtensionPointFailure(String msg) {
+	public ExtensionPointFailure(final String msg) {
 		super(msg);
 	}
 
@@ -33,7 +33,7 @@ public class ExtensionPointFailure extends Failure {
 	 * @param msg
 	 * @param cause
 	 */
-	public ExtensionPointFailure(String msg, Throwable cause) {
+	public ExtensionPointFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 

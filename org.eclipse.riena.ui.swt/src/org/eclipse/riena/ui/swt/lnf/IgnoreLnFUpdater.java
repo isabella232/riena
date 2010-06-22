@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
  * Defines a property that should no be manipulated by the {@code LnFUpdater}.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target( { ElementType.TYPE })
+@Target({ ElementType.TYPE })
 @Inherited
 public @interface IgnoreLnFUpdater {
 

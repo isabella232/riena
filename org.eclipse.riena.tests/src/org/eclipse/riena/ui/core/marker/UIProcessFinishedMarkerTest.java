@@ -25,7 +25,7 @@ public class UIProcessFinishedMarkerTest extends TestCase {
 	 */
 	public void testUIProcessFinishedMarker() {
 
-		UIProcessFinishedMarker marker = new UIProcessFinishedMarker();
+		final UIProcessFinishedMarker marker = new UIProcessFinishedMarker();
 		assertEquals(10, marker.getCounterMaximum());
 
 	}
@@ -35,7 +35,7 @@ public class UIProcessFinishedMarkerTest extends TestCase {
 	 */
 	public void testUIProcessFinishedMarkerInt() {
 
-		UIProcessFinishedMarker marker = new UIProcessFinishedMarker(2);
+		final UIProcessFinishedMarker marker = new UIProcessFinishedMarker(2);
 		assertEquals(2, marker.getCounterMaximum());
 		assertFalse(marker.isActivated());
 		assertTrue(marker.isOn());
@@ -47,7 +47,7 @@ public class UIProcessFinishedMarkerTest extends TestCase {
 	 */
 	public void testIsOn() {
 
-		UIProcessFinishedMarker marker = new UIProcessFinishedMarker(2);
+		final UIProcessFinishedMarker marker = new UIProcessFinishedMarker(2);
 
 		marker.activate();
 		assertTrue(marker.isOn());
@@ -66,7 +66,7 @@ public class UIProcessFinishedMarkerTest extends TestCase {
 	 */
 	public void testIsFlashing() {
 
-		UIProcessFinishedMarker marker = new UIProcessFinishedMarker(2);
+		final UIProcessFinishedMarker marker = new UIProcessFinishedMarker(2);
 		assertFalse(marker.isFlashing());
 
 		marker.activate();
@@ -85,7 +85,7 @@ public class UIProcessFinishedMarkerTest extends TestCase {
 	 */
 	public void testIsActivated() {
 
-		UIProcessFinishedMarker marker = new UIProcessFinishedMarker();
+		final UIProcessFinishedMarker marker = new UIProcessFinishedMarker();
 		assertFalse(marker.isActivated());
 
 		marker.activate();

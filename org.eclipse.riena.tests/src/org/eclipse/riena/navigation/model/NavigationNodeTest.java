@@ -42,12 +42,12 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testNavigationNode() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		NaviNode node = new NaviNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final NaviNode node = new NaviNode(id);
 
 		assertSame(id, node.getNodeId());
 
-		List<?> listeners = ReflectionUtils.invokeHidden(node, "getListeners");
+		final List<?> listeners = ReflectionUtils.invokeHidden(node, "getListeners");
 		assertNotNull(listeners);
 		assertTrue(listeners.isEmpty());
 
@@ -74,13 +74,13 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testIsEnabled() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		NaviNode node = new NaviNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final NaviNode node = new NaviNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
 
 		assertTrue(node.isEnabled());
 
-		DisabledMarker disabledMarker = new DisabledMarker();
+		final DisabledMarker disabledMarker = new DisabledMarker();
 		node.addMarker(disabledMarker);
 		assertFalse(node.isEnabled());
 
@@ -88,8 +88,8 @@ public class NavigationNodeTest extends RienaTestCase {
 		node.addMarker(new HiddenMarker());
 		assertTrue(node.isEnabled());
 
-		NavigationNodeId id2 = new NavigationNodeId("0815");
-		NaviNode node2 = new NaviNode(id2);
+		final NavigationNodeId id2 = new NavigationNodeId("0815");
+		final NaviNode node2 = new NaviNode(id2);
 		node2.setParent(node);
 		assertTrue(node.isEnabled());
 
@@ -104,13 +104,13 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testIsVisible() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		NaviNode node = new NaviNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final NaviNode node = new NaviNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
 
 		assertTrue(node.isVisible());
 
-		HiddenMarker hiddenMarker = new HiddenMarker();
+		final HiddenMarker hiddenMarker = new HiddenMarker();
 		node.addMarker(hiddenMarker);
 		assertFalse(node.isVisible());
 
@@ -118,8 +118,8 @@ public class NavigationNodeTest extends RienaTestCase {
 		node.addMarker(new DisabledMarker());
 		assertTrue(node.isVisible());
 
-		NavigationNodeId id2 = new NavigationNodeId("0815");
-		NaviNode node2 = new NaviNode(id2);
+		final NavigationNodeId id2 = new NavigationNodeId("0815");
+		final NaviNode node2 = new NaviNode(id2);
 		node2.setParent(node);
 		assertTrue(node.isVisible());
 
@@ -133,8 +133,8 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testSetEnabled() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		NaviNode node = new NaviNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final NaviNode node = new NaviNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
 
 		assertTrue(node.isEnabled());
@@ -144,7 +144,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		Collection<DisabledMarker> markers = node.getMarkersOfType(DisabledMarker.class);
 		assertNotNull(markers);
 		assertTrue(markers.size() == 1);
-		IMarker marker1 = markers.iterator().next();
+		final IMarker marker1 = markers.iterator().next();
 
 		node.setEnabled(false);
 		assertFalse(node.isEnabled());
@@ -173,8 +173,8 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testSetVisible() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		NaviNode node = new NaviNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final NaviNode node = new NaviNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
 
 		assertTrue(node.isVisible());
@@ -184,7 +184,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		Collection<HiddenMarker> markers = node.getMarkersOfType(HiddenMarker.class);
 		assertNotNull(markers);
 		assertTrue(markers.size() == 1);
-		IMarker marker1 = markers.iterator().next();
+		final IMarker marker1 = markers.iterator().next();
 
 		node.setVisible(false);
 		assertFalse(node.isVisible());
@@ -213,18 +213,18 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testAddMarker() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		NaviNode node = new NaviNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final NaviNode node = new NaviNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
 
-		NavigationNodeId id2 = new NavigationNodeId("0815");
-		NaviNode node2 = new NaviNode(id2);
+		final NavigationNodeId id2 = new NavigationNodeId("0815");
+		final NaviNode node2 = new NaviNode(id2);
 		node2.setParent(node);
 		node.addChild(node2);
 
 		node.reset();
 		node2.reset();
-		IMarker hiddenMarker = new HiddenMarker();
+		final IMarker hiddenMarker = new HiddenMarker();
 		node.addMarker(null, hiddenMarker);
 		assertTrue(node.getMarkersOfType(HiddenMarker.class).size() == 1);
 		assertTrue(node2.getMarkersOfType(HiddenMarker.class).size() == 1);
@@ -233,7 +233,7 @@ public class NavigationNodeTest extends RienaTestCase {
 
 		node.reset();
 		node2.reset();
-		IMarker disabledMarker = new DisabledMarker();
+		final IMarker disabledMarker = new DisabledMarker();
 		node.addMarker(null, disabledMarker);
 		assertTrue(node.getMarkersOfType(DisabledMarker.class).size() == 1);
 		assertTrue(node2.getMarkersOfType(DisabledMarker.class).size() == 1);
@@ -242,7 +242,7 @@ public class NavigationNodeTest extends RienaTestCase {
 
 		node.reset();
 		node2.reset();
-		IMarker outputMarker = new OutputMarker();
+		final IMarker outputMarker = new OutputMarker();
 		node.addMarker(null, outputMarker);
 		assertTrue(node.getMarkersOfType(OutputMarker.class).size() == 1);
 		assertTrue(node2.getMarkersOfType(OutputMarker.class).isEmpty());
@@ -251,7 +251,7 @@ public class NavigationNodeTest extends RienaTestCase {
 
 		node.reset();
 		node2.reset();
-		IMarker errorMarker = new ErrorMarker();
+		final IMarker errorMarker = new ErrorMarker();
 		node.addMarker(null, errorMarker);
 		assertTrue(node.getMarkersOfType(ErrorMarker.class).size() == 1);
 		assertTrue(node2.getMarkersOfType(ErrorMarker.class).isEmpty());
@@ -265,32 +265,32 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testRemoveMarker() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		NaviNode node = new NaviNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final NaviNode node = new NaviNode(id);
 		node.setNavigationProcessor(new NavigationProcessor());
 
-		NavigationNodeId id2 = new NavigationNodeId("0815");
-		NaviNode node2 = new NaviNode(id2);
+		final NavigationNodeId id2 = new NavigationNodeId("0815");
+		final NaviNode node2 = new NaviNode(id2);
 		node2.setParent(node);
 		node.addChild(node2);
 
 		// add markers; they are removed later
-		IMarker hiddenMarker = new HiddenMarker();
+		final IMarker hiddenMarker = new HiddenMarker();
 		node.addMarker(null, hiddenMarker);
 		assertTrue(node.getMarkersOfType(HiddenMarker.class).size() == 1);
 		assertTrue(node2.getMarkersOfType(HiddenMarker.class).size() == 1);
 
-		IMarker disabledMarker = new DisabledMarker();
+		final IMarker disabledMarker = new DisabledMarker();
 		node.addMarker(null, disabledMarker);
 		assertTrue(node.getMarkersOfType(DisabledMarker.class).size() == 1);
 		assertTrue(node2.getMarkersOfType(DisabledMarker.class).size() == 1);
 
-		IMarker outputMarker = new OutputMarker();
+		final IMarker outputMarker = new OutputMarker();
 		node.addMarker(null, outputMarker);
 		assertTrue(node.getMarkersOfType(OutputMarker.class).size() == 1);
 		assertTrue(node2.getMarkersOfType(OutputMarker.class).isEmpty());
 
-		IMarker errorMarker = new ErrorMarker();
+		final IMarker errorMarker = new ErrorMarker();
 		node.addMarker(null, errorMarker);
 		assertTrue(node.getMarkersOfType(ErrorMarker.class).size() == 1);
 		assertTrue(node2.getMarkersOfType(ErrorMarker.class).isEmpty());
@@ -352,16 +352,16 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testFindNode() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		NaviNode node = new NaviNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final NaviNode node = new NaviNode(id);
 		assertSame(node, node.findNode(id));
 
 		assertNull(node.findNode(null));
 
 		assertNull(node.findNode(new NavigationNodeId("someId")));
 
-		NavigationNodeId id2 = new NavigationNodeId("0815");
-		NaviNode node2 = new NaviNode(id2);
+		final NavigationNodeId id2 = new NavigationNodeId("0815");
+		final NaviNode node2 = new NaviNode(id2);
 		node2.setParent(node);
 		node.addChild(node2);
 		assertSame(node2, node.findNode(id2));
@@ -379,23 +379,23 @@ public class NavigationNodeTest extends RienaTestCase {
 	@SuppressWarnings("unchecked")
 	public void testAddChild() throws InstantiationException, IllegalAccessException {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		NaviNode node = new NaviNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final NaviNode node = new NaviNode(id);
 
 		// add null
 		node.reset();
 		try {
 			node.addChild(null);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
-		} catch (NavigationModelFailure failure) {
+		} catch (final NavigationModelFailure failure) {
 			ok("NavigationModelFailure expected");
 		}
 		assertTrue(node.getChildren().isEmpty());
 		assertFalse(node.isChildAddedCalled());
 
 		// add new node
-		NavigationNodeId id2 = new NavigationNodeId("2");
-		NaviNode node2 = new NaviNode(id2);
+		final NavigationNodeId id2 = new NavigationNodeId("2");
+		final NaviNode node2 = new NaviNode(id2);
 		node.reset();
 		node.addChild(node2);
 		assertTrue(node.getChildren().size() == 1);
@@ -411,7 +411,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		try {
 			node.addChild(node2);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
-		} catch (NavigationModelFailure failure) {
+		} catch (final NavigationModelFailure failure) {
 			ok("NavigationModelFailure expected");
 		}
 		assertTrue(node.getChildren().size() == 1);
@@ -421,15 +421,15 @@ public class NavigationNodeTest extends RienaTestCase {
 		assertFalse(node2.isParentChangedCalled());
 
 		// add disposed node
-		NavigationNodeId id3 = new NavigationNodeId("3");
-		NaviNode node3 = new NaviNode(id3);
+		final NavigationNodeId id3 = new NavigationNodeId("3");
+		final NaviNode node3 = new NaviNode(id3);
 		node3.setNavigationProcessor(new NavigationProcessor());
 		node3.dispose();
 		node.reset();
 		try {
 			node.addChild(node3);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
-		} catch (NavigationModelFailure failure) {
+		} catch (final NavigationModelFailure failure) {
 			ok("NavigationModelFailure expected");
 		}
 		assertTrue(node.getChildren().size() == 1);
@@ -442,7 +442,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		try {
 			node.addChild(node);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
-		} catch (NavigationModelFailure failure) {
+		} catch (final NavigationModelFailure failure) {
 			ok("NavigationModelFailure expected");
 		}
 
@@ -450,19 +450,19 @@ public class NavigationNodeTest extends RienaTestCase {
 		try {
 			getParentNode(ApplicationNode.class).addChild(node);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
-		} catch (NavigationModelFailure failure) {
+		} catch (final NavigationModelFailure failure) {
 			ok("NavigationModelFailure expected");
 		}
 
 		// add correct kind of node 
-		IModuleNode module = (IModuleNode) getParentNode(ModuleNode.class);
+		final IModuleNode module = (IModuleNode) getParentNode(ModuleNode.class);
 		module.addChild(node);
 		assertSame(node, module.getChild(module.getChildren().size() - 1));
 
 	}
 
 	@SuppressWarnings("rawtypes")
-	private INavigationNode getParentNode(Class<? extends INavigationNode> clazz) throws InstantiationException,
+	private INavigationNode getParentNode(final Class<? extends INavigationNode> clazz) throws InstantiationException,
 			IllegalAccessException {
 		return clazz.newInstance();
 	}
@@ -472,15 +472,15 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testRemoveChild() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		NaviNode node = new NaviNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final NaviNode node = new NaviNode(id);
 
-		NavigationNodeId id2 = new NavigationNodeId("2");
-		NaviNode node2 = new NaviNode(id2);
+		final NavigationNodeId id2 = new NavigationNodeId("2");
+		final NaviNode node2 = new NaviNode(id2);
 		node.addChild(node2);
 
-		NavigationNodeId id3 = new NavigationNodeId("3");
-		NaviNode node3 = new NaviNode(id3);
+		final NavigationNodeId id3 = new NavigationNodeId("3");
+		final NaviNode node3 = new NaviNode(id3);
 		node.addChild(node3);
 
 		node.reset();
@@ -489,7 +489,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		try {
 			node.removeChild(null);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
-		} catch (NavigationModelFailure failure) {
+		} catch (final NavigationModelFailure failure) {
 			ok("NavigationModelFailure expected");
 		}
 		assertTrue(node.getChildren().size() == 2);
@@ -519,7 +519,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		try {
 			node.removeChild(node2);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
-		} catch (NavigationModelFailure failure) {
+		} catch (final NavigationModelFailure failure) {
 			ok("NavigationModelFailure expected");
 		}
 		assertTrue(node.getChildren().size() == 1);
@@ -549,7 +549,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		try {
 			node.removeChild(node2);
 			fail("NavigationModelFailure expected"); //$NON-NLS-1$
-		} catch (NavigationModelFailure failure) {
+		} catch (final NavigationModelFailure failure) {
 			ok("NavigationModelFailure expected");
 		}
 		assertTrue(node.getChildren().isEmpty());
@@ -566,22 +566,22 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testGetNavigationProcessor() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		NaviNode node = new NaviNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final NaviNode node = new NaviNode(id);
 
 		assertSame(ApplicationNodeManager.getDefaultNavigationProcessor(), node.getNavigationProcessor());
 
-		NavigationNodeId id2 = new NavigationNodeId("2");
-		NaviNode node2 = new NaviNode(id2);
+		final NavigationNodeId id2 = new NavigationNodeId("2");
+		final NaviNode node2 = new NaviNode(id2);
 		node.addChild(node2);
 
 		assertSame(ApplicationNodeManager.getDefaultNavigationProcessor(), node2.getNavigationProcessor());
 
-		NavigationProcessor naviProcessor = new NavigationProcessor();
+		final NavigationProcessor naviProcessor = new NavigationProcessor();
 		node.setNavigationProcessor(naviProcessor);
 		assertSame(naviProcessor, node2.getNavigationProcessor());
 
-		NavigationProcessor naviProcessor2 = new NavigationProcessor();
+		final NavigationProcessor naviProcessor2 = new NavigationProcessor();
 		node2.setNavigationProcessor(naviProcessor2);
 		assertSame(naviProcessor2, node2.getNavigationProcessor());
 
@@ -594,8 +594,8 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testCheckChildClass() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
-		NaviNode node = new NaviNode(id);
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final NaviNode node = new NaviNode(id);
 
 		assertTrue(node.checkChildClass(NaviNode.class));
 		assertTrue(node.checkChildClass(SubModuleNode.class));
@@ -605,7 +605,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		try {
 			node.checkChildClass(null);
 			fail("Exception expected");
-		} catch (AssertionFailedException e) {
+		} catch (final AssertionFailedException e) {
 			ok("Exception expected");
 		}
 
@@ -616,8 +616,8 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testPrepare() {
 
-		NavigationNodeId id = new NavigationNodeId("0815");
-		NaviNode node = new NaviNode(id);
+		final NavigationNodeId id = new NavigationNodeId("0815");
+		final NaviNode node = new NaviNode(id);
 		assertTrue(node.isCreated());
 		assertFalse(node.isPrepared());
 		assertFalse(node.isPreparedCalled());
@@ -659,8 +659,8 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testAddFilter() {
 
-		NaviNode node = new NaviNode(null);
-		UIFilter filter1 = new UIFilter("filterOne");
+		final NaviNode node = new NaviNode(null);
+		final UIFilter filter1 = new UIFilter("filterOne");
 		node.addFilter(filter1);
 		assertEquals(1, node.getFilters().size());
 		assertSame(filter1, node.getFilters().iterator().next());
@@ -673,10 +673,10 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testRemoveFilter() {
 
-		NaviNode node = new NaviNode(null);
-		UIFilter filter1 = new UIFilter("filterOne");
+		final NaviNode node = new NaviNode(null);
+		final UIFilter filter1 = new UIFilter("filterOne");
 		node.addFilter(filter1);
-		UIFilter filter2 = new UIFilter("filterTwo");
+		final UIFilter filter2 = new UIFilter("filterTwo");
 		node.addFilter(filter2);
 		assertEquals(2, node.getFilters().size());
 
@@ -697,10 +697,10 @@ public class NavigationNodeTest extends RienaTestCase {
 	 */
 	public void testRemoveAllFilters() {
 
-		NaviNode node = new NaviNode(null);
-		UIFilter filter1 = new UIFilter("filterOne");
+		final NaviNode node = new NaviNode(null);
+		final UIFilter filter1 = new UIFilter("filterOne");
 		node.addFilter(filter1);
-		UIFilter filter2 = new UIFilter("filterTwo");
+		final UIFilter filter2 = new UIFilter("filterTwo");
 		node.addFilter(filter2);
 		assertEquals(2, node.getFilters().size());
 
@@ -713,7 +713,7 @@ public class NavigationNodeTest extends RienaTestCase {
 	 * Tests the methods getContext, setContext and removeContext
 	 */
 	public void testContext() {
-		NaviNode node = new NaviNode(null);
+		final NaviNode node = new NaviNode(null);
 		assertNull(node.getContext("nothinghere"));
 		node.setContext("context1", "value1");
 		assertEquals("value1", node.getContext("context1"));
@@ -739,7 +739,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		NaviNode node2 = new NaviNode(null);
 		assertTrue(node.equals(node2));
 
-		NavigationNodeId id = new NavigationNodeId("a");
+		final NavigationNodeId id = new NavigationNodeId("a");
 		node = new NaviNode(id);
 		NavigationNodeId id2 = new NavigationNodeId("b");
 		node2 = new NaviNode(id2);
@@ -767,7 +767,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		private boolean parentChangedCalled;
 		private boolean parentChangedCalledAfterChildAddedCalled;
 
-		public NaviNode(NavigationNodeId nodeId) {
+		public NaviNode(final NavigationNodeId nodeId) {
 			super(nodeId);
 			addSimpleListener(this);
 		}
@@ -783,89 +783,89 @@ public class NavigationNodeTest extends RienaTestCase {
 			parentChangedCalledAfterChildAddedCalled = false;
 		}
 
-		public void activated(INavigationNode<?> source) {
+		public void activated(final INavigationNode<?> source) {
 		}
 
 		/**
 		 * {@inheritDoc}
 		 */
-		public void prepared(INavigationNode<?> source) {
+		public void prepared(final INavigationNode<?> source) {
 			preparedCalled = true;
 		}
 
-		public void afterActivated(INavigationNode<?> source) {
+		public void afterActivated(final INavigationNode<?> source) {
 		}
 
-		public void afterDeactivated(INavigationNode<?> source) {
+		public void afterDeactivated(final INavigationNode<?> source) {
 		}
 
-		public void afterDisposed(INavigationNode<?> source) {
+		public void afterDisposed(final INavigationNode<?> source) {
 		}
 
-		public void beforeActivated(INavigationNode<?> source) {
+		public void beforeActivated(final INavigationNode<?> source) {
 		}
 
-		public void beforeDeactivated(INavigationNode<?> source) {
+		public void beforeDeactivated(final INavigationNode<?> source) {
 		}
 
-		public void beforeDisposed(INavigationNode<?> source) {
+		public void beforeDisposed(final INavigationNode<?> source) {
 		}
 
-		public void block(INavigationNode<?> source, boolean block) {
+		public void block(final INavigationNode<?> source, final boolean block) {
 		}
 
-		public void childAdded(INavigationNode<?> source, INavigationNode<?> childAdded) {
+		public void childAdded(final INavigationNode<?> source, final INavigationNode<?> childAdded) {
 			childAddedCalled = true;
 			if (childAdded instanceof NaviNode) {
-				NaviNode child = (NaviNode) childAdded;
+				final NaviNode child = (NaviNode) childAdded;
 				parentChangedCalledAfterChildAddedCalled = !child.isParentChangedCalled();
 			}
 		}
 
-		public void childRemoved(INavigationNode<?> source, INavigationNode<?> childRemoved) {
+		public void childRemoved(final INavigationNode<?> source, final INavigationNode<?> childRemoved) {
 			childRemovedCalled = true;
 		}
 
-		public void deactivated(INavigationNode<?> source) {
+		public void deactivated(final INavigationNode<?> source) {
 		}
 
-		public void disposed(INavigationNode<?> source) {
+		public void disposed(final INavigationNode<?> source) {
 		}
 
-		public void expandedChanged(INavigationNode<?> source) {
+		public void expandedChanged(final INavigationNode<?> source) {
 		}
 
-		public void filterAdded(INavigationNode<?> source, IUIFilter filter) {
+		public void filterAdded(final INavigationNode<?> source, final IUIFilter filter) {
 			filterAddedCalled = true;
 		}
 
-		public void filterRemoved(INavigationNode<?> source, IUIFilter filter) {
+		public void filterRemoved(final INavigationNode<?> source, final IUIFilter filter) {
 			filterRemovedCalled = true;
 		}
 
-		public void iconChanged(INavigationNode<?> source) {
+		public void iconChanged(final INavigationNode<?> source) {
 		}
 
-		public void labelChanged(INavigationNode<?> source) {
+		public void labelChanged(final INavigationNode<?> source) {
 		}
 
-		public void markerChanged(INavigationNode<?> source, IMarker marker) {
+		public void markerChanged(final INavigationNode<?> source, final IMarker marker) {
 			markersChangedCalled = true;
 		}
 
-		public void parentChanged(INavigationNode<?> source) {
+		public void parentChanged(final INavigationNode<?> source) {
 			parentChangedCalled = true;
 		}
 
-		public void presentationChanged(INavigationNode<?> source) {
+		public void presentationChanged(final INavigationNode<?> source) {
 		}
 
-		public void selectedChanged(INavigationNode<?> source) {
+		public void selectedChanged(final INavigationNode<?> source) {
 		}
 
-		public void stateChanged(INavigationNode<?> source,
-				org.eclipse.riena.navigation.INavigationNode.State oldState,
-				org.eclipse.riena.navigation.INavigationNode.State newState) {
+		public void stateChanged(final INavigationNode<?> source,
+				final org.eclipse.riena.navigation.INavigationNode.State oldState,
+				final org.eclipse.riena.navigation.INavigationNode.State newState) {
 		}
 
 		public boolean isMarkersChangedCalled() {
@@ -881,7 +881,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		}
 
 		@Override
-		public boolean checkChildClass(Class<?> childClass) {
+		public boolean checkChildClass(final Class<?> childClass) {
 			return super.checkChildClass(childClass);
 		}
 

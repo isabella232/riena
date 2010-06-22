@@ -22,8 +22,8 @@ import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 public interface IWindowRidget extends IRidget {
 
 	/**
-	 * Make {@code action} the default action while the focus is within {@code
-	 * focusRidget} including it's children.
+	 * Make {@code action} the default action while the focus is within
+	 * {@code focusRidget} including it's children.
 	 * <p>
 	 * If a default action is available and enabled, it will be invoked whenever
 	 * the user presses ENTER within the window.

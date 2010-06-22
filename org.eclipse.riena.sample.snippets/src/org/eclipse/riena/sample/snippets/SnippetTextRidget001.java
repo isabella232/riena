@@ -30,23 +30,23 @@ import org.eclipse.riena.ui.ridgets.validation.MinLength;
  */
 public final class SnippetTextRidget001 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = new Shell();
+			final Shell shell = new Shell();
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
 			createLabel(shell, "Input (>4 chars):"); //$NON-NLS-1$
-			Text text = new Text(shell, SWT.BORDER);
+			final Text text = new Text(shell, SWT.BORDER);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(text);
 
 			createLabel(shell, "Output:"); //$NON-NLS-1$
-			Label label = createLabel(shell, ""); //$NON-NLS-1$
+			final Label label = createLabel(shell, ""); //$NON-NLS-1$
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(label);
 
-			ILabelRidget labelRidget = (ILabelRidget) SwtRidgetFactory.createRidget(label);
+			final ILabelRidget labelRidget = (ILabelRidget) SwtRidgetFactory.createRidget(label);
 
-			ITextRidget textRidget = (ITextRidget) SwtRidgetFactory.createRidget(text);
+			final ITextRidget textRidget = (ITextRidget) SwtRidgetFactory.createRidget(text);
 			textRidget.addValidationRule(new MinLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
 			textRidget.setDirectWriting(true);
 			textRidget.bindToModel(BeansObservables.observeValue(labelRidget, ILabelRidget.PROPERTY_TEXT));
@@ -64,8 +64,8 @@ public final class SnippetTextRidget001 {
 		}
 	}
 
-	private static Label createLabel(Shell shell, String caption) {
-		Label result = new Label(shell, SWT.NONE);
+	private static Label createLabel(final Shell shell, final String caption) {
+		final Label result = new Label(shell, SWT.NONE);
 		result.setText(caption);
 		return result;
 	}

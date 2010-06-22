@@ -106,21 +106,21 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 */
 	public static final int DEFAULT_NAVIGATION_SUB_MODULE_GAP = 4;
 
-	private Set<IPresentablePart> knownParts = new HashSet<IPresentablePart>();
+	private final Set<IPresentablePart> knownParts = new HashSet<IPresentablePart>();
 	private IPresentablePart current;
 	private IPresentablePart navigation;
-	private Composite parent;
+	private final Composite parent;
 	private SubModuleViewRenderer renderer;
 	private boolean hasListener;
 
-	public TitlelessStackPresentation(Composite parent, IStackPresentationSite stackSite) {
+	public TitlelessStackPresentation(final Composite parent, final IStackPresentationSite stackSite) {
 		super(stackSite);
 		this.parent = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		createSubModuleViewArea();
 	}
 
 	@Override
-	public void addPart(IPresentablePart newPart, Object cookie) {
+	public void addPart(final IPresentablePart newPart, final Object cookie) {
 		initializeSubModuleChangeListener();
 		if (isNavigation(newPart)) {
 			navigation = newPart;
@@ -129,16 +129,16 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	@Override
-	public void selectPart(IPresentablePart toSelect) {
+	public void selectPart(final IPresentablePart toSelect) {
 		if (current == toSelect) {
 			return;
 		}
 		if (isNavigation(toSelect)) {
-			Rectangle navi = calcNavigationBounds(parent);
+			final Rectangle navi = calcNavigationBounds(parent);
 			toSelect.setBounds(navi);
 			redrawSubModuleTitle();
 		} else if (toSelect != null) {
-			Rectangle newInnerBounds = calcSubModuleInnerBounds();
+			final Rectangle newInnerBounds = calcSubModuleInnerBounds();
 			if (hasOldBounds(toSelect, newInnerBounds)) {
 				toSelect.setBounds(newInnerBounds);
 			}
@@ -161,15 +161,15 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * </ol>
 	 */
 	@Override
-	public void setBounds(Rectangle bounds) {
+	public void setBounds(final Rectangle bounds) {
 		parent.setBounds(bounds);
 		if (navigation != null) {
-			Rectangle navi = calcNavigationBounds(parent);
+			final Rectangle navi = calcNavigationBounds(parent);
 			navigation.setBounds(navi);
 		}
 		if (current != null) {
-			Rectangle innerBounds = calcSubModuleInnerBounds();
-			for (IPresentablePart part : knownParts) {
+			final Rectangle innerBounds = calcSubModuleInnerBounds();
+			for (final IPresentablePart part : knownParts) {
 				if (part != current && !isNavigation(part)) {
 					part.setBounds(new Rectangle(0, 0, 0, 0));
 				}
@@ -180,7 +180,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	@Override
-	public void removePart(IPresentablePart oldPart) {
+	public void removePart(final IPresentablePart oldPart) {
 		if (isNavigation(oldPart)) {
 			navigation = null;
 		} else if (oldPart == current) {
@@ -203,7 +203,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 *      org.eclipse.swt.graphics.Point)
 	 */
 	@Override
-	public StackDropResult dragOver(Control currentControl, Point location) {
+	public StackDropResult dragOver(final Control currentControl, final Point location) {
 		return null;
 	}
 
@@ -218,12 +218,12 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * @see org.eclipse.ui.presentations.StackPresentation#getTabList(org.eclipse.ui.presentations.IPresentablePart)
 	 */
 	@Override
-	public Control[] getTabList(IPresentablePart part) {
+	public Control[] getTabList(final IPresentablePart part) {
 		return new Control[] {};
 	}
 
 	@Override
-	public void setActive(int newState) {
+	public void setActive(final int newState) {
 		/*
 		 * Be very care careful what you do here, to avoid causing flicker. This
 		 * method may be called with AS_INACTIVE and AS_ACTIVE states repeatedly
@@ -238,12 +238,12 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * @see org.eclipse.ui.presentations.StackPresentation#setState(int)
 	 */
 	@Override
-	public void setState(int state) {
+	public void setState(final int state) {
 		// nothing to do
 	}
 
 	@Override
-	public void setVisible(boolean isVisible) {
+	public void setVisible(final boolean isVisible) {
 		parent.setVisible(isVisible);
 	}
 
@@ -278,13 +278,13 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 */
 	private Rectangle calcSubModuleOuterBounds() {
 
-		Rectangle naviBounds = calcNavigationBounds(parent);
+		final Rectangle naviBounds = calcNavigationBounds(parent);
 
-		int x = naviBounds.x + naviBounds.width + getNavigationSubModuleGap();
-		int y = naviBounds.y;
-		int width = parent.getBounds().width - x - getShellSubModuleGap();
-		int height = naviBounds.height;
-		Rectangle outerBounds = new Rectangle(x, y, width, height);
+		final int x = naviBounds.x + naviBounds.width + getNavigationSubModuleGap();
+		final int y = naviBounds.y;
+		final int width = parent.getBounds().width - x - getShellSubModuleGap();
+		final int height = naviBounds.height;
+		final Rectangle outerBounds = new Rectangle(x, y, width, height);
 
 		return outerBounds;
 	}
@@ -294,14 +294,14 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * 
 	 * @return bounds of navigation
 	 */
-	public static Rectangle calcNavigationBounds(Composite parent) {
+	public static Rectangle calcNavigationBounds(final Composite parent) {
 
-		GC gc = new GC(parent);
+		final GC gc = new GC(parent);
 		try {
-			Point size = getModuleGroupRenderer().computeSize(gc, SWT.DEFAULT, SWT.DEFAULT);
-			int x = getShellNavigationGap();
-			int width = size.x;
-			int height = parent.getBounds().height - PADDING_BOTTOM
+			final Point size = getModuleGroupRenderer().computeSize(gc, SWT.DEFAULT, SWT.DEFAULT);
+			final int x = getShellNavigationGap();
+			final int width = size.x;
+			final int height = parent.getBounds().height - PADDING_BOTTOM
 					- LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
 			return new Rectangle(x, 0, width, height);
 		} finally {
@@ -322,12 +322,12 @@ public class TitlelessStackPresentation extends StackPresentation {
 			/**
 			 * Paints the border of the current active sub-module.
 			 */
-			public void paintControl(PaintEvent e) {
+			public void paintControl(final PaintEvent e) {
 
 				if (current != null) {
-					SubModuleViewRenderer viewRenderer = getRenderer();
+					final SubModuleViewRenderer viewRenderer = getRenderer();
 					if (viewRenderer != null) {
-						Rectangle bounds = calcSubModuleOuterBounds();
+						final Rectangle bounds = calcSubModuleOuterBounds();
 						viewRenderer.setBounds(bounds);
 						viewRenderer.paint(e.gc, null);
 					}
@@ -385,12 +385,12 @@ public class TitlelessStackPresentation extends StackPresentation {
 		if (hasListener) {
 			return;
 		}
-		SubApplicationController controller = getSubApplicationController();
+		final SubApplicationController controller = getSubApplicationController();
 		if (controller != null) {
-			NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
+			final NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 			navigationTreeObserver.addListener(new SubModuleNodeListener() {
 				@Override
-				public void activated(ISubModuleNode source) {
+				public void activated(final ISubModuleNode source) {
 					redrawSubModuleTitle();
 				}
 			});
@@ -406,10 +406,10 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 */
 	private SubApplicationController getSubApplicationController() {
 		SubApplicationController result = null;
-		IWorkbenchPage page = getActivePage();
+		final IWorkbenchPage page = getActivePage();
 		if (page != null) {
-			String id = page.getPerspective().getId();
-			ISubApplicationNode subApplication = SwtViewProvider.getInstance().getNavigationNode(id,
+			final String id = page.getPerspective().getId();
+			final ISubApplicationNode subApplication = SwtViewProvider.getInstance().getNavigationNode(id,
 					ISubApplicationNode.class);
 			result = (SubApplicationController) subApplication.getNavigationNodeController();
 		}
@@ -420,14 +420,14 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * Return true if the {@link IPresentablePart} has bounds that are different
 	 * than {@code newBounds}.
 	 */
-	private boolean hasOldBounds(IPresentablePart toSelect, Rectangle newBounds) {
+	private boolean hasOldBounds(final IPresentablePart toSelect, final Rectangle newBounds) {
 		return toSelect.getControl() == null || !newBounds.equals(toSelect.getControl().getBounds());
 	}
 
 	/**
 	 * Returns true if the given part is the navigation tree.
 	 */
-	private boolean isNavigation(IPresentablePart part) {
+	private boolean isNavigation(final IPresentablePart part) {
 		return part.getPartProperty(PROPERTY_NAVIGATION) != null;
 	}
 
@@ -447,7 +447,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * @return gap
 	 */
 	private int getNavigationSubModuleGap() {
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		return lnf.getIntegerSetting(LnfKeyConstants.NAVIGATION_SUB_MODULE_GAP, DEFAULT_NAVIGATION_SUB_MODULE_GAP);
 	}
 
@@ -460,7 +460,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * @return gap
 	 */
 	private static int getShellNavigationGap() {
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		return lnf.getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_NAVIGATION_HORIZONTAL_GAP, DEFAULT_PADDING_LEFT);
 	}
 
@@ -473,7 +473,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * @return gap
 	 */
 	private static int getShellSubModuleGap() {
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		return lnf.getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_SUB_MODULE_HORIZONTAL_GAP, DEFAULT_PADDING_RIGHT);
 	}
 

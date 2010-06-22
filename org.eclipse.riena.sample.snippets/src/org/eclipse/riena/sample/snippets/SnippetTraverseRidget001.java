@@ -43,10 +43,10 @@ public final class SnippetTraverseRidget001 {
 	private static final int MINIMUM = 75;
 	private static final int MAXIMUM = 200;
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = new Shell();
+			final Shell shell = new Shell();
 			shell.setText(SnippetTraverseRidget001.class.getSimpleName());
 			shell.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
@@ -56,23 +56,23 @@ public final class SnippetTraverseRidget001 {
 			 */
 			// Slider
 			UIControlsFactory.createLabel(shell, "Slider"); //$NON-NLS-1$
-			Slider slider = new Slider(shell, SWT.HORIZONTAL);
+			final Slider slider = new Slider(shell, SWT.HORIZONTAL);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(slider);
 
 			// Scale
 			UIControlsFactory.createLabel(shell, "Scale"); //$NON-NLS-1$
-			Scale scale = new Scale(shell, SWT.HORIZONTAL);
+			final Scale scale = new Scale(shell, SWT.HORIZONTAL);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(scale);
 			scale.setBackground(shell.getBackground());
 
 			// Spinner
 			UIControlsFactory.createLabel(shell, "Spinner"); //$NON-NLS-1$
-			Spinner spinner = new Spinner(shell, SWT.HORIZONTAL);
+			final Spinner spinner = new Spinner(shell, SWT.HORIZONTAL);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(spinner);
 
 			// ProgressBar
 			UIControlsFactory.createLabel(shell, "Progress"); //$NON-NLS-1$
-			ProgressBar progressBar = new ProgressBar(shell, SWT.HORIZONTAL | SWT.SMOOTH);
+			final ProgressBar progressBar = new ProgressBar(shell, SWT.HORIZONTAL | SWT.SMOOTH);
 			progressBar.setState(SWT.PAUSED);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(progressBar);
 
@@ -80,7 +80,7 @@ public final class SnippetTraverseRidget001 {
 			 * Create the ridgets
 			 */
 			// Slider
-			ISliderRidget sliderRidget = (ISliderRidget) SwtRidgetFactory.createRidget(slider);
+			final ISliderRidget sliderRidget = (ISliderRidget) SwtRidgetFactory.createRidget(slider);
 			sliderRidget.setMaximum(MAXIMUM);
 			sliderRidget.setMinimum(MINIMUM);
 			sliderRidget.setPageIncrement(25);
@@ -89,8 +89,8 @@ public final class SnippetTraverseRidget001 {
 
 			sliderRidget.bindToModel(new IntegerBean(100), IntegerBean.PROP_VALUE);
 			sliderRidget.addValidationRule(new IValidator() {
-				public IStatus validate(Object value) {
-					int selection = (Integer) value;
+				public IStatus validate(final Object value) {
+					final int selection = (Integer) value;
 					if (selection > MAXIMUM - 20 || selection < MINIMUM + 20) {
 						return ValidationRuleStatus.error(true, "Value of of range!"); //$NON-NLS-1$
 					}
@@ -100,7 +100,7 @@ public final class SnippetTraverseRidget001 {
 			sliderRidget.updateFromModel();
 
 			// Scale
-			ITraverseRidget scaleRidget = (ITraverseRidget) SwtRidgetFactory.createRidget(scale);
+			final ITraverseRidget scaleRidget = (ITraverseRidget) SwtRidgetFactory.createRidget(scale);
 			scaleRidget.setMaximum(MAXIMUM);
 			scaleRidget.setMinimum(MINIMUM);
 			scaleRidget.setPageIncrement(25);
@@ -111,7 +111,7 @@ public final class SnippetTraverseRidget001 {
 			scaleRidget.updateFromModel();
 
 			// Spinner
-			ISpinnerRidget spinnerRidget = (ISpinnerRidget) SwtRidgetFactory.createRidget(spinner);
+			final ISpinnerRidget spinnerRidget = (ISpinnerRidget) SwtRidgetFactory.createRidget(spinner);
 			spinnerRidget.setMaximum(MAXIMUM);
 			spinnerRidget.setMinimum(MINIMUM);
 			spinnerRidget.setPageIncrement(25);
@@ -122,7 +122,7 @@ public final class SnippetTraverseRidget001 {
 			spinnerRidget.updateFromModel();
 
 			// ProgressBar
-			ITraverseRidget progressBarRidget = (ITraverseRidget) SwtRidgetFactory.createRidget(progressBar);
+			final ITraverseRidget progressBarRidget = (ITraverseRidget) SwtRidgetFactory.createRidget(progressBar);
 			progressBarRidget.setMaximum(MAXIMUM);
 			progressBarRidget.setMinimum(MINIMUM);
 			progressBarRidget.setToolTipText("Value of progress: [VALUE]"); //$NON-NLS-1$

@@ -26,10 +26,10 @@ import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
  */
 public class SwitchToWindowMenu extends AbstractHandler {
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		Shell shell = window.getShell();
-		for (Control child : shell.getChildren()) {
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
+		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
+		final Shell shell = window.getShell();
+		for (final Control child : shell.getChildren()) {
 			if (child instanceof MenuCoolBarComposite) {
 				child.setFocus();
 				break;

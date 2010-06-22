@@ -34,8 +34,8 @@ public class ClassRidgetMapperTest extends RienaTestCase {
 
 		// only used to get the initial mappings
 		// Create new instance of SwtControlRidgetMapper to start with initial mappings only (not additional mappings added in previous test cases)
-		ReflectionUtils.setHidden(SwtControlRidgetMapper.class, "instance", ReflectionUtils.newInstanceHidden(
-				SwtControlRidgetMapper.class, new Object[0]));
+		ReflectionUtils.setHidden(SwtControlRidgetMapper.class, "instance",
+				ReflectionUtils.newInstanceHidden(SwtControlRidgetMapper.class, new Object[0]));
 
 		mapper = ClassRidgetMapper.getInstance();
 	}
@@ -44,8 +44,8 @@ public class ClassRidgetMapperTest extends RienaTestCase {
 	protected void tearDown() throws Exception {
 
 		// Create new instance of ClassRidgetMapper to start with initial mappings only (not additional mappings added in previous test cases)
-		ReflectionUtils.setHidden(ClassRidgetMapper.class, "instance", ReflectionUtils.newInstanceHidden(
-				ClassRidgetMapper.class, new Object[0]));
+		ReflectionUtils.setHidden(ClassRidgetMapper.class, "instance",
+				ReflectionUtils.newInstanceHidden(ClassRidgetMapper.class, new Object[0]));
 		mapper = null;
 
 		super.tearDown();
@@ -54,27 +54,27 @@ public class ClassRidgetMapperTest extends RienaTestCase {
 	public void testAddMapping() throws Exception {
 		mapper.addMapping(IMockRidget.class, MockRidget.class);
 
-		Class<? extends IRidget> ridget = mapper.getRidgetClass(IMockRidget.class);
+		final Class<? extends IRidget> ridget = mapper.getRidgetClass(IMockRidget.class);
 		assertNotNull(ridget);
 		assertEquals(MockRidget.class.getName(), ridget.getName());
 
-		Map<Class<? extends IRidget>, Class<? extends IRidget>> mappings = ReflectionUtils
-				.getHidden(mapper, "mappings");
-		int size = mappings.size();
+		final Map<Class<? extends IRidget>, Class<? extends IRidget>> mappings = ReflectionUtils.getHidden(mapper,
+				"mappings");
+		final int size = mappings.size();
 		mapper.addMapping(null, null);
 		assertEquals(size, mappings.size());
 	}
 
 	public void testGetRidgetClass() throws Exception {
 
-		Class<? extends IRidget> ridget = mapper.getRidgetClass(ITextRidget.class);
+		final Class<? extends IRidget> ridget = mapper.getRidgetClass(ITextRidget.class);
 		assertNotNull(ridget);
 		assertEquals(TextRidget.class.getName(), ridget.getName());
 
 		try {
 			mapper.getRidgetClass(IMockRidget.class);
 			fail("BindingException expected");
-		} catch (BindingException e) {
+		} catch (final BindingException e) {
 			ok("BindingException expected");
 		}
 

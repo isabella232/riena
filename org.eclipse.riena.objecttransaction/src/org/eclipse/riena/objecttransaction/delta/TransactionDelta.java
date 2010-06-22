@@ -35,7 +35,7 @@ public class TransactionDelta implements Cloneable {
 	 * @param state
 	 * @param version
 	 */
-	public TransactionDelta(IObjectId objectId, State state, String version) {
+	public TransactionDelta(final IObjectId objectId, final State state, final String version) {
 		super();
 		setObjectId(objectId);
 		setState(state);
@@ -54,7 +54,7 @@ public class TransactionDelta implements Cloneable {
 	 * @param objectId
 	 *            The objectId to set.
 	 */
-	public void setObjectId(IObjectId objectId) {
+	public void setObjectId(final IObjectId objectId) {
 		this.objectId = objectId;
 	}
 
@@ -64,7 +64,7 @@ public class TransactionDelta implements Cloneable {
 	 * @param refName
 	 * @param childObject
 	 */
-	public void setSingleRefObject(String refName, Object childObject) {
+	public void setSingleRefObject(final String refName, final Object childObject) {
 		referenceChanges.put(refName, new SingleChange(refName, childObject));
 	}
 
@@ -72,8 +72,8 @@ public class TransactionDelta implements Cloneable {
 	 * @param refName
 	 * @return
 	 */
-	public boolean hasSingleRefObject(String refName) {
-		SingleChange sEntry = ((SingleChange) referenceChanges.get(refName));
+	public boolean hasSingleRefObject(final String refName) {
+		final SingleChange sEntry = ((SingleChange) referenceChanges.get(refName));
 		if (sEntry != null) {
 			return true;
 		}
@@ -86,8 +86,8 @@ public class TransactionDelta implements Cloneable {
 	 * @param refName
 	 * @return
 	 */
-	public Object getSingleRefObject(String refName) {
-		SingleChange sEntry = ((SingleChange) referenceChanges.get(refName));
+	public Object getSingleRefObject(final String refName) {
+		final SingleChange sEntry = ((SingleChange) referenceChanges.get(refName));
 		if (sEntry == null) {
 			return null;
 		}
@@ -101,8 +101,8 @@ public class TransactionDelta implements Cloneable {
 	 * @param refName
 	 * @param childObject
 	 */
-	public void addMultiRefObject(String refName, Object childObject) {
-		AbstractBaseChange baseEntry = referenceChanges.get(refName);
+	public void addMultiRefObject(final String refName, final Object childObject) {
+		final AbstractBaseChange baseEntry = referenceChanges.get(refName);
 		if (!(baseEntry instanceof MultipleChange) && baseEntry != null) {
 			throw new ObjectTransactionFailure("impossible to add a reference to refName" + refName //$NON-NLS-1$
 					+ "as it was previously used with a set object, which creates a 1:1 reference."); //$NON-NLS-1$
@@ -121,8 +121,8 @@ public class TransactionDelta implements Cloneable {
 	 * @param refName
 	 * @param childObject
 	 */
-	public void removeMultiRefObject(String refName, Object childObject) {
-		AbstractBaseChange baseEntry = referenceChanges.get(refName);
+	public void removeMultiRefObject(final String refName, final Object childObject) {
+		final AbstractBaseChange baseEntry = referenceChanges.get(refName);
 		if (!(baseEntry instanceof MultipleChange) && baseEntry != null) {
 			throw new ObjectTransactionFailure("impossible to add a reference to refName" + refName //$NON-NLS-1$
 					+ "as it was previously used with a set object, which creates a 1:1 reference."); //$NON-NLS-1$
@@ -151,7 +151,7 @@ public class TransactionDelta implements Cloneable {
 	 * @param state
 	 *            The state to set.
 	 */
-	public void setState(State state) {
+	public void setState(final State state) {
 		this.state = state;
 	}
 
@@ -194,7 +194,7 @@ public class TransactionDelta implements Cloneable {
 	 * @param version
 	 *            The version to set.
 	 */
-	public void setVersion(String version) {
+	public void setVersion(final String version) {
 		this.version = version;
 	}
 
@@ -207,11 +207,11 @@ public class TransactionDelta implements Cloneable {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		sb.append("##### objectId:" + objectId + " #####\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		sb.append("state:" + State.toString(state) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		sb.append("reference Changes ---START---\n"); //$NON-NLS-1$
-		for (Map.Entry<String, AbstractBaseChange> entry : referenceChanges.entrySet()) {
+		for (final Map.Entry<String, AbstractBaseChange> entry : referenceChanges.entrySet()) {
 			sb.append(entry.toString() + "\n"); //$NON-NLS-1$
 		}
 		sb.append("reference Changes ---END---\n"); //$NON-NLS-1$
@@ -221,7 +221,7 @@ public class TransactionDelta implements Cloneable {
 	@Override
 	@SuppressWarnings("unchecked")
 	public Object clone() throws CloneNotSupportedException {
-		TransactionDelta delta = (TransactionDelta) super.clone();
+		final TransactionDelta delta = (TransactionDelta) super.clone();
 		delta.referenceChanges = (Map<String, AbstractBaseChange>) ((HashMap<String, AbstractBaseChange>) referenceChanges)
 				.clone();
 		return delta;

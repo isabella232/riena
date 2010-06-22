@@ -56,11 +56,11 @@ public class BorderMarkerSupportTest extends TestCase {
 	 */
 	public void testCreateErrorDecoration() {
 
-		RienaDefaultLnf originalLnf = LnfManager.getLnf();
-		DefaultRealm realm = new DefaultRealm();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+		final DefaultRealm realm = new DefaultRealm();
 		try {
 			final Text text = new Text(shell, SWT.NONE);
-			TextRidget ridget = new TextRidget();
+			final TextRidget ridget = new TextRidget();
 			ridget.setUIControl(text);
 			BorderMarkerSupport support = new BorderMarkerSupport(ridget, null);
 
@@ -103,9 +103,10 @@ public class BorderMarkerSupportTest extends TestCase {
 		@Override
 		protected void initializeTheme() {
 			super.initializeTheme();
-			Map<String, ILnfResource> resourceTable = ReflectionUtils.getHidden(MyNonsenseLnf.this, "resourceTable");
+			final Map<String, ILnfResource> resourceTable = ReflectionUtils.getHidden(MyNonsenseLnf.this,
+					"resourceTable");
 			resourceTable.clear();
-			Map<String, Object> settingTable = ReflectionUtils.getHidden(MyNonsenseLnf.this, "settingTable");
+			final Map<String, Object> settingTable = ReflectionUtils.getHidden(MyNonsenseLnf.this, "settingTable");
 			settingTable.clear();
 		}
 	}

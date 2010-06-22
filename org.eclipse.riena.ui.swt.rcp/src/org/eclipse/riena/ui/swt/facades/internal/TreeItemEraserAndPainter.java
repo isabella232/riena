@@ -25,25 +25,26 @@ import org.eclipse.swt.widgets.TreeItem;
  * and SWT.PaintItem listener and indicating we will be repsonsible from erasing
  * and drawing the cells content.
  * 
- * @see '<a href="http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
+ * @see '<a href=
+ *      "http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
  *      >Custom Drawing Table and Tree Items</a>'
  */
 public final class TreeItemEraserAndPainter implements Listener {
 
-	private Rectangle bounds = new Rectangle(0, 0, 0, 0);
+	private final Rectangle bounds = new Rectangle(0, 0, 0, 0);
 
 	/*
 	 * Called EXTREMELY frequently. Must be as efficient as possible.
 	 */
-	public void handleEvent(Event event) {
+	public void handleEvent(final Event event) {
 		if (SWT.EraseItem == event.type) {
 			// indicate we are responsible for drawing the cell's content
 			event.detail &= ~SWT.FOREGROUND;
 		} else if (SWT.PaintItem == event.type) {
-			TreeItem item = (TreeItem) event.item;
-			Tree tree = item.getParent();
+			final TreeItem item = (TreeItem) event.item;
+			final Tree tree = item.getParent();
 			if (!tree.isEnabled()) {
-				GC gc = event.gc;
+				final GC gc = event.gc;
 				bounds.width = tree.getBounds().width;
 				bounds.height = tree.getBounds().height;
 				gc.fillRectangle(bounds);

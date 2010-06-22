@@ -109,12 +109,12 @@ public class NavigationProcessorTest extends RienaTestCase {
 		final String ridgetId = "myRidget";
 
 		// create a NavigationNodeControllerStub that returns the IRidgetMock
-		NavigationNodeController<ISubModuleNode> nodeControllerStub = new NavigationNodeController<ISubModuleNode>() {
+		final NavigationNodeController<ISubModuleNode> nodeControllerStub = new NavigationNodeController<ISubModuleNode>() {
 			public void configureRidgets() {
 			}
 
 			@Override
-			public IRidget getRidget(String id) {
+			public IRidget getRidget(final String id) {
 				return ridgetId.equals(id) ? ridgetStub : ridgetStubWithoutFocus;
 			}
 		};
@@ -179,17 +179,17 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 			assertEquals(2, applicationNode.getChildren().size());
 			assertFalse(subApplication.isActivated());
-			ISubApplicationNode secondSubApplication = applicationNode.getChild(1);
+			final ISubApplicationNode secondSubApplication = applicationNode.getChild(1);
 			assertEquals(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondSubApplication"),
 					secondSubApplication.getNodeId());
 			assertTrue(secondSubApplication.isActivated());
 			assertEquals(1, secondSubApplication.getChildren().size());
-			IModuleGroupNode secondModuleGroup = secondSubApplication.getChild(0);
+			final IModuleGroupNode secondModuleGroup = secondSubApplication.getChild(0);
 			assertEquals(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModuleGroup"),
 					secondModuleGroup.getNodeId());
 			assertTrue(secondModuleGroup.isActivated());
-			IModuleNode secondModule = secondModuleGroup.getChild(0);
-			ISubModuleNode secondSubModule = secondModule.getChild(0);
+			final IModuleNode secondModule = secondModuleGroup.getChild(0);
+			final ISubModuleNode secondSubModule = secondModule.getChild(0);
 			assertTrue(secondSubModule.isActivated());
 
 			secondSubModule.navigateBack();
@@ -224,7 +224,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 			reset();
 		}
 
-		public void jumpTargetStateChanged(INavigationNode<?> node, JumpTargetState jumpTargetState) {
+		public void jumpTargetStateChanged(final INavigationNode<?> node, final JumpTargetState jumpTargetState) {
 			this.jumpTargetState = jumpTargetState;
 			this.node = node;
 
@@ -238,7 +238,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 	}
 
 	public void testDefaultJump() throws Exception {
-		DummyJumpTargetListener listener = new DummyJumpTargetListener();
+		final DummyJumpTargetListener listener = new DummyJumpTargetListener();
 		subModule1.activate();
 		subModule2.addJumpTargetListener(listener);
 		subModule1.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2"));
@@ -289,18 +289,18 @@ public class NavigationProcessorTest extends RienaTestCase {
 	public void testGetActivateableNodes() {
 
 		NavigationNodeId id = new NavigationNodeId("4711");
-		SubModuleNode node = new SubModuleNode(id);
+		final SubModuleNode node = new SubModuleNode(id);
 		node.setNavigationProcessor(navigationProcessor);
 		id = new NavigationNodeId("0815");
-		SubModuleNode node2 = new SubModuleNode(id);
+		final SubModuleNode node2 = new SubModuleNode(id);
 		node2.setNavigationProcessor(navigationProcessor);
 		id = new NavigationNodeId("node3");
-		SubModuleNode node3 = new SubModuleNode(id);
+		final SubModuleNode node3 = new SubModuleNode(id);
 		node3.setNavigationProcessor(navigationProcessor);
 		id = new NavigationNodeId("node4");
-		SubModuleNode node4 = new SubModuleNode(id);
+		final SubModuleNode node4 = new SubModuleNode(id);
 		node4.setNavigationProcessor(navigationProcessor);
-		List<INavigationNode<?>> nodes = new ArrayList<INavigationNode<?>>();
+		final List<INavigationNode<?>> nodes = new ArrayList<INavigationNode<?>>();
 		nodes.add(node);
 		nodes.add(node2);
 		nodes.add(node3);
@@ -332,13 +332,13 @@ public class NavigationProcessorTest extends RienaTestCase {
 	public void testGetChildToActivate() {
 
 		NavigationNodeId id = new NavigationNodeId("4711");
-		SubModuleNode node = new SubModuleNode(id);
+		final SubModuleNode node = new SubModuleNode(id);
 
 		INavigationNode<?> toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", node);
 		assertNull(toActivate);
 
 		id = new NavigationNodeId("m1");
-		ModuleNode moduleNode = new ModuleNode(id);
+		final ModuleNode moduleNode = new ModuleNode(id);
 
 		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleNode);
 		assertNull(toActivate);
@@ -348,7 +348,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertSame(node, toActivate);
 
 		id = new NavigationNodeId("sm2");
-		SubModuleNode node2 = new SubModuleNode(id);
+		final SubModuleNode node2 = new SubModuleNode(id);
 		moduleNode.addChild(node2);
 		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleNode);
 		assertSame(node, toActivate);
@@ -358,13 +358,13 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertSame(node2, toActivate);
 
 		id = new NavigationNodeId("mg1");
-		ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
+		final ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
 		moduleGroupNode.setNavigationProcessor(navigationProcessor);
 		moduleGroupNode.addChild(moduleNode);
 		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleGroupNode);
 		assertSame(moduleNode, toActivate);
 
-		DisabledMarker disabledMarker = new DisabledMarker();
+		final DisabledMarker disabledMarker = new DisabledMarker();
 		moduleNode.addMarker(disabledMarker);
 		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleGroupNode);
 		assertNull(toActivate);
@@ -386,21 +386,21 @@ public class NavigationProcessorTest extends RienaTestCase {
 	public void testDispose() {
 
 		NavigationNodeId id = new NavigationNodeId("4711");
-		TestSubModuleNode node = new TestSubModuleNode(id);
+		final TestSubModuleNode node = new TestSubModuleNode(id);
 
 		id = new NavigationNodeId("0815");
-		TestSubModuleNode node2 = new TestSubModuleNode(id);
+		final TestSubModuleNode node2 = new TestSubModuleNode(id);
 
 		id = new NavigationNodeId("m1");
-		ModuleNode moduleNode = new ModuleNode(id);
+		final ModuleNode moduleNode = new ModuleNode(id);
 		moduleNode.addChild(node);
 		moduleNode.addChild(node2);
 
 		id = new NavigationNodeId("m2");
-		ModuleNode moduleNode2 = new ModuleNode(id);
+		final ModuleNode moduleNode2 = new ModuleNode(id);
 
 		id = new NavigationNodeId("mg1");
-		ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
+		final ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
 		moduleGroupNode.addChild(moduleNode);
 		moduleGroupNode.addChild(moduleNode2);
 
@@ -446,17 +446,17 @@ public class NavigationProcessorTest extends RienaTestCase {
 	public void testGetNodeToDispose() {
 
 		NavigationNodeId id = new NavigationNodeId("4711");
-		SubModuleNode node = new SubModuleNode(id);
+		final SubModuleNode node = new SubModuleNode(id);
 
 		id = new NavigationNodeId("m1");
-		ModuleNode moduleNode = new ModuleNode(id);
+		final ModuleNode moduleNode = new ModuleNode(id);
 		moduleNode.addChild(node);
 
 		id = new NavigationNodeId("m2");
-		ModuleNode moduleNode2 = new ModuleNode(id);
+		final ModuleNode moduleNode2 = new ModuleNode(id);
 
 		id = new NavigationNodeId("mg1");
-		ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
+		final ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
 		moduleGroupNode.addChild(moduleNode);
 		moduleGroupNode.addChild(moduleNode2);
 
@@ -479,20 +479,20 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testAddMarker() {
 
-		IMarker disabledMarker = new DisabledMarker();
-		IMarker hiddenMarker = new HiddenMarker();
-		IMarker errorMarker = new ErrorMarker();
+		final IMarker disabledMarker = new DisabledMarker();
+		final IMarker hiddenMarker = new HiddenMarker();
+		final IMarker errorMarker = new ErrorMarker();
 
 		navigationProcessor.addMarker(null, disabledMarker);
 
 		NavigationNodeId id = new NavigationNodeId("4711");
-		TestSubModuleNode node = new TestSubModuleNode(id);
+		final TestSubModuleNode node = new TestSubModuleNode(id);
 
 		id = new NavigationNodeId("0815");
-		TestSubModuleNode node2 = new TestSubModuleNode(id);
+		final TestSubModuleNode node2 = new TestSubModuleNode(id);
 
 		id = new NavigationNodeId("m1");
-		ModuleNode moduleNode = new ModuleNode(id);
+		final ModuleNode moduleNode = new ModuleNode(id);
 		moduleNode.addChild(node);
 		moduleNode.addChild(node2);
 		moduleNode.setNavigationProcessor(navigationProcessor);
@@ -575,21 +575,21 @@ public class NavigationProcessorTest extends RienaTestCase {
 	public void testGetTopParent() {
 
 		NavigationNodeId id = new NavigationNodeId("4711");
-		TestSubModuleNode node = new TestSubModuleNode(id);
+		final TestSubModuleNode node = new TestSubModuleNode(id);
 
 		id = new NavigationNodeId("0815");
-		TestSubModuleNode node2 = new TestSubModuleNode(id);
+		final TestSubModuleNode node2 = new TestSubModuleNode(id);
 
 		id = new NavigationNodeId("m1");
-		ModuleNode moduleNode = new ModuleNode(id);
+		final ModuleNode moduleNode = new ModuleNode(id);
 		moduleNode.addChild(node);
 		moduleNode.addChild(node2);
 
 		id = new NavigationNodeId("m2");
-		ModuleNode moduleNode2 = new ModuleNode(id);
+		final ModuleNode moduleNode2 = new ModuleNode(id);
 
 		id = new NavigationNodeId("mg1");
-		ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
+		final ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
 		moduleGroupNode.addChild(moduleNode);
 
 		INavigationNode<?> top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", node);
@@ -615,21 +615,21 @@ public class NavigationProcessorTest extends RienaTestCase {
 	public void testGetNextActiveParent() {
 
 		NavigationNodeId id = new NavigationNodeId("4711");
-		TestSubModuleNode node = new TestSubModuleNode(id);
+		final TestSubModuleNode node = new TestSubModuleNode(id);
 
 		id = new NavigationNodeId("0815");
-		TestSubModuleNode node2 = new TestSubModuleNode(id);
+		final TestSubModuleNode node2 = new TestSubModuleNode(id);
 		node.addChild(node2);
 
 		id = new NavigationNodeId("m1");
-		ModuleNode moduleNode = new ModuleNode(id);
+		final ModuleNode moduleNode = new ModuleNode(id);
 		moduleNode.addChild(node);
 
 		id = new NavigationNodeId("m2");
-		ModuleNode moduleNode2 = new ModuleNode(id);
+		final ModuleNode moduleNode2 = new ModuleNode(id);
 
 		id = new NavigationNodeId("mg1");
-		ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
+		final ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
 		moduleGroupNode.addChild(moduleNode);
 		moduleGroupNode.addChild(moduleNode2);
 		moduleGroupNode.setNavigationProcessor(navigationProcessor);
@@ -657,21 +657,21 @@ public class NavigationProcessorTest extends RienaTestCase {
 	public void testGetActiveChild() {
 
 		NavigationNodeId id = new NavigationNodeId("4711");
-		TestSubModuleNode node = new TestSubModuleNode(id);
+		final TestSubModuleNode node = new TestSubModuleNode(id);
 
 		id = new NavigationNodeId("0815");
-		TestSubModuleNode node2 = new TestSubModuleNode(id);
+		final TestSubModuleNode node2 = new TestSubModuleNode(id);
 		node.addChild(node2);
 
 		id = new NavigationNodeId("m1");
-		ModuleNode moduleNode = new ModuleNode(id);
+		final ModuleNode moduleNode = new ModuleNode(id);
 		moduleNode.addChild(node);
 
 		id = new NavigationNodeId("m2");
-		ModuleNode moduleNode2 = new ModuleNode(id);
+		final ModuleNode moduleNode2 = new ModuleNode(id);
 
 		id = new NavigationNodeId("mg1");
-		ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
+		final ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
 		moduleGroupNode.addChild(moduleNode);
 		moduleGroupNode.addChild(moduleNode2);
 		moduleGroupNode.setNavigationProcessor(navigationProcessor);
@@ -738,7 +738,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testMove() throws Exception {
 
-		INavigationNode<?> targetModuleGroup = navigationProcessor.create(subApplication, new NavigationNodeId(
+		final INavigationNode<?> targetModuleGroup = navigationProcessor.create(subApplication, new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.moduleGroup.2"), null);
 		assertEquals(module2, moduleGroup.getChild(1));
 		assertEquals(2, moduleGroup.getChildren().size());
@@ -755,9 +755,9 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testPrepare() {
 
-		TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
+		final TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
 		navigationProcessor.prepare(node);
-		INavigationContext context = node.getNaviContext();
+		final INavigationContext context = node.getNaviContext();
 		assertNotNull(context);
 		assertNotNull(context.getToPrepare());
 		assertEquals(1, context.getToPrepare().size());
@@ -772,7 +772,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testHistoryBack() {
 
-		TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
+		final TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
 		module.addChild(node);
 		subModule1.activate();
 		node.activate();
@@ -800,7 +800,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testHistoryForeward() {
 
-		TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
+		final TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
 		module.addChild(node);
 		subModule1.activate();
 		node.activate();
@@ -830,8 +830,8 @@ public class NavigationProcessorTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the <i>private</i> method {@code
-	 * findSelectableChildNode(ISubModuleNode)}
+	 * Tests the <i>private</i> method
+	 * {@code findSelectableChildNode(ISubModuleNode)}
 	 */
 	public void testFindSelectableChildNode() {
 
@@ -843,7 +843,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		selectableChild = ReflectionUtils.invokeHidden(navigationProcessor, "findSelectableChildNode", subModule1);
 		assertNull(selectableChild);
 
-		TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
+		final TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
 		subModule1.addChild(node);
 		selectableChild = ReflectionUtils.invokeHidden(navigationProcessor, "findSelectableChildNode", subModule1);
 		assertSame(node, selectableChild);
@@ -857,7 +857,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		private boolean allowsDispose;
 		private INavigationContext naviContext;
 
-		public TestSubModuleNode(NavigationNodeId nodeId) {
+		public TestSubModuleNode(final NavigationNodeId nodeId) {
 			super(nodeId);
 			allowsActivate = true;
 			allowsDeactivate = true;
@@ -865,34 +865,34 @@ public class NavigationProcessorTest extends RienaTestCase {
 		}
 
 		@Override
-		public boolean allowsActivate(INavigationContext context) {
+		public boolean allowsActivate(final INavigationContext context) {
 			return allowsActivate;
 		}
 
 		@Override
-		public boolean allowsDeactivate(INavigationContext context) {
+		public boolean allowsDeactivate(final INavigationContext context) {
 			return allowsDeactivate;
 		}
 
 		@Override
-		public boolean allowsDispose(INavigationContext context) {
+		public boolean allowsDispose(final INavigationContext context) {
 			return allowsDispose;
 		}
 
-		public void setAllowsActivate(boolean allowsActivate) {
+		public void setAllowsActivate(final boolean allowsActivate) {
 			this.allowsActivate = allowsActivate;
 		}
 
-		public void setAllowsDeactivate(boolean allowsDeactivate) {
+		public void setAllowsDeactivate(final boolean allowsDeactivate) {
 			this.allowsDeactivate = allowsDeactivate;
 		}
 
-		public void setAllowsDispose(boolean allowsDispose) {
+		public void setAllowsDispose(final boolean allowsDispose) {
 			this.allowsDispose = allowsDispose;
 		}
 
 		@Override
-		public void prepare(INavigationContext context) {
+		public void prepare(final INavigationContext context) {
 			super.prepare(context);
 			naviContext = context;
 		}

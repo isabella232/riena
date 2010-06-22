@@ -71,12 +71,12 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	 * 
 	 * @since 2.0
 	 */
-	public void addSelectionListener(ISelectionListener selectionListener) {
+	public void addSelectionListener(final ISelectionListener selectionListener) {
 		Assert.isNotNull(selectionListener, "selectionListener is null"); //$NON-NLS-1$
 		if (selectionListeners == null) {
 			selectionListeners = new ListenerList<ISelectionListener>(ISelectionListener.class);
 			addPropertyChangeListener(ISelectableRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
-				public void propertyChange(PropertyChangeEvent evt) {
+				public void propertyChange(final PropertyChangeEvent evt) {
 					notifySelectionListeners((List<?>) evt.getOldValue(), (List<?>) evt.getNewValue());
 				}
 			});
@@ -84,17 +84,17 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		selectionListeners.add(selectionListener);
 	}
 
-	public final void bindMultiSelectionToModel(IObservableList observableList) {
+	public final void bindMultiSelectionToModel(final IObservableList observableList) {
 		if (multiSelectionBinding != null) {
 			multiSelectionBinding.dispose();
 		}
-		DataBindingContext dbc = new DataBindingContext();
+		final DataBindingContext dbc = new DataBindingContext();
 		multiSelectionBinding = (ListBinding) dbc.bindList(multiSelectionObservable, observableList,
 				new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(
 						UpdateListStrategy.POLICY_ON_REQUEST));
 	}
 
-	public final void bindMultiSelectionToModel(Object selectionHolder, String selectionPropertyName) {
+	public final void bindMultiSelectionToModel(final Object selectionHolder, final String selectionPropertyName) {
 		IObservableList observableList;
 		if (AbstractSWTRidget.isBean(selectionHolder.getClass())) {
 			observableList = BeansObservables.observeList(selectionHolder, selectionPropertyName);
@@ -104,16 +104,16 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		bindMultiSelectionToModel(observableList);
 	}
 
-	public final void bindSingleSelectionToModel(IObservableValue selectionValue) {
+	public final void bindSingleSelectionToModel(final IObservableValue selectionValue) {
 		if (singleSelectionBinding != null) {
 			singleSelectionBinding.dispose();
 		}
-		DataBindingContext dbc = new DataBindingContext();
+		final DataBindingContext dbc = new DataBindingContext();
 		singleSelectionBinding = dbc.bindValue(singleSelectionObservable, selectionValue, new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(UpdateValueStrategy.POLICY_ON_REQUEST));
 	}
 
-	public final void bindSingleSelectionToModel(Object selectionHolder, String selectionPropertyName) {
+	public final void bindSingleSelectionToModel(final Object selectionHolder, final String selectionPropertyName) {
 		IObservableValue observableValue;
 		if (AbstractSWTRidget.isBean(selectionHolder.getClass())) {
 			observableValue = PojoObservables.observeValue(selectionHolder, selectionPropertyName);
@@ -128,7 +128,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		multiSelectionObservable.clear();
 	}
 
-	public boolean containsOption(Object option) {
+	public boolean containsOption(final Object option) {
 		if (getRowObservables() == null) {
 			return false;
 		}
@@ -140,7 +140,7 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	}
 
 	public final List<Object> getSelection() {
-		List<Object> result = new ArrayList<Object>();
+		final List<Object> result = new ArrayList<Object>();
 		if (SelectionType.SINGLE.equals(selectionType)) {
 			if (singleSelectionObservable.getValue() != null) {
 				result.add(singleSelectionObservable.getValue());
@@ -164,20 +164,20 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	 * 
 	 * @since 2.0
 	 */
-	public void removeSelectionListener(ISelectionListener selectionListener) {
+	public void removeSelectionListener(final ISelectionListener selectionListener) {
 		if (selectionListeners != null) {
 			selectionListeners.remove(selectionListener);
 		}
 	}
 
-	public void setSelection(List<?> newSelection) {
+	public void setSelection(final List<?> newSelection) {
 		assertIsBoundToModel();
-		List<?> knownElements = getKnownElements(newSelection);
+		final List<?> knownElements = getKnownElements(newSelection);
 		if (SelectionType.SINGLE.equals(selectionType)) {
-			Object value = knownElements.size() > 0 ? knownElements.get(0) : null;
+			final Object value = knownElements.size() > 0 ? knownElements.get(0) : null;
 			singleSelectionObservable.setValue(value);
 		} else if (SelectionType.MULTI.equals(selectionType)) {
-			ListDiff diff = Diffs.computeListDiff(multiSelectionObservable, knownElements);
+			final ListDiff diff = Diffs.computeListDiff(multiSelectionObservable, knownElements);
 			if (diff.getDifferences().length > 0) {
 				multiSelectionObservable.clear();
 				multiSelectionObservable.addAll(knownElements);
@@ -185,13 +185,13 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		}
 	}
 
-	public final void setSelection(Object newSelection) {
+	public final void setSelection(final Object newSelection) {
 		assertIsBoundToModel();
-		List<Object> list = Arrays.asList(new Object[] { newSelection });
+		final List<Object> list = Arrays.asList(new Object[] { newSelection });
 		setSelection(list);
 	}
 
-	public void setSelectionType(SelectionType selectionType) {
+	public void setSelectionType(final SelectionType selectionType) {
 		Assert.isNotNull(selectionType, "selectionType cannot be null"); //$NON-NLS-1$
 		if (SelectionType.NONE.equals(selectionType)) {
 			throw new IllegalArgumentException("SelectionType.NONE is not supported by the UI-control"); //$NON-NLS-1$
@@ -248,12 +248,12 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	 * @since 2.0
 	 */
 	protected final void refreshSelection() {
-		List<?> rowObservables = getRowObservables();
+		final List<?> rowObservables = getRowObservables();
 		if (rowObservables != null) {
 			boolean doUpdate = false;
-			List<Object> oldSelection = getSelection();
-			List<Object> newSelection = new ArrayList<Object>();
-			for (Object candidate : oldSelection) {
+			final List<Object> oldSelection = getSelection();
+			final List<Object> newSelection = new ArrayList<Object>();
+			for (final Object candidate : oldSelection) {
 				if (!rowObservables.contains(candidate)) {
 					doUpdate = true;
 				} else {
@@ -269,10 +269,10 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 	// helping methods
 	// ////////////////
 
-	private List<Object> getKnownElements(List<?> elements) {
-		List<Object> result = new ArrayList<Object>();
-		Collection<?> rowObservables = getRowObservables();
-		for (Object element : elements) {
+	private List<Object> getKnownElements(final List<?> elements) {
+		final List<Object> result = new ArrayList<Object>();
+		final Collection<?> rowObservables = getRowObservables();
+		for (final Object element : elements) {
 			if (rowObservables.contains(element)) {
 				result.add(element);
 			}
@@ -280,10 +280,10 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		return result;
 	}
 
-	private void notifySelectionListeners(List<?> oldSelectionList, List<?> newSelectionList) {
+	private void notifySelectionListeners(final List<?> oldSelectionList, final List<?> newSelectionList) {
 		if (selectionListeners != null) {
-			SelectionEvent event = new SelectionEvent(this, oldSelectionList, newSelectionList);
-			for (ISelectionListener listener : selectionListeners.getListeners()) {
+			final SelectionEvent event = new SelectionEvent(this, oldSelectionList, newSelectionList);
+			for (final ISelectionListener listener : selectionListeners.getListeners()) {
 				listener.ridgetSelected(event);
 			}
 		}
@@ -303,18 +303,18 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		}
 
 		@Override
-		protected void fireValueChange(ValueDiff diff) {
+		protected void fireValueChange(final ValueDiff diff) {
 			super.fireValueChange(diff);
-			Object newValue = diff.getNewValue();
-			Object oldValue = diff.getOldValue();
+			final Object newValue = diff.getNewValue();
+			final Object oldValue = diff.getOldValue();
 			if (oldValue != newValue && getSelectionType() == SelectionType.SINGLE) {
-				String key = ISelectableRidget.PROPERTY_SELECTION;
+				final String key = ISelectableRidget.PROPERTY_SELECTION;
 				AbstractSelectableRidget.this.propertyChangeSupport.firePropertyChange(key, toList(oldValue),
 						toList(newValue));
 			}
 		}
 
-		private List<?> toList(Object value) {
+		private List<?> toList(final Object value) {
 			return value == null ? Collections.EMPTY_LIST : Arrays.asList(new Object[] { value });
 		}
 	}
@@ -334,21 +334,21 @@ public abstract class AbstractSelectableRidget extends AbstractSWTRidget impleme
 		 * events to avoid duplicate events (bug 268897)
 		 */
 		@Override
-		protected void fireListChange(ListDiff diff) {
+		protected void fireListChange(final ListDiff diff) {
 			super.fireListChange(diff);
 			if (getSelectionType() == SelectionType.MULTI) {
-				List<Object> newSelection = Arrays.asList(toArray());
-				List<Object> oldSelection = computeOldSelection(diff, newSelection);
-				String key = ISelectableRidget.PROPERTY_SELECTION;
+				final List<Object> newSelection = Arrays.asList(toArray());
+				final List<Object> oldSelection = computeOldSelection(diff, newSelection);
+				final String key = ISelectableRidget.PROPERTY_SELECTION;
 				AbstractSelectableRidget.this.propertyChangeSupport.firePropertyChange(key, oldSelection, newSelection);
 			}
 		}
 
-		private List<Object> computeOldSelection(ListDiff diff, List<Object> newSelection) {
-			List<Object> oldSelection = new ArrayList<Object>();
+		private List<Object> computeOldSelection(final ListDiff diff, final List<Object> newSelection) {
+			final List<Object> oldSelection = new ArrayList<Object>();
 			oldSelection.addAll(newSelection);
-			for (ListDiffEntry entry : diff.getDifferences()) {
-				Object element = entry.getElement();
+			for (final ListDiffEntry entry : diff.getDifferences()) {
+				final Object element = entry.getElement();
 				if (entry.isAddition()) {
 					oldSelection.remove(element);
 				} else {

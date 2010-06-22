@@ -25,15 +25,15 @@ public final class SortableComparator implements Comparator<Object> {
 	private final ISortableByColumn ridget;
 	private final Comparator<Object> orgComparator;
 
-	public SortableComparator(ISortableByColumn ridget, Comparator<Object> comparator) {
+	public SortableComparator(final ISortableByColumn ridget, final Comparator<Object> comparator) {
 		Assert.isNotNull(ridget);
 		Assert.isNotNull(comparator);
 		this.ridget = ridget;
 		orgComparator = comparator;
 	}
 
-	public int compare(Object o1, Object o2) {
-		int result = orgComparator.compare(o1, o2);
+	public int compare(final Object o1, final Object o2) {
+		final int result = orgComparator.compare(o1, o2);
 		return ridget.isSortedAscending() ? result : result * -1;
 	}
 

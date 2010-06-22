@@ -15,13 +15,13 @@ package org.eclipse.riena.security.common.authentication.credentials;
  */
 public class TextInputCredential extends AbstractCredential {
 
-	private String defaultText;
+	private final String defaultText;
 	private String inputText;
 
 	/**
 	 * @param prompt
 	 */
-	public TextInputCredential(String prompt, String defaultText) {
+	public TextInputCredential(final String prompt, final String defaultText) {
 		super(prompt);
 		this.defaultText = defaultText;
 	}
@@ -30,7 +30,7 @@ public class TextInputCredential extends AbstractCredential {
 		return inputText;
 	}
 
-	public void setText(String inputText) {
+	public void setText(final String inputText) {
 		this.inputText = inputText;
 	}
 

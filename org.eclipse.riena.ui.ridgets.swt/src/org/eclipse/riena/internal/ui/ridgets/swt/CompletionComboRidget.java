@@ -26,14 +26,14 @@ import org.eclipse.riena.ui.swt.CompletionCombo;
  */
 public class CompletionComboRidget extends AbstractComboRidget {
 
-	private ModifyListener modifyListener = new ModifyListener() {
-		public void modifyText(ModifyEvent e) {
+	private final ModifyListener modifyListener = new ModifyListener() {
+		public void modifyText(final ModifyEvent e) {
 			setText(getUIControlText());
 		}
 	};
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, CompletionCombo.class);
 	}
 
@@ -59,8 +59,8 @@ public class CompletionComboRidget extends AbstractComboRidget {
 
 	@Override
 	protected ISWTObservableValue getUIControlSelectionObservable() {
-		CompletionCombo control = getUIControl();
-		Realm realm = SWTObservables.getRealm(control.getDisplay());
+		final CompletionCombo control = getUIControl();
+		final Realm realm = SWTObservables.getRealm(control.getDisplay());
 		return (ISWTObservableValue) new CompletionComboSelectionProperty().observe(realm, control);
 	}
 
@@ -73,7 +73,7 @@ public class CompletionComboRidget extends AbstractComboRidget {
 		// as well
 		getUIControl().getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				CompletionCombo combo = getUIControl();
+				final CompletionCombo combo = getUIControl();
 				if (combo != null && !combo.isDisposed()) {
 					combo.clearSelection(); // this does not change the text
 				}
@@ -97,22 +97,22 @@ public class CompletionComboRidget extends AbstractComboRidget {
 	}
 
 	@Override
-	protected int indexOfInUIControl(String item) {
+	protected int indexOfInUIControl(final String item) {
 		return getUIControl().indexOf(item);
 	}
 
 	@Override
-	protected void selectInUIControl(int index) {
+	protected void selectInUIControl(final int index) {
 		getUIControl().select(index);
 	}
 
 	@Override
-	protected void setItemsToControl(String[] arrItems) {
+	protected void setItemsToControl(final String[] arrItems) {
 		getUIControl().setItems(arrItems);
 	}
 
 	@Override
-	protected void setTextToControl(String text) {
+	protected void setTextToControl(final String text) {
 		getUIControl().setText(text);
 	}
 }

@@ -134,7 +134,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		selectionValidator = new SelectionBindingValidator();
 		valueChangeNotifier = new ValueChangeNotifier();
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				applyEnabled();
 			}
 		});
@@ -149,7 +149,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 		if (optionValues != null) {
 			// These bindings are only necessary when we have a model
-			DataBindingContext dbc = new DataBindingContext();
+			final DataBindingContext dbc = new DataBindingContext();
 			if (getUIControl() != null) {
 				applyEnabled();
 			}
@@ -192,12 +192,12 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * selection or the 'empty' selection entry is selected, the list will be
 	 * empty.
 	 */
-	public void addSelectionListener(ISelectionListener selectionListener) {
+	public void addSelectionListener(final ISelectionListener selectionListener) {
 		Assert.isNotNull(selectionListener, "selectionListener is null"); //$NON-NLS-1$
 		if (selectionListeners == null) {
 			selectionListeners = new ListenerList<ISelectionListener>(ISelectionListener.class);
 			addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
-				public void propertyChange(PropertyChangeEvent evt) {
+				public void propertyChange(final PropertyChangeEvent evt) {
 					notifySelectionListeners(evt.getOldValue(), evt.getNewValue());
 				}
 			});
@@ -205,14 +205,14 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		selectionListeners.add(selectionListener);
 	}
 
-	public void removeSelectionListener(ISelectionListener selectionListener) {
+	public void removeSelectionListener(final ISelectionListener selectionListener) {
 		if (selectionListeners != null) {
 			selectionListeners.remove(selectionListener);
 		}
 	}
 
-	public void bindToModel(IObservableList optionValues, Class<? extends Object> rowClass, String renderingMethod,
-			IObservableValue selectionValue) {
+	public void bindToModel(final IObservableList optionValues, final Class<? extends Object> rowClass,
+			final String renderingMethod, final IObservableValue selectionValue) {
 		unbindUIControl();
 
 		this.optionValues = optionValues;
@@ -223,8 +223,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		bindUIControl();
 	}
 
-	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
-			String renderingMethod, Object selectionHolder, String selectionPropertyName) {
+	public void bindToModel(final Object listHolder, final String listPropertyName,
+			final Class<? extends Object> rowClass, final String renderingMethod, final Object selectionHolder,
+			final String selectionPropertyName) {
 		IObservableList listObservableValue;
 		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
 			listObservableValue = BeansObservables.observeList(listHolder, listPropertyName);
@@ -254,13 +255,13 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	}
 
 	public Object getSelection() {
-		Object selection = selectionObservable.getValue();
+		final Object selection = selectionObservable.getValue();
 		return selection == emptySelection ? null : selection;
 	}
 
 	public int getSelectionIndex() {
 		int result = -1;
-		Object selection = selectionObservable.getValue();
+		final Object selection = selectionObservable.getValue();
 		if (emptySelection != selection) {
 			result = rowObservables.indexOf(selection);
 		}
@@ -281,11 +282,11 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		return markSelectionMismatch;
 	}
 
-	public void setEmptySelectionItem(Object emptySelection) {
+	public void setEmptySelectionItem(final Object emptySelection) {
 		this.emptySelection = emptySelection;
 	}
 
-	public void setMarkSelectionMismatch(boolean mark) {
+	public void setMarkSelectionMismatch(final boolean mark) {
 		if (mark != markSelectionMismatch) {
 			if (mark == true && selectionMismatchMarker == null) {
 				selectionMismatchMarker = new ErrorMessageMarker(
@@ -296,9 +297,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
-	public void setSelection(Object newSelection) {
+	public void setSelection(final Object newSelection) {
 		assertIsBoundToModel();
-		Object oldSelection = selectionObservable.getValue();
+		final Object oldSelection = selectionObservable.getValue();
 		if (oldSelection != newSelection) {
 			if (newSelection == null || !rowObservables.contains(newSelection)) {
 				if (getUIControl() != null) {
@@ -311,30 +312,30 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
-	public void setSelection(int index) {
+	public void setSelection(final int index) {
 		if (index == -1) {
 			setSelection(null);
 		} else {
-			Object newSelection = rowObservables.get(index);
+			final Object newSelection = rowObservables.get(index);
 			setSelection(newSelection);
 		}
 	}
 
-	public void setText(String text) {
+	public void setText(final String text) {
 		Assert.isNotNull(text);
 		if (!StringUtils.equals(text, this.text)) {
-			String oldText = this.text;
+			final String oldText = this.text;
 			this.text = text;
 			firePropertyChange(PROPERTY_TEXT, oldText, this.text);
 			applyText();
 		}
 	}
 
-	public void setModelToUIControlConverter(IConverter converter) {
+	public void setModelToUIControlConverter(final IConverter converter) {
 		objToStrConverter = (converter != null) ? converter : new ObjectToStringConverter();
 	}
 
-	public void setUIControlToModelConverter(IConverter converter) {
+	public void setUIControlToModelConverter(final IConverter converter) {
 		strToObjConverter = (converter != null) ? converter : new StringToObjectConverter();
 	}
 
@@ -460,7 +461,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	}
 
 	private void applyMarkSelectionMismatch() {
-		Object selection = selectionObservable.getValue();
+		final Object selection = selectionObservable.getValue();
 		if (markSelectionMismatch && selection != null && !rowObservables.contains(selection)) {
 			Assert.isNotNull(markSelectionMismatch);
 			addMarker(selectionMismatchMarker);
@@ -486,8 +487,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			/* update list of items in combo */
 			updateValueToItem();
 			/* re-create selectionBinding */
-			ISWTObservableValue controlSelection = getUIControlSelectionObservable();
-			DataBindingContext dbc = new DataBindingContext();
+			final ISWTObservableValue controlSelection = getUIControlSelectionObservable();
+			final DataBindingContext dbc = new DataBindingContext();
 			selectionBindingInternal = dbc.bindValue(controlSelection, selectionObservable,
 					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).setConverter(strToObjConverter)
 							.setAfterGetValidator(selectionValidator), new UpdateValueStrategy(
@@ -497,13 +498,13 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
-	private void disposeBinding(Binding binding) {
+	private void disposeBinding(final Binding binding) {
 		if (binding != null && !binding.isDisposed()) {
 			binding.dispose();
 		}
 	}
 
-	private String getItemFromValue(Object value) {
+	private String getItemFromValue(final Object value) {
 		Object valueObject = value;
 		if (value != null && renderingMethod != null) {
 			valueObject = ReflectionUtils.invoke(value, renderingMethod, (Object[]) null);
@@ -522,9 +523,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * @return value relevant object; {@code null} or empty string if no
 	 *         relevant object exists
 	 */
-	private Object getValueFromItem(String item) {
+	private Object getValueFromItem(final String item) {
 
-		String[] uiItems = getUIControlItems();
+		final String[] uiItems = getUIControlItems();
 		for (int i = 0; i < uiItems.length; i++) {
 			if (uiItems[i].equals(item)) {
 				return rowObservables.get(i);
@@ -540,22 +541,22 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	}
 
 	private boolean hasInput() {
-		Object selection = selectionObservable.getValue();
+		final Object selection = selectionObservable.getValue();
 		return selection != null && selection != emptySelection;
 	}
 
-	private void notifySelectionListeners(Object oldValue, Object newValue) {
+	private void notifySelectionListeners(final Object oldValue, final Object newValue) {
 		if (selectionListeners != null) {
-			List<Object> oldSelectionList = new ArrayList<Object>();
+			final List<Object> oldSelectionList = new ArrayList<Object>();
 			if (oldValue != null) {
 				oldSelectionList.add(oldValue);
 			}
-			List<Object> newSelectionList = new ArrayList<Object>();
+			final List<Object> newSelectionList = new ArrayList<Object>();
 			if (newValue != null) {
 				newSelectionList.add(newValue);
 			}
-			SelectionEvent event = new SelectionEvent(this, oldSelectionList, newSelectionList);
-			for (ISelectionListener listener : selectionListeners.getListeners()) {
+			final SelectionEvent event = new SelectionEvent(this, oldSelectionList, newSelectionList);
+			for (final ISelectionListener listener : selectionListeners.getListeners()) {
 				listener.ridgetSelected(event);
 			}
 		}
@@ -580,13 +581,13 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		if (items != null) {
 			items.clear();
 			try {
-				for (Object value : optionValues) {
-					String item = (String) objToStrConverter.convert(value);
+				for (final Object value : optionValues) {
+					final String item = (String) objToStrConverter.convert(value);
 					items.add(item);
 				}
 			} finally {
 				if (getUIControl() != null) {
-					String[] arrItems = items.toArray(new String[items.size()]);
+					final String[] arrItems = items.toArray(new String[items.size()]);
 					setItemsToControl(arrItems);
 				}
 			}
@@ -604,7 +605,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			super(Object.class, String.class);
 		}
 
-		public Object convert(Object fromObject) {
+		public Object convert(final Object fromObject) {
 			return getItemFromValue(fromObject);
 		}
 	}
@@ -617,7 +618,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			super(String.class, Object.class);
 		}
 
-		public Object convert(Object fromObject) {
+		public Object convert(final Object fromObject) {
 			return getValueFromItem((String) fromObject);
 		}
 	}
@@ -629,7 +630,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 
 		private boolean isEnabled = true;
 
-		public IStatus validate(Object value) {
+		public IStatus validate(final Object value) {
 			IStatus result = Status.OK_STATUS;
 			// disallow control to ridget update, isEnabled == false || output
 			if (!isEnabled) {
@@ -651,9 +652,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * </ul>
 	 */
 	private final class ValueChangeNotifier implements IValueChangeListener {
-		public void handleValueChange(ValueChangeEvent event) {
-			Object oldValue = event.diff.getOldValue();
-			Object newValue = event.diff.getNewValue();
+		public void handleValueChange(final ValueChangeEvent event) {
+			final Object oldValue = event.diff.getOldValue();
+			final Object newValue = event.diff.getNewValue();
 			try {
 				firePropertyChange(IComboRidget.PROPERTY_SELECTION, oldValue, newValue);
 			} finally {

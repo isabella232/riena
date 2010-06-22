@@ -36,7 +36,7 @@ public class ErrorMarker extends AbstractMarker implements IIconizableMarker {
 	 *            {@link AbstractMarker} more information.
 	 * @since 1.2
 	 */
-	protected ErrorMarker(boolean unique) {
+	protected ErrorMarker(final boolean unique) {
 		super(unique);
 	}
 

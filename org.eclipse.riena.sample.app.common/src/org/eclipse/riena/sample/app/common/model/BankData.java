@@ -38,7 +38,7 @@ public class BankData implements Cloneable {
 	 * @param bankCode
 	 *            the bankCode to set
 	 */
-	public BankData(String accountNumber, String bank, String bankCode) {
+	public BankData(final String accountNumber, final String bank, final String bankCode) {
 
 		this();
 
@@ -49,11 +49,11 @@ public class BankData implements Cloneable {
 	}
 
 	@Override
-	public boolean equals(Object other) {
+	public boolean equals(final Object other) {
 		if (!(other instanceof BankData)) {
 			return false;
 		}
-		BankData bdO = (BankData) other;
+		final BankData bdO = (BankData) other;
 		if (bdO.accountNumber.equals(accountNumber) && bdO.bank.equals(bank) && bdO.bankCode.equals(bankCode)) {
 			return true;
 		}
@@ -87,7 +87,7 @@ public class BankData implements Cloneable {
 	 * @param accountNumber
 	 *            the account number to set
 	 */
-	public void setAccountNumber(String accountNumber) {
+	public void setAccountNumber(final String accountNumber) {
 
 		this.accountNumber = accountNumber;
 
@@ -110,7 +110,7 @@ public class BankData implements Cloneable {
 	 * @param bank
 	 *            the name of bank to set
 	 */
-	public void setBank(String bank) {
+	public void setBank(final String bank) {
 
 		this.bank = bank;
 
@@ -133,7 +133,7 @@ public class BankData implements Cloneable {
 	 * @param bankCode
 	 *            the bank codd to set.
 	 */
-	public void setBankCode(String bankCode) {
+	public void setBankCode(final String bankCode) {
 
 		this.bankCode = bankCode;
 
@@ -179,7 +179,7 @@ public class BankData implements Cloneable {
 	public Object clone() throws CloneNotSupportedException {
 
 		super.clone();
-		BankData clone = new BankData();
+		final BankData clone = new BankData();
 		clone.setAccountNumber(getAccountNumber());
 		clone.setBank(getBank());
 		clone.setBankCode(getBankCode());

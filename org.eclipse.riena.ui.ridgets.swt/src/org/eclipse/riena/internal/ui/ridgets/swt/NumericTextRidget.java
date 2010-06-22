@@ -55,12 +55,12 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 * This is not API and should not be called by clients. Public for testing
 	 * only.
 	 */
-	public static String group(String input, boolean isGrouping, boolean isDecimal) {
+	public static String group(final String input, final boolean isGrouping, final boolean isDecimal) {
 		String result = input;
-		int decIndex = input.indexOf(DECIMAL_SEPARATOR);
+		final int decIndex = input.indexOf(DECIMAL_SEPARATOR);
 		if (isGrouping) {
-			String left = decIndex == -1 ? input : input.substring(0, decIndex);
-			String right = decIndex == -1 ? "" : input.substring(decIndex); //$NON-NLS-1$
+			final String left = decIndex == -1 ? input : input.substring(0, decIndex);
+			final String right = decIndex == -1 ? "" : input.substring(decIndex); //$NON-NLS-1$
 			result = NumericTextRidget.group(left) + right;
 		}
 		if (decIndex == -1 && isDecimal) {
@@ -73,10 +73,10 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 * This is not API and should not be called by clients. Public for testing
 	 * only.
 	 */
-	public static String ungroup(String input) {
-		StringBuilder result = new StringBuilder(input.length());
+	public static String ungroup(final String input) {
+		final StringBuilder result = new StringBuilder(input.length());
 		for (int i = 0; i < input.length(); i++) {
-			char ch = input.charAt(i);
+			final char ch = input.charAt(i);
 			if (ch != GROUPING_SEPARATOR) {
 				result.append(ch);
 			}
@@ -89,7 +89,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 * This is not API and should not be called by clients. Public for testing
 	 * only.
 	 */
-	public static String removeLeadingCruft(String input) {
+	public static String removeLeadingCruft(final String input) {
 		if (Pattern.matches("0+.", input) && input.endsWith(String.valueOf(DECIMAL_SEPARATOR))) { //$NON-NLS-1$
 			return ZERO_DEC;
 		}
@@ -102,7 +102,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		if (String.valueOf(MINUS_SIGN).equals(input) || MINUS_ZERO.equals(input) || String.valueOf(ZERO).equals(input)) {
 			return String.valueOf(ZERO);
 		}
-		StringBuilder result = new StringBuilder(input.length());
+		final StringBuilder result = new StringBuilder(input.length());
 		int start = 0;
 		if (input.indexOf(MINUS_SIGN) == 0) {
 			result.append(MINUS_SIGN);
@@ -130,9 +130,9 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	/**
 	 * This is not API.
 	 */
-	protected static String removeTrailingPadding(String text) {
+	protected static String removeTrailingPadding(final String text) {
 		String result = text;
-		int decSep = text.indexOf(DECIMAL_SEPARATOR);
+		final int decSep = text.indexOf(DECIMAL_SEPARATOR);
 		if (decSep != -1) {
 			int index = text.length() - 1;
 			char ch = result.charAt(index);
@@ -147,14 +147,14 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		return result;
 	}
 
-	private static String group(String input) {
+	private static String group(final String input) {
 		final int numLength = input.length();
-		boolean isNegative = input.indexOf(MINUS_SIGN) == 0;
-		int groupSize = 3;
-		int delta = isNegative ? -2 : -1;
-		int groupCount = (numLength + delta) / groupSize;
+		final boolean isNegative = input.indexOf(MINUS_SIGN) == 0;
+		final int groupSize = 3;
+		final int delta = isNegative ? -2 : -1;
+		final int groupCount = (numLength + delta) / groupSize;
 
-		char[] result = new char[numLength + groupCount];
+		final char[] result = new char[numLength + groupCount];
 		Arrays.fill(result, '#');
 		int availableChars = groupSize + 1;
 		for (int i = result.length - 1; i > 0; i--) {
@@ -211,7 +211,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		maxLength = -1;
 		precision = -1;
 		addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				// System.out.println("updateMarkNeg: " + evt.getNewValue());
 				updateMarkNegative();
 			}
@@ -227,20 +227,20 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 * @param number
 	 *            a String value; "" is used for the empty value
 	 */
-	protected void checkNumber(String number) {
+	protected void checkNumber(final String number) {
 		if (!"".equals(number)) { //$NON-NLS-1$
-			BigInteger bigInteger = checkIsNumber(number);
+			final BigInteger bigInteger = checkIsNumber(number);
 			checkSigned(bigInteger);
 			checkMaxLength(number);
 		}
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		super.checkUIControl(uiControl);
 		AbstractSWTRidget.assertType(uiControl, Text.class);
 		if (uiControl != null) {
-			int style = ((Text) uiControl).getStyle();
+			final int style = ((Text) uiControl).getStyle();
 			if ((style & SWT.SINGLE) == 0) {
 				throw new BindingException("Text widget must be SWT.SINGLE"); //$NON-NLS-1$
 			}
@@ -248,7 +248,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	@Override
-	protected final synchronized void addListeners(Text control) {
+	protected final synchronized void addListeners(final Text control) {
 		control.addModifyListener(modifyListener);
 		control.addVerifyListener(verifyListener);
 		control.addKeyListener(keyListener);
@@ -256,7 +256,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		super.addListeners(control);
 	}
 
-	protected IConverter getConverter(Class<?> type, int precision) {
+	protected IConverter getConverter(final Class<?> type, final int precision) {
 		if (hasCustomConverter) {
 			return getValueBindingSupport().getModelToUIControlConverter();
 		} else {
@@ -278,13 +278,13 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 *            a String representing a numeric value; never null
 	 * @return true if text is negative, false otherwise.
 	 */
-	protected boolean isNegative(String text) {
-		BigInteger value = new BigInteger(text);
+	protected boolean isNegative(final String text) {
+		final BigInteger value = new BigInteger(text);
 		return (value.compareTo(BigInteger.ZERO) < 0);
 	}
 
 	@Override
-	protected final synchronized void removeListeners(Text control) {
+	protected final synchronized void removeListeners(final Text control) {
 		control.removeModifyListener(modifyListener);
 		control.removeVerifyListener(verifyListener);
 		control.removeFocusListener(focusListener);
@@ -292,17 +292,17 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		super.removeListeners(control);
 	}
 
-	protected synchronized void setPrecision(int precision) {
+	protected synchronized void setPrecision(final int precision) {
 		this.precision = precision;
-		String oldText = getText();
-		String newText = formatFraction(oldText);
+		final String oldText = getText();
+		final String newText = formatFraction(oldText);
 		if (!oldText.equals(newText)) {
 			setText(newText);
 		}
 	}
 
 	@Override
-	protected void setUIText(String text) {
+	protected void setUIText(final String text) {
 		if (isDecimal() && text.length() > 0) {
 			super.setUIText(beautifyText(text));
 		} else {
@@ -311,7 +311,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	@Override
-	public void setUIControlToModelConverter(IConverter converter) {
+	public void setUIControlToModelConverter(final IConverter converter) {
 		hasCustomConverter = converter != null;
 		super.setUIControlToModelConverter(converter);
 	}
@@ -344,32 +344,32 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		return isSigned;
 	}
 
-	public synchronized void setGrouping(boolean useGrouping) {
+	public synchronized void setGrouping(final boolean useGrouping) {
 		if (isGrouping != useGrouping) {
 			isGrouping = useGrouping;
 			updateGrouping();
 		}
 	}
 
-	public synchronized void setMarkNegative(boolean mustBeMarked) {
+	public synchronized void setMarkNegative(final boolean mustBeMarked) {
 		if (isMarkNegative != mustBeMarked) {
 			isMarkNegative = mustBeMarked;
 			updateMarkNegative();
 		}
 	}
 
-	public final synchronized void setMaxLength(int maxLength) {
+	public final synchronized void setMaxLength(final int maxLength) {
 		Assert.isLegal(maxLength > 0, "maxLength must be greater than zero: " + maxLength); //$NON-NLS-1$
-		int oldValue = this.maxLength;
+		final int oldValue = this.maxLength;
 		if (oldValue != maxLength) {
 			this.maxLength = maxLength;
 			firePropertyChange(INumericTextRidget.PROPERTY_MAXLENGTH, oldValue, maxLength);
 		}
 	}
 
-	public final synchronized void setSigned(boolean signed) {
+	public final synchronized void setSigned(final boolean signed) {
 		if (isSigned != signed) {
-			boolean oldValue = isSigned;
+			final boolean oldValue = isSigned;
 			isSigned = signed;
 			firePropertyChange(PROPERTY_SIGNED, oldValue, isSigned);
 		}
@@ -393,8 +393,8 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 * @see DecimalFormatSymbols#getDecimalSeparator()
 	 */
 	@Override
-	public final synchronized void setText(String text) {
-		String value = text != null ? text : ""; //$NON-NLS-1$
+	public final synchronized void setText(final String text) {
+		final String value = text != null ? text : ""; //$NON-NLS-1$
 		checkNumber(value);
 		super.setText(group(ungroup(value), isGrouping, isDecimal()));
 	}
@@ -417,27 +417,27 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	// helping methods
 	//////////////////
 
-	private void beautifyText(Text control) {
+	private void beautifyText(final Text control) {
 		if (control != null) {
-			String oldText = control.getText();
-			String newText = beautifyText(oldText);
+			final String oldText = control.getText();
+			final String newText = beautifyText(oldText);
 			if (!newText.equals(oldText)) {
-				Listener[] verifyListeners = control.getListeners(SWT.Verify);
-				for (Listener listener : verifyListeners) {
+				final Listener[] verifyListeners = control.getListeners(SWT.Verify);
+				for (final Listener listener : verifyListeners) {
 					control.removeListener(SWT.Verify, listener);
 				}
 				stopModifyListener();
 				control.setText(newText);
 				control.setSelection(newText.length());
 				startModifyListener();
-				for (Listener listener : verifyListeners) {
+				for (final Listener listener : verifyListeners) {
 					control.addListener(SWT.Verify, listener);
 				}
 			}
 		}
 	}
 
-	private String beautifyText(String text) {
+	private String beautifyText(final String text) {
 		if (String.valueOf(DECIMAL_SEPARATOR).equals(text)) {
 			return text;
 		}
@@ -447,7 +447,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		} else if (newText.startsWith(MINUS_DEC)) {
 			boolean hasValue = false;
 			for (int i = 0; !hasValue && i < newText.length(); i++) {
-				char ch = newText.charAt(i);
+				final char ch = newText.charAt(i);
 				hasValue = Character.isDigit(ch) && ch != '0';
 			}
 			if (hasValue) {
@@ -459,15 +459,15 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		return newText;
 	}
 
-	private BigInteger checkIsNumber(String number) {
+	private BigInteger checkIsNumber(final String number) {
 		try {
 			return new BigInteger(ungroup(number));
-		} catch (NumberFormatException nfe) {
+		} catch (final NumberFormatException nfe) {
 			throw new NumberFormatException("Not a valid number: " + number); //$NON-NLS-1$
 		}
 	}
 
-	private void checkMaxLength(String number) {
+	private void checkMaxLength(final String number) {
 		if (maxLength == -1) {
 			return;
 		}
@@ -476,28 +476,28 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			length -= 1;
 		}
 		if (maxLength < length) {
-			String msg = String.format("Length (%d) exceeded: %s", maxLength, number); //$NON-NLS-1$
+			final String msg = String.format("Length (%d) exceeded: %s", maxLength, number); //$NON-NLS-1$
 			throw new NumberFormatException(msg);
 		}
 	}
 
-	private void checkSigned(BigInteger value) {
+	private void checkSigned(final BigInteger value) {
 		if (!isSigned() && value.compareTo(BigInteger.ZERO) == -1) {
 			throw new NumberFormatException("Negative numbers not allowed: " + value); //$NON-NLS-1$
 		}
 	}
 
 	private void checkValue() {
-		IObservableValue modelObservable = getValueBindingSupport().getModelObservable();
+		final IObservableValue modelObservable = getValueBindingSupport().getModelObservable();
 		if (modelObservable == null) {
 			return;
 		}
-		Object value = modelObservable.getValue();
-		Class<?> type = (Class<?>) modelObservable.getValueType();
+		final Object value = modelObservable.getValue();
+		final Class<?> type = (Class<?>) modelObservable.getValueType();
 		if (type == null) {
 			return;
 		}
-		IConverter converter = getConverter(type, Integer.MAX_VALUE);
+		final IConverter converter = getConverter(type, Integer.MAX_VALUE);
 		if (converter != null) {
 			checkNumber((String) converter.convert(value));
 		}
@@ -511,17 +511,17 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		verifyListener.setEnabled(true);
 	}
 
-	private synchronized String createPattern(String input) {
+	private synchronized String createPattern(final String input) {
 		String result;
 		if (isDecimal()) {
-			String decSep = DECIMAL_SEPARATOR == '.' ? "\\." : String.valueOf(DECIMAL_SEPARATOR); //$NON-NLS-1$
+			final String decSep = DECIMAL_SEPARATOR == '.' ? "\\." : String.valueOf(DECIMAL_SEPARATOR); //$NON-NLS-1$
 			result = String.format("\\d{0,%d}%s\\d{0,%d}", getMaxLength(), decSep, getPrecision()); //$NON-NLS-1$
 			if (isSigned) {
 				result = String.format("%c?", MINUS_SIGN) + result; //$NON-NLS-1$
 			}
 		} else {
 			// -1 => no length limit
-			int length = getMaxLength() == -1 ? input.length() : getMaxLength();
+			final int length = getMaxLength() == -1 ? input.length() : getMaxLength();
 			if (isSigned) {
 				result = String.format("%c?\\d{0,%d}", MINUS_SIGN, length); //$NON-NLS-1$
 			} else {
@@ -532,21 +532,21 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		return result;
 	}
 
-	private String formatFraction(String text) {
+	private String formatFraction(final String text) {
 		String result = text;
-		int decSep = text.indexOf(DECIMAL_SEPARATOR);
+		final int decSep = text.indexOf(DECIMAL_SEPARATOR);
 		if (decSep != -1) {
-			int fractionDigits = text.substring(decSep).length() - 1;
-			int prec = getPrecision();
+			final int fractionDigits = text.substring(decSep).length() - 1;
+			final int prec = getPrecision();
 			if (fractionDigits < prec) {
-				int pad = Math.max(0, getPrecision() - fractionDigits);
+				final int pad = Math.max(0, getPrecision() - fractionDigits);
 				if (pad > 0) {
-					char[] zeroes = new char[pad];
+					final char[] zeroes = new char[pad];
 					Arrays.fill(zeroes, '0');
 					result = text + String.valueOf(zeroes);
 				}
 			} else if (fractionDigits > prec) {
-				int diff = fractionDigits - prec;
+				final int diff = fractionDigits - prec;
 				result = text.substring(0, text.length() - diff);
 			}
 		}
@@ -570,12 +570,12 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	private void updateMarkNegative() {
-		String text = ungroup(getText());
+		final String text = ungroup(getText());
 		boolean needMarker = false;
 		if (isMarkNegative()) {
 			try {
 				needMarker = isNegative(text);
-			} catch (NumberFormatException nfe) {
+			} catch (final NumberFormatException nfe) {
 				needMarker = false;
 			}
 		}
@@ -606,11 +606,11 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 
 		private boolean isEnabled = true;
 
-		public synchronized void setEnabled(boolean isEnabled) {
+		public synchronized void setEnabled(final boolean isEnabled) {
 			this.isEnabled = isEnabled;
 		}
 
-		public synchronized void verifyText(VerifyEvent e) {
+		public synchronized void verifyText(final VerifyEvent e) {
 			if (!e.doit || !isEnabled) {
 				return;
 			}
@@ -621,7 +621,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			int newCursorPos = -1;
 			boolean applyText = false;
 			if (Character.isDigit(e.character) || MINUS_SIGN == e.character) { // insert / replace
-				boolean preserveDecSep = oldText.substring(e.start, e.end).indexOf(DECIMAL_SEPARATOR) != -1;
+				final boolean preserveDecSep = oldText.substring(e.start, e.end).indexOf(DECIMAL_SEPARATOR) != -1;
 				if (preserveDecSep) {
 					if (oldText.charAt(e.start) == DECIMAL_SEPARATOR && oldText.length() > e.end - e.start) {
 						// #(.#)# -> #.C# or (.#)# -> .C#
@@ -637,15 +637,15 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 					newText = oldText.substring(0, e.start) + e.character + oldText.substring(e.end);
 				}
 			} else if ('\b' == e.character || 127 == e.keyCode) { // delete
-				NumericString ns = new NumericString(oldText, isGrouping());
+				final NumericString ns = new NumericString(oldText, isGrouping());
 				newCursorPos = ns.delete(e.start, e.end, e.character);
 				newText = ns.toString();
 				applyText = true;
 			}
 			boolean doFlash = true;
 			if (newText != null) {
-				String newTextNoGroup = ungroup(newText);
-				String regex = createPattern(newTextNoGroup);
+				final String newTextNoGroup = ungroup(newText);
+				final String regex = createPattern(newTextNoGroup);
 				e.doit = Pattern.matches(regex, newTextNoGroup);
 				// System.out.println("nt:" + newTextNoGroup + " p: " + regex);
 				doFlash = !e.doit;
@@ -663,9 +663,9 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			}
 		}
 
-		private void setTextAndCursor(Text control, String text, int cursorPos, VerifyEvent e) {
+		private void setTextAndCursor(final Text control, final String text, final int cursorPos, final VerifyEvent e) {
 			final String oldText = control.getText();
-			int oldCursorPos = control.getCaretPosition();
+			final int oldCursorPos = control.getCaretPosition();
 			control.setText(text);
 			if (text.length() > 0 && text.charAt(0) == DECIMAL_SEPARATOR
 					&& control.getText().startsWith(String.valueOf(ZERO))) {
@@ -677,7 +677,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			} else if (cursorPos > -1) {
 				control.setSelection(cursorPos);
 			} else {
-				int posFromRight = oldText.length() - e.end;
+				final int posFromRight = oldText.length() - e.end;
 				control.setSelection(control.getText().length() - posFromRight);
 			}
 		}
@@ -693,18 +693,18 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 
 		private boolean isEnabled = true;
 
-		public synchronized void setEnabled(boolean isEnabled) {
+		public synchronized void setEnabled(final boolean isEnabled) {
 			this.isEnabled = isEnabled;
 		}
 
-		public synchronized void modifyText(ModifyEvent e) {
+		public synchronized void modifyText(final ModifyEvent e) {
 			if (!isEnabled || !isEnabled()) {
 				return;
 			}
 			// System.out.println(e);
-			Text control = (Text) e.widget;
-			String oldText = control.getText();
-			boolean isDecimal = isDecimal();
+			final Text control = (Text) e.widget;
+			final String oldText = control.getText();
+			final boolean isDecimal = isDecimal();
 			String newText = group(removeLeadingCruft(ungroup(oldText)), isGrouping(), isDecimal);
 			if (isOutputOnly() && newText.equals(String.valueOf(DECIMAL_SEPARATOR))) {
 				newText = ""; //$NON-NLS-1$
@@ -714,9 +714,9 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			}
 			if (!oldText.equals(newText)) {
 				stopVerifyListener();
-				int posFromRight = oldText.length() - control.getCaretPosition();
+				final int posFromRight = oldText.length() - control.getCaretPosition();
 				control.setText(newText);
-				int caretPos = newText.length() - posFromRight;
+				final int caretPos = newText.length() - posFromRight;
 				control.setSelection(caretPos);
 				// System.out.println("newText= " + newText + " @ " + caretPos);
 				startVerifyListener();
@@ -747,33 +747,33 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		private boolean shiftDown = false;
 
 		@Override
-		public void keyReleased(KeyEvent e) {
+		public void keyReleased(final KeyEvent e) {
 			if (131072 == e.keyCode) {
 				shiftDown = false;
 			}
 		}
 
 		@Override
-		public void keyPressed(KeyEvent e) {
-			Text control = (Text) e.widget;
-			String text = control.getText();
+		public void keyPressed(final KeyEvent e) {
+			final Text control = (Text) e.widget;
+			final String text = control.getText();
 			if (131072 == e.keyCode) {
 				shiftDown = true;
 			} else if (16777219 == e.keyCode && control.getSelectionCount() == 0) {// left arrow
-				int index = control.getCaretPosition() - 1;
+				final int index = control.getCaretPosition() - 1;
 				if (index > 1 && GROUPING_SEPARATOR == text.charAt(index) && !shiftDown) {
 					e.doit = false;
 					control.setSelection(index - 1);
 				}
 			} else if (16777220 == e.keyCode && control.getSelectionCount() == 0) { //right arrow
-				int index = control.getCaretPosition() + 1;
+				final int index = control.getCaretPosition() + 1;
 				if (index < text.length() - 1 && GROUPING_SEPARATOR == text.charAt(index) && !shiftDown) {
 					e.doit = false;
 					control.setSelection(index + 1);
 				}
 			} else if (DECIMAL_SEPARATOR == e.character) {
 				e.doit = false;
-				int index = control.getCaretPosition();
+				final int index = control.getCaretPosition();
 				if (index < text.length() && text.charAt(index) == DECIMAL_SEPARATOR) {
 					control.setSelection(index + 1);
 				} else {
@@ -782,7 +782,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			} else if (MINUS_SIGN == e.character) {
 				e.doit = false;
 				if (isSigned()) {
-					Event event = new Event();
+					final Event event = new Event();
 					event.type = SWT.Verify;
 					event.character = MINUS_SIGN;
 					event.start = 0;
@@ -791,7 +791,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 					event.text = String.valueOf(MINUS_SIGN);
 					control.notifyListeners(SWT.Verify, event);
 					if (event.doit) {
-						int caret = control.getCaretPosition() + 1;
+						final int caret = control.getCaretPosition() + 1;
 						stopVerifyListener();
 						control.setText(MINUS_SIGN + text);
 						control.setSelection(caret);
@@ -804,7 +804,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 				}
 			} else if ('\r' == e.character) {
 				if (isDecimal()) {
-					String newText = formatFraction(text);
+					final String newText = formatFraction(text);
 					if (!newText.equals(text)) {
 						stopVerifyListener();
 						control.setText(newText);
@@ -823,9 +823,9 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 */
 	private final class NumericFocusListener extends FocusAdapter {
 		@Override
-		public void focusLost(FocusEvent e) {
+		public void focusLost(final FocusEvent e) {
 			if (isDecimal()) {
-				Text control = (Text) e.widget;
+				final Text control = (Text) e.widget;
 				beautifyText(control);
 			}
 		}

@@ -30,13 +30,13 @@ public class AuthenticationServiceCallbackHandler implements CallbackHandler {
 
 	private static ThreadLocal<Callback[]> remoteCallbacks = new ThreadLocal<Callback[]>();
 
-	public static void setCallbacks(Callback[] parmRemoteCallbacks) {
+	public static void setCallbacks(final Callback[] parmRemoteCallbacks) {
 		remoteCallbacks.set(parmRemoteCallbacks);
 	}
 
-	public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
-		for (Callback cb : callbacks) {
-			for (Callback rcb : remoteCallbacks.get()) {
+	public void handle(final Callback[] callbacks) throws IOException, UnsupportedCallbackException {
+		for (final Callback cb : callbacks) {
+			for (final Callback rcb : remoteCallbacks.get()) {
 				if (cb.getClass() != rcb.getClass()) {
 					continue;
 				}

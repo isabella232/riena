@@ -42,12 +42,14 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		regAttachmentService = Register.remoteProxy(IAttachmentService.class).usingUrl(
-				"http://localhost:8080/hessian/AttachmentService").withProtocol("hessian").andStart(
-				Activator.getDefault().getContext());
-		attachService = (IAttachmentService) Activator.getDefault().getContext().getService(
-				Activator.getDefault().getContext().getServiceReference(IAttachmentService.class.getName()));
-		BundleContext context = Activator.getDefault().getContext();
+		regAttachmentService = Register.remoteProxy(IAttachmentService.class)
+				.usingUrl("http://localhost:8080/hessian/AttachmentService").withProtocol("hessian")
+				.andStart(Activator.getDefault().getContext());
+		attachService = (IAttachmentService) Activator
+				.getDefault()
+				.getContext()
+				.getService(Activator.getDefault().getContext().getServiceReference(IAttachmentService.class.getName()));
+		final BundleContext context = Activator.getDefault().getContext();
 		registry = (IRemoteProgressMonitorRegistry) context.getService(context
 				.getServiceReference(IRemoteProgressMonitorRegistry.class.getName()));
 
@@ -69,55 +71,51 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testSendSimpleAttachmentProgress() throws Exception {
-		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry
-				.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
+		final TestProgressMonitor monitor = new TestProgressMonitor();
+		registry.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
 
-		Attachment attachment = generateLargeAttachment(15000);
-		int i = attachService.sendAttachmentAndReturnSize(attachment);
+		final Attachment attachment = generateLargeAttachment(15000);
+		final int i = attachService.sendAttachmentAndReturnSize(attachment);
 		assertTrue(i == 15000);
 		monitor.validate(15000 / 512 + 1, 1);
 		registry.removeAllProgressMonitors(attachService);
 	}
 
 	public void testSendLargeAttachmentProgress() throws Exception {
-		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry
-				.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
+		final TestProgressMonitor monitor = new TestProgressMonitor();
+		registry.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
 
-		Attachment attachment = generateLargeAttachment(15000000);
-		int i = attachService.sendAttachmentAndReturnSize(attachment);
+		final Attachment attachment = generateLargeAttachment(15000000);
+		final int i = attachService.sendAttachmentAndReturnSize(attachment);
 		assertTrue(i == 15000000);
 		monitor.validate(15000000 / 512 + 1, 1);
 		registry.removeAllProgressMonitors(attachService);
 	}
 
 	public void testReceiveSimpleAttachmentProgress() throws Exception {
-		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry
-				.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
+		final TestProgressMonitor monitor = new TestProgressMonitor();
+		registry.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
 
-		Attachment attachment = attachService.returnAttachmentForSize(15000);
-		int i = getSize(attachment);
+		final Attachment attachment = attachService.returnAttachmentForSize(15000);
+		final int i = getSize(attachment);
 		assertTrue(i == 15000);
 		monitor.validate(1, i / 512 + 1);
 		registry.removeAllProgressMonitors(attachService);
 	}
 
 	public void testReceiveLargeAttachmentProgress() throws Exception {
-		TestProgressMonitor monitor = new TestProgressMonitor();
-		registry
-				.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
+		final TestProgressMonitor monitor = new TestProgressMonitor();
+		registry.addProgressMonitor(attachService, monitor, IRemoteProgressMonitorRegistry.RemovalPolicy.AFTER_ONE_CALL);
 
-		Attachment attachment = attachService.returnAttachmentForSize(15000000);
-		int i = getSize(attachment);
+		final Attachment attachment = attachService.returnAttachmentForSize(15000000);
+		final int i = getSize(attachment);
 		assertTrue(i == 15000000);
 		monitor.validate(1, i / 512 + 1);
 		registry.removeAllProgressMonitors(attachService);
 	}
 
-	private int getSize(Attachment attachment) throws IOException {
-		InputStream input = attachment.readAsStream();
+	private int getSize(final Attachment attachment) throws IOException {
+		final InputStream input = attachment.readAsStream();
 		int count = 0;
 		while (input.read() != -1) {
 			count++;
@@ -129,7 +127,7 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 		return new Attachment(new InputStream() {
 
 			private int count = countInBytes;
-			private SecureRandom random = new SecureRandom();
+			private final SecureRandom random = new SecureRandom();
 
 			@Override
 			public int read() throws IOException {
@@ -156,7 +154,7 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 		private boolean requestDivideable = true;
 		private boolean responseDividable = true;
 
-		public void validate(int requests, int responses) {
+		public void validate(final int requests, final int responses) {
 			assertTrue("start method not called", start);
 			assertTrue("end method not called", end);
 			// request count and response count can be larger with with larger size, the protocol overhead gets more (which is included in the count)
@@ -170,7 +168,7 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 			}
 		}
 
-		public void request(RemoteProgressMonitorEvent event) {
+		public void request(final RemoteProgressMonitorEvent event) {
 			System.out.println(event.getBytesProcessed());
 			if (event.getBytesProcessed() % 512 != 0) {
 				if (requestDivideable) {
@@ -185,7 +183,7 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 			requestCount++;
 		}
 
-		public void response(RemoteProgressMonitorEvent event) {
+		public void response(final RemoteProgressMonitorEvent event) {
 			System.out.println(event.getBytesProcessed());
 			if (event.getBytesProcessed() % 512 != 0) {
 				if (responseDividable) {

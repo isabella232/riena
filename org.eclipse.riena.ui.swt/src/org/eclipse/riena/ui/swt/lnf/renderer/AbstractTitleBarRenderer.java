@@ -39,13 +39,13 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	private boolean closeable;
 	private boolean maximizable;
 	private boolean minimizable;
-	private boolean[] pressed = new boolean[BTN_COUNT];
-	private boolean[] hover = new boolean[BTN_COUNT];
+	private final boolean[] pressed = new boolean[BTN_COUNT];
+	private final boolean[] hover = new boolean[BTN_COUNT];
 	private boolean active;
 	private boolean maximized;
 	private Rectangle imageBounds;
 	private Rectangle textBounds;
-	private Rectangle[] btnBounds = new Rectangle[BTN_COUNT];
+	private final Rectangle[] btnBounds = new Rectangle[BTN_COUNT];
 
 	private Shell shell;
 
@@ -78,7 +78,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @param shell
 	 *            the shell to set (non-null)
 	 */
-	public void setShell(Shell shell) {
+	public void setShell(final Shell shell) {
 		Assert.isNotNull(shell);
 		this.shell = shell;
 	}
@@ -92,7 +92,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void paint(GC gc, Object value) {
+	public void paint(final GC gc, final Object value) {
 
 		Assert.isNotNull(shell);
 
@@ -148,7 +148,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @param btnIndex
 	 *            index of the button
 	 */
-	protected void paintButton(GC gc, int btnIndex) {
+	protected void paintButton(final GC gc, final int btnIndex) {
 
 		Image image = null;
 
@@ -179,7 +179,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 		}
 		int y = 0;
 		if (image != null) {
-			Rectangle imgBounds = image.getBounds();
+			final Rectangle imgBounds = image.getBounds();
 			y = getBounds().height / 2 - imgBounds.height / 2;
 			y -= 2;
 			x -= imgBounds.width;
@@ -202,7 +202,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	/**
 	 * @return the pressed
 	 */
-	protected boolean isPressed(int btnIndex) {
+	protected boolean isPressed(final int btnIndex) {
 		return pressed[btnIndex];
 	}
 
@@ -210,14 +210,14 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @param pressed
 	 *            the pressed to set
 	 */
-	protected void setPressed(int btnIndex, boolean pressed) {
+	protected void setPressed(final int btnIndex, final boolean pressed) {
 		this.pressed[btnIndex] = pressed;
 	}
 
 	/**
 	 * @return the hover
 	 */
-	protected boolean isHover(int btnIndex) {
+	protected boolean isHover(final int btnIndex) {
 		return hover[btnIndex];
 	}
 
@@ -225,7 +225,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @param hover
 	 *            the hover to set
 	 */
-	protected void setHover(int btnIndex, boolean hover) {
+	protected void setHover(final int btnIndex, final boolean hover) {
 		this.hover[btnIndex] = hover;
 	}
 
@@ -240,7 +240,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @param active
 	 *            the active to set
 	 */
-	protected void setActive(boolean active) {
+	protected void setActive(final boolean active) {
 		this.active = active;
 	}
 
@@ -255,7 +255,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @param maximiz
 	 *            the maximized to set
 	 */
-	protected void setMaximized(boolean maximized) {
+	protected void setMaximized(final boolean maximized) {
 		this.maximized = maximized;
 	}
 
@@ -268,7 +268,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @return <code>true</code> if the close button bounds contains the point
 	 *         and <code>false</code> otherwise
 	 */
-	public boolean isInsideCloseButton(Point pt) {
+	public boolean isInsideCloseButton(final Point pt) {
 		return isInsideButton(pt, CLOSE_BTN_INDEX);
 	}
 
@@ -281,7 +281,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @return <code>true</code> if the minimize button bounds contains the
 	 *         point and <code>false</code> otherwise
 	 */
-	public boolean isInsideMinimizeButton(Point pt) {
+	public boolean isInsideMinimizeButton(final Point pt) {
 		return isInsideButton(pt, MIN_BTN_INDEX);
 	}
 
@@ -294,7 +294,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @return <code>true</code> if the maximize/restore button bounds contains
 	 *         the point and <code>false</code> otherwise
 	 */
-	public boolean isInsideMaximizeButton(Point pt) {
+	public boolean isInsideMaximizeButton(final Point pt) {
 		return isInsideButton(pt, MAX_BTN_INDEX);
 	}
 
@@ -309,7 +309,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @return <code>true</code> if the button bounds contains the point and
 	 *         <code>false</code> otherwise
 	 */
-	private boolean isInsideButton(Point pt, int btnIndex) {
+	private boolean isInsideButton(final Point pt, final int btnIndex) {
 		return btnBounds[btnIndex].contains(pt);
 	}
 
@@ -323,16 +323,16 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @return <code>true</code> if the move area bounds contains the point and
 	 *         <code>false</code> otherwise
 	 */
-	public boolean isInsideMoveArea(Point pt) {
+	public boolean isInsideMoveArea(final Point pt) {
 		boolean result = false;
-		Rectangle bounds = getBounds();
+		final Rectangle bounds = getBounds();
 		if (bounds != null) {
-			Rectangle moveArea = new Rectangle(bounds.x, bounds.y, bounds.width, bounds.height);
+			final Rectangle moveArea = new Rectangle(bounds.x, bounds.y, bounds.width, bounds.height);
 			int minX = bounds.x + bounds.width;
 			int maxHeight = textBounds.y + textBounds.height;
-			for (int i = 0; i < btnBounds.length; i++) {
-				minX = Math.min(minX, btnBounds[i].x);
-				maxHeight = Math.max(maxHeight, btnBounds[i].y + btnBounds[i].height);
+			for (final Rectangle btnBound : btnBounds) {
+				minX = Math.min(minX, btnBound.x);
+				maxHeight = Math.max(maxHeight, btnBound.y + btnBound.height);
 			}
 			int width = minX - bounds.x;
 			if (width < 0) {
@@ -352,7 +352,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 */
 	public Rectangle getAllButtonsBounds() {
 
-		Rectangle bounds = new Rectangle(btnBounds[0].x, btnBounds[0].y, btnBounds[0].width, btnBounds[0].height);
+		final Rectangle bounds = new Rectangle(btnBounds[0].x, btnBounds[0].y, btnBounds[0].width, btnBounds[0].height);
 
 		for (int i = 1; i < btnBounds.length; i++) {
 			bounds.add(btnBounds[i]);
@@ -388,7 +388,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @param pressed
 	 *            the pressed to set
 	 */
-	public void setCloseButtonPressed(boolean pressed) {
+	public void setCloseButtonPressed(final boolean pressed) {
 		setPressed(CLOSE_BTN_INDEX, pressed);
 	}
 
@@ -403,7 +403,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @param hover
 	 *            the hover to set
 	 */
-	public void setCloseButtonHover(boolean hover) {
+	public void setCloseButtonHover(final boolean hover) {
 		setHover(CLOSE_BTN_INDEX, hover);
 	}
 
@@ -418,7 +418,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @param pressed
 	 *            the pressed to set
 	 */
-	public void setMaximizedButtonPressed(boolean pressed) {
+	public void setMaximizedButtonPressed(final boolean pressed) {
 		setPressed(MAX_BTN_INDEX, pressed);
 	}
 
@@ -433,7 +433,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @param hover
 	 *            the hover to set
 	 */
-	public void setMaximizedButtonHover(boolean hover) {
+	public void setMaximizedButtonHover(final boolean hover) {
 		setHover(MAX_BTN_INDEX, hover);
 	}
 
@@ -448,7 +448,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @param pressed
 	 *            the pressed to set
 	 */
-	public void setMinimizedButtonPressed(boolean pressed) {
+	public void setMinimizedButtonPressed(final boolean pressed) {
 		setPressed(MIN_BTN_INDEX, pressed);
 	}
 
@@ -463,7 +463,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	 * @param hover
 	 *            the hover to set
 	 */
-	public void setMinimizedButtonHover(boolean hover) {
+	public void setMinimizedButtonHover(final boolean hover) {
 		setHover(MIN_BTN_INDEX, hover);
 	}
 
@@ -477,7 +477,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 
 	private boolean[] getBtnShow() {
 
-		boolean[] btnShow = new boolean[BTN_COUNT];
+		final boolean[] btnShow = new boolean[BTN_COUNT];
 
 		btnShow[CLOSE_BTN_INDEX] = isCloseable();
 		btnShow[MAX_BTN_INDEX] = isMaximizable();
@@ -486,7 +486,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 
 	}
 
-	public void setCloseable(boolean closeable) {
+	public void setCloseable(final boolean closeable) {
 		this.closeable = closeable;
 	}
 
@@ -494,7 +494,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 		return closeable;
 	}
 
-	public void setMaximizable(boolean maximizable) {
+	public void setMaximizable(final boolean maximizable) {
 		this.maximizable = maximizable;
 	}
 
@@ -502,7 +502,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 		return maximizable;
 	}
 
-	public void setMinimizable(boolean minimizable) {
+	public void setMinimizable(final boolean minimizable) {
 		this.minimizable = minimizable;
 	}
 

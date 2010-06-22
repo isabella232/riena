@@ -22,18 +22,18 @@ import org.eclipse.riena.sample.app.common.model.CustomersPermission;
 public class CustomersPermissionsTest extends TestCase {
 
 	public void testCustomersPermission() {
-		CustomersPermission cp1 = new CustomersPermission("german", "load,save");
-		CustomersPermission cp2 = new CustomersPermission("german", "load,save");
+		final CustomersPermission cp1 = new CustomersPermission("german", "load,save");
+		final CustomersPermission cp2 = new CustomersPermission("german", "load,save");
 		assertTrue(cp1.equals(cp2));
-		CustomersPermission cp3 = new CustomersPermission("german", "save,load");
+		final CustomersPermission cp3 = new CustomersPermission("german", "save,load");
 		assertTrue(cp1.equals(cp3));
-		CustomersPermission cp4 = new CustomersPermission("german", "load");
+		final CustomersPermission cp4 = new CustomersPermission("german", "load");
 		assertFalse(cp1.equals(cp4));
 		assertTrue(cp1.implies(cp4));
 		assertFalse(cp4.implies(cp1));
-		CustomersPermission cp5 = new CustomersPermission("english", "load,save");
+		final CustomersPermission cp5 = new CustomersPermission("english", "load,save");
 		assertFalse(cp1.equals(cp5));
-		CustomersPermission cp6 = new CustomersPermission("english", "load");
+		final CustomersPermission cp6 = new CustomersPermission("english", "load");
 		assertFalse(cp1.implies(cp6));
 		assertFalse(cp6.implies(cp1));
 	}

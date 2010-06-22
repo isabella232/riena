@@ -18,9 +18,9 @@ import javax.security.auth.callback.Callback;
  */
 public class CustomCredential extends AbstractCredential {
 
-	private Callback callback;
+	private final Callback callback;
 
-	public CustomCredential(Callback callback) {
+	public CustomCredential(final Callback callback) {
 		super(null);
 		this.callback = callback;
 	}

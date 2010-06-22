@@ -42,10 +42,10 @@ public final class NodeIdentificationSupport {
 	 * @param aNodeId
 	 *            : Node Id
 	 */
-	public static void setIdentification(Widget aWidget, String aWidgetId, NavigationNodeId aNodeId) {
+	public static void setIdentification(final Widget aWidget, final String aWidgetId, final NavigationNodeId aNodeId) {
 		if (aNodeId.getInstanceId() != null) {
-			WidgetIdentificationSupport.setIdentification(aWidget, aWidgetId, String.format(
-					"%s.%s", aNodeId.getTypeId(), aNodeId //$NON-NLS-1$
+			WidgetIdentificationSupport.setIdentification(aWidget, aWidgetId,
+					String.format("%s.%s", aNodeId.getTypeId(), aNodeId //$NON-NLS-1$
 							.getInstanceId()));
 		} else {
 			WidgetIdentificationSupport.setIdentification(aWidget, aWidgetId, aNodeId.getTypeId());
@@ -66,7 +66,7 @@ public final class NodeIdentificationSupport {
 	 */
 
 	@SuppressWarnings("rawtypes")
-	public static void setIdentification(Widget aWidget, String aWidgetId, INavigationNode aNode) {
+	public static void setIdentification(final Widget aWidget, final String aWidgetId, final INavigationNode aNode) {
 		if (aNode.getNodeId() != null) {
 			setIdentification(aWidget, aWidgetId, aNode.getNodeId());
 		} else {

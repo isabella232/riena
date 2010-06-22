@@ -74,7 +74,7 @@ public final class Utils {
 	 * @see IDateTextRidget
 	 * @since 1.2
 	 */
-	public static boolean isEmptyDate(String input) {
+	public static boolean isEmptyDate(final String input) {
 		return input.matches("[\\s\\.\\:\\/\\-]+"); //$NON-NLS-1$
 	}
 

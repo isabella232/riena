@@ -82,31 +82,31 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		setInitializationData(null, null, null);
 	}
 
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 		Map<String, String> properties = null;
 		try {
 			properties = PropertiesUtils.asMap(data, Literal.map(RETRY_TIME, RETRY_TIME_DEFAULT));
 			retryTime = Millis.valueOf(properties.get(RETRY_TIME));
 			Assert.isLegal(retryTime > 0, "retryTime must be greater than 0."); //$NON-NLS-1$
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
 		}
 	}
 
-	private CoreException configurationException(String message, Exception e) {
+	private CoreException configurationException(final String message, final Exception e) {
 		return new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, e));
 	}
 
-	public void bind(IReceiver receiver) {
+	public void bind(final IReceiver receiver) {
 		this.receiver = receiver;
 	}
 
-	public void unbind(IReceiver receiver) {
+	public void unbind(final IReceiver receiver) {
 		this.receiver = null;
 	}
 
-	public void start(IStore store, Collection<Category> categories) {
+	public void start(final IStore store, final Collection<Category> categories) {
 		if (started) {
 			return;
 		}
@@ -115,8 +115,8 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		this.store = store;
 		started = true;
 
-		for (Category category : categories) {
-			Sender sender = new Sender(category.getName());
+		for (final Category category : categories) {
+			final Sender sender = new Sender(category.getName());
 			senders.put(category.getName(), sender);
 			// check if there are remaining {@code Collectible}s, if so trigger transfer in the background with a slight delay
 			sender.tryIt(Millis.seconds(5));
@@ -133,17 +133,17 @@ public class SimpleSender implements ISender, IExecutableExtension {
 			return;
 		}
 		started = false;
-		for (Sender sender : senders.values()) {
+		for (final Sender sender : senders.values()) {
 			sender.cancel();
 		}
 		senders.clear();
 	}
 
-	public synchronized void triggerTransfer(String categoryName) {
+	public synchronized void triggerTransfer(final String categoryName) {
 		if (!started) {
 			return;
 		}
-		Sender sender = senders.get(categoryName);
+		final Sender sender = senders.get(categoryName);
 		if (sender == null) {
 			return;
 		}
@@ -155,12 +155,12 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		private final String category;
 		private boolean retrying;
 
-		private Sender(String category) {
+		private Sender(final String category) {
 			super("SimpleSender"); //$NON-NLS-1$
 			this.category = category;
 		}
 
-		private void tryIt(long delay) {
+		private void tryIt(final long delay) {
 			if (retrying) {
 				LOGGER.log(LogService.LOG_DEBUG, "Sender(" + category + ") retry already scheduled."); //$NON-NLS-1$ //$NON-NLS-2$
 				return;
@@ -175,14 +175,14 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		 * IProgressMonitor)
 		 */
 		@Override
-		protected IStatus run(IProgressMonitor monitor) {
+		protected IStatus run(final IProgressMonitor monitor) {
 			LOGGER.log(LogService.LOG_DEBUG, "Sender(" + category + ") started with" + (retrying ? "" : "out") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 					+ " retry"); //$NON-NLS-1$
 			if (receiver == null) {
 				LOGGER.log(LogService.LOG_DEBUG, "Sender(" + category + ") ended (no receiver)"); //$NON-NLS-1$ //$NON-NLS-2$
 				return Status.OK_STATUS;
 			}
-			List<Collectible<?>> transferables = store.retrieveTransferables(category);
+			final List<Collectible<?>> transferables = store.retrieveTransferables(category);
 			if (transferables.size() == 0) {
 				LOGGER.log(LogService.LOG_DEBUG, "Sender(" + category + ") ended (nothing to send)"); //$NON-NLS-1$ //$NON-NLS-2$
 				return Status.OK_STATUS;
@@ -195,9 +195,9 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		/**
 		 * 
 		 */
-		private void transfer(List<Collectible<?>> transferables) {
+		private void transfer(final List<Collectible<?>> transferables) {
 			LOGGER.log(LogService.LOG_DEBUG, "sender transfer " + transferables.size() + " transferables:"); //$NON-NLS-1$ //$NON-NLS-2$
-			for (Collectible<?> transferable : transferables) {
+			for (final Collectible<?> transferable : transferables) {
 				LOGGER.log(LogService.LOG_DEBUG, " - " + transferable.toLogString()); //$NON-NLS-1$
 			}
 			try {
@@ -207,7 +207,7 @@ public class SimpleSender implements ISender, IExecutableExtension {
 				} else {
 					throw new RuntimeException("Retry sending later because receiver rejected it."); //$NON-NLS-1$
 				}
-			} catch (Throwable t) {
+			} catch (final Throwable t) {
 				LOGGER.log(LogService.LOG_DEBUG, "sending failed with: " + condense(t)); //$NON-NLS-1$
 				LOGGER.log(LogService.LOG_DEBUG, "retrying in " + retryTime + " milli seconds"); //$NON-NLS-1$ //$NON-NLS-2$
 				retrying = true;
@@ -218,7 +218,7 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		private final static String CAUSED_BY = " Caused by: "; //$NON-NLS-1$
 
 		private String condense(Throwable throwable) {
-			StringBuilder bob = new StringBuilder();
+			final StringBuilder bob = new StringBuilder();
 			do {
 				bob.append(throwable.toString()).append(CAUSED_BY);
 				throwable = throwable.getCause();

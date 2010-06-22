@@ -56,7 +56,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		this(null);
 	}
 
-	public SubModuleController(ISubModuleNode navigationNode) {
+	public SubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -82,7 +82,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * 
 	 * @since 2.0
 	 */
-	public void addDefaultAction(IRidget focusRidget, IActionRidget action) {
+	public void addDefaultAction(final IRidget focusRidget, final IActionRidget action) {
 		actionManager = getWindowRidget().addDefaultAction(focusRidget, action);
 	}
 
@@ -126,7 +126,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 *         exists.
 	 */
 	public ModuleController getModuleController() {
-		IModuleNode moduleNode = getNavigationNode().getParentOfType(IModuleNode.class);
+		final IModuleNode moduleNode = getNavigationNode().getParentOfType(IModuleNode.class);
 		if (moduleNode != null) {
 			return (ModuleController) moduleNode.getNavigationNodeController();
 		}
@@ -147,7 +147,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @since 2.0
 	 */
 	public IInfoFlyoutRidget getInfoFlyout() {
-		ApplicationController appController = (ApplicationController) getNavigationNode().getParentOfType(
+		final ApplicationController appController = (ApplicationController) getNavigationNode().getParentOfType(
 				IApplicationNode.class).getNavigationNodeController();
 		return appController.getInfoFlyout();
 	}
@@ -166,18 +166,18 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * 
 	 * @since 2.0
 	 */
-	public void setInitialFocus(IRidget ridget) {
+	public void setInitialFocus(final IRidget ridget) {
 		this.initialFocus = ridget;
 	}
 
 	@Override
-	public void setNavigationNode(ISubModuleNode navigationNode) {
+	public void setNavigationNode(final ISubModuleNode navigationNode) {
 		super.setNavigationNode(navigationNode);
 
 		if (getModuleController() != null) {
 			getNavigationNode().getParent().addSimpleListener(new SimpleNavigationNodeAdapter() {
 				@Override
-				public void labelChanged(INavigationNode<?> parent) {
+				public void labelChanged(final INavigationNode<?> parent) {
 					super.labelChanged(parent);
 					updateLabel();
 				}
@@ -186,31 +186,31 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 
 		getNavigationNode().addListener(new SubModuleNodeListener() {
 			@Override
-			public void iconChanged(ISubModuleNode source) {
+			public void iconChanged(final ISubModuleNode source) {
 				updateIcon();
 			}
 
 			@Override
-			public void labelChanged(ISubModuleNode subModuleNode) {
+			public void labelChanged(final ISubModuleNode subModuleNode) {
 				updateLabel();
 			}
 
 			@Override
-			public void afterActivated(ISubModuleNode source) {
+			public void afterActivated(final ISubModuleNode source) {
 				if (actionManager != null) {
 					actionManager.activate();
 				}
 			}
 
 			@Override
-			public void afterDeactivated(ISubModuleNode source) {
+			public void afterDeactivated(final ISubModuleNode source) {
 				if (actionManager != null) {
 					actionManager.deactivate();
 				}
 			}
 
 			@Override
-			public void beforeDisposed(ISubModuleNode source) {
+			public void beforeDisposed(final ISubModuleNode source) {
 				if (actionManager != null) {
 					actionManager.dispose();
 					actionManager = null;
@@ -223,7 +223,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @param windowRidget
 	 *            the windowRidget to set
 	 */
-	public void setWindowRidget(IWindowRidget windowRidget) {
+	public void setWindowRidget(final IWindowRidget windowRidget) {
 		if (getRidget(IWindowRidget.class, WINDOW_RIDGET) != windowRidget) {
 			addRidget(WINDOW_RIDGET, windowRidget);
 		}
@@ -233,13 +233,13 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * calls updateFromModel for all registered ridgets in this controller
 	 */
 	public void updateAllRidgetsFromModel() {
-		Iterator<? extends IRidget> iter = getRidgets().iterator();
+		final Iterator<? extends IRidget> iter = getRidgets().iterator();
 		while (iter.hasNext()) {
-			IRidget ridget = iter.next();
+			final IRidget ridget = iter.next();
 			if (RienaStatus.isDevelopment()) {
 				try {
 					ridget.updateFromModel();
-				} catch (BindingException ex) {
+				} catch (final BindingException ex) {
 					LOGGER.log(
 							LogService.LOG_WARNING,
 							"Update from the model was unsuccessful for the ridget: " + ridget + ", with id: " + ridget.getID()); //$NON-NLS-1$ //$NON-NLS-2$
@@ -264,7 +264,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		String title = getNavigationNode().getLabel();
 
 		if (isInvisibleInTree()) {
-			IModuleNode moduleNode = getModuleController().getNavigationNode();
+			final IModuleNode moduleNode = getModuleController().getNavigationNode();
 			title = moduleNode.getLabel();
 		} else {
 			INavigationNode<?> parent = getNavigationNode().getParent();
@@ -285,18 +285,18 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @since 1.2
 	 */
 	protected void layout() {
-		IWindowRidget ridget = getRidget(IWindowRidget.class, WINDOW_RIDGET);
+		final IWindowRidget ridget = getRidget(IWindowRidget.class, WINDOW_RIDGET);
 		ridget.layout();
 	}
 
 	@Override
-	protected void updateIcon(IWindowRidget windowRidget) {
+	protected void updateIcon(final IWindowRidget windowRidget) {
 		if (isInvisibleInTree()) {
 			if (windowRidget == null) {
 				return;
 			}
-			IModuleNode moduleNode = getModuleController().getNavigationNode();
-			String nodeIcon = moduleNode.getIcon();
+			final IModuleNode moduleNode = getModuleController().getNavigationNode();
+			final String nodeIcon = moduleNode.getIcon();
 			windowRidget.setIcon(nodeIcon);
 		} else {
 			super.updateIcon(windowRidget);
@@ -319,14 +319,14 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	private void updateActive() {
-		IWindowRidget windowRidget = getWindowRidget();
+		final IWindowRidget windowRidget = getWindowRidget();
 		if (windowRidget != null) {
 			windowRidget.setActive(getNavigationNode().isActivated());
 		}
 	}
 
 	private void updateCloseable() {
-		IWindowRidget windowRidget = getWindowRidget();
+		final IWindowRidget windowRidget = getWindowRidget();
 		if (windowRidget != null) {
 			windowRidget.setCloseable(false);
 		}
@@ -337,7 +337,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	}
 
 	private void updateLabel() {
-		IWindowRidget windowRidget = getWindowRidget();
+		final IWindowRidget windowRidget = getWindowRidget();
 		if (windowRidget != null) {
 			windowRidget.setTitle(getFullTitle());
 		}

@@ -18,7 +18,7 @@ import org.eclipse.riena.navigation.ui.controllers.ModuleController;
  */
 public class TestModuleController extends ModuleController {
 
-	public TestModuleController(IModuleNode navigationNode) {
+	public TestModuleController(final IModuleNode navigationNode) {
 		super(navigationNode);
 	}
 

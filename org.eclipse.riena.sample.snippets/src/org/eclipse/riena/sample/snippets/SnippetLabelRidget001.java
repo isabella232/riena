@@ -32,14 +32,14 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public final class SnippetLabelRidget001 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
 			UIControlsFactory.createLabel(shell, "DateTime:"); //$NON-NLS-1$
-			Label dateTimeWidget = UIControlsFactory.createLabel(shell, ""); //$NON-NLS-1$
+			final Label dateTimeWidget = UIControlsFactory.createLabel(shell, ""); //$NON-NLS-1$
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(dateTimeWidget);
 
 			final DatePojo datePojo = new DatePojo();
@@ -49,7 +49,7 @@ public final class SnippetLabelRidget001 {
 
 			final Timer t = new Timer();
 			try {
-				TimerTask task = new TimerTask() {
+				final TimerTask task = new TimerTask() {
 					@Override
 					public void run() {
 						Display.getDefault().asyncExec(new Runnable() {
@@ -57,7 +57,7 @@ public final class SnippetLabelRidget001 {
 								try {
 									datePojo.update(); // update bean to the current value for date & time
 									dateTimeRidget.updateFromModel(); // update Ridget from bean
-								} catch (SWTException e) {
+								} catch (final SWTException e) {
 									t.cancel();
 								}
 							}

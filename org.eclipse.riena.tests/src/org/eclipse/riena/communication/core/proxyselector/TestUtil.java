@@ -22,7 +22,7 @@ public final class TestUtil {
 		// Utility
 	}
 
-	public static Proxy newProxy(String host) {
+	public static Proxy newProxy(final String host) {
 		return new Proxy(Proxy.Type.HTTP, InetSocketAddress.createUnresolved(host, 80));
 	}
 

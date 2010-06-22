@@ -23,13 +23,13 @@ public class StartupNodeInfo implements Comparable<StartupNodeInfo> {
 		SUBAPPLICATION, MODULEGROUP, MODULE, SUBMODULE, CUSTOM
 	}
 
-	public StartupNodeInfo(Level level, int sequence, String id) {
+	public StartupNodeInfo(final Level level, final int sequence, final String id) {
 		this.level = level;
 		this.sequence = sequence;
 		this.id = id;
 	}
 
-	public int compareTo(StartupNodeInfo o) {
+	public int compareTo(final StartupNodeInfo o) {
 		return sequence == o.sequence ? level.compareTo(o.level) : sequence - o.sequence;
 	}
 
@@ -56,7 +56,7 @@ public class StartupNodeInfo implements Comparable<StartupNodeInfo> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -66,7 +66,7 @@ public class StartupNodeInfo implements Comparable<StartupNodeInfo> {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		StartupNodeInfo other = (StartupNodeInfo) obj;
+		final StartupNodeInfo other = (StartupNodeInfo) obj;
 		if (level == null) {
 			if (other.level != null) {
 				return false;

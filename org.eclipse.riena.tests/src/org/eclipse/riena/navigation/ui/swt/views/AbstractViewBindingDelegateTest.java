@@ -50,10 +50,10 @@ public class AbstractViewBindingDelegateTest extends TestCase {
 	 */
 	public void testSWTViewBindingDelegate() {
 
-		IBindingManager bindingManager = ReflectionUtils.getHidden(binding, "bindingManager");
+		final IBindingManager bindingManager = ReflectionUtils.getHidden(binding, "bindingManager");
 		assertNotNull(bindingManager);
 
-		List<Object> uiControls = ReflectionUtils.getHidden(binding, "uiControls");
+		final List<Object> uiControls = ReflectionUtils.getHidden(binding, "uiControls");
 		assertNotNull(uiControls);
 		assertTrue(uiControls.isEmpty());
 
@@ -65,7 +65,8 @@ public class AbstractViewBindingDelegateTest extends TestCase {
 		 * @param propertyStrategy
 		 * @param mapper
 		 */
-		public MyViewBindingDelegate(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper<Object> mapper) {
+		public MyViewBindingDelegate(final IBindingPropertyLocator propertyStrategy,
+				final IControlRidgetMapper<Object> mapper) {
 			super(propertyStrategy, mapper);
 		}
 

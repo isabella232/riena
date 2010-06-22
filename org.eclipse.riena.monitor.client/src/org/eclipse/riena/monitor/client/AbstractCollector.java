@@ -40,7 +40,8 @@ public abstract class AbstractCollector implements ICollector {
 	 * 
 	 * @see org.eclipse.riena.monitor.client.ICollector#start()
 	 */
-	public void start(IAggregator aggregator, Category category, IClientInfoProvider clientInfoProvider) {
+	public void start(final IAggregator aggregator, final Category category,
+			final IClientInfoProvider clientInfoProvider) {
 		if (started) {
 			return;
 		}
@@ -90,7 +91,7 @@ public abstract class AbstractCollector implements ICollector {
 	 * @param payload
 	 * @return
 	 */
-	protected <T extends Serializable> void collect(T payload) {
+	protected <T extends Serializable> void collect(final T payload) {
 		if (!isReady()) {
 			return;
 		}

@@ -16,11 +16,11 @@ package org.eclipse.riena.core.wire;
 public class AnnoServiceBeanB extends AnnoServiceBeanA {
 
 	@InjectService(service = Stunk.class)
-	public void bind(Stunk stunk) {
+	public void bind(final Stunk stunk) {
 		SequenceUtil.add(AnnoServiceBeanB.class);
 	}
 
-	public void unbind(Stunk stunk) {
+	public void unbind(final Stunk stunk) {
 		SequenceUtil.add(AnnoServiceBeanB.class);
 	}
 

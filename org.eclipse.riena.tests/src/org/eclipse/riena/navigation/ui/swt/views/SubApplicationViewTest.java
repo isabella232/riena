@@ -52,7 +52,7 @@ public class SubApplicationViewTest extends TestCase {
 	protected void setUp() throws Exception {
 		view = new TestSubApplicationView();
 		shell = new Shell();
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		locator.setBindingProperty(shell, ApplicationViewAdvisor.SHELL_RIDGET_PROPERTY);
 
 		node = new SubApplicationNode();
@@ -71,8 +71,8 @@ public class SubApplicationViewTest extends TestCase {
 	 */
 	public void testGetItemId() {
 
-		Menu menu = new Menu(shell);
-		MenuItem item = new MenuItem(menu, SWT.NONE);
+		final Menu menu = new Menu(shell);
+		final MenuItem item = new MenuItem(menu, SWT.NONE);
 
 		String id = ReflectionUtils.invokeHidden(view, "getItemId", item);
 		assertNotNull(id);
@@ -82,15 +82,15 @@ public class SubApplicationViewTest extends TestCase {
 		assertNotNull(id);
 		assertEquals("2", id);
 
-		MyContributionItem contributionItem = new MyContributionItem();
+		final MyContributionItem contributionItem = new MyContributionItem();
 		contributionItem.setId("4711");
 		item.setData(contributionItem);
 		id = ReflectionUtils.invokeHidden(view, "getItemId", item);
 		assertNotNull(id);
 		assertEquals(IActionRidget.BASE_ID_MENUACTION + "4711", id);
 
-		MenuItem item2 = new MenuItem(menu, SWT.NONE);
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final MenuItem item2 = new MenuItem(menu, SWT.NONE);
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		locator.setBindingProperty(item2, "0815");
 		id = ReflectionUtils.invokeHidden(view, "getItemId", item2);
 		assertNotNull(id);
@@ -103,13 +103,13 @@ public class SubApplicationViewTest extends TestCase {
 	 */
 	public void testGetMenuCoolBarComposites() {
 
-		Composite comp1 = new Composite(shell, SWT.NONE);
+		final Composite comp1 = new Composite(shell, SWT.NONE);
 
 		List<MenuCoolBarComposite> composites = ReflectionUtils.invokeHidden(view, "getMenuCoolBarComposites", shell);
 		assertNotNull(composites);
 		assertTrue(composites.isEmpty());
 
-		MenuCoolBarComposite menuComposite = new MenuCoolBarComposite(comp1, SWT.NONE);
+		final MenuCoolBarComposite menuComposite = new MenuCoolBarComposite(comp1, SWT.NONE);
 
 		composites = ReflectionUtils.invokeHidden(view, "getMenuCoolBarComposites", shell);
 		assertNotNull(composites);
@@ -124,7 +124,7 @@ public class SubApplicationViewTest extends TestCase {
 	 */
 	public void testGetCoolBars() {
 
-		Composite comp1 = new Composite(shell, SWT.NONE);
+		final Composite comp1 = new Composite(shell, SWT.NONE);
 
 		List<CoolBar> coolBars = ReflectionUtils.invokeHidden(view, "getCoolBars", shell);
 		assertNotNull(coolBars);
@@ -135,7 +135,7 @@ public class SubApplicationViewTest extends TestCase {
 		assertNotNull(coolBars);
 		assertTrue(coolBars.isEmpty());
 
-		CoolBar coolBar = new CoolBar(comp1, SWT.NONE);
+		final CoolBar coolBar = new CoolBar(comp1, SWT.NONE);
 		coolBars = ReflectionUtils.invokeHidden(view, "getCoolBars", shell);
 		assertNotNull(coolBars);
 		assertFalse(coolBars.isEmpty());
@@ -149,13 +149,13 @@ public class SubApplicationViewTest extends TestCase {
 	 */
 	public void testGetToolBars() {
 
-		CoolBar coolBar = new CoolBar(shell, SWT.NONE);
+		final CoolBar coolBar = new CoolBar(shell, SWT.NONE);
 		List<ToolBar> toolBars = ReflectionUtils.invokeHidden(view, "getToolBars", coolBar);
 		assertNotNull(toolBars);
 		assertTrue(toolBars.isEmpty());
 
-		ToolBar toolBar = new ToolBar(coolBar, SWT.NONE);
-		ToolBar toolBar2 = new ToolBar(coolBar, SWT.NONE);
+		final ToolBar toolBar = new ToolBar(coolBar, SWT.NONE);
+		final ToolBar toolBar2 = new ToolBar(coolBar, SWT.NONE);
 		toolBars = ReflectionUtils.invokeHidden(view, "getToolBars", coolBar);
 		assertNotNull(toolBars);
 		assertFalse(toolBars.isEmpty());
@@ -170,15 +170,15 @@ public class SubApplicationViewTest extends TestCase {
 	 */
 	public void testGetAllToolItems() {
 
-		CoolBar coolBar = new CoolBar(shell, SWT.NONE);
-		ToolBar toolBar = new ToolBar(coolBar, SWT.NONE);
-		ToolBar toolBar2 = new ToolBar(coolBar, SWT.NONE);
+		final CoolBar coolBar = new CoolBar(shell, SWT.NONE);
+		final ToolBar toolBar = new ToolBar(coolBar, SWT.NONE);
+		final ToolBar toolBar2 = new ToolBar(coolBar, SWT.NONE);
 		List<ToolItem> items = ReflectionUtils.invokeHidden(view, "getAllToolItems");
 		assertNotNull(items);
 		assertTrue(items.isEmpty());
 
-		ToolItem item = new ToolItem(toolBar, SWT.NONE);
-		ToolItem item2 = new ToolItem(toolBar2, SWT.NONE);
+		final ToolItem item = new ToolItem(toolBar, SWT.NONE);
+		final ToolItem item2 = new ToolItem(toolBar2, SWT.NONE);
 		items = ReflectionUtils.invokeHidden(view, "getAllToolItems");
 		assertNotNull(items);
 		assertFalse(items.isEmpty());
@@ -202,9 +202,9 @@ public class SubApplicationViewTest extends TestCase {
 	 */
 	public void testCreateRidgetItem() {
 
-		Controller controller = new Controller();
-		Menu menu = new Menu(shell);
-		MenuItem menuItem = new MenuItem(menu, SWT.NONE);
+		final Controller controller = new Controller();
+		final Menu menu = new Menu(shell);
+		final MenuItem menuItem = new MenuItem(menu, SWT.NONE);
 		MyContributionItem contributionItem = new MyContributionItem();
 		contributionItem.setId("4711");
 		menuItem.setData(contributionItem);
@@ -218,9 +218,9 @@ public class SubApplicationViewTest extends TestCase {
 		assertEquals(IActionRidget.BASE_ID_MENUACTION + "4711", SWTBindingPropertyLocator.getInstance()
 				.locateBindingProperty(menuItem));
 
-		CoolBar coolBar = new CoolBar(shell, SWT.NONE);
-		ToolBar toolBar = new ToolBar(coolBar, SWT.NONE);
-		ToolItem toolItem = new ToolItem(toolBar, SWT.NONE);
+		final CoolBar coolBar = new CoolBar(shell, SWT.NONE);
+		final ToolBar toolBar = new ToolBar(coolBar, SWT.NONE);
+		final ToolItem toolItem = new ToolItem(toolBar, SWT.NONE);
 		contributionItem = new MyContributionItem();
 		contributionItem.setId("0815");
 		toolItem.setData(contributionItem);
@@ -241,16 +241,16 @@ public class SubApplicationViewTest extends TestCase {
 	 */
 	public void testCreateRidgetMenu() {
 
-		Controller controller = new Controller();
-		Menu menu = new Menu(shell);
-		MenuItem item = new MenuItem(menu, SWT.NONE);
-		MyContributionItem contributionItem = new MyContributionItem();
+		final Controller controller = new Controller();
+		final Menu menu = new Menu(shell);
+		final MenuItem item = new MenuItem(menu, SWT.NONE);
+		final MyContributionItem contributionItem = new MyContributionItem();
 		contributionItem.setId("4711");
 		item.setData(contributionItem);
 		ReflectionUtils.invokeHidden(view, "createRidget", controller, menu);
 		assertFalse(controller.getRidgets().isEmpty());
 		assertEquals(1, controller.getRidgets().size());
-		IRidget ridget = controller.getRidget(IActionRidget.BASE_ID_MENUACTION + "4711");
+		final IRidget ridget = controller.getRidget(IActionRidget.BASE_ID_MENUACTION + "4711");
 		assertNotNull(ridget);
 		assertTrue(ridget instanceof MenuItemRidget);
 		assertSame(item, ridget.getUIControl());
@@ -261,7 +261,7 @@ public class SubApplicationViewTest extends TestCase {
 
 	public void testUnbind() throws Exception {
 
-		List<ModuleGroupNodeListener> listeners = ReflectionUtils.getHidden(node, "listeners");
+		final List<ModuleGroupNodeListener> listeners = ReflectionUtils.getHidden(node, "listeners");
 
 		assertEquals(1, listeners.size());
 

@@ -47,7 +47,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Control createWidget(Composite parent) {
+	protected Control createWidget(final Composite parent) {
 		return new DateTime(getShell(), SWT.DATE | SWT.MEDIUM);
 	}
 
@@ -60,14 +60,14 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	///////////////
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(DateTimeRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testSetDate() {
-		IDateTimeRidget ridget = getRidget();
-		DateTime control = getWidget();
-		TypedBean<Date> dateBean = new TypedBean<Date>(null);
+		final IDateTimeRidget ridget = getRidget();
+		final DateTime control = getWidget();
+		final TypedBean<Date> dateBean = new TypedBean<Date>(null);
 
 		expectNoPropertyChangeEvent();
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
@@ -76,7 +76,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(null, ridget.getDate());
 		assertEquals(null, dateBean.getValue());
 
-		Date date2001 = createDate(2001, 12, 2);
+		final Date date2001 = createDate(2001, 12, 2);
 		expectPropertyChangeEvent(IDateTimeRidget.PROPERTY_DATE, null, date2001);
 		ridget.setDate(date2001);
 		verifyPropertyChangeEvents();
@@ -85,7 +85,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(date2001, dateBean.getValue());
 		assertEquals("12/2/2001", getDate(control));
 
-		Date date1800 = createDate(1800, 1, 1);
+		final Date date1800 = createDate(1800, 1, 1);
 		expectPropertyChangeEvent(IDateTimeRidget.PROPERTY_DATE, date2001, date1800);
 		ridget.setDate(date1800);
 		verifyPropertyChangeEvents();
@@ -96,9 +96,9 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetDateNull() {
-		IDateTimeRidget ridget = getRidget();
-		DateTime control = getWidget();
-		TypedBean<Date> dateBean = new TypedBean<Date>(new Date());
+		final IDateTimeRidget ridget = getRidget();
+		final DateTime control = getWidget();
+		final TypedBean<Date> dateBean = new TypedBean<Date>(new Date());
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
 		ridget.updateFromModel();
 
@@ -110,11 +110,11 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromModel() {
-		IDateTimeRidget ridget = getRidget();
-		DateTime control = getWidget();
-		Date date2000 = createDate(2000, 1, 1);
-		Date date2001 = createDate(2001, 12, 2);
-		TypedBean<Date> dateBean = new TypedBean<Date>(date2000);
+		final IDateTimeRidget ridget = getRidget();
+		final DateTime control = getWidget();
+		final Date date2000 = createDate(2000, 1, 1);
+		final Date date2001 = createDate(2001, 12, 2);
+		final TypedBean<Date> dateBean = new TypedBean<Date>(date2000);
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
 
 		assertEquals(null, ridget.getDate());
@@ -151,9 +151,9 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testWidgetModification() {
-		PropertyChangeEvent[] events = new PropertyChangeEvent[3];
+		final PropertyChangeEvent[] events = new PropertyChangeEvent[3];
 		String input;
-		String country = Locale.getDefault().getCountry();
+		final String country = Locale.getDefault().getCountry();
 		if ("DE".equals(country)) {
 			events[0] = createPropertyChangeEvent(2001, 12, 1, 2001, 12, 10);
 			events[1] = createPropertyChangeEvent(2001, 12, 10, 2001, 04, 10);
@@ -169,10 +169,10 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 			return;
 		}
 
-		IDateTimeRidget ridget = getRidget();
-		DateTime control = getWidget();
-		Date date2001 = createDate(2001, 12, 1);
-		TypedBean<Date> dateBean = new TypedBean<Date>(date2001);
+		final IDateTimeRidget ridget = getRidget();
+		final DateTime control = getWidget();
+		final Date date2001 = createDate(2001, 12, 1);
+		final TypedBean<Date> dateBean = new TypedBean<Date>(date2001);
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
 		ridget.updateFromModel();
 
@@ -195,7 +195,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testMandatoryMarker() {
-		IDateTimeRidget ridget = getRidget();
+		final IDateTimeRidget ridget = getRidget();
 		ridget.setMandatory(true);
 
 		assertTrue(ridget.isDisableMandatoryMarker());
@@ -203,8 +203,8 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testControlEnablement() {
-		IDateTimeRidget ridget = getRidget();
-		DateTime control = getWidget();
+		final IDateTimeRidget ridget = getRidget();
+		final DateTime control = getWidget();
 
 		assertTrue(control.isEnabled());
 
@@ -249,7 +249,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationWidgetModificationOnUpdateRules() {
-		String country = Locale.getDefault().getCountry();
+		final String country = Locale.getDefault().getCountry();
 		if ("DE".equals(country)) {
 			handleValidationWidgetModification(ValidationTime.ON_UPDATE_TO_MODEL, "10.04.2009");
 		} else if ("US".equals(country)) {
@@ -260,7 +260,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationWidgetModificationOnEditRules() {
-		String country = Locale.getDefault().getCountry();
+		final String country = Locale.getDefault().getCountry();
 		if ("DE".equals(country)) {
 			handleValidationWidgetModification(ValidationTime.ON_UI_CONTROL_EDIT, "10.04.2009");
 		} else if ("US".equals(country)) {
@@ -271,8 +271,8 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testRevalidate() {
-		IDateTimeRidget ridget = getRidget();
-		FTValidator validator = new FTValidator(new Date(99));
+		final IDateTimeRidget ridget = getRidget();
+		final FTValidator validator = new FTValidator(new Date(99));
 		ridget.addValidationRule(validator, ValidationTime.ON_UPDATE_TO_MODEL);
 		ridget.setDate(new Date(99));
 
@@ -290,15 +290,15 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	// helping methods
 	//////////////////
 
-	private String asString(Date date) {
+	private String asString(final Date date) {
 		String result = "null";
 		if (date != null) {
-			Calendar cal = Calendar.getInstance();
+			final Calendar cal = Calendar.getInstance();
 			cal.clear();
 			cal.setTime(date);
-			int year = cal.get(Calendar.YEAR);
-			int month = cal.get(Calendar.MONTH) + 1;
-			int day = cal.get(Calendar.DAY_OF_MONTH);
+			final int year = cal.get(Calendar.YEAR);
+			final int month = cal.get(Calendar.MONTH) + 1;
+			final int day = cal.get(Calendar.DAY_OF_MONTH);
 			result = String.format("%s/%s/%s", month, day, year);
 		}
 		return result;
@@ -308,33 +308,33 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		return asString(new Date(0));
 	}
 
-	private Date createDate(int year, int month, int day) {
-		Calendar cal = Calendar.getInstance();
+	private Date createDate(final int year, final int month, final int day) {
+		final Calendar cal = Calendar.getInstance();
 		cal.clear();
 		cal.set(year, month - 1, day, 0, 0);
 		cal.set(Calendar.MILLISECOND, 0);
 		return cal.getTime();
 	}
 
-	private PropertyChangeEvent createPropertyChangeEvent(int oldYear, int oldMonth, int oldDay, int newYear,
-			int newMonth, int newDay) {
-		Date oldDate = createDate(oldYear, oldMonth, oldDay);
-		Date newDate = createDate(newYear, newMonth, newDay);
+	private PropertyChangeEvent createPropertyChangeEvent(final int oldYear, final int oldMonth, final int oldDay,
+			final int newYear, final int newMonth, final int newDay) {
+		final Date oldDate = createDate(oldYear, oldMonth, oldDay);
+		final Date newDate = createDate(newYear, newMonth, newDay);
 		return new PropertyChangeEvent(getRidget(), IDateTimeRidget.PROPERTY_DATE, oldDate, newDate);
 	}
 
-	private String getDate(DateTime control) {
-		int year = control.getYear();
-		int month = control.getMonth() + 1;
-		int day = control.getDay();
+	private String getDate(final DateTime control) {
+		final int year = control.getYear();
+		final int month = control.getMonth() + 1;
+		final int day = control.getDay();
 		return String.format("%s/%s/%s", month, day, year);
 	}
 
-	private void handleValidationUpdateFromModel(ValidationTime time) {
-		IDateTimeRidget ridget = getRidget();
-		FTValidator validator = new FTValidator(new Date(99));
+	private void handleValidationUpdateFromModel(final ValidationTime time) {
+		final IDateTimeRidget ridget = getRidget();
+		final FTValidator validator = new FTValidator(new Date(99));
 		ridget.addValidationRule(validator, time);
-		TypedBean<Date> dateBean = new TypedBean<Date>(new Date(0));
+		final TypedBean<Date> dateBean = new TypedBean<Date>(new Date(0));
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
 
 		int count = validator.count;
@@ -359,9 +359,9 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(ridget.isErrorMarked());
 	}
 
-	private void handleValidationSetDate(ValidationTime time) {
-		IDateTimeRidget ridget = getRidget();
-		FTValidator validator = new FTValidator(new Date(99));
+	private void handleValidationSetDate(final ValidationTime time) {
+		final IDateTimeRidget ridget = getRidget();
+		final FTValidator validator = new FTValidator(new Date(99));
 		ridget.addValidationRule(validator, time);
 
 		assertEquals(0, validator.count);
@@ -383,15 +383,15 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(ridget.isErrorMarked());
 	}
 
-	private void handleValidationWidgetModification(ValidationTime time, final String input) {
-		IDateTimeRidget ridget = getRidget();
-		FTValidator validator = new FTValidator("4/10/2009");
-		DateTime control = getWidget();
+	private void handleValidationWidgetModification(final ValidationTime time, final String input) {
+		final IDateTimeRidget ridget = getRidget();
+		final FTValidator validator = new FTValidator("4/10/2009");
+		final DateTime control = getWidget();
 		ridget.addValidationRule(validator, time);
-		TypedBean<Date> dateBean = new TypedBean<Date>(new Date(0));
+		final TypedBean<Date> dateBean = new TypedBean<Date>(new Date(0));
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
 
-		int count = validator.count;
+		final int count = validator.count;
 		assertFalse(ridget.isErrorMarked());
 
 		control.setFocus();
@@ -413,15 +413,15 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		private Date errorDate;
 		private String errorString;
 
-		FTValidator(Date errorValue) {
+		FTValidator(final Date errorValue) {
 			this.errorDate = errorValue;
 		}
 
-		FTValidator(String errorValue) {
+		FTValidator(final String errorValue) {
 			this.errorString = errorValue;
 		}
 
-		public IStatus validate(Object value) {
+		public IStatus validate(final Object value) {
 			count++;
 			IStatus result = ValidationStatus.ok();
 			if (errorDate != null && errorDate.equals(value)) {

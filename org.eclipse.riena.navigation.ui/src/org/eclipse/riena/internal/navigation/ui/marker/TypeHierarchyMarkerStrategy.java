@@ -27,17 +27,17 @@ public class TypeHierarchyMarkerStrategy implements IUIProcessMarkupStrategy {
 
 	// the uiprocess finished marker
 	private IMarker marker;
-	private ISimpleNavigationNodeListener nodeObserver;
+	private final ISimpleNavigationNodeListener nodeObserver;
 
 	public TypeHierarchyMarkerStrategy() {
 		this.nodeObserver = new NodeObserver();
 	}
 
-	public void applyUIProcessMarker(INavigationNode<?> baseNode, IMarker marker) {
+	public void applyUIProcessMarker(final INavigationNode<?> baseNode, final IMarker marker) {
 		// save marker for later reuse on activate of marked nodes
 		this.marker = marker;
 		INavigationNode<?> node = baseNode;
-		Set<Class<?>> markedTyped = new HashSet<Class<?>>();
+		final Set<Class<?>> markedTyped = new HashSet<Class<?>>();
 		while (node != null && node.isDeactivated()) {
 			if (!nodeTypeMarked(markedTyped, node.getClass())) {
 				addNavigationNodeMarker(node);
@@ -51,8 +51,8 @@ public class TypeHierarchyMarkerStrategy implements IUIProcessMarkupStrategy {
 	/*
 	 * check if the hierarchy layer is already marked
 	 */
-	boolean nodeTypeMarked(Set<Class<?>> markedTypes, Class<?> nodeType) {
-		for (Class<?> markedType : markedTypes) {
+	boolean nodeTypeMarked(final Set<Class<?>> markedTypes, final Class<?> nodeType) {
+		for (final Class<?> markedType : markedTypes) {
 			if (markedType.isAssignableFrom(nodeType) || nodeType.isAssignableFrom(markedType)) {
 				return true;
 			}
@@ -64,14 +64,14 @@ public class TypeHierarchyMarkerStrategy implements IUIProcessMarkupStrategy {
 	/*
 	 * add the marker to the node
 	 */
-	void addNavigationNodeMarker(INavigationNode<?> node) {
+	void addNavigationNodeMarker(final INavigationNode<?> node) {
 		node.addMarker(marker);
 	}
 
 	/*
 	 * observer the node for later removal of the marker
 	 */
-	private void observeNodeActivity(INavigationNode<?> node) {
+	private void observeNodeActivity(final INavigationNode<?> node) {
 		node.addSimpleListener(nodeObserver);
 	}
 
@@ -83,13 +83,13 @@ public class TypeHierarchyMarkerStrategy implements IUIProcessMarkupStrategy {
 
 		@SuppressWarnings("rawtypes")
 		@Override
-		public void activated(INavigationNode source) {
+		public void activated(final INavigationNode source) {
 			removeNavigationNodeMarker(source);
 		}
 	}
 
 	@SuppressWarnings("rawtypes")
-	private void removeNavigationNodeMarker(INavigationNode source) {
+	private void removeNavigationNodeMarker(final INavigationNode source) {
 		source.removeMarker(marker);
 		// remove observer and let gc work
 		source.removeSimpleListener(nodeObserver);

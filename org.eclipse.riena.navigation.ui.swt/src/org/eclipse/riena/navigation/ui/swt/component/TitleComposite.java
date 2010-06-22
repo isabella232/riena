@@ -42,7 +42,7 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 public class TitleComposite extends Composite {
 
 	private TitlelessShellMouseListener mouseListener;
-	private ApplicationNode node;
+	private final ApplicationNode node;
 	private IApplicationNodeListener appNodeListener;
 
 	/**
@@ -54,7 +54,7 @@ public class TitleComposite extends Composite {
 	 * @param node
 	 *            node of the application
 	 */
-	public TitleComposite(Shell parentShell, ApplicationNode node) {
+	public TitleComposite(final Shell parentShell, final ApplicationNode node) {
 
 		super(parentShell, SWT.NONE);
 
@@ -70,19 +70,19 @@ public class TitleComposite extends Composite {
 	 * 
 	 * @param parentShell
 	 */
-	private void init(Shell parentShell) {
+	private void init(final Shell parentShell) {
 
 		// force result's background into logo and switcher
 		setBackgroundMode(SWT.INHERIT_FORCE);
 		// sets the background of the composite
-		Image image = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
+		final Image image = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE);
 		setBackgroundImage(image);
 
 		setLayout(new FormLayout());
-		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
+		final ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
-		int borderWidth = borderRenderer.getBorderWidth();
-		FormData data = new FormData();
+		final int borderWidth = borderRenderer.getBorderWidth();
+		final FormData data = new FormData();
 		data.top = new FormAttachment(parentShell, borderWidth);
 		data.left = new FormAttachment(0, borderWidth);
 		data.right = new FormAttachment(100, -borderWidth);
@@ -115,7 +115,7 @@ public class TitleComposite extends Composite {
 	 * @return renderer
 	 */
 	private ShellRenderer getShellRenderer() {
-		ShellRenderer shellRenderer = (ShellRenderer) LnfManager.getLnf().getRenderer(
+		final ShellRenderer shellRenderer = (ShellRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.TITLELESS_SHELL_RENDERER);
 		return shellRenderer;
 	}
@@ -151,7 +151,7 @@ public class TitleComposite extends Composite {
 	private class ApplicationLabelListener extends ApplicationNodeListener {
 
 		@Override
-		public void labelChanged(IApplicationNode source) {
+		public void labelChanged(final IApplicationNode source) {
 			super.labelChanged(source);
 			redraw();
 		}
@@ -166,7 +166,7 @@ public class TitleComposite extends Composite {
 		/**
 		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
 		 */
-		public void paintControl(PaintEvent e) {
+		public void paintControl(final PaintEvent e) {
 			onPaint(e);
 		}
 
@@ -176,17 +176,17 @@ public class TitleComposite extends Composite {
 		 * @param e
 		 *            event
 		 */
-		private void onPaint(PaintEvent e) {
+		private void onPaint(final PaintEvent e) {
 
 			if (e.getSource() instanceof Control) {
 
-				Control shell = (Control) e.getSource();
+				final Control shell = (Control) e.getSource();
 
-				ShellRenderer shellRenderer = getShellRenderer();
-				Rectangle shellBounds = shell.getBounds();
-				Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellRenderer.getHeight());
+				final ShellRenderer shellRenderer = getShellRenderer();
+				final Rectangle shellBounds = shell.getBounds();
+				final Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellRenderer.getHeight());
 				shellRenderer.setBounds(bounds);
-				RienaDefaultLnf lnf = LnfManager.getLnf();
+				final RienaDefaultLnf lnf = LnfManager.getLnf();
 				shellRenderer.setCloseable(lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_CLOSE, true));
 				Boolean maximizable = lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_MAX, true);
 				maximizable = maximizable && lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_RESIZEABLE, true);

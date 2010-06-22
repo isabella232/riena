@@ -47,12 +47,12 @@ public class UIFilterProvider implements IUIFilterProvider {
 	 *            filter ID
 	 * @return extension or {@code null} if no extension was found
 	 */
-	protected IUIFilterExtension getUIFilterDefinition(String filterId) {
+	protected IUIFilterExtension getUIFilterDefinition(final String filterId) {
 
 		if (uiFilterExtensions.length == 0 || filterId == null) {
 			return null;
 		} else {
-			for (IUIFilterExtension extension : uiFilterExtensions) {
+			for (final IUIFilterExtension extension : uiFilterExtensions) {
 				if ((extension.getFilterId() != null) && (extension.getFilterId().equals(filterId))) {
 					return extension;
 				}
@@ -63,19 +63,19 @@ public class UIFilterProvider implements IUIFilterProvider {
 
 	}
 
-	public IUIFilterContainer provideFilter(String filterID) {
+	public IUIFilterContainer provideFilter(final String filterID) {
 
-		IUIFilterExtension filterExtension = getUIFilterDefinition(filterID);
+		final IUIFilterExtension filterExtension = getUIFilterDefinition(filterID);
 
-		Collection<IUIFilterRule> rules = new ArrayList<IUIFilterRule>(1);
+		final Collection<IUIFilterRule> rules = new ArrayList<IUIFilterRule>(1);
 
 		// rules for marker/ridget
-		for (IRuleMarkerRidget ruleExtension : filterExtension.getRuleMarkerRidgets()) {
+		for (final IRuleMarkerRidget ruleExtension : filterExtension.getRuleMarkerRidgets()) {
 
-			String markerType = ruleExtension.getMarker();
-			IUIFilterRuleMarkerRidget rule = getRulesProvider().getRuleMarkerRidget(markerType);
+			final String markerType = ruleExtension.getMarker();
+			final IUIFilterRuleMarkerRidget rule = getRulesProvider().getRuleMarkerRidget(markerType);
 			if (rule != null) {
-				String id = ruleExtension.getRidgetId();
+				final String id = ruleExtension.getRidgetId();
 				rule.setId(id);
 				rules.add(rule);
 			}
@@ -83,12 +83,12 @@ public class UIFilterProvider implements IUIFilterProvider {
 		}
 
 		// rules for marker/menu- and toolItems
-		for (IRuleMarkerMenuItem ruleExtension : filterExtension.getRuleMarkerMenuItems()) {
+		for (final IRuleMarkerMenuItem ruleExtension : filterExtension.getRuleMarkerMenuItems()) {
 
-			String markerType = ruleExtension.getMarker();
-			IUIFilterRuleMarkerRidget rule = getRulesProvider().getRuleMarkerMenuItem(markerType);
+			final String markerType = ruleExtension.getMarker();
+			final IUIFilterRuleMarkerRidget rule = getRulesProvider().getRuleMarkerMenuItem(markerType);
 			if (rule != null) {
-				String id = ruleExtension.getItemId();
+				final String id = ruleExtension.getItemId();
 				rule.setId(id);
 				rules.add(rule);
 			}
@@ -96,12 +96,12 @@ public class UIFilterProvider implements IUIFilterProvider {
 		}
 
 		// rules for marker/navigation
-		for (IRuleMarkerNavigation ruleExtension : filterExtension.getRuleMarkerNavigations()) {
+		for (final IRuleMarkerNavigation ruleExtension : filterExtension.getRuleMarkerNavigations()) {
 
-			String markerType = ruleExtension.getMarker();
-			IUIFilterRuleMarkerNavigation rule = getRulesProvider().getRuleMarkerNavigation(markerType);
+			final String markerType = ruleExtension.getMarker();
+			final IUIFilterRuleMarkerNavigation rule = getRulesProvider().getRuleMarkerNavigation(markerType);
 			if (rule != null) {
-				String id = ruleExtension.getNodeId();
+				final String id = ruleExtension.getNodeId();
 				rule.setNode(id);
 				rules.add(rule);
 			}
@@ -109,16 +109,16 @@ public class UIFilterProvider implements IUIFilterProvider {
 		}
 
 		// rules for validator
-		for (IRuleValidatorRidget ruleExtension : filterExtension.getRuleValidatorRidgets()) {
+		for (final IRuleValidatorRidget ruleExtension : filterExtension.getRuleValidatorRidgets()) {
 
-			IUIFilterRuleValidator rule = createRuleValidatorRidget(ruleExtension);
+			final IUIFilterRuleValidator rule = createRuleValidatorRidget(ruleExtension);
 			if (rule != null) {
 				rules.add(rule);
 			}
 
 		}
 
-		UIFilter filterResult = new UIFilter(filterID, rules);
+		final UIFilter filterResult = new UIFilter(filterID, rules);
 
 		return new UIFilterContainer(filterResult, filterExtension.getNodeIds());
 
@@ -131,12 +131,12 @@ public class UIFilterProvider implements IUIFilterProvider {
 	 *            extension that defines the rule
 	 * @return rule or {@code null} if no rule was created
 	 */
-	private IUIFilterRuleValidator createRuleValidatorRidget(IRuleValidatorRidget ruleExtension) {
+	private IUIFilterRuleValidator createRuleValidatorRidget(final IRuleValidatorRidget ruleExtension) {
 
-		IUIFilterRuleValidatorRidget rule = getRulesProvider().getRuleValidatorRidget();
+		final IUIFilterRuleValidatorRidget rule = getRulesProvider().getRuleValidatorRidget();
 		if (rule != null) {
 			rule.setId(ruleExtension.getRidgetId());
-			String timeString = ruleExtension.getValidationTime();
+			final String timeString = ruleExtension.getValidationTime();
 			ValidationTime time = ValidationTime.ON_UPDATE_TO_MODEL;
 			if (timeString != null) {
 				if (timeString.equals("onUIControlEdit")) { //$NON-NLS-1$
@@ -144,7 +144,7 @@ public class UIFilterProvider implements IUIFilterProvider {
 				}
 			}
 			rule.setValidationTime(time);
-			IValidator validator = ruleExtension.getValidator();
+			final IValidator validator = ruleExtension.getValidator();
 			rule.setValidator(validator);
 		}
 
@@ -158,7 +158,7 @@ public class UIFilterProvider implements IUIFilterProvider {
 	 * @param uiFilterExtensions
 	 */
 	@InjectExtension
-	public void update(IUIFilterExtension[] uiFilterExtensions) {
+	public void update(final IUIFilterExtension[] uiFilterExtensions) {
 		this.uiFilterExtensions = uiFilterExtensions;
 	}
 

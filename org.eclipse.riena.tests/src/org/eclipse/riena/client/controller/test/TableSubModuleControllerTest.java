@@ -24,15 +24,15 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 public class TableSubModuleControllerTest extends AbstractSubModuleControllerTest<TableSubModuleController> {
 
 	@Override
-	protected TableSubModuleController createController(ISubModuleNode node) {
+	protected TableSubModuleController createController(final ISubModuleNode node) {
 		return new TableSubModuleController(node);
 	}
 
 	public void testButtonDelete() {
-		ITableRidget table = getController().getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
-		int count = table.getOptionCount();
+		final ITableRidget table = getController().getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
+		final int count = table.getOptionCount();
 
-		IActionRidget buttonDelete = getController().getRidget(IActionRidget.class, "buttonDelete"); //$NON-NLS-1$
+		final IActionRidget buttonDelete = getController().getRidget(IActionRidget.class, "buttonDelete"); //$NON-NLS-1$
 		// select and delete one item
 		table.setSelection(table.getOption(0));
 
@@ -64,9 +64,9 @@ public class TableSubModuleControllerTest extends AbstractSubModuleControllerTes
 	}
 
 	public void testAddButton() {
-		ITableRidget table = getController().getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
-		IActionRidget buttonAdd = getController().getRidget(IActionRidget.class, "buttonAddSibling"); //$NON-NLS-1$
-		int count = table.getOptionCount();
+		final ITableRidget table = getController().getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
+		final IActionRidget buttonAdd = getController().getRidget(IActionRidget.class, "buttonAddSibling"); //$NON-NLS-1$
+		final int count = table.getOptionCount();
 
 		buttonAdd.fireAction();
 		assertEquals(count + 1, table.getOptionCount());

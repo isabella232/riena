@@ -15,15 +15,15 @@ package org.eclipse.riena.communication.core.hooks;
  */
 public class FreeAdder {
 
-	public String add(String s1, String s2) {
+	public String add(final String s1, final String s2) {
 		return s1 + s2;
 	}
 
-	public String add(Number n1, Number n2) {
+	public String add(final Number n1, final Number n2) {
 		return n1.toString() + n2.toString();
 	}
 
-	public String add(Integer i1, Integer i2) {
+	public String add(final Integer i1, final Integer i2) {
 		return Integer.toString(i1 + i2);
 	}
 

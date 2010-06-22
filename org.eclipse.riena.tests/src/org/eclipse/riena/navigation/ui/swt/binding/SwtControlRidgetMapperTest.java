@@ -54,8 +54,8 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	protected void tearDown() throws Exception {
 
 		// Create new instance of SwtControlRidgetMapper to start with initial mappings only (not additional mappings added in previous test cases)
-		ReflectionUtils.setHidden(SwtControlRidgetMapper.class, "instance", ReflectionUtils.newInstanceHidden(
-				SwtControlRidgetMapper.class, new Object[0]));
+		ReflectionUtils.setHidden(SwtControlRidgetMapper.class, "instance",
+				ReflectionUtils.newInstanceHidden(SwtControlRidgetMapper.class, new Object[0]));
 		mapper = null;
 		shell.dispose();
 		shell = null;
@@ -75,7 +75,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 
 		mapper.addMapping(MockComposite.class, MockRidget.class);
 
-		Class<? extends IRidget> ridget = mapper.getRidgetClass(MockComposite.class);
+		final Class<? extends IRidget> ridget = mapper.getRidgetClass(MockComposite.class);
 		assertNotNull(ridget);
 		assertEquals(MockRidget.class.getName(), ridget.getName());
 
@@ -98,7 +98,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		assertNotNull(ridget);
 		assertEquals(MockRidget.class.getName(), ridget.getName());
 
-		MockComposite widget = new MockComposite(shell, SWT.BORDER);
+		final MockComposite widget = new MockComposite(shell, SWT.BORDER);
 		ridget = mapper.getRidgetClass(widget);
 		assertNotNull(ridget);
 		assertEquals(MockRidget2.class.getName(), ridget.getName());
@@ -113,13 +113,13 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	 */
 	public void testAddMappingWithCondition() {
 
-		FTMappingCondition condition1 = new FTMappingCondition(false);
-		FTMappingCondition condition2 = new FTMappingCondition(false);
+		final FTMappingCondition condition1 = new FTMappingCondition(false);
+		final FTMappingCondition condition2 = new FTMappingCondition(false);
 
 		mapper.addMapping(MockComposite.class, MockRidget.class, condition1);
 		mapper.addMapping(MockComposite.class, MockRidget2.class, condition2);
 
-		MockComposite widget = new MockComposite(shell, SWT.NONE);
+		final MockComposite widget = new MockComposite(shell, SWT.NONE);
 		try {
 			condition1.setMatch(true);
 
@@ -139,7 +139,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 			try {
 				mapper.getRidgetClass(widget);
 				fail();
-			} catch (BindingException bex) {
+			} catch (final BindingException bex) {
 				ok();
 			}
 		} finally {
@@ -155,14 +155,14 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	 */
 	public void testGetRidgetClass() throws Exception {
 
-		Class<? extends IRidget> ridget = mapper.getRidgetClass(Label.class);
+		final Class<? extends IRidget> ridget = mapper.getRidgetClass(Label.class);
 		assertNotNull(ridget);
 		assertEquals(LabelRidget.class.getName(), ridget.getName());
 
 		try {
 			mapper.getRidgetClass(MockComposite.class);
 			fail("BindingException expected");
-		} catch (BindingException e) {
+		} catch (final BindingException e) {
 			ok("BindingException expected");
 		}
 
@@ -226,7 +226,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		MockComposite comp = new MockComposite(shell, SWT.DEFAULT);
 		assertTrue(mapping.isMatching(comp));
 		comp.dispose();
-		MockComposite2 comp2 = new MockComposite2(shell, SWT.DEFAULT);
+		final MockComposite2 comp2 = new MockComposite2(shell, SWT.DEFAULT);
 		assertFalse(mapping.isMatching(comp2));
 		comp2.dispose();
 
@@ -241,7 +241,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		assertTrue(mapping.isMatching(comp));
 		comp.dispose();
 
-		FTMappingCondition condition = new FTMappingCondition(true);
+		final FTMappingCondition condition = new FTMappingCondition(true);
 		mapping = new Mapping(MockComposite.class, MockRidget.class, condition);
 		comp = new MockComposite(shell, SWT.DEFAULT);
 		try {
@@ -261,7 +261,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	}
 
 	public void testAddMappingToClassRidgetMapper() {
-		ClassRidgetMapper classRidgetMapper = ClassRidgetMapper.getInstance();
+		final ClassRidgetMapper classRidgetMapper = ClassRidgetMapper.getInstance();
 
 		mapper.addMapping(MockComposite.class, MockRidget.class);
 		assertEquals(MockRidget.class, classRidgetMapper.getRidgetClass(IRidget.class));
@@ -272,7 +272,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		try {
 			classRidgetMapper.getRidgetClass(IMockRidget.class);
 			fail("BindingException expected");
-		} catch (BindingException e) {
+		} catch (final BindingException e) {
 			ok("BindingException expected");
 		}
 	}
@@ -288,15 +288,15 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 
 		private boolean isMatch = true;
 
-		public FTMappingCondition(boolean isMatch) {
+		public FTMappingCondition(final boolean isMatch) {
 			this.isMatch = isMatch;
 		}
 
-		void setMatch(boolean isMatch) {
+		void setMatch(final boolean isMatch) {
 			this.isMatch = isMatch;
 		}
 
-		public boolean isMatch(Object widget) {
+		public boolean isMatch(final Object widget) {
 			return isMatch;
 		}
 
@@ -307,7 +307,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	 */
 	private static final class MockComposite extends Composite {
 
-		public MockComposite(Composite parent, int style) {
+		public MockComposite(final Composite parent, final int style) {
 			super(parent, style);
 		}
 
@@ -318,7 +318,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 	 */
 	private static final class MockComposite2 extends Composite {
 
-		public MockComposite2(Composite parent, int style) {
+		public MockComposite2(final Composite parent, final int style) {
 			super(parent, style);
 		}
 
@@ -333,39 +333,41 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 			return null;
 		}
 
-		public void setUIControl(Object uiControl) {
+		public void setUIControl(final Object uiControl) {
 		}
 
-		public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final String propertyName,
+				final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final String propertyName,
+				final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public boolean isVisible() {
 			return false;
 		}
 
-		public void setVisible(boolean visible) {
+		public void setVisible(final boolean visible) {
 		}
 
 		public boolean isEnabled() {
 			return false;
 		}
 
-		public void setEnabled(boolean enabled) {
+		public void setEnabled(final boolean enabled) {
 		}
 
-		public void addFocusListener(IFocusListener listener) {
+		public void addFocusListener(final IFocusListener listener) {
 		}
 
-		public void removeFocusListener(IFocusListener listener) {
+		public void removeFocusListener(final IFocusListener listener) {
 		}
 
 		public void updateFromModel() {
@@ -382,21 +384,21 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 			return false;
 		}
 
-		public void setFocusable(boolean focusable) {
+		public void setFocusable(final boolean focusable) {
 		}
 
 		public String getToolTipText() {
 			return null;
 		}
 
-		public void setToolTipText(String toolTipText) {
+		public void setToolTipText(final String toolTipText) {
 		}
 
 		public boolean isBlocked() {
 			return false;
 		}
 
-		public void setBlocked(boolean blocked) {
+		public void setBlocked(final boolean blocked) {
 		}
 
 		public String getID() {
@@ -413,39 +415,41 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 			return null;
 		}
 
-		public void setUIControl(Object uiControl) {
+		public void setUIControl(final Object uiControl) {
 		}
 
-		public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final String propertyName,
+				final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final String propertyName,
+				final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public boolean isVisible() {
 			return false;
 		}
 
-		public void setVisible(boolean visible) {
+		public void setVisible(final boolean visible) {
 		}
 
 		public boolean isEnabled() {
 			return false;
 		}
 
-		public void setEnabled(boolean enabled) {
+		public void setEnabled(final boolean enabled) {
 		}
 
-		public void addFocusListener(IFocusListener listener) {
+		public void addFocusListener(final IFocusListener listener) {
 		}
 
-		public void removeFocusListener(IFocusListener listener) {
+		public void removeFocusListener(final IFocusListener listener) {
 		}
 
 		public void updateFromModel() {
@@ -462,21 +466,21 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 			return false;
 		}
 
-		public void setFocusable(boolean focusable) {
+		public void setFocusable(final boolean focusable) {
 		}
 
 		public String getToolTipText() {
 			return null;
 		}
 
-		public void setToolTipText(String toolTipText) {
+		public void setToolTipText(final String toolTipText) {
 		}
 
 		public boolean isBlocked() {
 			return false;
 		}
 
-		public void setBlocked(boolean blocked) {
+		public void setBlocked(final boolean blocked) {
 		}
 
 		public String getID() {
@@ -506,39 +510,41 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 			return null;
 		}
 
-		public void setUIControl(Object uiControl) {
+		public void setUIControl(final Object uiControl) {
 		}
 
-		public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final String propertyName,
+				final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final String propertyName,
+				final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public boolean isVisible() {
 			return false;
 		}
 
-		public void setVisible(boolean visible) {
+		public void setVisible(final boolean visible) {
 		}
 
 		public boolean isEnabled() {
 			return false;
 		}
 
-		public void setEnabled(boolean enabled) {
+		public void setEnabled(final boolean enabled) {
 		}
 
-		public void addFocusListener(IFocusListener listener) {
+		public void addFocusListener(final IFocusListener listener) {
 		}
 
-		public void removeFocusListener(IFocusListener listener) {
+		public void removeFocusListener(final IFocusListener listener) {
 		}
 
 		public void updateFromModel() {
@@ -555,21 +561,21 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 			return false;
 		}
 
-		public void setFocusable(boolean focusable) {
+		public void setFocusable(final boolean focusable) {
 		}
 
 		public String getToolTipText() {
 			return null;
 		}
 
-		public void setToolTipText(String toolTipText) {
+		public void setToolTipText(final String toolTipText) {
 		}
 
 		public boolean isBlocked() {
 			return false;
 		}
 
-		public void setBlocked(boolean blocked) {
+		public void setBlocked(final boolean blocked) {
 		}
 
 		public String getID() {
@@ -586,7 +592,7 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 
 	private static class MockNonRidgetSuperClass implements Comparable<MockNonRidgetSuperClass> {
 
-		public int compareTo(MockNonRidgetSuperClass o) {
+		public int compareTo(final MockNonRidgetSuperClass o) {
 			return 0;
 		}
 
@@ -599,39 +605,41 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 			return null;
 		}
 
-		public void setUIControl(Object uiControl) {
+		public void setUIControl(final Object uiControl) {
 		}
 
-		public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final String propertyName,
+				final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final String propertyName,
+				final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public boolean isVisible() {
 			return false;
 		}
 
-		public void setVisible(boolean visible) {
+		public void setVisible(final boolean visible) {
 		}
 
 		public boolean isEnabled() {
 			return false;
 		}
 
-		public void setEnabled(boolean enabled) {
+		public void setEnabled(final boolean enabled) {
 		}
 
-		public void addFocusListener(IFocusListener listener) {
+		public void addFocusListener(final IFocusListener listener) {
 		}
 
-		public void removeFocusListener(IFocusListener listener) {
+		public void removeFocusListener(final IFocusListener listener) {
 		}
 
 		public void updateFromModel() {
@@ -648,21 +656,21 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 			return false;
 		}
 
-		public void setFocusable(boolean focusable) {
+		public void setFocusable(final boolean focusable) {
 		}
 
 		public String getToolTipText() {
 			return null;
 		}
 
-		public void setToolTipText(String toolTipText) {
+		public void setToolTipText(final String toolTipText) {
 		}
 
 		public boolean isBlocked() {
 			return false;
 		}
 
-		public void setBlocked(boolean blocked) {
+		public void setBlocked(final boolean blocked) {
 		}
 
 		public String getID() {

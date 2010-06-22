@@ -22,6 +22,7 @@ public class ObjectCounterTest extends TestCase {
 
 	private ObjectCounter<String> strings;
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		strings = new ObjectCounter<String>();

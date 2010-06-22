@@ -19,7 +19,7 @@ public class ValidDate extends AbstractValidDate {
 		super(false);
 	}
 
-	public ValidDate(String pattern) {
+	public ValidDate(final String pattern) {
 		super(pattern, false);
 	}
 

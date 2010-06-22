@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 
@@ -26,9 +27,9 @@ import org.eclipse.riena.ui.ridgets.ITreeRidget;
  */
 public class TreeNode extends AbstractBean implements ITreeNode, ITreeNode2 {
 
-	private static void addToParent(ITreeNode parent, ITreeNode child) {
+	private static void addToParent(final ITreeNode parent, final ITreeNode child) {
 		Assert.isNotNull(child);
-		List<ITreeNode> pChildren = parent.getChildren();
+		final List<ITreeNode> pChildren = parent.getChildren();
 		pChildren.add(child);
 		parent.setChildren(pChildren);
 	}
@@ -53,7 +54,7 @@ public class TreeNode extends AbstractBean implements ITreeNode, ITreeNode2 {
 	 *            the value to wrap in this tree node (may be null)
 	 * @see #setValue(Object)
 	 */
-	public TreeNode(ITreeNode parent, Object value) {
+	public TreeNode(final ITreeNode parent, final Object value) {
 		this.parent = parent;
 		this.value = value;
 		this.isEnabled = true;
@@ -70,7 +71,7 @@ public class TreeNode extends AbstractBean implements ITreeNode, ITreeNode2 {
 	 * @param enabled
 	 *            true if this node is enabled, false otherwise.
 	 */
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(final boolean enabled) {
 		if (isEnabled != enabled) {
 			firePropertyChanged(PROPERTY_ENABLED, isEnabled, isEnabled = enabled);
 		}
@@ -83,7 +84,7 @@ public class TreeNode extends AbstractBean implements ITreeNode, ITreeNode2 {
 	 * @param visible
 	 *            true if this node is visible, false otherwise.
 	 */
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		if (isVisible != visible) {
 			firePropertyChanged(PROPERTY_VISIBLE, isVisible, isVisible = visible);
 		}
@@ -105,7 +106,7 @@ public class TreeNode extends AbstractBean implements ITreeNode, ITreeNode2 {
 	 *            the value to wrap in this tree node (may be null)
 	 * @see #setValue(Object)
 	 */
-	public TreeNode(Object value) {
+	public TreeNode(final Object value) {
 		this(null, value);
 	}
 
@@ -121,16 +122,16 @@ public class TreeNode extends AbstractBean implements ITreeNode, ITreeNode2 {
 		return value;
 	}
 
-	public void setChildren(List<ITreeNode> children) {
+	public void setChildren(final List<ITreeNode> children) {
 		if (this.children != children) {
-			List<ITreeNode> newValue = (children != null) ? new ArrayList<ITreeNode>(children) : null;
+			final List<ITreeNode> newValue = (children != null) ? new ArrayList<ITreeNode>(children) : null;
 			firePropertyChanged(PROPERTY_CHILDREN, this.children, this.children = newValue);
 		}
 	}
 
-	public void setValue(Object value) {
+	public void setValue(final Object value) {
 		if (this.value != value) {
-			Object oldValue = this.value;
+			final Object oldValue = this.value;
 			this.value = value;
 			firePropertyChanged(PROPERTY_VALUE, oldValue, this.value);
 		}

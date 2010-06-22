@@ -54,17 +54,17 @@ public final class SnippetMasterDetailsRidget005 {
 
 		@Override
 		protected void createDetails(final Composite parent) {
-			GridLayoutFactory.fillDefaults().numColumns(1).margins(20, 20).spacing(10, 10).equalWidth(false).applyTo(
-					parent);
-			GridDataFactory hFill = GridDataFactory.fillDefaults().grab(true, false);
+			GridLayoutFactory.fillDefaults().numColumns(1).margins(20, 20).spacing(10, 10).equalWidth(false)
+					.applyTo(parent);
+			final GridDataFactory hFill = GridDataFactory.fillDefaults().grab(true, false);
 
 			UIControlsFactory.createLabel(parent, "First Name:"); //$NON-NLS-1$
-			Combo combo = UIControlsFactory.createCombo(parent, "combo"); //$NON-NLS-1$
+			final Combo combo = UIControlsFactory.createCombo(parent, "combo"); //$NON-NLS-1$
 			hFill.applyTo(combo);
 		}
 
 		@Override
-		protected Button createButtonNew(Composite compButton) {
+		protected Button createButtonNew(final Composite compButton) {
 			return null; // no 'New' button
 		}
 	}
@@ -78,24 +78,22 @@ public final class SnippetMasterDetailsRidget005 {
 		private IComboRidget combo;
 
 		public void configureRidgets(final IRidgetContainer container) {
-			WritableList options = new WritableList(Arrays.asList("empty"), String.class); //$NON-NLS-1$
-			IObservableValue selection = PojoObservables.observeValue(workingCopy, Person.PROPERTY_FIRSTNAME);
+			final WritableList options = new WritableList(Arrays.asList("empty"), String.class); //$NON-NLS-1$
+			final IObservableValue selection = PojoObservables.observeValue(workingCopy, Person.PROPERTY_FIRSTNAME);
 			combo = (IComboRidget) container.getRidget("combo"); //$NON-NLS-1$
 			combo.bindToModel(options, String.class, null, selection);
 		}
 
 		@Override
-		public void prepareItemSelected(Object newSelection) {
+		public void prepareItemSelected(final Object newSelection) {
 			if (newSelection == null) {
 				return;
 			}
-			Person person = (Person) newSelection;
+			final Person person = (Person) newSelection;
 			WritableList values = null;
 			if (person.getLastname().startsWith("Jackson")) { //$NON-NLS-1$
 				values = new WritableList(
-						Arrays
-								.asList(
-										"Jackie", "Tito", "Jermaine", "Marlon", "Michael", "Janet", "Joseph", "Katherine"), String.class); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+						Arrays.asList("Jackie", "Tito", "Jermaine", "Marlon", "Michael", "Janet", "Joseph", "Katherine"), String.class); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
 			} else {
 				values = new WritableList(Arrays.asList("Joey", "Jack", "Jane", "Frank", "John"), String.class); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			}
@@ -130,23 +128,23 @@ public final class SnippetMasterDetailsRidget005 {
 	}
 
 	public static void main(final String[] args) {
-		Display display = Display.getDefault();
-		Shell shell = UIControlsFactory.createShell(display);
+		final Display display = Display.getDefault();
+		final Shell shell = UIControlsFactory.createShell(display);
 		shell.setText(SnippetMasterDetailsRidget005.class.getSimpleName());
 		shell.setLayout(new FillLayout());
 
-		PersonMasterDetails details = new PersonMasterDetails(shell, SWT.NONE);
-		IMasterDetailsRidget ridget = (IMasterDetailsRidget) SwtRidgetFactory.createRidget(details);
+		final PersonMasterDetails details = new PersonMasterDetails(shell, SWT.NONE);
+		final IMasterDetailsRidget ridget = (IMasterDetailsRidget) SwtRidgetFactory.createRidget(details);
 		ridget.setDelegate(new PersonDelegate());
 
-		String text = "Select a 'Jackson' do see different suggestion in the Combo.\n" //$NON-NLS-1$
+		final String text = "Select a 'Jackson' do see different suggestion in the Combo.\n" //$NON-NLS-1$
 				+ "This is updated dynamically when an item is selected."; //$NON-NLS-1$
-		Label info = UIControlsFactory.createLabel(details, text, SWT.WRAP);
+		final Label info = UIControlsFactory.createLabel(details, text, SWT.WRAP);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(info);
 
-		WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
-		String[] properties = { Person.PROPERTY_LASTNAME, Person.PROPERTY_FIRSTNAME };
-		String[] headers = { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
+		final String[] properties = { Person.PROPERTY_LASTNAME, Person.PROPERTY_FIRSTNAME };
+		final String[] headers = { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 		ridget.bindToModel(input, Person.class, properties, headers);
 		ridget.updateFromModel();
 

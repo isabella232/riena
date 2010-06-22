@@ -52,11 +52,11 @@ public class SwtViewProvider {
 		viewShared = new HashMap<String, Boolean>();
 	}
 
-	public SwtViewId getSwtViewId(INavigationNode<?> node) {
+	public SwtViewId getSwtViewId(final INavigationNode<?> node) {
 
 		SwtViewId swtViewId = views.get(node);
 		if (swtViewId == null) {
-			ISubModuleNode submodule = node.getTypecastedAdapter(ISubModuleNode.class);
+			final ISubModuleNode submodule = node.getTypecastedAdapter(ISubModuleNode.class);
 			// submodules need special treatment as they may be shared 
 			if (submodule != null && submodule.getNodeId() != null) {
 				swtViewId = createAndRegisterSwtViewId(submodule);
@@ -68,15 +68,15 @@ public class SwtViewProvider {
 		return swtViewId;
 	}
 
-	public void unregisterSwtViewId(INavigationNode<?> node) {
+	public void unregisterSwtViewId(final INavigationNode<?> node) {
 		views.remove(node);
 	}
 
-	private SwtViewId createAndRegisterSwtViewId(INavigationNode<?> node) {
+	private SwtViewId createAndRegisterSwtViewId(final INavigationNode<?> node) {
 
 		SwtViewId swtViewId = null;
-		IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(node);
-		String viewId = getViewId(node, def);
+		final IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(node);
+		final String viewId = getViewId(node, def);
 
 		swtViewId = new SwtViewId(viewId, getNextSecondaryId(viewId));
 		views.put(node, swtViewId);
@@ -84,11 +84,11 @@ public class SwtViewProvider {
 		return swtViewId;
 	}
 
-	private SwtViewId createAndRegisterSwtViewId(ISubModuleNode submodule) {
+	private SwtViewId createAndRegisterSwtViewId(final ISubModuleNode submodule) {
 
 		SwtViewId swtViewId = null;
-		IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(submodule);
-		String viewId = getViewId(submodule, def);
+		final IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(submodule);
+		final String viewId = getViewId(submodule, def);
 
 		if (viewShared.get(viewId) != null) {
 			if (def.isViewShared() != viewShared.get(viewId)) {
@@ -123,11 +123,11 @@ public class SwtViewProvider {
 		return swtViewId;
 	}
 
-	private String getViewId(INavigationNode<?> node, IWorkareaDefinition def) {
+	private String getViewId(final INavigationNode<?> node, final IWorkareaDefinition def) {
 		if (def == null) {
 			throw new ApplicationModelFailure("no work area definition for node " + node.getNodeId()); //$NON-NLS-1$
 		}
-		Object viewId = def.getViewId();
+		final Object viewId = def.getViewId();
 		if (viewId == null) {
 			throw new ApplicationModelFailure("viewId is null for nodeId " + node.getNodeId()); //$NON-NLS-1$
 		}
@@ -137,7 +137,7 @@ public class SwtViewProvider {
 		return (String) viewId;
 	}
 
-	private String getNextSecondaryId(String pViewId) {
+	private String getNextSecondaryId(final String pViewId) {
 		if (viewCounter.get(pViewId) == null) {
 			viewCounter.put(pViewId, 0);
 		}
@@ -145,23 +145,24 @@ public class SwtViewProvider {
 		return String.valueOf(viewCounter.get(pViewId));
 	}
 
-	private boolean isViewShared(String viewId) {
-		Boolean result = this.viewShared.get(viewId);
+	private boolean isViewShared(final String viewId) {
+		final Boolean result = this.viewShared.get(viewId);
 		return result == null ? false : result;
 	}
 
-	public <N extends INavigationNode<?>> N getNavigationNode(String pId, Class<N> pClass) {
+	public <N extends INavigationNode<?>> N getNavigationNode(final String pId, final Class<N> pClass) {
 		return getNavigationNode(pId, null, pClass);
 	}
 
-	public <N extends INavigationNode<?>> N getNavigationNode(String pId, String secondary, Class<N> pClass) {
+	public <N extends INavigationNode<?>> N getNavigationNode(final String pId, final String secondary,
+			final Class<N> pClass) {
 		return getNavigationNode(pId, secondary, pClass, false);
 
 	}
 
-	public <N extends INavigationNode<?>> N getNavigationNode(String pId, String secondary, Class<N> pClass,
-			boolean ignoreSharedState) {
-		for (Entry<INavigationNode<?>, SwtViewId> entry : views.entrySet()) {
+	public <N extends INavigationNode<?>> N getNavigationNode(final String pId, final String secondary,
+			final Class<N> pClass, final boolean ignoreSharedState) {
+		for (final Entry<INavigationNode<?>, SwtViewId> entry : views.entrySet()) {
 			if (entry.getValue() == null) {
 				continue;
 			}

@@ -43,23 +43,22 @@ public class Activator extends RienaActivator {
 	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
 
 		try {
-			Register
-					.remoteProxy(IAuthenticationService.class)
+			Register.remoteProxy(IAuthenticationService.class)
 					.usingUrl("http://${riena.securehostname}/hessian/AuthenticationService").withProtocol("hessian").andStart(context); //$NON-NLS-1$ //$NON-NLS-2$
-		} catch (ProxyAlreadyRegisteredFailure e) {
+		} catch (final ProxyAlreadyRegisteredFailure e) {
 			Nop.reason("do nothing, can happen if other projects already registered this remote service"); //$NON-NLS-1$
 		}
 
 		try {
-			Register.remoteProxy(IAuthorizationService.class).usingUrl(
-					"http://${riena.securehostname}/hessian/AuthorizationService").withProtocol("hessian").andStart( //$NON-NLS-1$ //$NON-NLS-2$
-					context);
-		} catch (ProxyAlreadyRegisteredFailure e) {
+			Register.remoteProxy(IAuthorizationService.class)
+					.usingUrl("http://${riena.securehostname}/hessian/AuthorizationService").withProtocol("hessian").andStart( //$NON-NLS-1$ //$NON-NLS-2$
+							context);
+		} catch (final ProxyAlreadyRegisteredFailure e) {
 			Nop.reason("do nothing, can happen if other projects already registered this remote service"); //$NON-NLS-1$
 		}
 	}
@@ -71,7 +70,7 @@ public class Activator extends RienaActivator {
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		Activator.plugin = null;
 		super.stop(context);
 	}

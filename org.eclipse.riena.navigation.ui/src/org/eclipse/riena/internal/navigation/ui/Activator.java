@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui;
 
-import org.eclipse.riena.core.RienaPlugin;
 import org.osgi.framework.BundleContext;
+
+import org.eclipse.riena.core.RienaPlugin;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -37,7 +38,7 @@ public class Activator extends RienaPlugin {
 	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
 	}
@@ -49,7 +50,7 @@ public class Activator extends RienaPlugin {
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		Activator.plugin = null;
 		super.stop(context);
 	}

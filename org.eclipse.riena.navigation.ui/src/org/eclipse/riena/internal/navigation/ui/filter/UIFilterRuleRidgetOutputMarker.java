@@ -33,7 +33,7 @@ public class UIFilterRuleRidgetOutputMarker extends AbstractUIFilterRuleRidgetMa
 	 * @param ridgetIdPattern
 	 *            ID
 	 */
-	public UIFilterRuleRidgetOutputMarker(String ridgetIdPattern) {
+	public UIFilterRuleRidgetOutputMarker(final String ridgetIdPattern) {
 		super(ridgetIdPattern, new OutputMarker(false));
 	}
 

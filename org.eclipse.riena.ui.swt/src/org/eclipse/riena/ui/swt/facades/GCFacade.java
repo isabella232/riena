@@ -31,6 +31,7 @@ public abstract class GCFacade {
 	/**
 	 * @deprecated - RAP's GC now supports this directly TODO [ev] remove
 	 */
+	@Deprecated
 	public abstract void drawLine(GC gc, int x1, int y1, int x2, int y2);
 
 	/**
@@ -55,6 +56,7 @@ public abstract class GCFacade {
 	 *            the height of the arc
 	 * @deprecated - RAP's GC now supports this directly TODO [ev] remove
 	 */
+	@Deprecated
 	public abstract void drawRoundRectangle(GC gc, int x, int y, int width, int height, int arcWidth, int arcHeight);
 
 	/**

@@ -142,8 +142,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @noreference This constructor is not intended to be referenced by
 	 *              clients.
 	 */
-	public ApplicationViewAdvisor(IWorkbenchWindowConfigurer configurer, ApplicationController pController,
-			IAdvisorHelper helper) {
+	public ApplicationViewAdvisor(final IWorkbenchWindowConfigurer configurer, final ApplicationController pController,
+			final IAdvisorHelper helper) {
 		super(configurer);
 		controller = pController;
 		binding = createBinding();
@@ -151,19 +151,20 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		initializeListener();
 	}
 
-	public void addUIControl(Composite control, String propertyName) {
+	public void addUIControl(final Composite control, final String propertyName) {
 		binding.addUIControl(control, propertyName);
 	}
 
 	@InjectExtension()
-	public void bindStatuslineContentFactory(IStatuslineContentFactoryExtension[] statuslineContentFactoryExtensions) {
+	public void bindStatuslineContentFactory(
+			final IStatuslineContentFactoryExtension[] statuslineContentFactoryExtensions) {
 		if (statuslineContentFactoryExtensions.length > 0) {
 			this.statuslineContentFactory = statuslineContentFactoryExtensions[0].createFactory();
 		}
 	}
 
 	@Override
-	public final ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
+	public final ActionBarAdvisor createActionBarAdvisor(final IActionBarConfigurer configurer) {
 		return advisorHelper.createActionBarAdvisor(configurer);
 	}
 
@@ -173,22 +174,22 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		// create and layouts the composite of switcher, menu, tool bar etc.
 		shell.setLayout(new FormLayout());
-		Composite grabCorner = createGrabCorner(shell);
+		final Composite grabCorner = createGrabCorner(shell);
 		createStatusLine(shell, grabCorner);
 		titleComposite = createTitleComposite(shell);
-		Composite menuBarComposite = createMenuBarComposite(shell, titleComposite);
-		Composite coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
-		Composite mainComposite = createMainComposite(shell, coolBarComposite);
+		final Composite menuBarComposite = createMenuBarComposite(shell, titleComposite);
+		final Composite coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
+		final Composite mainComposite = createMainComposite(shell, coolBarComposite);
 		createInfoFlyout(mainComposite);
 
-		RestoreFocusOnEscListener focusListener = new RestoreFocusOnEscListener(shell);
+		final RestoreFocusOnEscListener focusListener = new RestoreFocusOnEscListener(shell);
 		focusListener.addControl(RestoreFocusOnEscListener.findCoolBar(menuBarComposite));
 		focusListener.addControl(RestoreFocusOnEscListener.findCoolBar(coolBarComposite));
 
 	}
 
-	private void createInfoFlyout(Composite mainComposite) {
-		InfoFlyout flyout = new InfoFlyout(mainComposite);
+	private void createInfoFlyout(final Composite mainComposite) {
+		final InfoFlyout flyout = new InfoFlyout(mainComposite);
 		binding.addUIControl(flyout, "infoFlyout"); //$NON-NLS-1$
 	}
 
@@ -231,7 +232,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	//////////////////
 
 	private void initializeListener() {
-		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
+		final NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(new MyApplicationNodeListener());
 		navigationTreeObserver.addListener(new MySubApplicationNodeListener());
 		navigationTreeObserver.addListener(new MyModuleGroupNodeListener());
@@ -245,8 +246,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private void configureWindow() {
 
-		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-		String label = controller.getNavigationNode().getLabel();
+		final IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
+		final String label = controller.getNavigationNode().getLabel();
 		if (label != null) {
 			configurer.setTitle(label);
 		}
@@ -266,7 +267,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * 
 	 * @param configurer
 	 */
-	private void initApplicationSize(IWorkbenchWindowConfigurer configurer) {
+	private void initApplicationSize(final IWorkbenchWindowConfigurer configurer) {
 
 		int width = Integer.getInteger(PROPERTY_RIENA_APPLICATION_WIDTH, getApplicationSizeMinimum().x);
 		if (width < getApplicationSizeMinimum().x) {
@@ -289,9 +290,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 	private void initApplicationSizeMinimum() {
 
-		int widthMinimum = Integer.getInteger(PROPERTY_RIENA_APPLICATION_MINIMUM_WIDTH,
+		final int widthMinimum = Integer.getInteger(PROPERTY_RIENA_APPLICATION_MINIMUM_WIDTH,
 				getApplicationDefaultSizeMinimum().x);
-		int heightMinimum = Integer.getInteger(PROPERTY_RIENA_APPLICATION_MINIMUM_HEIGHT,
+		final int heightMinimum = Integer.getInteger(PROPERTY_RIENA_APPLICATION_MINIMUM_HEIGHT,
 				getApplicationDefaultSizeMinimum().y);
 		applicationSizeMinimum = new Point(widthMinimum, heightMinimum);
 	}
@@ -314,20 +315,20 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		controller.getNavigationNode().activate();
 	}
 
-	private void createStatusLine(Composite shell, Composite grabCorner) {
+	private void createStatusLine(final Composite shell, final Composite grabCorner) {
 		IStatusLineContentFactory statusLineFactory = getStatuslineContentFactory();
 		if (statusLineFactory == null) {
 			statusLineFactory = new DefaultStatuslineContentFactory();
 		}
-		Statusline statusLine = new Statusline(shell, SWT.None, StatuslineSpacer.class, statusLineFactory);
-		FormData fd = new FormData();
+		final Statusline statusLine = new Statusline(shell, SWT.None, StatuslineSpacer.class, statusLineFactory);
+		final FormData fd = new FormData();
 		fd.height = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
-		Rectangle navigationBounds = TitlelessStackPresentation.calcNavigationBounds(shell);
+		final Rectangle navigationBounds = TitlelessStackPresentation.calcNavigationBounds(shell);
 		fd.left = new FormAttachment(0, navigationBounds.x);
 		if (grabCorner != null) {
 			fd.right = new FormAttachment(grabCorner, 0);
 		} else {
-			int padding = getShellPadding();
+			final int padding = getShellPadding();
 			fd.right = new FormAttachment(100, -padding);
 		}
 		fd.bottom = new FormAttachment(100, -5);
@@ -347,7 +348,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		shell.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND));
 		shell.addPaintListener(new ShellPaintListener());
 
-		String iconName = controller.getNavigationNode().getIcon();
+		final String iconName = controller.getNavigationNode().getIcon();
 		shell.setImage(ImageStore.getInstance().getImage(iconName));
 		shell.setMinimumSize(getApplicationSizeMinimum());
 
@@ -383,7 +384,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @return the title composite (never null)
 	 */
 	private TitleComposite createTitleComposite(final Shell parentShell) {
-		ApplicationNode node = (ApplicationNode) controller.getNavigationNode();
+		final ApplicationNode node = (ApplicationNode) controller.getNavigationNode();
 		return new TitleComposite(parentShell, node);
 	}
 
@@ -411,18 +412,18 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 *            previous composite in the layout
 	 * @return composite
 	 */
-	private Composite createMenuBarComposite(Composite parent, Composite previous) {
+	private Composite createMenuBarComposite(final Composite parent, final Composite previous) {
 		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
-		int padding = getShellPadding();
+		final int padding = getShellPadding();
 
 		// menu bar
-		MenuCoolBarComposite composite = new MenuCoolBarComposite(parent, SWT.NONE);
+		final MenuCoolBarComposite composite = new MenuCoolBarComposite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout());
 
 		createMenuBar(composite);
 
-		FormData formData = new FormData();
+		final FormData formData = new FormData();
 		formData.top = new FormAttachment(previous, getMenuBarTopMargin());
 		formData.left = new FormAttachment(0, padding);
 		formData.right = new FormAttachment(100, -padding);
@@ -437,12 +438,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @param parent
 	 * @return cool bar with menus
 	 */
-	private void createMenuBar(MenuCoolBarComposite parent) {
+	private void createMenuBar(final MenuCoolBarComposite parent) {
 
-		IContributionItem[] contribItems = getMenuManager().getItems();
-		for (int i = 0; i < contribItems.length; i++) {
-			if (contribItems[i] instanceof MenuManager) {
-				MenuManager topMenuManager = (MenuManager) contribItems[i];
+		final IContributionItem[] contribItems = getMenuManager().getItems();
+		for (final IContributionItem contribItem : contribItems) {
+			if (contribItem instanceof MenuManager) {
+				final MenuManager topMenuManager = (MenuManager) contribItem;
 				parent.createAndAddMenu(topMenuManager);
 			}
 		}
@@ -458,12 +459,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 *            previous composite in the layout
 	 * @return composite
 	 */
-	private Composite createCoolBarComposite(Composite parent, Composite previous) {
+	private Composite createCoolBarComposite(final Composite parent, final Composite previous) {
 		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
 		int padding = getCoolBarSeparatorPadding();
 
-		Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+		final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(previous);
 		formData.left = new FormAttachment(0, padding);
@@ -471,7 +472,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		separator.setLayoutData(formData);
 
 		padding = getShellPadding();
-		Composite result = new Composite(parent, SWT.NONE);
+		final Composite result = new Composite(parent, SWT.NONE);
 		result.setLayout(new FillLayout());
 		formData = new FormData();
 		formData.top = new FormAttachment(previous, getToolBarTopMargin());
@@ -479,9 +480,9 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		formData.right = new FormAttachment(100, -padding);
 		result.setLayoutData(formData);
 
-		Control control = getWindowConfigurer().createCoolBarControl(result);
+		final Control control = getWindowConfigurer().createCoolBarControl(result);
 		if (control instanceof CoolBar) {
-			CoolBar coolbar = (CoolBar) control;
+			final CoolBar coolbar = (CoolBar) control;
 			CoolbarUtils.initCoolBar(coolbar, getToolbarFont());
 		}
 		return result;
@@ -521,15 +522,15 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 *            previous composite in the layout
 	 * @return composite
 	 */
-	private Composite createMainComposite(Composite parent, Composite previous) {
+	private Composite createMainComposite(final Composite parent, final Composite previous) {
 
 		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
-		int padding = getShellPadding();
+		final int padding = getShellPadding();
 
-		Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+		final Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		composite.setLayout(new FillLayout());
-		FormData formData = new FormData();
+		final FormData formData = new FormData();
 		formData.top = new FormAttachment(previous, LnfManager.getLnf().getIntegerSetting(
 				LnfKeyConstants.TOOLBAR_WORK_AREA_VERTICAL_GAP), 0);
 		formData.bottom = new FormAttachment(100, -padding);
@@ -548,7 +549,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private int getShellPadding() {
 
-		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
+		final ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		return borderRenderer.getCompleteBorderWidth();
 
@@ -560,7 +561,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @return renderer
 	 */
 	private ShellRenderer getShellRenderer() {
-		ShellRenderer shellRenderer = (ShellRenderer) LnfManager.getLnf().getRenderer(
+		final ShellRenderer shellRenderer = (ShellRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.TITLELESS_SHELL_RENDERER);
 		return shellRenderer;
 	}
@@ -571,7 +572,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @return top margin
 	 */
 	private int getMenuBarTopMargin() {
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		return lnf.getIntegerSetting(LnfKeyConstants.MENUBAR_TOP_MARGIN, DEFAULT_COOLBAR_TOP_MARGIN);
 	}
 
@@ -581,7 +582,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @return top margin
 	 */
 	private int getToolBarTopMargin() {
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		return lnf.getIntegerSetting(LnfKeyConstants.TOOLBAR_TOP_MARGIN, DEFAULT_COOLBAR_TOP_MARGIN);
 	}
 
@@ -591,12 +592,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private class MyApplicationNodeListener extends ApplicationNodeListener {
 
 		@Override
-		public void filterAdded(IApplicationNode source, IUIFilter filter) {
+		public void filterAdded(final IApplicationNode source, final IUIFilter filter) {
 			show();
 		}
 
 		@Override
-		public void filterRemoved(IApplicationNode source, IUIFilter filter) {
+		public void filterRemoved(final IApplicationNode source, final IUIFilter filter) {
 			show();
 		}
 
@@ -606,12 +607,13 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				return;
 			}
 			try {
-				IViewPart vp = getNavigationViewPart();
+				final IViewPart vp = getNavigationViewPart();
 				if (vp == null) {
-					NavigationViewPart navi = (NavigationViewPart) getActivePage().showView(NavigationViewPart.ID);
+					final NavigationViewPart navi = (NavigationViewPart) getActivePage()
+							.showView(NavigationViewPart.ID);
 					navi.updateNavigationSize();
 				}
-			} catch (PartInitException e) {
+			} catch (final PartInitException e) {
 				throw new UIViewFailure(e.getMessage(), e);
 			}
 		}
@@ -626,8 +628,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * @return view part of the navigation or
 		 */
 		private IViewPart getNavigationViewPart() {
-			IViewReference[] references = getActivePage().getViewReferences();
-			for (IViewReference viewReference : references) {
+			final IViewReference[] references = getActivePage().getViewReferences();
+			for (final IViewReference viewReference : references) {
 				if (viewReference.getId().equals(NavigationViewPart.ID)) {
 					return viewReference.getView(true);
 				}
@@ -645,7 +647,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * Shows the specified perspective (sub-application).
 		 */
 		@Override
-		public void activated(ISubApplicationNode source) {
+		public void activated(final ISubApplicationNode source) {
 			if (source != null) {
 				showPerspective(source);
 				if (titleComposite != null) {
@@ -658,22 +660,22 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			super.activated(source);
 		}
 
-		private void showPerspective(ISubApplicationNode source) {
+		private void showPerspective(final ISubApplicationNode source) {
 			try {
 				PlatformUI.getWorkbench().showPerspective(SwtViewProvider.getInstance().getSwtViewId(source).getId(),
 						PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-			} catch (WorkbenchException e) {
+			} catch (final WorkbenchException e) {
 				throw new UIViewFailure(e.getMessage(), e);
 			}
 		}
 
 		@Override
-		public void disposed(ISubApplicationNode source) {
-			SwtViewProvider viewProvider = SwtViewProvider.getInstance();
-			String id = viewProvider.getSwtViewId(source).getId();
-			IWorkbench workbench = PlatformUI.getWorkbench();
-			IPerspectiveRegistry registry = workbench.getPerspectiveRegistry();
-			IPerspectiveDescriptor perspDesc = registry.findPerspectiveWithId(id);
+		public void disposed(final ISubApplicationNode source) {
+			final SwtViewProvider viewProvider = SwtViewProvider.getInstance();
+			final String id = viewProvider.getSwtViewId(source).getId();
+			final IWorkbench workbench = PlatformUI.getWorkbench();
+			final IPerspectiveRegistry registry = workbench.getPerspectiveRegistry();
+			final IPerspectiveDescriptor perspDesc = registry.findPerspectiveWithId(id);
 			workbench.getActiveWorkbenchWindow().getActivePage().closePerspective(perspDesc, false, false);
 			viewProvider.unregisterSwtViewId(source);
 		}
@@ -692,7 +694,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * child (sub module) node.
 		 */
 		@Override
-		public void activated(IModuleGroupNode source) {
+		public void activated(final IModuleGroupNode source) {
 			prepare(source);
 			super.activated(source);
 		}
@@ -704,7 +706,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * every child node.
 		 */
 		@Override
-		public void parentChanged(IModuleGroupNode source) {
+		public void parentChanged(final IModuleGroupNode source) {
 			super.parentChanged(source);
 			prepare(source);
 		}
@@ -724,7 +726,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * (sub module) node.
 		 */
 		@Override
-		public void activated(IModuleNode source) {
+		public void activated(final IModuleNode source) {
 			prepare(source);
 			super.activated(source);
 		}
@@ -736,7 +738,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * child node.
 		 */
 		@Override
-		public void parentChanged(IModuleNode source) {
+		public void parentChanged(final IModuleNode source) {
 			super.parentChanged(source);
 			prepare(source);
 		}
@@ -756,7 +758,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * node.
 		 */
 		@Override
-		public void activated(ISubModuleNode source) {
+		public void activated(final ISubModuleNode source) {
 			prepare(source);
 			super.activated(source);
 		}
@@ -768,7 +770,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * every child node.
 		 */
 		@Override
-		public void parentChanged(ISubModuleNode source) {
+		public void parentChanged(final ISubModuleNode source) {
 			super.parentChanged(source);
 			prepare(source);
 		}
@@ -781,15 +783,15 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * @param node
 	 *            navigation node
 	 */
-	private void prepare(INavigationNode<?> node) {
+	private void prepare(final INavigationNode<?> node) {
 
 		if ((node == null) || (node.getParent() == null)) {
 			return;
 		}
 
 		if (node instanceof ISubModuleNode) {
-			ISubModuleNode subModuleNode = (ISubModuleNode) node;
-			IWorkareaDefinition definition = WorkareaManager.getInstance().getDefinition(subModuleNode);
+			final ISubModuleNode subModuleNode = (ISubModuleNode) node;
+			final IWorkareaDefinition definition = WorkareaManager.getInstance().getDefinition(subModuleNode);
 			if ((definition != null) && definition.isRequiredPreparation() && subModuleNode.isCreated()) {
 				subModuleNode.prepare();
 			}
@@ -802,8 +804,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * Just ensure that there will be no concurrent modification of the
 		 * children list while iterating over it. Conclusion is a copy..
 		 */
-		List<INavigationNode<?>> children = new ArrayList<INavigationNode<?>>(node.getChildren());
-		for (INavigationNode<?> child : children) {
+		final List<INavigationNode<?>> children = new ArrayList<INavigationNode<?>>(node.getChildren());
+		for (final INavigationNode<?> child : children) {
 			prepare(child);
 		}
 	}
@@ -813,7 +815,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 */
 	private static class ShellPaintListener implements PaintListener {
 
-		public void paintControl(PaintEvent e) {
+		public void paintControl(final PaintEvent e) {
 			onPaint(e);
 		}
 
@@ -823,14 +825,14 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		 * @param e
 		 *            event
 		 */
-		private void onPaint(PaintEvent e) {
+		private void onPaint(final PaintEvent e) {
 			if (e.getSource() instanceof Control) {
-				Control shell = (Control) e.getSource();
+				final Control shell = (Control) e.getSource();
 
-				Rectangle shellBounds = shell.getBounds();
-				Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellBounds.height);
+				final Rectangle shellBounds = shell.getBounds();
+				final Rectangle bounds = new Rectangle(0, 0, shellBounds.width, shellBounds.height);
 
-				ILnfRenderer borderRenderer = LnfManager.getLnf().getRenderer(
+				final ILnfRenderer borderRenderer = LnfManager.getLnf().getRenderer(
 						LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 				borderRenderer.setBounds(bounds);
 				borderRenderer.paint(e.gc, null);

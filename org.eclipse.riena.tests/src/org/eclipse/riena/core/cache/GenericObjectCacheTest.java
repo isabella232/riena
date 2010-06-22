@@ -65,7 +65,7 @@ public class GenericObjectCacheTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testPutMultiple() throws Exception {
-		IGenericObjectCache<Integer, String> genericCacheLocal = new GenericObjectCache<Integer, String>();
+		final IGenericObjectCache<Integer, String> genericCacheLocal = new GenericObjectCache<Integer, String>();
 		for (int i = 0; i < 30; i++) {
 			genericCacheLocal.put(Integer.valueOf(i), "testvalue");
 		}
@@ -81,7 +81,7 @@ public class GenericObjectCacheTest extends RienaTestCase {
 	 */
 	public void testMultiThread() throws Exception {
 		genericCache2 = new GenericObjectCache<Integer, TestRunner>();
-		Thread[] runner = new Thread[10];
+		final Thread[] runner = new Thread[10];
 		for (int i = 0; i < 10; i++) {
 			runner[i] = new TestRunner(i * 20, i * 20 + 19, 10);
 		}
@@ -94,7 +94,7 @@ public class GenericObjectCacheTest extends RienaTestCase {
 	 */
 	public void testMultiThreadSameRange() throws Exception {
 		genericCache2 = new GenericObjectCache<Integer, TestRunner>();
-		Thread[] runner = new Thread[10];
+		final Thread[] runner = new Thread[10];
 		for (int i = 0; i < 10; i++) {
 			runner[i] = new TestRunner(0, 20, 10);
 		}
@@ -107,7 +107,7 @@ public class GenericObjectCacheTest extends RienaTestCase {
 	 */
 	public void testMultiThreadLargeNoOfThreadsSameRange() throws Exception {
 		genericCache2 = new GenericObjectCache<Integer, TestRunner>();
-		Thread[] runner = new Thread[100];
+		final Thread[] runner = new Thread[100];
 		for (int i = 0; i < 100; i++) {
 			runner[i] = new TestRunner(0, 20, 100);
 		}
@@ -120,7 +120,7 @@ public class GenericObjectCacheTest extends RienaTestCase {
 	 */
 	public void testMultiThreadLargeNoOfThreads() throws Exception {
 		genericCache2 = new GenericObjectCache<Integer, TestRunner>();
-		Thread[] runner = new Thread[100];
+		final Thread[] runner = new Thread[100];
 		for (int i = 0; i < 100; i++) {
 			runner[i] = new TestRunner(i * 20, i * 20 + 19, 100);
 		}
@@ -150,20 +150,20 @@ public class GenericObjectCacheTest extends RienaTestCase {
 		genericCache3 = null;
 	}
 
-	private void runAndCheckThreads(Thread[] runner) {
-		Status status = new Status();
-		for (int i = 0; i < runner.length; i++) {
+	private void runAndCheckThreads(final Thread[] runner) {
+		final Status status = new Status();
+		for (final Thread element : runner) {
 			//			trace("starting thread " + i);
-			((TestRunner) runner[i]).setStatus(status);
-			runner[i].start();
+			((TestRunner) element).setStatus(status);
+			element.start();
 		}
 		int count = 0; // number of running threads
 		boolean first = true;
 		Thread.yield();
 		while (count != 0 || first) {
 			count = 0;
-			for (int i = 0; i < runner.length; i++) {
-				if (runner[i].isAlive()) {
+			for (final Thread element : runner) {
+				if (element.isAlive()) {
 					count++;
 				}
 			}
@@ -171,19 +171,19 @@ public class GenericObjectCacheTest extends RienaTestCase {
 			first = false;
 			try {
 				Thread.sleep(100);
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				Nop.reason("no action");
 			}
 		}
 	}
 
 	class TestRunner extends Thread {
-		private int lowRange;
-		private int highRange;
-		private int runs;
+		private final int lowRange;
+		private final int highRange;
+		private final int runs;
 		private Status status;
 
-		TestRunner(int lowRange, int highRange, int runs) {
+		TestRunner(final int lowRange, final int highRange, final int runs) {
 			this.lowRange = lowRange;
 			this.highRange = highRange;
 			this.runs = runs;
@@ -193,7 +193,7 @@ public class GenericObjectCacheTest extends RienaTestCase {
 		/**
 		 * @param status
 		 */
-		public void setStatus(Status status) {
+		public void setStatus(final Status status) {
 			this.status = status;
 		}
 
@@ -208,7 +208,7 @@ public class GenericObjectCacheTest extends RienaTestCase {
 						assertNotNull("object not found in cache", genericCache2.get(Integer.valueOf(k)));
 					}
 				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				this.status.setLastException(e);
 				e.printStackTrace();
 			}
@@ -221,7 +221,7 @@ public class GenericObjectCacheTest extends RienaTestCase {
 		/**
 		 * @param lastException
 		 */
-		public void setLastException(Exception lastException) {
+		public void setLastException(final Exception lastException) {
 			this.lastException = lastException;
 		}
 

@@ -28,15 +28,15 @@ public class CustomersPermission extends Permission {
 		super(""); //$NON-NLS-1$
 	}
 
-	public CustomersPermission(String name, String actions) {
+	public CustomersPermission(final String name, final String actions) {
 		super(name);
 		this.actions = actions;
 		actionList = makeActionList(actions);
 	}
 
-	private String[] makeActionList(String actions) {
-		StringTokenizer st = new StringTokenizer(actions, ",", false); //$NON-NLS-1$
-		String[] list = new String[st.countTokens()];
+	private String[] makeActionList(final String actions) {
+		final StringTokenizer st = new StringTokenizer(actions, ",", false); //$NON-NLS-1$
+		final String[] list = new String[st.countTokens()];
 		int i = 0;
 		while (st.hasMoreTokens()) {
 			list[i++] = st.nextToken();
@@ -50,16 +50,16 @@ public class CustomersPermission extends Permission {
 	 * @see java.security.Permission#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof CustomersPermission) {
-			CustomersPermission cp = (CustomersPermission) obj;
+			final CustomersPermission cp = (CustomersPermission) obj;
 			if (cp.getName().equals(this.getName())) {
-				String[] l2 = makeActionList(cp.getActions());
+				final String[] l2 = makeActionList(cp.getActions());
 				if (actionList.length == l2.length) {
-					for (int i = 0; i < actionList.length; i++) {
+					for (final String element : actionList) {
 						boolean found = false;
 						for (int x = 0; x < l2.length && !found; x++) {
-							if (actionList[i].equals(l2[x])) {
+							if (element.equals(l2[x])) {
 								found = true;
 							}
 						}
@@ -101,16 +101,16 @@ public class CustomersPermission extends Permission {
 	 * @see java.security.Permission#implies(java.security.Permission)
 	 */
 	@Override
-	public boolean implies(Permission permission) {
+	public boolean implies(final Permission permission) {
 		if (permission instanceof CustomersPermission) {
-			CustomersPermission cp = (CustomersPermission) permission;
+			final CustomersPermission cp = (CustomersPermission) permission;
 			if (getName().equals(cp.getName())) {
-				String[] l2 = makeActionList(cp.getActions());
+				final String[] l2 = makeActionList(cp.getActions());
 				if (l2.length <= actionList.length) {
-					for (int i = 0; i < l2.length; i++) {
+					for (final String element : l2) {
 						boolean found = false;
 						for (int x = 0; x < actionList.length && !found; x++) {
-							if (l2[i].equals(actionList[x])) {
+							if (element.equals(actionList[x])) {
 								found = true;
 							}
 						}

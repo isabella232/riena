@@ -17,6 +17,7 @@ import java.util.Locale;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.core.util.ArraysUtil;
 import org.eclipse.riena.core.util.PropertiesUtils;
 
@@ -109,18 +110,18 @@ public class MaxNumberLength extends MaxLength {
 	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocal(java.lang.String[])
 	 */
 	@Override
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray(data);
+			final String[] args = PropertiesUtils.asArray(data);
 			int localStart = 0;
 			if (args.length > 0) {
 				this.maxLength = Integer.parseInt(args[0]);
 				localStart++;
 			}
 			if (args.length > localStart) {
-				String[] localArgs = ArraysUtil.copyRange(args, localStart, args.length);
+				final String[] localArgs = ArraysUtil.copyRange(args, localStart, args.length);
 				setLocal(localArgs);
 			}
 		}
@@ -133,9 +134,9 @@ public class MaxNumberLength extends MaxLength {
 	 * @param localArgs
 	 *            language, country, variant
 	 */
-	protected void setLocal(String[] localArgs) {
+	protected void setLocal(final String[] localArgs) {
 		if (localArgs.length > 0) {
-			String language = localArgs[0];
+			final String language = localArgs[0];
 			String country = ""; //$NON-NLS-1$
 			String variant = ""; //$NON-NLS-1$
 			if (localArgs.length > 1) {
@@ -159,13 +160,13 @@ public class MaxNumberLength extends MaxLength {
 	 */
 	protected DecimalFormatSymbols getSymbols() {
 		if (symbols == null) {
-			DecimalFormat format = (DecimalFormat) DecimalFormat.getInstance(locale);
+			final DecimalFormat format = (DecimalFormat) DecimalFormat.getInstance(locale);
 			symbols = format.getDecimalFormatSymbols();
 		}
 		return symbols;
 	}
 
-	private void setLocale(Locale locale) {
+	private void setLocale(final Locale locale) {
 		this.locale = locale;
 	}
 

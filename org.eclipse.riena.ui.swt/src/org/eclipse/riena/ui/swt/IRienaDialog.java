@@ -19,6 +19,7 @@ package org.eclipse.riena.ui.swt;
  * 
  * @deprecated - use AbstractDialogView instead
  */
+@Deprecated
 public interface IRienaDialog {
 
 	/**

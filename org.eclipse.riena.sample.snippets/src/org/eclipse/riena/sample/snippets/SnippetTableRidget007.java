@@ -39,54 +39,54 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class SnippetTableRidget007 {
 
-	public SnippetTableRidget007(Shell shell) {
-		Composite compTable = UIControlsFactory.createComposite(shell);
+	public SnippetTableRidget007(final Shell shell) {
+		final Composite compTable = UIControlsFactory.createComposite(shell);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(compTable);
 		final Table table = UIControlsFactory.createTable(compTable, SWT.SINGLE | SWT.FULL_SELECTION);
 
-		Composite compButton = UIControlsFactory.createComposite(shell);
+		final Composite compButton = UIControlsFactory.createComposite(shell);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(compButton);
 		GridLayoutFactory.swtDefaults().numColumns(3).applyTo(compButton);
-		Button btnMark = UIControlsFactory.createButton(compButton, "&Mark"); //$NON-NLS-1$
+		final Button btnMark = UIControlsFactory.createButton(compButton, "&Mark"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().align(SWT.RIGHT, SWT.FILL).grab(true, false).applyTo(btnMark);
-		Button btnUnmark = UIControlsFactory.createButton(compButton, "&Unmark"); //$NON-NLS-1$
-		Button btnLines = UIControlsFactory.createButton(compButton, "Toggle &Lines"); //$NON-NLS-1$
+		final Button btnUnmark = UIControlsFactory.createButton(compButton, "&Unmark"); //$NON-NLS-1$
+		final Button btnLines = UIControlsFactory.createButton(compButton, "Toggle &Lines"); //$NON-NLS-1$
 
 		final ITableRidget tableRidget = (ITableRidget) SwtRidgetFactory.createRidget(table);
-		String[] columnPropertyNames = { "pseudonym", "name", "appearance" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
-		String[] columnHeaders = { "Pseudonym", "Name", "First appearance" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
-		IObservableList input = new WritableList(SuperHeroFactory.createInput(), SuperHero.class);
+		final String[] columnPropertyNames = { "pseudonym", "name", "appearance" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+		final String[] columnHeaders = { "Pseudonym", "Name", "First appearance" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+		final IObservableList input = new WritableList(SuperHeroFactory.createInput(), SuperHero.class);
 		tableRidget.bindToModel(input, SuperHero.class, columnPropertyNames, columnHeaders);
 		tableRidget.updateFromModel();
 		tableRidget.setToolTipText("The ORIGINAL table tooltip!"); //$NON-NLS-1$
 
-		IActionRidget ridgetMark = (IActionRidget) SwtRidgetFactory.createRidget(btnMark);
+		final IActionRidget ridgetMark = (IActionRidget) SwtRidgetFactory.createRidget(btnMark);
 		ridgetMark.addListener(new IActionListener() {
 			public void callback() {
-				List<Object> selection = tableRidget.getSelection();
+				final List<Object> selection = tableRidget.getSelection();
 				if (!selection.isEmpty()) {
-					Object value = selection.get(0);
+					final Object value = selection.get(0);
 					System.out.println("mark: " + value); //$NON-NLS-1$
-					IMarker marker = new RowErrorMessageMarker("There is an error with: " + value, value); //$NON-NLS-1$
+					final IMarker marker = new RowErrorMessageMarker("There is an error with: " + value, value); //$NON-NLS-1$
 					tableRidget.addMarker(marker);
 				}
 			}
 		});
 
-		IActionRidget ridgetUnmark = (IActionRidget) SwtRidgetFactory.createRidget(btnUnmark);
+		final IActionRidget ridgetUnmark = (IActionRidget) SwtRidgetFactory.createRidget(btnUnmark);
 		ridgetUnmark.addListener(new IActionListener() {
 			public void callback() {
-				List<Object> selection = tableRidget.getSelection();
+				final List<Object> selection = tableRidget.getSelection();
 				if (!selection.isEmpty()) {
-					Object value = selection.get(0);
+					final Object value = selection.get(0);
 					System.out.println("unmark: " + value); //$NON-NLS-1$
-					IMarker marker = new RowErrorMessageMarker(null, value);
+					final IMarker marker = new RowErrorMessageMarker(null, value);
 					tableRidget.removeMarker(marker);
 				}
 			}
 		});
 
-		IActionRidget ridgetLines = (IActionRidget) SwtRidgetFactory.createRidget(btnLines);
+		final IActionRidget ridgetLines = (IActionRidget) SwtRidgetFactory.createRidget(btnLines);
 		ridgetLines.addListener(new IActionListener() {
 			public void callback() {
 				table.setLinesVisible(!table.getLinesVisible());
@@ -94,10 +94,10 @@ public class SnippetTableRidget007 {
 		});
 	}
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetTableRidget007.class.getSimpleName());
 			GridLayoutFactory.fillDefaults().applyTo(shell);
 

@@ -39,20 +39,20 @@ public final class SnippetDialogView001 {
 		// "utility class"
 	}
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
 			final Shell shell = new Shell();
 			GridLayoutFactory.fillDefaults().applyTo(shell);
 
-			Button button = new Button(shell, SWT.BORDER);
+			final Button button = new Button(shell, SWT.BORDER);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(button);
 
-			IActionRidget actionRidget = (IActionRidget) SwtRidgetFactory.createRidget(button);
+			final IActionRidget actionRidget = (IActionRidget) SwtRidgetFactory.createRidget(button);
 			actionRidget.setText("Open dialog"); //$NON-NLS-1$
 			actionRidget.addListener(new IActionListener() {
 				public void callback() {
-					HelloDialogView dialog = new HelloDialogView(shell);
+					final HelloDialogView dialog = new HelloDialogView(shell);
 					if (Window.OK == dialog.open()) {
 						System.out.println("OK pressed"); //$NON-NLS-1$
 					} else {
@@ -88,16 +88,16 @@ public final class SnippetDialogView001 {
 
 			getWindowRidget().setTitle("Hello Dialog"); //$NON-NLS-1$
 
-			ITextRidget input = (ITextRidget) getRidget(RIDGET_ID_INPUT);
+			final ITextRidget input = (ITextRidget) getRidget(RIDGET_ID_INPUT);
 			input.setText("Input please"); //$NON-NLS-1$
 
-			IActionRidget okAction = (IActionRidget) getRidget(RIDGET_ID_OK);
+			final IActionRidget okAction = (IActionRidget) getRidget(RIDGET_ID_OK);
 			okAction.addListener(new IActionListener() {
 				public void callback() {
 					getWindowRidget().dispose();
 				}
 			});
-			IActionRidget cancelAction = (IActionRidget) getRidget(RIDGET_ID_CANCEL);
+			final IActionRidget cancelAction = (IActionRidget) getRidget(RIDGET_ID_CANCEL);
 			cancelAction.addListener(new IActionListener() {
 				public void callback() {
 					setReturnCode(CANCEL);
@@ -112,7 +112,7 @@ public final class SnippetDialogView001 {
 	 */
 	private static class HelloDialogView extends AbstractDialogView {
 
-		public HelloDialogView(Shell shell) {
+		public HelloDialogView(final Shell shell) {
 			super(shell);
 		}
 
@@ -122,19 +122,19 @@ public final class SnippetDialogView001 {
 		}
 
 		@Override
-		protected Control buildView(Composite parent) {
-			Composite composite = new Composite(parent, SWT.NONE);
+		protected Control buildView(final Composite parent) {
+			final Composite composite = new Composite(parent, SWT.NONE);
 			composite.setLayout(new GridLayout(2, false));
 
 			UIControlsFactory.createLabel(composite, "Input"); //$NON-NLS-1$
-			Text input = UIControlsFactory.createText(composite);
+			final Text input = UIControlsFactory.createText(composite);
 			addUIControl(input, HelloDialogController.RIDGET_ID_INPUT);
 
-			Button okButton = UIControlsFactory.createButton(composite);
+			final Button okButton = UIControlsFactory.createButton(composite);
 			okButton.setText("Ok"); //$NON-NLS-1$
 			addUIControl(okButton, HelloDialogController.RIDGET_ID_OK);
 
-			Button cancelButton = UIControlsFactory.createButton(composite);
+			final Button cancelButton = UIControlsFactory.createButton(composite);
 			cancelButton.setText("Cancel"); //$NON-NLS-1$
 			addUIControl(cancelButton, HelloDialogController.RIDGET_ID_CANCEL);
 

@@ -51,7 +51,7 @@ public class NumberLabelTest extends TestCase {
 	 */
 	public void testComputeSize() {
 
-		NumberLabel label = new NumberLabel(statusline, SWT.NONE);
+		final NumberLabel label = new NumberLabel(statusline, SWT.NONE);
 
 		Point size = label.computeSize(12, 13, false);
 		assertEquals(12, size.x);

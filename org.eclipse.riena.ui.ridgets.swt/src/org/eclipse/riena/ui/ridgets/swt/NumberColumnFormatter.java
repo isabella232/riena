@@ -29,15 +29,15 @@ public abstract class NumberColumnFormatter extends ColumnFormatter {
 	 * @param precision
 	 *            the precision.
 	 */
-	public NumberColumnFormatter(Class<?> type, int precision) {
+	public NumberColumnFormatter(final Class<?> type, final int precision) {
 		super();
 		converter = ToStringConverterFactory.createNumberConverter(type, precision);
 	}
 
 	@Override
-	public String getText(Object element) {
+	public String getText(final Object element) {
 		String result = null;
-		Number number = getValue(element);
+		final Number number = getValue(element);
 		if (number != null) {
 			result = (String) converter.convert(number);
 		}

@@ -20,7 +20,7 @@ import org.easymock.IArgumentMatcher;
  */
 public class PropertyChangeEventEquals implements IArgumentMatcher {
 
-	private PropertyChangeEvent expected;
+	private final PropertyChangeEvent expected;
 
 	/**
 	 * Creates and reports an argument matcher for the specified property change
@@ -33,7 +33,7 @@ public class PropertyChangeEventEquals implements IArgumentMatcher {
 	 * @return null, intended to be used a argument for a method call of a mock
 	 *         object.
 	 */
-	public static <T extends PropertyChangeEvent> T eqPropertyChangeEvent(T expected) {
+	public static <T extends PropertyChangeEvent> T eqPropertyChangeEvent(final T expected) {
 		EasyMock.reportMatcher(new PropertyChangeEventEquals(expected));
 		return null;
 	}
@@ -45,16 +45,16 @@ public class PropertyChangeEventEquals implements IArgumentMatcher {
 	 * @param expected
 	 *            The expected property change event.
 	 */
-	public PropertyChangeEventEquals(PropertyChangeEvent expected) {
+	public PropertyChangeEventEquals(final PropertyChangeEvent expected) {
 		this.expected = expected;
 	}
 
 	/**
 	 * @see org.easymock.IArgumentMatcher#matches(java.lang.Object)
 	 */
-	public boolean matches(Object actualObject) {
+	public boolean matches(final Object actualObject) {
 		if (actualObject instanceof PropertyChangeEvent) {
-			PropertyChangeEvent actual = (PropertyChangeEvent) actualObject;
+			final PropertyChangeEvent actual = (PropertyChangeEvent) actualObject;
 			return expected.getSource().equals(actual.getSource())
 					&& expected.getPropertyName().equals(actual.getPropertyName())
 					&& equals(expected.getOldValue(), actual.getOldValue())
@@ -64,14 +64,14 @@ public class PropertyChangeEventEquals implements IArgumentMatcher {
 		}
 	}
 
-	private boolean equals(Object value1, Object value2) {
+	private boolean equals(final Object value1, final Object value2) {
 		return (value1 == null && value2 == null) || (value1 != null && value1.equals(value2));
 	}
 
 	/**
 	 * @see org.easymock.IArgumentMatcher#appendTo(java.lang.StringBuffer)
 	 */
-	public void appendTo(StringBuffer buffer) {
+	public void appendTo(final StringBuffer buffer) {
 		buffer.append("eqPropertyChangeEvent(");
 		buffer.append(expected.getClass().getName());
 		buffer.append(" with source <");

@@ -33,13 +33,13 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public final class SnippetLinkRidget001 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetLinkRidget001.class.getSimpleName());
-			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).equalWidth(false).spacing(20, 10).applyTo(
-					shell);
+			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).equalWidth(false).spacing(20, 10)
+					.applyTo(shell);
 
 			/**
 			 * Create the controls
@@ -47,21 +47,21 @@ public final class SnippetLinkRidget001 {
 
 			// Link
 			UIControlsFactory.createLabel(shell, "Links:"); //$NON-NLS-1$
-			Link link1 = UIControlsFactory.createLink(shell);
+			final Link link1 = UIControlsFactory.createLink(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(link1);
 
 			// Link
 			UIControlsFactory.createLabel(shell, ""); //$NON-NLS-1$
-			Link link2 = UIControlsFactory.createLink(shell);
+			final Link link2 = UIControlsFactory.createLink(shell);
 			GridDataFactory.fillDefaults().grab(true, false).align(SWT.FILL, SWT.CENTER).applyTo(link2);
 
 			// Link
 			UIControlsFactory.createLabel(shell, ""); //$NON-NLS-1$
-			Link link3 = UIControlsFactory.createLink(shell);
+			final Link link3 = UIControlsFactory.createLink(shell);
 			GridDataFactory.fillDefaults().grab(true, false).align(SWT.FILL, SWT.CENTER).applyTo(link2);
 
 			// Browser
-			Label label = UIControlsFactory.createLabel(shell, "Browser:"); //$NON-NLS-1$
+			final Label label = UIControlsFactory.createLabel(shell, "Browser:"); //$NON-NLS-1$
 			GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).applyTo(label);
 			final Browser browser = new Browser(shell, SWT.BORDER);
 			browser.setUrl("about:blank"); //$NON-NLS-1$
@@ -71,7 +71,7 @@ public final class SnippetLinkRidget001 {
 			 * Create the ridgets
 			 */
 
-			ISelectionListener listener = new LinkSelectionListener(browser);
+			final ISelectionListener listener = new LinkSelectionListener(browser);
 
 			// Link
 			final ILinkRidget linkRidget1 = (ILinkRidget) SwtRidgetFactory.createRidget(link1);
@@ -110,13 +110,13 @@ public final class SnippetLinkRidget001 {
 
 		private final Browser browser;
 
-		LinkSelectionListener(Browser browser) {
+		LinkSelectionListener(final Browser browser) {
 			Assert.isNotNull(browser);
 			this.browser = browser;
 		}
 
-		public void ridgetSelected(SelectionEvent event) {
-			String url = (String) event.getNewSelection().get(0);
+		public void ridgetSelected(final SelectionEvent event) {
+			final String url = (String) event.getNewSelection().get(0);
 			System.out.println("Visiting: " + url); //$NON-NLS-1$
 			browser.setUrl(url);
 		}

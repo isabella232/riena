@@ -60,7 +60,7 @@ public class BorderControlDecoration {
 	 * @param control
 	 *            the control to be decorated
 	 */
-	public BorderControlDecoration(Control control) {
+	public BorderControlDecoration(final Control control) {
 		this(control, DEFAULT_BORDER_WIDTH);
 	}
 
@@ -71,7 +71,7 @@ public class BorderControlDecoration {
 	 * @param control
 	 *            the control to be decorated
 	 */
-	public BorderControlDecoration(Control control, int borderWidth) {
+	public BorderControlDecoration(final Control control, final int borderWidth) {
 		this(control, borderWidth, null);
 	}
 
@@ -82,7 +82,7 @@ public class BorderControlDecoration {
 	 * @param control
 	 *            the control to be decorated
 	 */
-	public BorderControlDecoration(Control control, int borderWidth, Color borderColor) {
+	public BorderControlDecoration(final Control control, int borderWidth, final Color borderColor) {
 
 		this.control = control;
 		// workaround for DatePicker
@@ -114,7 +114,7 @@ public class BorderControlDecoration {
 			/**
 			 * {@inheritDoc}
 			 */
-			public void widgetDisposed(DisposeEvent event) {
+			public void widgetDisposed(final DisposeEvent event) {
 				dispose();
 			}
 		};
@@ -126,7 +126,7 @@ public class BorderControlDecoration {
 			 * <p>
 			 * After moving the control will be redrawn.
 			 */
-			public void controlMoved(ControlEvent e) {
+			public void controlMoved(final ControlEvent e) {
 				redrawControl(e);
 			}
 
@@ -135,7 +135,7 @@ public class BorderControlDecoration {
 			 * <p>
 			 * After resizing the control will be redrawn.
 			 */
-			public void controlResized(ControlEvent e) {
+			public void controlResized(final ControlEvent e) {
 				redrawControl(e);
 			}
 
@@ -146,9 +146,9 @@ public class BorderControlDecoration {
 			 *            an event containing information about the resize or
 			 *            the move.
 			 */
-			private void redrawControl(ControlEvent e) {
+			private void redrawControl(final ControlEvent e) {
 				if (e.widget instanceof Control) {
-					Control ctrl = (Control) e.widget;
+					final Control ctrl = (Control) e.widget;
 					ctrl.setRedraw(false);
 					ctrl.setRedraw(true);
 				}
@@ -162,10 +162,10 @@ public class BorderControlDecoration {
 			 * Paints a border around the decorated control, if the decoration
 			 * is visible.
 			 */
-			public void paintControl(PaintEvent event) {
+			public void paintControl(final PaintEvent event) {
 				if (shouldShowDecoration()) {
-					Control uiControl = (Control) event.widget;
-					Rectangle rect = getDecorationRectangle(uiControl);
+					final Control uiControl = (Control) event.widget;
+					final Rectangle rect = getDecorationRectangle(uiControl);
 					onPaint(event.gc, rect);
 				}
 			}
@@ -175,7 +175,7 @@ public class BorderControlDecoration {
 		// is providing the decoration space, so hook all the way up, until
 		// the shell or the specified parent composite is reached.
 		Composite c = control.getParent();
-		Rectangle controlBounds = control.getBounds();
+		final Rectangle controlBounds = control.getBounds();
 		while (c != null) {
 			installCompositeListeners(c);
 			if (c instanceof Shell) {
@@ -184,7 +184,7 @@ public class BorderControlDecoration {
 			} else if (c instanceof ScrolledComposite) {
 				c = null;
 			} else {
-				Rectangle decoRect = getDecorationRectangle(c);
+				final Rectangle decoRect = getDecorationRectangle(c);
 				if (((decoRect.x >= 0) && (decoRect.y >= 0))
 						&& ((controlBounds.width + getBorderWidth() <= decoRect.width) && (controlBounds.height
 								+ getBorderWidth() <= decoRect.height))) {
@@ -242,7 +242,7 @@ public class BorderControlDecoration {
 	/**
 	 * Installs the listeners used to paint on the composite.
 	 */
-	private void installCompositeListeners(Composite c) {
+	private void installCompositeListeners(final Composite c) {
 		if (!c.isDisposed()) {
 			SWTFacade.getDefault().addPaintListener(c, paintListener);
 			c.addControlListener(controlListener);
@@ -252,7 +252,7 @@ public class BorderControlDecoration {
 	/**
 	 * Removes the listeners used to paint on the composite.
 	 */
-	private void removeCompositeListeners(Composite c) {
+	private void removeCompositeListeners(final Composite c) {
 		if (!c.isDisposed()) {
 			c.removeControlListener(controlListener);
 			SWTFacade.getDefault().removePaintListener(c, paintListener);
@@ -267,13 +267,13 @@ public class BorderControlDecoration {
 	 * @param rect
 	 *            the rectangle to draw
 	 */
-	private void onPaint(GC gc, Rectangle rect) {
+	private void onPaint(final GC gc, final Rectangle rect) {
 
 		if ((rect.width == 0) && (rect.height == 0)) {
 			return;
 		}
 
-		Color previousForeground = gc.getForeground();
+		final Color previousForeground = gc.getForeground();
 		if (getBorderColor() != null) {
 			gc.setForeground(getBorderColor());
 		} else {
@@ -337,7 +337,7 @@ public class BorderControlDecoration {
 		if ((control == null) || control.isDisposed() || getBorderWidth() <= 0) {
 			return;
 		}
-		Rectangle rect = getDecorationRectangle(control.getShell());
+		final Rectangle rect = getDecorationRectangle(control.getShell());
 		// Redraw this rectangle in all children
 		control.getShell().redraw(rect.x - 1, rect.y - 1, rect.width + 2, rect.height + 2, true);
 		control.getShell().update();
@@ -351,27 +351,27 @@ public class BorderControlDecoration {
 	 *            the control whose coordinates should be used
 	 * @return the rectangle in which the decoration should be rendered
 	 */
-	private Rectangle getDecorationRectangle(Control targetControl) {
+	private Rectangle getDecorationRectangle(final Control targetControl) {
 
 		if (control == null) {
 			return ZERO_RECTANGLE;
 		}
 
-		Rectangle controlBounds = control.getBounds();
+		final Rectangle controlBounds = control.getBounds();
 		if ((controlBounds.width <= 0) && (controlBounds.height <= 0)) {
 			return ZERO_RECTANGLE;
 		}
-		int x = controlBounds.x - getBorderWidth();
-		int y = controlBounds.y - getBorderWidth();
-		Point globalPoint = control.getParent().toDisplay(x, y);
+		final int x = controlBounds.x - getBorderWidth();
+		final int y = controlBounds.y - getBorderWidth();
+		final Point globalPoint = control.getParent().toDisplay(x, y);
 		Point targetPoint;
 		if (targetControl == null) {
 			targetPoint = globalPoint;
 		} else {
 			targetPoint = targetControl.toControl(globalPoint);
 		}
-		int width = controlBounds.width + getBorderWidth() * 2 - 1;
-		int height = controlBounds.height + getBorderWidth() * 2 - 1;
+		final int width = controlBounds.width + getBorderWidth() * 2 - 1;
+		final int height = controlBounds.height + getBorderWidth() * 2 - 1;
 		return new Rectangle(targetPoint.x, targetPoint.y, width, height);
 
 	}
@@ -382,7 +382,7 @@ public class BorderControlDecoration {
 	 * @param borderColor
 	 *            border color
 	 */
-	public void setBorderColor(Color borderColor) {
+	public void setBorderColor(final Color borderColor) {
 		this.borderColor = borderColor;
 		update();
 	}

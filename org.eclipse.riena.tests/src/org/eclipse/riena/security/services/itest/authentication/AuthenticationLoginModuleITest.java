@@ -42,9 +42,9 @@ public class AuthenticationLoginModuleITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
 		stopBundles("org\\.eclipse\\.riena.example.client", null);
-		authenticationService = Register.remoteProxy(IAuthenticationService.class).usingUrl(
-				"http://localhost:8080/hessian/AuthenticationService").withProtocol("hessian").andStart(
-				Activator.getDefault().getContext());
+		authenticationService = Register.remoteProxy(IAuthenticationService.class)
+				.usingUrl("http://localhost:8080/hessian/AuthenticationService").withProtocol("hessian")
+				.andStart(Activator.getDefault().getContext());
 	}
 
 	@Override
@@ -57,8 +57,8 @@ public class AuthenticationLoginModuleITest extends RienaTestCase {
 		// set the userid,password that the authenticating callback handler will set (as user input)
 		TestLocalCallbackHandler.setSuppliedCredentials("testuser", "testpass");
 
-		URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
-		ILoginContext secureContext = LoginContextFactory.createContext("RemoteTest", configUrl);
+		final URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
+		final ILoginContext secureContext = LoginContextFactory.createContext("RemoteTest", configUrl);
 
 		secureContext.login();
 

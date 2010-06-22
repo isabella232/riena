@@ -45,14 +45,14 @@ public abstract class AbstractApplication implements IApplication {
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), AbstractApplication.class);
 	protected ILoginDialogViewExtension loginDialogViewExtension;
 
-	public Object start(IApplicationContext context) throws Exception {
+	public Object start(final IApplicationContext context) throws Exception {
 
-		Object result = initializePerformLogin(context);
+		final Object result = initializePerformLogin(context);
 		if (!EXIT_OK.equals(result)) {
 			return result;
 		}
 
-		IApplicationNode applicationNode = createModel();
+		final IApplicationNode applicationNode = createModel();
 		if (applicationNode == null) {
 			throw new RuntimeException(
 					"Application did not return an ApplicationModel in method 'createModel' but returned NULL. Cannot continue"); //$NON-NLS-1$
@@ -65,7 +65,7 @@ public abstract class AbstractApplication implements IApplication {
 	}
 
 	private void setProgressProviderBridge() {
-		ProgressProviderBridge bridge = ProgressProviderBridge.instance();
+		final ProgressProviderBridge bridge = ProgressProviderBridge.instance();
 		Job.getJobManager().setProgressProvider(bridge);
 		bridge.setVisualizerFactory(new ProgressVisualizerLocator());
 	}
@@ -77,7 +77,7 @@ public abstract class AbstractApplication implements IApplication {
 	 *         model
 	 */
 	protected IApplicationNode createModel() {
-		IApplicationNode applicationModel = new ApplicationNode(new NavigationNodeId(
+		final IApplicationNode applicationModel = new ApplicationNode(new NavigationNodeId(
 				ApplicationNode.DEFAULT_APPLICATION_TYPEID));
 		return applicationModel;
 	}
@@ -85,42 +85,42 @@ public abstract class AbstractApplication implements IApplication {
 	/**
 	 * @since 1.2
 	 */
-	protected void createStartupNodes(IApplicationNode applicationNode) {
-		INavigationNodeProvider navigationNodeProvider = NavigationNodeProvider.getInstance();
-		List<StartupNodeInfo> startups = navigationNodeProvider.getSortedStartupNodeInfos();
-		for (StartupNodeInfo startup : startups) {
+	protected void createStartupNodes(final IApplicationNode applicationNode) {
+		final INavigationNodeProvider navigationNodeProvider = NavigationNodeProvider.getInstance();
+		final List<StartupNodeInfo> startups = navigationNodeProvider.getSortedStartupNodeInfos();
+		for (final StartupNodeInfo startup : startups) {
 			LOGGER.log(LogService.LOG_INFO, "creating " + startup.toString()); //$NON-NLS-1$
 			applicationNode.create(new NavigationNodeId(startup.getId()));
 		}
 	}
 
-	protected void initializeNode(IApplicationNode model) {
+	protected void initializeNode(final IApplicationNode model) {
 		initializeModelDefaults(model);
 	}
 
-	protected void initializeModelDefaults(IApplicationNode model) {
+	protected void initializeModelDefaults(final IApplicationNode model) {
 		initializeNodeDefaults(model);
 	}
 
-	protected void initializeNodeDefaults(IApplicationNode node) {
-		for (ISubApplicationNode child : node.getChildren()) {
+	protected void initializeNodeDefaults(final IApplicationNode node) {
+		for (final ISubApplicationNode child : node.getChildren()) {
 			initializeNodeDefaults(child);
 		}
 	}
 
-	protected void initializeNodeDefaults(ISubApplicationNode node) {
-		for (IModuleGroupNode child : node.getChildren()) {
+	protected void initializeNodeDefaults(final ISubApplicationNode node) {
+		for (final IModuleGroupNode child : node.getChildren()) {
 			initializeNodeDefaults(child);
 		}
 	}
 
-	protected void initializeNodeDefaults(IModuleGroupNode node) {
-		for (IModuleNode child : node.getChildren()) {
+	protected void initializeNodeDefaults(final IModuleGroupNode node) {
+		for (final IModuleNode child : node.getChildren()) {
 			initializeNodeDefaults(child);
 		}
 	}
 
-	protected void initializeNodeDefaults(IModuleNode node) {
+	protected void initializeNodeDefaults(final IModuleNode node) {
 
 		initializeNodeDefaultIcon(node);
 		//		for (ISubModuleNode child : node.getChildren()) {
@@ -137,7 +137,7 @@ public abstract class AbstractApplication implements IApplication {
 	//		}
 	//	}
 
-	protected void initializeNodeDefaultIcon(INavigationNode<?> node) {
+	protected void initializeNodeDefaultIcon(final INavigationNode<?> node) {
 		//		if (node.getIcon() == null) {
 		//			node.setIcon("defaultNode"); //$NON-NLS-1$
 		//		}
@@ -145,7 +145,7 @@ public abstract class AbstractApplication implements IApplication {
 
 	abstract protected Object createView(IApplicationContext context, IApplicationNode pNode) throws Exception;
 
-	protected Object initializePerformLogin(IApplicationContext context) throws Exception {
+	protected Object initializePerformLogin(final IApplicationContext context) throws Exception {
 
 		initializeLoginViewDefinition();
 
@@ -156,25 +156,25 @@ public abstract class AbstractApplication implements IApplication {
 		}
 	}
 
-	protected boolean isDialogLogin(IApplicationContext context) {
+	protected boolean isDialogLogin(final IApplicationContext context) {
 		return loginDialogViewExtension != null;
 	}
 
-	protected boolean isSplashLogin(IApplicationContext context) {
+	protected boolean isSplashLogin(final IApplicationContext context) {
 		return false;
 	}
 
-	protected Object doPerformLogin(IApplicationContext context) {
+	protected Object doPerformLogin(final IApplicationContext context) {
 
 		return EXIT_OK;
 	}
 
-	protected Object doPerformSplashLogin(IApplicationContext context) {
+	protected Object doPerformSplashLogin(final IApplicationContext context) {
 
 		return EXIT_OK;
 	}
 
-	protected Object performLogin(IApplicationContext context) throws Exception {
+	protected Object performLogin(final IApplicationContext context) throws Exception {
 
 		if (isSplashLogin(context)) {
 			return doPerformSplashLogin(context);
@@ -184,7 +184,7 @@ public abstract class AbstractApplication implements IApplication {
 	}
 
 	@InjectExtension
-	public void update(ILoginDialogViewExtension[] data) {
+	public void update(final ILoginDialogViewExtension[] data) {
 
 		if (data.length > 0) {
 			loginDialogViewExtension = data[0];

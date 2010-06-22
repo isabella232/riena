@@ -27,7 +27,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 
 	@Override
-	protected Browser createWidget(Composite parent) {
+	protected Browser createWidget(final Composite parent) {
 		return new Browser(parent, SWT.NONE);
 	}
 
@@ -47,7 +47,7 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(BrowserRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
@@ -64,11 +64,11 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToModel() {
-		IBrowserRidget ridget = getRidget();
-		String url1 = "http://www.redview.org";
-		String url2 = "http://www.eclipse.org";
+		final IBrowserRidget ridget = getRidget();
+		final String url1 = "http://www.redview.org";
+		final String url2 = "http://www.eclipse.org";
 
-		StringBean bean = new StringBean(url1);
+		final StringBean bean = new StringBean(url1);
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
 		assertNull(ridget.getUrl());
@@ -95,7 +95,7 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetText() {
-		IBrowserRidget ridget = getRidget();
+		final IBrowserRidget ridget = getRidget();
 		final String text = "<html><body><h1>Riena</h1></body></html>";
 
 		ridget.setText(text);
@@ -112,7 +112,7 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetTextClearsUrl() {
-		IBrowserRidget ridget = getRidget();
+		final IBrowserRidget ridget = getRidget();
 		final String text = "<html><body><p>riena</p></body></html>";
 
 		ridget.setUrl("http://eclipse.org");
@@ -123,8 +123,8 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetTextOnOutputOnly() {
-		IBrowserRidget ridget = getRidget();
-		Browser control = getWidget();
+		final IBrowserRidget ridget = getRidget();
+		final Browser control = getWidget();
 
 		assertNull(ridget.getText());
 
@@ -140,7 +140,7 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetUrl() {
-		IBrowserRidget ridget = getRidget();
+		final IBrowserRidget ridget = getRidget();
 
 		ridget.setUrl("http://www.redview.org");
 
@@ -166,7 +166,7 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetUrlClearsText() {
-		IBrowserRidget ridget = getRidget();
+		final IBrowserRidget ridget = getRidget();
 
 		ridget.setText("riena");
 		ridget.setUrl("http://eclipse.org");
@@ -176,7 +176,7 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetUrlOnOutputOnly() {
-		IBrowserRidget ridget = getRidget();
+		final IBrowserRidget ridget = getRidget();
 
 		assertNull(ridget.getUrl());
 
@@ -196,7 +196,7 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSettersFireUrlEvents() {
-		IBrowserRidget ridget = getRidget();
+		final IBrowserRidget ridget = getRidget();
 		final String newValue = "http://www.redview.org";
 		final String oldValue = ridget.getUrl();
 
@@ -220,8 +220,8 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testApplyTextOnRebind() {
-		IBrowserRidget ridget = getRidget();
-		Browser control1 = getWidget();
+		final IBrowserRidget ridget = getRidget();
+		final Browser control1 = getWidget();
 
 		final String text = "<html><body><h1>Riena</h1></body></html>";
 		ridget.setText(text);
@@ -230,7 +230,7 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		// browser may add line breaks - just check if 'Riena' is in the output
 		assertTrue("control1.text:" + control1.getText(), control1.getText().contains("Riena"));
 
-		Browser control2 = createWidget(getShell());
+		final Browser control2 = createWidget(getShell());
 		ridget.setUIControl(control2);
 		UITestHelper.readAndDispatch(control2);
 

@@ -26,13 +26,13 @@ import org.eclipse.riena.navigation.ui.swt.views.NavigationViewPart;
  */
 public class SwitchToNavigation extends AbstractHandler {
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-		IWorkbenchPage page = window.getActivePage();
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
+		final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
+		final IWorkbenchPage page = window.getActivePage();
 		IViewPart navigationView = null;
 		if (page != null) {
-			IViewReference[] viewRefs = page.getViewReferences();
-			for (IViewReference ref : viewRefs) {
+			final IViewReference[] viewRefs = page.getViewReferences();
+			for (final IViewReference ref : viewRefs) {
 				if (NavigationViewPart.ID.equals(ref.getId())) {
 					navigationView = ref.getView(false);
 					break;

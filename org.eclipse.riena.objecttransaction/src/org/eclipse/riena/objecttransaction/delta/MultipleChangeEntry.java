@@ -19,10 +19,10 @@ import org.eclipse.riena.objecttransaction.state.State;
  */
 public class MultipleChangeEntry {
 
-	private Object childObject;
-	private State state;
+	private final Object childObject;
+	private final State state;
 
-	MultipleChangeEntry(Object childObject, State state) {
+	MultipleChangeEntry(final Object childObject, final State state) {
 		this.childObject = childObject;
 		this.state = state;
 	}

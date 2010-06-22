@@ -54,7 +54,7 @@ public class ApplicationViewAdvisorTest extends RienaTestCase {
 		winConfig = EasyMock.createNiceMock(IWorkbenchWindowConfigurer.class);
 		applicationNode = new ApplicationNode();
 		controller = new ApplicationController(applicationNode);
-		IAdvisorHelper factory = EasyMock.createMock(IAdvisorHelper.class);
+		final IAdvisorHelper factory = EasyMock.createMock(IAdvisorHelper.class);
 		advisor = new ApplicationViewAdvisor(winConfig, controller, factory);
 		Wire.instance(advisor).andStart(getContext());
 	}
@@ -72,9 +72,9 @@ public class ApplicationViewAdvisorTest extends RienaTestCase {
 	 * Tests the method <code>initShell</code>.
 	 */
 	public void testInitShell() {
-		Shell shell = new Shell();
+		final Shell shell = new Shell();
 		assertNotSame(SWT.INHERIT_FORCE, shell.getBackgroundMode());
-		Point defMinSize = shell.getMinimumSize();
+		final Point defMinSize = shell.getMinimumSize();
 
 		ReflectionUtils.invokeHidden(advisor, "initShell", shell);
 
@@ -109,10 +109,10 @@ public class ApplicationViewAdvisorTest extends RienaTestCase {
 	 * Tests that an IAdvisorFactory is used to create the ActionBarAdvisor.
 	 */
 	public void testInvokesAdvisorFactory() {
-		IActionBarConfigurer actionConfig = EasyMock.createNiceMock(IActionBarConfigurer.class);
-		ActionBarAdvisor actionAdvisor = new ActionBarAdvisor(actionConfig);
+		final IActionBarConfigurer actionConfig = EasyMock.createNiceMock(IActionBarConfigurer.class);
+		final ActionBarAdvisor actionAdvisor = new ActionBarAdvisor(actionConfig);
 
-		IAdvisorHelper factory = EasyMock.createMock(IAdvisorHelper.class);
+		final IAdvisorHelper factory = EasyMock.createMock(IAdvisorHelper.class);
 		EasyMock.expect(factory.createActionBarAdvisor(actionConfig)).andReturn(actionAdvisor);
 		EasyMock.replay(factory);
 
@@ -127,12 +127,12 @@ public class ApplicationViewAdvisorTest extends RienaTestCase {
 	 */
 	public void testPrepare() {
 
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(new NavigationNodeId("mg"));
-		IModuleNode module = new ModuleNode(new NavigationNodeId("m"));
+		final IModuleGroupNode moduleGroup = new ModuleGroupNode(new NavigationNodeId("mg"));
+		final IModuleNode module = new ModuleNode(new NavigationNodeId("m"));
 		moduleGroup.addChild(module);
-		ISubModuleNode subModule1 = new SubModuleNode(new NavigationNodeId("sm1"));
+		final ISubModuleNode subModule1 = new SubModuleNode(new NavigationNodeId("sm1"));
 		module.addChild(subModule1);
-		ISubModuleNode subModule2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		final ISubModuleNode subModule2 = new SubModuleNode(new NavigationNodeId("sm2"));
 		module.addChild(subModule2);
 		IWorkareaDefinition def = WorkareaManager.getInstance().registerDefinition(subModule1, "dummy1");
 		def.setRequiredPreparation(false);

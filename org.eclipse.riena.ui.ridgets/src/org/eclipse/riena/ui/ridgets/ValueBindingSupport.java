@@ -55,8 +55,8 @@ public class ValueBindingSupport {
 	 * This rule fails if the ridget is marked with an error marker
 	 */
 	private final IValidator noErrorsRule = new IValidator() {
-		public IStatus validate(Object value) {
-			boolean isOk = markable.getMarkersOfType(ErrorMarker.class).isEmpty();
+		public IStatus validate(final Object value) {
+			final boolean isOk = markable.getMarkersOfType(ErrorMarker.class).isEmpty();
 			return isOk ? Status.OK_STATUS : Status.CANCEL_STATUS;
 		}
 
@@ -82,13 +82,13 @@ public class ValueBindingSupport {
 
 	private IMarkable markable;
 
-	public ValueBindingSupport(IObservableValue target) {
+	public ValueBindingSupport(final IObservableValue target) {
 		bindToTarget(target);
 		afterGetValidators = new ValidatorCollection();
 		onEditValidators = new ValidatorCollection();
 	}
 
-	public ValueBindingSupport(IObservableValue target, IObservableValue model) {
+	public ValueBindingSupport(final IObservableValue target, final IObservableValue model) {
 		this(target);
 		bindToModel(model);
 	}
@@ -97,7 +97,7 @@ public class ValueBindingSupport {
 		return uiControlToModelConverter;
 	}
 
-	public void setUIControlToModelConverter(IConverter uiControlToModelConverter) {
+	public void setUIControlToModelConverter(final IConverter uiControlToModelConverter) {
 		this.uiControlToModelConverter = uiControlToModelConverter;
 	}
 
@@ -105,12 +105,12 @@ public class ValueBindingSupport {
 		return modelToUIControlConverter;
 	}
 
-	public void setModelToUIControlConverter(IConverter modelToUIControlConverter) {
+	public void setModelToUIControlConverter(final IConverter modelToUIControlConverter) {
 		this.modelToUIControlConverter = modelToUIControlConverter;
 	}
 
 	public Collection<IValidator> getValidationRules() {
-		ArrayList<IValidator> allValidationRules = new ArrayList<IValidator>(onEditValidators.getValidators());
+		final ArrayList<IValidator> allValidationRules = new ArrayList<IValidator>(onEditValidators.getValidators());
 		allValidationRules.addAll(afterGetValidators.getValidators());
 		return allValidationRules;
 	}
@@ -123,11 +123,11 @@ public class ValueBindingSupport {
 	 * @since 1.2
 	 */
 	public ValidatorCollection getAllValidators() {
-		ValidatorCollection result = new ValidatorCollection();
-		for (IValidator validationRule : onEditValidators) {
+		final ValidatorCollection result = new ValidatorCollection();
+		for (final IValidator validationRule : onEditValidators) {
 			result.add(validationRule);
 		}
-		for (IValidator validationRule : afterGetValidators) {
+		for (final IValidator validationRule : afterGetValidators) {
 			result.add(validationRule);
 		}
 		return result;
@@ -165,7 +165,7 @@ public class ValueBindingSupport {
 	 *             if validationRule is null, or an unsupported ValidationTime
 	 *             is used
 	 */
-	public boolean addValidationRule(IValidator validationRule, ValidationTime validationTime) {
+	public boolean addValidationRule(final IValidator validationRule, final ValidationTime validationTime) {
 		Assert.isNotNull(validationRule);
 		if (validationTime == ValidationTime.ON_UI_CONTROL_EDIT) {
 			onEditValidators.add(validationRule);
@@ -186,7 +186,7 @@ public class ValueBindingSupport {
 	 * @return true, if the onEditValidators were changed, false otherwise
 	 * @see #getOnEditValidators()
 	 */
-	public boolean removeValidationRule(IValidator validationRule) {
+	public boolean removeValidationRule(final IValidator validationRule) {
 		if (validationRule == null) {
 			return false;
 		}
@@ -204,7 +204,7 @@ public class ValueBindingSupport {
 		}
 	}
 
-	public void bindToTarget(IObservableValue observableValue) {
+	public void bindToTarget(final IObservableValue observableValue) {
 		targetOV = observableValue;
 		rebindToModel();
 	}
@@ -213,7 +213,7 @@ public class ValueBindingSupport {
 	 * @see org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(org.eclipse.core
 	 *      .databinding.observable.value.IObservableValue)
 	 */
-	public void bindToModel(IObservableValue observableValue) {
+	public void bindToModel(final IObservableValue observableValue) {
 		modelOV = observableValue;
 		rebindToModel();
 	}
@@ -222,7 +222,7 @@ public class ValueBindingSupport {
 	 * @see org.eclipse.riena.ui.ridgets.IValueRidget#bindToModel(java.lang.Object,
 	 *      java.lang.String)
 	 */
-	public void bindToModel(Object valueHolder, String valuePropertyName) {
+	public void bindToModel(final Object valueHolder, final String valuePropertyName) {
 		if (isBean(valueHolder.getClass())) {
 			modelOV = BeansObservables.observeValue(valueHolder, valuePropertyName);
 		} else {
@@ -238,8 +238,9 @@ public class ValueBindingSupport {
 		if (modelOV == null || targetOV == null) {
 			return;
 		}
-		UpdateValueStrategy uiControlToModelStrategy = new RidgetUpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE);
-		UpdateValueStrategy modelToUIControlStrategy = new RidgetUpdateValueStrategy(
+		final UpdateValueStrategy uiControlToModelStrategy = new RidgetUpdateValueStrategy(
+				UpdateValueStrategy.POLICY_UPDATE);
+		final UpdateValueStrategy modelToUIControlStrategy = new RidgetUpdateValueStrategy(
 				UpdateValueStrategy.POLICY_ON_REQUEST);
 		uiControlToModelStrategy.setAfterGetValidator(afterGetValidators);
 		if (uiControlToModelConverter != null) {
@@ -265,19 +266,19 @@ public class ValueBindingSupport {
 			getContext().removeBinding(modelBinding);
 		}
 		modelBinding = getContext().bindValue(targetOV, modelOV, uiControlToModelStrategy, modelToUIControlStrategy);
-		AggregateValidationStatus validationStatus = new AggregateValidationStatus(getContext().getBindings(),
+		final AggregateValidationStatus validationStatus = new AggregateValidationStatus(getContext().getBindings(),
 				AggregateValidationStatus.MAX_SEVERITY);
 		validationStatus.addValueChangeListener(new IValueChangeListener() {
-			public void handleValueChange(ValueChangeEvent event) {
-				IStatus newStatus = (IStatus) ((ComputedValue) event.getSource()).getValue();
+			public void handleValueChange(final ValueChangeEvent event) {
+				final IStatus newStatus = (IStatus) ((ComputedValue) event.getSource()).getValue();
 				updateValidationMessages(newStatus);
 			}
 
-			private void updateValidationMessages(IStatus newStatus) {
+			private void updateValidationMessages(final IStatus newStatus) {
 				if (targetOV != null) {
-					Object value = targetOV.getValue();
+					final Object value = targetOV.getValue();
 					updateValidationStatus(noErrorsRule, newStatus);
-					for (IValidator rule : getAfterGetValidators()) {
+					for (final IValidator rule : getAfterGetValidators()) {
 						updateValidationStatus(rule, rule.validate(value));
 					}
 				}
@@ -293,7 +294,7 @@ public class ValueBindingSupport {
 		return modelBinding;
 	}
 
-	public void setMarkable(IMarkable markable) {
+	public void setMarkable(final IMarkable markable) {
 		this.markable = markable;
 	}
 
@@ -316,22 +317,23 @@ public class ValueBindingSupport {
 		return context;
 	}
 
-	public void addValidationMessage(String message) {
+	public void addValidationMessage(final String message) {
 		addValidationMessage(message, noErrorsRule);
 	}
 
-	public void addValidationMessage(IMessageMarker messageMarker) {
+	public void addValidationMessage(final IMessageMarker messageMarker) {
 		addValidationMessage(messageMarker, noErrorsRule);
 	}
 
-	public void addValidationMessage(String message, IValidator validationRule) {
+	public void addValidationMessage(final String message, final IValidator validationRule) {
 		addValidationMessage(new MessageMarker(message), validationRule);
 	}
 
-	public void addValidationMessage(IMessageMarker messageMarker, IValidator validationRule) {
+	public void addValidationMessage(final IMessageMarker messageMarker, final IValidator validationRule) {
 		Assert.isNotNull(messageMarker, "messageMarker cannot be null"); //$NON-NLS-1$
 		Assert.isNotNull(validationRule, "validationRule cannot be null"); //$NON-NLS-1$
-		ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker, validationRule);
+		final ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker,
+				validationRule);
 		if (rule2messages == null) {
 			rule2messages = new HashMap<IValidator, Set<ValidationMessageMarker>>();
 		}
@@ -344,22 +346,23 @@ public class ValueBindingSupport {
 		updateValidationMessageMarker(validationRule);
 	}
 
-	public void removeValidationMessage(String message) {
+	public void removeValidationMessage(final String message) {
 		removeValidationMessage(message, noErrorsRule);
 	}
 
-	public void removeValidationMessage(IMessageMarker messageMarker) {
+	public void removeValidationMessage(final IMessageMarker messageMarker) {
 		removeValidationMessage(messageMarker, noErrorsRule);
 	}
 
-	public void removeValidationMessage(String message, IValidator validationRule) {
+	public void removeValidationMessage(final String message, final IValidator validationRule) {
 		removeValidationMessage(new MessageMarker(message), validationRule);
 	}
 
-	public void removeValidationMessage(IMessageMarker messageMarker, IValidator validationRule) {
-		ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker, validationRule);
+	public void removeValidationMessage(final IMessageMarker messageMarker, final IValidator validationRule) {
+		final ValidationMessageMarker validationMessageMarker = new ValidationMessageMarker(messageMarker,
+				validationRule);
 		if (rule2messages != null) {
-			Set<ValidationMessageMarker> messages = rule2messages.get(validationRule);
+			final Set<ValidationMessageMarker> messages = rule2messages.get(validationRule);
 			messages.remove(validationMessageMarker);
 			markable.removeMarker(validationMessageMarker);
 			if (messages.isEmpty()) {
@@ -381,7 +384,7 @@ public class ValueBindingSupport {
 	 * @see IValidationCallback
 	 * @since 1.2
 	 */
-	public void updateValidationStatus(IStatus status) {
+	public void updateValidationStatus(final IStatus status) {
 		updateValidationStatus(noErrorsRule, status);
 	}
 
@@ -397,7 +400,7 @@ public class ValueBindingSupport {
 	 * @see IValidationCallback
 	 * @since 1.2
 	 */
-	public void updateValidationStatus(IValidator validationRule, IStatus status) {
+	public void updateValidationStatus(final IValidator validationRule, final IStatus status) {
 		// trace("updating rule " + validationRule + " with " + status);
 		storeStatus(validationRule, status);
 		if (!status.isOK()) {
@@ -412,7 +415,7 @@ public class ValueBindingSupport {
 	// helping methods
 	//////////////////
 
-	private void addErrorMarker(IValidator validationRule, IStatus status) {
+	private void addErrorMarker(final IValidator validationRule, final IStatus status) {
 		if (isBlocked(validationRule, status) || validationRule == noErrorsRule) {
 			return;
 		}
@@ -430,53 +433,53 @@ public class ValueBindingSupport {
 		// trace("+EM " + errorMarker + " " + markable.getMarkers().size());
 	}
 
-	private void addMessages(IValidator validationRule) {
+	private void addMessages(final IValidator validationRule) {
 		if (rule2messages != null && rule2messages.containsKey(validationRule)) {
-			Set<ValidationMessageMarker> messages = rule2messages.get(validationRule);
-			for (ValidationMessageMarker message : messages) {
+			final Set<ValidationMessageMarker> messages = rule2messages.get(validationRule);
+			for (final ValidationMessageMarker message : messages) {
 				// trace("+VMM " + message);
 				markable.addMarker(message);
 			}
 		}
 	}
 
-	private void clearStatus(IValidator validationRule) {
+	private void clearStatus(final IValidator validationRule) {
 		if (rule2status != null) {
 			rule2status.remove(validationRule);
 		}
 	}
 
-	private IStatus getStatus(IValidator validationRule) {
+	private IStatus getStatus(final IValidator validationRule) {
 		return rule2status != null ? rule2status.get(validationRule) : null;
 	}
 
-	private boolean isBean(Class<?> clazz) {
+	private boolean isBean(final Class<?> clazz) {
 		boolean result;
 		try {
 			// next line throws NoSuchMethodException, if no matching method found
 			clazz.getMethod("addPropertyChangeListener", PropertyChangeListener.class); //$NON-NLS-1$
 			result = true; // have bean
-		} catch (NoSuchMethodException e) {
+		} catch (final NoSuchMethodException e) {
 			result = false; // have pojo
 		}
 		return result;
 	}
 
-	private boolean isBlocked(IValidator validationRule, IStatus status) {
+	private boolean isBlocked(final IValidator validationRule, final IStatus status) {
 		return status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH
 				&& onEditValidators.contains(validationRule);
 	}
 
-	private void storeStatus(IValidator validationRule, IStatus status) {
+	private void storeStatus(final IValidator validationRule, final IStatus status) {
 		if (rule2status == null) {
 			rule2status = new HashMap<IValidator, IStatus>();
 		}
 		rule2status.put(validationRule, status);
 	}
 
-	private void removeErrorMarker(IValidator validationRule) {
+	private void removeErrorMarker(final IValidator validationRule) {
 		if (rule2error != null) {
-			ErrorMessageMarker errorMarker = rule2error.remove(validationRule);
+			final ErrorMessageMarker errorMarker = rule2error.remove(validationRule);
 			if (errorMarker != null) {
 				markable.removeMarker(errorMarker);
 				// trace("-EM " + errorMarker + " " + (size - 1));
@@ -484,18 +487,18 @@ public class ValueBindingSupport {
 		}
 	}
 
-	private void removeMessages(IValidator validationRule) {
+	private void removeMessages(final IValidator validationRule) {
 		if (rule2messages != null && rule2messages.containsKey(validationRule)) {
-			Set<ValidationMessageMarker> messages = rule2messages.get(validationRule);
-			for (ValidationMessageMarker message : messages) {
+			final Set<ValidationMessageMarker> messages = rule2messages.get(validationRule);
+			for (final ValidationMessageMarker message : messages) {
 				markable.removeMarker(message);
 				// trace("-VMM " + message);
 			}
 		}
 	}
 
-	private void updateValidationMessageMarker(IValidator validationRule) {
-		IStatus status = getStatus(validationRule);
+	private void updateValidationMessageMarker(final IValidator validationRule) {
+		final IStatus status = getStatus(validationRule);
 		if (status != null) {
 			updateValidationStatus(validationRule, status);
 		}

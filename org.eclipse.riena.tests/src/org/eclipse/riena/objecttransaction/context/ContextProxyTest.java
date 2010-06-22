@@ -29,13 +29,13 @@ public class ContextProxyTest extends TestCase {
 	 */
 	public void testContextManagementOnNotContextCarrier() {
 
-		IContextHolder contextCarrier = new BasicContextHolder(null);
+		final IContextHolder contextCarrier = new BasicContextHolder(null);
 
-		IContext context1 = new ContextProxyTestContext();
-		IContext context2 = new ContextProxyTestContext();
+		final IContext context1 = new ContextProxyTestContext();
+		final IContext context2 = new ContextProxyTestContext();
 		assertFalse(context1.equals(context2));
 
-		IContextProxyTestInterface nonContextCarrier = new ContextProxyTestNonContextCarrier();
+		final IContextProxyTestInterface nonContextCarrier = new ContextProxyTestNonContextCarrier();
 
 		// test creating proxy on null and setting
 		IContextProxyTestInterface nonContextCarrierProxy = ContextProxy.cover(nonContextCarrier, contextCarrier);
@@ -82,14 +82,14 @@ public class ContextProxyTest extends TestCase {
 	 */
 	public void testContextManagementOnContextCarrier() {
 
-		IContext context1 = new ContextProxyTestContext();
-		IContext context2 = new ContextProxyTestContext();
+		final IContext context1 = new ContextProxyTestContext();
+		final IContext context2 = new ContextProxyTestContext();
 		assertFalse(context1.equals(context2));
 
-		IContextProxyTestInterfaceHolder contextCarrier = new ContextProxyTestContextHolder();
+		final IContextProxyTestInterfaceHolder contextCarrier = new ContextProxyTestContextHolder();
 
 		// test creating proxy on null and setting
-		IContextProxyTestInterfaceHolder contextCarrierProxy = ContextProxy.cover(contextCarrier);
+		final IContextProxyTestInterfaceHolder contextCarrierProxy = ContextProxy.cover(contextCarrier);
 
 		activatedContext = null;
 		passivatedContext = null;
@@ -153,7 +153,7 @@ public class ContextProxyTest extends TestCase {
 		/**
 		 * @see org.eclipse.riena.objecttransaction.context.IContextHolder#setContext(org.eclipse.riena.objecttransaction.context.IContext)
 		 */
-		public void setContext(IContext pContext) {
+		public void setContext(final IContext pContext) {
 			context = pContext;
 		}
 

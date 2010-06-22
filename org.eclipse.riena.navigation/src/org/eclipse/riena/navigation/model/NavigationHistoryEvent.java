@@ -23,7 +23,7 @@ public class NavigationHistoryEvent implements INavigationHistoryEvent {
 
 	private List<INavigationNode<?>> historyNodes = null;
 
-	public NavigationHistoryEvent(List<INavigationNode<?>> list) {
+	public NavigationHistoryEvent(final List<INavigationNode<?>> list) {
 		historyNodes = list;
 	}
 

@@ -26,16 +26,16 @@ import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
  */
 public final class SnippetHelloWorld {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = new Shell();
+			final Shell shell = new Shell();
 			GridLayoutFactory.fillDefaults().applyTo(shell);
 
-			Label label = new Label(shell, SWT.BORDER);
+			final Label label = new Label(shell, SWT.BORDER);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(label);
 
-			ILabelRidget ridget = (ILabelRidget) SwtRidgetFactory.createRidget(label);
+			final ILabelRidget ridget = (ILabelRidget) SwtRidgetFactory.createRidget(label);
 			ridget.bindToModel(PojoObservables.observeValue(new HelloModel(), "text")); //$NON-NLS-1$
 			ridget.updateFromModel();
 
@@ -60,7 +60,7 @@ public final class SnippetHelloWorld {
 		}
 
 		@SuppressWarnings("unused")
-		public void setText(String text) {
+		public void setText(final String text) {
 			this.text = text;
 		}
 	}

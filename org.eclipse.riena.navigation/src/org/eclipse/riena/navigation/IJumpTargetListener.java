@@ -19,7 +19,7 @@ public interface IJumpTargetListener {
 	public enum JumpTargetState {
 		ENABLED, DISABLED;
 
-		public JumpTargetState valueOf(Boolean flag) {
+		public JumpTargetState valueOf(final Boolean flag) {
 			return flag ? ENABLED : DISABLED;
 		}
 	}

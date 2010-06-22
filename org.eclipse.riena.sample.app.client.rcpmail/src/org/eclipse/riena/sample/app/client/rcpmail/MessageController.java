@@ -60,43 +60,43 @@ public class MessageController extends AbstractRidgetController {
 		}
 
 		@SuppressWarnings("unused")
-		public void setDate(String date) {
+		public void setDate(final String date) {
 			this.date = date;
 		}
 
 		@SuppressWarnings("unused")
-		public void setFrom(String from) {
+		public void setFrom(final String from) {
 			this.from = from;
 		}
 
 		@SuppressWarnings("unused")
-		public void setMessage(String message) {
+		public void setMessage(final String message) {
 			this.message = message;
 		}
 
 		@SuppressWarnings("unused")
-		public void setSubject(String subject) {
+		public void setSubject(final String subject) {
 			this.subject = subject;
 		}
 	}
 
-	private MailMessage message = new MailMessage();
+	private final MailMessage message = new MailMessage();
 
 	@Override
 	public void configureRidgets() {
-		ILabelRidget lblSubject = (ILabelRidget) getRidget("subject"); //$NON-NLS-1$
+		final ILabelRidget lblSubject = (ILabelRidget) getRidget("subject"); //$NON-NLS-1$
 		lblSubject.bindToModel(PojoObservables.observeValue(message, "subject")); //$NON-NLS-1$
 		lblSubject.updateFromModel();
 
-		ILabelRidget lblFrom = (ILabelRidget) getRidget("from"); //$NON-NLS-1$
+		final ILabelRidget lblFrom = (ILabelRidget) getRidget("from"); //$NON-NLS-1$
 		lblFrom.bindToModel(PojoObservables.observeValue(message, "from")); //$NON-NLS-1$
 		lblFrom.updateFromModel();
 
-		ILabelRidget lblDate = (ILabelRidget) getRidget("date"); //$NON-NLS-1$
+		final ILabelRidget lblDate = (ILabelRidget) getRidget("date"); //$NON-NLS-1$
 		lblDate.bindToModel(PojoObservables.observeValue(message, "date")); //$NON-NLS-1$
 		lblDate.updateFromModel();
 
-		ITextRidget txtMessage = (ITextRidget) getRidget("message"); //$NON-NLS-1$
+		final ITextRidget txtMessage = (ITextRidget) getRidget("message"); //$NON-NLS-1$
 		txtMessage.bindToModel(PojoObservables.observeValue(message, "message")); //$NON-NLS-1$
 		txtMessage.setOutputOnly(true);
 		txtMessage.updateFromModel();

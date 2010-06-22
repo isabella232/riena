@@ -36,7 +36,7 @@ public abstract class AbstractNavigationAssembler implements INavigationAssemble
 	 * 
 	 * @since 2.0
 	 */
-	public void setId(String id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 
@@ -54,7 +54,7 @@ public abstract class AbstractNavigationAssembler implements INavigationAssemble
 	 * 
 	 * @since 2.0
 	 */
-	public void setParentNodeId(String parentNodeId) {
+	public void setParentNodeId(final String parentNodeId) {
 		this.parentNodeId = parentNodeId;
 	}
 
@@ -72,7 +72,7 @@ public abstract class AbstractNavigationAssembler implements INavigationAssemble
 	 * 
 	 * @since 2.0
 	 */
-	public void setStartOrder(int startOrder) {
+	public void setStartOrder(final int startOrder) {
 		this.startOrder = startOrder;
 	}
 
@@ -90,7 +90,7 @@ public abstract class AbstractNavigationAssembler implements INavigationAssemble
 	 * 
 	 * @since 2.0
 	 */
-	public void setAssembly(INavigationAssembly2Extension assembly) {
+	public void setAssembly(final INavigationAssembly2Extension assembly) {
 		this.assembly = assembly;
 	}
 

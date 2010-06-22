@@ -51,30 +51,30 @@ public class SimpleSubjectHolder implements ISubjectHolder {
 	 * org.eclipse.riena.security.common.ISubjectHolder#setSubject(javax.security
 	 * .auth.Subject)
 	 */
-	public void setSubject(Subject subject) {
-		Subject old = this.subject;
+	public void setSubject(final Subject subject) {
+		final Subject old = this.subject;
 		this.subject = subject;
 		notifySubjectChange(this.subject, old);
 	}
 
-	private void notifySubjectChange(Subject newSubject, Subject oldSubject) {
+	private void notifySubjectChange(final Subject newSubject, final Subject oldSubject) {
 		// check avoids SubjectChangeEvent object if there is no listener
 		if (subjectChangeListeners.size() == 0) {
 			return;
 		}
-		SubjectChangeEvent event = new SubjectChangeEvent(newSubject, oldSubject);
-		for (ISubjectChangeListener listener : subjectChangeListeners.getListeners()) {
+		final SubjectChangeEvent event = new SubjectChangeEvent(newSubject, oldSubject);
+		for (final ISubjectChangeListener listener : subjectChangeListeners.getListeners()) {
 			listener.changed(event);
 		}
 	}
 
-	public void addSubjectChangeListener(ISubjectChangeListener listener) {
+	public void addSubjectChangeListener(final ISubjectChangeListener listener) {
 		if (listener != null) {
 			subjectChangeListeners.add(listener);
 		}
 	}
 
-	public void removeSubjectChangeListener(ISubjectChangeListener listener) {
+	public void removeSubjectChangeListener(final ISubjectChangeListener listener) {
 		subjectChangeListeners.remove(listener);
 	}
 

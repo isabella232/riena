@@ -54,7 +54,7 @@ public class NodePositionerTest extends TestCase {
 		boolean failureOccured = false;
 		try {
 			NodePositioner.indexed(-1).addChildToParent(parent, childToAdd);
-		} catch (NavigationModelFailure e) {
+		} catch (final NavigationModelFailure e) {
 			failureOccured = true;
 		}
 		assertTrue(failureOccured);
@@ -63,7 +63,7 @@ public class NodePositionerTest extends TestCase {
 
 		try {
 			NodePositioner.ordinal(10).addChildToParent(parent, new SubModuleNode(new NavigationNodeId("ordinal")));
-		} catch (NavigationModelFailure e) {
+		} catch (final NavigationModelFailure e) {
 			failureOccured = true;
 		}
 		assertTrue(failureOccured);
@@ -93,7 +93,7 @@ public class NodePositionerTest extends TestCase {
 		boolean failureOccured = false;
 		try {
 			NodePositioner.indexed(1).addChildToParent(parent, childD);
-		} catch (NavigationModelFailure e) {
+		} catch (final NavigationModelFailure e) {
 			failureOccured = true;
 		}
 		assertTrue(failureOccured);

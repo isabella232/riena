@@ -96,20 +96,20 @@ public class ValidInteger extends ValidDecimal {
 			if (string.length() > 0) {
 				final ScanResult scanned = scan(string);
 				if (scanned.decimalSeperatorIndex >= 0) {
-					Character decSep = Character.valueOf(getSymbols().getDecimalSeparator());
-					String message = NLS.bind(Messages.ValidInteger_error_hasDecSep, decSep, string);
+					final Character decSep = Character.valueOf(getSymbols().getDecimalSeparator());
+					final String message = NLS.bind(Messages.ValidInteger_error_hasDecSep, decSep, string);
 					return ValidationRuleStatus.error(true, message);
 				}
 				// test if sign present
 				if (!signed && scanned.minusSignIndex > -1) {
-					String message = NLS.bind(Messages.ValidInteger_error_hasMinus, Integer
-							.valueOf(scanned.minusSignIndex), string);
+					final String message = NLS.bind(Messages.ValidInteger_error_hasMinus,
+							Integer.valueOf(scanned.minusSignIndex), string);
 					return ValidationRuleStatus.error(true, message);
 				}
 				// test if alien character present:
 				if (scanned.lastAlienCharIndex > -1) {
-					String message = NLS.bind(Messages.ValidInteger_error_alienChar, Character
-							.valueOf(scanned.lastAlienCharacter), string);
+					final String message = NLS.bind(Messages.ValidInteger_error_alienChar,
+							Character.valueOf(scanned.lastAlienCharacter), string);
 					return ValidationRuleStatus.error(true, message);
 				}
 				try {
@@ -118,7 +118,7 @@ public class ValidInteger extends ValidDecimal {
 						format.parse(string);
 					}
 				} catch (final ParseException e) {
-					String message = NLS.bind(Messages.ValidInteger_error_cannotParse, string);
+					final String message = NLS.bind(Messages.ValidInteger_error_cannotParse, string);
 					return ValidationRuleStatus.error(true, message);
 				}
 			}
@@ -142,11 +142,11 @@ public class ValidInteger extends ValidDecimal {
 	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocal(java.lang.String[])
 	 */
 	@Override
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray(data);
+			final String[] args = PropertiesUtils.asArray(data);
 			int localStart = 0;
 			if (args.length > 0) {
 				if (args[0].equals(Boolean.TRUE.toString())) {
@@ -158,7 +158,7 @@ public class ValidInteger extends ValidDecimal {
 				}
 			}
 			if (args.length > localStart) {
-				String[] localArgs = ArraysUtil.copyRange(args, localStart, args.length);
+				final String[] localArgs = ArraysUtil.copyRange(args, localStart, args.length);
 				setLocal(localArgs);
 			}
 		}

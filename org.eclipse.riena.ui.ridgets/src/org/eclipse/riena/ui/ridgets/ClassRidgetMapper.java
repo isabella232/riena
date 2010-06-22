@@ -31,7 +31,7 @@ public final class ClassRidgetMapper {
 
 	private static ClassRidgetMapper instance = new ClassRidgetMapper();
 
-	private Map<Class<? extends IRidget>, Class<? extends IRidget>> mappings;
+	private final Map<Class<? extends IRidget>, Class<? extends IRidget>> mappings;
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ClassRidgetMapper.class);
 
@@ -59,7 +59,7 @@ public final class ClassRidgetMapper {
 	 *            ridgetClazz is abstract or an interface it will not be added
 	 *            and warning is logged.
 	 */
-	public void addMapping(Class<? extends IRidget> ridgetInterface, Class<? extends IRidget> ridgetClazz) {
+	public void addMapping(final Class<? extends IRidget> ridgetInterface, final Class<? extends IRidget> ridgetClazz) {
 		if (ridgetInterface == null || ridgetClazz == null) {
 			return;
 		}
@@ -84,8 +84,8 @@ public final class ClassRidgetMapper {
 	 * @throws throws a <code>BindingException</code> if the ridgetInterface
 	 *         cannot be found in the mapper.
 	 */
-	public Class<? extends IRidget> getRidgetClass(Class<? extends IRidget> ridgetInterface) {
-		Class<? extends IRidget> ridgetClass = mappings.get(ridgetInterface);
+	public Class<? extends IRidget> getRidgetClass(final Class<? extends IRidget> ridgetInterface) {
+		final Class<? extends IRidget> ridgetClass = mappings.get(ridgetInterface);
 		if (ridgetClass != null) {
 			return ridgetClass;
 		}

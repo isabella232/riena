@@ -57,8 +57,9 @@ public class RienaMessageDialog extends MessageDialog {
 	 * 
 	 * @see {@link MessageDialog#MessageDialog(Shell, String, Image, String, int, String[], int)}
 	 */
-	public RienaMessageDialog(Shell parentShell, String dialogTitle, Image dialogTitleImage, String dialogMessage,
-			int dialogImageType, String[] dialogButtonLabels, int defaultIndex) {
+	public RienaMessageDialog(final Shell parentShell, final String dialogTitle, final Image dialogTitleImage,
+			final String dialogMessage, final int dialogImageType, final String[] dialogButtonLabels,
+			final int defaultIndex) {
 		super(parentShell, dialogTitle, dialogTitleImage, dialogMessage, dialogImageType, dialogButtonLabels,
 				defaultIndex);
 		dlgRenderer = new RienaWindowRenderer(this);
@@ -70,7 +71,7 @@ public class RienaMessageDialog extends MessageDialog {
 	 * @param parent
 	 */
 	@Override
-	protected void createDialogAndButtonArea(Composite parent) {
+	protected void createDialogAndButtonArea(final Composite parent) {
 
 		// create the contents area
 		GridLayout gridLayout = new GridLayout();
@@ -83,7 +84,7 @@ public class RienaMessageDialog extends MessageDialog {
 		dlgRenderer.createContents(parent);
 
 		// create the dialog area and button bar
-		Composite centerComposite = dlgRenderer.getCenterComposite();
+		final Composite centerComposite = dlgRenderer.getCenterComposite();
 		gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
 		gridLayout.horizontalSpacing = LayoutConstants.getSpacing().x * 2;

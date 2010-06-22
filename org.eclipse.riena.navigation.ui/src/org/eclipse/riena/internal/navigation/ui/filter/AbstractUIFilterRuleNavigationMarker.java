@@ -32,21 +32,21 @@ public abstract class AbstractUIFilterRuleNavigationMarker extends AbstractUIFil
 	 *            pattern ({@link StringMatcher}) for navigation node IDs
 	 * @param marker
 	 */
-	public AbstractUIFilterRuleNavigationMarker(String nodeIdPattern, IMarker marker) {
+	public AbstractUIFilterRuleNavigationMarker(final String nodeIdPattern, final IMarker marker) {
 		super(marker);
 		this.nodeIdPattern = nodeIdPattern;
 	}
 
-	public boolean matches(Object... args) {
+	public boolean matches(final Object... args) {
 
 		if ((args == null) || (args.length <= 0)) {
 			return false;
 		}
 
 		if (args[0] instanceof INavigationNode<?>) {
-			INavigationNode<?> node = (INavigationNode<?>) args[0];
-			String longNodeId = NavigationNodeUtility.getNodeLongId(node);
-			StringMatcher stringMatcher = new StringMatcher(nodeIdPattern);
+			final INavigationNode<?> node = (INavigationNode<?>) args[0];
+			final String longNodeId = NavigationNodeUtility.getNodeLongId(node);
+			final StringMatcher stringMatcher = new StringMatcher(nodeIdPattern);
 			return stringMatcher.match(longNodeId);
 		} else {
 			return false;
@@ -54,22 +54,22 @@ public abstract class AbstractUIFilterRuleNavigationMarker extends AbstractUIFil
 
 	}
 
-	public void apply(Object object) {
+	public void apply(final Object object) {
 		if (object instanceof INavigationNode<?>) {
-			INavigationNode<?> node = (INavigationNode<?>) object;
+			final INavigationNode<?> node = (INavigationNode<?>) object;
 			node.addMarker(getMarker());
 		}
 
 	}
 
-	public void remove(Object object) {
+	public void remove(final Object object) {
 		if (object instanceof INavigationNode<?>) {
-			INavigationNode<?> node = (INavigationNode<?>) object;
+			final INavigationNode<?> node = (INavigationNode<?>) object;
 			node.removeMarker(getMarker());
 		}
 	}
 
-	public void setNode(String id) {
+	public void setNode(final String id) {
 		this.nodeIdPattern = id;
 	}
 

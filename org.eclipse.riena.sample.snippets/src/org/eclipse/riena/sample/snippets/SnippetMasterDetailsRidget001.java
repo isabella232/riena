@@ -47,24 +47,24 @@ public final class SnippetMasterDetailsRidget001 {
 	 */
 	private static final class PersonMasterDetails extends MasterDetailsComposite {
 
-		PersonMasterDetails(Composite parent, int style) {
+		PersonMasterDetails(final Composite parent, final int style) {
 			super(parent, style, SWT.BOTTOM);
 			setMargins(5, 5);
 		}
 
 		@Override
-		protected void createDetails(Composite parent) {
-			GridLayoutFactory.fillDefaults().numColumns(2).margins(20, 20).spacing(10, 10).equalWidth(false).applyTo(
-					parent);
-			GridDataFactory hFill = GridDataFactory.fillDefaults().grab(true, false);
+		protected void createDetails(final Composite parent) {
+			GridLayoutFactory.fillDefaults().numColumns(2).margins(20, 20).spacing(10, 10).equalWidth(false)
+					.applyTo(parent);
+			final GridDataFactory hFill = GridDataFactory.fillDefaults().grab(true, false);
 
 			UIControlsFactory.createLabel(parent, "Last Name:"); //$NON-NLS-1$
-			Text txtLast = UIControlsFactory.createText(parent);
+			final Text txtLast = UIControlsFactory.createText(parent);
 			hFill.applyTo(txtLast);
 			addUIControl(txtLast, "txtLast"); //$NON-NLS-1$
 
 			UIControlsFactory.createLabel(parent, "First Name:"); //$NON-NLS-1$
-			Text txtFirst = UIControlsFactory.createText(parent);
+			final Text txtFirst = UIControlsFactory.createText(parent);
 			hFill.applyTo(txtFirst);
 			addUIControl(txtFirst, "txtFirst"); //$NON-NLS-1$
 		}
@@ -82,20 +82,20 @@ public final class SnippetMasterDetailsRidget001 {
 
 		private final Person workingCopy = createWorkingCopy();
 
-		public void configureRidgets(IRidgetContainer container) {
-			ITextRidget txtLast = (ITextRidget) container.getRidget("txtLast"); //$NON-NLS-1$
+		public void configureRidgets(final IRidgetContainer container) {
+			final ITextRidget txtLast = (ITextRidget) container.getRidget("txtLast"); //$NON-NLS-1$
 			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
 			txtLast.addValidationRule(new NotEmpty(), ValidationTime.ON_UI_CONTROL_EDIT);
 			txtLast.updateFromModel();
 
-			ITextRidget txtFirst = (ITextRidget) container.getRidget("txtFirst"); //$NON-NLS-1$
+			final ITextRidget txtFirst = (ITextRidget) container.getRidget("txtFirst"); //$NON-NLS-1$
 			txtFirst.bindToModel(workingCopy, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 		}
 
-		public Person copyBean(Object source, Object target) {
-			Person from = source != null ? (Person) source : createWorkingCopy();
-			Person to = target != null ? (Person) target : createWorkingCopy();
+		public Person copyBean(final Object source, final Object target) {
+			final Person from = source != null ? (Person) source : createWorkingCopy();
+			final Person to = target != null ? (Person) target : createWorkingCopy();
 			to.setFirstname(from.getFirstname());
 			to.setLastname(from.getLastname());
 			return to;
@@ -110,16 +110,17 @@ public final class SnippetMasterDetailsRidget001 {
 		}
 
 		@Override
-		public boolean isChanged(Object source, Object target) {
-			Person p1 = (Person) source;
-			Person p2 = (Person) target;
-			boolean equal = p1.getFirstname().equals(p2.getFirstname()) && p1.getLastname().equals(p2.getLastname());
+		public boolean isChanged(final Object source, final Object target) {
+			final Person p1 = (Person) source;
+			final Person p2 = (Person) target;
+			final boolean equal = p1.getFirstname().equals(p2.getFirstname())
+					&& p1.getLastname().equals(p2.getLastname());
 			return !equal;
 		}
 
 		@Override
-		public String isValid(IRidgetContainer container) {
-			ITextRidget txtLast = (ITextRidget) container.getRidget("txtLast"); //$NON-NLS-1$
+		public String isValid(final IRidgetContainer container) {
+			final ITextRidget txtLast = (ITextRidget) container.getRidget("txtLast"); //$NON-NLS-1$
 			if (txtLast.isErrorMarked()) {
 				return "'Last Name' is not valid."; //$NON-NLS-1$
 			}
@@ -127,19 +128,19 @@ public final class SnippetMasterDetailsRidget001 {
 		}
 	}
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
-		Shell shell = new Shell(display);
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
+		final Shell shell = new Shell(display);
 		shell.setText(SnippetMasterDetailsRidget001.class.getSimpleName());
 		shell.setLayout(new FillLayout());
 
-		PersonMasterDetails details = new PersonMasterDetails(shell, SWT.NONE);
+		final PersonMasterDetails details = new PersonMasterDetails(shell, SWT.NONE);
 
-		IMasterDetailsRidget ridget = (IMasterDetailsRidget) SwtRidgetFactory.createRidget(details);
+		final IMasterDetailsRidget ridget = (IMasterDetailsRidget) SwtRidgetFactory.createRidget(details);
 		ridget.setDelegate(new PersonDelegate());
-		WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
-		String[] properties = { Person.PROPERTY_LASTNAME, Person.PROPERTY_FIRSTNAME };
-		String[] headers = { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
+		final String[] properties = { Person.PROPERTY_LASTNAME, Person.PROPERTY_FIRSTNAME };
+		final String[] headers = { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 		ridget.bindToModel(input, Person.class, properties, headers);
 		ridget.updateFromModel();
 

@@ -92,7 +92,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 
 	public void testHandleFocusEvents() throws Exception {
 
-		String testErrorMessage = "Test Error in Adapter 1";
+		final String testErrorMessage = "Test Error in Adapter 1";
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(EMPTY_STATUSLINE_MESSAGE);
 		statuslineRidget.error(testErrorMessage);
@@ -115,9 +115,9 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 
 	public void testHandleFocusEventsAndModifiedMessage() throws Exception {
 
-		String testErrorMessage = "Test Error in Adapter 1";
-		String testMessageBySomebodyElse = "Some message by somebody else";
-		ErrorMessageMarker errorMessageMarker1 = new ErrorMessageMarker(testErrorMessage);
+		final String testErrorMessage = "Test Error in Adapter 1";
+		final String testMessageBySomebodyElse = "Some message by somebody else";
+		final ErrorMessageMarker errorMessageMarker1 = new ErrorMessageMarker(testErrorMessage);
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(EMPTY_STATUSLINE_MESSAGE);
 		statuslineRidget.error(testErrorMessage);
@@ -157,7 +157,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		EasyMock.verify(statuslineRidget);
 		EasyMock.reset(statuslineRidget);
 
-		String anotherTestErrorMessage = "Another Test Error in Adapter 1";
+		final String anotherTestErrorMessage = "Another Test Error in Adapter 1";
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(testMessageBySomebodyElse);
 		statuslineRidget.error(anotherTestErrorMessage);
 		EasyMock.replay(statuslineRidget);
@@ -179,8 +179,8 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 
 	public void testRemoveRidget() throws Exception {
 
-		String testErrorMessage = "Test Error in Adapter 1";
-		ErrorMessageMarker errorMessageMarker1 = new ErrorMessageMarker(testErrorMessage);
+		final String testErrorMessage = "Test Error in Adapter 1";
+		final ErrorMessageMarker errorMessageMarker1 = new ErrorMessageMarker(testErrorMessage);
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(EMPTY_STATUSLINE_MESSAGE);
 		statuslineRidget.error(testErrorMessage);
 		EasyMock.replay(statuslineRidget);
@@ -209,7 +209,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 
 		EasyMock.replay(statuslineRidget);
 
-		String messageDifferentType = "TestDifferentMarkerType";
+		final String messageDifferentType = "TestDifferentMarkerType";
 		ridget2.addMarker(new MessageMarker(messageDifferentType));
 
 		statuslineMessageMarkerViewer.addMarkerType(MessageMarker.class);
@@ -249,7 +249,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 
 	public void testSetVisible() throws Exception {
 
-		String testErrorMessage = "Test Error in Adapter 1";
+		final String testErrorMessage = "Test Error in Adapter 1";
 
 		statuslineMessageMarkerViewer.setVisible(false);
 		ridget1.addMarker(new ErrorMessageMarker(testErrorMessage));
@@ -283,11 +283,11 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 
 	public void testTwoMarkers() throws Exception {
 
-		String testErrorMessage1 = "Test Error 1 in Adapter 1";
-		ErrorMessageMarker marker1 = new ErrorMessageMarker(testErrorMessage1);
+		final String testErrorMessage1 = "Test Error 1 in Adapter 1";
+		final ErrorMessageMarker marker1 = new ErrorMessageMarker(testErrorMessage1);
 		statuslineMessageMarkerViewer.addMarkerType(MessageMarker.class);
-		String testErrorMessage2 = "Test Error 2 in Adapter 1";
-		MessageMarker marker2 = new MessageMarker(testErrorMessage2);
+		final String testErrorMessage2 = "Test Error 2 in Adapter 1";
+		final MessageMarker marker2 = new MessageMarker(testErrorMessage2);
 
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(EMPTY_STATUSLINE_MESSAGE);
 		statuslineRidget.error(testErrorMessage1);

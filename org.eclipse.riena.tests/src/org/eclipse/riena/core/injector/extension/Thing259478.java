@@ -30,7 +30,7 @@ public class Thing259478 implements IExecutableExtension {
 	public Thing259478() {
 	}
 
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 		properties = PropertiesUtils.asMap(data);
 	}

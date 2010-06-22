@@ -33,13 +33,13 @@ abstract class AbstractObserver<T> extends SelectionAdapter {
 	 * @param source
 	 *            the ridget where the selection occured; never null
 	 */
-	public AbstractObserver(IRidget source) {
+	public AbstractObserver(final IRidget source) {
 		Assert.isNotNull(source);
 		this.source = source;
 	}
 
 	@Override
-	public final void widgetSelected(SelectionEvent evt) {
+	public final void widgetSelected(final SelectionEvent evt) {
 		fireAction(evt);
 	}
 
@@ -52,7 +52,7 @@ abstract class AbstractObserver<T> extends SelectionAdapter {
 	 * @throws RuntimeException
 	 *             if IActionListener is null
 	 */
-	public final void addListener(T listener) {
+	public final void addListener(final T listener) {
 		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
 		if (listeners == null) {
 			listeners = createList();
@@ -66,7 +66,7 @@ abstract class AbstractObserver<T> extends SelectionAdapter {
 	 * @param listener
 	 *            a listener instance of type T
 	 */
-	public final void removeListener(T listener) {
+	public final void removeListener(final T listener) {
 		if (listeners != null) {
 			listeners.remove(listener);
 		}

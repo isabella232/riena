@@ -36,7 +36,7 @@ public abstract class AbstractStatuslineComposite extends Composite {
 	 * @param style
 	 *            the SWT style of the Composite
 	 */
-	public AbstractStatuslineComposite(Composite parent, int style) {
+	public AbstractStatuslineComposite(final Composite parent, final int style) {
 		super(parent, style);
 		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
 		setContentsLayout();
@@ -53,7 +53,7 @@ public abstract class AbstractStatuslineComposite extends Composite {
 	 */
 	protected void setContentsLayout() {
 
-		RowLayout rowLayout = new RowLayout();
+		final RowLayout rowLayout = new RowLayout();
 		rowLayout.justify = false;
 		rowLayout.marginLeft = getLeftMargin();
 		rowLayout.marginTop = getTopMargin();

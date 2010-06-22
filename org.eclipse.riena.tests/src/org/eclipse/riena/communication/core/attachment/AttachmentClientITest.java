@@ -51,11 +51,13 @@ public final class AttachmentClientITest extends RienaTestCase {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		regAttachmentService = Register.remoteProxy(IAttachmentService.class).usingUrl(
-				"http://localhost:8080/hessian/AttachmentService").withProtocol("hessian").andStart(
-				Activator.getDefault().getContext());
-		attachService = (IAttachmentService) Activator.getDefault().getContext().getService(
-				Activator.getDefault().getContext().getServiceReference(IAttachmentService.class.getName()));
+		regAttachmentService = Register.remoteProxy(IAttachmentService.class)
+				.usingUrl("http://localhost:8080/hessian/AttachmentService").withProtocol("hessian")
+				.andStart(Activator.getDefault().getContext());
+		attachService = (IAttachmentService) Activator
+				.getDefault()
+				.getContext()
+				.getService(Activator.getDefault().getContext().getServiceReference(IAttachmentService.class.getName()));
 	}
 
 	/**
@@ -75,10 +77,10 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 * 
 	 */
 	public void testSendSimpleFile() throws IOException {
-		Attachment attachment = new Attachment(setupTestFile(TESTDATA1));
-		String str = attachService.sendSingleAttachment(attachment);
-		assertTrue("expecting a certain string", str != null
-				&& str.equals("das sind testdaten, die wir mal einfach so verschicken um et"));
+		final Attachment attachment = new Attachment(setupTestFile(TESTDATA1));
+		final String str = attachService.sendSingleAttachment(attachment);
+		assertTrue("expecting a certain string",
+				str != null && str.equals("das sind testdaten, die wir mal einfach so verschicken um et"));
 		trace("testSendSimpleFile " + str);
 	}
 
@@ -88,9 +90,9 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 * @throws FileNotFoundException
 	 */
 	public void testSendTwoFiles() throws IOException {
-		Attachment attachment = new Attachment(setupTestFile(TESTDATA1));
-		Attachment attachment2 = new Attachment(setupTestFile(TESTDATA2));
-		String str = attachService.sendTwoAttachments(attachment, attachment2);
+		final Attachment attachment = new Attachment(setupTestFile(TESTDATA1));
+		final Attachment attachment2 = new Attachment(setupTestFile(TESTDATA2));
+		final String str = attachService.sendTwoAttachments(attachment, attachment2);
 		assertTrue("expecting a certain string", str != null && str.equals(STRING1));
 		trace("testSendTwoFiles " + str);
 	}
@@ -101,9 +103,9 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 * @throws FileNotFoundException
 	 */
 	public void testSendFileAndData() throws IOException {
-		Attachment attachment = new Attachment(setupTestFile(TESTDATA1));
-		Attachment attachment2 = new Attachment(setupTestFile(TESTDATA2));
-		String str = attachService.sendAttachmentsAndData("first", attachment, "second", attachment2, "third", 2);
+		final Attachment attachment = new Attachment(setupTestFile(TESTDATA1));
+		final Attachment attachment2 = new Attachment(setupTestFile(TESTDATA2));
+		final String str = attachService.sendAttachmentsAndData("first", attachment, "second", attachment2, "third", 2);
 		assertTrue("expecting a certain string", str != null && str.equals(STRING2));
 		trace("testSendFileAndData " + str);
 	}
@@ -112,7 +114,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 * @throws IOException
 	 */
 	public void testReturn() throws IOException {
-		Attachment attachment = attachService.returnAttachment();
+		final Attachment attachment = attachService.returnAttachment();
 		trace("testReturn as String " + readAttachmentStart(attachment));
 	}
 
@@ -120,7 +122,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 * @throws IOException
 	 */
 	public void testReturnOnRequest() throws IOException {
-		Attachment attachment = attachService.returnAttachmentForRequest("validfilename");
+		final Attachment attachment = attachService.returnAttachmentForRequest("validfilename");
 		trace("testReturn as String " + readAttachmentStart(attachment));
 	}
 
@@ -131,7 +133,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 		try {
 			attachService.returnAttachmentForRequest("invalidfilename");
 			fail("the requested file does not exist and the webservice should throw an exception");
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			e.printStackTrace();
 			// expect exception
 		}
@@ -141,8 +143,8 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 * @throws FileNotFoundException
 	 */
 	public void testSendAndReturn() throws IOException {
-		Attachment attachment = new Attachment(setupTestFile(TESTDATA1));
-		Attachment attachment2 = attachService.sendAndReturnAttachment(attachment);
+		final Attachment attachment = new Attachment(setupTestFile(TESTDATA1));
+		final Attachment attachment2 = attachService.sendAndReturnAttachment(attachment);
 		trace("testReturn as String " + readAttachmentStart(attachment2));
 		assertEquals("The webservice echos the request, how the result is not the same as it was sent in the request.",
 				readAttachmentStart(attachment), readAttachmentStart(attachment2));
@@ -152,11 +154,11 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testReadFileAsInputStream() throws Exception {
-		InputStream input = attachService.getFile();
-		byte[] b = new byte[50];
+		final InputStream input = attachService.getFile();
+		final byte[] b = new byte[50];
 		int rc = input.read(b);
 		while (rc != -1) {
-			String s = new String(b, 0, rc);
+			final String s = new String(b, 0, rc);
 			trace(s);
 			rc = input.read(b);
 		}
@@ -167,10 +169,10 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 */
 	public void testReadInputWithError() throws Exception {
 		try {
-			Attachment attachment = attachService.getBytesFromSampleWithError();
+			final Attachment attachment = attachService.getBytesFromSampleWithError();
 			attachment.readAsStream();
 			fail();
-		} catch (RemoteFailure e) {
+		} catch (final RemoteFailure e) {
 			ok();
 		}
 	}
@@ -180,11 +182,11 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 */
 	public void testReadUrlWithErrorAtStart() throws Exception {
 		try {
-			Attachment attachment = attachService.getBytesFromUrlWithErrorAtStart();
-			String output = readAttachmentStart(attachment);
+			final Attachment attachment = attachService.getBytesFromUrlWithErrorAtStart();
+			final String output = readAttachmentStart(attachment);
 			trace(output);
 			fail();
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			ok();
 		}
 	}
@@ -193,8 +195,8 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testReadUrlWithError() throws Exception {
-		Attachment attachment = attachService.getBytesFromUrlWithError();
-		String output = readAttachmentStart(attachment);
+		final Attachment attachment = attachService.getBytesFromUrlWithError();
+		final String output = readAttachmentStart(attachment);
 		trace(output);
 	}
 
@@ -202,23 +204,23 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testReadUrlWithoutError() throws Exception {
-		Attachment attachment = attachService.getBytesFromUrlWithoutError();
-		String output = readAttachmentStart(attachment);
+		final Attachment attachment = attachService.getBytesFromUrlWithoutError();
+		final String output = readAttachmentStart(attachment);
 		trace(output);
 	}
 
 	private final static int ATTACHMENT_START = 60;
 
-	private String readAttachmentStart(Attachment attachment) {
-		byte[] byteArray = new byte[ATTACHMENT_START];
+	private String readAttachmentStart(final Attachment attachment) {
+		final byte[] byteArray = new byte[ATTACHMENT_START];
 		try {
-			InputStream input = attachment.readAsStream();
-			int nbrBytes = input.read(byteArray, 0, byteArray.length);
+			final InputStream input = attachment.readAsStream();
+			final int nbrBytes = input.read(byteArray, 0, byteArray.length);
 			if (nbrBytes < 1) {
 				throw new IOException("Empty Attachment.");
 			}
 			return new String(byteArray, 0, nbrBytes);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			return "[can't read " + attachment + "]";
 		}
 	}
@@ -230,10 +232,10 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 */
 	public void testReadAttachmentCreatedWithInvalidUrl() throws Exception {
 		try {
-			Attachment attachment = attachService.getBytesFromInvalidUrl();
+			final Attachment attachment = attachService.getBytesFromInvalidUrl();
 			trace(attachment);
 			fail();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			ok();
 		}
 	}
@@ -245,7 +247,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 		// TODO warning suppression. Ignoring FindBugs problem about
 		// hard coded reference to an absolute pathname. Appears to
 		// be ok for testing.
-		File file = new File("/testattachments.txt");
+		final File file = new File("/testattachments.txt");
 		OutputStream out = null;
 		try {
 			out = new FileOutputStream(file);
@@ -257,20 +259,20 @@ public final class AttachmentClientITest extends RienaTestCase {
 		}
 
 		// attachService.sendFile(new Attachment(file));
-		boolean deleted = file.delete();
+		final boolean deleted = file.delete();
 		assertTrue(deleted);
 		assertFalse("file must be deleted by now", file.exists());
 
 	}
 
 	public void testRetrieveAttachmentAsObject() throws IOException {
-		Object a = attachService.getAttachmentAsObject();
+		final Object a = attachService.getAttachmentAsObject();
 		assertTrue(a instanceof Attachment);
 	}
 
 	public void testEmptyAttachment() throws Exception {
-		Attachment attachment = attachService.getEmptyAttachment();
-		InputStream input = attachment.readAsStream();
+		final Attachment attachment = attachService.getEmptyAttachment();
+		final InputStream input = attachment.readAsStream();
 		assertTrue(input != null);
 		assertTrue(input.read() == -1);
 	}
@@ -285,24 +287,25 @@ public final class AttachmentClientITest extends RienaTestCase {
 		// ServiceAccessor.fetchService(PROXIEDATTACHMENTSERVICE,
 		// IAttachmentService.class);
 		System.out.println("generating 15 Mio bytes attachment");
-		Attachment attachment = generateLargeAttachment(15000000);
+		final Attachment attachment = generateLargeAttachment(15000000);
 		System.out.println("sending it");
-		int i = attachService.sendAttachmentAndReturnSize(attachment);
+		final int i = attachService.sendAttachmentAndReturnSize(attachment);
 		System.out.println("done");
 		assertTrue(i == 15000000);
 	}
 
 	public void testSendFileAndTestIfItIsClosed() throws Exception {
-		File file = File.createTempFile("attachTest", null);
-		PrintWriter printWriter = new PrintWriter(new FileOutputStream(file));
+		final File file = File.createTempFile("attachTest", null);
+		final PrintWriter printWriter = new PrintWriter(new FileOutputStream(file));
 		printWriter.write("This text file is accessed in AttachmentTest to test the Attachment class.");
 		printWriter.close();
-		Attachment attach = new Attachment(file);
+		final Attachment attach = new Attachment(file);
 		assertTrue(file.exists());
 		// the object gets serialized
-		AttachmentSerialized attach2 = (AttachmentSerialized) attach.writeReplace();
-		ByteArrayDataSource byteArray = (ByteArrayDataSource) ReflectionUtils.getHidden(attach2, "internalDataSource");
-		InputStream inputStream = byteArray.getInputStream();
+		final AttachmentSerialized attach2 = (AttachmentSerialized) attach.writeReplace();
+		final ByteArrayDataSource byteArray = (ByteArrayDataSource) ReflectionUtils.getHidden(attach2,
+				"internalDataSource");
+		final InputStream inputStream = byteArray.getInputStream();
 		while (inputStream.read() != -1) {
 			Nop.reason("nothing to do");
 		}
@@ -317,7 +320,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 		return new Attachment(new InputStream() {
 
 			private int count = countInBytes;
-			private SecureRandom random = new SecureRandom();
+			private final SecureRandom random = new SecureRandom();
 
 			@Override
 			public int read() throws IOException {
@@ -331,21 +334,21 @@ public final class AttachmentClientITest extends RienaTestCase {
 		});
 	}
 
-	private File setupTestFile(String string) {
+	private File setupTestFile(final String string) {
 		File file;
 		try {
 			file = File.createTempFile("attachTest", null);
-			PrintWriter printWriter = new PrintWriter(new FileOutputStream(file));
+			final PrintWriter printWriter = new PrintWriter(new FileOutputStream(file));
 			printWriter.write(string);
 			printWriter.close();
 			return file;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
 
-	private void trace(Object object) {
+	private void trace(final Object object) {
 		System.out.println(object.toString());
 	}
 

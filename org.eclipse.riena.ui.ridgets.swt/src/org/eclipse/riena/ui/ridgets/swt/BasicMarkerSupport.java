@@ -41,7 +41,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		super();
 	}
 
-	public BasicMarkerSupport(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+	public BasicMarkerSupport(final IBasicMarkableRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
 	}
 
@@ -49,15 +49,15 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void init(final IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+	public void init(final IBasicMarkableRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
 
 		super.init(ridget, propertyChangeSupport);
 
-		Control control = getUIControl();
+		final Control control = getUIControl();
 		if (control != null) {
 			control.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(DisposeEvent e) {
-					Control control = getUIControl();
+				public void widgetDisposed(final DisposeEvent e) {
+					final Control control = getUIControl();
 					if (e.widget == control) {
 						// workaround for Bug 304869
 						if (!(control instanceof CCombo)) {
@@ -71,7 +71,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		// workaround for 272863
 		if (!osChecked) {
 			osChecked = true;
-			String osname = System.getProperty("org.osgi.framework.os.name"); //$NON-NLS-1$
+			final String osname = System.getProperty("org.osgi.framework.os.name"); //$NON-NLS-1$
 			if (osname != null && osname.equalsIgnoreCase("macosx")) { //$NON-NLS-1$
 				alwaysSkipRedraw = true;
 			}
@@ -87,7 +87,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	 * @param control
 	 *            the control
 	 */
-	protected void clearAllMarkers(Control control) {
+	protected void clearAllMarkers(final Control control) {
 		// does nothing
 	}
 
@@ -119,7 +119,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	}
 
 	private void updateUIControl() {
-		Control control = getUIControl();
+		final Control control = getUIControl();
 		if (control != null) {
 			stopRedraw(control);
 			try {
@@ -130,17 +130,17 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		}
 	}
 
-	protected void updateUIControl(Control control) {
+	protected void updateUIControl(final Control control) {
 		updateVisible(control);
 		updateDisabled(control);
 	}
 
-	protected void updateVisible(Control control) {
+	protected void updateVisible(final Control control) {
 		control.setVisible(!hasHiddenMarkers());
 	}
 
-	protected void updateDisabled(Control control) {
-		boolean on = LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.DISABLED_MARKER_ADVANCED);
+	protected void updateDisabled(final Control control) {
+		final boolean on = LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.DISABLED_MARKER_ADVANCED);
 		if (on) {
 			// delegate to the visualizer for rendering
 			getDisabledMarkerVisualizer().updateDisabled();
@@ -149,14 +149,14 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		}
 	}
 
-	private void startRedraw(Control control) {
+	private void startRedraw(final Control control) {
 		if (!skipRedrawForBug258176(control)) {
 			control.setRedraw(true);
 		}
 		control.redraw();
 	}
 
-	private void stopRedraw(Control control) {
+	private void stopRedraw(final Control control) {
 		if (!skipRedrawForBug258176(control)) {
 			control.setRedraw(false);
 		}
@@ -165,7 +165,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	/**
 	 * These controls are affected by bug 258176 in SWT.
 	 */
-	private boolean skipRedrawForBug258176(Control control) {
+	private boolean skipRedrawForBug258176(final Control control) {
 		if (alwaysSkipRedraw) {
 			return true;
 		}

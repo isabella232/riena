@@ -33,7 +33,7 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 	 * @param style
 	 *            the style of widget to construct
 	 */
-	public StatuslineNumber(Composite parent, int style) {
+	public StatuslineNumber(final Composite parent, final int style) {
 		super(parent, style | SWT.NO_FOCUS);
 	}
 
@@ -79,16 +79,16 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 	 * @param number
 	 *            number to display in the status line.
 	 */
-	public void setNumber(int number) {
+	public void setNumber(final int number) {
 
 		if (number <= 0) {
 			numberLabel.setText(""); //$NON-NLS-1$
 			return;
 		}
 
-		String numberStrg = Integer.toString(number);
+		final String numberStrg = Integer.toString(number);
 		// add leading '0'
-		StringBuilder sb = new StringBuilder(numberStrg);
+		final StringBuilder sb = new StringBuilder(numberStrg);
 		while (sb.length() < 7) {
 			sb.insert(0, '0');
 		}
@@ -103,7 +103,7 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 	 *            the string to displayed in the status line; null removes the
 	 *            number string from the status line
 	 */
-	public void setNumber(String number) {
+	public void setNumber(final String number) {
 
 		if (number != null) {
 			numberLabel.setText(number);

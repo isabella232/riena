@@ -33,7 +33,7 @@ public final class FTClickListener implements IClickListener {
 		return event;
 	}
 
-	public void callback(ClickEvent event) {
+	public void callback(final ClickEvent event) {
 		count++;
 		this.event = event;
 	}

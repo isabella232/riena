@@ -41,14 +41,14 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	/**
 	 * @see IUISynchronizer#syncExec(Runnable)
 	 */
-	public void syncExec(Runnable runnable) {
+	public void syncExec(final Runnable runnable) {
 		execute(new SyncExecutor(), runnable);
 	}
 
 	/**
 	 * @see IUISynchronizer#asyncExec(Runnable)
 	 */
-	public void asyncExec(Runnable runnable) {
+	public void asyncExec(final Runnable runnable) {
 		execute(new ASyncExecutor(), runnable);
 	}
 
@@ -56,14 +56,14 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	 * Executes the given runnable using the executor. First checks if there is
 	 * a display available.
 	 */
-	private void execute(Executor executor, Runnable runnable) {
+	private void execute(final Executor executor, final Runnable runnable) {
 		if (isWorkbenchShutdown()) {
 			return;
 		}
 		if (!hasDisplay()) {
 			waitForDisplay(15000);
 		}
-		Display display = getDisplay();
+		final Display display = getDisplay();
 		if (executeOnDisplay(executor, runnable, display)) {
 			return;
 		}
@@ -88,7 +88,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		}
 	}
 
-	private void queueRunnable(Executor executor, Runnable runnable) {
+	private void queueRunnable(final Executor executor, final Runnable runnable) {
 		synchronized (SwtUISynchronizer.class) {
 			asyncJobs.add(runnable);
 		}
@@ -103,7 +103,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 			while (PlatformUI.isWorkbenchRunning() && getDisplay() == null || getDisplay().isDisposed()) {
 				try {
 					Thread.sleep(50);
-				} catch (InterruptedException e) {
+				} catch (final InterruptedException e) {
 					getLogger().log(LogService.LOG_ERROR, e.getMessage());
 				}
 			}
@@ -111,18 +111,17 @@ public class SwtUISynchronizer implements IUISynchronizer {
 			synchronized (SwtUISynchronizer.class) {
 
 				// notify job waiters (syncExec)
-				Iterator<FutureSyncLatch> syncIter = syncJobs.iterator();
+				final Iterator<FutureSyncLatch> syncIter = syncJobs.iterator();
 				while (syncIter.hasNext()) {
-					SwtUISynchronizer.FutureSyncLatch futureSyncLatch = (SwtUISynchronizer.FutureSyncLatch) syncIter
-							.next();
+					final SwtUISynchronizer.FutureSyncLatch futureSyncLatch = syncIter.next();
 					futureSyncLatch.countDown();
 					syncIter.remove();
 				}
 
 				// execute jobs (asyncExec)
-				Iterator<Runnable> asyncIter = asyncJobs.iterator();
+				final Iterator<Runnable> asyncIter = asyncJobs.iterator();
 				while (asyncIter.hasNext()) {
-					Runnable next = (Runnable) asyncIter.next();
+					final Runnable next = asyncIter.next();
 					if (!isWorkbenchShutdown()) {
 						new ASyncExecutor().execute(getDisplay(), next);
 					}
@@ -135,8 +134,8 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		}
 	}
 
-	private void waitForDisplayInitialisation(Runnable job) {
-		FutureSyncLatch latch = new FutureSyncLatch(1, job);
+	private void waitForDisplayInitialisation(final Runnable job) {
+		final FutureSyncLatch latch = new FutureSyncLatch(1, job);
 		synchronized (SwtUISynchronizer.class) {
 			syncJobs.add(latch);
 		}
@@ -144,20 +143,20 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		try {
 
 			latch.await();
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			getLogger().log(LogService.LOG_ERROR, e.getMessage());
 		}
 	}
 
-	private boolean isSyncExecutor(Executor executor) {
+	private boolean isSyncExecutor(final Executor executor) {
 		return executor instanceof SyncExecutor;
 	}
 
 	private class FutureSyncLatch extends CountDownLatch {
 
-		private Runnable job;
+		private final Runnable job;
 
-		public FutureSyncLatch(int count, Runnable job) {
+		public FutureSyncLatch(final int count, final Runnable job) {
 			super(count);
 			this.job = job;
 		}
@@ -172,7 +171,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 
 	}
 
-	private boolean executeOnDisplay(Executor executor, Runnable runnable, Display display) {
+	private boolean executeOnDisplay(final Executor executor, final Runnable runnable, final Display display) {
 		if (null != display && !display.isDisposed()) {
 			executor.execute(display, runnable);
 			return true;
@@ -201,7 +200,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	 * @param timeoutMs
 	 *            time out in ms (positive)
 	 */
-	private void waitForDisplay(int timeoutMs) {
+	private void waitForDisplay(final int timeoutMs) {
 
 		Assert.isTrue(timeoutMs >= 0);
 
@@ -211,7 +210,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 			try {
 				Thread.sleep(500);
 				time += 500;
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				return;
 			}
 		} while (time < timeoutMs && !hasDisplay());
@@ -222,13 +221,13 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	}
 
 	private static class SyncExecutor implements Executor {
-		public void execute(Display display, Runnable runnable) {
+		public void execute(final Display display, final Runnable runnable) {
 			display.syncExec(runnable);
 		}
 	}
 
 	private static class ASyncExecutor implements Executor {
-		public void execute(Display display, Runnable runnable) {
+		public void execute(final Display display, final Runnable runnable) {
 			display.asyncExec(runnable);
 		}
 	}
@@ -244,7 +243,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	 * @param workbenchShutdown
 	 *            the workbenchShutdown to set
 	 */
-	public static void setWorkbenchShutdown(boolean workbenchShutdown) {
+	public static void setWorkbenchShutdown(final boolean workbenchShutdown) {
 		SwtUISynchronizer.workbenchShutdown.set(workbenchShutdown);
 	}
 }

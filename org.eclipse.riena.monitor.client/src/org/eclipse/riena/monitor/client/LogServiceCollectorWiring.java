@@ -23,7 +23,7 @@ import org.eclipse.riena.core.wire.AbstractWiring;
 public class LogServiceCollectorWiring extends AbstractWiring {
 
 	@Override
-	public void wire(Object bean, BundleContext context) {
+	public void wire(final Object bean, final BundleContext context) {
 		Inject.service(ExtendedLogReaderService.class).useRanking().into(bean).andStart(context);
 	}
 

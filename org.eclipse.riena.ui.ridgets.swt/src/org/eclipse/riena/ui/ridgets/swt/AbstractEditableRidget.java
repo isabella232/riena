@@ -52,20 +52,20 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * 
 	 * @since 2.0
 	 */
-	protected static final IStatus suppressBlock(IStatus... statuses) {
-		IStatus status = ValidationRuleStatus.join(statuses);
+	protected static final IStatus suppressBlock(final IStatus... statuses) {
+		final IStatus status = ValidationRuleStatus.join(statuses);
 		IStatus result;
 		if (status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
 			final int newCode = ValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
-			result = new Status(status.getSeverity(), status.getPlugin(), newCode, status.getMessage(), status
-					.getException());
+			result = new Status(status.getSeverity(), status.getPlugin(), newCode, status.getMessage(),
+					status.getException());
 		} else {
 			result = status;
 		}
 		return result;
 	}
 
-	public void addValidationRule(IValidator validationRule, ValidationTime validationTime) {
+	public void addValidationRule(final IValidator validationRule, final ValidationTime validationTime) {
 		Assert.isNotNull(validationRule);
 		Assert.isNotNull(validationTime);
 		getValueBindingSupport().addValidationRule(validationRule, validationTime);
@@ -79,43 +79,43 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 		return getValueBindingSupport().getValidationRules();
 	}
 
-	public void removeValidationRule(IValidator validationRule) {
+	public void removeValidationRule(final IValidator validationRule) {
 		getValueBindingSupport().removeValidationRule(validationRule);
 	}
 
-	public void setUIControlToModelConverter(IConverter converter) {
+	public void setUIControlToModelConverter(final IConverter converter) {
 		getValueBindingSupport().setUIControlToModelConverter(converter);
 	}
 
-	public void addValidationMessage(IMessageMarker messageMarker, IValidator validationRule) {
+	public void addValidationMessage(final IMessageMarker messageMarker, final IValidator validationRule) {
 		getValueBindingSupport().addValidationMessage(messageMarker, validationRule);
 	}
 
-	public void addValidationMessage(IMessageMarker messageMarker) {
+	public void addValidationMessage(final IMessageMarker messageMarker) {
 		getValueBindingSupport().addValidationMessage(messageMarker);
 	}
 
-	public void addValidationMessage(String message, IValidator validationRule) {
+	public void addValidationMessage(final String message, final IValidator validationRule) {
 		getValueBindingSupport().addValidationMessage(message, validationRule);
 	}
 
-	public void addValidationMessage(String message) {
+	public void addValidationMessage(final String message) {
 		getValueBindingSupport().addValidationMessage(message);
 	}
 
-	public void removeValidationMessage(IMessageMarker messageMarker, IValidator validationRule) {
+	public void removeValidationMessage(final IMessageMarker messageMarker, final IValidator validationRule) {
 		getValueBindingSupport().removeValidationMessage(messageMarker, validationRule);
 	}
 
-	public void removeValidationMessage(IMessageMarker messageMarker) {
+	public void removeValidationMessage(final IMessageMarker messageMarker) {
 		getValueBindingSupport().removeValidationMessage(messageMarker);
 	}
 
-	public void removeValidationMessage(String message, IValidator validationRule) {
+	public void removeValidationMessage(final String message, final IValidator validationRule) {
 		getValueBindingSupport().removeValidationMessage(message, validationRule);
 	}
 
-	public void removeValidationMessage(String message) {
+	public void removeValidationMessage(final String message) {
 		getValueBindingSupport().removeValidationMessage(message);
 	}
 
@@ -134,9 +134,9 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * @see ValidationCallback
 	 * @since 2.0
 	 */
-	protected final IStatus checkAllRules(Object value, IValidationCallback callback) {
-		ValueBindingSupport vbs = getValueBindingSupport();
-		ValidatorCollection allValidators = vbs.getAllValidators();
+	protected final IStatus checkAllRules(final Object value, final IValidationCallback callback) {
+		final ValueBindingSupport vbs = getValueBindingSupport();
+		final ValidatorCollection allValidators = vbs.getAllValidators();
 		return allValidators.validate(value, callback);
 	}
 
@@ -152,9 +152,9 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * @see ValidationCallback
 	 * @since 2.0
 	 */
-	protected final IStatus checkOnEditRules(Object value, IValidationCallback callback) {
-		ValueBindingSupport vbs = getValueBindingSupport();
-		ValidatorCollection onEditValidators = vbs.getOnEditValidators();
+	protected final IStatus checkOnEditRules(final Object value, final IValidationCallback callback) {
+		final ValueBindingSupport vbs = getValueBindingSupport();
+		final ValidatorCollection onEditValidators = vbs.getOnEditValidators();
 		return onEditValidators.validate(value, callback);
 	}
 
@@ -170,9 +170,9 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	 * @see ValidationCallback
 	 * @since 2.0
 	 */
-	protected final IStatus checkOnUpdateRules(Object value, IValidationCallback callback) {
-		ValueBindingSupport vbs = getValueBindingSupport();
-		ValidatorCollection afterGetValidators = vbs.getAfterGetValidators();
+	protected final IStatus checkOnUpdateRules(final Object value, final IValidationCallback callback) {
+		final ValueBindingSupport vbs = getValueBindingSupport();
+		final ValidatorCollection afterGetValidators = vbs.getAfterGetValidators();
 		return afterGetValidators.validate(value, callback);
 	}
 
@@ -187,13 +187,13 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 
 			final Display display = control.getDisplay();
 			final Color oldBgColor = control.getBackground();
-			Color bgColor = Activator.getSharedColor(display, SharedColors.COLOR_FLASH_ERROR);
+			final Color bgColor = Activator.getSharedColor(display, SharedColors.COLOR_FLASH_ERROR);
 			control.setBackground(bgColor);
-			Runnable op = new Runnable() {
+			final Runnable op = new Runnable() {
 				public void run() {
 					try {
 						Thread.sleep(AbstractEditableRidget.FLASH_DURATION_MS);
-					} catch (InterruptedException e) {
+					} catch (final InterruptedException e) {
 						Nop.reason("ignore"); //$NON-NLS-1$
 					} finally {
 						if (!control.isDisposed()) {
@@ -233,17 +233,17 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 		 *            message' -- see
 		 *            {@link AbstractEditableRidget#suppressBlock(IStatus...)}
 		 */
-		public ValidationCallback(boolean allowBlock) {
+		public ValidationCallback(final boolean allowBlock) {
 			this.allowBlock = allowBlock;
 		}
 
-		public void validationRuleChecked(IValidator validationRule, IStatus status) {
-			IStatus myStatus = allowBlock ? status : suppressBlock(status);
+		public void validationRuleChecked(final IValidator validationRule, final IStatus status) {
+			final IStatus myStatus = allowBlock ? status : suppressBlock(status);
 			getValueBindingSupport().updateValidationStatus(validationRule, myStatus);
 		}
 
-		public void validationResult(IStatus status) {
-			IStatus myStatus = allowBlock ? status : suppressBlock(status);
+		public void validationResult(final IStatus status) {
+			final IStatus myStatus = allowBlock ? status : suppressBlock(status);
 			if (!myStatus.isOK() && myStatus.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
 				flash();
 			}

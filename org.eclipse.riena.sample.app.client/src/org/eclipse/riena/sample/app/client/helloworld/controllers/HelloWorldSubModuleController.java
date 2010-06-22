@@ -17,9 +17,9 @@ import org.eclipse.riena.ui.ridgets.ILabelRidget;
 public class HelloWorldSubModuleController extends SubModuleController {
 
 	private ILabelRidget labelRidget;
-	private TxtBean bean;
+	private final TxtBean bean;
 
-	public HelloWorldSubModuleController(ISubModuleNode navigationNode) {
+	public HelloWorldSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 		bean = new TxtBean();
 		bean.setTxt("Hello World"); //$NON-NLS-1$
@@ -66,7 +66,7 @@ public class HelloWorldSubModuleController extends SubModuleController {
 			return name;
 		}
 
-		public void setName(String name) {
+		public void setName(final String name) {
 			this.name = name;
 		}
 
@@ -75,7 +75,7 @@ public class HelloWorldSubModuleController extends SubModuleController {
 			return txt;
 		}
 
-		public void setTxt(String txt) {
+		public void setTxt(final String txt) {
 			this.txt = txt;
 		}
 

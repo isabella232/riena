@@ -69,14 +69,14 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	 *         they are repsonsible for they own children.
 	 * @since 1.2
 	 */
-	public static List<Object> getControlsWithBindingProperty(Composite composite) {
+	public static List<Object> getControlsWithBindingProperty(final Composite composite) {
 		final Map<String, Object> id2control = new HashMap<String, Object>();
-		SWTControlFinder finder = new SWTControlFinder(composite) {
+		final SWTControlFinder finder = new SWTControlFinder(composite) {
 			@Override
-			public void handleBoundControl(Control control, String bindingProperty) {
+			public void handleBoundControl(final Control control, final String bindingProperty) {
 				if (id2control.containsKey(bindingProperty)) {
-					String format = "conflict: control with id '%s' already defined: %s, %s"; //$NON-NLS-1$
-					String msg = String.format(format, bindingProperty, id2control.get(bindingProperty), control);
+					final String format = "conflict: control with id '%s' already defined: %s, %s"; //$NON-NLS-1$
+					final String msg = String.format(format, bindingProperty, id2control.get(bindingProperty), control);
 					throw new RuntimeException(msg);
 				}
 				id2control.put(bindingProperty, control);
@@ -94,15 +94,15 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	 *            UI control; may be null
 	 * @since 2.0
 	 */
-	public boolean hasBindingProperty(Object uiControl) {
-		String prop = locateBindingProperty(uiControl);
+	public boolean hasBindingProperty(final Object uiControl) {
+		final String prop = locateBindingProperty(uiControl);
 		return !StringUtils.isDeepEmpty(prop);
 	}
 
-	public String locateBindingProperty(Object uiControl) {
+	public String locateBindingProperty(final Object uiControl) {
 		String result = null;
 		if (uiControl instanceof Widget) {
-			Widget widget = (Widget) uiControl;
+			final Widget widget = (Widget) uiControl;
 			if (!widget.isDisposed()) {
 				result = (String) widget.getData(BINDING_PROPERTY);
 			}
@@ -122,9 +122,9 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	 *            value will also be assigned to the Ridget that is paired to
 	 *            the control.
 	 */
-	public void setBindingProperty(Object uiControl, String id) {
+	public void setBindingProperty(final Object uiControl, final String id) {
 		if (uiControl instanceof Widget) {
-			Widget widget = (Widget) uiControl;
+			final Widget widget = (Widget) uiControl;
 			if (widget.isDisposed()) {
 				return;
 			}
@@ -132,9 +132,9 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 		} else if (uiControl instanceof IPropertyNameProvider) {
 			((IPropertyNameProvider) uiControl).setPropertyName(id);
 		} else {
-			Logger log = Log4r.getLogger(Activator.getDefault(), SWTBindingPropertyLocator.class);
-			String className = uiControl != null ? uiControl.getClass().getName() : "null"; //$NON-NLS-1$
-			String msg = String.format("Failed to set binding property '%s' for %s", id, className); //$NON-NLS-1$
+			final Logger log = Log4r.getLogger(Activator.getDefault(), SWTBindingPropertyLocator.class);
+			final String className = uiControl != null ? uiControl.getClass().getName() : "null"; //$NON-NLS-1$
+			final String msg = String.format("Failed to set binding property '%s' for %s", id, className); //$NON-NLS-1$
 			log.log(LogService.LOG_WARNING, msg);
 		}
 	}

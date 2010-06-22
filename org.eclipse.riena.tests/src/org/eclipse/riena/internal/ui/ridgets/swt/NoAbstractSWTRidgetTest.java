@@ -38,7 +38,7 @@ public class NoAbstractSWTRidgetTest extends AbstractSWTRidgetTest {
 	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidgetTest#createWidget(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	protected Control createWidget(Composite parent) {
+	protected Control createWidget(final Composite parent) {
 		return new Label(parent, SWT.NONE);
 	}
 

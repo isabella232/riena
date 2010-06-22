@@ -22,28 +22,28 @@ import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 @NonUITestCase
 public class ListenerListTest extends RienaTestCase {
 
-	private ListenerList<TestListener> listenerList = new ListenerList<TestListener>(TestListener.class);
+	private final ListenerList<TestListener> listenerList = new ListenerList<TestListener>(TestListener.class);
 
 	public void testFresh() {
-		EventListener[] list = listenerList.getListeners();
+		final EventListener[] list = listenerList.getListeners();
 		assertNotNull(list);
 		assertEquals(0, list.length);
 		TestListener.pieps = 0;
-		for (TestListener listener : listenerList.getListeners()) {
+		for (final TestListener listener : listenerList.getListeners()) {
 			listener.piep();
 		}
 		assertEquals(0, TestListener.pieps);
 	}
 
 	public void testAddOneRemoveOne() {
-		EventListener[] list = listenerList.getListeners();
+		final EventListener[] list = listenerList.getListeners();
 		assertNotNull(list);
 		assertEquals(0, list.length);
-		TestListener t = new TestListener();
+		final TestListener t = new TestListener();
 		listenerList.add(t);
 		assertEquals(1, listenerList.getListeners().length);
 		TestListener.pieps = 0;
-		for (TestListener listener : listenerList.getListeners()) {
+		for (final TestListener listener : listenerList.getListeners()) {
 			listener.piep();
 		}
 		assertEquals(listenerList.getListeners().length, TestListener.pieps);
@@ -53,15 +53,15 @@ public class ListenerListTest extends RienaTestCase {
 	}
 
 	public void testAddMoreRemoveAll() {
-		EventListener[] list = listenerList.getListeners();
+		final EventListener[] list = listenerList.getListeners();
 		assertNotNull(list);
 		assertEquals(0, list.length);
-		TestListener[] listeners = new TestListener[10];
+		final TestListener[] listeners = new TestListener[10];
 		for (int i = 0; i < listeners.length; i++) {
 			listeners[i] = new TestListener();
 			listenerList.add(listeners[i]);
 			TestListener.pieps = 0;
-			for (TestListener listener : listenerList.getListeners()) {
+			for (final TestListener listener : listenerList.getListeners()) {
 				listener.piep();
 			}
 			assertEquals(listenerList.getListeners().length, TestListener.pieps);
@@ -70,7 +70,7 @@ public class ListenerListTest extends RienaTestCase {
 			listenerList.remove(listeners[i]);
 			assertEquals(i, listenerList.getListeners().length);
 			TestListener.pieps = 0;
-			for (TestListener listener : listenerList.getListeners()) {
+			for (final TestListener listener : listenerList.getListeners()) {
 				listener.piep();
 			}
 			assertEquals(listenerList.getListeners().length, TestListener.pieps);
@@ -86,7 +86,7 @@ public class ListenerListTest extends RienaTestCase {
 		final ListenerList<IWindowRidgetListener> windowListenerList = new ListenerList<IWindowRidgetListener>(
 				IWindowRidgetListener.class);
 
-		IWindowRidgetListener listener1 = new IWindowRidgetListener() {
+		final IWindowRidgetListener listener1 = new IWindowRidgetListener() {
 			public void activated() {
 			}
 
@@ -95,7 +95,7 @@ public class ListenerListTest extends RienaTestCase {
 		};
 		windowListenerList.add(listener1);
 
-		IWindowRidgetListener listener2 = new IWindowRidgetListener() {
+		final IWindowRidgetListener listener2 = new IWindowRidgetListener() {
 			public void activated() {
 			}
 

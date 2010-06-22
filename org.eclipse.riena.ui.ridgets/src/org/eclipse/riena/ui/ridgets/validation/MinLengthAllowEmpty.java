@@ -37,7 +37,7 @@ public class MinLengthAllowEmpty extends MinLength {
 	 * Object)
 	 */
 	@Override
-	public IStatus validate(Object value) {
+	public IStatus validate(final Object value) {
 		if (value == null) {
 			return ValidationRuleStatus.ok();
 		}

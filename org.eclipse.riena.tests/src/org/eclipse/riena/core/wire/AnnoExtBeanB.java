@@ -16,7 +16,7 @@ package org.eclipse.riena.core.wire;
 public class AnnoExtBeanB extends AnnoExtBeanA {
 
 	@InjectExtension(id = "core.test.extpointB")
-	public void config(IDataB data) {
+	public void config(final IDataB data) {
 		if (data != null) {
 			SequenceUtil.add(data.getInfo());
 		} else {

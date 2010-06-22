@@ -47,15 +47,15 @@ public class SentinelTest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		// create FilePermissionStore which we inject into a local AuthorizationService
-		InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml"); //$NON-NLS-1$
-		FilePermissionStore store = new FilePermissionStore(inputStream);
-		ServiceReference ref = getContext().getServiceReference(IAuthorizationService.class.getName());
+		final InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml"); //$NON-NLS-1$
+		final FilePermissionStore store = new FilePermissionStore(inputStream);
+		final ServiceReference ref = getContext().getServiceReference(IAuthorizationService.class.getName());
 		if (ref != null && ref.getBundle().getState() == Bundle.ACTIVE
 				&& ref.getBundle() != Activator.getDefault().getBundle()) {
 			ref.getBundle().stop();
 		}
 		// create and register a local AuthorizationService with a dummy permission store
-		AuthorizationService authorizationService = new AuthorizationService();
+		final AuthorizationService authorizationService = new AuthorizationService();
 		authorizationServiceReg = getContext().registerService(IAuthorizationService.class.getName(),
 				authorizationService, null);
 		// inject my test filestore
@@ -74,25 +74,25 @@ public class SentinelTest extends RienaTestCase {
 	}
 
 	public void testWithoutUser() {
-		boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
+		final boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
 		assertFalse("no permission if there is no subject", result);
 	}
 
 	public void testValidUser() {
-		Subject subject = new Subject();
+		final Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("testuser"));
 		Service.get(ISubjectHolder.class).setSubject(subject);
 
-		boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
+		final boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
 		assertTrue("has permission since valid subject", result);
 	}
 
 	public void testValidUserMissingPermissions() {
-		Subject subject = new Subject();
+		final Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("anotheruser"));
 		Service.get(ISubjectHolder.class).setSubject(subject);
 
-		boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
+		final boolean result = Sentinel.checkAccess(new TestcasePermission("testPerm"));
 		assertFalse("has no permission since subject has no permission", result);
 
 	}

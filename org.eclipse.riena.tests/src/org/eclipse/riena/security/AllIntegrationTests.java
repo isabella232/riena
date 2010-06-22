@@ -26,8 +26,8 @@ public class AllIntegrationTests extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	public static Test suite() {
-		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), AllIntegrationTests.class
-				.getPackage(), true, IntegrationTestCase.class);
+		return TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(),
+				AllIntegrationTests.class.getPackage(), true, IntegrationTestCase.class);
 	}
 
 }

@@ -15,10 +15,10 @@ package org.eclipse.riena.security.common.authentication.credentials;
  */
 public class TextOutputCredential extends AbstractCredential {
 
-	private int messageType;
-	private String message;
+	private final int messageType;
+	private final String message;
 
-	public TextOutputCredential(int messageType, String message) {
+	public TextOutputCredential(final int messageType, final String message) {
 		super(null);
 		this.messageType = messageType;
 		this.message = message;

@@ -34,7 +34,7 @@ public class MarkableTest extends TestCase {
 		assertNotNull(Markable.getMarkersOfType(null, null));
 		assertTrue(Markable.getMarkersOfType(null, null).isEmpty());
 
-		List<IMarker> markers = new ArrayList<IMarker>();
+		final List<IMarker> markers = new ArrayList<IMarker>();
 		assertTrue(Markable.getMarkersOfType(markers, null).isEmpty());
 		assertTrue(Markable.getMarkersOfType(markers, ErrorMarker.class).isEmpty());
 

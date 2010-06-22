@@ -44,7 +44,7 @@ public class NavigationArgument {
 	 * @param parameter
 	 *            parameter object that is passed to the opened node.
 	 */
-	public NavigationArgument(Object parameter) {
+	public NavigationArgument(final Object parameter) {
 		this();
 		this.parameter = parameter;
 	}
@@ -57,7 +57,7 @@ public class NavigationArgument {
 	 *            associated with the opened node
 	 * @since 1.2
 	 */
-	public NavigationArgument(Object parameter, String ridgetId) {
+	public NavigationArgument(final Object parameter, final String ridgetId) {
 		this(parameter);
 		this.ridgetId = ridgetId;
 	}
@@ -70,7 +70,7 @@ public class NavigationArgument {
 	 *            assembly extension. The type of the specified parent node has
 	 *            to be identical to the type of the original node.
 	 */
-	public NavigationArgument(Object parameter, NavigationNodeId parentNodeId) {
+	public NavigationArgument(final Object parameter, final NavigationNodeId parentNodeId) {
 		this(parameter);
 		this.parentNodeId = parentNodeId;
 	}
@@ -87,7 +87,7 @@ public class NavigationArgument {
 	 *            associated with the opened node
 	 * @since 1.2
 	 */
-	public NavigationArgument(Object parameter, NavigationNodeId parentNodeId, String ridgetId) {
+	public NavigationArgument(final Object parameter, final NavigationNodeId parentNodeId, final String ridgetId) {
 		this(parameter, parentNodeId);
 		this.ridgetId = ridgetId;
 	}
@@ -105,7 +105,8 @@ public class NavigationArgument {
 	 *            assembly extension. The type of the specified parent node has
 	 *            to be identical to the type of the original node.
 	 */
-	public NavigationArgument(Object parameter, IUpdateListener updateListener, NavigationNodeId parentNodeId) {
+	public NavigationArgument(final Object parameter, final IUpdateListener updateListener,
+			final NavigationNodeId parentNodeId) {
 		this(parameter, parentNodeId);
 		this.updateListener = updateListener;
 	}
@@ -149,7 +150,7 @@ public class NavigationArgument {
 	 *            {@code true} prepare all nodes; otherwise {@code false}
 	 * @since 2.0
 	 */
-	public void setPrepareAll(boolean prepareAll) {
+	public void setPrepareAll(final boolean prepareAll) {
 		this.prepareAll = prepareAll;
 	}
 
@@ -176,7 +177,7 @@ public class NavigationArgument {
 	 *            the nodePositioner to set
 	 * @since 2.0
 	 */
-	public void setNodePositioner(NodePositioner nodePositioner) {
+	public void setNodePositioner(final NodePositioner nodePositioner) {
 		this.nodePositioner = nodePositioner;
 	}
 
@@ -184,7 +185,7 @@ public class NavigationArgument {
 	 * Notify the update listener of this NavigationArgument about changes in
 	 * the opened node.
 	 */
-	public void fireValueChanged(Object parameter) {
+	public void fireValueChanged(final Object parameter) {
 		if (updateListener == null) {
 			return;
 		}
@@ -214,7 +215,7 @@ public class NavigationArgument {
 	 * All properties of this class are used.
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 
 		if (this == obj) {
 			return true;
@@ -226,7 +227,7 @@ public class NavigationArgument {
 			return false;
 		}
 
-		NavigationArgument other = (NavigationArgument) obj;
+		final NavigationArgument other = (NavigationArgument) obj;
 		if (nodePositioner == null) {
 			if (other.nodePositioner != null) {
 				return false;
@@ -238,8 +239,9 @@ public class NavigationArgument {
 			if (other.parameter != null) {
 				return false;
 			}
-		} else if (!parameter.equals(other.parameter))
+		} else if (!parameter.equals(other.parameter)) {
 			return false;
+		}
 		if (parentNodeId == null) {
 			if (other.parentNodeId != null) {
 				return false;

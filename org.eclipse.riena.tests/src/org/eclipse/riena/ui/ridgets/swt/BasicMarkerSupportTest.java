@@ -53,15 +53,15 @@ public class BasicMarkerSupportTest extends TestCase {
 	 */
 	public void testInit() {
 
-		DefaultRealm realm = new DefaultRealm();
+		final DefaultRealm realm = new DefaultRealm();
 		try {
-			Text control = new Text(shell, SWT.NONE);
-			ITextRidget ridget = new TextRidget();
+			final Text control = new Text(shell, SWT.NONE);
+			final ITextRidget ridget = new TextRidget();
 			ridget.setUIControl(control);
 			ridget.addMarker(new ErrorMarker());
 			ridget.addMarker(new MandatoryMarker());
 
-			MyBasicMarkerSupport markerSupport = new MyBasicMarkerSupport();
+			final MyBasicMarkerSupport markerSupport = new MyBasicMarkerSupport();
 			markerSupport.setClearAllMarkersCalled(false);
 			markerSupport.init(ridget, null);
 			assertEquals(2, ridget.getMarkers().size());
@@ -80,12 +80,12 @@ public class BasicMarkerSupportTest extends TestCase {
 		private boolean clearAllMarkersCalled;
 
 		@Override
-		protected void clearAllMarkers(Control control) {
+		protected void clearAllMarkers(final Control control) {
 			super.clearAllMarkers(control);
 			setClearAllMarkersCalled(true);
 		}
 
-		public void setClearAllMarkersCalled(boolean clearAllMarkersCalled) {
+		public void setClearAllMarkersCalled(final boolean clearAllMarkersCalled) {
 			this.clearAllMarkersCalled = clearAllMarkersCalled;
 		}
 

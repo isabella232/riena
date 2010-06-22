@@ -42,9 +42,9 @@ public final class State {
 	/** <code>REMOVED</code> */
 	public transient final static State REMOVED = new State(State.REMOVED_CODE);
 
-	private int state;
+	private final int state;
 
-	private State(int state) {
+	private State(final int state) {
 		super();
 		this.state = state;
 	}
@@ -73,7 +73,7 @@ public final class State {
 	 * @param state
 	 * @return
 	 */
-	public static String toString(State state) {
+	public static String toString(final State state) {
 		if (state == null) {
 			return "state is NULL ??"; //$NON-NLS-1$
 		} else {
@@ -85,7 +85,7 @@ public final class State {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object object) {
+	public boolean equals(final Object object) {
 		if (object instanceof State) {
 			return ((State) object).state == state;
 		}

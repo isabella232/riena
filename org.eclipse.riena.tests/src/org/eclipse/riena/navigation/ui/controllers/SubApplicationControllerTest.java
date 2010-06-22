@@ -35,8 +35,8 @@ public class SubApplicationControllerTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 
-		Display display = Display.getDefault();
-		Realm realm = SWTObservables.getRealm(display);
+		final Display display = Display.getDefault();
+		final Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 
@@ -57,7 +57,7 @@ public class SubApplicationControllerTest extends TestCase {
 	public void testGetMenuActionRidget() {
 
 		controller.addRidget(IActionRidget.BASE_ID_MENUACTION + "id1", new LabelRidget());
-		ActionRidget menuAction = new ActionRidget();
+		final ActionRidget menuAction = new ActionRidget();
 		controller.addRidget("id2", menuAction);
 		controller.addRidget(IActionRidget.BASE_ID_MENUACTION + "id3", menuAction);
 		controller.addRidget(IActionRidget.BASE_ID_TOOLBARACTION + "id4", menuAction);
@@ -75,7 +75,7 @@ public class SubApplicationControllerTest extends TestCase {
 	public void testGetToolbarActionRidget() {
 
 		controller.addRidget(IActionRidget.BASE_ID_TOOLBARACTION + "id1", new LabelRidget());
-		ActionRidget menuAction = new ActionRidget();
+		final ActionRidget menuAction = new ActionRidget();
 		controller.addRidget("id2", menuAction);
 		controller.addRidget(IActionRidget.BASE_ID_TOOLBARACTION + "id3", menuAction);
 		controller.addRidget(IActionRidget.BASE_ID_MENUACTION + "id4", menuAction);

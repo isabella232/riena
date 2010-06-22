@@ -44,13 +44,13 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  */
 public class SubApplicationSwitcherWidget extends Canvas {
 
-	private List<SubApplicationItem> items;
+	private final List<SubApplicationItem> items;
 	private TabSelector tabSelector;
 	private MnemonicListener mnemonicListener;
 	private PaintDelegation paintDelegation;
-	private Control control;
-	private ApplicationListener applicationListener;
-	private SubApplicationListener subApplicationListener;
+	private final Control control;
+	private final ApplicationListener applicationListener;
+	private final SubApplicationListener subApplicationListener;
 
 	/**
 	 * Creates a new widget.
@@ -63,7 +63,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 * @param application
 	 *            the node of the application
 	 */
-	public SubApplicationSwitcherWidget(Composite parent, int style, IApplicationNode application) {
+	public SubApplicationSwitcherWidget(final Composite parent, final int style, final IApplicationNode application) {
 
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		control = this;
@@ -105,7 +105,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 * @return {@code true} if the sub-application was activated; otherwise
 	 *         {@code false}
 	 */
-	private boolean activateItem(SubApplicationItem item) {
+	private boolean activateItem(final SubApplicationItem item) {
 		if (isTabEnabled(item)) {
 			item.getSubApplicationNode().activate();
 			redraw();
@@ -125,8 +125,8 @@ public class SubApplicationSwitcherWidget extends Canvas {
 		 * 
 		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
 		 */
-		public void paintControl(PaintEvent e) {
-			GC gc = e.gc;
+		public void paintControl(final PaintEvent e) {
+			final GC gc = e.gc;
 			getRenderer().setBounds(getParent().getBounds());
 			getRenderer().setItems(getItems());
 			getRenderer().paint(gc, control);
@@ -145,8 +145,8 @@ public class SubApplicationSwitcherWidget extends Canvas {
 		 * @see org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.events.MouseEvent)
 		 */
 		@Override
-		public void mouseDown(MouseEvent e) {
-			SubApplicationItem item = getItem(new Point(e.x, e.y));
+		public void mouseDown(final MouseEvent e) {
+			final SubApplicationItem item = getItem(new Point(e.x, e.y));
 			activateItem(item);
 		}
 
@@ -157,9 +157,9 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 */
 	private final class MnemonicListener implements TraverseListener {
 
-		public void keyTraversed(TraverseEvent evt) {
+		public void keyTraversed(final TraverseEvent evt) {
 			if (evt.detail == SWT.TRAVERSE_MNEMONIC) {
-				SubApplicationItem item = getItem(evt.character);
+				final SubApplicationItem item = getItem(evt.character);
 				activateItem(item);
 			}
 		}
@@ -173,9 +173,9 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 *            point over sub-application item
 	 * @return module item; or null, if not item was found
 	 */
-	private SubApplicationItem getItem(Point point) {
+	private SubApplicationItem getItem(final Point point) {
 
-		for (SubApplicationItem item : getItems()) {
+		for (final SubApplicationItem item : getItems()) {
 			if (item.getBounds().contains(point)) {
 				return item;
 			}
@@ -192,12 +192,12 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 *            -
 	 * @return module item; or null, if not item was found
 	 */
-	private SubApplicationItem getItem(char mnemonic) {
+	private SubApplicationItem getItem(final char mnemonic) {
 
 		String mnemonicStrg = "&" + mnemonic; //$NON-NLS-1$
 		mnemonicStrg = mnemonicStrg.toLowerCase();
 
-		for (SubApplicationItem item : getItems()) {
+		for (final SubApplicationItem item : getItems()) {
 			String label = item.getLabel();
 			if (label != null) {
 				label = label.toLowerCase();
@@ -220,7 +220,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 *            sub-application item
 	 * @return {@code true} if item is enabled and visible; otherwise false.
 	 */
-	private boolean isTabEnabled(SubApplicationItem item) {
+	private boolean isTabEnabled(final SubApplicationItem item) {
 
 		if (item == null) {
 			return false;
@@ -252,24 +252,24 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 * @param applicationModel
 	 *            model of the application
 	 */
-	private void registerItems(IApplicationNode applicationModel) {
+	private void registerItems(final IApplicationNode applicationModel) {
 
 		applicationModel.addListener(applicationListener);
 
-		List<ISubApplicationNode> subApps = applicationModel.getChildren();
-		for (ISubApplicationNode subApp : subApps) {
+		final List<ISubApplicationNode> subApps = applicationModel.getChildren();
+		for (final ISubApplicationNode subApp : subApps) {
 			registerSubApplication(subApp);
 		}
 
 	}
 
-	private void registerSubApplication(ISubApplicationNode subApp) {
+	private void registerSubApplication(final ISubApplicationNode subApp) {
 		subApp.addListener(subApplicationListener);
-		SubApplicationItem item = new SubApplicationItem(this, subApp);
+		final SubApplicationItem item = new SubApplicationItem(this, subApp);
 		item.setIcon(subApp.getIcon());
 		item.setLabel(subApp.getLabel());
 		getItems().add(item);
-		IApplicationNode applicationNode = findApplicationNode(getItems());
+		final IApplicationNode applicationNode = findApplicationNode(getItems());
 		if (applicationNode != null) {
 			// honor the order of subapplicationNodes in the applicationNode
 			orderItems(applicationNode);
@@ -285,9 +285,9 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 *            {@link ISubApplicationNode}s
 	 * @return - the {@link IApplicationNode} as the root of the whole model
 	 */
-	private IApplicationNode findApplicationNode(List<SubApplicationItem> items) {
-		for (SubApplicationItem item : items) {
-			ISubApplicationNode node = item.getSubApplicationNode();
+	private IApplicationNode findApplicationNode(final List<SubApplicationItem> items) {
+		for (final SubApplicationItem item : items) {
+			final ISubApplicationNode node = item.getSubApplicationNode();
 			if (node.getParent() != null) {
 				return (IApplicationNode) node.getParent();
 			}
@@ -295,30 +295,30 @@ public class SubApplicationSwitcherWidget extends Canvas {
 		return null;
 	}
 
-	private void orderItems(IApplicationNode appNode) {
+	private void orderItems(final IApplicationNode appNode) {
 		// use comparator to order the items honoring order of subapplicationNodes
 		Collections.sort(getItems(), new SubApplicationItemComparator(appNode));
 	}
 
 	private class SubApplicationItemComparator implements Comparator<SubApplicationItem> {
 
-		private IApplicationNode appNode;
+		private final IApplicationNode appNode;
 
-		public SubApplicationItemComparator(IApplicationNode appNode) {
+		public SubApplicationItemComparator(final IApplicationNode appNode) {
 			this.appNode = appNode;
 		}
 
-		public int compare(SubApplicationItem item1, SubApplicationItem item2) {
+		public int compare(final SubApplicationItem item1, final SubApplicationItem item2) {
 			return appNode.getIndexOfChild(item1.getSubApplicationNode()) < appNode.getIndexOfChild(item2
 					.getSubApplicationNode()) ? -1 : 1;
 		}
 
 	}
 
-	private void unregisterSubApplication(ISubApplicationNode subApp) {
+	private void unregisterSubApplication(final ISubApplicationNode subApp) {
 		subApp.removeListener(subApplicationListener);
 		SubApplicationItem itemToRemove = null;
-		for (SubApplicationItem item : getItems()) {
+		for (final SubApplicationItem item : getItems()) {
 			if (item.getSubApplicationNode().equals(subApp)) {
 				itemToRemove = item;
 				break;
@@ -351,7 +351,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	private final class SubApplicationListener extends SubApplicationNodeListener {
 
 		@Override
-		public void markerChanged(ISubApplicationNode source, IMarker marker) {
+		public void markerChanged(final ISubApplicationNode source, final IMarker marker) {
 			redraw();
 		}
 
@@ -359,7 +359,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void disposed(ISubApplicationNode source) {
+		public void disposed(final ISubApplicationNode source) {
 			unregisterSubApplication(source);
 			redraw();
 		}
@@ -368,13 +368,13 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	private final class ApplicationListener extends ApplicationNodeListener {
 
 		@Override
-		public void childRemoved(IApplicationNode source, ISubApplicationNode childRemoved) {
+		public void childRemoved(final IApplicationNode source, final ISubApplicationNode childRemoved) {
 			unregisterSubApplication(childRemoved);
 			redraw();
 		}
 
 		@Override
-		public void childAdded(IApplicationNode source, ISubApplicationNode childAdded) {
+		public void childAdded(final IApplicationNode source, final ISubApplicationNode childAdded) {
 			registerSubApplication(childAdded);
 			redraw();
 		}

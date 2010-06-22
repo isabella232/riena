@@ -15,31 +15,32 @@ import java.util.List;
 
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+
+import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * This class stores the properties of a tool item.
  */
 public class ToolItemProperties extends AbstractItemProperties {
 
-	private ToolBar parent;
+	private final ToolBar parent;
 	private List<String> prevSiblingIds;
-	private Image hotImage;
-	private Image disabledImage;
+	private final Image hotImage;
+	private final Image disabledImage;
 
 	/**
 	 * @param item
 	 */
-	public ToolItemProperties(ToolItemRidget ridget) {
+	public ToolItemProperties(final ToolItemRidget ridget) {
 
 		super(ridget);
 
-		ToolItem item = ridget.getUIControl();
+		final ToolItem item = ridget.getUIControl();
 		parent = item.getParent();
 		hotImage = item.getHotImage();
 		disabledImage = item.getDisabledImage();
@@ -53,9 +54,9 @@ public class ToolItemProperties extends AbstractItemProperties {
 	 * @param item
 	 *            item of tool bar
 	 */
-	private void storePreviousSiblings(ToolItem item) {
-		int index = parent.indexOf(item);
-		Item[] siblings = parent.getItems();
+	private void storePreviousSiblings(final ToolItem item) {
+		final int index = parent.indexOf(item);
+		final Item[] siblings = parent.getItems();
 		prevSiblingIds = new ArrayList<String>();
 		for (int i = 0; i < index; i++) {
 			prevSiblingIds.add(SWTBindingPropertyLocator.getInstance().locateBindingProperty(siblings[i]));
@@ -72,9 +73,9 @@ public class ToolItemProperties extends AbstractItemProperties {
 
 		int index = 0;
 
-		Item[] siblings = parent.getItems();
-		for (int i = 0; i < siblings.length; i++) {
-			String id = SWTBindingPropertyLocator.getInstance().locateBindingProperty(siblings[i]);
+		final Item[] siblings = parent.getItems();
+		for (final Item sibling : siblings) {
+			final String id = SWTBindingPropertyLocator.getInstance().locateBindingProperty(sibling);
 			if (prevSiblingIds.contains(id)) {
 				index++;
 			}
@@ -92,8 +93,8 @@ public class ToolItemProperties extends AbstractItemProperties {
 	@Override
 	protected ToolItem createItem() {
 
-		IContributionItem contributionItem = getContributionItem();
-		MenuManager menuManager = getMenuManager();
+		final IContributionItem contributionItem = getContributionItem();
+		final MenuManager menuManager = getMenuManager();
 		ToolItem toolItem;
 		if ((contributionItem != null) && (menuManager == null)) {
 			contributionItem.fill(parent, getIndex());
@@ -106,7 +107,7 @@ public class ToolItemProperties extends AbstractItemProperties {
 			setAllProperties(toolItem, true);
 			if (menuManager != null) {
 				toolItem.setData(menuManager);
-				MenuManagerHelper helper = new MenuManagerHelper();
+				final MenuManagerHelper helper = new MenuManagerHelper();
 				helper.addListeners(toolItem, menuManager.getMenu());
 			}
 		}
@@ -116,9 +117,9 @@ public class ToolItemProperties extends AbstractItemProperties {
 	}
 
 	@Override
-	protected void setAllProperties(Item item, boolean addListeners) {
+	protected void setAllProperties(final Item item, final boolean addListeners) {
 		super.setAllProperties(item, addListeners);
-		ToolItem toolItem = (ToolItem) item;
+		final ToolItem toolItem = (ToolItem) item;
 		if (hotImage == null || !hotImage.isDisposed()) {
 			toolItem.setHotImage(hotImage);
 		}
@@ -130,7 +131,7 @@ public class ToolItemProperties extends AbstractItemProperties {
 
 	private MenuManager getMenuManager() {
 
-		IContributionItem contributionItem = getContributionItem();
+		final IContributionItem contributionItem = getContributionItem();
 		if (contributionItem instanceof MenuManager) {
 			return (MenuManager) contributionItem;
 		}

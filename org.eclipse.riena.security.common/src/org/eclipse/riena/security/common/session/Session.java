@@ -35,7 +35,7 @@ public final class Session implements Serializable {
 	 * @param sessionId
 	 *            session ID
 	 */
-	public Session(String sessionId) {
+	public Session(final String sessionId) {
 		super();
 		setSessionId(sessionId);
 	}
@@ -53,7 +53,7 @@ public final class Session implements Serializable {
 	 * @param sessionId
 	 *            ID of the session
 	 */
-	public void setSessionId(String sessionId) {
+	public void setSessionId(final String sessionId) {
 		this.sessionId = sessionId;
 	}
 

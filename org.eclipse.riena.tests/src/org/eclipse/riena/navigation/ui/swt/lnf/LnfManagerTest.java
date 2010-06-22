@@ -48,7 +48,7 @@ public class LnfManagerTest extends TestCase {
 		assertEquals(RienaDefaultLnf.class, LnfManager.getLnf().getClass());
 
 		// check for some other default L&F
-		RienaDefaultLnf otherDefaultLnf = new OtherDefaultTestLnf();
+		final RienaDefaultLnf otherDefaultLnf = new OtherDefaultTestLnf();
 		LnfManager.setDefaultLnf(otherDefaultLnf);
 
 		assertEquals(otherDefaultLnf.getClass().getName(), LnfManager.getLnf().getClass().getName());
@@ -71,7 +71,7 @@ public class LnfManagerTest extends TestCase {
 	public void testGetLnfClassNameAndGetLnfWithSystemProperty() {
 		LnfManager.setLnf((RienaDefaultLnf) null);
 
-		Bundle bundle = FrameworkUtil.getBundle(LnfManagerTest.class);
+		final Bundle bundle = FrameworkUtil.getBundle(LnfManagerTest.class);
 
 		assertNotNull(bundle);
 
@@ -96,7 +96,7 @@ public class LnfManagerTest extends TestCase {
 	 * Test of the method <code>dispose()</code>.
 	 */
 	public void testDispose() {
-		RienaDefaultLnf myLnf = new RienaDefaultLnf();
+		final RienaDefaultLnf myLnf = new RienaDefaultLnf();
 		LnfManager.setLnf(myLnf);
 		myLnf.initialize();
 

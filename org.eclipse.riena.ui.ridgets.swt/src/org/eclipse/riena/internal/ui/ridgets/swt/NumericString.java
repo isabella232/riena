@@ -49,12 +49,12 @@ public class NumericString {
 	 *            Grouping separators will automatically be added to the value
 	 *            argument, if necessary.
 	 */
-	public NumericString(String value, boolean isGrouping) {
+	public NumericString(final String value, final boolean isGrouping) {
 		Assert.isNotNull(value);
 		if (value.length() > 0) {
 			Digit prev = null;
 			for (int i = 0; i < value.length(); i++) {
-				char ch = value.charAt(i);
+				final char ch = value.charAt(i);
 				prev = new Digit(ch, prev);
 				if (i == 0) {
 					start = prev;
@@ -80,17 +80,17 @@ public class NumericString {
 	 * @throws RuntimeException
 	 *             if {@code from} or {@code to} are not valid
 	 */
-	public int delete(int from, int to, char ch) {
+	public int delete(final int from, final int to, final char ch) {
 		Assert.isLegal(-1 < from);
 		Assert.isLegal(from < to);
 		final int delta = '\b' == ch ? -1 : 1;
 		if (to - from == 1) {
-			Digit fromDigit = findDigit(from);
+			final Digit fromDigit = findDigit(from);
 			fromDigit.delete(delta);
 		} else {
-			Digit fromDigit = findDigit(from);
-			Digit toDigitExcl = findDigit(to);
-			boolean endsWithSep = toDigitExcl != null && toDigitExcl.prev != null
+			final Digit fromDigit = findDigit(from);
+			final Digit toDigitExcl = findDigit(to);
+			final boolean endsWithSep = toDigitExcl != null && toDigitExcl.prev != null
 					&& toDigitExcl.prev.isDecimalSeparator();
 			fromDigit.delete(toDigitExcl);
 			if (endsWithSep && toDigitExcl.prev != null) {
@@ -98,7 +98,7 @@ public class NumericString {
 			} else if (toDigitExcl != null) {
 				toDigitExcl.setCursorBefore();
 			} else {
-				Digit lastDigit = getLastDigit();
+				final Digit lastDigit = getLastDigit();
 				if (lastDigit != null && lastDigit == start && lastDigit.isDecimalSeparator()) {
 					lastDigit.setCursorBefore();
 				} else if (lastDigit != null) {
@@ -112,7 +112,7 @@ public class NumericString {
 
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder();
+		final StringBuilder result = new StringBuilder();
 		if (start != null) {
 			Digit current = start;
 			while (current != null) {
@@ -153,7 +153,7 @@ public class NumericString {
 		int i = 2;
 		while (firstDigit != null) {
 			if (i == 0 && firstDigit.prev != null && Character.isDigit(firstDigit.prev.ch)) {
-				Digit sep = new Digit(NumericTextRidget.GROUPING_SEPARATOR, null);
+				final Digit sep = new Digit(NumericTextRidget.GROUPING_SEPARATOR, null);
 				sep.next = firstDigit;
 				sep.prev = firstDigit.prev;
 				firstDigit.prev.next = sep;
@@ -215,7 +215,7 @@ public class NumericString {
 		private Digit prev;
 		private Digit next;
 
-		public Digit(char ch, Digit prev) {
+		public Digit(final char ch, final Digit prev) {
 			this.ch = ch;
 			this.prev = prev;
 			if (prev != null) {
@@ -249,7 +249,7 @@ public class NumericString {
 			}
 		}
 
-		public void delete(int delta) {
+		public void delete(final int delta) {
 			Assert.isLegal(delta == -1 || delta == 1);
 			if (isSeparator()) {
 				if (delta == -1) {
@@ -275,10 +275,10 @@ public class NumericString {
 			}
 		}
 
-		public void delete(Digit end) {
+		public void delete(final Digit end) {
 			if (this != end) {
-				boolean hasPrev = this.prev != null;
-				boolean hasNext = this.next != null;
+				final boolean hasPrev = this.prev != null;
+				final boolean hasNext = this.next != null;
 				if (!isDecimalSeparator()) {
 					if (hasPrev) {
 						this.prev.next = this.next;

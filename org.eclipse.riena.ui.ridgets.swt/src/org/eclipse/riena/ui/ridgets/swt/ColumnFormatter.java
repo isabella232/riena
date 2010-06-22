@@ -33,31 +33,31 @@ import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
  */
 public class ColumnFormatter implements IColumnFormatter {
 
-	public String getText(Object element) {
+	public String getText(final Object element) {
 		return null;
 	}
 
-	public Image getImage(Object element) {
+	public Image getImage(final Object element) {
 		return null;
 	}
 
-	public Color getForeground(Object element) {
+	public Color getForeground(final Object element) {
 		return null;
 	}
 
-	public Color getBackground(Object element) {
+	public Color getBackground(final Object element) {
 		return null;
 	}
 
-	public Font getFont(Object element) {
+	public Font getFont(final Object element) {
 		return null;
 	}
 
-	public int getHorizontalAlignment(Object element) {
+	public int getHorizontalAlignment(final Object element) {
 		return SWT.DEFAULT;
 	}
 
-	public int getLeftIndent(Object element) {
+	public int getLeftIndent(final Object element) {
 		return 0;
 	}
 

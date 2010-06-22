@@ -44,7 +44,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Button createWidget(Composite parent) {
+	protected Button createWidget(final Composite parent) {
 		return new Button(parent, SWT.CHECK);
 	}
 
@@ -59,35 +59,35 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testRidgetMapping() {
-		Shell shell = getShell();
+		final Shell shell = getShell();
 
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 
-		Button buttonToggle = new Button(shell, SWT.TOGGLE);
+		final Button buttonToggle = new Button(shell, SWT.TOGGLE);
 		assertSame(ToggleButtonRidget.class, mapper.getRidgetClass(buttonToggle));
 
-		Button buttonCheck = new Button(shell, SWT.CHECK);
+		final Button buttonCheck = new Button(shell, SWT.CHECK);
 		assertSame(ToggleButtonRidget.class, mapper.getRidgetClass(buttonCheck));
 
-		Button buttonPush = new Button(shell, SWT.PUSH);
+		final Button buttonPush = new Button(shell, SWT.PUSH);
 		assertNotSame(ToggleButtonRidget.class, mapper.getRidgetClass(buttonPush));
 
-		Button aButton = new Button(shell, SWT.NONE);
+		final Button aButton = new Button(shell, SWT.NONE);
 		assertNotSame(ToggleButtonRidget.class, mapper.getRidgetClass(aButton));
 	}
 
 	public void testSetUIControl() throws Exception {
-		IToggleButtonRidget ridget = getRidget();
-		Button button = getWidget();
+		final IToggleButtonRidget ridget = getRidget();
+		final Button button = getWidget();
 
 		assertSame(button, ridget.getUIControl());
 	}
 
 	public void testSetSelected() throws Exception {
-		IToggleButtonRidget ridget = getRidget();
-		Button button = getWidget();
-		BooleanTestPojo model = new BooleanTestPojo();
-		IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
+		final IToggleButtonRidget ridget = getRidget();
+		final Button button = getWidget();
+		final BooleanTestPojo model = new BooleanTestPojo();
+		final IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
 		ridget.bindToModel(modelOV);
 
 		ridget.setSelected(true);
@@ -102,11 +102,11 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testIsSelected() throws Exception {
-		IToggleButtonRidget ridget = getRidget();
+		final IToggleButtonRidget ridget = getRidget();
 
-		BooleanTestPojo model = new BooleanTestPojo();
+		final BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
-		IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
+		final IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
 		ridget.bindToModel(modelOV);
 		ridget.updateFromModel();
 
@@ -114,11 +114,11 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToModelIObservableValue() throws Exception {
-		IToggleButtonRidget ridget = getRidget();
+		final IToggleButtonRidget ridget = getRidget();
 
-		BooleanTestPojo model = new BooleanTestPojo();
+		final BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
-		IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
+		final IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
 		ridget.bindToModel(modelOV);
 
 		assertNotNull(BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED));
@@ -132,9 +132,9 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToModelPropertyName() throws Exception {
-		IToggleButtonRidget ridget = getRidget();
+		final IToggleButtonRidget ridget = getRidget();
 
-		BooleanTestPojo model = new BooleanTestPojo();
+		final BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
 		ridget.bindToModel(model, "selected");
 
@@ -149,10 +149,10 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromModel() throws Exception {
-		IToggleButtonRidget ridget = getRidget();
-		Button button = getWidget();
+		final IToggleButtonRidget ridget = getRidget();
+		final Button button = getWidget();
 
-		BooleanTestPojo model = new BooleanTestPojo();
+		final BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
 		ridget.bindToModel(model, "selected");
 		ridget.updateFromModel();
@@ -165,11 +165,11 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testActionListener() {
-		IToggleButtonRidget ridget = getRidget();
+		final IToggleButtonRidget ridget = getRidget();
 
 		ridget.setSelected(false);
 
-		FTActionListener listener = new FTActionListener();
+		final FTActionListener listener = new FTActionListener();
 		ridget.addListener(listener);
 		ridget.setSelected(true);
 
@@ -191,14 +191,14 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.addListener(null);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 	}
 
 	public final void testSetText() throws Exception {
-		IToggleButtonRidget ridget = getRidget();
-		Button button = getWidget();
+		final IToggleButtonRidget ridget = getRidget();
+		final Button button = getWidget();
 
 		ridget.setText("");
 
@@ -208,7 +208,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setText(null);
 			fail();
-		} catch (IllegalArgumentException iae) {
+		} catch (final IllegalArgumentException iae) {
 			ok();
 		}
 
@@ -233,8 +233,8 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 * Test method get/setIcon().
 	 */
 	public final void testSetIcon() {
-		IToggleButtonRidget ridget = getRidget();
-		Button control = getWidget();
+		final IToggleButtonRidget ridget = getRidget();
+		final Button control = getWidget();
 
 		ridget.setIcon(ICON_ECLIPSE);
 
@@ -248,12 +248,12 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setIcon("nonsense");
 
-		Image missingImage = ImageStore.getInstance().getMissingImage();
+		final Image missingImage = ImageStore.getInstance().getMissingImage();
 		assertEquals("nonsense", ridget.getIcon());
 		assertEquals(missingImage, control.getImage());
 
 		Button button = createWidget(getShell());
-		Image buttonImage = button.getDisplay().getSystemImage(SWT.ICON_INFORMATION);
+		final Image buttonImage = button.getDisplay().getSystemImage(SWT.ICON_INFORMATION);
 		button.setImage(buttonImage);
 		IToggleButtonRidget buttonRidget = createRidget();
 		// binding doesn't remove image of button, because the icon of the ridget is null and the method #setIcon wasn't called yet.
@@ -284,8 +284,8 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 * Tests the method {@code initText}
 	 */
 	public final void testInitText() {
-		IToggleButtonRidget ridget = getRidget();
-		Button control = getWidget();
+		final IToggleButtonRidget ridget = getRidget();
+		final Button control = getWidget();
 
 		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false);
 		ReflectionUtils.setHidden(ridget, "text", null);
@@ -308,8 +308,8 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 * "output only".
 	 */
 	public void testOutputRidgetNotVisible() {
-		IToggleButtonRidget ridget = getRidget();
-		Button control = getWidget();
+		final IToggleButtonRidget ridget = getRidget();
+		final Button control = getWidget();
 
 		assertFalse(ridget.isOutputOnly());
 		assertTrue(control.isVisible());
@@ -367,9 +367,9 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 * control, when the ridget is disabled.
 	 */
 	public void testDisabledRidgetDoesNotCheckControlOnRidgetSelection() {
-		IToggleButtonRidget ridget = getRidget();
-		Button control = getWidget();
-		BooleanTestPojo model = new BooleanTestPojo();
+		final IToggleButtonRidget ridget = getRidget();
+		final Button control = getWidget();
+		final BooleanTestPojo model = new BooleanTestPojo();
 		ridget.bindToModel(model, "selected");
 
 		ridget.setSelected(false);
@@ -401,9 +401,9 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 * the control, when the ridget is disabled.
 	 */
 	public void testDisabledRidgetDoesNotCheckControlOnModelSelection() {
-		IToggleButtonRidget ridget = getRidget();
-		Button control = getWidget();
-		BooleanTestPojo model = new BooleanTestPojo();
+		final IToggleButtonRidget ridget = getRidget();
+		final Button control = getWidget();
+		final BooleanTestPojo model = new BooleanTestPojo();
 		ridget.bindToModel(model, "selected");
 		ridget.setEnabled(false);
 
@@ -437,8 +437,8 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 * no model is bound to the ridget.
 	 */
 	public void testDisableRidgetRemovesSelection() {
-		IToggleButtonRidget ridget = getRidget();
-		Button control = getWidget();
+		final IToggleButtonRidget ridget = getRidget();
+		final Button control = getWidget();
 
 		ridget.setEnabled(true);
 		ridget.setSelected(true);
@@ -472,12 +472,12 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 * though the control is modified.
 	 */
 	public void testDisabledDoesNotFireSelected() {
-		IToggleButtonRidget ridget = getRidget();
+		final IToggleButtonRidget ridget = getRidget();
 		ridget.setEnabled(true);
 		ridget.setSelected(true);
 
 		ridget.addPropertyChangeListener(IToggleButtonRidget.PROPERTY_SELECTED, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				fail("Unexpected property change event: " + evt);
 			}
 		});
@@ -492,8 +492,8 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	 * the ridget.
 	 */
 	public void testDisableAndClearOnBind() {
-		IToggleButtonRidget ridget = getRidget();
-		Button control = getWidget();
+		final IToggleButtonRidget ridget = getRidget();
+		final Button control = getWidget();
 
 		ridget.setUIControl(null);
 		ridget.setEnabled(false);
@@ -514,15 +514,15 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testFireAction() {
-		IToggleButtonRidget ridget = getRidget();
-		FTActionListener listener1 = new FTActionListener();
-		FTActionListener listener2 = new FTActionListener();
+		final IToggleButtonRidget ridget = getRidget();
+		final FTActionListener listener1 = new FTActionListener();
+		final FTActionListener listener2 = new FTActionListener();
 
 		ridget.addListener(listener1);
 
-		BooleanTestPojo model = new BooleanTestPojo();
+		final BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
-		IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
+		final IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
 		ridget.bindToModel(modelOV);
 		ridget.updateFromModel();
 
@@ -553,7 +553,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 			return selected;
 		}
 
-		public void setSelected(boolean selected) {
+		public void setSelected(final boolean selected) {
 			this.selected = selected;
 		}
 	}

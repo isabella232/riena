@@ -15,7 +15,7 @@ package org.eclipse.riena.core.service;
  */
 public class TestService2 implements ITestService {
 
-	public String hello(String thing) {
+	public String hello(final String thing) {
 		return "Hallo " + thing;
 	}
 

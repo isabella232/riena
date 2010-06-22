@@ -60,7 +60,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		textPrice.setText(Double.toString(-29.99));
 
 		final IComboRidget comboAge = (IComboRidget) getRidget("comboAge"); //$NON-NLS-1$
-		List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		final List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		comboAge.bindToModel(new WritableList(ages, String.class), String.class, null, new WritableValue());
 		comboAge.updateFromModel();
 		comboAge.setEmptySelectionItem("<none>"); //$NON-NLS-1$
@@ -125,8 +125,8 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		checkMandatory.addListener(new IActionListener() {
 			public void callback() {
-				boolean isMandatory = checkMandatory.isSelected();
-				for (IRidget ridget : markables) {
+				final boolean isMandatory = checkMandatory.isSelected();
+				for (final IRidget ridget : markables) {
 					if (ridget instanceof IMarkableRidget) {
 						((IMarkableRidget) ridget).setMandatory(isMandatory);
 					}
@@ -150,11 +150,11 @@ public class MarkerSubModuleController extends SubModuleController {
 		});
 
 		checkError.addListener(new IActionListener() {
-			private IValidator alwaysWrong = new AlwaysWrongValidator();
+			private final IValidator alwaysWrong = new AlwaysWrongValidator();
 
 			public void callback() {
-				boolean isError = checkError.isSelected();
-				for (IRidget ridget : markables) {
+				final boolean isError = checkError.isSelected();
+				for (final IRidget ridget : markables) {
 					if (ridget instanceof IMarkableRidget) {
 						((IMarkableRidget) ridget).setErrorMarked(isError);
 					}
@@ -177,8 +177,8 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		checkDisabled.addListener(new IActionListener() {
 			public void callback() {
-				boolean isEnabled = !checkDisabled.isSelected();
-				for (IRidget ridget : markables) {
+				final boolean isEnabled = !checkDisabled.isSelected();
+				for (final IRidget ridget : markables) {
 					ridget.setEnabled(isEnabled);
 				}
 			}
@@ -186,8 +186,8 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		checkOutput.addListener(new IActionListener() {
 			public void callback() {
-				boolean isOutput = checkOutput.isSelected();
-				for (IRidget ridget : markables) {
+				final boolean isOutput = checkOutput.isSelected();
+				for (final IRidget ridget : markables) {
 					if (ridget instanceof IMarkableRidget) {
 						((IMarkableRidget) ridget).setOutputOnly(isOutput);
 					}
@@ -197,8 +197,8 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		checkHidden.addListener(new IActionListener() {
 			public void callback() {
-				boolean isVisible = !checkHidden.isSelected();
-				for (IRidget ridget : markables) {
+				final boolean isVisible = !checkHidden.isSelected();
+				for (final IRidget ridget : markables) {
 					ridget.setVisible(isVisible);
 				}
 			}
@@ -209,7 +209,7 @@ public class MarkerSubModuleController extends SubModuleController {
 	// ////////////////
 
 	private WritableList createPersonList() {
-		ArrayList<Person> personList = new ArrayList<Person>();
+		final ArrayList<Person> personList = new ArrayList<Person>();
 		personList.add(new Person("Albinus", "Albert")); //$NON-NLS-1$ //$NON-NLS-2$
 		personList.add(new Person("Aurelius", "Mark")); //$NON-NLS-1$ //$NON-NLS-2$
 		personList.add(new Person("Adjunctus", "Maximus")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -217,18 +217,18 @@ public class MarkerSubModuleController extends SubModuleController {
 	}
 
 	private ITreeNode[] createTreeRoots() {
-		ITreeNode rootA = new TreeNode("A"); //$NON-NLS-1$
+		final ITreeNode rootA = new TreeNode("A"); //$NON-NLS-1$
 		new TreeNode(rootA, new Person("Albinus", "Albert")); //$NON-NLS-1$ //$NON-NLS-2$
 		new TreeNode(rootA, new Person("Aurelius", "Mark")); //$NON-NLS-1$ //$NON-NLS-2$
-		ITreeNode rootB = new TreeNode("B"); //$NON-NLS-1$
+		final ITreeNode rootB = new TreeNode("B"); //$NON-NLS-1$
 		new TreeNode(rootB, new Person("Barker", "Clyve")); //$NON-NLS-1$ //$NON-NLS-2$
 		new TreeNode(rootB, new Person("Barclay", "Bob")); //$NON-NLS-1$ //$NON-NLS-2$
 		return new ITreeNode[] { rootA, rootB };
 	}
 
 	private WordNode[] createTreeTableRoots() {
-		WordNode rootA = new WordNode("A"); //$NON-NLS-1$
-		WordNode rootB = new WordNode("B"); //$NON-NLS-1$
+		final WordNode rootA = new WordNode("A"); //$NON-NLS-1$
+		final WordNode rootB = new WordNode("B"); //$NON-NLS-1$
 		new WordNode(rootA, "Astoria"); //$NON-NLS-1$
 		new WordNode(rootA, "Ashland"); //$NON-NLS-1$
 		new WordNode(rootA, "Aurora"); //$NON-NLS-1$
@@ -247,7 +247,7 @@ public class MarkerSubModuleController extends SubModuleController {
 	 * Validator that always returns an error status.
 	 */
 	private static final class AlwaysWrongValidator implements IValidator {
-		public IStatus validate(Object value) {
+		public IStatus validate(final Object value) {
 			return ValidationRuleStatus.error(false, ""); //$NON-NLS-1$
 		}
 

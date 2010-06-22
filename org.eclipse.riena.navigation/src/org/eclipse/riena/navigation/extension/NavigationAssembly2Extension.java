@@ -92,7 +92,7 @@ public class NavigationAssembly2Extension implements INavigationAssembly2Extensi
 		return id;
 	}
 
-	public void setNavigationAssembler(String getNavigationAssembler) {
+	public void setNavigationAssembler(final String getNavigationAssembler) {
 		this.navigationAssembler = getNavigationAssembler;
 	}
 
@@ -102,7 +102,7 @@ public class NavigationAssembly2Extension implements INavigationAssembly2Extensi
 	 * @param assembly
 	 *            ID
 	 */
-	public void setId(String id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 
@@ -112,7 +112,7 @@ public class NavigationAssembly2Extension implements INavigationAssembly2Extensi
 	 * @param subApplications
 	 *            sub-application definitions
 	 */
-	public void setSubApplications(ISubApplicationNode2Extension[] subApplications) {
+	public void setSubApplications(final ISubApplicationNode2Extension[] subApplications) {
 		this.subApplications = subApplications;
 	}
 
@@ -122,7 +122,7 @@ public class NavigationAssembly2Extension implements INavigationAssembly2Extensi
 	 * @param moduleGroups
 	 *            module group definitions
 	 */
-	public void setModuleGroups(IModuleGroupNode2Extension[] moduleGroups) {
+	public void setModuleGroups(final IModuleGroupNode2Extension[] moduleGroups) {
 		this.moduleGroups = moduleGroups;
 	}
 
@@ -132,7 +132,7 @@ public class NavigationAssembly2Extension implements INavigationAssembly2Extensi
 	 * @param modules
 	 *            module definitions
 	 */
-	public void setModules(IModuleNode2Extension[] modules) {
+	public void setModules(final IModuleNode2Extension[] modules) {
 		this.modules = modules;
 	}
 
@@ -142,7 +142,7 @@ public class NavigationAssembly2Extension implements INavigationAssembly2Extensi
 	 * @param subModules
 	 *            sub-module definitions
 	 */
-	public void setSubModules(ISubModuleNode2Extension[] subModules) {
+	public void setSubModules(final ISubModuleNode2Extension[] subModules) {
 		this.subModules = subModules;
 	}
 
@@ -153,7 +153,7 @@ public class NavigationAssembly2Extension implements INavigationAssembly2Extensi
 	 * @param parentNodeId
 	 *            ID of the parent node
 	 */
-	public void setParentNodeId(String parentNodeId) {
+	public void setParentNodeId(final String parentNodeId) {
 		this.parentNodeId = parentNodeId;
 	}
 
@@ -164,11 +164,11 @@ public class NavigationAssembly2Extension implements INavigationAssembly2Extensi
 	 * @param startOrder
 	 *            >0 start order; otherwise no auto start
 	 */
-	public void setStartOrder(int startOrder) {
+	public void setStartOrder(final int startOrder) {
 		this.startOrder = startOrder;
 	}
 
-	public void setAssembler(INavigationAssembler assembler) {
+	public void setAssembler(final INavigationAssembler assembler) {
 		this.assembler = assembler;
 	}
 

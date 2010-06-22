@@ -18,18 +18,18 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
-	public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
+	public ApplicationWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
 		super(configurer);
 	}
 
 	@Override
-	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
+	public ActionBarAdvisor createActionBarAdvisor(final IActionBarConfigurer configurer) {
 		return new ApplicationActionBarAdvisor(configurer);
 	}
 
 	@Override
 	public void preWindowOpen() {
-		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
+		final IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		configurer.setInitialSize(new Point(600, 400));
 		configurer.setShowCoolBar(true);
 		configurer.setShowStatusLine(false);

@@ -76,21 +76,21 @@ public class SampleLoginModule implements LoginModule {
 	 * , javax.security.auth.callback.CallbackHandler, java.util.Map,
 	 * java.util.Map)
 	 */
-	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState,
-			Map<String, ?> options) {
+	public void initialize(final Subject subject, final CallbackHandler callbackHandler,
+			final Map<String, ?> sharedState, final Map<String, ?> options) {
 		this.subject = subject;
 		this.callbackHandler = callbackHandler;
 
 		try {
 			accounts = loadProperties((String) options.get("accounts.file")); //$NON-NLS-1$
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private Properties loadProperties(String path) throws IOException {
-		URL url = Activator.getDefault().getContext().getBundle().getEntry(path);
-		Properties properties = new Properties();
+	private Properties loadProperties(final String path) throws IOException {
+		final URL url = Activator.getDefault().getContext().getBundle().getEntry(path);
+		final Properties properties = new Properties();
 		properties.load(url.openStream());
 		return properties;
 	}
@@ -101,7 +101,7 @@ public class SampleLoginModule implements LoginModule {
 	 * @see javax.security.auth.spi.LoginModule#login()
 	 */
 	public boolean login() throws LoginException {
-		Callback[] callbacks = new Callback[2];
+		final Callback[] callbacks = new Callback[2];
 		callbacks[0] = new NameCallback("username: "); //$NON-NLS-1$
 		callbacks[1] = new PasswordCallback("password: ", false); //$NON-NLS-1$
 		if (callbackHandler == null) {
@@ -111,7 +111,7 @@ public class SampleLoginModule implements LoginModule {
 		try {
 			callbackHandler.handle(callbacks);
 			username = ((NameCallback) callbacks[0]).getName();
-			char[] password2 = ((PasswordCallback) callbacks[1]).getPassword();
+			final char[] password2 = ((PasswordCallback) callbacks[1]).getPassword();
 			if (password2 == null) {
 				password = null;
 			} else {
@@ -120,7 +120,7 @@ public class SampleLoginModule implements LoginModule {
 			if (username == null) {
 				return false;
 			}
-			String psw = (String) accounts.get(username);
+			final String psw = (String) accounts.get(username);
 			return psw != null && psw.equals(password);
 			//			if (username != null && password != null) {
 			//				if (username.equals("testuser") && password.equals("testpass")) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -137,10 +137,10 @@ public class SampleLoginModule implements LoginModule {
 			//			}
 			//
 			//			return false;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			return false;
-		} catch (UnsupportedCallbackException e) {
+		} catch (final UnsupportedCallbackException e) {
 			e.printStackTrace();
 			return false;
 		}

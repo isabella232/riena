@@ -21,7 +21,7 @@ public enum ImageFileExtension {
 
 	private String fileNameExtension;
 
-	private ImageFileExtension(String fileNameExtension) {
+	private ImageFileExtension(final String fileNameExtension) {
 		this.fileNameExtension = fileNameExtension;
 	}
 

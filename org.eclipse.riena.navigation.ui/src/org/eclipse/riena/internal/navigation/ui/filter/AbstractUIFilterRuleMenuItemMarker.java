@@ -22,7 +22,7 @@ public abstract class AbstractUIFilterRuleMenuItemMarker extends AbstractUIFilte
 	 * 
 	 * @param marker
 	 */
-	public AbstractUIFilterRuleMenuItemMarker(IMarker marker) {
+	public AbstractUIFilterRuleMenuItemMarker(final IMarker marker) {
 		super(null, marker);
 	}
 
@@ -33,12 +33,12 @@ public abstract class AbstractUIFilterRuleMenuItemMarker extends AbstractUIFilte
 	 *            ID
 	 * @param marker
 	 */
-	public AbstractUIFilterRuleMenuItemMarker(String id, IMarker marker) {
+	public AbstractUIFilterRuleMenuItemMarker(final String id, final IMarker marker) {
 		super(id, marker);
 	}
 
 	@Override
-	protected RidgetMatcher createMatcher(String id) {
+	protected RidgetMatcher createMatcher(final String id) {
 		return new MenuItemRidgetMatcher(id);
 	}
 

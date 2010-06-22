@@ -56,19 +56,19 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 
 	public DateTimeRidget() {
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				updateEditable();
 			}
 		});
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				updateEditable();
 			}
 		});
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTWidgetRidget.assertType(uiControl, DateTime.class);
 	}
 
@@ -114,9 +114,9 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		if (ridgetObservable == null) {
 			ridgetObservable = new WritableValue(null, Date.class);
 			ridgetObservable.addValueChangeListener(new IValueChangeListener() {
-				public void handleValueChange(ValueChangeEvent event) {
-					Object oldValue = event.diff.getOldValue();
-					Object newValue = event.diff.getNewValue();
+				public void handleValueChange(final ValueChangeEvent event) {
+					final Object oldValue = event.diff.getOldValue();
+					final Object newValue = event.diff.getNewValue();
 					firePropertyChange(IDateTimeRidget.PROPERTY_DATE, oldValue, newValue);
 				}
 			});
@@ -130,7 +130,7 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	}
 
 	@Override
-	public void bindToModel(IObservableValue observableValue) {
+	public void bindToModel(final IObservableValue observableValue) {
 		unbindUIControl();
 
 		Assert.isNotNull(observableValue);
@@ -140,7 +140,7 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	}
 
 	@Override
-	public void bindToModel(Object valueHolder, String valuePropertyName) {
+	public void bindToModel(final Object valueHolder, final String valuePropertyName) {
 		if (AbstractSWTRidget.isBean(valueHolder.getClass())) {
 			bindToModel(BeansObservables.observeValue(valueHolder, valuePropertyName));
 		} else {
@@ -153,7 +153,7 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	}
 
 	public String getText() {
-		Date date = getDate();
+		final Date date = getDate();
 		return date != null ? SimpleDateFormat.getInstance().format(date) : ""; //$NON-NLS-1$
 	}
 
@@ -167,8 +167,8 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	}
 
 	public boolean revalidate() {
-		Date date = getDate();
-		IStatus onUpdate = checkOnUpdateRules(date, new ValidationCallback(false));
+		final Date date = getDate();
+		final IStatus onUpdate = checkOnUpdateRules(date, new ValidationCallback(false));
 		if (onUpdate.isOK()) {
 			getValueBindingSupport().updateFromTarget();
 		}
@@ -193,29 +193,29 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	 * operating system. See <a href="http://bugs.eclipse.org/248075">Bug
 	 * #248075</a>.
 	 */
-	public void setDate(Date date) {
+	public void setDate(final Date date) {
 		getRidgetObservable().setValue(date);
 		if (controlBinding != null) {
 			controlBinding.updateModelToTarget(); // update widget
 		}
-		IStatus status = checkAllRules(date, new ValidationCallback(false));
+		final IStatus status = checkAllRules(date, new ValidationCallback(false));
 		if (status.isOK()) {
 			getValueBindingSupport().updateFromTarget();
 		}
 	}
 
 	/** Not supported. */
-	public void setDirectWriting(boolean directWriting) {
+	public void setDirectWriting(final boolean directWriting) {
 		throw new UnsupportedOperationException();
 	}
 
 	/** Not supported. */
-	public void setInputToUIControlConverter(IConverter converter) {
+	public void setInputToUIControlConverter(final IConverter converter) {
 		throw new UnsupportedOperationException();
 	}
 
 	/** Not supported. */
-	public void setText(String text) {
+	public void setText(final String text) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -236,16 +236,16 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	 * 
 	 * @return {@code date} or new Date instance
 	 */
-	private Date getNonNullDate(Date date) {
+	private Date getNonNullDate(final Date date) {
 		return date != null ? date : new Date(0);
 	}
 
-	private boolean isTimeControl(DateTime control) {
+	private boolean isTimeControl(final DateTime control) {
 		return (control.getStyle() & SWT.TIME) != 0;
 	}
 
 	private void updateEditable() {
-		DateTime control = getUIControl();
+		final DateTime control = getUIControl();
 		if (control != null && !control.isDisposed()) {
 			control.setEnabled(isOutputOnly() || !isEnabled() ? false : true);
 		}
@@ -258,12 +258,13 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	 * DateAndTimeObservable that handles doSetValue(null) gracefully.
 	 */
 	private final class DateAndTimeObservableWithNullConversion extends DateAndTimeObservableValue {
-		public DateAndTimeObservableWithNullConversion(IObservableValue dateObservable, IObservableValue timeObservable) {
+		public DateAndTimeObservableWithNullConversion(final IObservableValue dateObservable,
+				final IObservableValue timeObservable) {
 			super(dateObservable, timeObservable);
 		}
 
 		@Override
-		protected void doSetValue(Object value) {
+		protected void doSetValue(final Object value) {
 			super.doSetValue(getNonNullDate((Date) value));
 		}
 	}
@@ -272,7 +273,7 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	 * Validator that delegates to the 'on edit' validators for this ridget.
 	 */
 	private final class EditRulesValidator implements IValidator {
-		public IStatus validate(Object value) {
+		public IStatus validate(final Object value) {
 			return checkOnEditRules(value, new ValidationCallback(true));
 		}
 	}

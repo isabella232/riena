@@ -114,7 +114,7 @@ public class ValidatorCollection implements IValidator, Iterable<IValidator> {
 	 * 
 	 * @since 1.2
 	 */
-	public IStatus validate(final Object value, IValidationCallback callback) {
+	public IStatus validate(final Object value, final IValidationCallback callback) {
 		final IStatus[] statuses = new IStatus[validators.size()];
 		int index = -1;
 		for (final IValidator validator : validators) {
@@ -123,7 +123,7 @@ public class ValidatorCollection implements IValidator, Iterable<IValidator> {
 				callback.validationRuleChecked(validator, statuses[index]);
 			}
 		}
-		IStatus result = ValidationRuleStatus.join(statuses);
+		final IStatus result = ValidationRuleStatus.join(statuses);
 		if (callback != null) {
 			callback.validationResult(result);
 		}

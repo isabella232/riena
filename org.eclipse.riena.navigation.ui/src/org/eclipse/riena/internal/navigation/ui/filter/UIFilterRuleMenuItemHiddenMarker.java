@@ -30,7 +30,7 @@ public class UIFilterRuleMenuItemHiddenMarker extends AbstractUIFilterRuleMenuIt
 	 * @param idPattern
 	 *            ID
 	 */
-	public UIFilterRuleMenuItemHiddenMarker(String idPattern) {
+	public UIFilterRuleMenuItemHiddenMarker(final String idPattern) {
 		super(idPattern, new HiddenMarker(false));
 	}
 

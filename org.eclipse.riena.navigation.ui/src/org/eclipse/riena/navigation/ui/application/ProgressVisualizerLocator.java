@@ -25,11 +25,11 @@ import org.eclipse.riena.ui.ridgets.IStatuslineUIProcessRidget;
 public class ProgressVisualizerLocator implements IProgressVisualizerLocator {
 
 	@SuppressWarnings("unchecked")
-	public IProgressVisualizer getProgressVisualizer(Object context) {
-		IProgressVisualizer aVisualizer = new ProgressVisualizer();
+	public IProgressVisualizer getProgressVisualizer(final Object context) {
+		final IProgressVisualizer aVisualizer = new ProgressVisualizer();
 		if (context != null && INavigationNode.class.isAssignableFrom(context.getClass())) {
-			INavigationNode node = INavigationNode.class.cast(context);
-			IStatuslineUIProcessRidget statuslineUIProcessRidget = ((ApplicationController) node.getParentOfType(
+			final INavigationNode node = INavigationNode.class.cast(context);
+			final IStatuslineUIProcessRidget statuslineUIProcessRidget = ((ApplicationController) node.getParentOfType(
 					IApplicationNode.class).getNavigationNodeController()).getStatusline()
 					.getStatuslineUIProcessRidget();
 			if (statuslineUIProcessRidget != null) {
@@ -47,11 +47,11 @@ public class ProgressVisualizerLocator implements IProgressVisualizerLocator {
 		return aVisualizer;
 	}
 
-	private UIProcessFinishedObserver createObserver(INavigationNode<?> node) {
+	private UIProcessFinishedObserver createObserver(final INavigationNode<?> node) {
 		return new UIProcessFinishedObserver(node);
 	}
 
-	private IProgressVisualizerObserver getUIProcessRidget(ISubApplicationNode subApp) {
+	private IProgressVisualizerObserver getUIProcessRidget(final ISubApplicationNode subApp) {
 		return ((SubApplicationController) subApp.getNavigationNodeController()).getUiProcessRidget();
 	}
 }

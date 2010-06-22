@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -26,6 +25,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tracker;
 
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
+
 /**
  * Mouse listener to be used together with a {@link GrabCorner}.
  * <p>
@@ -38,9 +39,9 @@ public final class GrabCornerListenerWithTracker extends MouseAdapter implements
 	private Cursor resizeCursor;
 	private Cursor defaultCursor;
 
-	public GrabCornerListenerWithTracker(GrabCorner control) {
+	public GrabCornerListenerWithTracker(final GrabCorner control) {
 		control.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+			public void widgetDisposed(final DisposeEvent e) {
 				SwtUtilities.disposeResource(resizeCursor);
 				SwtUtilities.disposeResource(defaultCursor);
 			}
@@ -51,10 +52,10 @@ public final class GrabCornerListenerWithTracker extends MouseAdapter implements
 	}
 
 	@Override
-	public void mouseDown(MouseEvent e) {
-		Tracker tracker = createTracker();
+	public void mouseDown(final MouseEvent e) {
+		final Tracker tracker = createTracker();
 		try {
-			boolean doResize = tracker.open();
+			final boolean doResize = tracker.open();
 			if (doResize) {
 				handleResize(tracker);
 			}
@@ -63,15 +64,15 @@ public final class GrabCornerListenerWithTracker extends MouseAdapter implements
 		}
 	}
 
-	public void mouseEnter(MouseEvent e) {
+	public void mouseEnter(final MouseEvent e) {
 		showResizeCursor();
 	}
 
-	public void mouseExit(MouseEvent e) {
+	public void mouseExit(final MouseEvent e) {
 		showDefaultCursor();
 	}
 
-	public void mouseHover(MouseEvent e) {
+	public void mouseHover(final MouseEvent e) {
 		// unused
 	}
 
@@ -102,11 +103,11 @@ public final class GrabCornerListenerWithTracker extends MouseAdapter implements
 	 * Create a tracker rectangle
 	 */
 	private Tracker createTracker() {
-		Shell shell = control.getShell();
-		Display display = shell.getDisplay();
-		Tracker tracker = new Tracker(display, SWT.DOWN | SWT.RIGHT | SWT.RESIZE);
+		final Shell shell = control.getShell();
+		final Display display = shell.getDisplay();
+		final Tracker tracker = new Tracker(display, SWT.DOWN | SWT.RIGHT | SWT.RESIZE);
 		tracker.addControlListener(new TrackerListener());
-		Rectangle boundsDsp = display.map(shell, null, shell.getClientArea());
+		final Rectangle boundsDsp = display.map(shell, null, shell.getClientArea());
 		tracker.setRectangles(new Rectangle[] { boundsDsp });
 		tracker.setStippled(true);
 		return tracker;
@@ -115,8 +116,8 @@ public final class GrabCornerListenerWithTracker extends MouseAdapter implements
 	/**
 	 * Resize the shell with the coordinates from the tracker
 	 */
-	private void handleResize(Tracker tracker) {
-		Rectangle bounds = getTrackerBounds(tracker);
+	private void handleResize(final Tracker tracker) {
+		final Rectangle bounds = getTrackerBounds(tracker);
 		if (bounds != null) {
 			control.getShell().setBounds(bounds);
 		}
@@ -130,8 +131,8 @@ public final class GrabCornerListenerWithTracker extends MouseAdapter implements
 	 * @param tracker
 	 * @return bounds; {@code null} if the tracker has no bounds.
 	 */
-	private Rectangle getTrackerBounds(Tracker tracker) {
-		Rectangle[] rectangles = tracker.getRectangles();
+	private Rectangle getTrackerBounds(final Tracker tracker) {
+		final Rectangle[] rectangles = tracker.getRectangles();
 		if (rectangles.length > 0) {
 			return rectangles[0];
 		} else {
@@ -146,10 +147,10 @@ public final class GrabCornerListenerWithTracker extends MouseAdapter implements
 	 * 
 	 * @param tracker
 	 */
-	private void setMinimumBounds(Tracker tracker) {
+	private void setMinimumBounds(final Tracker tracker) {
 
-		Rectangle bounds = getTrackerBounds(tracker);
-		Point miniSize = control.getShell().getMinimumSize();
+		final Rectangle bounds = getTrackerBounds(tracker);
+		final Point miniSize = control.getShell().getMinimumSize();
 		boolean setTrackerBounds = false;
 		if (bounds.width < miniSize.x) {
 			setTrackerBounds = true;
@@ -174,7 +175,7 @@ public final class GrabCornerListenerWithTracker extends MouseAdapter implements
 		 * @see org.eclipse.swt.events.ControlListener#controlMoved(org.eclipse.swt
 		 *      .events.ControlEvent)
 		 */
-		public void controlMoved(ControlEvent e) {
+		public void controlMoved(final ControlEvent e) {
 			// nothing to do
 		}
 
@@ -182,10 +183,10 @@ public final class GrabCornerListenerWithTracker extends MouseAdapter implements
 		 * @see org.eclipse.swt.events.ControlListener#controlResized(org.eclipse
 		 *      .swt.events.ControlEvent)
 		 */
-		public void controlResized(ControlEvent e) {
+		public void controlResized(final ControlEvent e) {
 
 			if (e.widget instanceof Tracker) {
-				Tracker tracker = (Tracker) e.widget;
+				final Tracker tracker = (Tracker) e.widget;
 				setMinimumBounds(tracker);
 			}
 

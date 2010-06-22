@@ -48,7 +48,7 @@ public class ProcessDetail {
 
 	private final int key = nextKey();
 
-	public ProcessDetail(long startupTS, IProgressVisualizer visualizer) {
+	public ProcessDetail(final long startupTS, final IProgressVisualizer visualizer) {
 		this.startupTS = startupTS;
 		this.visualizer = visualizer;
 	}
@@ -98,7 +98,7 @@ public class ProcessDetail {
 		return isPending() ? pendingProgress : progress;
 	}
 
-	public void setProgress(int progress) {
+	public void setProgress(final int progress) {
 		this.progress = progress;
 	}
 
@@ -111,7 +111,7 @@ public class ProcessDetail {
 	 * 
 	 * @param state
 	 */
-	public void setState(ProcessState state) {
+	public void setState(final ProcessState state) {
 		this.state = state;
 	}
 
@@ -126,9 +126,9 @@ public class ProcessDetail {
 		return calculatePercentage(getValue(), getMaxValue());
 	}
 
-	private static int calculatePercentage(int ivalue, int imaxValue) {
-		double dmaxValue = imaxValue;
-		double dValue = ivalue;
+	private static int calculatePercentage(final int ivalue, final int imaxValue) {
+		final double dmaxValue = imaxValue;
+		final double dValue = ivalue;
 		return (int) ((dValue / dmaxValue) * 100);
 	}
 

@@ -31,18 +31,18 @@ public class RemoteLoginProxy {
 	private ISubjectHolder subjectHolder;
 	private final String loginContext;
 	private AuthenticationTicket ticket;
-	private Subject subject;
+	private final Subject subject;
 
-	public RemoteLoginProxy(String loginContext, Subject subject) {
+	public RemoteLoginProxy(final String loginContext, final Subject subject) {
 		super();
 		this.loginContext = loginContext;
 		this.subject = subject;
-		Inject.service(IAuthenticationService.class).useRanking().into(this).andStart(
-				Activator.getDefault().getContext());
+		Inject.service(IAuthenticationService.class).useRanking().into(this)
+				.andStart(Activator.getDefault().getContext());
 		Inject.service(ISubjectHolder.class).useRanking().into(this).andStart(Activator.getDefault().getContext());
 	}
 
-	public void bind(IAuthenticationService authenticationService) {
+	public void bind(final IAuthenticationService authenticationService) {
 		this.authenticationService = authenticationService;
 	}
 
@@ -55,39 +55,39 @@ public class RemoteLoginProxy {
 	/**
 	 * @since 2.0
 	 */
-	public void bind(ISubjectHolder subjectHolderService) {
+	public void bind(final ISubjectHolder subjectHolderService) {
 		this.subjectHolder = subjectHolderService;
 	}
 
 	/**
 	 * @since 2.0
 	 */
-	public void unbind(ISubjectHolder subjectHolderService) {
+	public void unbind(final ISubjectHolder subjectHolderService) {
 		if (this.subjectHolder == subjectHolderService) {
 			this.subjectHolder = null;
 		}
 	}
 
-	public boolean login(Callback[] callbacks) throws LoginException {
+	public boolean login(final Callback[] callbacks) throws LoginException {
 		try {
-			AbstractCredential[] creds = Callback2CredentialConverter.callbacks2Credentials(callbacks);
+			final AbstractCredential[] creds = Callback2CredentialConverter.callbacks2Credentials(callbacks);
 			if (authenticationService == null) {
 				throw new AuthenticationFailure("no authentication service"); //$NON-NLS-1$
 			}
 			ticket = authenticationService.login(loginContext, creds);
-			for (Principal principal : ticket.getPrincipals()) {
+			for (final Principal principal : ticket.getPrincipals()) {
 				subject.getPrincipals().add(principal);
 			}
 			subjectHolder.setSubject(subject);
 			return true;
-		} catch (AuthenticationFailure failure) {
+		} catch (final AuthenticationFailure failure) {
 			throw new LoginException(failure.getMessage());
 		}
 	}
 
 	public boolean commit() {
-		Set<Principal> pSet = subject.getPrincipals();
-		for (Principal p : ticket.getPrincipals()) {
+		final Set<Principal> pSet = subject.getPrincipals();
+		for (final Principal p : ticket.getPrincipals()) {
 			pSet.add(p);
 		}
 		subjectHolder.setSubject(subject);
@@ -98,7 +98,7 @@ public class RemoteLoginProxy {
 		try {
 			authenticationService.logout();
 			subject.getPrincipals().clear();
-		} catch (AuthenticationFailure e) {
+		} catch (final AuthenticationFailure e) {
 			throw new LoginException(e.getMessage());
 		}
 		return true;

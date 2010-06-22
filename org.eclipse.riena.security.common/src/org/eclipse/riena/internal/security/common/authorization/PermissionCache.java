@@ -36,18 +36,18 @@ public class PermissionCache implements IPermissionCache {
 		}
 	}
 
-	public Permissions getPermissions(Principal principal) {
+	public Permissions getPermissions(final Principal principal) {
 		return permCache.get(principal.getName());
 	}
 
-	public void putPermissions(Principal principal, Permissions permissions) {
+	public void putPermissions(final Principal principal, final Permissions permissions) {
 		permCache.put(principal.getName(), permissions);
 
 	}
 
-	public void purgePermissions(Subject subject) {
+	public void purgePermissions(final Subject subject) {
 	}
 
-	public void purgePermissions(Principal principal) {
+	public void purgePermissions(final Principal principal) {
 	}
 }

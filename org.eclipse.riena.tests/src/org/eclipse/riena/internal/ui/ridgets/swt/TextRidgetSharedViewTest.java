@@ -40,9 +40,9 @@ public class TextRidgetSharedViewTest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		Display display = Display.getDefault();
+		final Display display = Display.getDefault();
 
-		Realm realm = SWTObservables.getRealm(display);
+		final Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 
@@ -77,12 +77,12 @@ public class TextRidgetSharedViewTest extends RienaTestCase {
 	 */
 	public void testMandatoryMarkersInSharedViews() throws Exception {
 
-		Color normalBackground = widget.getBackground();
+		final Color normalBackground = widget.getBackground();
 
 		textRidget1.setMandatory(true);
 		textRidget2.setMandatory(true);
 
-		Color mandatoryBackground = widget.getBackground();
+		final Color mandatoryBackground = widget.getBackground();
 		assertFalse(normalBackground.equals(mandatoryBackground));
 
 		assertEquals(mandatoryBackground, widget.getBackground());

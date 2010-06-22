@@ -45,14 +45,14 @@ public final class AssembliesConverter {
 	 */
 	public static INavigationAssembly2Extension convert(final INavigationAssemblyExtension assembly) {
 
-		NavigationAssembly2Extension assembly2 = new NavigationAssembly2Extension();
+		final NavigationAssembly2Extension assembly2 = new NavigationAssembly2Extension();
 		assembly2.setAssembler(assembly.createNavigationAssembler());
 		assembly2.setNavigationAssembler(assembly.getNavigationAssembler());
 		assembly2.setId(assembly.getId());
 		assembly2.setParentNodeId(assembly.getParentNodeId());
 		try {
 			assembly2.setStartOrder(assembly.getStartOrder());
-		} catch (NumberFormatException ex) {
+		} catch (final NumberFormatException ex) {
 			assembly2.setStartOrder(-1);
 		}
 		if (assembly.getSubApplicationNode() != null) {
@@ -81,7 +81,7 @@ public final class AssembliesConverter {
 	}
 
 	private static ISubApplicationNode2Extension convert(final ISubApplicationNodeExtension nodeExt) {
-		SubApplicationNode2Extension node2Ext = new SubApplicationNode2Extension();
+		final SubApplicationNode2Extension node2Ext = new SubApplicationNode2Extension();
 		node2Ext.setPerspectiveId(nodeExt.getViewId());
 		node2Ext.setIcon(nodeExt.getIcon());
 		node2Ext.setName(nodeExt.getLabel());
@@ -94,7 +94,7 @@ public final class AssembliesConverter {
 		if (nodeExts == null) {
 			return new IModuleGroupNode2Extension[0];
 		}
-		ModuleGroupNode2Extension[] node2Exts = new ModuleGroupNode2Extension[nodeExts.length];
+		final ModuleGroupNode2Extension[] node2Exts = new ModuleGroupNode2Extension[nodeExts.length];
 		for (int i = 0; i < nodeExts.length; i++) {
 			node2Exts[i] = convert(nodeExts[i]);
 		}
@@ -102,7 +102,7 @@ public final class AssembliesConverter {
 	}
 
 	private static ModuleGroupNode2Extension convert(final IModuleGroupNodeExtension nodeExt) {
-		ModuleGroupNode2Extension node2Ext = new ModuleGroupNode2Extension();
+		final ModuleGroupNode2Extension node2Ext = new ModuleGroupNode2Extension();
 		node2Ext.setNodeId(nodeExt.getTypeId());
 		node2Ext.setChildNodes(convert(nodeExt.getChildNodes()));
 		return node2Ext;
@@ -112,7 +112,7 @@ public final class AssembliesConverter {
 		if (nodeExts == null) {
 			return new IModuleNode2Extension[0];
 		}
-		ModuleNode2Extension[] node2Exts = new ModuleNode2Extension[nodeExts.length];
+		final ModuleNode2Extension[] node2Exts = new ModuleNode2Extension[nodeExts.length];
 		for (int i = 0; i < nodeExts.length; i++) {
 			node2Exts[i] = convert(nodeExts[i]);
 		}
@@ -120,7 +120,7 @@ public final class AssembliesConverter {
 	}
 
 	private static ModuleNode2Extension convert(final IModuleNodeExtension nodeExt) {
-		ModuleNode2Extension node2Ext = new ModuleNode2Extension();
+		final ModuleNode2Extension node2Ext = new ModuleNode2Extension();
 		node2Ext.setClosable(!nodeExt.isUnclosable());
 		node2Ext.setIcon(nodeExt.getIcon());
 		node2Ext.setName(nodeExt.getLabel());
@@ -133,7 +133,7 @@ public final class AssembliesConverter {
 		if (nodeExts == null) {
 			return new ISubModuleNode2Extension[0];
 		}
-		SubModuleNode2Extension[] node2Exts = new SubModuleNode2Extension[nodeExts.length];
+		final SubModuleNode2Extension[] node2Exts = new SubModuleNode2Extension[nodeExts.length];
 		for (int i = 0; i < nodeExts.length; i++) {
 			node2Exts[i] = convert(nodeExts[i]);
 		}
@@ -142,7 +142,7 @@ public final class AssembliesConverter {
 
 	@SuppressWarnings("unchecked")
 	private static SubModuleNode2Extension convert(final ISubModuleNodeExtension nodeExt) {
-		SubModuleNode2Extension node2Ext = new SubModuleNode2Extension();
+		final SubModuleNode2Extension node2Ext = new SubModuleNode2Extension();
 		node2Ext.setController(nodeExt.getController());
 		node2Ext.setRequiresPreparation(nodeExt.isRequiresPreparation());
 		node2Ext.setSelectable(nodeExt.isSelectable());

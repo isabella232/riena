@@ -31,7 +31,7 @@ public class DateToStringConverter extends Converter {
 	 * @param pattern
 	 *            The pattern to match e.g. MM/dd/yyyy.
 	 */
-	public DateToStringConverter(String pattern) {
+	public DateToStringConverter(final String pattern) {
 		super(Date.class, String.class);
 		format = new SimpleDateFormat(pattern);
 		if (!hasTimeZone(pattern)) {
@@ -44,12 +44,12 @@ public class DateToStringConverter extends Converter {
 	/**
 	 * @see org.eclipse.core.databinding.conversion.IConverter#convert(java.lang.Object)
 	 */
-	public Object convert(Object fromObject) {
+	public Object convert(final Object fromObject) {
 		if (fromObject == null) {
 			return null;
 		}
 		synchronized (format) {
-			Date localDate = createLocalDate((Date) fromObject);
+			final Date localDate = createLocalDate((Date) fromObject);
 			return format.format(localDate);
 		}
 	}
@@ -60,17 +60,17 @@ public class DateToStringConverter extends Converter {
 	/**
 	 * If necessary convert from GMT date into local Date.
 	 */
-	private Date createLocalDate(Date date) {
+	private Date createLocalDate(final Date date) {
 		Date result = date;
 		if (timezone != null) {
-			long time = date.getTime();
-			int offset = timezone.getOffset(time);
+			final long time = date.getTime();
+			final int offset = timezone.getOffset(time);
 			result = new Date(time - offset);
 		}
 		return result;
 	}
 
-	private boolean hasTimeZone(String pattern) {
+	private boolean hasTimeZone(final String pattern) {
 		return pattern.contains("zzz") || pattern.contains("ZZZZ"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 

@@ -79,7 +79,7 @@ public class ValidatorCollectionTest extends RienaTestCase {
 
 	public void testConcurrentModification() {
 		// this test may not fail with a ConcurrentModificationException
-		ValidatorCollection rule = new ValidatorCollection();
+		final ValidatorCollection rule = new ValidatorCollection();
 		rule.add(ALWAYS_SUCCEED_1);
 		rule.add(ALWAYS_SUCCEED_1);
 		rule.add(ALWAYS_SUCCEED_1);
@@ -126,7 +126,7 @@ public class ValidatorCollectionTest extends RienaTestCase {
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
 			ok("expected a thrown ValidationFailure");
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			fail("expected a thrown ValidationFailure instead");
 		}
 		// two exception throwing rules
@@ -136,7 +136,7 @@ public class ValidatorCollectionTest extends RienaTestCase {
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
 			ok("expected a thrown ValidationFailure");
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			fail("expected a thrown ValidationFailure instead");
 		}
 
@@ -148,7 +148,7 @@ public class ValidatorCollectionTest extends RienaTestCase {
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
 			ok("expected a thrown ValidationFailure");
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			fail("expected a thrown ValidationFailure instead");
 		}
 
@@ -160,7 +160,7 @@ public class ValidatorCollectionTest extends RienaTestCase {
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
 			ok("expected a thrown ValidationFailure");
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			fail("expected a thrown ValidationFailure instead");
 		}
 
@@ -172,7 +172,7 @@ public class ValidatorCollectionTest extends RienaTestCase {
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
 			ok("expected a thrown ValidationFailure");
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			fail("expected a thrown ValidationFailure instead");
 		}
 
@@ -185,7 +185,7 @@ public class ValidatorCollectionTest extends RienaTestCase {
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
 			ok("expected a thrown ValidationFailure");
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			fail("expected a thrown ValidationFailure instead");
 		}
 
@@ -198,7 +198,7 @@ public class ValidatorCollectionTest extends RienaTestCase {
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
 			ok("expected a thrown ValidationFailure");
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			fail("expected a thrown ValidationFailure instead");
 		}
 
@@ -211,17 +211,17 @@ public class ValidatorCollectionTest extends RienaTestCase {
 			fail("expected a thrown ValidationFailure");
 		} catch (final ValidationFailure f) {
 			ok("expected a thrown ValidationFailure");
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			fail("expected a thrown ValidationFailure instead");
 		}
 	}
 
 	public void testValidationCallback() {
-		ValidatorCollection rule = new ValidatorCollection();
+		final ValidatorCollection rule = new ValidatorCollection();
 		rule.add(ALWAYS_FAIL_1);
 		rule.add(ALWAYS_SUCCEED_1);
 
-		IValidationCallback callback = createMock(IValidationCallback.class);
+		final IValidationCallback callback = createMock(IValidationCallback.class);
 		callback.validationRuleChecked(ALWAYS_FAIL_1, Status.CANCEL_STATUS);
 		callback.validationRuleChecked(ALWAYS_SUCCEED_1, Status.OK_STATUS);
 		callback.validationResult((IStatus) anyObject());

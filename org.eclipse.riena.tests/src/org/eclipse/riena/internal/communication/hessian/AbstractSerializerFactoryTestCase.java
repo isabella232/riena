@@ -49,15 +49,17 @@ public abstract class AbstractSerializerFactoryTestCase extends RienaTestCase {
 	}
 
 	/**
-	 * This must be kept in sync with {@code
+	 * This must be kept in sync with
+	 * {@code
 	 * org.eclipse.riena.internal.communication.factory.hessian.
 	 * RienaSerializerFactory.prepareHessianSerializerFactory()}
 	 */
 	private void removeUnwantedSerializerFactories() {
-		HashMap<?, ?> staticDeSerMap = ReflectionUtils.getHidden(SerializerFactory.class, "_staticDeserializerMap"); //$NON-NLS-1$
+		final HashMap<?, ?> staticDeSerMap = ReflectionUtils.getHidden(SerializerFactory.class,
+				"_staticDeserializerMap"); //$NON-NLS-1$
 		staticDeSerMap.remove(java.io.InputStream.class);
 		staticDeSerMap.remove(StackTraceElement.class);
-		HashMap<?, ?> staticSerMap = ReflectionUtils.getHidden(SerializerFactory.class, "_staticSerializerMap"); //$NON-NLS-1$
+		final HashMap<?, ?> staticSerMap = ReflectionUtils.getHidden(SerializerFactory.class, "_staticSerializerMap"); //$NON-NLS-1$
 		staticSerMap.remove(java.io.InputStream.class);
 	}
 
@@ -69,8 +71,8 @@ public abstract class AbstractSerializerFactoryTestCase extends RienaTestCase {
 	 * @param abstractSerializerFactories
 	 * @throws IOException
 	 */
-	protected boolean isBackAndForthOk(Object object, Class<?> asReturnType,
-			AbstractSerializerFactory... abstractSerializerFactories) {
+	protected boolean isBackAndForthOk(final Object object, final Class<?> asReturnType,
+			final AbstractSerializerFactory... abstractSerializerFactories) {
 		return isBackAndForthOk(object, HessianSerializerVersion.One, asReturnType, abstractSerializerFactories)
 				&& isBackAndForthOk(object, HessianSerializerVersion.Two, asReturnType, abstractSerializerFactories);
 	}
@@ -84,12 +86,12 @@ public abstract class AbstractSerializerFactoryTestCase extends RienaTestCase {
 	 * @param abstractSerializerFactories
 	 * @throws IOException
 	 */
-	protected boolean isBackAndForthOk(Object expected, HessianSerializerVersion version, Class<?> asReturnType,
-			AbstractSerializerFactory... abstractSerializerFactories) {
+	protected boolean isBackAndForthOk(final Object expected, final HessianSerializerVersion version,
+			final Class<?> asReturnType, final AbstractSerializerFactory... abstractSerializerFactories) {
 		Assert.isNotNull(expected, "expected value MUST not be null");
 		try {
 			return expected.equals(inAndOut(expected, version, asReturnType, abstractSerializerFactories));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			if (isTrace()) {
 				println("Comparing in and out caused an IOException: ");
 				e.printStackTrace();
@@ -109,24 +111,25 @@ public abstract class AbstractSerializerFactoryTestCase extends RienaTestCase {
 	 * @return
 	 * @throws IOException
 	 */
-	protected Object inAndOut(Object object, HessianSerializerVersion version, Class<?> asReturnType,
-			AbstractSerializerFactory... abstractSerializerFactories) throws IOException {
+	protected Object inAndOut(final Object object, final HessianSerializerVersion version, final Class<?> asReturnType,
+			final AbstractSerializerFactory... abstractSerializerFactories) throws IOException {
 
 		// Serialization
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		SerializerFactory factory = out(object, baos, version, asReturnType, abstractSerializerFactories);
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		final SerializerFactory factory = out(object, baos, version, asReturnType, abstractSerializerFactories);
 
 		// Deserialization
-		InputStream is = new ByteArrayInputStream(baos.toByteArray());
+		final InputStream is = new ByteArrayInputStream(baos.toByteArray());
 		return in(is, version, asReturnType, factory);
 	}
 
-	protected SerializerFactory out(Object object, OutputStream outputStream, HessianSerializerVersion version,
-			Class<?> asReturnType, AbstractSerializerFactory... abstractSerializerFactories) throws IOException {
-		AbstractHessianOutput out = version == HessianSerializerVersion.Two ? new Hessian2Output(outputStream)
+	protected SerializerFactory out(final Object object, final OutputStream outputStream,
+			final HessianSerializerVersion version, final Class<?> asReturnType,
+			final AbstractSerializerFactory... abstractSerializerFactories) throws IOException {
+		final AbstractHessianOutput out = version == HessianSerializerVersion.Two ? new Hessian2Output(outputStream)
 				: new HessianOutput(outputStream);
-		SerializerFactory factory = out.findSerializerFactory();
-		for (AbstractSerializerFactory serializerFactory : abstractSerializerFactories) {
+		final SerializerFactory factory = out.findSerializerFactory();
+		for (final AbstractSerializerFactory serializerFactory : abstractSerializerFactories) {
 			factory.addFactory(serializerFactory);
 		}
 		factory.setAllowNonSerializable(true);
@@ -135,9 +138,9 @@ public abstract class AbstractSerializerFactoryTestCase extends RienaTestCase {
 		return factory;
 	}
 
-	protected Object in(InputStream inputStream, HessianSerializerVersion version, Class<?> asReturnType,
-			SerializerFactory factory) throws IOException {
-		AbstractHessianInput in = version == HessianSerializerVersion.Two ? new Hessian2Input(inputStream)
+	protected Object in(final InputStream inputStream, final HessianSerializerVersion version,
+			final Class<?> asReturnType, final SerializerFactory factory) throws IOException {
+		final AbstractHessianInput in = version == HessianSerializerVersion.Two ? new Hessian2Input(inputStream)
 				: new HessianInput(inputStream);
 		if (factory != null) {
 			in.setSerializerFactory(factory);

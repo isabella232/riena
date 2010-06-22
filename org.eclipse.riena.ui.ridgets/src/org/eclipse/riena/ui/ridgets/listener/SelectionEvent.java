@@ -22,9 +22,9 @@ import org.eclipse.riena.ui.ridgets.IRidget;
  */
 public class SelectionEvent {
 
-	private IRidget source;
-	private List<Object> newSelection;
-	private List<Object> oldSelection;
+	private final IRidget source;
+	private final List<Object> newSelection;
+	private final List<Object> oldSelection;
 
 	/**
 	 * Creates a SelectionEvent.
@@ -36,7 +36,7 @@ public class SelectionEvent {
 	 * @param newSelectionList
 	 *            the new selection
 	 */
-	public SelectionEvent(IRidget source, List<?> oldSelectionList, List<?> newSelectionList) {
+	public SelectionEvent(final IRidget source, final List<?> oldSelectionList, final List<?> newSelectionList) {
 		this.source = source;
 		// making sure client code cannot modify the collection after using
 		// getNewSelection() or getOldSelection();
@@ -70,7 +70,7 @@ public class SelectionEvent {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder buffer = new StringBuilder("SelectionEvent[source="); //$NON-NLS-1$
+		final StringBuilder buffer = new StringBuilder("SelectionEvent[source="); //$NON-NLS-1$
 		buffer.append(getSource());
 		buffer.append(", oldSelection="); //$NON-NLS-1$
 		buffer.append(getOldSelection());

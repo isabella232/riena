@@ -23,8 +23,8 @@ import org.eclipse.riena.ui.filter.extension.IFilterNodeIdExtension;
  */
 public class UIFilterContainer implements IUIFilterContainer {
 
-	private Collection<String> nodeIds;
-	private IUIFilter filter;
+	private final Collection<String> nodeIds;
+	private final IUIFilter filter;
 
 	/**
 	 * Creates a container to stores the given filter and th according node IDs.
@@ -34,11 +34,11 @@ public class UIFilterContainer implements IUIFilterContainer {
 	 * @param idsS
 	 *            array of navigation-node IDs
 	 */
-	public UIFilterContainer(IUIFilter filter, IFilterNodeIdExtension[] ids) {
+	public UIFilterContainer(final IUIFilter filter, final IFilterNodeIdExtension[] ids) {
 
 		nodeIds = new ArrayList<String>();
-		for (int i = 0; i < ids.length; i++) {
-			nodeIds.add((ids[i].getId()));
+		for (final IFilterNodeIdExtension id : ids) {
+			nodeIds.add((id.getId()));
 		}
 
 		this.filter = filter;

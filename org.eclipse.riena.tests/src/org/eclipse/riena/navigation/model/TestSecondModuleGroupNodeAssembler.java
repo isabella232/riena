@@ -24,12 +24,13 @@ public class TestSecondModuleGroupNodeAssembler extends AbstractNavigationAssemb
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public INavigationNode<?>[] buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
-		IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId);
-		IModuleNode module = new ModuleNode(
-				new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModule"));
+	public INavigationNode<?>[] buildNode(final NavigationNodeId navigationNodeId,
+			final NavigationArgument navigationArgument) {
+		final IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId);
+		final IModuleNode module = new ModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.navigation.model.test.secondModule"));
 		moduleGroup.addChild(module);
-		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
+		final ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.secondSubModule"));
 		module.addChild(subModule);
 		return new IModuleGroupNode[] { moduleGroup };
@@ -38,7 +39,7 @@ public class TestSecondModuleGroupNodeAssembler extends AbstractNavigationAssemb
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(String)
 	 */
-	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
 
 		return nodeId.getTypeId().equals("org.eclipse.riena.navigation.model.test.secondModuleGroup")
 				|| nodeId.getTypeId().equals("org.eclipse.riena.navigation.model.test.secondModule")

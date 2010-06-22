@@ -27,8 +27,8 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 public class NavigationSubModuleControllerTest extends AbstractSubModuleControllerTest<NavigationSubModuleController> {
 
 	@Override
-	protected NavigationSubModuleController createController(ISubModuleNode node) {
-		NavigationSubModuleController newInst = new NavigationSubModuleController();
+	protected NavigationSubModuleController createController(final ISubModuleNode node) {
+		final NavigationSubModuleController newInst = new NavigationSubModuleController();
 		node.setNodeId(new NavigationNodeId("org.eclipse.riena.example.navigation"));
 		newInst.setNavigationNode(node);
 
@@ -41,13 +41,14 @@ public class NavigationSubModuleControllerTest extends AbstractSubModuleControll
 	 * @throws Exception
 	 */
 	public void testAddSubModules() throws Exception {
-		ISubModuleNode newSubModuleNode = new SubModuleNode(new NavigationNodeId(
+		final ISubModuleNode newSubModuleNode = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigation", Integer.toString(1)), "Node 0"); //$NON-NLS-1$
 		getMockNavigationProcessor().activate(EasyMock.eq(newSubModuleNode));
 
 		EasyMock.replay(getMockNavigationProcessor());
 
-		IActionRidget addSubModuleToSelf = getController().getRidget(IActionRidget.class, "addSubModuleToSelfBtn");
+		final IActionRidget addSubModuleToSelf = getController()
+				.getRidget(IActionRidget.class, "addSubModuleToSelfBtn");
 		addSubModuleToSelf.fireAction();
 
 		EasyMock.verify(getMockNavigationProcessor());

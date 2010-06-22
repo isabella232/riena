@@ -51,20 +51,20 @@ import org.eclipse.riena.internal.monitor.client.Activator;
 public class SimpleClientInfoProvider implements IClientInfoProvider, IExecutableExtension {
 
 	/**
-	 * ´Synthetic´ property that retrieves the hosts ip address, i.e. {@code
-	 * InetAddress.getLocalHost().getHostAddress()}
+	 * ´Synthetic´ property that retrieves the hosts ip address, i.e.
+	 * {@code InetAddress.getLocalHost().getHostAddress()}
 	 */
 	public static final String HOST_ADDRESS = "x-host.address"; //$NON-NLS-1$
 
 	/**
-	 * ´Synthetic´ property that retrieves the canonical host name, i.e. {@code
-	 * InetAddress.getLocalHost().getCanonicalHostName()}
+	 * ´Synthetic´ property that retrieves the canonical host name, i.e.
+	 * {@code InetAddress.getLocalHost().getCanonicalHostName()}
 	 */
 	public static final String HOST_CANONICALNAME = "x-host.canonicalname"; //$NON-NLS-1$
 
 	/**
-	 * ´Synthetic´ property that retrieves the host name, i.e. {@code
-	 * InetAddress.getLocalHost().getHostName()}
+	 * ´Synthetic´ property that retrieves the host name, i.e.
+	 * {@code InetAddress.getLocalHost().getHostName()}
 	 */
 	public static final String HOST_NAME = "x-host.name"; //$NON-NLS-1$
 
@@ -88,18 +88,18 @@ public class SimpleClientInfoProvider implements IClientInfoProvider, IExecutabl
 	 * .eclipse.core.runtime.IConfigurationElement, java.lang.String,
 	 * java.lang.Object)
 	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 		try {
 			clientInfo = getClientInfo(PropertiesUtils.asArray(data));
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
 		}
 	}
 
-	protected String getClientInfo(String[] properties) {
-		StringBuilder bob = new StringBuilder();
-		for (String property : properties) {
+	protected String getClientInfo(final String[] properties) {
+		final StringBuilder bob = new StringBuilder();
+		for (final String property : properties) {
 			bob.append(property).append('=').append(getProperty(property)).append(',');
 		}
 		if (bob.length() > 0) {
@@ -108,30 +108,30 @@ public class SimpleClientInfoProvider implements IClientInfoProvider, IExecutabl
 		return bob.toString();
 	}
 
-	protected String getProperty(String property) {
+	protected String getProperty(final String property) {
 		if (HOST_NAME.equals(property)) {
 			try {
 				return InetAddress.getLocalHost().getHostName();
-			} catch (UnknownHostException e) {
+			} catch (final UnknownHostException e) {
 				return UNKNOWN;
 			}
 		} else if (HOST_CANONICALNAME.equals(property)) {
 			try {
 				return InetAddress.getLocalHost().getCanonicalHostName();
-			} catch (UnknownHostException e) {
+			} catch (final UnknownHostException e) {
 				return UNKNOWN;
 			}
 		} else if (HOST_ADDRESS.equals(property)) {
 			try {
 				return InetAddress.getLocalHost().getHostAddress();
-			} catch (UnknownHostException e) {
+			} catch (final UnknownHostException e) {
 				return UNKNOWN;
 			}
 		}
 		return System.getProperty(property, UNKNOWN);
 	}
 
-	private CoreException configurationException(String message, Exception e) {
+	private CoreException configurationException(final String message, final Exception e) {
 		return new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, e));
 	}
 

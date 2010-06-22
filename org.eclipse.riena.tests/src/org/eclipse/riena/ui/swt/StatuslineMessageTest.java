@@ -53,7 +53,7 @@ public class StatuslineMessageTest extends TestCase {
 	 */
 	public void testCreateContents() {
 
-		Control[] controls = statusMessage.getChildren();
+		final Control[] controls = statusMessage.getChildren();
 		assertEquals(1, controls.length);
 		assertTrue(controls[0] instanceof CLabel);
 
@@ -66,8 +66,8 @@ public class StatuslineMessageTest extends TestCase {
 
 		statusMessage.setMessage("Hello!");
 
-		Control[] controls = statusMessage.getChildren();
-		CLabel label = (CLabel) controls[0];
+		final Control[] controls = statusMessage.getChildren();
+		final CLabel label = (CLabel) controls[0];
 		assertEquals("Hello!", label.getText());
 
 	}

@@ -63,7 +63,7 @@ public class DialogBorderRenderer extends AbstractLnfRenderer {
 		return getLnfColor(LnfKeyConstants.DIALOG_BORDER_TOP_LEFT_COLOR);
 	}
 
-	protected Color getLnfColor(String key) {
+	protected Color getLnfColor(final String key) {
 		return LnfManager.getLnf().getColor(key);
 	}
 
@@ -72,13 +72,13 @@ public class DialogBorderRenderer extends AbstractLnfRenderer {
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void paint(GC gc, Object value) {
+	public void paint(final GC gc, final Object value) {
 
 		if (!hideOsBorder()) {
 			return;
 		}
 
-		GCFacade gcFacade = GCFacade.getDefault();
+		final GCFacade gcFacade = GCFacade.getDefault();
 		gcFacade.setAdvanced(gc, true);
 		gcFacade.setAntialias(gc, SWT.ON);
 

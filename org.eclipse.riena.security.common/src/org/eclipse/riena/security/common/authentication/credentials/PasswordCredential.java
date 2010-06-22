@@ -16,12 +16,12 @@ package org.eclipse.riena.security.common.authentication.credentials;
 public class PasswordCredential extends AbstractCredential {
 
 	private char[] password;
-	private boolean echoOn;
+	private final boolean echoOn;
 
 	/**
 	 * @param prompt
 	 */
-	public PasswordCredential(String prompt, boolean echoOn) {
+	public PasswordCredential(final String prompt, final boolean echoOn) {
 		super(prompt);
 		this.echoOn = echoOn;
 	}
@@ -33,7 +33,7 @@ public class PasswordCredential extends AbstractCredential {
 		return password.clone();
 	}
 
-	public void setPassword(char[] password) {
+	public void setPassword(final char[] password) {
 		if (password != null) {
 			this.password = password.clone();
 		} else {

@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.sample.app.client;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.riena.communication.core.factory.Register;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.sample.app.common.model.IHelloWorldService;
 import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
-
-import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -35,15 +35,14 @@ public class Activator extends AbstractRienaUIPlugin {
 	}
 
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		// hack to force riena.core to load
 
 		plugin = this;
 
 		// register hessian proxy for riena remote service
-		Register
-				.remoteProxy(IHelloWorldService.class)
+		Register.remoteProxy(IHelloWorldService.class)
 				.usingUrl("http://localhost:8080/hessian/HelloWorldServiceWS").withProtocol("hessian").andStart(context); //$NON-NLS-1$ //$NON-NLS-2$
 
 		Register.remoteProxy(ICustomerSearch.class)
@@ -52,7 +51,7 @@ public class Activator extends AbstractRienaUIPlugin {
 	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		super.stop(context);
 		plugin = null;
 

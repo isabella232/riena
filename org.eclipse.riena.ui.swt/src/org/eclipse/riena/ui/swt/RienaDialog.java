@@ -22,9 +22,10 @@ import org.eclipse.swt.widgets.Shell;
  * 
  * @deprecated use AbstractDialogView
  */
+@Deprecated
 public class RienaDialog extends Dialog implements IRienaDialog {
 
-	private RienaDialogDelegate dlgDelegate;
+	private final RienaDialogDelegate dlgDelegate;
 
 	/**
 	 * Creates a new instance of {@code RienaDialog}.
@@ -32,7 +33,7 @@ public class RienaDialog extends Dialog implements IRienaDialog {
 	 * @param shell
 	 *            the parent shell
 	 */
-	public RienaDialog(Shell shell) {
+	public RienaDialog(final Shell shell) {
 		super(shell);
 		dlgDelegate = new RienaDialogDelegate(this);
 		dlgDelegate.evaluateStyle();
@@ -45,17 +46,17 @@ public class RienaDialog extends Dialog implements IRienaDialog {
 	}
 
 	@Override
-	protected Control createContents(Composite parent) {
+	protected Control createContents(final Composite parent) {
 
-		Control contentsComposite = dlgDelegate.createContents(parent);
+		final Control contentsComposite = dlgDelegate.createContents(parent);
 		super.createContents(dlgDelegate.getCenterComposite());
 		return contentsComposite;
 	}
 
 	@Override
-	protected Control createButtonBar(Composite parent) {
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridData data = new GridData();
+	protected Control createButtonBar(final Composite parent) {
+		final Composite composite = new Composite(parent, SWT.NONE);
+		final GridData data = new GridData();
 		data.heightHint = 0;
 		composite.setLayoutData(data);
 		return composite;
@@ -73,11 +74,11 @@ public class RienaDialog extends Dialog implements IRienaDialog {
 	}
 
 	@Override
-	public void setShellStyle(int newShellStyle) {
+	public void setShellStyle(final int newShellStyle) {
 		super.setShellStyle(newShellStyle);
 	}
 
-	public void setHideOsBorder(boolean hideOsBorder) {
+	public void setHideOsBorder(final boolean hideOsBorder) {
 		dlgDelegate.setHideOsBorder(hideOsBorder);
 	}
 

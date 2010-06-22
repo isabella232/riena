@@ -29,8 +29,8 @@ import org.eclipse.riena.internal.monitor.client.Activator;
 import org.eclipse.riena.monitor.common.LogEntryTransferObject;
 
 /**
- * Collects logs that are delivered by the {@code
- * org.osgi.service.log.LogListener}.
+ * Collects logs that are delivered by the
+ * {@code org.osgi.service.log.LogListener}.
  * <p>
  */
 @WireWith(LogServiceCollectorWiring.class)
@@ -59,14 +59,14 @@ public class LogServiceCollector extends AbstractCollector implements IExecutabl
 	 * .eclipse.core.runtime.IConfigurationElement, java.lang.String,
 	 * java.lang.Object)
 	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 		Map<String, String> properties = null;
 		try {
 			properties = PropertiesUtils.asMap(data, COLLECT_RANGE, TRIGGER_RANGE);
 			collectRange = new Range(properties.get(COLLECT_RANGE));
 			triggerRange = new Range(properties.get(TRIGGER_RANGE));
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
 		}
 	}
@@ -97,18 +97,18 @@ public class LogServiceCollector extends AbstractCollector implements IExecutabl
 		extendedLogReaderService.removeLogListener(logListener);
 	}
 
-	public void bind(ExtendedLogReaderService extendedLogReaderService) {
+	public void bind(final ExtendedLogReaderService extendedLogReaderService) {
 		this.extendedLogReaderService = extendedLogReaderService;
 	}
 
-	public void unbind(ExtendedLogReaderService extendedLogReaderService) {
+	public void unbind(final ExtendedLogReaderService extendedLogReaderService) {
 		extendedLogReaderService.removeLogListener(logListener);
 		this.extendedLogReaderService = null;
 	}
 
 	private LogListener newLogListener() {
 		return new LogListener() {
-			public void logged(LogEntry entry) {
+			public void logged(final LogEntry entry) {
 				if (!collectRange.matches(entry.getLevel())) {
 					return;
 				}
@@ -120,7 +120,7 @@ public class LogServiceCollector extends AbstractCollector implements IExecutabl
 		};
 	}
 
-	private CoreException configurationException(String message, Exception e) {
+	private CoreException configurationException(final String message, final Exception e) {
 		return new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, e));
 	}
 

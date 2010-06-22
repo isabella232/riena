@@ -49,7 +49,7 @@ public final class Activator extends RienaActivator {
 	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
 		// bring up a simple in memory session store
@@ -57,10 +57,10 @@ public final class Activator extends RienaActivator {
 				RienaConstants.newDefaultServiceProperties());
 
 		// bring up a simple authorization store for permissions
-		InputStream inputStream = this.getClass().getResourceAsStream("policy-def.xml"); //$NON-NLS-1$
-		FilePermissionStore store = new FilePermissionStore(inputStream);
-		filepermissionstore = context.registerService(IPermissionStore.class.getName(), store, RienaConstants
-				.newDefaultServiceProperties());
+		final InputStream inputStream = this.getClass().getResourceAsStream("policy-def.xml"); //$NON-NLS-1$
+		final FilePermissionStore store = new FilePermissionStore(inputStream);
+		filepermissionstore = context.registerService(IPermissionStore.class.getName(), store,
+				RienaConstants.newDefaultServiceProperties());
 
 	}
 
@@ -71,7 +71,7 @@ public final class Activator extends RienaActivator {
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		memoryStore.unregister();
 		filepermissionstore.unregister();
 		Activator.plugin = null;

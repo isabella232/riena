@@ -17,7 +17,7 @@ public class NotAuthorizedFailure extends SecurityFailure {
 	/**
 	 * @param msg
 	 */
-	public NotAuthorizedFailure(String msg) {
+	public NotAuthorizedFailure(final String msg) {
 		super(msg);
 	}
 
@@ -25,7 +25,7 @@ public class NotAuthorizedFailure extends SecurityFailure {
 	 * @param msg
 	 * @param cause
 	 */
-	public NotAuthorizedFailure(String msg, Throwable cause) {
+	public NotAuthorizedFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 

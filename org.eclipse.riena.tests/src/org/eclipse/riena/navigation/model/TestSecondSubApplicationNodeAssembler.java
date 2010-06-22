@@ -22,15 +22,16 @@ public class TestSecondSubApplicationNodeAssembler extends AbstractNavigationAss
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
 	 *      org.eclipse.riena.navigation.NavigationArgument)
 	 */
-	public INavigationNode<?>[] buildNode(NavigationNodeId navigationNodeId, NavigationArgument navigationArgument) {
-		ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId);
+	public INavigationNode<?>[] buildNode(final NavigationNodeId navigationNodeId,
+			final NavigationArgument navigationArgument) {
+		final ISubApplicationNode subApplication = new SubApplicationNode(navigationNodeId);
 		return new ISubApplicationNode[] { subApplication };
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(String)
 	 */
-	public boolean acceptsToBuildNode(NavigationNodeId nodeId, NavigationArgument argument) {
+	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
 
 		return nodeId.getTypeId().equals("org.eclipse.riena.navigation.model.test.secondSubApplication");
 	}

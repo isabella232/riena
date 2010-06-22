@@ -64,8 +64,8 @@ public class GrabCornerListenerWithTrackerTest extends TestCase {
 	 */
 	public void testGetTrackerBounds() {
 
-		Rectangle rec1 = new Rectangle(1, 2, 3, 4);
-		Rectangle rec2 = new Rectangle(10, 20, 30, 40);
+		final Rectangle rec1 = new Rectangle(1, 2, 3, 4);
+		final Rectangle rec2 = new Rectangle(10, 20, 30, 40);
 		Rectangle[] recs = new Rectangle[] { rec1, rec2 };
 		tracker.setRectangles(recs);
 		Rectangle bounds = ReflectionUtils.invokeHidden(grabCornerListener, "getTrackerBounds", tracker);
@@ -83,7 +83,7 @@ public class GrabCornerListenerWithTrackerTest extends TestCase {
 	 */
 	public void testSetMinimumBounds() {
 
-		Point miniSize = new Point(200, 300);
+		final Point miniSize = new Point(200, 300);
 		shell.setMinimumSize(miniSize);
 
 		Rectangle rec1 = new Rectangle(1, 2, 3, 4);

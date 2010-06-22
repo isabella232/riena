@@ -44,7 +44,7 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */
-	public ModuleNode(NavigationNodeId nodeId) {
+	public ModuleNode(final NavigationNodeId nodeId) {
 		super(nodeId);
 		initialize();
 	}
@@ -57,7 +57,7 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 * @param label
 	 *            Label of the module displayed in the modules title bar.
 	 */
-	public ModuleNode(NavigationNodeId nodeId, String label) {
+	public ModuleNode(final NavigationNodeId nodeId, final String label) {
 		super(nodeId, label);
 		initialize();
 	}
@@ -68,7 +68,7 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 * @param label
 	 *            Label of the module displayed in the modules title bar.
 	 */
-	public ModuleNode(String label) {
+	public ModuleNode(final String label) {
 		this(null, label);
 	}
 
@@ -88,7 +88,7 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 * riena.navigation.NavigationNodeId)
 	 */
 	@Override
-	public void moveTo(NavigationNodeId targetId) {
+	public void moveTo(final NavigationNodeId targetId) {
 		getNavigationProcessor().move(this, targetId);
 	}
 
@@ -103,15 +103,15 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 * @param presentSingleSubModule
 	 *            the presentSingleSubModule to set
 	 */
-	public void setPresentSingleSubModule(boolean presentSingleSubModule) {
+	public void setPresentSingleSubModule(final boolean presentSingleSubModule) {
 		this.presentSingleSubModule = presentSingleSubModule;
 		notifyPresentSingleSubModuleChanged();
 	}
 
 	private void notifyPresentSingleSubModuleChanged() {
-		for (INavigationNodeListener<?, ?> next : getListeners()) {
+		for (final INavigationNodeListener<?, ?> next : getListeners()) {
 			if (next instanceof IModuleNodeListener) {
-				IModuleNodeListener moduleNodeListener = (IModuleNodeListener) next;
+				final IModuleNodeListener moduleNodeListener = (IModuleNodeListener) next;
 				moduleNodeListener.presentSingleSubModuleChanged(this);
 			}
 		}
@@ -142,11 +142,11 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 *            start node
 	 * @return number of children
 	 */
-	private int calcDepth(INavigationNode<?> node) {
+	private int calcDepth(final INavigationNode<?> node) {
 
 		int depth = 0;
 		if ((node == this) || node.isExpanded()) {
-			for (INavigationNode<?> child : node.getChildren()) {
+			for (final INavigationNode<?> child : node.getChildren()) {
 				if (child.isVisible()) {
 					depth++;
 					depth += calcDepth(child);
@@ -168,7 +168,7 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	/**
 	 * @see org.eclipse.riena.navigation.IModuleNode#setClosable(boolean)
 	 */
-	public void setClosable(boolean closeable) {
+	public void setClosable(final boolean closeable) {
 		this.closeable = closeable;
 	}
 

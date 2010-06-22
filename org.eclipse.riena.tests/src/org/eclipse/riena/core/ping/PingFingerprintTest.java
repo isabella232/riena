@@ -27,12 +27,12 @@ public class PingFingerprintTest extends RienaTestCase {
 		try {
 			new PingFingerprint(null);
 			fail("Expected precondition violation");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			ok();
 		}
-		IPingable pingable = new DefaultPingable() {
+		final IPingable pingable = new DefaultPingable() {
 		};
-		PingFingerprint fingerprint = new PingFingerprint(pingable);
+		final PingFingerprint fingerprint = new PingFingerprint(pingable);
 		assertEquals(new PingFingerprint(pingable, true), fingerprint);
 	}
 
@@ -44,14 +44,14 @@ public class PingFingerprintTest extends RienaTestCase {
 		try {
 			new PingFingerprint(null, true);
 			fail("Expected precondition violation");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			ok();
 		}
-		IPingable pingable = new DefaultPingable() {
+		final IPingable pingable = new DefaultPingable() {
 		};
 
-		assertEquals("PingFingerprint[" + pingable.getClass().getName() + "]", new PingFingerprint(pingable, true)
-				.toString());
+		assertEquals("PingFingerprint[" + pingable.getClass().getName() + "]",
+				new PingFingerprint(pingable, true).toString());
 
 		assertEquals(
 				"PingFingerprint[" + pingable.getClass().getName() + "#" + System.identityHashCode(pingable) + "]",
@@ -63,11 +63,11 @@ public class PingFingerprintTest extends RienaTestCase {
 	 * {@link PingFingerprint#hashCode() hashCode()}.
 	 */
 	public void testEqualsAndHash() {
-		IPingable pingable = new DefaultPingable() {
+		final IPingable pingable = new DefaultPingable() {
 		};
-		PingFingerprint fingerprintA = new PingFingerprint(pingable, "a");
-		PingFingerprint fingerprintB = new PingFingerprint(pingable, "b");
-		PingFingerprint fingerprintAOtherPingable = new PingFingerprint(new DefaultPingable() {
+		final PingFingerprint fingerprintA = new PingFingerprint(pingable, "a");
+		final PingFingerprint fingerprintB = new PingFingerprint(pingable, "b");
+		final PingFingerprint fingerprintAOtherPingable = new PingFingerprint(new DefaultPingable() {
 		}, "a");
 
 		checkEqualsAndHashCode(true, fingerprintA, fingerprintA);
@@ -78,7 +78,7 @@ public class PingFingerprintTest extends RienaTestCase {
 		checkEqualsAndHashCode(false, fingerprintA, null);
 	}
 
-	private void checkEqualsAndHashCode(boolean equalityExpected, Object first, Object second) {
+	private void checkEqualsAndHashCode(final boolean equalityExpected, final Object first, final Object second) {
 
 		if (first == null) {
 			assertEquals(equalityExpected, first == second);

@@ -26,7 +26,7 @@ public class SessionFailure extends SecurityFailure {
 	 * @param msg
 	 *            message text or message code
 	 */
-	public SessionFailure(String msg) {
+	public SessionFailure(final String msg) {
 		super(msg);
 	}
 
@@ -38,7 +38,7 @@ public class SessionFailure extends SecurityFailure {
 	 * @param cause
 	 *            exception which has caused this Failure
 	 */
-	public SessionFailure(String msg, Throwable cause) {
+	public SessionFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 

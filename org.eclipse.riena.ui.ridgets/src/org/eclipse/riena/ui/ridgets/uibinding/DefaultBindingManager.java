@@ -41,8 +41,8 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
  */
 public class DefaultBindingManager implements IBindingManager {
 
-	private IBindingPropertyLocator propertyStrategy;
-	private IControlRidgetMapper<Object> mapper;
+	private final IBindingPropertyLocator propertyStrategy;
+	private final IControlRidgetMapper<Object> mapper;
 
 	/**
 	 * Creates the managers of all bindings of a view.
@@ -53,23 +53,24 @@ public class DefaultBindingManager implements IBindingManager {
 	 * @param mapper
 	 *            mapping for UI control-classes to ridget-classes
 	 */
-	public DefaultBindingManager(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper<Object> mapper) {
+	public DefaultBindingManager(final IBindingPropertyLocator propertyStrategy,
+			final IControlRidgetMapper<Object> mapper) {
 		this.propertyStrategy = propertyStrategy;
 		this.mapper = mapper;
 	}
 
-	public void injectRidgets(IRidgetContainer ridgetContainer, List<Object> uiControls) {
-		CorrespondingLabelMapper ridgetMapper = new CorrespondingLabelMapper(ridgetContainer);
+	public void injectRidgets(final IRidgetContainer ridgetContainer, final List<Object> uiControls) {
+		final CorrespondingLabelMapper ridgetMapper = new CorrespondingLabelMapper(ridgetContainer);
 		if (Activator.getDefault() != null) {
 			Wire.instance(ridgetMapper).andStart(Activator.getDefault().getContext());
 		}
 
-		Map<String, IRidget> controls = new HashMap<String, IRidget>();
+		final Map<String, IRidget> controls = new HashMap<String, IRidget>();
 
-		for (Object control : uiControls) {
-			String bindingProperty = propertyStrategy.locateBindingProperty(control);
+		for (final Object control : uiControls) {
+			final String bindingProperty = propertyStrategy.locateBindingProperty(control);
 			if (bindingProperty != null) {
-				IRidget ridget = createRidget(control);
+				final IRidget ridget = createRidget(control);
 				injectRidget(ridgetContainer, bindingProperty, ridget);
 
 				//because the ridgets are not bound yet, we have to save the bindingProperty separately
@@ -78,8 +79,8 @@ public class DefaultBindingManager implements IBindingManager {
 				}
 
 				if (control instanceof IComplexComponent) {
-					IComplexRidget complexRidget = (IComplexRidget) ridget;
-					IComplexComponent complexComponent = (IComplexComponent) control;
+					final IComplexRidget complexRidget = (IComplexRidget) ridget;
+					final IComplexComponent complexComponent = (IComplexComponent) control;
 					injectRidgets(complexRidget, complexComponent.getUIControls());
 				}
 			}
@@ -87,9 +88,9 @@ public class DefaultBindingManager implements IBindingManager {
 
 		// iterate over all controls that are not ILabelRidgets and try to connect 
 		// them with their corresponding Label
-		Iterator<Entry<String, IRidget>> it = controls.entrySet().iterator();
+		final Iterator<Entry<String, IRidget>> it = controls.entrySet().iterator();
 		while (it.hasNext()) {
-			Entry<String, IRidget> entry = it.next();
+			final Entry<String, IRidget> entry = it.next();
 			ridgetMapper.connectCorrespondingLabel(entry.getValue(), entry.getKey());
 		}
 
@@ -110,7 +111,8 @@ public class DefaultBindingManager implements IBindingManager {
 	 * @param ridget
 	 *            ridget to inject
 	 */
-	protected void injectRidget(IRidgetContainer ridgetContainer, String bindingProperty, IRidget ridget) {
+	protected void injectRidget(final IRidgetContainer ridgetContainer, final String bindingProperty,
+			final IRidget ridget) {
 		ridgetContainer.addRidget(bindingProperty, ridget);
 	}
 
@@ -122,8 +124,8 @@ public class DefaultBindingManager implements IBindingManager {
 	 * @return ridget
 	 * @throws ReflectionFailure
 	 */
-	public IRidget createRidget(Object control) throws ReflectionFailure {
-		Class<? extends IRidget> ridgetClass = mapper.getRidgetClass(control);
+	public IRidget createRidget(final Object control) throws ReflectionFailure {
+		final Class<? extends IRidget> ridgetClass = mapper.getRidgetClass(control);
 		return ReflectionUtils.newInstance(ridgetClass);
 	}
 
@@ -137,7 +139,7 @@ public class DefaultBindingManager implements IBindingManager {
 	 *            ridget container
 	 * @return ridget
 	 */
-	protected IRidget getRidget(String bindingProperty, IRidgetContainer controller) {
+	protected IRidget getRidget(final String bindingProperty, final IRidgetContainer controller) {
 		return controller.getRidget(bindingProperty);
 	}
 
@@ -145,7 +147,7 @@ public class DefaultBindingManager implements IBindingManager {
 	 * @see org.eclipse.riena.ui.internal.ridgets.uibinding.IBindingManager#bind(IRidgetContainer,
 	 *      java.util.List)
 	 */
-	public void bind(IRidgetContainer controller, List<Object> uiControls) {
+	public void bind(final IRidgetContainer controller, final List<Object> uiControls) {
 		updateBindings(controller, uiControls, false);
 	}
 
@@ -153,25 +155,25 @@ public class DefaultBindingManager implements IBindingManager {
 	 * @see org.eclipse.riena.ui.internal.ridgets.uibinding.IBindingManager#unbind(IRidgetContainer,
 	 *      java.util.List)
 	 */
-	public void unbind(IRidgetContainer controller, List<Object> uiControls) {
+	public void unbind(final IRidgetContainer controller, final List<Object> uiControls) {
 		updateBindings(controller, uiControls, true);
 	}
 
-	private void updateBindings(IRidgetContainer controller, List<Object> uiControls, boolean unbind) {
+	private void updateBindings(final IRidgetContainer controller, final List<Object> uiControls, final boolean unbind) {
 
-		for (Object control : uiControls) {
+		for (final Object control : uiControls) {
 			if (control instanceof IComplexComponent) {
-				IComplexComponent complexComponent = (IComplexComponent) control;
-				String bindingProperty = propertyStrategy.locateBindingProperty(control);
-				IComplexRidget complexRidget = (IComplexRidget) getRidget(bindingProperty, controller);
+				final IComplexComponent complexComponent = (IComplexComponent) control;
+				final String bindingProperty = propertyStrategy.locateBindingProperty(control);
+				final IComplexRidget complexRidget = (IComplexRidget) getRidget(bindingProperty, controller);
 				updateBindings(complexRidget, complexComponent.getUIControls(), unbind);
 				if (complexRidget != null) {
 					bindRidget(complexRidget, complexComponent, unbind);
 				}
 			} else {
-				String bindingProperty = propertyStrategy.locateBindingProperty(control);
+				final String bindingProperty = propertyStrategy.locateBindingProperty(control);
 				if (bindingProperty != null) {
-					IRidget ridget = getRidget(bindingProperty, controller);
+					final IRidget ridget = getRidget(bindingProperty, controller);
 					Assert.isNotNull(ridget, "Null ridget for property: " + bindingProperty); //$NON-NLS-1$
 					bindRidget(ridget, control, unbind);
 				}
@@ -179,7 +181,7 @@ public class DefaultBindingManager implements IBindingManager {
 		}
 	}
 
-	private void bindRidget(IRidget ridget, Object uiControl, boolean unbind) {
+	private void bindRidget(final IRidget ridget, final Object uiControl, final boolean unbind) {
 
 		if (unbind) {
 			ridget.setUIControl(null);

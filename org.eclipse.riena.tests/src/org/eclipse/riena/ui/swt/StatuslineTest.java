@@ -56,13 +56,13 @@ public class StatuslineTest extends TestCase {
 	 */
 	public void testAddUIControl() {
 
-		Label label = new Label(shell, SWT.NONE);
+		final Label label = new Label(shell, SWT.NONE);
 
 		ReflectionUtils.invokeHidden(statusline, "addUIControl", label, "labelName");
-		List<Object> controls = statusline.getUIControls();
+		final List<Object> controls = statusline.getUIControls();
 		assertNotNull(controls);
 		assertFalse(controls.isEmpty());
-		Label labelOfList = (Label) controls.get(controls.size() - 1);
+		final Label labelOfList = (Label) controls.get(controls.size() - 1);
 		assertSame(label, labelOfList);
 		assertEquals("labelName", labelOfList.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
 
@@ -76,24 +76,24 @@ public class StatuslineTest extends TestCase {
 	 */
 	public void testCreateContents() {
 
-		Control[] controls = statusline.getChildren();
+		final Control[] controls = statusline.getChildren();
 		boolean time = false;
 		boolean date = false;
 		boolean number = false;
-		for (int i = 0; i < controls.length; i++) {
-			if (controls[i].getClass() == StatuslineTime.class) {
+		for (final Control control : controls) {
+			if (control.getClass() == StatuslineTime.class) {
 				if (time) {
 					fail("More than of time control!");
 				}
 				time = true;
 			}
-			if (controls[i].getClass() == StatuslineDate.class) {
+			if (control.getClass() == StatuslineDate.class) {
 				if (date) {
 					fail("More than of date control!");
 				}
 				date = true;
 			}
-			if (controls[i].getClass() == StatuslineNumber.class) {
+			if (control.getClass() == StatuslineNumber.class) {
 				if (number) {
 					fail("More than of number control!");
 				}
@@ -106,16 +106,16 @@ public class StatuslineTest extends TestCase {
 		assertNotNull(statusline.getMessageComposite());
 
 		number = false;
-		List<Object> uicontrols = statusline.getUIControls();
-		for (Object uiControl : uicontrols) {
+		final List<Object> uicontrols = statusline.getUIControls();
+		for (final Object uiControl : uicontrols) {
 			if (uiControl.getClass() == StatuslineNumber.class) {
 				if (number) {
 					fail("More than of number UI-control!");
 				}
 				number = true;
-				StatuslineNumber statuslineNumber = (StatuslineNumber) uiControl;
-				assertEquals("statuslineNumberRidget", statuslineNumber
-						.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
+				final StatuslineNumber statuslineNumber = (StatuslineNumber) uiControl;
+				assertEquals("statuslineNumberRidget",
+						statuslineNumber.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
 			}
 		}
 		assertTrue(number);

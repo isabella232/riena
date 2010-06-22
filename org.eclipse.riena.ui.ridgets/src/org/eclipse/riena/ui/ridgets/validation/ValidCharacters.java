@@ -71,8 +71,8 @@ public class ValidCharacters implements IValidator, IExecutableExtension {
 				for (int t = 0; t < string.length(); ++t) {
 					final char currentChar = string.charAt(t);
 					if (Arrays.binarySearch(allowedCharsSorted, currentChar) < 0) {
-						String message = NLS.bind(Messages.ValidCharacters_error_invalidChar, Character
-								.valueOf(currentChar), string);
+						final String message = NLS.bind(Messages.ValidCharacters_error_invalidChar,
+								Character.valueOf(currentChar), string);
 						return ValidationRuleStatus.error(true, message);
 					}
 				}
@@ -109,11 +109,11 @@ public class ValidCharacters implements IValidator, IExecutableExtension {
 	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
 	 *      java.lang.String, java.lang.Object)
 	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray(data);
+			final String[] args = PropertiesUtils.asArray(data);
 			setAllowedChars(args[0]);
 		}
 

@@ -29,7 +29,7 @@ public class ContextFailure extends Failure {
 	 * @param cause
 	 *            the cause if any
 	 */
-	public ContextFailure(String msg, Throwable cause) {
+	public ContextFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 
@@ -39,7 +39,7 @@ public class ContextFailure extends Failure {
 	 * @param msg
 	 *            The failure message text.
 	 */
-	public ContextFailure(String msg) {
+	public ContextFailure(final String msg) {
 		super(msg);
 	}
 

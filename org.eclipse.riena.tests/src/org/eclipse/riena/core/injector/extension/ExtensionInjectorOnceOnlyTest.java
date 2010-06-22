@@ -28,8 +28,9 @@ public class ExtensionInjectorOnceOnlyTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorOnceOnlyTest.class, "plugin_ext1.xml");
 		try {
 			ConfigurableThingMultipleDataOnceOnlyViaStatic.resetUpdateCount();
-			ConfigurableThingMultipleDataOnceOnlyViaStatic target = new ConfigurableThingMultipleDataOnceOnlyViaStatic();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target).andStart(getContext());
+			final ConfigurableThingMultipleDataOnceOnlyViaStatic target = new ConfigurableThingMultipleDataOnceOnlyViaStatic();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target)
+					.andStart(getContext());
 			assertEquals(1, target.getData().length);
 			assertEquals(1, ConfigurableThingMultipleDataOnceOnlyViaStatic.getUpdateCount());
 			injector.stop();
@@ -48,13 +49,15 @@ public class ExtensionInjectorOnceOnlyTest extends RienaTestCase {
 		try {
 			ConfigurableThingMultipleDataOnceOnlyViaStatic.resetUpdateCount();
 
-			ConfigurableThingMultipleDataOnceOnlyViaStatic target1 = new ConfigurableThingMultipleDataOnceOnlyViaStatic();
-			ExtensionInjector injector1 = Inject.extension("core.test.extpoint").into(target1).andStart(getContext());
+			final ConfigurableThingMultipleDataOnceOnlyViaStatic target1 = new ConfigurableThingMultipleDataOnceOnlyViaStatic();
+			final ExtensionInjector injector1 = Inject.extension("core.test.extpoint").into(target1)
+					.andStart(getContext());
 			assertEquals(1, target1.getData().length);
 			assertEquals(1, ConfigurableThingMultipleDataOnceOnlyViaStatic.getUpdateCount());
 
-			ConfigurableThingMultipleDataOnceOnlyViaStatic target2 = new ConfigurableThingMultipleDataOnceOnlyViaStatic();
-			ExtensionInjector injector2 = Inject.extension("core.test.extpoint").into(target2).andStart(getContext());
+			final ConfigurableThingMultipleDataOnceOnlyViaStatic target2 = new ConfigurableThingMultipleDataOnceOnlyViaStatic();
+			final ExtensionInjector injector2 = Inject.extension("core.test.extpoint").into(target2)
+					.andStart(getContext());
 			assertEquals(1, target2.getData().length);
 			assertEquals(1, ConfigurableThingMultipleDataOnceOnlyViaStatic.getUpdateCount());
 
@@ -77,9 +80,9 @@ public class ExtensionInjectorOnceOnlyTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorOnceOnlyTest.class, "plugin_ext1.xml");
 		try {
 			ConfigurableThingMultipleDataOnceOnlyViaDefinition.resetUpdateCount();
-			ConfigurableThingMultipleDataOnceOnlyViaDefinition target = new ConfigurableThingMultipleDataOnceOnlyViaDefinition();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target).onceOnly().andStart(
-					getContext());
+			final ConfigurableThingMultipleDataOnceOnlyViaDefinition target = new ConfigurableThingMultipleDataOnceOnlyViaDefinition();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target).onceOnly()
+					.andStart(getContext());
 			assertEquals(1, target.getData().length);
 			assertEquals(1, ConfigurableThingMultipleDataOnceOnlyViaDefinition.getUpdateCount());
 			injector.stop();
@@ -98,15 +101,15 @@ public class ExtensionInjectorOnceOnlyTest extends RienaTestCase {
 		try {
 			ConfigurableThingMultipleDataOnceOnlyViaDefinition.resetUpdateCount();
 
-			ConfigurableThingMultipleDataOnceOnlyViaDefinition target1 = new ConfigurableThingMultipleDataOnceOnlyViaDefinition();
-			ExtensionInjector injector1 = Inject.extension("core.test.extpoint").into(target1).onceOnly().andStart(
-					getContext());
+			final ConfigurableThingMultipleDataOnceOnlyViaDefinition target1 = new ConfigurableThingMultipleDataOnceOnlyViaDefinition();
+			final ExtensionInjector injector1 = Inject.extension("core.test.extpoint").into(target1).onceOnly()
+					.andStart(getContext());
 			assertEquals(1, target1.getData().length);
 			assertEquals(1, ConfigurableThingMultipleDataOnceOnlyViaDefinition.getUpdateCount());
 
-			ConfigurableThingMultipleDataOnceOnlyViaDefinition target2 = new ConfigurableThingMultipleDataOnceOnlyViaDefinition();
-			ExtensionInjector injector2 = Inject.extension("core.test.extpoint").into(target2).onceOnly().andStart(
-					getContext());
+			final ConfigurableThingMultipleDataOnceOnlyViaDefinition target2 = new ConfigurableThingMultipleDataOnceOnlyViaDefinition();
+			final ExtensionInjector injector2 = Inject.extension("core.test.extpoint").into(target2).onceOnly()
+					.andStart(getContext());
 			assertEquals(1, target2.getData().length);
 			assertEquals(1, ConfigurableThingMultipleDataOnceOnlyViaDefinition.getUpdateCount());
 

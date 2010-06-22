@@ -69,7 +69,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		IRidgetContainer ridgetContainer = new StubRidgetContainer();
+		final IRidgetContainer ridgetContainer = new StubRidgetContainer();
 
 		shell = new Shell();
 
@@ -123,7 +123,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 	}
 
 	public void testConnectCorrespondingLabel() throws Exception {
-		boolean foundLabel = labelMapper.connectCorrespondingLabel(txtFirstName, FIRSTNAME_TEXT_ID);
+		final boolean foundLabel = labelMapper.connectCorrespondingLabel(txtFirstName, FIRSTNAME_TEXT_ID);
 		assertTrue(foundLabel);
 
 		assertTrue(txtFirstName.isEnabled());
@@ -138,7 +138,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 	}
 
 	public void testConnectCorrespondingLabelLabelNotFound() throws Exception {
-		boolean foundLabel = labelMapper.connectCorrespondingLabel(txtLastName, LASTNAME_TEXT_ID);
+		final boolean foundLabel = labelMapper.connectCorrespondingLabel(txtLastName, LASTNAME_TEXT_ID);
 		assertFalse(foundLabel);
 	}
 
@@ -147,7 +147,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 				SWT.BORDER, LASTNAME_TEXT_ID));
 		CorrespondingLabelMapper.setLabelFinderStrategy(new StubLabelFinderStrategyProperties());
 
-		boolean foundLabel = labelMapper.connectCorrespondingLabel(txtLastName, LASTNAME_TEXT_ID);
+		final boolean foundLabel = labelMapper.connectCorrespondingLabel(txtLastName, LASTNAME_TEXT_ID);
 		assertTrue(foundLabel);
 
 		assertTrue(lblDummyFinder.isEnabled());
@@ -169,7 +169,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 			}
 		});
 
-		boolean foundLabel = labelMapper.connectCorrespondingLabel(txtAge, AGE_TEXT_ID);
+		final boolean foundLabel = labelMapper.connectCorrespondingLabel(txtAge, AGE_TEXT_ID);
 		assertTrue(foundLabel);
 
 		assertTrue(txtLastName.isEnabled());
@@ -196,7 +196,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 	}
 
 	private class DummyLabelFinderStrategy implements ILabelFinderStrategy {
-		public ILabelRidget findLabelRidget(IRidgetContainer ridgetContainer, String ridgetID) {
+		public ILabelRidget findLabelRidget(final IRidgetContainer ridgetContainer, final String ridgetID) {
 			System.out.println("CorrespondingLabelManagerTest.DummyLabelFinderStrategy.findLabelRidget()");
 			return lblDummyFinder;
 		}
@@ -204,18 +204,18 @@ public class CorrespondingLabelManagerTest extends TestCase {
 	}
 
 	private static class StubRidgetContainer implements IRidgetContainer {
-		private Map<String, IRidget> ridgets;
+		private final Map<String, IRidget> ridgets;
 
 		public StubRidgetContainer() {
 			ridgets = new HashMap<String, IRidget>();
 		}
 
-		public void addRidget(String id, IRidget ridget) {
+		public void addRidget(final String id, final IRidget ridget) {
 			ridgets.put(id, ridget);
 
 		}
 
-		public IRidget getRidget(String id) {
+		public IRidget getRidget(final String id) {
 			return ridgets.get(id);
 		}
 
@@ -227,7 +227,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 		}
 
 		@SuppressWarnings("unchecked")
-		public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+		public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
 			return (R) getRidget(id);
 		}
 	}

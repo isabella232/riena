@@ -10,18 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt.uibinding;
 
-import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MenuItem;
+
+import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
 
 /**
  */
 public final class MenuItemCondition implements IMappingCondition {
 
-	public boolean isMatch(Object widget) {
+	public boolean isMatch(final Object widget) {
 		boolean result = false;
 		if (widget instanceof MenuItem) {
-			MenuItem menuItem = (MenuItem) widget;
+			final MenuItem menuItem = (MenuItem) widget;
 			result = !isMenu(menuItem);
 		}
 		return result;
@@ -34,7 +35,7 @@ public final class MenuItemCondition implements IMappingCondition {
 	 *            menu item
 	 * @return {@code true} if item is cascade menu; otherwise {@code false}
 	 */
-	private boolean isMenu(MenuItem menuItem) {
+	private boolean isMenu(final MenuItem menuItem) {
 		return ((menuItem.getStyle() & SWT.CASCADE) == SWT.CASCADE);
 	}
 

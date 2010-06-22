@@ -53,7 +53,7 @@ public final class SwtUtilities {
 	 *            maximum of the text
 	 * @return truncated text
 	 */
-	public static String clipText(final GC gc, final String text, int maxWidth) {
+	public static String clipText(final GC gc, final String text, final int maxWidth) {
 		int textwidth = calcTextWidth(gc, text);
 		if (textwidth <= maxWidth) {
 			return text;
@@ -82,7 +82,7 @@ public final class SwtUtilities {
 		if (text == null) {
 			return 0;
 		}
-		GCString lookupKey = new GCString(gc, text);
+		final GCString lookupKey = new GCString(gc, text);
 		Integer width = TEXT_WIDTH_CACHE.get(lookupKey);
 		if (width == null) {
 			int w = 0;
@@ -105,8 +105,8 @@ public final class SwtUtilities {
 	 *            character
 	 * @return width of character
 	 */
-	public static int calcCharWidth(final GC gc, char ch) {
-		GCString lookupKey = new GCString(gc, Character.toString(ch));
+	public static int calcCharWidth(final GC gc, final char ch) {
+		final GCString lookupKey = new GCString(gc, Character.toString(ch));
 		Integer width = TEXT_WIDTH_CACHE.get(lookupKey);
 		if (width == null) {
 			width = GC_FACADE.getAdvanceWidth(gc, ch);
@@ -128,14 +128,14 @@ public final class SwtUtilities {
 	 * 
 	 * @pre color != null;
 	 */
-	public static Color makeBrighter(final Color color, float f) {
+	public static Color makeBrighter(final Color color, final float f) {
 
 		Assert.isNotNull(color);
 		Assert.isTrue(f >= 0.0);
 
-		float[] hsb = color.getRGB().getHSB();
-		float h = hsb[0];
-		float s = hsb[1];
+		final float[] hsb = color.getRGB().getHSB();
+		final float h = hsb[0];
+		final float s = hsb[1];
 		float b = hsb[2];
 
 		b = b * f;
@@ -143,7 +143,7 @@ public final class SwtUtilities {
 			b = 1.0f;
 		}
 
-		RGB rgb = new RGB(h, s, b);
+		final RGB rgb = new RGB(h, s, b);
 
 		return new Color(color.getDevice(), rgb);
 	}
@@ -182,7 +182,7 @@ public final class SwtUtilities {
 	 * @return {@code true}, if the widget is disposed or {@code null};
 	 *         otherwise {@code false}.
 	 */
-	public static boolean isDisposed(Widget widget) {
+	public static boolean isDisposed(final Widget widget) {
 		return widget == null || widget.isDisposed();
 	}
 
@@ -194,7 +194,7 @@ public final class SwtUtilities {
 	 * @return {@code true}, if the resource is disposed or {@code null};
 	 *         otherwise {@code false}.
 	 */
-	public static boolean isDisposed(Resource resource) {
+	public static boolean isDisposed(final Resource resource) {
 		return !((resource != null) && (!resource.isDisposed()));
 	}
 
@@ -202,7 +202,7 @@ public final class SwtUtilities {
 		private final String text;
 		private final FontMetrics fontMetrics;
 
-		private GCString(GC gc, CharSequence seq) {
+		private GCString(final GC gc, final CharSequence seq) {
 			this.fontMetrics = gc.getFontMetrics();
 			this.text = seq.toString();
 		}
@@ -217,7 +217,7 @@ public final class SwtUtilities {
 		}
 
 		@Override
-		public boolean equals(Object obj) {
+		public boolean equals(final Object obj) {
 			if (this == obj) {
 				return true;
 			}
@@ -227,7 +227,7 @@ public final class SwtUtilities {
 			if (getClass() != obj.getClass()) {
 				return false;
 			}
-			GCString other = (GCString) obj;
+			final GCString other = (GCString) obj;
 			if (fontMetrics == null) {
 				if (other.fontMetrics != null) {
 					return false;

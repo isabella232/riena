@@ -26,7 +26,7 @@ public class MaxLengthTest extends TestCase {
 		return new MaxLength();
 	}
 
-	protected MaxLength createRule(int length) {
+	protected MaxLength createRule(final int length) {
 		return new MaxLength(length);
 	}
 
@@ -35,7 +35,7 @@ public class MaxLengthTest extends TestCase {
 	 *             Handled by JUnit.
 	 */
 	public void testLength() {
-		MaxLength rule = createRule(10);
+		final MaxLength rule = createRule(10);
 
 		assertTrue(rule.validate("abcde").isOK());
 		assertTrue(rule.validate("abcdeabcde").isOK());
@@ -44,8 +44,8 @@ public class MaxLengthTest extends TestCase {
 	}
 
 	public void testIsBlocking() {
-		MaxLength rule = createRule(3);
-		IStatus status = rule.validate("abcd");
+		final MaxLength rule = createRule(3);
+		final IStatus status = rule.validate("abcd");
 
 		assertFalse(status.isOK());
 		assertEquals(ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH, status.getCode());

@@ -72,11 +72,11 @@ public final class ImageStore {
 	 *            extension of the image file (@see ImageFileExtension)
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
-	public Image getImage(String imageName, ImageFileExtension fileExtension) {
+	public Image getImage(final String imageName, final ImageFileExtension fileExtension) {
 		String fullName = getFullName(imageName, fileExtension);
 		Image image = loadImage(fullName);
 		if (image == null) {
-			String defaultIconName = getDefaultIconMangerImageName(imageName);
+			final String defaultIconName = getDefaultIconMangerImageName(imageName);
 			fullName = getFullName(defaultIconName, fileExtension);
 			image = loadImage(fullName);
 		}
@@ -90,10 +90,10 @@ public final class ImageStore {
 	 *            name of the image (icon ID)
 	 * @return default icon name/ID
 	 */
-	private String getDefaultIconMangerImageName(String imageName) {
+	private String getDefaultIconMangerImageName(final String imageName) {
 
-		IIconManager iconManager = IconManagerProvider.getInstance().getIconManager();
-		String name = iconManager.getName(imageName);
+		final IIconManager iconManager = IconManagerProvider.getInstance().getIconManager();
+		final String name = iconManager.getName(imageName);
 		IconSize size = iconManager.getSize(imageName);
 		if ((size == null) || (size.getClass() != IconSize.class)) {
 			size = IconSize.NONE;
@@ -103,8 +103,8 @@ public final class ImageStore {
 			state = IconState.NORMAL;
 		}
 
-		IIconManager defaultIconManager = IconManagerProvider.getInstance().getDefaultIconManager();
-		String defaultIconName = defaultIconManager.getIconID(name, size, state);
+		final IIconManager defaultIconManager = IconManagerProvider.getInstance().getDefaultIconManager();
+		final String defaultIconName = defaultIconManager.getIconID(name, size, state);
 
 		return defaultIconName;
 
@@ -117,7 +117,7 @@ public final class ImageStore {
 	 *            name (ID) of the image
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
-	public Image getImage(String imageName) {
+	public Image getImage(final String imageName) {
 		return getImage(imageName, ImageFileExtension.PNG);
 	}
 
@@ -132,7 +132,7 @@ public final class ImageStore {
 	 *            extension of the image file (@see ImageFileExtension)
 	 * @return full name of the image (file name).
 	 */
-	private String getFullName(String imageName, ImageFileExtension fileExtension) {
+	private String getFullName(final String imageName, final ImageFileExtension fileExtension) {
 
 		if (StringUtils.isEmpty(imageName)) {
 			return null;
@@ -153,14 +153,14 @@ public final class ImageStore {
 
 	/**
 	 * Returns the image for the given name. If the image isn't cached, the
-	 * image is loaded form the resources and stores in the cache of the {@code
-	 * ImageStore}.
+	 * image is loaded form the resources and stores in the cache of the
+	 * {@code ImageStore}.
 	 * 
 	 * @param fullName
 	 *            full name of the image (file name)
 	 * @return image or {@code null} if no image exists for the given name.
 	 */
-	private synchronized Image loadImage(String fullName) {
+	private synchronized Image loadImage(final String fullName) {
 		if (StringUtils.isEmpty(fullName)) {
 			return null;
 		}
@@ -169,10 +169,10 @@ public final class ImageStore {
 			return null;
 		}
 
-		ImageRegistry imageRegistry = Activator.getDefault().getImageRegistry();
+		final ImageRegistry imageRegistry = Activator.getDefault().getImageRegistry();
 		Image image = imageRegistry.get(fullName);
 		if (image == null || image.isDisposed()) {
-			ImageDescriptor descriptor = getImageDescriptor(fullName);
+			final ImageDescriptor descriptor = getImageDescriptor(fullName);
 			if (descriptor == null) {
 				return null;
 			}
@@ -192,22 +192,22 @@ public final class ImageStore {
 	 *            full name of the image (file name)
 	 * @return image descriptor or {@code null} if file does not exists.
 	 */
-	private ImageDescriptor getImageDescriptor(String fullName) {
+	private ImageDescriptor getImageDescriptor(final String fullName) {
 
-		for (IImagePathExtension iconPath : iconPathes) {
-			String fullPath = iconPath.getPath() + '/' + fullName;
-			URL url = iconPath.getContributingBundle().getEntry(fullPath);
+		for (final IImagePathExtension iconPath : iconPathes) {
+			final String fullPath = iconPath.getPath() + '/' + fullName;
+			final URL url = iconPath.getContributingBundle().getEntry(fullPath);
 			if (url != null) {
 				return ImageDescriptor.createFromURL(url);
 			}
 		}
 
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		sb.append("Image resource \""); //$NON-NLS-1$
 		sb.append(fullName);
 		sb.append("\" not found in:"); //$NON-NLS-1$
 
-		for (IImagePathExtension iconPath : iconPathes) {
+		for (final IImagePathExtension iconPath : iconPathes) {
 			sb.append("\n  "); //$NON-NLS-1$
 			sb.append(iconPath.getContributingBundle().getLocation());
 			sb.append(iconPath.getPath());
@@ -231,7 +231,7 @@ public final class ImageStore {
 	}
 
 	@InjectExtension
-	public void update(IImagePathExtension[] iconPathes) {
+	public void update(final IImagePathExtension[] iconPathes) {
 		this.iconPathes = iconPathes;
 	}
 

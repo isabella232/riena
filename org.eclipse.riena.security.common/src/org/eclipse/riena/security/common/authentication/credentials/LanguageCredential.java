@@ -17,12 +17,12 @@ import java.util.Locale;
  */
 public class LanguageCredential extends AbstractCredential {
 
-	private Locale locale;
+	private final Locale locale;
 
 	/**
 	 * @param prompt
 	 */
-	public LanguageCredential(Locale locale) {
+	public LanguageCredential(final Locale locale) {
 		super(null);
 		this.locale = locale;
 	}

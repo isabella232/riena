@@ -72,8 +72,8 @@ public interface IBrowserRidget extends IValueRidget {
 	 * <p>
 	 * Setting the text will also set the url value to null or 'about:blank'.
 	 * <p>
-	 * Note: currently there is no synchronisation. Invoking setText(...) while a
-	 * page is loaded asynchronously from setUrl(...) call may have undefined
+	 * Note: currently there is no synchronisation. Invoking setText(...) while
+	 * a page is loaded asynchronously from setUrl(...) call may have undefined
 	 * results.
 	 * 
 	 * @param text

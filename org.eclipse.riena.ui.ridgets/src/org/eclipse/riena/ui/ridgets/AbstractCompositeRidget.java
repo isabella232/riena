@@ -49,7 +49,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		enabled = true;
 	}
 
-	public void addRidget(String id, IRidget ridget) {
+	public void addRidget(final String id, final IRidget ridget) {
 		ridget.addPropertyChangeListener(propertyChangeListener);
 		ridgets.put(id, ridget);
 	}
@@ -73,7 +73,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		return null;
 	}
 
-	public IRidget getRidget(String id) {
+	public IRidget getRidget(final String id) {
 		return ridgets.get(id);
 	}
 
@@ -81,7 +81,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 * @since 2.0
 	 */
 	@SuppressWarnings("unchecked")
-	public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+	public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
 		R ridget = (R) getRidget(id);
 
 		if (ridget != null) {
@@ -90,7 +90,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		if (RienaStatus.isTest()) {
 			try {
 				if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
-					Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(ridgetClazz);
+					final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(
+							ridgetClazz);
 					if (mappedRidgetClazz != null) {
 						ridget = mappedRidgetClazz.newInstance();
 					}
@@ -100,9 +101,9 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 				} else {
 					ridget = ridgetClazz.newInstance();
 				}
-			} catch (InstantiationException e) {
+			} catch (final InstantiationException e) {
 				throw new RuntimeException(e);
-			} catch (IllegalAccessException e) {
+			} catch (final IllegalAccessException e) {
 				throw new RuntimeException(e);
 			}
 
@@ -125,8 +126,8 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	public boolean hasFocus() {
-		Collection<? extends IRidget> myRidgets = getRidgets();
-		for (IRidget ridget : myRidgets) {
+		final Collection<? extends IRidget> myRidgets = getRidgets();
+		for (final IRidget ridget : myRidgets) {
 			if (ridget.hasFocus()) {
 				return true;
 			}
@@ -139,7 +140,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	public boolean isFocusable() {
-		for (IRidget ridget : getRidgets()) {
+		for (final IRidget ridget : getRidgets()) {
 			if (ridget.isFocusable()) {
 				return true;
 			}
@@ -167,27 +168,27 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		}
 	}
 
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(final boolean enabled) {
 		if (this.enabled != enabled) {
 			this.enabled = enabled;
 			updateEnabled();
 		}
 	}
 
-	public void setFocusable(boolean focusable) {
-		for (IRidget ridget : getRidgets()) {
+	public void setFocusable(final boolean focusable) {
+		for (final IRidget ridget : getRidgets()) {
 			ridget.setFocusable(focusable);
 		}
 	}
 
-	public void setToolTipText(String toolTipText) {
-		String oldValue = toolTip;
+	public void setToolTipText(final String toolTipText) {
+		final String oldValue = toolTip;
 		toolTip = toolTipText;
 		updateToolTipText();
 		firePropertyChange(IRidget.PROPERTY_TOOLTIP, oldValue, toolTip);
 	}
 
-	public void setUIControl(Object uiControl) {
+	public void setUIControl(final Object uiControl) {
 		checkUIControl(uiControl);
 		unbindUIControl();
 		// save state
@@ -199,7 +200,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		bindUIControl();
 	}
 
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		if (this.markedHidden == visible) {
 			this.markedHidden = !visible;
 			updateVisible();
@@ -231,7 +232,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 *             if the <tt>uiControl</tt> fails the check
 	 * @since 1.2
 	 */
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		// implementors should overwrite
 	}
 
@@ -239,7 +240,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	public void updateFromModel() {
 		super.updateFromModel();
 		//delegate to inner ridgets
-		for (IRidget ridget : ridgets.values()) {
+		for (final IRidget ridget : ridgets.values()) {
 			ridget.updateFromModel();
 		}
 	}
@@ -324,7 +325,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 * this composite ridget, to the listeners of the composite ridget.
 	 */
 	private class PropertyChangeHandler implements PropertyChangeListener {
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(final PropertyChangeEvent evt) {
 			propertyChangeSupport.firePropertyChange(evt);
 		}
 	}

@@ -47,10 +47,10 @@ public class ToolItemMarkerSupportTest extends TestCase {
 	 */
 	public void testUpdateMarkers() {
 
-		ToolItem item = new ToolItem(toolbar, SWT.NONE);
-		ToolItemRidget ridget = new ToolItemRidget();
+		final ToolItem item = new ToolItem(toolbar, SWT.NONE);
+		final ToolItemRidget ridget = new ToolItemRidget();
 
-		ToolItemMarkerSupport markerSupport = new ToolItemMarkerSupport(ridget, null);
+		final ToolItemMarkerSupport markerSupport = new ToolItemMarkerSupport(ridget, null);
 		ridget.setEnabled(false);
 		assertTrue(item.isEnabled());
 
@@ -65,9 +65,9 @@ public class ToolItemMarkerSupportTest extends TestCase {
 	 */
 	public void testUpdateDisabled() {
 
-		ToolItem item = new ToolItem(toolbar, SWT.NONE);
-		ToolItemRidget ridget = new ToolItemRidget();
-		ToolItemMarkerSupport markerSupport = new ToolItemMarkerSupport(ridget, null);
+		final ToolItem item = new ToolItem(toolbar, SWT.NONE);
+		final ToolItemRidget ridget = new ToolItemRidget();
+		final ToolItemMarkerSupport markerSupport = new ToolItemMarkerSupport(ridget, null);
 
 		ridget.setEnabled(false);
 		ReflectionUtils.invokeHidden(markerSupport, "updateDisabled", item);

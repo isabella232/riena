@@ -94,23 +94,23 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		isSortedAscending = true;
 		sortedColumn = -1;
 		getSingleSelectionObservable().addValueChangeListener(new IValueChangeListener() {
-			public void handleValueChange(ValueChangeEvent event) {
+			public void handleValueChange(final ValueChangeEvent event) {
 				disableMandatoryMarkers(hasInput());
 			}
 		});
 		getMultiSelectionObservable().addListChangeListener(new IListChangeListener() {
-			public void handleListChange(ListChangeEvent event) {
+			public void handleListChange(final ListChangeEvent event) {
 				disableMandatoryMarkers(hasInput());
 			}
 		});
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
 				updateEnabled(isEnabled);
 			}
 		});
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				if (isOutputOnly()) {
 					disposeMultipleSelectionBinding();
 				} else {
@@ -120,7 +120,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		});
 	}
 
-	public void addClickListener(IClickListener listener) {
+	public void addClickListener(final IClickListener listener) {
 		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
 		if (clickListeners == null) {
 			clickListeners = new ListenerList<IClickListener>(IClickListener.class);
@@ -128,7 +128,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		clickListeners.add(listener);
 	}
 
-	public void addDoubleClickListener(IActionListener listener) {
+	public void addDoubleClickListener(final IActionListener listener) {
 		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
 		if (doubleClickListeners == null) {
 			doubleClickListeners = new ListenerList<IActionListener>(IActionListener.class);
@@ -136,23 +136,24 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		doubleClickListeners.add(listener);
 	}
 
-	public void bindToModel(IObservableList rowValues, Class<? extends Object> rowClass, String columnPropertyName) {
+	public void bindToModel(final IObservableList rowValues, final Class<? extends Object> rowClass,
+			final String columnPropertyName) {
 		Assert.isNotNull(columnPropertyName, "columnPropertyName"); //$NON-NLS-1$
-		String[] columns = { columnPropertyName };
+		final String[] columns = { columnPropertyName };
 		bindToModel(rowValues, rowClass, columns, null);
 	}
 
-	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
-			String columnPropertyName) {
+	public void bindToModel(final Object listHolder, final String listPropertyName,
+			final Class<? extends Object> rowClass, final String columnPropertyName) {
 		Assert.isNotNull(columnPropertyName, "columnPropertyName"); //$NON-NLS-1$
-		String[] columns = { columnPropertyName };
+		final String[] columns = { columnPropertyName };
 		bindToModel(listHolder, listPropertyName, rowClass, columns, null);
 	}
 
 	/**
 	 * @since 2.0
 	 */
-	public void bindToModel(Object listHolder, String listPropertyName) {
+	public void bindToModel(final Object listHolder, final String listPropertyName) {
 		bindToModel(listHolder, listPropertyName, Object.class, new String[] {}, null);
 	}
 
@@ -163,8 +164,8 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 * 
 	 * @see #bindToModel(IObservableList, Class, String)
 	 */
-	public void bindToModel(IObservableList rowValues, Class<? extends Object> rowClass, String[] columnPropertyNames,
-			String[] columnHeaders) {
+	public void bindToModel(final IObservableList rowValues, final Class<? extends Object> rowClass,
+			final String[] columnPropertyNames, final String[] columnHeaders) {
 		unbindUIControl();
 
 		rowBeanClass = rowClass;
@@ -182,8 +183,8 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 * 
 	 * @see #bindToModel(Object, String, Class, String)
 	 */
-	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
-			String[] columnPropertyNames, String[] columnHeaders) {
+	public void bindToModel(final Object listHolder, final String listPropertyName,
+			final Class<? extends Object> rowClass, final String[] columnPropertyNames, final String[] columnHeaders) {
 		IObservableList rowValues;
 		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
 			rowValues = BeansObservables.observeList(listHolder, listPropertyName);
@@ -197,11 +198,12 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		return viewerObservables;
 	}
 
-	public Object getOption(int index) {
+	@Override
+	public Object getOption(final int index) {
 		if (getRowObservables() == null || index < 0 || index >= getOptionCount()) {
 			throw new IllegalArgumentException("index: " + index); //$NON-NLS-1$
 		}
-		AbstractListViewer viewer = getViewer();
+		final AbstractListViewer viewer = getViewer();
 		if (viewer != null) {
 			return viewer.getElementAt(index); // sorted
 		}
@@ -227,9 +229,9 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	}
 
 	@Override
-	public int indexOfOption(Object option) {
+	public int indexOfOption(final Object option) {
 		if (getUIControl() != null) {
-			int optionCount = getUIControlItemCount();
+			final int optionCount = getUIControlItemCount();
 			for (int i = 0; i < optionCount; i++) {
 				if (getViewer().getElementAt(i).equals(option)) {
 					return i;
@@ -239,7 +241,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		return -1;
 	}
 
-	public boolean isColumnSortable(int columnIndex) {
+	public boolean isColumnSortable(final int columnIndex) {
 		Assert.isLegal(columnIndex == 0, "columnIndex out of bounds (must be 0)"); //$NON-NLS-1$
 		return comparator != null;
 	}
@@ -253,20 +255,20 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		return isSortedAscending;
 	}
 
-	public void refresh(Object node) {
-		AbstractListViewer viewer = getViewer();
+	public void refresh(final Object node) {
+		final AbstractListViewer viewer = getViewer();
 		if (viewer != null) {
 			viewer.refresh(node, true);
 		}
 	}
 
-	public void removeClickListener(IClickListener listener) {
+	public void removeClickListener(final IClickListener listener) {
 		if (clickListeners != null) {
 			clickListeners.remove(listener);
 		}
 	}
 
-	public void removeDoubleClickListener(IActionListener listener) {
+	public void removeDoubleClickListener(final IActionListener listener) {
 		if (doubleClickListeners != null) {
 			doubleClickListeners.remove(listener);
 		}
@@ -278,7 +280,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 * @throws UnsupportedOperationException
 	 *             this is not supported by this ridget
 	 */
-	public void setColumnFormatter(int columnIndex, IColumnFormatter formatter) {
+	public void setColumnFormatter(final int columnIndex, final IColumnFormatter formatter) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -288,7 +290,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 * @throws UnsupportedOperationException
 	 *             this is not supported by this ridget
 	 */
-	public final void setColumnSortable(int columnIndex, boolean sortable) {
+	public final void setColumnSortable(final int columnIndex, final boolean sortable) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -298,14 +300,14 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 * @throws UnsupportedOperationException
 	 *             this is not supported by this ridget
 	 */
-	public final void setColumnWidths(Object[] widths) {
+	public final void setColumnWidths(final Object[] widths) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void setComparator(int columnIndex, Comparator<Object> comparator) {
+	public void setComparator(final int columnIndex, final Comparator<Object> comparator) {
 		Assert.isLegal(columnIndex == 0, "columnIndex out of bounds (must be 0)"); //$NON-NLS-1$
 		if (comparator != null) {
-			SortableComparator sortableComparator = new SortableComparator(this, comparator);
+			final SortableComparator sortableComparator = new SortableComparator(this, comparator);
 			this.comparator = new ViewerComparator(sortableComparator);
 		} else {
 			this.comparator = null;
@@ -319,13 +321,13 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 * @throws UnsupportedOperationException
 	 *             this is not supported by this ridget
 	 */
-	public final void setMoveableColumns(boolean moveableColumns) {
+	public final void setMoveableColumns(final boolean moveableColumns) {
 		throw new UnsupportedOperationException("not implemented"); //$NON-NLS-1$
 	}
 
-	public void setSortedAscending(boolean ascending) {
+	public void setSortedAscending(final boolean ascending) {
 		if (ascending != isSortedAscending) {
-			boolean oldSortedAscending = isSortedAscending;
+			final boolean oldSortedAscending = isSortedAscending;
 			isSortedAscending = ascending;
 			if (hasViewer()) {
 				refreshViewer();
@@ -334,11 +336,11 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		}
 	}
 
-	public final void setSortedColumn(int columnIndex) {
-		String msg = "columnIndex out of range (-1 - 0): " + columnIndex; //$NON-NLS-1$
+	public final void setSortedColumn(final int columnIndex) {
+		final String msg = "columnIndex out of range (-1 - 0): " + columnIndex; //$NON-NLS-1$
 		Assert.isLegal(columnIndex >= -1 && columnIndex <= 0, msg);
 		if (sortedColumn != columnIndex) {
-			int oldSortedColumn = sortedColumn;
+			final int oldSortedColumn = sortedColumn;
 			sortedColumn = columnIndex;
 			updateComparator();
 			firePropertyChange(ISortableByColumn.PROPERTY_SORTED_COLUMN, oldSortedColumn, sortedColumn);
@@ -350,15 +352,15 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	public void updateFromModel() {
 		super.updateFromModel();
 		if (modelObservables != null) {
-			List<Object> copy = new ArrayList<Object>(modelObservables);
+			final List<Object> copy = new ArrayList<Object>(modelObservables);
 			viewerObservables = new WritableList(copy, rowBeanClass);
 		}
 		if (viewerObservables != null) {
 			if (hasViewer()) {
-				AbstractListViewer viewer = getViewer();
+				final AbstractListViewer viewer = getViewer();
 				viewer.getControl().setRedraw(false); // prevent flicker during
 				// update
-				StructuredSelection currentSelection = new StructuredSelection(getSelection());
+				final StructuredSelection currentSelection = new StructuredSelection(getSelection());
 				try {
 					configureViewer(viewer);
 				} finally {
@@ -371,9 +373,9 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		}
 	}
 
-	protected void configureViewer(AbstractListViewer viewer) {
-		ObservableListContentProvider viewerCP = new ObservableListContentProvider();
-		String[] propertyNames = new String[] { renderingMethod };
+	protected void configureViewer(final AbstractListViewer viewer) {
+		final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
+		final String[] propertyNames = new String[] { renderingMethod };
 		IObservableMap[] attributeMap = null;
 
 		// if renderingMethod is null, toString-Method will be used in ListLabelProvider
@@ -393,7 +395,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	protected void createSelectionBindings() {
 		dbc = new DataBindingContext();
 		// viewer to single selection binding
-		IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(getViewer());
+		final IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(getViewer());
 		viewerSSB = dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
 				UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
 				new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
@@ -469,8 +471,8 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 
 	private void createMultipleSelectionBinding() {
 		if (viewerMSB == null && dbc != null && hasViewer()) {
-			StructuredSelection currentSelection = new StructuredSelection(getSelection());
-			IViewerObservableList viewerSelections = ViewersObservables.observeMultiSelection(getViewer());
+			final StructuredSelection currentSelection = new StructuredSelection(getSelection());
+			final IViewerObservableList viewerSelections = ViewersObservables.observeMultiSelection(getViewer());
 			viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
 					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
 			getViewer().setSelection(currentSelection);
@@ -497,19 +499,19 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 */
 	private final class ClickForwarder extends MouseAdapter {
 		@Override
-		public void mouseDown(MouseEvent e) {
+		public void mouseDown(final MouseEvent e) {
 			if (clickListeners != null) {
-				ClickEvent event = createClickEvent(e);
-				for (IClickListener listener : clickListeners.getListeners()) {
+				final ClickEvent event = createClickEvent(e);
+				for (final IClickListener listener : clickListeners.getListeners()) {
 					listener.callback(event);
 				}
 			}
 		}
 
 		@Override
-		public void mouseDoubleClick(MouseEvent e) {
+		public void mouseDoubleClick(final MouseEvent e) {
 			if (doubleClickListeners != null) {
-				for (IActionListener listener : doubleClickListeners.getListeners()) {
+				for (final IActionListener listener : doubleClickListeners.getListeners()) {
 					listener.callback();
 				}
 			}
@@ -518,9 +520,9 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		// helping methods
 		//////////////////
 
-		private ClickEvent createClickEvent(MouseEvent e) {
+		private ClickEvent createClickEvent(final MouseEvent e) {
 			Object rowData;
-			int index = getUIControlSelectionIndex();
+			final int index = getUIControlSelectionIndex();
 			if (index > -1) {
 				rowData = getViewer().getElementAt(index);
 			} else {
@@ -537,13 +539,13 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 
 		private final boolean useToString;
 
-		public ListLabelProvider(IObservableMap[] attributeMap) {
+		public ListLabelProvider(final IObservableMap[] attributeMap) {
 			super(null == attributeMap ? new IObservableMap[] {} : attributeMap);
 			useToString = attributeMap == null;
 		}
 
 		@Override
-		public String getColumnText(Object element, int columnIndex) {
+		public String getColumnText(final Object element, final int columnIndex) {
 			String result;
 			if (MarkerSupport.isHideDisabledRidgetContent() && !isEnabled()) {
 				result = ""; //$NON-NLS-1$
@@ -553,11 +555,11 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 			return result;
 		}
 
-		private String toString(Object element) {
+		private String toString(final Object element) {
 			if (element == null) {
 				throw new NullPointerException("Row-element in ListRidget is null"); //$NON-NLS-1$
 			}
-			String result = element.toString();
+			final String result = element.toString();
 			if (result == null) {
 				throw new NullPointerException("Row-element.toString() returned null"); //$NON-NLS-1$
 			}

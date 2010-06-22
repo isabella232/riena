@@ -17,7 +17,7 @@ public class ConfigurableThingModify {
 
 	private IDataModify data;
 
-	public void update(IDataModify data) {
+	public void update(final IDataModify data) {
 		this.data = data;
 	}
 

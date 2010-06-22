@@ -22,13 +22,13 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 public class ValidationRuleStatusTest extends RienaTestCase {
 
 	public void testStatusOk() {
-		IStatus result = ValidationRuleStatus.ok();
+		final IStatus result = ValidationRuleStatus.ok();
 
 		assertTrue(result.isOK());
 	}
 
 	public void testStatusErrorBlocker() {
-		IStatus result = ValidationRuleStatus.error(true, "msg");
+		final IStatus result = ValidationRuleStatus.error(true, "msg");
 
 		assertFalse(result.isOK());
 		assertEquals(ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH, result.getCode());
@@ -36,7 +36,7 @@ public class ValidationRuleStatusTest extends RienaTestCase {
 	}
 
 	public void testStatusError() {
-		IStatus result = ValidationRuleStatus.error(false, "msg");
+		final IStatus result = ValidationRuleStatus.error(false, "msg");
 
 		assertFalse(result.isOK());
 		assertEquals(ValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE, result.getCode());
@@ -44,7 +44,7 @@ public class ValidationRuleStatusTest extends RienaTestCase {
 	}
 
 	public void testStatusErrorNullMessage() {
-		IStatus result = ValidationRuleStatus.error(false, null);
+		final IStatus result = ValidationRuleStatus.error(false, null);
 
 		assertFalse(result.isOK());
 		assertEquals(ValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE, result.getCode());

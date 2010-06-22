@@ -37,10 +37,10 @@ public class GregorianCalendarToStringConverter extends Converter {
 	 * 
 	 * @see org.eclipse.core.databinding.conversion.IConverter#convert(java.lang.Object)
 	 */
-	public Object convert(Object fromObject) {
+	public Object convert(final Object fromObject) {
 
 		if ((fromObject != null) && (fromObject.getClass() == getFromType())) {
-			GregorianCalendar calendar = (GregorianCalendar) fromObject;
+			final GregorianCalendar calendar = (GregorianCalendar) fromObject;
 			synchronized (FORMAT) {
 				return FORMAT.format(calendar.getTime());
 			}

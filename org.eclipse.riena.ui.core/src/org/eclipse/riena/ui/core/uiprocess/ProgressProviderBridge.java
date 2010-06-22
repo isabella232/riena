@@ -26,7 +26,7 @@ public class ProgressProviderBridge extends ProgressProvider {
 
 	private static ProgressProviderBridge instance;
 	private IProgressVisualizerLocator visualizerLocator;
-	private Map<Job, UIProcess> jobUiProcess;
+	private final Map<Job, UIProcess> jobUiProcess;
 
 	public ProgressProviderBridge() {
 		jobUiProcess = Collections.synchronizedMap(new HashMap<Job, UIProcess>());
@@ -39,40 +39,40 @@ public class ProgressProviderBridge extends ProgressProvider {
 		return instance;
 	}
 
-	public void setVisualizerFactory(IProgressVisualizerLocator visualizerLocator) {
+	public void setVisualizerFactory(final IProgressVisualizerLocator visualizerLocator) {
 		this.visualizerLocator = visualizerLocator;
 	}
 
 	@Override
-	public IProgressMonitor createMonitor(Job job) {
-		ProgressProvider provider = queryProgressProvider(job);
+	public IProgressMonitor createMonitor(final Job job) {
+		final ProgressProvider provider = queryProgressProvider(job);
 		return provider.createMonitor(job);
 	}
 
-	private ProgressProvider queryProgressProvider(Job job) {
+	private ProgressProvider queryProgressProvider(final Job job) {
 		UIProcess uiprocess = jobUiProcess.get(job);
-		Object context = getContext(job);
+		final Object context = getContext(job);
 		if (uiprocess == null) {
 			uiprocess = createDefaultUIProcess(job);
 		}
-		UICallbackDispatcher dispatcher = (UICallbackDispatcher) uiprocess.getAdapter(UICallbackDispatcher.class);
+		final UICallbackDispatcher dispatcher = (UICallbackDispatcher) uiprocess.getAdapter(UICallbackDispatcher.class);
 		dispatcher.addUIMonitor(visualizerLocator.getProgressVisualizer(context));
 		return dispatcher;
 	}
 
-	private Object getContext(Job job) {
+	private Object getContext(final Job job) {
 		return job.getProperty(UIProcess.PROPERTY_CONTEXT);
 	}
 
-	private UIProcess createDefaultUIProcess(Job job) {
+	private UIProcess createDefaultUIProcess(final Job job) {
 		return new UIProcess(job);
 	}
 
-	public void registerMapping(Job job, UIProcess process) {
+	public void registerMapping(final Job job, final UIProcess process) {
 		jobUiProcess.put(job, process);
 	}
 
-	public void unregisterMapping(Job job) {
+	public void unregisterMapping(final Job job) {
 		jobUiProcess.remove(job);
 	}
 }

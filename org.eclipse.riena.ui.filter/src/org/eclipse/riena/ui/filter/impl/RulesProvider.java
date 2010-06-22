@@ -39,13 +39,13 @@ public class RulesProvider {
 	 *            type of marker (hidden, disabled, output or mandatory)
 	 * @return rule or {@code null} if no rule was found.
 	 */
-	public IUIFilterRuleMarkerRidget getRuleMarkerRidget(String type) {
+	public IUIFilterRuleMarkerRidget getRuleMarkerRidget(final String type) {
 
 		if (type == null) {
 			return null;
 		}
 
-		for (IRuleMapperExtension ruleMapperExtension : ruleMapperExtensions) {
+		for (final IRuleMapperExtension ruleMapperExtension : ruleMapperExtensions) {
 
 			IRuleMarkerRidgetMapper mapper = null;
 			if (type.equals("hidden")) { //$NON-NLS-1$
@@ -58,7 +58,7 @@ public class RulesProvider {
 				mapper = ruleMapperExtension.getRidgetMandatoryMarker();
 			}
 			if (mapper != null) {
-				IUIFilterRuleMarkerRidget rule = mapper.getRuleClass();
+				final IUIFilterRuleMarkerRidget rule = mapper.getRuleClass();
 				if (rule != null) {
 					return rule;
 				}
@@ -76,13 +76,13 @@ public class RulesProvider {
 	 *            type of marker (hidden or disabled)
 	 * @return rule or {@code null} if no rule was found.
 	 */
-	public IUIFilterRuleMarkerRidget getRuleMarkerMenuItem(String type) {
+	public IUIFilterRuleMarkerRidget getRuleMarkerMenuItem(final String type) {
 
 		if (type == null) {
 			return null;
 		}
 
-		for (IRuleMapperExtension ruleMapperExtension : ruleMapperExtensions) {
+		for (final IRuleMapperExtension ruleMapperExtension : ruleMapperExtensions) {
 
 			IRuleMarkerRidgetMapper mapper = null;
 			if (type.equals("hidden")) { //$NON-NLS-1$
@@ -91,7 +91,7 @@ public class RulesProvider {
 				mapper = ruleMapperExtension.getMenuItemDisabledMarker();
 			}
 			if (mapper != null) {
-				IUIFilterRuleMarkerRidget rule = mapper.getRuleClass();
+				final IUIFilterRuleMarkerRidget rule = mapper.getRuleClass();
 				if (rule != null) {
 					return rule;
 				}
@@ -109,13 +109,13 @@ public class RulesProvider {
 	 *            type of marker (hidden or disabled)
 	 * @return rule or {@code null} if no rule was found.
 	 */
-	public IUIFilterRuleMarkerNavigation getRuleMarkerNavigation(String type) {
+	public IUIFilterRuleMarkerNavigation getRuleMarkerNavigation(final String type) {
 
 		if (type == null) {
 			return null;
 		}
 
-		for (IRuleMapperExtension ruleMapperExtension : ruleMapperExtensions) {
+		for (final IRuleMapperExtension ruleMapperExtension : ruleMapperExtensions) {
 
 			IRuleMarkerNavigationMapper mapper = null;
 			if (type.equals("hidden")) { //$NON-NLS-1$
@@ -124,7 +124,7 @@ public class RulesProvider {
 				mapper = ruleMapperExtension.getNavigationDisabledMarker();
 			}
 			if (mapper != null) {
-				IUIFilterRuleMarkerNavigation rule = mapper.getRuleClass();
+				final IUIFilterRuleMarkerNavigation rule = mapper.getRuleClass();
 				if (rule != null) {
 					return rule;
 				}
@@ -142,10 +142,10 @@ public class RulesProvider {
 	 */
 	public IUIFilterRuleValidatorRidget getRuleValidatorRidget() {
 
-		for (IRuleMapperExtension ruleMapperExtension : ruleMapperExtensions) {
-			IRuleValidatorRidgetMapper mapper = ruleMapperExtension.getRidgetValidator();
+		for (final IRuleMapperExtension ruleMapperExtension : ruleMapperExtensions) {
+			final IRuleValidatorRidgetMapper mapper = ruleMapperExtension.getRidgetValidator();
 			if (mapper != null) {
-				IUIFilterRuleValidatorRidget rule = mapper.getRuleClass();
+				final IUIFilterRuleValidatorRidget rule = mapper.getRuleClass();
 				if (rule != null) {
 					return rule;
 				}
@@ -162,7 +162,7 @@ public class RulesProvider {
 	 * @param ruleMapperExtensions
 	 */
 	@InjectExtension
-	public void update(IRuleMapperExtension[] ruleMapperExtensions) {
+	public void update(final IRuleMapperExtension[] ruleMapperExtensions) {
 		this.ruleMapperExtensions = ruleMapperExtensions;
 	}
 

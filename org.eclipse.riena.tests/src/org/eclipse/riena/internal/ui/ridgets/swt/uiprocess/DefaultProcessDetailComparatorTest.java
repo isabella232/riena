@@ -25,10 +25,10 @@ public class DefaultProcessDetailComparatorTest extends TestCase {
 	 */
 	public void testCompare() {
 
-		DefaultProcessDetailComparator comparator = new DefaultProcessDetailComparator();
+		final DefaultProcessDetailComparator comparator = new DefaultProcessDetailComparator();
 
-		ProcessDetail detail1 = new ProcessDetail(1, null);
-		ProcessDetail detail2 = new ProcessDetail(2, null);
+		final ProcessDetail detail1 = new ProcessDetail(1, null);
+		final ProcessDetail detail2 = new ProcessDetail(2, null);
 
 		assertEquals(1, comparator.compare(detail1, detail2));
 		assertEquals(-1, comparator.compare(detail2, detail1));

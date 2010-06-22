@@ -28,7 +28,7 @@ public class ImageButtonRidgetTest extends AbstractRidgetTestCase {
 	}
 
 	@Override
-	protected ImageButton createWidget(Composite parent) {
+	protected ImageButton createWidget(final Composite parent) {
 		return new ImageButton(parent, SWT.NONE);
 	}
 

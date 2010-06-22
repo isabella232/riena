@@ -65,14 +65,14 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 	private boolean isFirst;
 	private boolean isLast;
 
-	ModuleNavigationListener(Tree moduleTree) {
+	ModuleNavigationListener(final Tree moduleTree) {
 		moduleTree.addKeyListener(this);
 		moduleTree.addSelectionListener(this);
 		moduleTree.addFocusListener(this);
 	}
 
 	@Override
-	public void widgetSelected(SelectionEvent event) {
+	public void widgetSelected(final SelectionEvent event) {
 		// System.out.println("widgetSelected() " + getSelection(event));
 		cancelSwitch();
 		if (!keyPressed) {
@@ -80,8 +80,8 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 			startSwitch(getSelection(event));
 		} else {
 			// key is down and we must check if the tree node is selectable
-			Tree tree = (Tree) event.widget;
-			TreeItem[] sel = tree.getSelection();
+			final Tree tree = (Tree) event.widget;
+			final TreeItem[] sel = tree.getSelection();
 			if (sel.length > 0) {
 				TreeItem item = sel[0];
 				if (!isSelectable(item)) {
@@ -101,16 +101,16 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 		}
 	}
 
-	public void keyPressed(KeyEvent event) {
+	public void keyPressed(final KeyEvent event) {
 		cancelSwitch();
 		keyPressed = true;
 		keyCode = event.keyCode;
-		TreeItem from = getSelection(event);
+		final TreeItem from = getSelection(event);
 		isFirst = isFirst(from);
 		isLast = isLast(from);
 	}
 
-	public void keyReleased(KeyEvent event) {
+	public void keyReleased(final KeyEvent event) {
 		// System.out.println("keyReleased() " + getSelection(event));
 		// plain arrow up
 		if (event.stateMask == 0 && KC_ARROW_UP == event.keyCode && isFirst) {
@@ -124,11 +124,11 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 		keyPressed = false;
 	}
 
-	public void focusGained(FocusEvent e) {
+	public void focusGained(final FocusEvent e) {
 		// unused
 	}
 
-	public void focusLost(FocusEvent e) {
+	public void focusLost(final FocusEvent e) {
 		// reset key pressed state when focus is removed from the tree
 		keyPressed = false;
 	}
@@ -143,23 +143,23 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 	}
 
 	private SwitchModule createSwitchModuleOp() {
-		SwitchModule result = new SwitchModule();
+		final SwitchModule result = new SwitchModule();
 		result.setActivateSubmodule(true);
 		return result;
 	}
 
-	private TreeItem findLast(Tree tree) {
+	private TreeItem findLast(final Tree tree) {
 		if (tree.isDisposed()) {
 			return null;
 		}
-		TreeItem[] items = tree.getItems();
+		final TreeItem[] items = tree.getItems();
 		return items.length > 0 ? findLast(items[items.length - 1]) : null;
 	}
 
-	private TreeItem findLast(TreeItem item) {
+	private TreeItem findLast(final TreeItem item) {
 		TreeItem result = item;
 		if (item.getExpanded() && item.getItemCount() > 0) {
-			TreeItem last = item.getItem(item.getItemCount() - 1);
+			final TreeItem last = item.getItem(item.getItemCount() - 1);
 			result = findLast(last);
 		}
 		return result;
@@ -171,9 +171,9 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 	 * 
 	 * @return a TreeItem, may be null
 	 */
-	private TreeItem findNext(TreeItem item) {
-		List<TreeItem> siblings = sequentialize(item.getParent().getItems());
-		int index = siblings.indexOf(item);
+	private TreeItem findNext(final TreeItem item) {
+		final List<TreeItem> siblings = sequentialize(item.getParent().getItems());
+		final int index = siblings.indexOf(item);
 		TreeItem result = index != -1 && index < siblings.size() - 1 ? siblings.get(index + 1) : null;
 		if (result != null && !isSelectable(result)) {
 			result = findNext(result);
@@ -187,9 +187,9 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 	 * 
 	 * @return a TreeItem, may be null
 	 */
-	private TreeItem findPrevious(TreeItem item) {
-		List<TreeItem> siblings = sequentialize(item.getParent().getItems());
-		int index = siblings.indexOf(item);
+	private TreeItem findPrevious(final TreeItem item) {
+		final List<TreeItem> siblings = sequentialize(item.getParent().getItems());
+		final int index = siblings.indexOf(item);
 		TreeItem result = index > 0 ? siblings.get(index - 1) : null;
 		if (result != null && !isSelectable(result)) {
 			result = findPrevious(result);
@@ -197,8 +197,8 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 		return result;
 	}
 
-	private TreeItem getSelection(TypedEvent event) {
-		Tree tree = (Tree) event.widget;
+	private TreeItem getSelection(final TypedEvent event) {
+		final Tree tree = (Tree) event.widget;
 		TreeItem result = null;
 		if (tree.getSelectionCount() > 0) {
 			result = tree.getSelection()[0];
@@ -206,10 +206,10 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 		return result;
 	}
 
-	private boolean isFirst(TreeItem item) {
+	private boolean isFirst(final TreeItem item) {
 		boolean result = false;
 		if (item != null) {
-			Tree tree = item.getParent();
+			final Tree tree = item.getParent();
 			if (tree.getItemCount() > 0) {
 				result = tree.getItem(0) == item;
 			}
@@ -217,16 +217,16 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 		return result;
 	}
 
-	private boolean isLast(TreeItem item) {
+	private boolean isLast(final TreeItem item) {
 		if (null == item) {
 			return false;
 		}
 		return item == findLast(item.getParent());
 	}
 
-	private boolean isSelectable(TreeItem item) {
+	private boolean isSelectable(final TreeItem item) {
 		boolean result = true;
-		INavigationNode<?> node = (INavigationNode<?>) item.getData();
+		final INavigationNode<?> node = (INavigationNode<?>) item.getData();
 		if (node instanceof SubModuleNode) {
 			result = ((SubModuleNode) node).isSelectable();
 		}
@@ -236,11 +236,11 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 	/**
 	 * Do a DFS traversal and return all reachable nodes.
 	 */
-	private List<TreeItem> sequentialize(TreeItem[] siblings) {
-		List<TreeItem> stack = new ArrayList<TreeItem>(Arrays.asList(siblings));
-		List<TreeItem> result = new ArrayList<TreeItem>();
+	private List<TreeItem> sequentialize(final TreeItem[] siblings) {
+		final List<TreeItem> stack = new ArrayList<TreeItem>(Arrays.asList(siblings));
+		final List<TreeItem> result = new ArrayList<TreeItem>();
 		while (!stack.isEmpty()) {
-			TreeItem item = stack.remove(0);
+			final TreeItem item = stack.remove(0);
 			result.add(item);
 			if (item.getExpanded()) {
 				stack.addAll(0, Arrays.asList(item.getItems()));
@@ -249,7 +249,7 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 		return result;
 	}
 
-	private void startSwitch(TreeItem item) {
+	private void startSwitch(final TreeItem item) {
 		cancelSwitch();
 		if (item != null) {
 			nodeSwitcher = new NodeSwitcher(item.getDisplay(), (INavigationNode<?>) item.getData());
@@ -275,7 +275,7 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 
 		private volatile boolean isCancelled;
 
-		NodeSwitcher(Display display, INavigationNode<?> node) {
+		NodeSwitcher(final Display display, final INavigationNode<?> node) {
 			this.display = display;
 			this.node = node;
 		}
@@ -284,7 +284,7 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 		public void run() {
 			try {
 				sleep(TIMEOUT_MS);
-			} catch (InterruptedException iex) {
+			} catch (final InterruptedException iex) {
 				Nop.reason("ignore"); //$NON-NLS-1$
 			}
 			if (!isCancelled) {

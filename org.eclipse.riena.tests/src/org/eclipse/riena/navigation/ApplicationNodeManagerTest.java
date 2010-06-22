@@ -37,13 +37,13 @@ public class ApplicationNodeManagerTest extends TestCase {
 
 	public void testAddDefaultModel() throws Exception {
 		ApplicationNodeManager.registerApplicationNode(model);
-		IApplicationNode rModel = ApplicationNodeManager.getApplicationNode();
+		final IApplicationNode rModel = ApplicationNodeManager.getApplicationNode();
 		assertNotNull(rModel);
 	}
 
 	public void testAddNamedModel() throws Exception {
 		ApplicationNodeManager.registerApplicationNode(new ApplicationNode(null, "MyModel"));
-		IApplicationNode rModel = ApplicationNodeManager.getApplicationNode("MyModel");
+		final IApplicationNode rModel = ApplicationNodeManager.getApplicationNode("MyModel");
 		assertNotNull(rModel);
 	}
 
@@ -52,7 +52,7 @@ public class ApplicationNodeManagerTest extends TestCase {
 		try {
 			ApplicationNodeManager.registerApplicationNode(model);
 			ApplicationNodeManager.registerApplicationNode(model);
-		} catch (ApplicationModelFailure f) {
+		} catch (final ApplicationModelFailure f) {
 			exOk = true;
 		}
 		assertTrue("duplicate default model registration didn't fire a ApplicationModelFailure", exOk);
@@ -60,7 +60,7 @@ public class ApplicationNodeManagerTest extends TestCase {
 		try {
 			ApplicationNodeManager.registerApplicationNode(new ApplicationNode(null, "MyModel"));
 			ApplicationNodeManager.registerApplicationNode(new ApplicationNode(null, "MyModel"));
-		} catch (ApplicationModelFailure f) {
+		} catch (final ApplicationModelFailure f) {
 			exOk = true;
 		}
 		assertTrue("duplicate named registration didn't fire a ApplicationModelFailure", exOk);
@@ -69,7 +69,7 @@ public class ApplicationNodeManagerTest extends TestCase {
 	public void testGetDefaultModel() throws Exception {
 		ApplicationNodeManager.registerApplicationNode(model);
 		ApplicationNodeManager.registerApplicationNode(new ApplicationNode(null, "MyModel"));
-		IApplicationNode rModel = ApplicationNodeManager.getApplicationNode();
+		final IApplicationNode rModel = ApplicationNodeManager.getApplicationNode();
 		assertNotNull(rModel);
 		assertSame(model, rModel);
 	}
@@ -77,7 +77,7 @@ public class ApplicationNodeManagerTest extends TestCase {
 	public void testGetDefaultModelWhenNamedAndSingle() throws Exception {
 		model = new ApplicationNode(null, "MyModel");
 		ApplicationNodeManager.registerApplicationNode(model);
-		IApplicationNode rModel = ApplicationNodeManager.getApplicationNode();
+		final IApplicationNode rModel = ApplicationNodeManager.getApplicationNode();
 		assertNotNull(rModel);
 		assertSame(model, rModel);
 	}
@@ -87,7 +87,7 @@ public class ApplicationNodeManagerTest extends TestCase {
 		ApplicationNodeManager.registerApplicationNode(model);
 		ApplicationNodeManager.registerApplicationNode(new ApplicationNode(null, "MyModell"));
 		ApplicationNodeManager.registerApplicationNode(new ApplicationNode(null, "MyModel2"));
-		IApplicationNode rModel = ApplicationNodeManager.getApplicationNode("MyModel");
+		final IApplicationNode rModel = ApplicationNodeManager.getApplicationNode("MyModel");
 		assertNotNull(rModel);
 		assertSame(model, rModel);
 	}
@@ -96,9 +96,9 @@ public class ApplicationNodeManagerTest extends TestCase {
 	 * Tests the method {@code getDefaultNavigationProcessor()}.
 	 */
 	public void testGetDefaultNavigationProcessor() {
-		INavigationProcessor navigationProcessor = ApplicationNodeManager.getDefaultNavigationProcessor();
+		final INavigationProcessor navigationProcessor = ApplicationNodeManager.getDefaultNavigationProcessor();
 		assertNotNull(navigationProcessor);
-		INavigationProcessor navigationProcessor2 = ApplicationNodeManager.getDefaultNavigationProcessor();
+		final INavigationProcessor navigationProcessor2 = ApplicationNodeManager.getDefaultNavigationProcessor();
 		assertSame(navigationProcessor, navigationProcessor2);
 	}
 

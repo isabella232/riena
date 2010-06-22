@@ -53,10 +53,10 @@ public class StatuslineNumberTest extends TestCase {
 	 */
 	public void testCreateContents() {
 
-		Control[] controls = statusNumber.getChildren();
+		final Control[] controls = statusNumber.getChildren();
 		assertEquals(1, controls.length);
 		assertTrue(controls[0] instanceof CLabel);
-		CLabel label = (CLabel) controls[0];
+		final CLabel label = (CLabel) controls[0];
 		assertEquals("0000000", label.getText());
 
 	}
@@ -68,8 +68,8 @@ public class StatuslineNumberTest extends TestCase {
 
 		statusNumber.setNumber("4711-a");
 
-		Control[] controls = statusNumber.getChildren();
-		CLabel label = (CLabel) controls[0];
+		final Control[] controls = statusNumber.getChildren();
+		final CLabel label = (CLabel) controls[0];
 		assertEquals("4711-a", label.getText());
 
 		statusNumber.setNumber(null);
@@ -85,8 +85,8 @@ public class StatuslineNumberTest extends TestCase {
 
 		statusNumber.setNumber(12);
 
-		Control[] controls = statusNumber.getChildren();
-		CLabel label = (CLabel) controls[0];
+		final Control[] controls = statusNumber.getChildren();
+		final CLabel label = (CLabel) controls[0];
 		assertEquals("0000012", label.getText());
 
 		statusNumber.setNumber(0);

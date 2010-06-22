@@ -17,7 +17,7 @@ public class ConfigurableThingModifyMethodOff {
 
 	private IDataModifyMethodOff data;
 
-	public void update(IDataModifyMethodOff data) {
+	public void update(final IDataModifyMethodOff data) {
 		this.data = data;
 	}
 

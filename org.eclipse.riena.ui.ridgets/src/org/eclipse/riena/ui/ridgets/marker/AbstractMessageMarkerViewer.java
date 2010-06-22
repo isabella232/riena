@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -44,12 +43,11 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 	 * @return string with all messages
 	 * @since 1.2
 	 */
-	public static String constructMessage(Collection<IMessageMarker> messageMarker, String separator) {
+	public static String constructMessage(final Collection<IMessageMarker> messageMarker, final String separator) {
 		Assert.isNotNull(separator);
-		StringWriter sw = new StringWriter();
+		final StringWriter sw = new StringWriter();
 		if (messageMarker != null) {
-			for (Iterator<IMessageMarker> i = messageMarker.iterator(); i.hasNext();) {
-				IMessageMarker nextMarker = i.next();
+			for (final IMessageMarker nextMarker : messageMarker) {
 				if (sw.toString().trim().length() > 0) {
 					sw.write(separator);
 				}
@@ -62,8 +60,8 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 		return sw.toString().trim();
 	}
 
-	private HashSet<Class<? extends IMessageMarker>> markerTypes;
-	private ListenerList<IBasicMarkableRidget> ridgets;
+	private final HashSet<Class<? extends IMessageMarker>> markerTypes;
+	private final ListenerList<IBasicMarkableRidget> ridgets;
 	private boolean visible;
 
 	public AbstractMessageMarkerViewer() {
@@ -74,22 +72,22 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 		markerTypes.add(ErrorMessageMarker.class);
 	}
 
-	public void addRidget(IBasicMarkableRidget markableRidget) {
+	public void addRidget(final IBasicMarkableRidget markableRidget) {
 		ridgets.add(markableRidget);
 		showMessages(markableRidget);
 	}
 
-	public void removeRidget(IBasicMarkableRidget markableRidget) {
+	public void removeRidget(final IBasicMarkableRidget markableRidget) {
 		ridgets.remove(markableRidget);
 		hideMessages(markableRidget);
 	}
 
-	public void addMarkerType(Class<? extends IMessageMarker> markerClass) {
+	public void addMarkerType(final Class<? extends IMessageMarker> markerClass) {
 		markerTypes.add(markerClass);
 		showMessages();
 	}
 
-	public void removeMarkerType(Class<? extends IMessageMarker> markerClass) {
+	public void removeMarkerType(final Class<? extends IMessageMarker> markerClass) {
 		markerTypes.remove(markerClass);
 		showMessages();
 	}
@@ -98,13 +96,13 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 		return visible;
 	}
 
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		this.visible = visible;
 		showMessages();
 	}
 
 	private void showMessages() {
-		for (IBasicMarkableRidget ridget : getRidgets()) {
+		for (final IBasicMarkableRidget ridget : getRidgets()) {
 			showMessages(ridget);
 		}
 	}
@@ -122,22 +120,23 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 
 	protected abstract void hideMessages(IBasicMarkableRidget ridget);
 
-	protected Collection<IMessageMarker> getMessageMarker(IBasicMarkableRidget markableRidget) {
+	protected Collection<IMessageMarker> getMessageMarker(final IBasicMarkableRidget markableRidget) {
 		return getMessageMarker(markableRidget, false);
 	}
 
-	protected Collection<IMessageMarker> getMessageMarker(IBasicMarkableRidget markableRidget, boolean pRemove) {
-		List<IMessageMarker> result = new ArrayList<IMessageMarker>();
-		for (Class<? extends IMessageMarker> nextMessageMarkerType : markerTypes) {
-			Collection<? extends IMessageMarker> nextMessageMarkers = markableRidget
+	protected Collection<IMessageMarker> getMessageMarker(final IBasicMarkableRidget markableRidget,
+			final boolean pRemove) {
+		final List<IMessageMarker> result = new ArrayList<IMessageMarker>();
+		for (final Class<? extends IMessageMarker> nextMessageMarkerType : markerTypes) {
+			final Collection<? extends IMessageMarker> nextMessageMarkers = markableRidget
 					.getMarkersOfType(nextMessageMarkerType);
 			if (nextMessageMarkers != null && nextMessageMarkers.size() > 0) {
 				result.addAll(nextMessageMarkers);
 			}
 		}
 		if (pRemove) {
-			for (Iterator<IMessageMarker> j = result.iterator(); j.hasNext();) {
-				markableRidget.removeMarker(j.next());
+			for (final IMessageMarker iMessageMarker : result) {
+				markableRidget.removeMarker(iMessageMarker);
 			}
 		}
 		Collections.sort(result, new MessageMarkerComparator());
@@ -152,9 +151,9 @@ public abstract class AbstractMessageMarkerViewer implements IMessageMarkerViewe
 
 		private static final long serialVersionUID = 1L;
 
-		public int compare(IMessageMarker o1, IMessageMarker o2) {
-			String message1 = o1.getMessage();
-			String message2 = o2.getMessage();
+		public int compare(final IMessageMarker o1, final IMessageMarker o2) {
+			final String message1 = o1.getMessage();
+			final String message2 = o2.getMessage();
 			return message1.compareTo(message2);
 		}
 

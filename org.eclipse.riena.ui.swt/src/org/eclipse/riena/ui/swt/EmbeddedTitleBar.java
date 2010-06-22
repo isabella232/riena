@@ -58,7 +58,7 @@ public class EmbeddedTitleBar extends Canvas {
 	 * @param style
 	 *            the style of control to construct
 	 */
-	public EmbeddedTitleBar(Composite parent, int style) {
+	public EmbeddedTitleBar(final Composite parent, final int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		addListeners();
 		titleBarListeners = new ListenerList<IEmbeddedTitleBarListener>(IEmbeddedTitleBarListener.class);
@@ -70,7 +70,7 @@ public class EmbeddedTitleBar extends Canvas {
 	protected void addListeners() {
 
 		paintListener = new PaintListener() {
-			public void paintControl(PaintEvent e) {
+			public void paintControl(final PaintEvent e) {
 				onPaint(e);
 			}
 		};
@@ -95,9 +95,9 @@ public class EmbeddedTitleBar extends Canvas {
 	 * @param e
 	 *            an event containing information about the paint
 	 */
-	private void onPaint(PaintEvent e) {
+	private void onPaint(final PaintEvent e) {
 
-		GC gc = e.gc;
+		final GC gc = e.gc;
 
 		// title bar
 		getLnfTitlebarRenderer().setActive(isWindowActive());
@@ -109,8 +109,8 @@ public class EmbeddedTitleBar extends Canvas {
 		getLnfTitlebarRenderer().setImage(getImage());
 		getLnfTitlebarRenderer().setTitle(getTitle());
 		getLnfTitlebarRenderer().setMarkers(getMarkers());
-		Point titlebarSize = getLnfTitlebarRenderer().computeSize(gc, getBounds().width, 0);
-		Rectangle titlebarBounds = new Rectangle(0, 0, titlebarSize.x, titlebarSize.y);
+		final Point titlebarSize = getLnfTitlebarRenderer().computeSize(gc, getBounds().width, 0);
+		final Rectangle titlebarBounds = new Rectangle(0, 0, titlebarSize.x, titlebarSize.y);
 		getLnfTitlebarRenderer().setBounds(titlebarBounds);
 		getLnfTitlebarRenderer().paint(gc, this);
 
@@ -132,11 +132,11 @@ public class EmbeddedTitleBar extends Canvas {
 
 	}
 
-	public void addEmbeddedTitleBarListener(IEmbeddedTitleBarListener listener) {
+	public void addEmbeddedTitleBarListener(final IEmbeddedTitleBarListener listener) {
 		titleBarListeners.add(listener);
 	}
 
-	public void removeEmbeddedTitleBarListener(IEmbeddedTitleBarListener listener) {
+	public void removeEmbeddedTitleBarListener(final IEmbeddedTitleBarListener listener) {
 		titleBarListeners.remove(listener);
 	}
 
@@ -146,7 +146,7 @@ public class EmbeddedTitleBar extends Canvas {
 	@Override
 	public Point getSize() {
 		Point size = super.getSize();
-		GC gc = new GC(this);
+		final GC gc = new GC(this);
 		size = getLnfTitlebarRenderer().computeSize(gc, size.x, size.y);
 		gc.dispose();
 		return size;
@@ -171,7 +171,7 @@ public class EmbeddedTitleBar extends Canvas {
 	 * @param windowActive
 	 *            the windowActive to set
 	 */
-	public void setWindowActive(boolean active) {
+	public void setWindowActive(final boolean active) {
 		if (hasChanged(this.windowActive, active)) {
 			this.windowActive = active;
 			redraw();
@@ -189,7 +189,7 @@ public class EmbeddedTitleBar extends Canvas {
 	 * @param pressed
 	 *            the pressed to set
 	 */
-	public void setPressed(boolean pressed) {
+	public void setPressed(final boolean pressed) {
 		if (isDisposed()) {
 			return;
 		}
@@ -210,7 +210,7 @@ public class EmbeddedTitleBar extends Canvas {
 	 * @param hover
 	 *            the hover to set
 	 */
-	public void setHover(boolean hover) {
+	public void setHover(final boolean hover) {
 		if (isDisposed()) {
 			return;
 		}
@@ -231,7 +231,7 @@ public class EmbeddedTitleBar extends Canvas {
 	 * @param closeable
 	 *            the closeable to set
 	 */
-	public void setCloseable(boolean closeable) {
+	public void setCloseable(final boolean closeable) {
 		if (hasChanged(this.closeable, closeable)) {
 			this.closeable = closeable;
 			redraw();
@@ -249,7 +249,7 @@ public class EmbeddedTitleBar extends Canvas {
 	 * @param title
 	 *            the title to set
 	 */
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		if (hasChanged(this.title, title)) {
 			this.title = title;
 			redraw();
@@ -260,7 +260,7 @@ public class EmbeddedTitleBar extends Canvas {
 	 * @param image
 	 *            the image to set
 	 */
-	public void setImage(Image image) {
+	public void setImage(final Image image) {
 		if (hasChanged(this.image, image)) {
 			this.image = image;
 			redraw();
@@ -274,7 +274,7 @@ public class EmbeddedTitleBar extends Canvas {
 		return image;
 	}
 
-	public void setMarkers(Collection<? extends IMarker> markers) {
+	public void setMarkers(final Collection<? extends IMarker> markers) {
 		this.markers = markers;
 	}
 
@@ -285,27 +285,27 @@ public class EmbeddedTitleBar extends Canvas {
 	/**
 	 * @see org.eclipse.riena.ui.swt.lnf.ILnfRenderer#getMarkersOfType(java.lang.Class)
 	 */
-	public <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
+	public <T extends IMarker> Collection<T> getMarkersOfType(final Class<T> type) {
 		return Markable.getMarkersOfType(getMarkers(), type);
 	}
 
-	protected boolean isOverClose(Point point) {
+	protected boolean isOverClose(final Point point) {
 
 		if (!isCloseable()) {
 			return false;
 		}
 
-		boolean inside = getLnfTitlebarRenderer().isInsideCloseButton(point);
+		final boolean inside = getLnfTitlebarRenderer().isInsideCloseButton(point);
 		return inside;
 
 	}
 
 	public boolean isTextClipped() {
 
-		EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer();
+		final EmbeddedTitlebarRenderer titlebarRenderer = getLnfTitlebarRenderer();
 		titlebarRenderer.setBounds(getBounds());
-		GC gc = new GC(this);
-		String clippedText = titlebarRenderer.getClippedText(gc, title);
+		final GC gc = new GC(this);
+		final String clippedText = titlebarRenderer.getClippedText(gc, title);
 		gc.dispose();
 		if (StringUtils.isEmpty(title)) {
 			return false;
@@ -324,11 +324,11 @@ public class EmbeddedTitleBar extends Canvas {
 	 *            new value
 	 * @return true, if value has changed; otherwise false
 	 */
-	private boolean hasChanged(Object oldValue, Object newValue) {
+	private boolean hasChanged(final Object oldValue, final Object newValue) {
 		return (oldValue == null && newValue != null) || (oldValue != null && !oldValue.equals(newValue));
 	}
 
-	public void setCloseButtonPressed(boolean closeButtonPressed) {
+	public void setCloseButtonPressed(final boolean closeButtonPressed) {
 		if (isDisposed()) {
 			return;
 		}
@@ -342,7 +342,7 @@ public class EmbeddedTitleBar extends Canvas {
 		return closeButtonPressed;
 	}
 
-	public void setCloseButtonHover(boolean closeButtonHover) {
+	public void setCloseButtonHover(final boolean closeButtonHover) {
 		if (isDisposed()) {
 			return;
 		}

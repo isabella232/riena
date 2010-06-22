@@ -28,24 +28,24 @@ public class ApplicationController extends NavigationNodeController<IApplication
 	private IInfoFlyoutRidget infoFlyout;
 	private boolean menuBarVisible;
 
-	public ApplicationController(IApplicationNode applicationNode) {
+	public ApplicationController(final IApplicationNode applicationNode) {
 		super(applicationNode);
 		applicationNode.addListener(new ApplicationNodeListener() {
 
 			@Override
-			public void labelChanged(IApplicationNode source) {
+			public void labelChanged(final IApplicationNode source) {
 				updateLabel();
 			}
 
 			@Override
-			public void iconChanged(IApplicationNode source) {
+			public void iconChanged(final IApplicationNode source) {
 				updateIcon();
 			}
 		});
 	}
 
 	private boolean done = false;
-	private NodeEventDelegation contextUpdater = new NodeEventDelegation();
+	private final NodeEventDelegation contextUpdater = new NodeEventDelegation();
 
 	public IStatuslineRidget getStatusline() {
 		if (!done) {
@@ -61,11 +61,11 @@ public class ApplicationController extends NavigationNodeController<IApplication
 	 * @param statuslineRidget
 	 *            the statuslineRidget to set
 	 */
-	public void setStatusline(IStatuslineRidget statuslineRidget) {
+	public void setStatusline(final IStatuslineRidget statuslineRidget) {
 		this.statuslineRidget = statuslineRidget;
 	}
 
-	public void setApplicationWindow(IWindowRidget pWindowRidget) {
+	public void setApplicationWindow(final IWindowRidget pWindowRidget) {
 		if (windowRidgetListener == null) {
 			windowRidgetListener = new FrameListener();
 		}
@@ -75,7 +75,7 @@ public class ApplicationController extends NavigationNodeController<IApplication
 		}
 	}
 
-	public void setVisible(boolean pVisible) {
+	public void setVisible(final boolean pVisible) {
 		if (applicationWindow != null) {
 			applicationWindow.setVisible(pVisible);
 		}
@@ -121,7 +121,7 @@ public class ApplicationController extends NavigationNodeController<IApplication
 		updateIcon(applicationWindow);
 	}
 
-	public void setMenubarVisible(boolean visible) {
+	public void setMenubarVisible(final boolean visible) {
 		this.menuBarVisible = visible;
 	}
 
@@ -133,7 +133,7 @@ public class ApplicationController extends NavigationNodeController<IApplication
 	 * @param infoFlyout
 	 *            the infoFlyout to set
 	 */
-	public void setInfoFlyout(IInfoFlyoutRidget infoFlyout) {
+	public void setInfoFlyout(final IInfoFlyoutRidget infoFlyout) {
 		this.infoFlyout = infoFlyout;
 	}
 

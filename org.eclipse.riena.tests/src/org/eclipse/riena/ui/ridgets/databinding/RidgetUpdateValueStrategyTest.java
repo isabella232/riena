@@ -28,7 +28,7 @@ public class RidgetUpdateValueStrategyTest extends TestCase {
 
 	public void testCreateConverter() throws Exception {
 
-		RidgetUpdateValueStrategy strategy = new RidgetUpdateValueStrategy();
+		final RidgetUpdateValueStrategy strategy = new RidgetUpdateValueStrategy();
 
 		IConverter converter = ReflectionUtils.invokeHidden(strategy, "createConverter", String.class, Double.TYPE);
 		assertTrue(converter instanceof StringToNumberAllowingNullConverter);

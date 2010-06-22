@@ -31,9 +31,9 @@ public class StatusLineViewPart extends ViewPart {
 	 *      .Composite)
 	 */
 	@Override
-	public void createPartControl(Composite parent) {
+	public void createPartControl(final Composite parent) {
 		setPartProperty(TitlelessStackPresentation.PROPERTY_STATUSLINE, String.valueOf(Boolean.TRUE));
-		Statusline statusLine = new Statusline(parent, SWT.None, StatuslineSpacer.class);
+		final Statusline statusLine = new Statusline(parent, SWT.None, StatuslineSpacer.class);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(statusLine, "statusline"); //$NON-NLS-1$
 	}
 

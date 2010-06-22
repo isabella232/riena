@@ -25,8 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 public class ErrorInTheMiddleServlet extends HttpServlet {
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		PrintWriter printWriter = new PrintWriter(resp.getOutputStream());
+	protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException,
+			IOException {
+		final PrintWriter printWriter = new PrintWriter(resp.getOutputStream());
 		printWriter.write("das sind mal ein paar Daten am Anfang"); //$NON-NLS-1$
 		printWriter.flush();
 		throw new IOException();

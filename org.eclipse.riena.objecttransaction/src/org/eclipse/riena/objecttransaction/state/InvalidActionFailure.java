@@ -23,7 +23,7 @@ public class InvalidActionFailure extends ObjectTransactionFailure {
 	/**
 	 * @param message
 	 */
-	public InvalidActionFailure(String message) {
+	public InvalidActionFailure(final String message) {
 		super(message);
 	}
 

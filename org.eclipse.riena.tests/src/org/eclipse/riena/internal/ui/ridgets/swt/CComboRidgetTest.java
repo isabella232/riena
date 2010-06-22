@@ -25,12 +25,12 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 public class CComboRidgetTest extends AbstractComboRidgetTest {
 
 	@Override
-	protected Control createWidget(Composite parent) {
+	protected Control createWidget(final Composite parent) {
 		return new CCombo(parent, SWT.READ_ONLY);
 	}
 
 	@Override
-	protected Control createWidget(Composite parent, int style) {
+	protected Control createWidget(final Composite parent, final int style) {
 		return new CCombo(parent, style);
 	}
 
@@ -40,7 +40,7 @@ public class CComboRidgetTest extends AbstractComboRidgetTest {
 	}
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertTrue(getWidget() instanceof CCombo);
 		assertSame(CComboRidget.class, mapper.getRidgetClass(getWidget()));
 	}
@@ -53,7 +53,7 @@ public class CComboRidgetTest extends AbstractComboRidgetTest {
 			// not SWT.READ_ONLY => exception 
 			getRidget().setUIControl(createWidget(getShell(), SWT.NONE));
 			fail();
-		} catch (BindingException bex) {
+		} catch (final BindingException bex) {
 			ok();
 		}
 	}

@@ -15,11 +15,11 @@ public class NameCredential extends AbstractCredential {
 	private String defaultName;
 	private String name;
 
-	public NameCredential(String prompt) {
+	public NameCredential(final String prompt) {
 		super(prompt);
 	}
 
-	public NameCredential(String prompt, String defaultName) {
+	public NameCredential(final String prompt, final String defaultName) {
 		this(prompt);
 		this.defaultName = defaultName;
 	}
@@ -28,7 +28,7 @@ public class NameCredential extends AbstractCredential {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 

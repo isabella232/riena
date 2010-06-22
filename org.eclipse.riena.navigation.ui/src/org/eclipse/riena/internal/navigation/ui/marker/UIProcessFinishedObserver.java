@@ -25,11 +25,11 @@ import org.eclipse.riena.ui.core.uiprocess.UIProcess;
  */
 public class UIProcessFinishedObserver implements IProgressVisualizerObserver {
 
-	private INavigationNode<?> baseNode;
+	private final INavigationNode<?> baseNode;
 
-	private IMarker uiProcessFinishedMarker;
+	private final IMarker uiProcessFinishedMarker;
 
-	private IUIProcessMarkupStrategy markupStrategy;
+	private final IUIProcessMarkupStrategy markupStrategy;
 
 	/**
 	 * @param baseNode
@@ -38,13 +38,13 @@ public class UIProcessFinishedObserver implements IProgressVisualizerObserver {
 	 *            the strategy that handles the markup of the nodes showing the
 	 *            path to baseNode
 	 */
-	public UIProcessFinishedObserver(INavigationNode<?> baseNode, IUIProcessMarkupStrategy markupStrategy) {
+	public UIProcessFinishedObserver(final INavigationNode<?> baseNode, final IUIProcessMarkupStrategy markupStrategy) {
 		this.baseNode = baseNode;
 		uiProcessFinishedMarker = new UIProcessFinishedMarker();
 		this.markupStrategy = markupStrategy;
 	}
 
-	public UIProcessFinishedObserver(INavigationNode<?> currentNode) {
+	public UIProcessFinishedObserver(final INavigationNode<?> currentNode) {
 		this(currentNode, new TypeHierarchyMarkerStrategy());
 	}
 
@@ -52,7 +52,7 @@ public class UIProcessFinishedObserver implements IProgressVisualizerObserver {
 		return baseNode;
 	}
 
-	public void finalUpdateUI(IProgressVisualizer visualizer) {
+	public void finalUpdateUI(final IProgressVisualizer visualizer) {
 		getMarkupStrategy().applyUIProcessMarker(getBaseNode(), uiProcessFinishedMarker);
 	}
 
@@ -62,16 +62,16 @@ public class UIProcessFinishedObserver implements IProgressVisualizerObserver {
 
 	////////////////////////// empty callbacks
 
-	public void addProgressVisualizer(IProgressVisualizer visualizer) {
+	public void addProgressVisualizer(final IProgressVisualizer visualizer) {
 	}
 
-	public void initialUpdateUI(IProgressVisualizer visualizer, int totalWork) {
+	public void initialUpdateUI(final IProgressVisualizer visualizer, final int totalWork) {
 	}
 
-	public void removeProgressVisualizer(IProgressVisualizer visualizer) {
+	public void removeProgressVisualizer(final IProgressVisualizer visualizer) {
 	}
 
-	public void updateProgress(IProgressVisualizer visualizer, int progress) {
+	public void updateProgress(final IProgressVisualizer visualizer, final int progress) {
 	}
 
 }

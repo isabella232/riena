@@ -59,14 +59,14 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
  */
 public abstract class AbstractRidgetController implements IController {
 
-	private Map<String, IRidget> map;
+	private final Map<String, IRidget> map;
 	private boolean isBlocked;
 
 	public AbstractRidgetController() {
 		map = new HashMap<String, IRidget>();
 	}
 
-	public final void addRidget(String id, IRidget ridget) {
+	public final void addRidget(final String id, final IRidget ridget) {
 		map.put(id, ridget);
 	}
 
@@ -74,12 +74,12 @@ public abstract class AbstractRidgetController implements IController {
 		// does nothing and is not called automatically
 	}
 
-	public final IRidget getRidget(String id) {
+	public final IRidget getRidget(final String id) {
 		return map.get(id);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+	public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
 		return (R) getRidget(id);
 	}
 
@@ -93,7 +93,7 @@ public abstract class AbstractRidgetController implements IController {
 		return isBlocked;
 	}
 
-	public void setBlocked(boolean blocked) {
+	public void setBlocked(final boolean blocked) {
 		isBlocked = blocked;
 	}
 

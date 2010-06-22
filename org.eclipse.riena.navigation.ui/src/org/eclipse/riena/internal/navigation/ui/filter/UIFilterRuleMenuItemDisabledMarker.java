@@ -30,7 +30,7 @@ public class UIFilterRuleMenuItemDisabledMarker extends AbstractUIFilterRuleMenu
 	 * @param idPattern
 	 *            ID
 	 */
-	public UIFilterRuleMenuItemDisabledMarker(String idPattern) {
+	public UIFilterRuleMenuItemDisabledMarker(final String idPattern) {
 		super(idPattern, new DisabledMarker(false));
 	}
 

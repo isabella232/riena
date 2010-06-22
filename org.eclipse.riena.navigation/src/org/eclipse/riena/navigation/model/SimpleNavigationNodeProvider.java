@@ -27,8 +27,9 @@ public class SimpleNavigationNodeProvider extends AbstractSimpleNavigationNodePr
 	 */
 	public SimpleNavigationNodeProvider() {
 
-		Inject.extension(getLegacyNavigationAssemblyExtensionPointSafe()).useType(
-				getLegacyNavigationAssemblyExtensionIFSafe()).into(this).andStart(Activator.getDefault().getContext());
+		Inject.extension(getLegacyNavigationAssemblyExtensionPointSafe())
+				.useType(getLegacyNavigationAssemblyExtensionIFSafe()).into(this)
+				.andStart(Activator.getDefault().getContext());
 		Inject.extension(getNavigationAssemblyExtensionPointSafe()).useType(getNavigationAssemblyExtensionIFSafe())
 				.into(this).andStart(Activator.getDefault().getContext());
 
@@ -41,9 +42,9 @@ public class SimpleNavigationNodeProvider extends AbstractSimpleNavigationNodePr
 	 * @param data
 	 *            The navigation assemblies contributed by all extension points
 	 */
-	public void update(INavigationAssemblyExtension[] data) {
+	public void update(final INavigationAssemblyExtension[] data) {
 		// cleanUp();
-		for (INavigationAssemblyExtension assembly : data) {
+		for (final INavigationAssemblyExtension assembly : data) {
 			register(assembly);
 		}
 	}
@@ -84,9 +85,9 @@ public class SimpleNavigationNodeProvider extends AbstractSimpleNavigationNodePr
 	 * @param data
 	 *            The navigation assemblies contributed by all extension points
 	 */
-	public void update(INavigationAssembly2Extension[] data) {
+	public void update(final INavigationAssembly2Extension[] data) {
 		// cleanUp();
-		for (INavigationAssembly2Extension assembly : data) {
+		for (final INavigationAssembly2Extension assembly : data) {
 			register(assembly);
 		}
 	}
@@ -115,8 +116,8 @@ public class SimpleNavigationNodeProvider extends AbstractSimpleNavigationNodePr
 		return INavigationAssemblyExtension.class;
 	}
 
-	private void register(INavigationAssemblyExtension assembly) {
-		INavigationAssembly2Extension assembly2 = AssembliesConverter.convert(assembly);
+	private void register(final INavigationAssemblyExtension assembly) {
+		final INavigationAssembly2Extension assembly2 = AssembliesConverter.convert(assembly);
 		register(assembly2);
 	}
 

@@ -27,18 +27,18 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 public class TopologicalSortTest extends TestCase {
 
 	public void testSortEmpty() {
-		List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
-		List<Integer> result = TopologicalSort.sort(nodes);
+		final List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
+		final List<Integer> result = TopologicalSort.sort(nodes);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals("expected size", 0, result.size());
 	}
 
 	public void testSortSimple() {
-		List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
-		TopologicalNode<Integer> node = new TopologicalNode<Integer>("shoes", null, 1);
+		final List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
+		final TopologicalNode<Integer> node = new TopologicalNode<Integer>("shoes", null, 1);
 		nodes.add(node);
-		List<Integer> result = TopologicalSort.sort(nodes);
+		final List<Integer> result = TopologicalSort.sort(nodes);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals("expected size", 1, result.size());
@@ -46,13 +46,13 @@ public class TopologicalSortTest extends TestCase {
 	}
 
 	public void testSortTwo() {
-		List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
+		final List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
 		TopologicalNode<Integer> node = new TopologicalNode<Integer>("shoes", null, 1);
 		nodes.add(node);
 		node = new TopologicalNode<Integer>("socks", "shoes", 2);
 		nodes.add(node);
 
-		List<Integer> result = TopologicalSort.sort(nodes);
+		final List<Integer> result = TopologicalSort.sort(nodes);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals("expected size", 2, result.size());
@@ -61,13 +61,13 @@ public class TopologicalSortTest extends TestCase {
 	}
 
 	public void testSortTwoStar() {
-		List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
+		final List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
 		TopologicalNode<Integer> node = new TopologicalNode<Integer>("shoes", null, 1);
 		nodes.add(node);
 		node = new TopologicalNode<Integer>("socks", "*", 2);
 		nodes.add(node);
 
-		List<Integer> result = TopologicalSort.sort(nodes);
+		final List<Integer> result = TopologicalSort.sort(nodes);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals("expected size", 2, result.size());
@@ -76,14 +76,14 @@ public class TopologicalSortTest extends TestCase {
 	}
 
 	public void testSortTwoSwitched() {
-		List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
+		final List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
 		TopologicalNode<Integer> node;
 		node = new TopologicalNode<Integer>("socks", "shoes", 2);
 		nodes.add(node);
 		node = new TopologicalNode<Integer>("shoes", null, 1);
 		nodes.add(node);
 
-		List<Integer> result = TopologicalSort.sort(nodes);
+		final List<Integer> result = TopologicalSort.sort(nodes);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals("expected size", 2, result.size());
@@ -92,14 +92,14 @@ public class TopologicalSortTest extends TestCase {
 	}
 
 	public void testSortTwoStarSwitched() {
-		List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
+		final List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
 		TopologicalNode<Integer> node;
 		node = new TopologicalNode<Integer>("socks", "*", 2);
 		nodes.add(node);
 		node = new TopologicalNode<Integer>("shoes", null, 1);
 		nodes.add(node);
 
-		List<Integer> result = TopologicalSort.sort(nodes);
+		final List<Integer> result = TopologicalSort.sort(nodes);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals("expected size", 2, result.size());
@@ -108,7 +108,7 @@ public class TopologicalSortTest extends TestCase {
 	}
 
 	public void testSortTwoPointOne() {
-		List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
+		final List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
 		TopologicalNode<Integer> node = new TopologicalNode<Integer>("shoes", null, 1);
 		nodes.add(node);
 		node = new TopologicalNode<Integer>("socks", "shoes", 2);
@@ -116,7 +116,7 @@ public class TopologicalSortTest extends TestCase {
 		node = new TopologicalNode<Integer>("pant", "shoes", 3);
 		nodes.add(node);
 
-		List<Integer> result = TopologicalSort.sort(nodes);
+		final List<Integer> result = TopologicalSort.sort(nodes);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals("expected size", 3, result.size());
@@ -126,7 +126,7 @@ public class TopologicalSortTest extends TestCase {
 	}
 
 	public void testSortTwoPointOneStar() {
-		List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
+		final List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
 		TopologicalNode<Integer> node = new TopologicalNode<Integer>("shoes", null, 1);
 		nodes.add(node);
 		node = new TopologicalNode<Integer>("socks", "*", 2);
@@ -134,7 +134,7 @@ public class TopologicalSortTest extends TestCase {
 		node = new TopologicalNode<Integer>("pant", "shoes", 3);
 		nodes.add(node);
 
-		List<Integer> result = TopologicalSort.sort(nodes);
+		final List<Integer> result = TopologicalSort.sort(nodes);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals("expected size", 3, result.size());
@@ -144,14 +144,14 @@ public class TopologicalSortTest extends TestCase {
 	}
 
 	public void testSortTwoPointPoint() {
-		List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
+		final List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
 		TopologicalNode<Integer> node;
 		node = new TopologicalNode<Integer>("shoes", "socks", 3);
 		nodes.add(node);
 		node = new TopologicalNode<Integer>("socks", "shoes", 2);
 		nodes.add(node);
 
-		List<Integer> result = TopologicalSort.sort(nodes);
+		final List<Integer> result = TopologicalSort.sort(nodes);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals("expected size", 2, result.size());
@@ -160,14 +160,14 @@ public class TopologicalSortTest extends TestCase {
 	}
 
 	public void testSortTwoOrphans() {
-		List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
+		final List<TopologicalNode<Integer>> nodes = new ArrayList<TopologicalNode<Integer>>();
 		TopologicalNode<Integer> node;
 		node = new TopologicalNode<Integer>("socks", null, 2);
 		nodes.add(node);
 		node = new TopologicalNode<Integer>("shoes", null, 3);
 		nodes.add(node);
 
-		List<Integer> result = TopologicalSort.sort(nodes);
+		final List<Integer> result = TopologicalSort.sort(nodes);
 
 		Assert.assertNotNull(result);
 		Assert.assertEquals("expected size", 2, result.size());

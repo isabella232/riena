@@ -72,7 +72,7 @@ public class ImageButtonTest extends RienaTestCase {
 		assertEquals(1, button.getListeners(SWT.Dispose).length);
 
 		button = new ImageButton(shell, SWT.HOT);
-		Button hoverButton = ReflectionUtils.getHidden(button, "hoverButton");
+		final Button hoverButton = ReflectionUtils.getHidden(button, "hoverButton");
 		// MouseListener added?
 		assertEquals(1, hoverButton.getListeners(SWT.MouseDown).length);
 		// MouseTrackListener added?
@@ -109,7 +109,7 @@ public class ImageButtonTest extends RienaTestCase {
 
 		button = new ImageButton(shell, SWT.HOT);
 		ReflectionUtils.invokeHidden(button, "removeListeners");
-		Button hoverButton = ReflectionUtils.getHidden(button, "hoverButton");
+		final Button hoverButton = ReflectionUtils.getHidden(button, "hoverButton");
 		// MouseListener added?
 		assertEquals(0, hoverButton.getListeners(SWT.MouseDown).length);
 		// MouseTrackListener added?
@@ -127,20 +127,20 @@ public class ImageButtonTest extends RienaTestCase {
 		Image retImage = ReflectionUtils.invokeHidden(button, "getImageToDraw");
 		assertNull(retImage);
 
-		Image image = ImageStore.getInstance().getImage("imagebutton.png");
+		final Image image = ImageStore.getInstance().getImage("imagebutton.png");
 		button.setImage(image);
 		retImage = ReflectionUtils.invokeHidden(button, "getImageToDraw");
 		assertSame(image, retImage);
 
-		Image focusedImage = ImageStore.getInstance().getImage("spirit.png");
+		final Image focusedImage = ImageStore.getInstance().getImage("spirit.png");
 		button.setFocusedImage(focusedImage);
-		Image hoverFocusedImage = ImageStore.getInstance().getImage("spirit_h_.png");
+		final Image hoverFocusedImage = ImageStore.getInstance().getImage("spirit_h_.png");
 		button.setHoverFocusedImage(hoverFocusedImage);
-		Image hoverImage = ImageStore.getInstance().getImage("imagebutton_h_.png");
+		final Image hoverImage = ImageStore.getInstance().getImage("imagebutton_h_.png");
 		button.setHoverImage(hoverImage);
-		Image pressedImage = ImageStore.getInstance().getImage("imagebutton_p_.png");
+		final Image pressedImage = ImageStore.getInstance().getImage("imagebutton_p_.png");
 		button.setPressedImage(pressedImage);
-		Image disabledImage = ImageStore.getInstance().getImage("eclipse.gif");
+		final Image disabledImage = ImageStore.getInstance().getImage("eclipse.gif");
 		button.setDisabledImage(disabledImage);
 
 		ReflectionUtils.invokeHidden(button, "setFocused", true);
@@ -176,12 +176,12 @@ public class ImageButtonTest extends RienaTestCase {
 		Point size = button.computeSize(SWT.DEFAULT, SWT.DEFAULT, false);
 		assertEquals(new Point(0, 0), size);
 
-		Image image = ImageStore.getInstance().getImage("eclipse.gif");
+		final Image image = ImageStore.getInstance().getImage("eclipse.gif");
 		button.setImage(image);
 		size = button.computeSize(SWT.DEFAULT, SWT.DEFAULT, false);
 		assertEquals(new Point(16, 16), size);
 
-		Image focusedImage = new Image(shell.getDisplay(), 20, 21);
+		final Image focusedImage = new Image(shell.getDisplay(), 20, 21);
 		button.setFocusedImage(focusedImage);
 		size = button.computeSize(SWT.DEFAULT, SWT.DEFAULT, false);
 		assertEquals(new Point(20, 21), size);
@@ -189,7 +189,7 @@ public class ImageButtonTest extends RienaTestCase {
 		size = button.computeSize(11, 12, false);
 		assertEquals(new Point(11, 12), size);
 
-		Image miniImage = new Image(shell.getDisplay(), 1, 1);
+		final Image miniImage = new Image(shell.getDisplay(), 1, 1);
 		button.setImage(miniImage);
 		button.setFocusedImage(miniImage);
 		size = button.computeSize(SWT.DEFAULT, SWT.DEFAULT, false);
@@ -212,16 +212,16 @@ public class ImageButtonTest extends RienaTestCase {
 	 */
 	public void testComputeImagePos() {
 
-		Event e = new Event();
+		final Event e = new Event();
 		e.widget = button;
-		PaintEvent event = new PaintEvent(e);
+		final PaintEvent event = new PaintEvent(e);
 		event.width = 20;
 		event.height = 40;
-		Image image = new Image(shell.getDisplay(), 10, 16);
+		final Image image = new Image(shell.getDisplay(), 10, 16);
 		Point retPos = ReflectionUtils.invokeHidden(button, "computeImagePos", event, image);
 		assertEquals(new Point(5, 12), retPos);
 
-		Image bigImage = new Image(shell.getDisplay(), 50, 60);
+		final Image bigImage = new Image(shell.getDisplay(), 50, 60);
 		retPos = ReflectionUtils.invokeHidden(button, "computeImagePos", event, bigImage);
 		assertEquals(new Point(0, 0), retPos);
 
@@ -238,7 +238,7 @@ public class ImageButtonTest extends RienaTestCase {
 		shell.setVisible(true);
 
 		button = new ImageButton(shell, SWT.HOT);
-		Button hoverButton = ReflectionUtils.getHidden(button, "hoverButton");
+		final Button hoverButton = ReflectionUtils.getHidden(button, "hoverButton");
 		assertFalse(hoverButton.isVisible());
 
 		ReflectionUtils.invokeHidden(button, "setPressed", true);

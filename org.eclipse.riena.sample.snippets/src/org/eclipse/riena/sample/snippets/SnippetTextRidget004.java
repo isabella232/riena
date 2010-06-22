@@ -33,25 +33,25 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public final class SnippetTextRidget004 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetTextRidget004.class.getSimpleName());
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
 			UIControlsFactory.createLabel(shell, "ALL UPPERCASE:"); //$NON-NLS-1$
-			Text txtUpper = UIControlsFactory.createText(shell);
+			final Text txtUpper = UIControlsFactory.createText(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtUpper);
 
 			UIControlsFactory.createLabel(shell, "all lowercase:"); //$NON-NLS-1$
-			Text txtLower = UIControlsFactory.createText(shell);
+			final Text txtLower = UIControlsFactory.createText(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtLower);
 
-			ITextRidget upper = (ITextRidget) SwtRidgetFactory.createRidget(txtUpper);
+			final ITextRidget upper = (ITextRidget) SwtRidgetFactory.createRidget(txtUpper);
 			upper.setInputToUIControlConverter(new StringToUpperCaseConverter());
 
-			ITextRidget lower = (ITextRidget) SwtRidgetFactory.createRidget(txtLower);
+			final ITextRidget lower = (ITextRidget) SwtRidgetFactory.createRidget(txtLower);
 			lower.setInputToUIControlConverter(new StringToLowerCaseConverter());
 
 			shell.setSize(400, 100);

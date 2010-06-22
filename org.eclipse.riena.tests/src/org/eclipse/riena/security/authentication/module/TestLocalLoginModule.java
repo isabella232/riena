@@ -51,7 +51,7 @@ public class TestLocalLoginModule implements LoginModule {
 	 * @param string
 	 * @param string2
 	 */
-	public static void setCredentials(String usernameParm, String passwordParm) {
+	public static void setCredentials(final String usernameParm, final String passwordParm) {
 		checkedUsername = usernameParm;
 		checkedPassword = passwordParm;
 
@@ -86,8 +86,8 @@ public class TestLocalLoginModule implements LoginModule {
 	 * , javax.security.auth.callback.CallbackHandler, java.util.Map,
 	 * java.util.Map)
 	 */
-	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState,
-			Map<String, ?> options) {
+	public void initialize(final Subject subject, final CallbackHandler callbackHandler,
+			final Map<String, ?> sharedState, final Map<String, ?> options) {
 		if (callbackHandler == null) {
 			LOGGER.log(LogService.LOG_ERROR, "callbackhandler cant be null");
 			throw new RuntimeException("callbackhandler cant be null");
@@ -104,7 +104,7 @@ public class TestLocalLoginModule implements LoginModule {
 	 */
 	public boolean login() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "login");
-		Callback[] callbacks = new Callback[2];
+		final Callback[] callbacks = new Callback[2];
 		callbacks[0] = new NameCallback("username: ");
 		callbacks[1] = new PasswordCallback("password: ", false);
 		if (callbackHandler == null) {
@@ -122,10 +122,10 @@ public class TestLocalLoginModule implements LoginModule {
 			}
 
 			return false;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			return false;
-		} catch (UnsupportedCallbackException e) {
+		} catch (final UnsupportedCallbackException e) {
 			e.printStackTrace();
 			return false;
 		}

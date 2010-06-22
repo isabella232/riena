@@ -59,11 +59,11 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	private ResizeListener resizeListener;
 	private Composite scrolledComposite;
 	private ScrollingSupport scrollingSupport;
-	private List<ModuleGroupView> moduleGroupViews = new ArrayList<ModuleGroupView>();
+	private final List<ModuleGroupView> moduleGroupViews = new ArrayList<ModuleGroupView>();
 	private Composite navigationMainComposite;
 	private NavigationTreeObserver navigationTreeObserver;
-	private Map<INavigationNode<?>, ModuleGroupView> moduleGroupNodesToViews;
-	private Map<INavigationNode<?>, ModuleView> moduleNodesToViews;
+	private final Map<INavigationNode<?>, ModuleGroupView> moduleGroupNodesToViews;
+	private final Map<INavigationNode<?>, ModuleView> moduleNodesToViews;
 
 	public NavigationViewPart() {
 		markAsNavigation();
@@ -84,12 +84,12 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	}
 
 	public ISubApplicationNode getSubApplicationNode() {
-		String perspectiveID = getViewSite().getPage().getPerspective().getId();
+		final String perspectiveID = getViewSite().getPage().getPerspective().getId();
 		return SwtViewProvider.getInstance().getNavigationNode(perspectiveID, ISubApplicationNode.class);
 	}
 
 	@Override
-	public void createPartControl(Composite parent) {
+	public void createPartControl(final Composite parent) {
 		this.parent = parent;
 		initLayoutParts();
 		// build the view hierarchy
@@ -141,8 +141,8 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 	private void buildNavigationViewHierarchy() {
 		// get the root of the SubApplication
-		ISubApplicationNode subApplicationNode = getSubApplicationNode();
-		for (IModuleGroupNode moduleGroupNode : subApplicationNode.getChildren()) {
+		final ISubApplicationNode subApplicationNode = getSubApplicationNode();
+		for (final IModuleGroupNode moduleGroupNode : subApplicationNode.getChildren()) {
 			createModuleGroupView(moduleGroupNode);
 		}
 		updateNavigationSize();
@@ -162,7 +162,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	 */
 	private final class ResizeListener extends ControlAdapter {
 		@Override
-		public void controlResized(ControlEvent e) {
+		public void controlResized(final ControlEvent e) {
 			updateNavigationSize();
 			parent.layout();
 		}
@@ -179,7 +179,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void childAdded(ISubApplicationNode source, IModuleGroupNode child) {
+		public void childAdded(final ISubApplicationNode source, final IModuleGroupNode child) {
 			// create moduleGroupView
 			createModuleGroupView(child);
 			updateNavigationSize();
@@ -202,7 +202,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void childRemoved(ISubApplicationNode source, IModuleGroupNode child) {
+		public void childRemoved(final ISubApplicationNode source, final IModuleGroupNode child) {
 			unregisterModuleGroupView(child);
 			if (source.isSelected()) {
 				updateNavigationSize();
@@ -210,7 +210,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		}
 
 		@Override
-		public void markerChanged(ISubApplicationNode source, IMarker marker) {
+		public void markerChanged(final ISubApplicationNode source, final IMarker marker) {
 			if (marker instanceof HiddenMarker) {
 				updateNavigationSize();
 			}
@@ -233,29 +233,29 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		//		}
 
 		@Override
-		public void childAdded(IModuleGroupNode source, IModuleNode child) {
+		public void childAdded(final IModuleGroupNode source, final IModuleNode child) {
 			// createModuleView
-			ModuleGroupView moduleGroupView = getModuleGroupViewForNode(source);
+			final ModuleGroupView moduleGroupView = getModuleGroupViewForNode(source);
 			createModuleView(child, moduleGroupView);
 			// childAdded.activate();
 			updateNavigationSize();
 		}
 
 		@Override
-		public void childRemoved(IModuleGroupNode source, IModuleNode child) {
+		public void childRemoved(final IModuleGroupNode source, final IModuleNode child) {
 			moduleNodesToViews.remove(child);
 			// updateNavigationSize();
 		}
 
 		@Override
-		public void disposed(IModuleGroupNode source) {
+		public void disposed(final IModuleGroupNode source) {
 			super.disposed(source);
 			unregisterModuleGroupView(source);
 			// updateNavigationSize();
 		}
 
 		@Override
-		public void markerChanged(IModuleGroupNode source, IMarker marker) {
+		public void markerChanged(final IModuleGroupNode source, final IMarker marker) {
 			if (marker instanceof HiddenMarker) {
 				updateNavigationSize();
 			}
@@ -266,27 +266,27 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	private class SubModuleListener extends SubModuleNodeListener {
 
 		@Override
-		public void markerChanged(ISubModuleNode source, IMarker marker) {
+		public void markerChanged(final ISubModuleNode source, final IMarker marker) {
 			if (marker instanceof HiddenMarker) {
 				updateNavigationSize();
 			}
 		}
 	}
 
-	public ModuleGroupView getModuleGroupViewForNode(IModuleGroupNode source) {
+	public ModuleGroupView getModuleGroupViewForNode(final IModuleGroupNode source) {
 		return moduleGroupNodesToViews.get(source);
 	}
 
 	/**
 	 * @since 1.2
 	 */
-	public ModuleView getModuleViewForNode(IModuleNode source) {
+	public ModuleView getModuleViewForNode(final IModuleNode source) {
 		return moduleNodesToViews.get(source);
 	}
 
-	private void createModuleGroupView(IModuleGroupNode moduleGroupNode) {
+	private void createModuleGroupView(final IModuleGroupNode moduleGroupNode) {
 		// ModuleGroupView are directly rendered into the bodyComposite
-		ModuleGroupView moduleGroupView = getViewFactory().createModuleGroupView(scrolledComposite);
+		final ModuleGroupView moduleGroupView = getViewFactory().createModuleGroupView(scrolledComposite);
 		NodeIdentificationSupport.setIdentification(moduleGroupView, "moduleGroupView", moduleGroupNode); //$NON-NLS-1$
 		moduleGroupNodesToViews.put(moduleGroupNode, moduleGroupView);
 		moduleGroupView.addUpdateListener(new ModuleGroupViewObserver());
@@ -300,10 +300,10 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		moduleGroupView.bind((ModuleGroupNode) moduleGroupNode);
 
 		moduleGroupView.setLayout(new FormLayout());
-		Composite moduleGroupBody = new Composite(moduleGroupView, SWT.NONE);
+		final Composite moduleGroupBody = new Composite(moduleGroupView, SWT.NONE);
 		moduleGroupBody.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND));
-		FormData formData = new FormData();
-		int padding = getModuleGroupPadding();
+		final FormData formData = new FormData();
+		final int padding = getModuleGroupPadding();
 		formData.top = new FormAttachment(0, padding);
 		formData.left = new FormAttachment(0, padding);
 		formData.bottom = new FormAttachment(100, -padding);
@@ -311,7 +311,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		moduleGroupBody.setLayoutData(formData);
 
 		// now it's time for the module views
-		for (IModuleNode moduleNode : moduleGroupNode.getChildren()) {
+		for (final IModuleNode moduleNode : moduleGroupNode.getChildren()) {
 			createModuleView(moduleNode, moduleGroupView);
 		}
 
@@ -319,7 +319,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 	private final class ModuleGroupViewObserver implements IComponentUpdateListener {
 
-		public void update(INavigationNode<?> node) {
+		public void update(final INavigationNode<?> node) {
 
 			updateNavigationSize();
 		}
@@ -332,17 +332,17 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	 * @param moduleView
 	 *            view to register
 	 */
-	private void registerModuleGroupView(ModuleGroupView moduleGroupView) {
+	private void registerModuleGroupView(final ModuleGroupView moduleGroupView) {
 		moduleGroupViews.add(moduleGroupView);
-		ModuleGroupViewComparator comparator = new ModuleGroupViewComparator();
+		final ModuleGroupViewComparator comparator = new ModuleGroupViewComparator();
 		Collections.sort(moduleGroupViews, comparator);
 	}
 
 	class ModuleGroupViewComparator implements Comparator<ModuleGroupView> {
 
-		public int compare(ModuleGroupView moduleGroupView1, ModuleGroupView moduleGroupView2) {
-			ModuleGroupNode moduleGroupNode1 = moduleGroupView1.getNavigationNode();
-			ModuleGroupNode moduleGroupNode2 = moduleGroupView2.getNavigationNode();
+		public int compare(final ModuleGroupView moduleGroupView1, final ModuleGroupView moduleGroupView2) {
+			final ModuleGroupNode moduleGroupNode1 = moduleGroupView1.getNavigationNode();
+			final ModuleGroupNode moduleGroupNode2 = moduleGroupView2.getNavigationNode();
 			return getSubApplicationNode().getIndexOfChild(moduleGroupNode1) < getSubApplicationNode().getIndexOfChild(
 					moduleGroupNode2) ? -1 : 1;
 		}
@@ -356,8 +356,8 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	 * @param moduleGroupNode
 	 *            node whose according view should be unregistered
 	 */
-	public void unregisterModuleGroupView(IModuleGroupNode moduleGroupNode) {
-		for (ModuleGroupView moduleGroupView : moduleGroupViews) {
+	public void unregisterModuleGroupView(final IModuleGroupNode moduleGroupNode) {
+		for (final ModuleGroupView moduleGroupView : moduleGroupViews) {
 			if (moduleGroupView.getNavigationNode() == moduleGroupNode) {
 				unregisterModuleGroupView(moduleGroupView, moduleGroupNode);
 				break;
@@ -371,17 +371,17 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	 * @param moduleGroupView
 	 *            view to remove
 	 */
-	private void unregisterModuleGroupView(ModuleGroupView moduleGroupView, IModuleGroupNode node) {
+	private void unregisterModuleGroupView(final ModuleGroupView moduleGroupView, final IModuleGroupNode node) {
 		moduleGroupNodesToViews.remove(node);
 		moduleGroupViews.remove(moduleGroupView);
 	}
 
-	private void createModuleView(IModuleNode moduleNode, ModuleGroupView moduleGroupView) {
-		Composite moduleGroupBody = (Composite) moduleGroupView.getChildren()[0];
-		FormLayout layout = new FormLayout();
+	private void createModuleView(final IModuleNode moduleNode, final ModuleGroupView moduleGroupView) {
+		final Composite moduleGroupBody = (Composite) moduleGroupView.getChildren()[0];
+		final FormLayout layout = new FormLayout();
 		moduleGroupBody.setLayout(layout);
 
-		ModuleView moduleView = viewFactory.createModuleView(moduleGroupBody);
+		final ModuleView moduleView = viewFactory.createModuleView(moduleGroupBody);
 		moduleView.setModuleGroupNode(moduleGroupView.getNavigationNode());
 		NodeIdentificationSupport.setIdentification(moduleView.getTitle(), "titleBar", moduleNode); //$NON-NLS-1$
 		NodeIdentificationSupport.setIdentification(moduleView.getTree(), "tree", moduleNode); //$NON-NLS-1$
@@ -403,7 +403,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 	public IModuleGroupNode getActiveModuleGroupNode() {
 		IModuleGroupNode active = null;
-		Iterator<IModuleGroupNode> it = getSubApplicationNode().getChildren().iterator();
+		final Iterator<IModuleGroupNode> it = getSubApplicationNode().getChildren().iterator();
 		while (active == null && it.hasNext()) {
 			active = it.next();
 			if (!active.isActivated()) {
@@ -416,7 +416,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	public int calculateBounds() {
 		int yPosition = 0;
 		Collections.sort(moduleGroupViews, new ModuleGroupViewComparator());
-		for (ModuleGroupView moduleGroupView : moduleGroupViews) {
+		for (final ModuleGroupView moduleGroupView : moduleGroupViews) {
 			yPosition = moduleGroupView.calculateBounds(yPosition);
 		}
 		return yPosition;

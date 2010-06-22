@@ -33,7 +33,7 @@ public abstract class AbstractLnfRenderer implements ILnfRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void paint(GC gc, Object value) {
+	public void paint(final GC gc, final Object value) {
 		Assert.isNotNull(gc);
 		initGC(gc);
 	}
@@ -48,7 +48,7 @@ public abstract class AbstractLnfRenderer implements ILnfRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setBounds(int x, int y, int width, int height) {
+	public void setBounds(final int x, final int y, final int width, final int height) {
 		setBounds(new Rectangle(x, y, width, height));
 
 	}
@@ -56,14 +56,14 @@ public abstract class AbstractLnfRenderer implements ILnfRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setBounds(Rectangle bounds) {
+	public void setBounds(final Rectangle bounds) {
 		this.bounds = bounds;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void setMarkers(Collection<? extends IMarker> markers) {
+	public void setMarkers(final Collection<? extends IMarker> markers) {
 		this.markers = markers;
 	}
 
@@ -77,7 +77,7 @@ public abstract class AbstractLnfRenderer implements ILnfRenderer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
+	public <T extends IMarker> Collection<T> getMarkersOfType(final Class<T> type) {
 		return Markable.getMarkersOfType(getMarkers(), type);
 	}
 
@@ -92,8 +92,8 @@ public abstract class AbstractLnfRenderer implements ILnfRenderer {
 	 *            graphics context
 	 * @since 1.2
 	 */
-	protected void initGC(GC gc) {
-		GCFacade gcFacade = GCFacade.getDefault();
+	protected void initGC(final GC gc) {
+		final GCFacade gcFacade = GCFacade.getDefault();
 		gcFacade.setAdvanced(gc, true);
 		gcFacade.setAntialias(gc, SWT.ON);
 	}

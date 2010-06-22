@@ -36,21 +36,21 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void paint(GC gc, Object value) {
+	public void paint(final GC gc, final Object value) {
 
 		super.paint(gc, value);
 
-		Image logo = getLogoImage();
+		final Image logo = getLogoImage();
 		if (logo == null) {
 			return;
 		}
-		int logoWidth = logo.getBounds().width;
-		int logoHeight = logo.getBounds().height;
-		int hMargin = getHorizontalLogoMargin();
-		int vMargin = getVerticalLogoMargin();
+		final int logoWidth = logo.getBounds().width;
+		final int logoHeight = logo.getBounds().height;
+		final int hMargin = getHorizontalLogoMargin();
+		final int vMargin = getVerticalLogoMargin();
 
 		int x = getBounds().x;
-		Integer hPos = getHorizontalLogoPosition();
+		final Integer hPos = getHorizontalLogoPosition();
 		switch (hPos) {
 		case SWT.CENTER:
 			x = getBounds().width / 2 - logoWidth / 2;
@@ -63,7 +63,7 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 			break;
 		}
 		int y = getBounds().y;
-		Integer vPos = getVerticalLogoPosition();
+		final Integer vPos = getVerticalLogoPosition();
 		switch (vPos) {
 		case SWT.CENTER:
 			y = getBounds().height / 2 - logoHeight / 2;
@@ -159,7 +159,7 @@ public class ShellLogoRenderer extends AbstractLnfRenderer {
 	private Image getLogoImage() {
 		Image logoImage = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_LOGO);
 		if (logoImage == null) {
-			String message = "The image of the logo wasn't found! A dummy image is used."; //$NON-NLS-1$
+			final String message = "The image of the logo wasn't found! A dummy image is used."; //$NON-NLS-1$
 			LOGGER.log(LogService.LOG_WARNING, message);
 			logoImage = ImageStore.getInstance().getMissingImage();
 		}

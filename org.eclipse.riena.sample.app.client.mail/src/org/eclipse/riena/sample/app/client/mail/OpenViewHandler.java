@@ -27,11 +27,13 @@ public class OpenViewHandler extends AbstractHandler implements IHandler {
 
 	private int count = 0;
 
-	public Object execute(ExecutionEvent event) {
-		IApplicationNode node = ApplicationNodeManager.getApplicationNode();
-		IModuleGroupNode group = (IModuleGroupNode) node.findNode(new NavigationNodeId(Application.ID_GROUP_MBOXES));
-		String title = "me@this.com (" + ++count + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-		IModuleNode moduleAccount1 = NodeFactory.createModule(new NavigationNodeId("account", Integer.toString(count)), //$NON-NLS-1$
+	public Object execute(final ExecutionEvent event) {
+		final IApplicationNode node = ApplicationNodeManager.getApplicationNode();
+		final IModuleGroupNode group = (IModuleGroupNode) node.findNode(new NavigationNodeId(
+				Application.ID_GROUP_MBOXES));
+		final String title = "me@this.com (" + ++count + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		final IModuleNode moduleAccount1 = NodeFactory.createModule(
+				new NavigationNodeId("account", Integer.toString(count)), //$NON-NLS-1$
 				title, group);
 		NodeFactory.createSubMobule(
 				new NavigationNodeId("Inbox", Integer.toString(count)), "Inbox", moduleAccount1, View.ID); //$NON-NLS-1$ //$NON-NLS-2$

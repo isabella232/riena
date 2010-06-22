@@ -21,8 +21,8 @@ public class UIProcessFinishedFlasher extends Thread {
 
 	private static IUISynchronizer uiSynchronizer;
 
-	private UIProcessFinishedMarker processMarker;
-	private Runnable updater;
+	private final UIProcessFinishedMarker processMarker;
+	private final Runnable updater;
 
 	/**
 	 * Creates a new instance of {@link UIProcessFinishedMarker}.
@@ -33,7 +33,7 @@ public class UIProcessFinishedFlasher extends Thread {
 	 *            the updater shows or hides the marker during and after
 	 *            flashing.
 	 */
-	public UIProcessFinishedFlasher(UIProcessFinishedMarker processMarker, Runnable updater) {
+	public UIProcessFinishedFlasher(final UIProcessFinishedMarker processMarker, final Runnable updater) {
 		this.processMarker = processMarker;
 		this.updater = updater;
 		if (uiSynchronizer == null) {
@@ -64,7 +64,7 @@ public class UIProcessFinishedFlasher extends Thread {
 				if (sleepTime > 0) {
 					Thread.sleep(sleepTime);
 				}
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				e.getCause(); // ...can be swallowed because the flashing of the process
 				// finished marked is not intended to be cancelable. If a caller invokes
 				// .interrupt() on this thread it may be ignored. The pointless statement

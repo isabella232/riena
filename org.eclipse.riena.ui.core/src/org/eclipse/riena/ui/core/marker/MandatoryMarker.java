@@ -27,7 +27,7 @@ public class MandatoryMarker extends AbstractMarker implements IIconizableMarker
 		super();
 	}
 
-	public MandatoryMarker(boolean unique) {
+	public MandatoryMarker(final boolean unique) {
 		super(unique);
 	}
 
@@ -54,7 +54,7 @@ public class MandatoryMarker extends AbstractMarker implements IIconizableMarker
 	 * @return true, if the marker is disabled, false otherwise.
 	 */
 	public boolean isDisabled() {
-		Object attributeDisabled = getAttribute(ATTRIBUTE_DISABLED);
+		final Object attributeDisabled = getAttribute(ATTRIBUTE_DISABLED);
 		return (attributeDisabled != null && attributeDisabled.equals(Boolean.TRUE));
 	}
 
@@ -65,7 +65,7 @@ public class MandatoryMarker extends AbstractMarker implements IIconizableMarker
 	 *            The new disabled state: true, to disable the marker; false, to
 	 *            enable it.
 	 */
-	public void setDisabled(boolean disabled) {
+	public void setDisabled(final boolean disabled) {
 		if (disabled) {
 			setAttribute(ATTRIBUTE_DISABLED, Boolean.TRUE);
 		} else {

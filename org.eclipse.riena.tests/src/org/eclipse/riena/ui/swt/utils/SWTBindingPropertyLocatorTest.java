@@ -45,13 +45,13 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 	 * Tests the <i>private</i> method {@code locateBindingProperty(Widget)}.
 	 */
 	public void testLocateBindingProperty() {
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 
 		String prop = locator.locateBindingProperty(shell);
 
 		assertEquals(null, prop);
 
-		Label label = new Label(shell, SWT.NONE);
+		final Label label = new Label(shell, SWT.NONE);
 		locator.setBindingProperty(label, "label1");
 		prop = locator.locateBindingProperty(label);
 
@@ -72,9 +72,9 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 	}
 
 	public void testLocateBindingPropertyInComplexComponent() {
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		TestComplexComponent complexComponent = new TestComplexComponent(shell, SWT.NONE);
-		Text text = new Text(complexComponent, SWT.NONE);
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final TestComplexComponent complexComponent = new TestComplexComponent(shell, SWT.NONE);
+		final Text text = new Text(complexComponent, SWT.NONE);
 
 		locator.setBindingProperty(complexComponent, "complex1");
 
@@ -90,10 +90,10 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 	}
 
 	public void testLocateBindingPropertyInComplexComponentWithNesting() {
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		TestComplexComponent complexComponent = new TestComplexComponent(shell, SWT.NONE);
-		Composite composite = new Composite(complexComponent, SWT.NONE);
-		Text text = new Text(composite, SWT.NONE);
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final TestComplexComponent complexComponent = new TestComplexComponent(shell, SWT.NONE);
+		final Composite composite = new Composite(complexComponent, SWT.NONE);
+		final Text text = new Text(composite, SWT.NONE);
 
 		locator.setBindingProperty(complexComponent, "complex1");
 		locator.setBindingProperty(text, "text");
@@ -102,15 +102,15 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 	}
 
 	public void testGetControlsWithBindingProperty() {
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		Composite composite1 = new Composite(shell, SWT.NONE);
-		Label label1 = new Label(composite1, SWT.NONE);
-		Label label2 = new Label(composite1, SWT.NONE);
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final Composite composite1 = new Composite(shell, SWT.NONE);
+		final Label label1 = new Label(composite1, SWT.NONE);
+		final Label label2 = new Label(composite1, SWT.NONE);
 
 		locator.setBindingProperty(label1, "label1");
 		locator.setBindingProperty(label2, "label2");
 
-		List<Object> result1 = SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
+		final List<Object> result1 = SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
 
 		assertEquals(2, result1.size());
 		assertTrue(result1.contains(label1));
@@ -118,32 +118,32 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 	}
 
 	public void testGetControlsWithBindingPropertyExcludeFirstComposite() {
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		Composite composite1 = new Composite(shell, SWT.NONE);
-		Label label1 = new Label(composite1, SWT.NONE);
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final Composite composite1 = new Composite(shell, SWT.NONE);
+		final Label label1 = new Label(composite1, SWT.NONE);
 
 		locator.setBindingProperty(composite1, "complex1");
 		locator.setBindingProperty(label1, "label1");
 
-		List<Object> result1 = SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
+		final List<Object> result1 = SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
 
 		assertEquals(1, result1.size());
 		assertTrue(result1.contains(label1));
 	}
 
 	public void testGetControlsWithBindingPropertyRecursive() {
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 
-		Composite composite1 = new Composite(shell, SWT.NONE);
+		final Composite composite1 = new Composite(shell, SWT.NONE);
 		locator.setBindingProperty(composite1, "composite1");
-		Composite composite2 = new Composite(composite1, SWT.NONE);
+		final Composite composite2 = new Composite(composite1, SWT.NONE);
 		locator.setBindingProperty(composite2, "composite2");
-		Label c2Label1 = new Label(composite2, SWT.NONE);
+		final Label c2Label1 = new Label(composite2, SWT.NONE);
 		locator.setBindingProperty(c2Label1, "label1");
-		Label c2Label2 = new Label(composite2, SWT.NONE);
+		final Label c2Label2 = new Label(composite2, SWT.NONE);
 		locator.setBindingProperty(c2Label2, "label2");
 
-		List<Object> result = SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
+		final List<Object> result = SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
 
 		assertEquals(3, result.size());
 		assertTrue(result.contains(composite2));
@@ -152,10 +152,10 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 	}
 
 	public void testGetControlsWithBindingPropertyConflict() {
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		Composite composite1 = new Composite(shell, SWT.NONE);
-		Label label1 = new Label(composite1, SWT.NONE);
-		Label label2 = new Label(composite1, SWT.NONE);
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final Composite composite1 = new Composite(shell, SWT.NONE);
+		final Label label1 = new Label(composite1, SWT.NONE);
+		final Label label2 = new Label(composite1, SWT.NONE);
 
 		locator.setBindingProperty(composite1, "composite1");
 		locator.setBindingProperty(label1, "label");
@@ -164,17 +164,17 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		try {
 			SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			// ok
 		}
 	}
 
 	public void testGetControlsWithBindingPropertyRecursiveConflict() {
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		Composite composite1 = new Composite(shell, SWT.NONE);
-		Label label1 = new Label(composite1, SWT.NONE);
-		Composite composite2 = new Composite(composite1, SWT.NONE);
-		Label label2 = new Label(composite2, SWT.NONE);
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final Composite composite1 = new Composite(shell, SWT.NONE);
+		final Label label1 = new Label(composite1, SWT.NONE);
+		final Composite composite2 = new Composite(composite1, SWT.NONE);
+		final Label label2 = new Label(composite2, SWT.NONE);
 
 		locator.setBindingProperty(composite1, "composite1");
 		locator.setBindingProperty(label1, "label");
@@ -183,17 +183,17 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		try {
 			SWTBindingPropertyLocator.getControlsWithBindingProperty(composite1);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			// ok
 		}
 	}
 
 	public void testGetControlsWithBindingPropertyRecursiveConflict2() {
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		Composite composite1 = new Composite(shell, SWT.NONE);
-		Composite composite2 = new Composite(shell, SWT.NONE);
-		Label c1Label1 = new Label(composite1, SWT.NONE);
-		Label c2Label1 = new Label(composite2, SWT.NONE);
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final Composite composite1 = new Composite(shell, SWT.NONE);
+		final Composite composite2 = new Composite(shell, SWT.NONE);
+		final Label c1Label1 = new Label(composite1, SWT.NONE);
+		final Label c2Label1 = new Label(composite2, SWT.NONE);
 
 		locator.setBindingProperty(composite1, "composite1");
 		locator.setBindingProperty(composite2, "composite2");
@@ -203,7 +203,7 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 		try {
 			SWTBindingPropertyLocator.getControlsWithBindingProperty(shell);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			// ok
 		}
 	}
@@ -212,7 +212,7 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 	//////////////////
 
 	private static class TestComplexComponent extends Composite implements IComplexComponent {
-		public TestComplexComponent(Composite parent, int style) {
+		public TestComplexComponent(final Composite parent, final int style) {
 			super(parent, style);
 		}
 

@@ -21,7 +21,7 @@ public class HiddenMarker extends AbstractMarker {
 		super();
 	}
 
-	public HiddenMarker(boolean unique) {
+	public HiddenMarker(final boolean unique) {
 		super(unique);
 	}
 

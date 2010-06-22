@@ -40,7 +40,7 @@ public class MinLength implements IValidator, IExecutableExtension {
 	public IStatus validate(final Object value) {
 		if (value == null) {
 			if (minLength > 0) {
-				String message = NLS.bind(Messages.MinLength_error_nullValue, Integer.valueOf(minLength));
+				final String message = NLS.bind(Messages.MinLength_error_nullValue, Integer.valueOf(minLength));
 				return ValidationRuleStatus.error(false, message);
 			}
 			return ValidationRuleStatus.ok();
@@ -50,7 +50,7 @@ public class MinLength implements IValidator, IExecutableExtension {
 			if (string.length() >= minLength) {
 				return ValidationRuleStatus.ok();
 			}
-			String message = NLS.bind(Messages.MinLength_error_tooShort, string, Integer.valueOf(minLength));
+			final String message = NLS.bind(Messages.MinLength_error_tooShort, string, Integer.valueOf(minLength));
 			return ValidationRuleStatus.error(false, message);
 		}
 		throw new ValidationFailure(getClass().getName() + " can only validate objects of type " //$NON-NLS-1$
@@ -59,7 +59,7 @@ public class MinLength implements IValidator, IExecutableExtension {
 
 	@Override
 	public String toString() {
-		StringBuilder buffer = new StringBuilder(this.getClass().getSimpleName());
+		final StringBuilder buffer = new StringBuilder(this.getClass().getSimpleName());
 		buffer.append("[minLength="); //$NON-NLS-1$
 		buffer.append(minLength);
 		buffer.append("]"); //$NON-NLS-1$
@@ -76,11 +76,11 @@ public class MinLength implements IValidator, IExecutableExtension {
 	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
 	 *      java.lang.String, java.lang.Object)
 	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray(data);
+			final String[] args = PropertiesUtils.asArray(data);
 			minLength = Integer.parseInt(args[0]);
 		}
 

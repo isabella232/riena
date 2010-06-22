@@ -35,7 +35,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	private boolean visible;
 	private boolean enabled = true;
 	private boolean focusable;
-	private FocusListener focusManager;
+	private final FocusListener focusManager;
 	private Type type = Type.PLAIN;
 	private MessageBoxOption[] options = OPTIONS_OK;
 
@@ -66,19 +66,19 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		return type;
 	}
 
-	public void setOptions(MessageBoxOption[] options) {
+	public void setOptions(final MessageBoxOption[] options) {
 		this.options = options;
 	}
 
-	public void setText(String text) {
+	public void setText(final String text) {
 		this.text = text;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
-	public void setType(Type type) {
+	public void setType(final Type type) {
 		this.type = type;
 	}
 
@@ -94,16 +94,16 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		}
 	}
 
-	private MessageBoxOption show(Type type) {
+	private MessageBoxOption show(final Type type) {
 
 		messageBox.show(getTitle(), getText(), getType(type), getButtonLabels(type));
 
 		return getResultOption();
 	}
 
-	private String[] getButtonLabels(Type type) {
+	private String[] getButtonLabels(final Type type) {
 
-		String[] labels = new String[options.length];
+		final String[] labels = new String[options.length];
 		for (int i = 0; i < options.length; i++) {
 			labels[i] = getButtonLabel(options[i]);
 		}
@@ -111,7 +111,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		return labels;
 	}
 
-	private String getButtonLabel(MessageBoxOption option) {
+	private String getButtonLabel(final MessageBoxOption option) {
 		String result;
 		if (OK.equals(option)) {
 			result = DialogConstantsFacade.getDefault().getOkLabel();
@@ -129,7 +129,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 
 	private MessageBoxOption getResultOption() {
 
-		int result = messageBox.getResult();
+		final int result = messageBox.getResult();
 
 		if (result == SWT.DEFAULT) {
 			return CLOSED;
@@ -138,7 +138,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		}
 	}
 
-	private int getType(Type type) {
+	private int getType(final Type type) {
 
 		switch (type) {
 		case PLAIN:
@@ -197,7 +197,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		}
 	}
 
-	public void setFocusable(boolean focusable) {
+	public void setFocusable(final boolean focusable) {
 		this.focusable = focusable;
 	}
 
@@ -205,11 +205,11 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @throws UnsupportedOperationException
 	 *             this class does not support this operation
 	 */
-	public void setToolTipText(String toolTipText) {
+	public void setToolTipText(final String toolTipText) {
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
-	public void setUIControl(Object uiControl) {
+	public void setUIControl(final Object uiControl) {
 		assertUIControlType(uiControl, MessageBox.class);
 
 		uninstallListeners();
@@ -218,12 +218,12 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		updateUIControl();
 	}
 
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		this.visible = visible;
 		updateUIControl();
 	}
 
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(final boolean enabled) {
 		this.enabled = enabled;
 		updateUIControl();
 	}
@@ -258,7 +258,7 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	 * @param requiredUIControlType
 	 *            The required type.
 	 */
-	protected void assertUIControlType(Object uiControl, Class<MessageBox> requiredUIControlType) {
+	protected void assertUIControlType(final Object uiControl, final Class<MessageBox> requiredUIControlType) {
 		Assert.isTrue(uiControl == null || requiredUIControlType.isAssignableFrom(uiControl.getClass()),
 				"Wrong UI-control type. Expected " + requiredUIControlType); //$NON-NLS-1$
 	}
@@ -292,24 +292,24 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 	private final class FocusManager extends FocusAdapter {
 
 		@Override
-		public void focusGained(FocusEvent e) {
+		public void focusGained(final FocusEvent e) {
 			if (focusable) {
 				fireFocusGained(new org.eclipse.riena.ui.ridgets.listener.FocusEvent(null, MessageBoxRidget.this));
 			} else {
-				Control control = (Control) e.widget;
-				Composite parent = control.getParent();
+				final Control control = (Control) e.widget;
+				final Composite parent = control.getParent();
 				Control[] tabList = parent.getTabList();
 				int i = findNextElement(control, tabList);
 				if (i != -1) {
-					Control nextFocusControl = tabList[i];
+					final Control nextFocusControl = tabList[i];
 					nextFocusControl.setFocus();
 				} else { // no suitable control found, try one level up
-					Composite pParent = parent.getParent();
+					final Composite pParent = parent.getParent();
 					if (pParent != null) {
 						tabList = pParent.getTabList();
 						i = findNextElement(parent, tabList);
 						if (i != -1) {
-							Control nextFocusControl = tabList[i];
+							final Control nextFocusControl = tabList[i];
 							nextFocusControl.setFocus();
 						}
 					}
@@ -318,13 +318,13 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 		}
 
 		@Override
-		public void focusLost(FocusEvent e) {
+		public void focusLost(final FocusEvent e) {
 			if (focusable) {
 				fireFocusLost(new org.eclipse.riena.ui.ridgets.listener.FocusEvent(MessageBoxRidget.this, null));
 			}
 		}
 
-		private int findNextElement(Control control, Control[] controls) {
+		private int findNextElement(final Control control, final Control[] controls) {
 			int myIndex = -1;
 			// find index for control
 			for (int i = 0; myIndex == -1 && i < controls.length; i++) {
@@ -335,14 +335,14 @@ public class MessageBoxRidget extends AbstractRidget implements IMessageBoxRidge
 			// find next possible control
 			int result = -1;
 			for (int i = myIndex + 1; result == -1 && i < controls.length; i++) {
-				Control candidate = controls[i];
+				final Control candidate = controls[i];
 				if (candidate.isEnabled() && candidate.isVisible()) {
 					result = i;
 				}
 			}
 			// find previous possible control
 			for (int i = 0; result == -1 && i < myIndex; i++) {
-				Control candidate = controls[i];
+				final Control candidate = controls[i];
 				if (candidate.isEnabled() && candidate.isVisible()) {
 					result = i;
 				}

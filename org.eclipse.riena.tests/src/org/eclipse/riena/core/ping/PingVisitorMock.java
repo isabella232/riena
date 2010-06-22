@@ -35,28 +35,28 @@ public class PingVisitorMock extends PingVisitor {
 	}
 
 	@Override
-	public PingVisitor visit(IPingable pingable) {
+	public PingVisitor visit(final IPingable pingable) {
 		Assert.assertSame(this.pingable, pingable);
 		return visitorMock;
 	}
 
 	@Override
-	public Collection<IPingable> getChildPingablesOf(IPingable pingable) {
+	public Collection<IPingable> getChildPingablesOf(final IPingable pingable) {
 		return super.getChildPingablesOf(pingable);
 	}
 
 	@Override
-	public void collectPingMethods(IPingable pingable, Set<IPingable> pingableList) {
+	public void collectPingMethods(final IPingable pingable, final Set<IPingable> pingableList) {
 		super.collectPingMethods(pingable, pingableList);
 	}
 
 	@Override
-	public void collectPingableMembers(IPingable pingable, Set<IPingable> pingableList) {
+	public void collectPingableMembers(final IPingable pingable, final Set<IPingable> pingableList) {
 		super.collectPingableMembers(pingable, pingableList);
 	}
 
 	@Override
-	public void collectAdditionalPingables(IPingable pingable, Set<IPingable> pingableList) {
+	public void collectAdditionalPingables(final IPingable pingable, final Set<IPingable> pingableList) {
 		super.collectAdditionalPingables(pingable, pingableList);
 	}
 

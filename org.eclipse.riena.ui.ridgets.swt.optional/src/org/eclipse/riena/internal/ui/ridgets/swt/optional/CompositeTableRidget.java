@@ -110,8 +110,8 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		rowValues = new Object[0];
 		sortedColumn = -1;
 		getSingleSelectionObservable().addValueChangeListener(new IValueChangeListener() {
-			public void handleValueChange(ValueChangeEvent event) {
-				Object value = event.getObservableValue().getValue();
+			public void handleValueChange(final ValueChangeEvent event) {
+				final Object value = event.getObservableValue().getValue();
 				getMultiSelectionObservable().clear();
 				if (value != null) {
 					getMultiSelectionObservable().add(value);
@@ -119,25 +119,25 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			}
 		});
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				refreshRowStyles();
 			}
 		});
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				refreshRowStyles();
 			}
 		});
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, CompositeTable.class);
 	}
 
 	@Override
 	protected void bindUIControl() {
-		CompositeTable control = getUIControl();
+		final CompositeTable control = getUIControl();
 		if (control != null) {
 			control.addRowConstructionListener(rowToRidgetMapper);
 			control.addRowContentProvider(rowToRidgetMapper);
@@ -145,7 +145,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			control.addRowFocusListener(selectionSynchronizer);
 			getSingleSelectionObservable().addValueChangeListener(selectionSynchronizer);
 			if (getHeader() != null) {
-				for (TableColumn column : getHeader().getColumns()) {
+				for (final TableColumn column : getHeader().getColumns()) {
 					column.addSelectionListener(sortListener);
 				}
 			}
@@ -156,10 +156,10 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	@Override
 	protected void unbindUIControl() {
 		super.unbindUIControl();
-		CompositeTable control = getUIControl();
+		final CompositeTable control = getUIControl();
 		if (control != null) {
 			if (getHeader() != null) {
-				for (TableColumn column : getHeader().getColumns()) {
+				for (final TableColumn column : getHeader().getColumns()) {
 					column.removeSelectionListener(sortListener);
 				}
 			}
@@ -170,19 +170,21 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 	}
 
+	@Override
 	protected List<?> getRowObservables() {
 		return modelObservables != null ? Arrays.asList(rowValues) : null;
 	}
 
-	public Object getOption(int index) {
+	@Override
+	public Object getOption(final int index) {
 		if (getRowObservables() == null || index < 0 || index >= getOptionCount()) {
 			throw new IllegalArgumentException("index: " + index); //$NON-NLS-1$
 		}
 		return rowValues[index];
 	}
 
-	public void bindToModel(IObservableList rowObservables, Class<? extends Object> rowClass,
-			Class<? extends Object> rowRidgetClass) {
+	public void bindToModel(final IObservableList rowObservables, final Class<? extends Object> rowClass,
+			final Class<? extends Object> rowRidgetClass) {
 		Assert.isLegal(IRowRidget.class.isAssignableFrom(rowRidgetClass));
 
 		unbindUIControl();
@@ -196,8 +198,8 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		bindUIControl();
 	}
 
-	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
-			Class<? extends Object> rowRidgetClass) {
+	public void bindToModel(final Object listHolder, final String listPropertyName,
+			final Class<? extends Object> rowClass, final Class<? extends Object> rowRidgetClass) {
 		IObservableList rowBeansObservables;
 		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
 			rowBeansObservables = BeansObservables.observeList(listHolder, listPropertyName);
@@ -210,7 +212,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	@Override
 	public void updateFromModel() {
 		super.updateFromModel();
-		CompositeTable control = getUIControl();
+		final CompositeTable control = getUIControl();
 		if (modelObservables != null) {
 			rowValues = modelObservables.toArray();
 		} else {
@@ -226,13 +228,13 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 
 	@Override
 	public int getSelectionIndex() {
-		Object selection = getSingleSelectionObservable().getValue();
+		final Object selection = getSingleSelectionObservable().getValue();
 		return indexOfOption(selection);
 	}
 
 	@Override
 	public int[] getSelectionIndices() {
-		int index = getSelectionIndex();
+		final int index = getSelectionIndex();
 		return index == -1 ? new int[0] : new int[] { index };
 	}
 
@@ -242,7 +244,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	}
 
 	@Override
-	public int indexOfOption(Object option) {
+	public int indexOfOption(final Object option) {
 		int result = -1;
 		if (option != null) {
 			result = rowIndexOfOption(option);
@@ -256,7 +258,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	}
 
 	@Override
-	public void setSelectionType(SelectionType selectionType) {
+	public void setSelectionType(final SelectionType selectionType) {
 		if (SelectionType.MULTI.equals(selectionType)) {
 			throw new IllegalArgumentException("SelectionType.MULTI is not supported by the UI-control"); //$NON-NLS-1$
 		}
@@ -264,15 +266,15 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	}
 
 	@Override
-	public void setSelection(List<?> newSelection) {
+	public void setSelection(final List<?> newSelection) {
 		readAndDispatch();
 		super.setSelection(newSelection);
 		readAndDispatch();
 	}
 
-	public void setComparator(int columnIndex, Comparator<Object> comparator) {
+	public void setComparator(final int columnIndex, final Comparator<Object> comparator) {
 		checkColumnRange(columnIndex);
-		Integer key = Integer.valueOf(columnIndex);
+		final Integer key = Integer.valueOf(columnIndex);
 		if (comparator != null) {
 			comparatorMap.put(key, comparator);
 		} else {
@@ -295,7 +297,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	 */
 	public int getSortedColumn() {
 		int result = -1;
-		Integer key = Integer.valueOf(sortedColumn);
+		final Integer key = Integer.valueOf(sortedColumn);
 		if (getUIControl() != null && comparatorMap.containsKey(key)) {
 			result = sortedColumn;
 		}
@@ -310,12 +312,12 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	 * {@link AbstractNativeHeader}. In any other case this method will return
 	 * false.
 	 */
-	public boolean isColumnSortable(int columnIndex) {
+	public boolean isColumnSortable(final int columnIndex) {
 		checkColumnRange(columnIndex);
 		boolean result = false;
 		if (getHeader() != null) {
-			Integer key = Integer.valueOf(columnIndex);
-			Boolean sortable = sortableColumnsMap.get(columnIndex);
+			final Integer key = Integer.valueOf(columnIndex);
+			final Boolean sortable = sortableColumnsMap.get(columnIndex);
 			if (sortable == null || Boolean.TRUE.equals(sortable)) {
 				result = comparatorMap.get(key) != null;
 			}
@@ -338,10 +340,10 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		return result;
 	}
 
-	public void setColumnSortable(int columnIndex, boolean sortable) {
+	public void setColumnSortable(final int columnIndex, final boolean sortable) {
 		checkColumnRange(columnIndex);
-		Integer key = Integer.valueOf(columnIndex);
-		Boolean newValue = Boolean.valueOf(sortable);
+		final Integer key = Integer.valueOf(columnIndex);
+		final Boolean newValue = Boolean.valueOf(sortable);
 		Boolean oldValue = sortableColumnsMap.put(key, newValue);
 		if (oldValue == null) {
 			oldValue = Boolean.TRUE;
@@ -351,21 +353,21 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 	}
 
-	public void setSortedAscending(boolean ascending) {
+	public void setSortedAscending(final boolean ascending) {
 		if (isSortedAscending != ascending) {
-			boolean oldSortedAscending = isSortedAscending;
+			final boolean oldSortedAscending = isSortedAscending;
 			isSortedAscending = ascending;
 			applyComparator();
 			firePropertyChange(ISortableByColumn.PROPERTY_SORT_ASCENDING, oldSortedAscending, isSortedAscending);
 		}
 	}
 
-	public void setSortedColumn(int columnIndex) {
+	public void setSortedColumn(final int columnIndex) {
 		if (columnIndex != -1) {
 			checkColumnRange(columnIndex);
 		}
 		if (sortedColumn != columnIndex) {
-			int oldSortedColumn = sortedColumn;
+			final int oldSortedColumn = sortedColumn;
 			sortedColumn = columnIndex;
 			applyComparator();
 			firePropertyChange(ISortableByColumn.PROPERTY_SORTED_COLUMN, oldSortedColumn, sortedColumn);
@@ -379,7 +381,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	 *             when invoked
 	 */
 	@Override
-	public void addSelectionListener(ISelectionListener selectionListener) {
+	public void addSelectionListener(final ISelectionListener selectionListener) {
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
@@ -390,7 +392,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	 *             when invoked
 	 */
 	@Override
-	public void removeSelectionListener(ISelectionListener selectionListener) {
+	public void removeSelectionListener(final ISelectionListener selectionListener) {
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
@@ -398,22 +400,22 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	//////////////////
 
 	private void applyComparator() {
-		CompositeTable control = getUIControl();
+		final CompositeTable control = getUIControl();
 		if (control != null) {
 			Comparator<Object> comparator = null;
 			if (sortedColumn != -1) {
-				Integer key = Integer.valueOf(sortedColumn);
+				final Integer key = Integer.valueOf(sortedColumn);
 				comparator = comparatorMap.get(key);
 			}
 			if (comparator != null) {
 				setSortColumnOnHeader(sortedColumn);
-				int direction = isSortedAscending ? SWT.UP : SWT.DOWN;
+				final int direction = isSortedAscending ? SWT.UP : SWT.DOWN;
 				setSortDirectionOnHeader(direction);
 				if (rowValuesUnsorted == null) {
 					rowValuesUnsorted = new Object[rowValues.length];
 					System.arraycopy(rowValues, 0, rowValuesUnsorted, 0, rowValuesUnsorted.length);
 				}
-				SortableComparator sortableComparator = new SortableComparator(this, comparator);
+				final SortableComparator sortableComparator = new SortableComparator(this, comparator);
 				Arrays.sort(rowValues, sortableComparator);
 				control.refreshAllRows();
 			} else {
@@ -429,13 +431,13 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 	}
 
-	private void checkColumnRange(int columnIndex) {
+	private void checkColumnRange(final int columnIndex) {
 		Assert.isLegal(-1 < columnIndex, "columnIndex out of range: " + columnIndex); //$NON-NLS-1$
 	}
 
 	private AbstractNativeHeader getHeader() {
-		CompositeTable control = getUIControl();
-		Control header = control.getHeader();
+		final CompositeTable control = getUIControl();
+		final Control header = control.getHeader();
 		return (AbstractNativeHeader) (header instanceof AbstractNativeHeader ? header : null);
 	}
 
@@ -450,16 +452,17 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	 * ct.setSelection(x,y);
 	 */
 	private void readAndDispatch() {
-		CompositeTable control = getUIControl();
+		final CompositeTable control = getUIControl();
 		if (control != null) {
-			Display display = control.getDisplay();
+			final Display display = control.getDisplay();
 			while (display.readAndDispatch()) {
 				Nop.reason("keep working"); //$NON-NLS-1$
 			}
 		}
 	}
 
-	private void refreshRowStyle(Control rowControl, boolean isEnabled, boolean isOutput, Color bgColor) {
+	private void refreshRowStyle(final Control rowControl, final boolean isEnabled, final boolean isOutput,
+			final Color bgColor) {
 		rowControl.setBackground(bgColor);
 		if (MarkerSupport.isHideDisabledRidgetContent()) {
 			rowControl.setVisible(isEnabled);
@@ -468,13 +471,13 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	}
 
 	private void refreshRowStyles() {
-		CompositeTable table = getUIControl();
-		boolean enabled = isEnabled();
-		boolean output = isOutputOnly();
+		final CompositeTable table = getUIControl();
+		final boolean enabled = isEnabled();
+		final boolean output = isOutputOnly();
 		if (table != null) {
 			// update each row
-			for (Control rowControl : table.getRowControls()) {
-				Color bgColor = table.getBackground();
+			for (final Control rowControl : table.getRowControls()) {
+				final Color bgColor = table.getBackground();
 				refreshRowStyle(rowControl, enabled, output, bgColor);
 			}
 			// Updates the color of contentPane (=composite that holds the rows). 
@@ -484,15 +487,16 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			// of the internal contentPane - this way we don't get in each
 			// other's way. By using the color for table when enabled we make
 			// sure that we apply the 'right' color from MarkerSupport. 
-			Control[] children = table.getChildren();
-			Control contentPane = children[children.length - 1];
-			Display display = table.getDisplay();
-			Color cpBgColor = enabled ? table.getBackground() : display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+			final Control[] children = table.getChildren();
+			final Control contentPane = children[children.length - 1];
+			final Display display = table.getDisplay();
+			final Color cpBgColor = enabled ? table.getBackground() : display
+					.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
 			contentPane.setBackground(cpBgColor);
 		}
 	}
 
-	private int rowIndexOfOption(Object element) {
+	private int rowIndexOfOption(final Object element) {
 		int result = -1;
 		for (int i = 0; result == -1 && i < rowValues.length; i++) {
 			if (rowValues[i] == element) {
@@ -502,21 +506,21 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		return result;
 	}
 
-	private void setSortDirectionOnHeader(int direction) {
-		AbstractNativeHeader header = getHeader();
+	private void setSortDirectionOnHeader(final int direction) {
+		final AbstractNativeHeader header = getHeader();
 		if (header != null) {
 			header.setSortDirection(direction);
 		}
 	}
 
-	private void setSortColumnOnHeader(int columnIndex) {
-		AbstractNativeHeader header = getHeader();
+	private void setSortColumnOnHeader(final int columnIndex) {
+		final AbstractNativeHeader header = getHeader();
 		if (header != null) {
 			header.setSortColumn(columnIndex);
 		}
 	}
 
-	private void updateControl(CompositeTable control) {
+	private void updateControl(final CompositeTable control) {
 		control.setRedraw(false);
 		try {
 			control.setNumRowsInCollection(rowValues.length);
@@ -535,12 +539,12 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	 * clears ridget selection
 	 */
 	private void updateSelection() {
-		CompositeTable control = getUIControl();
+		final CompositeTable control = getUIControl();
 		if (control != null) {
-			Object selection = getSingleSelectionObservable().getValue();
-			int index = rowIndexOfOption(selection);
+			final Object selection = getSingleSelectionObservable().getValue();
+			final int index = rowIndexOfOption(selection);
 			if (index > -1) {
-				int row = index - control.getTopRow();
+				final int row = index - control.getTopRow();
 				readAndDispatch();
 				control.setSelection(0, row);
 				readAndDispatch();
@@ -557,23 +561,24 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	private final class CTRowToRidgetMapper extends RowConstructionListener implements IRowContentProvider {
 
 		@Override
-		public void headerConstructed(Control newHeader) {
+		public void headerConstructed(final Control newHeader) {
 			// unused
 		}
 
 		@Override
-		public void rowConstructed(Control newRow) {
-			IComplexComponent rowControl = (IComplexComponent) newRow;
-			IRowRidget rowRidget = (IRowRidget) ReflectionUtils.newInstance(rowRidgetClass, (Object[]) null);
-			IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-			for (Object control : rowControl.getUIControls()) {
-				String bindingProperty = locator.locateBindingProperty(control);
+		public void rowConstructed(final Control newRow) {
+			final IComplexComponent rowControl = (IComplexComponent) newRow;
+			final IRowRidget rowRidget = (IRowRidget) ReflectionUtils.newInstance(rowRidgetClass, (Object[]) null);
+			final IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+			for (final Object control : rowControl.getUIControls()) {
+				final String bindingProperty = locator.locateBindingProperty(control);
 				if (bindingProperty != null) {
-					IRidget ridget = createRidget(control);
+					final IRidget ridget = createRidget(control);
 					ridget.setUIControl(control);
 					rowRidget.addRidget(bindingProperty, ridget);
 				} else {
-					String message = String.format("widget without binding property: %s : %s", rowControl.getClass(), //$NON-NLS-1$
+					final String message = String.format(
+							"widget without binding property: %s : %s", rowControl.getClass(), //$NON-NLS-1$
 							control);
 					LOGGER.log(LogService.LOG_WARNING, message);
 				}
@@ -584,20 +589,20 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			newRow.setData("rowRidget", rowRidget); //$NON-NLS-1$
 		}
 
-		public void refresh(CompositeTable table, int index, Control row) {
+		public void refresh(final CompositeTable table, final int index, final Control row) {
 			if (index < rowValues.length) {
-				Object rowBean = rowValues[index];
+				final Object rowBean = rowValues[index];
 				Assert.isLegal(rowBeanClass.isAssignableFrom(rowBean.getClass()));
-				IRowRidget rowRidget = (IRowRidget) row.getData("rowRidget"); //$NON-NLS-1$
+				final IRowRidget rowRidget = (IRowRidget) row.getData("rowRidget"); //$NON-NLS-1$
 				rowRidget.setData(rowBean);
 				rowRidget.configureRidgets();
 				refreshRowStyle(row, isEnabled(), isOutputOnly(), table.getBackground());
 			}
 		}
 
-		private IRidget createRidget(Object control) {
-			IControlRidgetMapper<Object> mapper = SwtControlRidgetMapper.getInstance();
-			Class<? extends IRidget> ridgetClass = mapper.getRidgetClass(control);
+		private IRidget createRidget(final Object control) {
+			final IControlRidgetMapper<Object> mapper = SwtControlRidgetMapper.getInstance();
+			final Class<? extends IRidget> ridgetClass = mapper.getRidgetClass(control);
 			return ReflectionUtils.newInstance(ridgetClass);
 		}
 	}
@@ -611,13 +616,13 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		private boolean isArriving = false;
 		private boolean isSelecting = false;
 
-		public void arrive(CompositeTable sender, int currentObjectOffset, Control newRow) {
+		public void arrive(final CompositeTable sender, final int currentObjectOffset, final Control newRow) {
 			if (isSelecting) {
 				return;
 			}
 			isArriving = true;
 			try {
-				int selectionIndex = rowIndexOfOption(getSingleSelectionObservable().getValue());
+				final int selectionIndex = rowIndexOfOption(getSingleSelectionObservable().getValue());
 				if (currentObjectOffset != selectionIndex) {
 					setSelection(currentObjectOffset);
 				}
@@ -626,15 +631,15 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 			}
 		}
 
-		public void depart(CompositeTable sender, int currentObjectOffset, Control row) {
+		public void depart(final CompositeTable sender, final int currentObjectOffset, final Control row) {
 			// unused
 		}
 
-		public boolean requestRowChange(CompositeTable sender, int currentObjectOffset, Control row) {
+		public boolean requestRowChange(final CompositeTable sender, final int currentObjectOffset, final Control row) {
 			return true;
 		}
 
-		public void handleValueChange(ValueChangeEvent event) {
+		public void handleValueChange(final ValueChangeEvent event) {
 			if (isArriving) {
 				return;
 			}
@@ -653,10 +658,10 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	 */
 	private final class ColumnSortListener extends SelectionAdapter {
 		@Override
-		public void widgetSelected(SelectionEvent e) {
-			TableColumn column = (TableColumn) e.widget;
-			int columnIndex = column.getParent().indexOf(column);
-			int direction = column.getParent().getSortDirection();
+		public void widgetSelected(final SelectionEvent e) {
+			final TableColumn column = (TableColumn) e.widget;
+			final int columnIndex = column.getParent().indexOf(column);
+			final int direction = column.getParent().getSortDirection();
 			if (columnIndex == sortedColumn) {
 				if (direction == SWT.UP) {
 					setSortedAscending(false);

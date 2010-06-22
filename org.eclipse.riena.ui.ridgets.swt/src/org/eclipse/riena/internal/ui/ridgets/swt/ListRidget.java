@@ -37,7 +37,7 @@ public class ListRidget extends AbstractListRidget {
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, List.class);
 	}
 
@@ -82,7 +82,7 @@ public class ListRidget extends AbstractListRidget {
 	protected void unbindUIControl() {
 		super.unbindUIControl();
 
-		List control = getUIControl();
+		final List control = getUIControl();
 		if (control != null) {
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(doubleClickForwarder);
@@ -96,14 +96,14 @@ public class ListRidget extends AbstractListRidget {
 	}
 
 	@Override
-	protected void updateEnabled(boolean isEnabled) {
+	protected void updateEnabled(final boolean isEnabled) {
 		final String savedBackgroundKey = "oldbg"; //$NON-NLS-1$
 		if (isEnabled) {
 			if (hasViewer()) {
 				refreshViewer();
 				disposeSelectionBindings();
 				createSelectionBindings();
-				List list = viewer.getList();
+				final List list = viewer.getList();
 				list.setBackground((Color) list.getData(savedBackgroundKey));
 				list.setData(savedBackgroundKey, null);
 			}
@@ -111,7 +111,7 @@ public class ListRidget extends AbstractListRidget {
 			disposeSelectionBindings();
 			if (hasViewer()) {
 				refreshViewer();
-				List list = viewer.getList();
+				final List list = viewer.getList();
 				if (MarkerSupport.isHideDisabledRidgetContent()) {
 					list.deselectAll();
 				}
@@ -134,8 +134,8 @@ public class ListRidget extends AbstractListRidget {
 	 */
 	private final class SelectionTypeEnforcer extends SelectionAdapter {
 		@Override
-		public void widgetSelected(SelectionEvent e) {
-			List control = (List) e.widget;
+		public void widgetSelected(final SelectionEvent e) {
+			final List control = (List) e.widget;
 			if (isOutputOnly()) {
 				revertSelection(control);
 			} else if (SelectionType.SINGLE.equals(getSelectionType())) {
@@ -147,17 +147,17 @@ public class ListRidget extends AbstractListRidget {
 			}
 		}
 
-		private void selectFirstItem(List control) {
+		private void selectFirstItem(final List control) {
 			// set selection to most recent item
 			control.setSelection(control.getSelectionIndex());
 			// fire event
-			Event event = new Event();
+			final Event event = new Event();
 			event.type = SWT.Selection;
 			event.doit = true;
 			control.notifyListeners(SWT.Selection, event);
 		}
 
-		private void revertSelection(List control) {
+		private void revertSelection(final List control) {
 			control.setRedraw(false);
 			try {
 				// undo user selection when "output only"

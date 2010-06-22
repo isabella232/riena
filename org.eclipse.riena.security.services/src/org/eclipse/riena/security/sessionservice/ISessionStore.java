@@ -38,6 +38,7 @@ public interface ISessionStore {
 	 * @return an array of session objects
 	 * @deprecated
 	 */
+	@Deprecated
 	Session[] read(Principal principal);
 
 	/**
@@ -69,6 +70,7 @@ public interface ISessionStore {
 	 * @param principal
 	 * @deprecated
 	 */
+	@Deprecated
 	void delete(Principal principal);
 
 }

@@ -26,7 +26,7 @@ public class AbstractSWTWidgetRidgetTest extends TestCase {
 	 */
 	public void testHasChanged() {
 
-		MockRidget ridget = new MockRidget();
+		final MockRidget ridget = new MockRidget();
 
 		assertTrue(ridget.hasChanged("a", "b"));
 		assertFalse(ridget.hasChanged("a", "a"));
@@ -43,7 +43,7 @@ public class AbstractSWTWidgetRidgetTest extends TestCase {
 		}
 
 		@Override
-		protected void checkUIControl(Object uiControl) {
+		protected void checkUIControl(final Object uiControl) {
 		}
 
 		@Override
@@ -64,7 +64,7 @@ public class AbstractSWTWidgetRidgetTest extends TestCase {
 		}
 
 		@Override
-		public boolean hasChanged(Object oldValue, Object newValue) {
+		public boolean hasChanged(final Object oldValue, final Object newValue) {
 			return super.hasChanged(oldValue, newValue);
 		}
 

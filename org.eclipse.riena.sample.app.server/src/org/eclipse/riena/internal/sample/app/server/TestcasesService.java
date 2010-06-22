@@ -31,7 +31,7 @@ public class TestcasesService implements ITestcasesWS {
 	 * org.eclipse.riena.sample.app.common.ITestcasesWS#echoBigInteger(java.
 	 * math.BigInteger)
 	 */
-	public BigInteger echoBigInteger(BigInteger value) {
+	public BigInteger echoBigInteger(final BigInteger value) {
 		if (value == null) {
 			throw new RuntimeException("not expected null value"); //$NON-NLS-1$
 		}
@@ -43,7 +43,7 @@ public class TestcasesService implements ITestcasesWS {
 	 *            value must be null
 	 * @return
 	 */
-	public BigInteger echoNullBigInteger(BigInteger valueNull) {
+	public BigInteger echoNullBigInteger(final BigInteger valueNull) {
 		if (valueNull != null) {
 			throw new RuntimeException("expected null value"); //$NON-NLS-1$
 		}
@@ -57,7 +57,7 @@ public class TestcasesService implements ITestcasesWS {
 	 * org.eclipse.riena.sample.app.common.ITestcasesWS#echoXMLGregorianCalendar
 	 * (javax.xml.datatype.XMLGregorianCalendar)
 	 */
-	public XMLGregorianCalendar echoXMLGregorianCalendar(XMLGregorianCalendar value) {
+	public XMLGregorianCalendar echoXMLGregorianCalendar(final XMLGregorianCalendar value) {
 		if (value == null) {
 			throw new RuntimeException("not expected null value"); //$NON-NLS-1$
 		}
@@ -71,7 +71,7 @@ public class TestcasesService implements ITestcasesWS {
 	 * org.eclipse.riena.sample.app.common.ITestcasesWS#echoBigIntegerContainer
 	 * (org.eclipse.riena.sample.app.common.BigIntegerContainer)
 	 */
-	public BigIntegerContainer echoBigIntegerContainer(BigIntegerContainer value) {
+	public BigIntegerContainer echoBigIntegerContainer(final BigIntegerContainer value) {
 		if (value == null) {
 			throw new RuntimeException("not expected null value"); //$NON-NLS-1$
 		}
@@ -85,7 +85,7 @@ public class TestcasesService implements ITestcasesWS {
 	 * org.eclipse.riena.sample.app.common.ITestcasesWS#echoBigIntegerHashMap
 	 * (java.util.HashMap)
 	 */
-	public HashMap<String, BigInteger> echoBigIntegerHashMap(HashMap<String, BigInteger> value) {
+	public HashMap<String, BigInteger> echoBigIntegerHashMap(final HashMap<String, BigInteger> value) {
 		if (value == null) {
 			throw new RuntimeException("not expected null value"); //$NON-NLS-1$
 		}
@@ -99,7 +99,7 @@ public class TestcasesService implements ITestcasesWS {
 	 * org.eclipse.riena.sample.app.common.ITestcasesWS#echoBigIntegerList(java
 	 * .util.List)
 	 */
-	public List<BigInteger> echoBigIntegerList(List<BigInteger> value) {
+	public List<BigInteger> echoBigIntegerList(final List<BigInteger> value) {
 		if (value == null) {
 			throw new RuntimeException("not expected null value"); //$NON-NLS-1$
 		}

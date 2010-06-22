@@ -50,7 +50,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	private boolean closeable;
 	private boolean closeButtonPressed;
 	private boolean closeButtonHover;
-	private FlasherSupportForRenderer flasherSupport;
+	private final FlasherSupportForRenderer flasherSupport;
 
 	/**
 	 * Creates a new instance of the renderer for an embedded title bar.
@@ -86,13 +86,13 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 *            the height hint
 	 * @return a Point representing the size of the title bar
 	 */
-	public Point computeSize(GC gc, int wHint, int hHint) {
+	public Point computeSize(final GC gc, final int wHint, final int hHint) {
 
-		Font font = getTitlebarFont();
+		final Font font = getTitlebarFont();
 		gc.setFont(font);
-		FontMetrics fontMetrics = gc.getFontMetrics();
+		final FontMetrics fontMetrics = gc.getFontMetrics();
 
-		int h = fontMetrics.getHeight() + TITLEBAR_LABEL_PADDING * 2;
+		final int h = fontMetrics.getHeight() + TITLEBAR_LABEL_PADDING * 2;
 
 		return new Point(wHint, h);
 
@@ -104,8 +104,8 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * @return font
 	 */
 	protected Font getTitlebarFont() {
-		RienaDefaultLnf lnf = LnfManager.getLnf();
-		Font font = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT);
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
+		final Font font = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT);
 		return font;
 	}
 
@@ -113,7 +113,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * Draws the background in the specified region with the specified
 	 * {@link GC}.
 	 */
-	protected void drawBackground(GC gc, int x, int y, int w, int h) {
+	protected void drawBackground(final GC gc, final int x, final int y, final int w, final int h) {
 
 		final Color startColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR,
 				LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, null);
@@ -133,7 +133,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	/**
 	 * Draws the border of the title bar with the specified {@link GC}.
 	 */
-	protected void drawBorder(GC gc) {
+	protected void drawBorder(final GC gc) {
 		gc.setForeground(getBorderColor());
 		final Rectangle b = getBounds();
 		gc.drawRectangle(b.x, b.y, b.width - 1, b.height - 1);
@@ -147,7 +147,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void paint(GC gc, Object value) {
+	public void paint(final GC gc, final Object value) {
 
 		Assert.isNotNull(gc);
 		Assert.isNotNull(value);
@@ -158,11 +158,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			return;
 		}
 
-		GCFacade gcFacade = GCFacade.getDefault();
+		final GCFacade gcFacade = GCFacade.getDefault();
 		gcFacade.setAdvanced(gc, true);
 		gcFacade.setAntialias(gc, SWT.ON);
 
-		Font font = getTitlebarFont();
+		final Font font = getTitlebarFont();
 		gc.setFont(font);
 
 		int x = getBounds().x;
@@ -193,9 +193,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		//		gc.drawPoint(x, y);
 
 		// Close icon
-		Rectangle closeBounds = computeCloseButtonBounds();
+		final Rectangle closeBounds = computeCloseButtonBounds();
 		if (isCloseable()) {
-			Image closeImage = getCloseButtonImage();
+			final Image closeImage = getCloseButtonImage();
 			gc.drawImage(closeImage, closeBounds.x, closeBounds.y);
 		} else {
 			closeBounds.x = 0;
@@ -207,7 +207,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		// Icon
 		x = getBounds().x + TITLEBAR_LABEL_PADDING_LEFT;
 		if (getImage() != null) {
-			Rectangle imageBounds = getImage().getBounds();
+			final Rectangle imageBounds = getImage().getBounds();
 			y = getBounds().y + (getHeight() - imageBounds.height) / 2;
 			y++;
 			gc.drawImage(getImage(), x, y);
@@ -217,11 +217,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		// Text
 		String text = getTitle();
 		if (!StringUtils.isEmpty(text)) {
-			Color fgColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND,
+			final Color fgColor = getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND,
 					LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_FOREGROUND,
 					LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND);
 			gc.setForeground(fgColor);
-			int y2 = (getHeight() - gc.getFontMetrics().getHeight()) / 2;
+			final int y2 = (getHeight() - gc.getFontMetrics().getHeight()) / 2;
 			y = getBounds().y + y2;
 			y++;
 			text = getClippedText(gc, text);
@@ -246,7 +246,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(final boolean active) {
 		this.active = active;
 	}
 
@@ -254,7 +254,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		return pressed;
 	}
 
-	public void setPressed(boolean pressed) {
+	public void setPressed(final boolean pressed) {
 		this.pressed = pressed;
 	}
 
@@ -262,7 +262,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		return hover;
 	}
 
-	public void setHover(boolean hover) {
+	public void setHover(final boolean hover) {
 		this.hover = hover;
 	}
 
@@ -270,11 +270,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		return image;
 	}
 
-	public void setImage(Image image) {
+	public void setImage(final Image image) {
 		this.image = image;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
@@ -306,7 +306,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * @param closeable
 	 *            the closeable to set
 	 */
-	public void setCloseable(boolean closeable) {
+	public void setCloseable(final boolean closeable) {
 		this.closeable = closeable;
 	}
 
@@ -317,9 +317,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 */
 	protected Rectangle computeCloseButtonBounds() {
 
-		Rectangle closeBounds = new Rectangle(0, 0, 0, 0);
+		final Rectangle closeBounds = new Rectangle(0, 0, 0, 0);
 
-		Image closeImage = getCloseButtonImage();
+		final Image closeImage = getCloseButtonImage();
 		// if no close icon was found, return 0 sized bounds
 		if (closeImage == null) {
 			return closeBounds;
@@ -342,9 +342,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * @return <code>true</code> if the button bounds contains the point and
 	 *         <code>false</code> otherwise
 	 */
-	public boolean isInsideCloseButton(Point pt) {
+	public boolean isInsideCloseButton(final Point pt) {
 
-		Rectangle closeBounds = computeCloseButtonBounds();
+		final Rectangle closeBounds = computeCloseButtonBounds();
 		return closeBounds.contains(pt);
 
 	}
@@ -357,7 +357,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 */
 	protected Image getCloseButtonImage() {
 
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 
 		String key = LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON;
 		if (isEnabled()) {
@@ -370,7 +370,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			key = LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_INACTIVE_ICON;
 		}
 
-		Image closeImage = lnf.getImage(key);
+		final Image closeImage = lnf.getImage(key);
 
 		return closeImage;
 
@@ -387,7 +387,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * @param pressed
 	 *            the pressed to set
 	 */
-	public void setCloseButtonPressed(boolean pressed) {
+	public void setCloseButtonPressed(final boolean pressed) {
 		closeButtonPressed = pressed;
 	}
 
@@ -402,7 +402,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * @param hover
 	 *            the hover to set
 	 */
-	public void setCloseButtonHover(boolean hover) {
+	public void setCloseButtonHover(final boolean hover) {
 		closeButtonHover = hover;
 	}
 
@@ -411,9 +411,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @return bounds
 	 */
-	public Rectangle computeTextBounds(GC gc) {
+	public Rectangle computeTextBounds(final GC gc) {
 
-		Rectangle textBounds = new Rectangle(0, 0, 0, 0);
+		final Rectangle textBounds = new Rectangle(0, 0, 0, 0);
 
 		textBounds.x = getBounds().x + TITLEBAR_LABEL_PADDING_LEFT;
 		if (getImage() != null) {
@@ -422,9 +422,9 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 
 		textBounds.width = getWidth() - (textBounds.x - getBounds().x) - TITLEBAR_LABEL_PADDING;
 
-		Font font = getTitlebarFont();
+		final Font font = getTitlebarFont();
 		gc.setFont(font);
-		FontMetrics fontMetrics = gc.getFontMetrics();
+		final FontMetrics fontMetrics = gc.getFontMetrics();
 
 		textBounds.height = fontMetrics.getHeight();
 		textBounds.y = getBounds().y + (getBounds().height - textBounds.height) / 2;
@@ -441,19 +441,19 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 *            text to clip (if necessary)
 	 * @return text
 	 */
-	public String getClippedText(GC gc, String text) {
+	public String getClippedText(final GC gc, final String text) {
 
 		if (StringUtils.isEmpty(text)) {
 			return text;
 		}
-		Rectangle textBounds = computeTextBounds(gc);
+		final Rectangle textBounds = computeTextBounds(gc);
 		int maxWidth = textBounds.width;
 		if (isCloseable()) {
-			Rectangle closeBounds = computeCloseButtonBounds();
+			final Rectangle closeBounds = computeCloseButtonBounds();
 			maxWidth -= closeBounds.width;
 		}
 
-		Font font = getTitlebarFont();
+		final Font font = getTitlebarFont();
 		gc.setFont(font);
 		return SwtUtilities.clipText(gc, text, maxWidth);
 
@@ -492,7 +492,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * @return color TODO same code in SubApplicationTabRenderer Returns
 	 *         according to the
 	 */
-	protected Color getColor(String activeColorKey, String passiveColorKey, String disabeldColorKey) {
+	protected Color getColor(final String activeColorKey, final String passiveColorKey, final String disabeldColorKey) {
 
 		Color color = null;
 
@@ -501,7 +501,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			colorKey = activeColorKey;
 		}
 
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		color = lnf.getColor(colorKey);
 		if (color == null) {
 			return getDefaultColor();
@@ -529,7 +529,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * @return key
 	 * @TODO same code in SubApplicationTabRenderer Returns according to the
 	 */
-	private String getKey(String activeKey, String passiveKey, String disabledKey) {
+	private String getKey(final String activeKey, final String passiveKey, final String disabledKey) {
 
 		String key = null;
 		if (isEnabled()) {

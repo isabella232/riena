@@ -42,7 +42,7 @@ public class ModuleGroupNode extends NavigationNode<IModuleGroupNode, IModuleNod
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */
-	public ModuleGroupNode(NavigationNodeId nodeId) {
+	public ModuleGroupNode(final NavigationNodeId nodeId) {
 		super(nodeId);
 		presentWithSingleModule = true;
 	}
@@ -51,13 +51,13 @@ public class ModuleGroupNode extends NavigationNode<IModuleGroupNode, IModuleNod
 		return presentWithSingleModule;
 	}
 
-	public void setPresentWithSingleModule(boolean pPresentWithSingleModule) {
+	public void setPresentWithSingleModule(final boolean pPresentWithSingleModule) {
 		presentWithSingleModule = pPresentWithSingleModule;
 		notifyPresentWithSingleModule();
 	}
 
 	private void notifyPresentWithSingleModule() {
-		for (IModuleGroupNodeListener next : getListeners()) {
+		for (final IModuleGroupNodeListener next : getListeners()) {
 			next.presentWithSingleModuleChanged(this);
 		}
 	}
@@ -71,8 +71,8 @@ public class ModuleGroupNode extends NavigationNode<IModuleGroupNode, IModuleNod
 		if (!super.isVisible()) {
 			return false;
 		}
-		List<IModuleNode> children = getChildren();
-		for (IModuleNode moduleNode : children) {
+		final List<IModuleNode> children = getChildren();
+		for (final IModuleNode moduleNode : children) {
 			if (moduleNode.isVisible()) {
 				return true;
 			}

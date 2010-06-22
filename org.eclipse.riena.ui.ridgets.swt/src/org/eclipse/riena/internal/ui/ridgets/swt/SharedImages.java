@@ -57,18 +57,18 @@ public final class SharedImages {
 	 */
 	public static final String IMG_ERROR_DECO = "IMG_ERROR_DECO"; //$NON-NLS-1$
 
-	static void initializeImageRegistry(ImageRegistry reg) {
+	static void initializeImageRegistry(final ImageRegistry reg) {
 		doPut(reg, IMG_NODE_COLLAPSED, SharedImages.class, "node_collapsed.gif"); //$NON-NLS-1$
 		doPut(reg, IMG_NODE_EXPANDED, SharedImages.class, "node_expanded.gif"); //$NON-NLS-1$
 		doPut(reg, IMG_LEAF, SharedImages.class, "leaf.gif"); //$NON-NLS-1$
 		doPut(reg, IMG_CHECKED, SharedImages.class, "checkbox_checked.gif"); //$NON-NLS-1$
 		doPut(reg, IMG_UNCHECKED, SharedImages.class, "checkbox_unchecked.gif"); //$NON-NLS-1$
-		Image lnfImage = getLnfImage(LnfKeyConstants.SUB_MODULE_TREE_ERROR_MARKER_ICON);
+		final Image lnfImage = getLnfImage(LnfKeyConstants.SUB_MODULE_TREE_ERROR_MARKER_ICON);
 		if (lnfImage != null) {
 			// create an independent copy so we can keep using it, even if  
 			// lnfImage is disposed by the LnfManager. Note: if the L&F is  
 			// changed later, we 'll still keep using our copy.
-			Image copy = new Image(lnfImage.getDevice(), lnfImage, SWT.IMAGE_COPY);
+			final Image copy = new Image(lnfImage.getDevice(), lnfImage, SWT.IMAGE_COPY);
 			reg.put(IMG_ERROR_DECO, copy);
 		} else {
 			doPut(reg, IMG_ERROR_DECO, SharedImages.class, "errorMarker.png"); //$NON-NLS-1$
@@ -82,7 +82,7 @@ public final class SharedImages {
 	// helping methods
 	// ////////////////
 
-	private static void doPut(ImageRegistry reg, String key, Class<?> location, String filename) {
+	private static void doPut(final ImageRegistry reg, final String key, final Class<?> location, final String filename) {
 		ImageDescriptor descr = ImageDescriptor.createFromFile(location, filename);
 		if (descr == null) {
 			descr = ImageDescriptor.getMissingImageDescriptor();
@@ -90,7 +90,7 @@ public final class SharedImages {
 		reg.put(key, descr);
 	}
 
-	private static Image getLnfImage(String key) {
+	private static Image getLnfImage(final String key) {
 		Image result = null;
 		if (Activator.getDefault() != null) { // running as plug-in
 			result = LnfManager.getLnf().getImage(key);

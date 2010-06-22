@@ -31,10 +31,10 @@ public class FlasherSupportForRendererTest extends TestCase {
 	 */
 	public void testIsProcessMarkerVisible() {
 
-		ILnfRenderer renderer = new MockRenderer();
-		FlasherSupportForRenderer support = new FlasherSupportForRenderer(renderer, null);
+		final ILnfRenderer renderer = new MockRenderer();
+		final FlasherSupportForRenderer support = new FlasherSupportForRenderer(renderer, null);
 
-		Collection<IMarker> markers = new ArrayList<IMarker>();
+		final Collection<IMarker> markers = new ArrayList<IMarker>();
 		renderer.setMarkers(markers);
 
 		assertFalse(support.isProcessMarkerVisible());
@@ -42,7 +42,7 @@ public class FlasherSupportForRendererTest extends TestCase {
 		markers.add(new ErrorMarker());
 		assertFalse(support.isProcessMarkerVisible());
 
-		UIProcessFinishedMarker finishedMarker = new UIProcessFinishedMarker();
+		final UIProcessFinishedMarker finishedMarker = new UIProcessFinishedMarker();
 		markers.add(finishedMarker);
 		finishedMarker.setOn(true);
 		assertTrue(support.isProcessMarkerVisible());

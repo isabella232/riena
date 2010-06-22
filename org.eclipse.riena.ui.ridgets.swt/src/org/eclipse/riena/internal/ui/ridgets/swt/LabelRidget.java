@@ -25,12 +25,12 @@ public class LabelRidget extends AbstractLabelRidget {
 		this(null);
 	}
 
-	public LabelRidget(Label label) {
+	public LabelRidget(final Label label) {
 		setUIControl(label);
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, Label.class);
 	}
 
@@ -45,12 +45,12 @@ public class LabelRidget extends AbstractLabelRidget {
 	}
 
 	@Override
-	protected void setUIControlText(String text) {
+	protected void setUIControlText(final String text) {
 		getUIControl().setText(text);
 	}
 
 	@Override
-	protected void setUIControlImage(Image image) {
+	protected void setUIControlImage(final Image image) {
 		getUIControl().setImage(image);
 	}
 

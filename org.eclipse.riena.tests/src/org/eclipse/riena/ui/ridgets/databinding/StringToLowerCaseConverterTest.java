@@ -45,7 +45,7 @@ public class StringToLowerCaseConverterTest extends TestCase {
 		try {
 			converter.convert(Integer.valueOf(1337));
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			// expected
 		}
 	}

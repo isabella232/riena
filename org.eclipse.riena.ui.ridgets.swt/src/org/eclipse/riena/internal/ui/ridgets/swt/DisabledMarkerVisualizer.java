@@ -29,7 +29,7 @@ public class DisabledMarkerVisualizer {
 	// the ridget
 	private final IRidget ridget;
 
-	public DisabledMarkerVisualizer(IRidget ridget) {
+	public DisabledMarkerVisualizer(final IRidget ridget) {
 		this.ridget = ridget;
 	}
 
@@ -40,7 +40,7 @@ public class DisabledMarkerVisualizer {
 		updateDisabled(getControl(), getRidget().isEnabled());
 	}
 
-	private void updateDisabled(Control control, boolean enabled) {
+	private void updateDisabled(final Control control, final boolean enabled) {
 		control.setEnabled(enabled);
 		removePaintlistener(control);
 
@@ -49,9 +49,9 @@ public class DisabledMarkerVisualizer {
 		}
 
 		if (control instanceof Composite) {
-			Composite composite = (Composite) control;
-			Control[] children = composite.getChildren();
-			for (Control child : children) {
+			final Composite composite = (Composite) control;
+			final Control[] children = composite.getChildren();
+			for (final Control child : children) {
 				updateDisabled(child, enabled);
 			}
 		}
@@ -62,13 +62,13 @@ public class DisabledMarkerVisualizer {
 	/**
 	 * Control connect and disconnect the Paintlistener.
 	 */
-	protected void removePaintlistener(Control control) {
-		SWTFacade facade = SWTFacade.getDefault();
+	protected void removePaintlistener(final Control control) {
+		final SWTFacade facade = SWTFacade.getDefault();
 		facade.removePaintListener(control, DISABLED_MARKER_PAINTER);
 	}
 
-	protected void addPaintlistener(Control control) {
-		SWTFacade facade = SWTFacade.getDefault();
+	protected void addPaintlistener(final Control control) {
+		final SWTFacade facade = SWTFacade.getDefault();
 		facade.addPaintListener(control, DISABLED_MARKER_PAINTER);
 	}
 

@@ -64,59 +64,59 @@ public final class TestcasesWSITest extends RienaTestCase {
 	 * nomen est omen
 	 */
 	public void testBigInteger() {
-		BigInteger bigInteger = new BigInteger(80, new Random());
-		BigInteger result = testcasesService.echoBigInteger(bigInteger);
+		final BigInteger bigInteger = new BigInteger(80, new Random());
+		final BigInteger result = testcasesService.echoBigInteger(bigInteger);
 		assertNotNull("result must not be null", result);
 		assertEquals("result and echo must be equal", result, bigInteger);
 	}
 
 	public void testXMLGregorianCalendarImpl() {
-		XMLGregorianCalendarImpl xmlGregorianCalendarImpl = new XMLGregorianCalendarImpl(new GregorianCalendar());
-		XMLGregorianCalendar result = testcasesService.echoXMLGregorianCalendar(xmlGregorianCalendarImpl);
+		final XMLGregorianCalendarImpl xmlGregorianCalendarImpl = new XMLGregorianCalendarImpl(new GregorianCalendar());
+		final XMLGregorianCalendar result = testcasesService.echoXMLGregorianCalendar(xmlGregorianCalendarImpl);
 		assertNotNull("result must not be null", result);
 		assertTrue("result must be instance of XMLGregorianCalendarImpl", result instanceof XMLGregorianCalendarImpl);
-		XMLGregorianCalendarImpl result2 = (XMLGregorianCalendarImpl) result;
+		final XMLGregorianCalendarImpl result2 = (XMLGregorianCalendarImpl) result;
 		assertEquals("result and echo must be equal", result2, xmlGregorianCalendarImpl);
 	}
 
 	public void testBigIntegerWithNullValue() {
-		BigInteger bigInteger = null;
-		BigInteger result = testcasesService.echoNullBigInteger(bigInteger);
+		final BigInteger bigInteger = null;
+		final BigInteger result = testcasesService.echoNullBigInteger(bigInteger);
 		assertNull("result must be null", result);
 		assertNull("result must be null", bigInteger);
 	}
 
 	public void testBigIntegerHashMap() {
-		HashMap<String, BigInteger> hashMap = new HashMap<String, BigInteger>();
-		Random random = new Random();
+		final HashMap<String, BigInteger> hashMap = new HashMap<String, BigInteger>();
+		final Random random = new Random();
 		for (int i = 0; i < 10; i++) {
-			BigInteger bigInteger = new BigInteger(80, random);
+			final BigInteger bigInteger = new BigInteger(80, random);
 			hashMap.put(Integer.valueOf(random.nextInt()).toString(), bigInteger);
 		}
-		HashMap<String, BigInteger> result = testcasesService.echoBigIntegerHashMap(hashMap);
+		final HashMap<String, BigInteger> result = testcasesService.echoBigIntegerHashMap(hashMap);
 		assertNotNull("result must be not null", result);
 		assertEquals("hashmaps must be equal", result, hashMap);
 
 	}
 
 	public void testBigIntegerList() {
-		ArrayList<BigInteger> list = new ArrayList<BigInteger>();
-		Random random = new Random();
+		final ArrayList<BigInteger> list = new ArrayList<BigInteger>();
+		final Random random = new Random();
 		for (int i = 0; i < 10; i++) {
-			BigInteger bigInteger = new BigInteger(80, random);
+			final BigInteger bigInteger = new BigInteger(80, random);
 			list.add(bigInteger);
 		}
-		List<BigInteger> result = testcasesService.echoBigIntegerList(list);
+		final List<BigInteger> result = testcasesService.echoBigIntegerList(list);
 		assertNotNull("result must be not null", result);
 		assertEquals("lists must be equal", result, list);
 
 	}
 
 	public void testBigIntegerContainer() {
-		Random random = new Random();
-		BigIntegerContainer bigIntegerContainer = new BigIntegerContainer(new BigInteger(10, random), new BigInteger(
-				30, random), "name4711");
-		BigIntegerContainer result = testcasesService.echoBigIntegerContainer(bigIntegerContainer);
+		final Random random = new Random();
+		final BigIntegerContainer bigIntegerContainer = new BigIntegerContainer(new BigInteger(10, random),
+				new BigInteger(30, random), "name4711");
+		final BigIntegerContainer result = testcasesService.echoBigIntegerContainer(bigIntegerContainer);
 		assertNotNull("result must not be null", result);
 		assertEquals("result and echo must be equal", result, bigIntegerContainer);
 

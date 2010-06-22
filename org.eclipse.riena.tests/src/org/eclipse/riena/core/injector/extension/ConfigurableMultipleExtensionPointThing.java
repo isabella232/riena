@@ -17,7 +17,7 @@ public class ConfigurableMultipleExtensionPointThing {
 
 	private IDataMultipleExtensionPointId[] data;
 
-	public void update(IDataMultipleExtensionPointId[] data) {
+	public void update(final IDataMultipleExtensionPointId[] data) {
 		this.data = data;
 	}
 

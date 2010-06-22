@@ -58,11 +58,11 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 * {@inheritDoc}
 	 */
 	public List<StartupNodeInfo> getSortedStartupNodeInfos() {
-		List<StartupNodeInfo> startups = new ArrayList<StartupNodeInfo>();
+		final List<StartupNodeInfo> startups = new ArrayList<StartupNodeInfo>();
 
-		for (INavigationAssembler assembler : getNavigationAssemblers()) {
+		for (final INavigationAssembler assembler : getNavigationAssemblers()) {
 			if (assembler.getStartOrder() > 0) {
-				StartupNodeInfo startupNodeInfo = createStartupSortable(assembler, assembler.getStartOrder());
+				final StartupNodeInfo startupNodeInfo = createStartupSortable(assembler, assembler.getStartOrder());
 				if (startupNodeInfo != null) {
 					startups.add(startupNodeInfo);
 				}
@@ -74,7 +74,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 
 	private StartupNodeInfo createStartupSortable(final INavigationAssembler assembler, final Integer sequence) {
 
-		INavigationAssembly2Extension assembly = assembler.getAssembly();
+		final INavigationAssembly2Extension assembly = assembler.getAssembly();
 		if (assembly == null) {
 			return null;
 		}
@@ -107,7 +107,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 
 	}
 
-	private String getTypeId(INode2Extension[] extensions) {
+	private String getTypeId(final INode2Extension[] extensions) {
 		if ((extensions != null) && (extensions.length > 0)) {
 			return extensions[0].getNodeId();
 		} else {
@@ -118,8 +118,8 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	/**
 	 * {@inheritDoc}
 	 */
-	public INavigationNode<?> provideNode(INavigationNode<?> sourceNode, NavigationNodeId targetId,
-			NavigationArgument argument) {
+	public INavigationNode<?> provideNode(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
+			final NavigationArgument argument) {
 		return provideNodeHook(sourceNode, targetId, argument);
 	}
 
@@ -136,8 +136,8 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 * @return target node
 	 */
 	@SuppressWarnings("rawtypes")
-	protected INavigationNode<?> provideNodeHook(INavigationNode<?> sourceNode, NavigationNodeId targetId,
-			NavigationArgument argument) {
+	protected INavigationNode<?> provideNodeHook(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
+			final NavigationArgument argument) {
 
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 		if (targetNode == null) {
@@ -145,19 +145,20 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 				LOGGER.log(LogService.LOG_DEBUG, "createNode: " + targetId); //$NON-NLS-1$
 			}
 
-			INavigationAssembler assembler = getNavigationAssembler(targetId, argument);
+			final INavigationAssembler assembler = getNavigationAssembler(targetId, argument);
 			if (assembler != null) {
-				NavigationNodeId parentTypeId = getParentTypeId(argument, assembler);
+				final NavigationNodeId parentTypeId = getParentTypeId(argument, assembler);
 				// Call of findNode() on the result of method provideNodeHook() fixes problem for the case when the result 
 				// is not the node with typeId parentTypeId but one of the nodes parents (i.e. when the nodes assembler also 
 				// builds some of its parent nodes). 
-				INavigationNode parentNode = findNode(provideNodeHook(sourceNode, parentTypeId, null), parentTypeId);
+				final INavigationNode parentNode = findNode(provideNodeHook(sourceNode, parentTypeId, null),
+						parentTypeId);
 				prepareNavigationAssembler(targetId, assembler, parentNode);
-				INavigationNode<?>[] targetNodes = assembler.buildNode(targetId, argument);
+				final INavigationNode<?>[] targetNodes = assembler.buildNode(targetId, argument);
 				if ((targetNodes != null) && (targetNodes.length > 0)) {
-					NodePositioner nodePositioner = argument != null ? argument.getNodePositioner()
+					final NodePositioner nodePositioner = argument != null ? argument.getNodePositioner()
 							: NodePositioner.ADD_END;
-					for (INavigationNode<?> node : targetNodes) {
+					for (final INavigationNode<?> node : targetNodes) {
 						storeNavigationArgument(node, argument);
 						nodePositioner.addChildToParent(parentNode, node);
 						if (node.getNodeId() == null && assembler.getId().equals(targetId.getTypeId())) {
@@ -190,7 +191,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 * @param argument
 	 *            contains information passed used for providing the target node
 	 */
-	private void storeNavigationArgument(INavigationNode<?> targetNode, NavigationArgument argument) {
+	private void storeNavigationArgument(final INavigationNode<?> targetNode, final NavigationArgument argument) {
 		if (argument != null) {
 			targetNode.setContext(NavigationArgument.CONTEXTKEY_ARGUMENT, argument);
 		}
@@ -203,7 +204,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 * @param assembly
 	 *            assembly to register
 	 */
-	public void register(INavigationAssembly2Extension assembly) {
+	public void register(final INavigationAssembly2Extension assembly) {
 
 		String assemblyId = assembly.getId();
 
@@ -211,7 +212,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 			if (random == null) {
 				try {
 					random = SecureRandom.getInstance("SHA1PRNG"); //$NON-NLS-1$
-				} catch (NoSuchAlgorithmException e) {
+				} catch (final NoSuchAlgorithmException e) {
 					random = new Random(System.currentTimeMillis());
 				}
 			}
@@ -233,11 +234,11 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 
 	}
 
-	private int getStartOrder(ICommonNavigationAssemblyExtension assembly) {
+	private int getStartOrder(final ICommonNavigationAssemblyExtension assembly) {
 		try {
-			INavigationAssembly2Extension assembly2 = (INavigationAssembly2Extension) assembly;
+			final INavigationAssembly2Extension assembly2 = (INavigationAssembly2Extension) assembly;
 			return assembly2.getStartOrder();
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			return -1;
 		}
 	}
@@ -249,7 +250,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 *            child node
 	 * @return root node
 	 */
-	protected INavigationNode<?> getRootNode(INavigationNode<?> node) {
+	protected INavigationNode<?> getRootNode(final INavigationNode<?> node) {
 		if (node.getParent() == null) {
 			return node;
 		}
@@ -266,15 +267,15 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 *            ID of the node that should be found
 	 * @return the found node or {@code null} if no matching node was found
 	 */
-	protected INavigationNode<?> findNode(INavigationNode<?> node, NavigationNodeId targetId) {
+	protected INavigationNode<?> findNode(final INavigationNode<?> node, final NavigationNodeId targetId) {
 		if (targetId == null) {
 			return null;
 		}
 		if (targetId.equals(node.getNodeId())) {
 			return node;
 		}
-		for (INavigationNode<?> child : node.getChildren()) {
-			INavigationNode<?> foundNode = findNode(child, targetId);
+		for (final INavigationNode<?> child : node.getChildren()) {
+			final INavigationNode<?> foundNode = findNode(child, targetId);
 			if (foundNode != null) {
 				return foundNode;
 			}
@@ -282,10 +283,10 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 		return null;
 	}
 
-	public INavigationAssembler getNavigationAssembler(NavigationNodeId nodeId, NavigationArgument argument) {
+	public INavigationAssembler getNavigationAssembler(final NavigationNodeId nodeId, final NavigationArgument argument) {
 
 		if (nodeId != null && nodeId.getTypeId() != null) {
-			for (INavigationAssembler probe : getNavigationAssemblers()) {
+			for (final INavigationAssembler probe : getNavigationAssemblers()) {
 				if (probe.acceptsToBuildNode(nodeId, argument)) {
 					return probe;
 				}
@@ -307,13 +308,13 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 *            returned.
 	 * @return ID of the parent node
 	 */
-	private NavigationNodeId getParentTypeId(NavigationArgument argument, INavigationAssembler assembler) {
+	private NavigationNodeId getParentTypeId(final NavigationArgument argument, final INavigationAssembler assembler) {
 		if (argument != null && argument.getParentNodeId() != null) {
 			return argument.getParentNodeId();
 		} else {
-			String parentTypeId = assembler.getParentNodeId();
+			final String parentTypeId = assembler.getParentNodeId();
 			if (StringUtils.isEmpty(parentTypeId)) {
-				String id = assembler.getId();
+				final String id = assembler.getId();
 				throw new ExtensionPointFailure("parentTypeId cannot be null or blank for assembly ID=" //$NON-NLS-1$
 						+ id);
 			}
@@ -327,9 +328,9 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 * @param node
 	 *            navigation node to prepare.
 	 */
-	private void prepareAll(INavigationNode<?> node) {
+	private void prepareAll(final INavigationNode<?> node) {
 		node.prepare();
-		for (INavigationNode<?> child : node.getChildren()) {
+		for (final INavigationNode<?> child : node.getChildren()) {
 			prepareAll(child);
 		}
 	}
@@ -344,7 +345,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	/**
 	 * {@inheritDoc}
 	 */
-	public INavigationAssembler getNavigationAssembler(String assemblyId) {
+	public INavigationAssembler getNavigationAssembler(final String assemblyId) {
 		return assemblyId2AssemblerCache.get(assemblyId);
 	}
 
@@ -369,11 +370,11 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 * @param assembler
 	 *            assembler to register
 	 */
-	public void registerNavigationAssembler(String id, final INavigationAssembler assembler) {
-		INavigationAssembler oldAssembler = assemblyId2AssemblerCache.put(id, assembler);
+	public void registerNavigationAssembler(final String id, final INavigationAssembler assembler) {
+		final INavigationAssembler oldAssembler = assemblyId2AssemblerCache.put(id, assembler);
 		if (oldAssembler != null) {
-			String msg = String.format("There are two assembly extension definitions for '%s'.", id); //$NON-NLS-1$
-			RuntimeException runtimeExc = new IllegalStateException(msg);
+			final String msg = String.format("There are two assembly extension definitions for '%s'.", id); //$NON-NLS-1$
+			final RuntimeException runtimeExc = new IllegalStateException(msg);
 			LOGGER.log(LogService.LOG_ERROR, msg, runtimeExc);
 			throw runtimeExc;
 		}
@@ -386,8 +387,8 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 * @param assembler
 	 * @param parentNode
 	 */
-	protected void prepareNavigationAssembler(NavigationNodeId targetId, INavigationAssembler assembler,
-			INavigationNode<?> parentNode) {
+	protected void prepareNavigationAssembler(final NavigationNodeId targetId, final INavigationAssembler assembler,
+			final INavigationNode<?> parentNode) {
 		if (assembler instanceof IGenericNavigationAssembler) {
 			((IGenericNavigationAssembler) assembler).setAssemblerProvider(this);
 		}

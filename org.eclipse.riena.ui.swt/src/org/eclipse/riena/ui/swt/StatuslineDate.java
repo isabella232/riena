@@ -23,12 +23,12 @@ public class StatuslineDate extends StatuslineTime {
 	 * Creates a new instance of <code>StatuslineDate</code>.
 	 * 
 	 * @param parent
-	 *            a widget which will be the parent of the new instance
-	 *            (cannot be null)
+	 *            a widget which will be the parent of the new instance (cannot
+	 *            be null)
 	 * @param style
 	 *            the style of widget to construct
 	 */
-	public StatuslineDate(Composite parent, int style) {
+	public StatuslineDate(final Composite parent, final int style) {
 		super(parent, style);
 	}
 

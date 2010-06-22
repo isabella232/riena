@@ -108,7 +108,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * @see #getControllerId()
 	 * @see #canRestoreFocus()
 	 */
-	private Map<Integer, Control> focusControlMap = new HashMap<Integer, Control>(1);
+	private final Map<Integer, Control> focusControlMap = new HashMap<Integer, Control>(1);
 
 	private NavigationTreeObserver navigationTreeObserver;
 
@@ -120,11 +120,11 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		focusListener = new FocusListener();
 	}
 
-	public void addUpdateListener(IComponentUpdateListener listener) {
+	public void addUpdateListener(final IComponentUpdateListener listener) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void bind(SubModuleNode node) {
+	public void bind(final SubModuleNode node) {
 
 		if (currentController != getController()) {
 			if (currentController != null) {
@@ -150,12 +150,12 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	@Override
-	public void createPartControl(Composite parent) {
+	public void createPartControl(final Composite parent) {
 		this.parentComposite = parent;
 		parent.setData(IS_SUB_MODULE_VIEW_COMPOSITE, Boolean.TRUE);
 		if (!Beans.isDesignTime()) {
 			observeRoot();
-			SubModuleController controller = createController(getNavigationNode());
+			final SubModuleController controller = createController(getNavigationNode());
 			if (controller != null) {
 				setPartName(controller.getNavigationNode().getLabel());
 			}
@@ -182,7 +182,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 		contentComposite.getDisplay().addFilter(SWT.FocusIn, focusListener);
 		contentComposite.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent event) {
+			public void widgetDisposed(final DisposeEvent event) {
 				event.widget.getDisplay().removeFilter(SWT.FocusIn, focusListener);
 			}
 		});
@@ -190,7 +190,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	@Override
 	public void dispose() {
-		IApplicationNode appNode = getAppNode();
+		final IApplicationNode appNode = getAppNode();
 		if (navigationTreeObserver != null && appNode != null) {
 			navigationTreeObserver.removeListenerFrom(appNode);
 		}
@@ -215,8 +215,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			return getFallbackNavigationNode();
 		}
 
-		String viewId = this.getViewSite().getId();
-		String secondaryId = this.getViewSite().getSecondaryId();
+		final String viewId = this.getViewSite().getId();
+		final String secondaryId = this.getViewSite().getSecondaryId();
 		SubModuleNode result = (SubModuleNode) getSubModuleNode(viewId, secondaryId);
 		if (result == null) {
 			result = getRCPSubModuleNode();
@@ -238,8 +238,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	@Override
 	public void setFocus() {
 		if (canRestoreFocus()) {
-			Integer id = Integer.valueOf(getControllerId());
-			Control lastFocusedControl = focusControlMap.get(id);
+			final Integer id = Integer.valueOf(getControllerId());
+			final Control lastFocusedControl = focusControlMap.get(id);
 			lastFocusedControl.setFocus();
 		} else if (canFocusOnRidget()) {
 			getFocusRidget().requestFocus();
@@ -250,7 +250,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	private boolean canFocusOnRidget() {
 		boolean result = false;
-		IRidget ridget = getFocusRidget();
+		final IRidget ridget = getFocusRidget();
 		if (ridget != null) {
 			result = ridget.isFocusable() && ridget.isEnabled() && ridget.isVisible();
 			if (ridget instanceof IMarkableRidget) {
@@ -265,7 +265,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	public void unbind() {
-		SubModuleController controller = getController();
+		final SubModuleController controller = getController();
 		if (controller != null) {
 			binding.unbind(controller);
 		}
@@ -277,7 +277,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * @param uiControl
 	 *            control to bind
 	 */
-	protected void addUIControl(Object uiControl) {
+	protected void addUIControl(final Object uiControl) {
 		binding.addUIControl(uiControl);
 	}
 
@@ -289,7 +289,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * @param bindingId
 	 *            ID for binding
 	 */
-	protected void addUIControl(Object uiControl, String bindingId) {
+	protected void addUIControl(final Object uiControl, final String bindingId) {
 		binding.addUIControl(uiControl, bindingId);
 	}
 
@@ -300,7 +300,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * @param parent
 	 * @since 1.2
 	 */
-	protected void afterBasicCreatePartControl(Composite parent) {
+	protected void afterBasicCreatePartControl(final Composite parent) {
 
 	}
 
@@ -312,7 +312,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 */
 	protected abstract void basicCreatePartControl(Composite parent);
 
-	protected void blockView(boolean block) {
+	protected void blockView(final boolean block) {
 		if (!parentComposite.isDisposed()) {
 			parentComposite.setCursor(block ? getWaitCursor() : getArrowCursor());
 			contentComposite.setEnabled(!block);
@@ -330,8 +330,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * @since 1.2
 	 */
 	protected final boolean canRestoreFocus() {
-		Integer id = Integer.valueOf(getControllerId());
-		Control control = focusControlMap.get(id);
+		final Integer id = Integer.valueOf(getControllerId());
+		final Control control = focusControlMap.get(id);
 		return !SwtUtilities.isDisposed(control);
 	}
 
@@ -344,7 +344,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		return new DefaultSwtBindingDelegate();
 	}
 
-	protected SubModuleController createController(ISubModuleNode node) {
+	protected SubModuleController createController(final ISubModuleNode node) {
 
 		// check node itself for controller definition first
 		Assert.isNotNull(node, "navigation node must not be null"); //$NON-NLS-1$
@@ -353,12 +353,13 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 		// consult workarea manager
 		SubModuleController controller = null;
-		IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(node);
+		final IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(node);
 		if (def != null) {
 			try {
 				controller = (SubModuleController) def.createController();
-			} catch (Exception ex) {
-				String message = String.format("cannnot create controller for class %s", def.getControllerClass()); //$NON-NLS-1$ 
+			} catch (final Exception ex) {
+				final String message = String
+						.format("cannnot create controller for class %s", def.getControllerClass()); //$NON-NLS-1$ 
 				LOGGER.log(LogService.LOG_ERROR, message, ex);
 				throw new InvocationTargetFailure(message, ex);
 			}
@@ -387,7 +388,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * @param parent
 	 * @since 1.2
 	 */
-	protected void createWorkarea(Composite parent) {
+	protected void createWorkarea(final Composite parent) {
 		basicCreatePartControl(parent);
 		afterBasicCreatePartControl(parent);
 	}
@@ -409,18 +410,18 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 *            the secondary id
 	 * @return the subModule node if found
 	 */
-	protected ISubModuleNode getSubModuleNode(String nodeId, String secondaryId) {
+	protected ISubModuleNode getSubModuleNode(final String nodeId, final String secondaryId) {
 		return SwtViewProvider.getInstance().getNavigationNode(nodeId, secondaryId, ISubModuleNode.class);
 	}
 
 	// helping methods
 	//////////////////
 
-	private void addMenuControl(Menu menu) {
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+	private void addMenuControl(final Menu menu) {
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		for (int i = 0; i < menu.getItemCount(); i++) {
-			MenuItem item = menu.getItem(i);
-			String bindingId = locator.locateBindingProperty(item);
+			final MenuItem item = menu.getItem(i);
+			final String bindingId = locator.locateBindingProperty(item);
 			if (StringUtils.isGiven(bindingId)) {
 				addUIControl(item, bindingId);
 			}
@@ -430,15 +431,15 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		}
 	}
 
-	private void addUIControls(Composite composite) {
-		SWTControlFinder finder = new SWTControlFinder(composite) {
+	private void addUIControls(final Composite composite) {
+		final SWTControlFinder finder = new SWTControlFinder(composite) {
 			@Override
-			public void handleBoundControl(Control control, String bindingProperty) {
+			public void handleBoundControl(final Control control, final String bindingProperty) {
 				addUIControl(control);
 			}
 
 			@Override
-			public void handleControl(Control control) {
+			public void handleControl(final Control control) {
 				if (control.getMenu() != null) {
 					addMenuControl(control.getMenu());
 				}
@@ -456,8 +457,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * @param parent
 	 * @return
 	 */
-	private Composite createContentComposite(Composite parent) {
-		Color bgColor = LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND);
+	private Composite createContentComposite(final Composite parent) {
+		final Color bgColor = LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND);
 		parent.setBackground(bgColor);
 
 		parent.setLayout(new FormLayout());
@@ -466,7 +467,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			title = new EmbeddedTitleBar(parent, SWT.NONE);
 			addUIControl(title, SubModuleController.WINDOW_RIDGET);
 			title.setWindowActive(true);
-			FormData formData = new FormData();
+			final FormData formData = new FormData();
 			// don't show the top border of the title => -1
 			formData.top = new FormAttachment(0, -1);
 			// don't show the left border of the title => -1
@@ -479,9 +480,9 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			title.setLayoutData(formData);
 		}
 
-		Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
+		final Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		composite.setBackground(bgColor);
-		FormData formData = new FormData();
+		final FormData formData = new FormData();
 		if (title != null) {
 			formData.top = new FormAttachment(title, 0, 0);
 		} else {
@@ -507,7 +508,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		while (node.getParent() != null) {
 			node = node.getParent();
 		}
-		IApplicationNode appNode = node.getTypecastedAdapter(IApplicationNode.class);
+		final IApplicationNode appNode = node.getTypecastedAdapter(IApplicationNode.class);
 		return appNode;
 	}
 
@@ -519,7 +520,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * Returns the id (hashcode) of the controller if available, or zero.
 	 */
 	private int getControllerId() {
-		SubModuleController controller = getController();
+		final SubModuleController controller = getController();
 		return controller == null ? 0 : controller.hashCode();
 	}
 
@@ -537,21 +538,21 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	private SubModuleNode getRCPSubModuleNode() {
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IConfigurationElement[] elements = registry
+		final IExtensionRegistry registry = Platform.getExtensionRegistry();
+		final IConfigurationElement[] elements = registry
 				.getConfigurationElementsFor("org.eclipse.riena.navigation.assemblies"); //$NON-NLS-1$
-		String viewId = getViewSite().getId();
+		final String viewId = getViewSite().getId();
 
 		return getRCPSubModuleNode(viewId, elements);
 	}
 
-	private SubModuleNode getRCPSubModuleNode(String viewId, IConfigurationElement[] elements) {
+	private SubModuleNode getRCPSubModuleNode(final String viewId, final IConfigurationElement[] elements) {
 		for (int i = 0; rcpSubModuleNode == null && i < elements.length; i++) {
-			IConfigurationElement element = elements[i];
+			final IConfigurationElement element = elements[i];
 			if ("submodule".equals(element.getName())) { //$NON-NLS-1$
-				String view = element.getAttribute("view"); //$NON-NLS-1$
+				final String view = element.getAttribute("view"); //$NON-NLS-1$
 				if (viewId.equals(view)) {
-					String typeId = element.getAttribute("typeId"); //$NON-NLS-1$
+					final String typeId = element.getAttribute("typeId"); //$NON-NLS-1$
 					if (typeId != null) {
 						rcpSubModuleNode = new SubModuleNode(new NavigationNodeId(typeId), getPartName());
 					}
@@ -576,7 +577,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	private void observeRoot() {
-		IApplicationNode appNode = getAppNode();
+		final IApplicationNode appNode = getAppNode();
 		if (appNode != null) {
 			Assert.isLegal(navigationTreeObserver == null);
 			navigationTreeObserver = new NavigationTreeObserver();
@@ -592,11 +593,11 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * Keeps track of the last focused control within this view.
 	 */
 	private final class FocusListener implements Listener {
-		public void handleEvent(Event event) {
+		public void handleEvent(final Event event) {
 			if (contentComposite.isVisible() && event.widget instanceof Control) {
-				Control control = (Control) event.widget;
+				final Control control = (Control) event.widget;
 				if (contains(contentComposite, control)) {
-					int id = getControllerId();
+					final int id = getControllerId();
 					if (id != 0) {
 						focusControlMap.put(Integer.valueOf(id), control);
 					}
@@ -604,7 +605,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			}
 		}
 
-		private boolean contains(Composite container, Control control) {
+		private boolean contains(final Composite container, final Control control) {
 			boolean result = false;
 			Composite parent = control.getParent();
 			while (!result && parent != null) {
@@ -621,14 +622,14 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 */
 	private final class SubModuleNodesListener extends SubModuleNodeListener {
 		@Override
-		public void activated(ISubModuleNode source) {
+		public void activated(final ISubModuleNode source) {
 			if (source.equals(getNavigationNode())) {
 				doBinding();
 			}
 		}
 
 		@Override
-		public void block(ISubModuleNode source, boolean block) {
+		public void block(final ISubModuleNode source, final boolean block) {
 			if (source.equals(getNavigationNode())) {
 				blockView(block);
 			}

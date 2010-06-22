@@ -24,7 +24,7 @@ public class TestMultiSelectionBean {
 		return selectionList;
 	}
 
-	public void setSelectionList(List<Object> selectionList) {
+	public void setSelectionList(final List<Object> selectionList) {
 		this.selectionList = selectionList;
 	}
 

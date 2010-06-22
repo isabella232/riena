@@ -17,7 +17,7 @@ public class ConfigurableThingSingleData {
 
 	private IData data;
 
-	public void configure(IData data) {
+	public void configure(final IData data) {
 		this.data = data;
 	}
 

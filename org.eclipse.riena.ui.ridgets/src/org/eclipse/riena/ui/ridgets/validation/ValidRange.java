@@ -117,14 +117,15 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 					} catch (final ParseException e) {
 						// should never occur, as super.validate(Object) will
 						// make this method return earlier
-						String message = NLS.bind(Messages.ValidRange_error_cannotParse, string);
+						final String message = NLS.bind(Messages.ValidRange_error_cannotParse, string);
 						return ValidationRuleStatus.error(true, message);
 					}
 				}
 			}
 		}
 		if (currentValue.compareTo(min) < 0 || currentValue.compareTo(max) > 0) {
-			String message = NLS.bind(Messages.ValidRange_error_outOfRange, new Object[] { currentValue, min, max });
+			final String message = NLS.bind(Messages.ValidRange_error_outOfRange,
+					new Object[] { currentValue, min, max });
 			return ValidationRuleStatus.error(true, message);
 		}
 		return ValidationRuleStatus.ok();
@@ -165,11 +166,11 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocal(java.lang.String[])
 	 */
 	@Override
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray(data);
+			final String[] args = PropertiesUtils.asArray(data);
 			if (args.length > 0) {
 				this.min = new BigDecimal(args[0]);
 			}
@@ -177,7 +178,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 				this.max = new BigDecimal(args[1]);
 			}
 			if (args.length > 2) {
-				String[] localArgs = ArraysUtil.copyRange(args, 2, args.length);
+				final String[] localArgs = ArraysUtil.copyRange(args, 2, args.length);
 				setLocal(localArgs);
 			}
 		}

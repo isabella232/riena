@@ -26,10 +26,10 @@ import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 public class MessageBox implements IPropertyNameProvider {
 
 	private String propertyName;
-	private Composite parent;
+	private final Composite parent;
 	private int result;
 	private MessageDialog messageDialog;
-	private Set<FocusListener> focusListeners;
+	private final Set<FocusListener> focusListeners;
 
 	/*
 	 * @see
@@ -46,7 +46,7 @@ public class MessageBox implements IPropertyNameProvider {
 	 * org.eclipse.riena.ui.swt.utils.IPropertyNameProvider#setPropertyName(
 	 * java.lang.String)
 	 */
-	public void setPropertyName(String propertyName) {
+	public void setPropertyName(final String propertyName) {
 		this.propertyName = propertyName;
 	}
 
@@ -54,7 +54,7 @@ public class MessageBox implements IPropertyNameProvider {
 	 * @param parent
 	 *            the parent control.
 	 */
-	public MessageBox(Composite parent) {
+	public MessageBox(final Composite parent) {
 
 		super();
 
@@ -77,7 +77,7 @@ public class MessageBox implements IPropertyNameProvider {
 	 * @param buttonLabels
 	 *            the labels of the buttons shown in the dialog.
 	 */
-	public void show(String title, String text, int type, String[] buttonLabels) {
+	public void show(final String title, final String text, final int type, final String[] buttonLabels) {
 
 		messageDialog = new RienaMessageDialog(parent.getShell(), title, null, // accept the default window icon
 				text, type, buttonLabels, 0) {
@@ -87,10 +87,10 @@ public class MessageBox implements IPropertyNameProvider {
 			@Override
 			public boolean close() {
 
-				for (FocusListener l : focusListeners) {
+				for (final FocusListener l : focusListeners) {
 					messageDialog.getShell().removeFocusListener(l);
 				}
-				boolean closed = super.close();
+				final boolean closed = super.close();
 				messageDialog = null;
 
 				return closed;
@@ -101,7 +101,7 @@ public class MessageBox implements IPropertyNameProvider {
 
 				super.create();
 
-				for (FocusListener l : focusListeners) {
+				for (final FocusListener l : focusListeners) {
 					getShell().addFocusListener(l);
 				}
 			}
@@ -147,7 +147,7 @@ public class MessageBox implements IPropertyNameProvider {
 	 * @param visible
 	 *            the visibility.
 	 */
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		if (messageDialog != null) {
 			messageDialog.getShell().setVisible(visible);
 		}
@@ -159,7 +159,7 @@ public class MessageBox implements IPropertyNameProvider {
 	 * @param enabled
 	 *            the new enabled state.
 	 */
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(final boolean enabled) {
 		if (messageDialog != null) {
 			messageDialog.getShell().setEnabled(enabled);
 		}
@@ -171,7 +171,7 @@ public class MessageBox implements IPropertyNameProvider {
 	 * @param listener
 	 *            the listener
 	 */
-	public void addFocusListener(FocusListener listener) {
+	public void addFocusListener(final FocusListener listener) {
 		focusListeners.add(listener);
 	}
 
@@ -181,7 +181,7 @@ public class MessageBox implements IPropertyNameProvider {
 	 * @param listener
 	 *            the listener
 	 */
-	public void removeFocusListener(FocusListener listener) {
+	public void removeFocusListener(final FocusListener listener) {
 		focusListeners.remove(listener);
 	}
 }

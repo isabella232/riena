@@ -33,7 +33,7 @@ public class UIFilterRuleRidgetHiddenMarker extends AbstractUIFilterRuleRidgetMa
 	 * @param ridgetIdPattern
 	 *            ID
 	 */
-	public UIFilterRuleRidgetHiddenMarker(String ridgetIdPattern) {
+	public UIFilterRuleRidgetHiddenMarker(final String ridgetIdPattern) {
 		super(ridgetIdPattern, new HiddenMarker(false));
 	}
 

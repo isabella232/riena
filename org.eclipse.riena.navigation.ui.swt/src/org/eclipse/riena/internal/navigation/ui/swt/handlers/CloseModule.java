@@ -26,12 +26,12 @@ import org.eclipse.riena.navigation.INavigationNode;
  */
 public class CloseModule extends AbstractNavigationHandler {
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		// assumes there is only one application node
-		IApplicationNode application = ApplicationNodeManager.getApplicationNode();
-		IModuleNode module = findModule(application);
+		final IApplicationNode application = ApplicationNodeManager.getApplicationNode();
+		final IModuleNode module = findModule(application);
 		if (module != null && module.isClosable()) {
-			INavigationNode<?> previous = findPreviousModule(application);
+			final INavigationNode<?> previous = findPreviousModule(application);
 			if (previous != null) {
 				previous.activate();
 			}
@@ -43,8 +43,8 @@ public class CloseModule extends AbstractNavigationHandler {
 	// helping methods
 	//////////////////
 
-	private INavigationNode<?> findPreviousModule(IApplicationNode application) {
-		IModuleNode[] modules = collectModules(application);
+	private INavigationNode<?> findPreviousModule(final IApplicationNode application) {
+		final IModuleNode[] modules = collectModules(application);
 		return findPreviousNode(modules, false);
 	}
 
@@ -52,11 +52,11 @@ public class CloseModule extends AbstractNavigationHandler {
 	 * Not API; public for testing only.
 	 */
 	@SuppressWarnings("unchecked")
-	public final IModuleNode findModule(IApplicationNode application) {
+	public final IModuleNode findModule(final IApplicationNode application) {
 		IModuleNode result = null;
-		IModuleGroupNode moduleGroup = findModuleGroup(application);
+		final IModuleGroupNode moduleGroup = findModuleGroup(application);
 		if (moduleGroup != null) {
-			INavigationNode<?> module = findActive((List) moduleGroup.getChildren());
+			final INavigationNode<?> module = findActive((List) moduleGroup.getChildren());
 			if (module instanceof IModuleNode) {
 				result = (IModuleNode) module;
 			}

@@ -47,12 +47,12 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 * Use a renderer to draw the border of the module group.
 	 */
 	@Override
-	public void paint(GC gc, Object value) {
+	public void paint(final GC gc, final Object value) {
 
 		super.paint(gc, value);
 
 		// border of module group
-		EmbeddedBorderRenderer borderRenderer = getLnfBorderRenderer();
+		final EmbeddedBorderRenderer borderRenderer = getLnfBorderRenderer();
 		borderRenderer.setMarkers(getMarkers());
 		borderRenderer.setBounds(getBounds().x, getBounds().y, getBounds().width, getBounds().height);
 		borderRenderer.setActive(isActive());
@@ -64,7 +64,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#dispose()
 	 */
 	public void dispose() {
-		for (ModuleView item : getItems()) {
+		for (final ModuleView item : getItems()) {
 			item.dispose();
 		}
 	}
@@ -80,28 +80,27 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 *            the height hint
 	 * @return a Point representing the size of the module group
 	 */
-	public Point computeSize(GC gc, int wHint, int hHint) {
+	public Point computeSize(final GC gc, final int wHint, final int hHint) {
 
-		EmbeddedBorderRenderer borderRenderer = getLnfBorderRenderer();
+		final EmbeddedBorderRenderer borderRenderer = getLnfBorderRenderer();
 
 		int w = wHint;
 		if (w == SWT.DEFAULT) {
 			w = borderRenderer.computeOuterWidth(getItemWidth());
 		}
 
-		List<ModuleView> modules = getItems();
+		final List<ModuleView> modules = getItems();
 		int h = 0;
 		if (modules.size() > 0) {
 
-			Composite parent = modules.get(0).getParent();
+			final Composite parent = modules.get(0).getParent();
 			if (SwtUtilities.isDisposed(parent)) {
 				return new Point(w, h);
 			}
 
 			h = getModuleGroupPadding();
 			Collections.sort(modules, new ModuleCompartor());
-			for (Iterator<ModuleView> iterator = modules.iterator(); iterator.hasNext();) {
-				ModuleView moduleView = iterator.next();
+			for (final ModuleView moduleView : modules) {
 				if (moduleView.getNavigationNode() == null || moduleView.getNavigationNode().isDisposed()) {
 					break;
 				}
@@ -111,8 +110,8 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 			parent.layout();
 
 			Collections.sort(modules, new ModuleCompartor());
-			for (Iterator<ModuleView> iterator = modules.iterator(); iterator.hasNext();) {
-				ModuleView moduleView = iterator.next();
+			for (final Iterator<ModuleView> iterator = modules.iterator(); iterator.hasNext();) {
+				final ModuleView moduleView = iterator.next();
 				if (moduleView.getNavigationNode() == null || moduleView.getNavigationNode().isDisposed()) {
 					break;
 				}
@@ -137,7 +136,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		 * 
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 		 */
-		public int compare(ModuleView o1, ModuleView o2) {
+		public int compare(final ModuleView o1, final ModuleView o2) {
 			return navigationNode.getIndexOfChild(o1.getNavigationNode()) < navigationNode.getIndexOfChild(o2
 					.getNavigationNode()) ? -1 : 1;
 		}
@@ -169,7 +168,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 * @param items
 	 *            the items to set
 	 */
-	public void setItems(List<ModuleView> items) {
+	public void setItems(final List<ModuleView> items) {
 		this.items = items;
 	}
 
@@ -205,7 +204,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(final boolean active) {
 		this.active = active;
 	}
 
@@ -214,7 +213,7 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 *            is the {@link ModuleGroupNode} of the related
 	 *            {@link ModuleGroupView}
 	 */
-	public void setNavigationNode(ModuleGroupNode navigationNode) {
+	public void setNavigationNode(final ModuleGroupNode navigationNode) {
 		this.navigationNode = navigationNode;
 	}
 

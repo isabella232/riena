@@ -25,7 +25,7 @@ public class TypedComparatorTest extends TestCase {
 	 */
 	public void testNullValues() {
 
-		TypedComparator<String> tc = new TypedComparator<String>();
+		final TypedComparator<String> tc = new TypedComparator<String>();
 		assertEquals(0, tc.compare(null, null));
 		assertEquals(1, tc.compare("test", null));
 		assertEquals(1, tc.compare("", null));

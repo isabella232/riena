@@ -22,7 +22,7 @@ public class TestcasePermission extends Permission {
 	/**
 	 * @param name
 	 */
-	public TestcasePermission(String name) {
+	public TestcasePermission(final String name) {
 		super(name);
 	}
 
@@ -32,7 +32,7 @@ public class TestcasePermission extends Permission {
 	 * @see java.security.Permission#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj instanceof TestcasePermission) {
 			if (((TestcasePermission) obj).getName().equals(this.getName())) {
 				return true;
@@ -67,7 +67,7 @@ public class TestcasePermission extends Permission {
 	 * @see java.security.Permission#implies(java.security.Permission)
 	 */
 	@Override
-	public boolean implies(Permission permission) {
+	public boolean implies(final Permission permission) {
 		if (permission.equals(this)) {
 			return true;
 		}

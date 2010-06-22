@@ -21,10 +21,10 @@ import org.eclipse.riena.core.injector.Inject;
 public class Scribble {
 
 	public void scribble() {
-		BundleContext context = null;
+		final BundleContext context = null;
 		Inject.extension("").useType(Object.class).expectingMinMax(0, 1).into(this).andStart(context);
-		Inject.extension("").useType(Object.class).expectingExactly(1).into(this).update("update").specific().andStart(
-				context);
+		Inject.extension("").useType(Object.class).expectingExactly(1).into(this).update("update").specific()
+				.andStart(context);
 		Inject.extension("").heterogeneous().into(this).doNotReplaceSymbols().andStart(context).stop();
 	}
 

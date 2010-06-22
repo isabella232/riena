@@ -36,27 +36,27 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class SnippetComboRidget003 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		new DefaultRealm();
 
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetComboRidget003.class.getSimpleName());
 			GridLayoutFactory.swtDefaults().numColumns(2).spacing(5, 5).applyTo(shell);
 
 			UIControlsFactory.createLabel(shell, "CCombo:"); //$NON-NLS-1$
-			CCombo ccombo = UIControlsFactory.createCCombo(shell);
+			final CCombo ccombo = UIControlsFactory.createCCombo(shell);
 
 			UIControlsFactory.createLabel(shell, "Selection:"); //$NON-NLS-1$
-			Label lblSelection = UIControlsFactory.createLabel(shell, ""); //$NON-NLS-1$
+			final Label lblSelection = UIControlsFactory.createLabel(shell, ""); //$NON-NLS-1$
 
-			Button button = UIControlsFactory.createButton(shell, "&Reset"); //$NON-NLS-1$
+			final Button button = UIControlsFactory.createButton(shell, "&Reset"); //$NON-NLS-1$
 			GridDataFactory.fillDefaults().span(2, 1).applyTo(button);
 
 			// data model
 			final String emptySelection = "<no selection>"; //$NON-NLS-1$
-			IObservableList input = createInput(emptySelection);
+			final IObservableList input = createInput(emptySelection);
 
 			final IComboRidget ccomboRidget = (IComboRidget) SwtRidgetFactory.createRidget(ccombo);
 			ccomboRidget.setMandatory(true);
@@ -64,7 +64,7 @@ public class SnippetComboRidget003 {
 			ccomboRidget.bindToModel(input, String.class, null, SWTObservables.observeText(lblSelection));
 			ccomboRidget.updateFromModel();
 
-			IActionRidget actionRidget = (IActionRidget) SwtRidgetFactory.createRidget(button);
+			final IActionRidget actionRidget = (IActionRidget) SwtRidgetFactory.createRidget(button);
 			actionRidget.addListener(new IActionListener() {
 				public void callback() {
 					ccomboRidget.setSelection(emptySelection);
@@ -83,12 +83,12 @@ public class SnippetComboRidget003 {
 		}
 	}
 
-	private static IObservableList createInput(String emptySelection) {
-		List<String> days = new ArrayList<String>();
-		String[] values = new String[] { emptySelection,
+	private static IObservableList createInput(final String emptySelection) {
+		final List<String> days = new ArrayList<String>();
+		final String[] values = new String[] { emptySelection,
 				"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 				"Sunday" }; //$NON-NLS-1$
-		for (String day : values) {
+		for (final String day : values) {
 			days.add(day);
 		}
 		return new WritableList(days, String.class);

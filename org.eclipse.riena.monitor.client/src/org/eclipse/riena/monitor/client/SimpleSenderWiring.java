@@ -22,7 +22,7 @@ import org.eclipse.riena.monitor.common.IReceiver;
 public class SimpleSenderWiring extends AbstractWiring {
 
 	@Override
-	public void wire(Object bean, BundleContext context) {
+	public void wire(final Object bean, final BundleContext context) {
 		Inject.service(IReceiver.class).useRanking().into(bean).andStart(context);
 	}
 

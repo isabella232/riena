@@ -94,7 +94,7 @@ public class Collectible<T extends Serializable> implements Serializable {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (!(obj instanceof Collectible<?>)) {
 			return false;
 		}
@@ -120,17 +120,17 @@ public class Collectible<T extends Serializable> implements Serializable {
 		return toString(false);
 	}
 
-	private String toString(boolean verbose) {
-		StringBuilder bob = new StringBuilder("Collectible: "); //$NON-NLS-1$
+	private String toString(final boolean verbose) {
+		final StringBuilder bob = new StringBuilder("Collectible: "); //$NON-NLS-1$
 		bob.append("ClientInfo={").append(clientInfo).append("},"); //$NON-NLS-1$ //$NON-NLS-2$
 		bob.append("Category=").append(categoryName).append(','); //$NON-NLS-1$
 		bob.append("Payload (partial)=").append(verbose ? payload : partial(payload)); //$NON-NLS-1$
 		return bob.toString();
 	}
 
-	private String partial(T payload) {
-		String all = payload.toString();
-		int cutOff = all.indexOf('\n');
+	private String partial(final T payload) {
+		final String all = payload.toString();
+		final int cutOff = all.indexOf('\n');
 		if (cutOff == -1) {
 			return all;
 		}

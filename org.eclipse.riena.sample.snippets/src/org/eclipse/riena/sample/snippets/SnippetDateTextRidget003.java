@@ -31,29 +31,29 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * DatePickerComposite.
  */
 public class SnippetDateTextRidget003 {
-	public static void main(String[] args) {
-		Display display = new Display();
-		Shell shell = new Shell(display);
+	public static void main(final String[] args) {
+		final Display display = new Display();
+		final Shell shell = new Shell(display);
 		shell.setSize(400, 200);
 		shell.setText("DateTime Demoapp"); //$NON-NLS-1$
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).applyTo(shell);
 
-		Calendar currentDate = Calendar.getInstance();
+		final Calendar currentDate = Calendar.getInstance();
 		currentDate.setTime(new Date());
 
 		createLabel(shell, "SWT DateTime"); //$NON-NLS-1$
-		DateTime dateTime = new DateTime(shell, SWT.MEDIUM | SWT.BORDER | SWT.DROP_DOWN);
+		final DateTime dateTime = new DateTime(shell, SWT.MEDIUM | SWT.BORDER | SWT.DROP_DOWN);
 		dateTime.setDay(currentDate.get(Calendar.DAY_OF_MONTH));
 		dateTime.setMonth(currentDate.get(Calendar.MONTH));
 		dateTime.setYear(currentDate.get(Calendar.YEAR));
-		GridDataFactory gdf = GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.CENTER);
+		final GridDataFactory gdf = GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.CENTER);
 		gdf.applyTo(dateTime);
 
 		createLabel(shell, "Riena DatePickerComposite"); //$NON-NLS-1$
-		DatePickerComposite textDatePicker = UIControlsFactory.createDatePickerComposite(shell, "test"); //$NON-NLS-1$
+		final DatePickerComposite textDatePicker = UIControlsFactory.createDatePickerComposite(shell, "test"); //$NON-NLS-1$
 		gdf.applyTo(textDatePicker);
 
-		IDateTextRidget datePickerRidget = (IDateTextRidget) SwtRidgetFactory.createRidget(textDatePicker);
+		final IDateTextRidget datePickerRidget = (IDateTextRidget) SwtRidgetFactory.createRidget(textDatePicker);
 		datePickerRidget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		datePickerRidget.updateFromModel();
 		datePickerRidget.setMandatory(true);
@@ -68,8 +68,8 @@ public class SnippetDateTextRidget003 {
 		display.dispose();
 	}
 
-	private static void createLabel(Shell parent, String caption) {
-		Label label = new Label(parent, SWT.None);
+	private static void createLabel(final Shell parent, final String caption) {
+		final Label label = new Label(parent, SWT.None);
 		label.setText(caption);
 	}
 

@@ -48,14 +48,14 @@ public final class TestUtils {
 	 * @param numberOfCols
 	 *            the number of columns that the widget displays
 	 */
-	public static void assertColumnWidths(Control control, int numberOfCols) {
+	public static void assertColumnWidths(final Control control, final int numberOfCols) {
 		final int expected = control.getSize().x / numberOfCols;
 		Assert.assertTrue(String.valueOf(expected), expected > 0);
 
 		for (int column = 0; column < numberOfCols; column++) {
-			int actual = getColumnWidth(control, column);
+			final int actual = getColumnWidth(control, column);
 			// take into account rounding errors, e.g. total width 85 => col widths (29, 28, 28)
-			String message = String.format(
+			final String message = String.format(
 					"col %d, expected %d <= x <= %d but was %d", column, expected, (expected + 1), actual); //$NON-NLS-1$
 			Assert.assertTrue(message, (expected <= actual && actual <= expected + 1));
 		}
@@ -72,12 +72,13 @@ public final class TestUtils {
 	 * @param disabledState
 	 *            the expected disabled state value
 	 */
-	public static void assertMandatoryMarker(IMarkableRidget ridget, int expectedCount, boolean disabledState) {
-		Collection<MandatoryMarker> markers = ridget.getMarkersOfType(MandatoryMarker.class);
+	public static void assertMandatoryMarker(final IMarkableRidget ridget, final int expectedCount,
+			final boolean disabledState) {
+		final Collection<MandatoryMarker> markers = ridget.getMarkersOfType(MandatoryMarker.class);
 		Assert.assertEquals(expectedCount, markers.size());
-		Iterator<MandatoryMarker> iter = markers.iterator();
+		final Iterator<MandatoryMarker> iter = markers.iterator();
 		while (iter.hasNext()) {
-			boolean isDisabled = iter.next().isDisabled();
+			final boolean isDisabled = iter.next().isDisabled();
 			Assert.assertEquals(disabledState, isDisabled);
 		}
 	}
@@ -94,12 +95,12 @@ public final class TestUtils {
 	 *            the expected count; 0 or greater
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void assertMessageCount(IMarkable ridget, Class markerType, int count) {
-		Collection<IMessageMarker> collection = ridget.getMarkersOfType(markerType);
+	public static void assertMessageCount(final IMarkable ridget, final Class markerType, final int count) {
+		final Collection<IMessageMarker> collection = ridget.getMarkersOfType(markerType);
 		if (count != collection.size()) {
 			System.out.println(String.format("assertion failed on message count -- expected %d, got %d:", count, //$NON-NLS-1$
 					collection.size()));
-			for (IMessageMarker messageMarker : collection) {
+			for (final IMessageMarker messageMarker : collection) {
 				System.out.println("\t" + messageMarker.getMessage()); //$NON-NLS-1$
 			}
 		}
@@ -118,12 +119,12 @@ public final class TestUtils {
 	 *            the message to find
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static void assertMessage(IMarkable ridget, Class markerType, String message) {
-		Collection<IMessageMarker> collection = ridget.getMarkersOfType(markerType);
+	public static void assertMessage(final IMarkable ridget, final Class markerType, final String message) {
+		final Collection<IMessageMarker> collection = ridget.getMarkersOfType(markerType);
 		boolean wasFound = false;
-		Iterator<IMessageMarker> iter = collection.iterator();
+		final Iterator<IMessageMarker> iter = collection.iterator();
 		while (!wasFound && iter.hasNext()) {
-			IMessageMarker marker = iter.next();
+			final IMessageMarker marker = iter.next();
 			wasFound = message.equals(marker.getMessage());
 		}
 		Assert.assertEquals(String.format("Message '%s'", message), true, wasFound); //$NON-NLS-1$
@@ -153,7 +154,7 @@ public final class TestUtils {
 	 * @param after
 	 *            the expected after value
 	 */
-	public static void assertText(Text control, String before, String keySeq, String after) {
+	public static void assertText(final Text control, final String before, final String keySeq, final String after) {
 		forceText(control, before);
 
 		checkText(control, before);
@@ -191,7 +192,7 @@ public final class TestUtils {
 	 * @param after
 	 *            the expected after value
 	 */
-	public static void assertText(Text control, String before, int keyCode, String after) {
+	public static void assertText(final Text control, final String before, final int keyCode, final String after) {
 		forceText(control, before);
 
 		checkText(control, before);
@@ -209,8 +210,8 @@ public final class TestUtils {
 	 * Returns true if the Arab locale ("ar_AE") is available.
 	 */
 	public static boolean isArabLocaleAvailable() {
-		Locale arabLocale = new Locale("ar", "AE"); //$NON-NLS-1$  //$NON-NLS-2$
-		for (Locale availableLocale : Locale.getAvailableLocales()) {
+		final Locale arabLocale = new Locale("ar", "AE"); //$NON-NLS-1$  //$NON-NLS-2$
+		for (final Locale availableLocale : Locale.getAvailableLocales()) {
 			if (availableLocale.equals(arabLocale)) {
 				return true;
 			}
@@ -234,11 +235,11 @@ public final class TestUtils {
 	 *            grouping separator and ',' is used as the decimal separator.
 	 * @return a localized String representation of a number
 	 */
-	public static String getLocalizedNumber(String number) {
-		DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-		char decimalSep = dfs.getDecimalSeparator();
-		char groupingSep = dfs.getGroupingSeparator();
-		String result = number.replace('.', '_').replace(',', decimalSep).replace('_', groupingSep);
+	public static String getLocalizedNumber(final String number) {
+		final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+		final char decimalSep = dfs.getDecimalSeparator();
+		final char groupingSep = dfs.getGroupingSeparator();
+		final String result = number.replace('.', '_').replace(',', decimalSep).replace('_', groupingSep);
 		return result;
 	}
 
@@ -246,10 +247,10 @@ public final class TestUtils {
 	 * Print all markers in this markable.
 	 */
 	@SuppressWarnings("unchecked")
-	public static void printMarkers(IMarkable markable) {
-		Collection<IMarker> markers = (Collection<IMarker>) markable.getMarkers();
+	public static void printMarkers(final IMarkable markable) {
+		final Collection<IMarker> markers = (Collection<IMarker>) markable.getMarkers();
 		System.out.println(String.format("Have %d markers::", markers.size())); //$NON-NLS-1$
-		for (IMarker m : markers) {
+		for (final IMarker m : markers) {
 			System.out.println(m.toString());
 		}
 	}
@@ -257,14 +258,14 @@ public final class TestUtils {
 	// helping methods
 	//////////////////
 
-	private static void checkText(Text control, String input) {
-		String expected = removePositionMarkers(input);
+	private static void checkText(final Text control, final String input) {
+		final String expected = removePositionMarkers(input);
 		Assert.assertEquals(expected, control.getText());
 	}
 
-	private static void checkSelection(Text control, String input) {
-		int start = input.indexOf('^');
-		int end = input.lastIndexOf('^');
+	private static void checkSelection(final Text control, final String input) {
+		final int start = input.indexOf('^');
+		final int end = input.lastIndexOf('^');
 		String expected = ""; //$NON-NLS-1$
 		if (start < end) {
 			expected = input.substring(start + 1, end);
@@ -273,17 +274,17 @@ public final class TestUtils {
 		Assert.assertEquals(expected, control.getSelectionText());
 	}
 
-	private static void checkCaret(Text control, String input) {
-		int start = input.indexOf('^');
+	private static void checkCaret(final Text control, final String input) {
+		final int start = input.indexOf('^');
 		if (start != -1) {
-			int end = input.lastIndexOf('^');
-			int expected = start < end ? end - 1 : end;
+			final int end = input.lastIndexOf('^');
+			final int expected = start < end ? end - 1 : end;
 			// System.out.println("exp car: " + expected);
 			Assert.assertEquals(expected, control.getCaretPosition());
 		}
 	}
 
-	private static int getColumnWidth(Control control, int colIndex) {
+	private static int getColumnWidth(final Control control, final int colIndex) {
 		if (control instanceof Tree) {
 			return ((Tree) control).getColumn(colIndex).getWidth();
 		} else if (control instanceof Table) {
@@ -292,10 +293,10 @@ public final class TestUtils {
 		throw new IllegalArgumentException("unsupported control: " + control); //$NON-NLS-1$
 	}
 
-	private static String removePositionMarkers(String input) {
-		StringBuilder result = new StringBuilder(input.length());
+	private static String removePositionMarkers(final String input) {
+		final StringBuilder result = new StringBuilder(input.length());
 		for (int i = 0; i < input.length(); i++) {
-			char ch = input.charAt(i);
+			final char ch = input.charAt(i);
 			if (ch != '^') {
 				result.append(ch);
 			}
@@ -303,16 +304,16 @@ public final class TestUtils {
 		return result.toString();
 	}
 
-	private static void forceText(Text control, String text) {
-		int start = text.indexOf('^');
-		int end = text.lastIndexOf('^');
+	private static void forceText(final Text control, final String text) {
+		final int start = text.indexOf('^');
+		final int end = text.lastIndexOf('^');
 
-		Listener[] listeners = control.getListeners(SWT.Verify);
-		for (Listener listener : listeners) {
+		final Listener[] listeners = control.getListeners(SWT.Verify);
+		for (final Listener listener : listeners) {
 			control.removeListener(SWT.Verify, listener);
 		}
 		control.setText(removePositionMarkers(text));
-		for (Listener listener : listeners) {
+		for (final Listener listener : listeners) {
 			control.addListener(SWT.Verify, listener);
 		}
 		control.setFocus();

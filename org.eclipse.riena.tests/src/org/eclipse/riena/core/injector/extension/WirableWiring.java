@@ -19,11 +19,11 @@ import org.eclipse.riena.core.wire.IWiring;
  */
 public class WirableWiring implements IWiring {
 
-	public void unwire(Object bean, BundleContext context) {
+	public void unwire(final Object bean, final BundleContext context) {
 		((IWireable) bean).setWired(false);
 	}
 
-	public void wire(Object bean, BundleContext context) {
+	public void wire(final Object bean, final BundleContext context) {
 		((IWireable) bean).setWired(true);
 	}
 

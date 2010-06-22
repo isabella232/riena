@@ -46,8 +46,8 @@ public class BasicAuthenticationITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null); //$NON-NLS-1$
 		stopBundles("org\\.eclipse\\.riena.example.client", null);
 
-		customerSearchRegistration = Register.remoteProxy(ICustomerSearch.class).usingUrl(TESTURL).withProtocol(
-				"hessian").andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
+		customerSearchRegistration = Register.remoteProxy(ICustomerSearch.class).usingUrl(TESTURL)
+				.withProtocol("hessian").andStart(Activator.getDefault().getContext()); //$NON-NLS-1$
 	}
 
 	@Override
@@ -61,12 +61,12 @@ public class BasicAuthenticationITest extends RienaTestCase {
 	 */
 	public void testNoCallHook() {
 		try {
-			ICustomerSearch customerSearch = (ICustomerSearch) getContext().getService(
+			final ICustomerSearch customerSearch = (ICustomerSearch) getContext().getService(
 					getContext().getServiceReference(ICustomerSearch.class.getName()));
 
 			customerSearch.findCustomer(null);
 			fail("RemoteFailure HTTP=401 expected"); //$NON-NLS-1$
-		} catch (RemoteFailure e) {
+		} catch (final RemoteFailure e) {
 			assertTrue(e.getCause().getCause().getMessage().contains("401")); //$NON-NLS-1$
 		}
 	}
@@ -76,17 +76,17 @@ public class BasicAuthenticationITest extends RienaTestCase {
 	 */
 	public void testWithCallHookNoAuthorization() {
 		try {
-			ICustomerSearch customerSearch = (ICustomerSearch) getContext().getService(
+			final ICustomerSearch customerSearch = (ICustomerSearch) getContext().getService(
 					getContext().getServiceReference(ICustomerSearch.class.getName()));
 
-			ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
+			final ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
 					new BasicAuthenticationCallHook(), null);
 
 			customerSearch.findCustomer(null);
 
 			serviceReg.unregister();
 			fail("RemoteFailure HTTP=401 expected"); //$NON-NLS-1$
-		} catch (RemoteFailure e) {
+		} catch (final RemoteFailure e) {
 			assertTrue(e.getCause().getCause().getMessage().contains("401")); //$NON-NLS-1$
 		}
 
@@ -97,16 +97,16 @@ public class BasicAuthenticationITest extends RienaTestCase {
 	 */
 	public void testWithCallHookWithInvalidAuthorization() {
 		try {
-			ICustomerSearch customerSearch = (ICustomerSearch) getContext().getService(
+			final ICustomerSearch customerSearch = (ICustomerSearch) getContext().getService(
 					getContext().getServiceReference(ICustomerSearch.class.getName()));
 
-			ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
+			final ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
 					new BasicAuthenticationCallHook(), null);
 
 			//			ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
 			//					getContext().getServiceReference(ISubjectHolderService.class.getName()));
 
-			Subject subject = new Subject();
+			final Subject subject = new Subject();
 			subject.getPrincipals().add(new SimplePrincipal("christian"));
 			subject.getPrivateCredentials().add("password");
 			Service.get(ISubjectHolder.class).setSubject(subject);
@@ -115,7 +115,7 @@ public class BasicAuthenticationITest extends RienaTestCase {
 
 			serviceReg.unregister();
 			fail("RemoteFailure HTTP=401 expected"); //$NON-NLS-1$
-		} catch (RemoteFailure e) {
+		} catch (final RemoteFailure e) {
 			assertTrue(e.getCause().getCause().getMessage().contains("401")); //$NON-NLS-1$
 		}
 
@@ -126,15 +126,15 @@ public class BasicAuthenticationITest extends RienaTestCase {
 	 */
 	public void testWithCallHookWithValidAuthorization() {
 		try {
-			ICustomerSearch customerSearch = Service.get(ICustomerSearch.class);
+			final ICustomerSearch customerSearch = Service.get(ICustomerSearch.class);
 
-			ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
+			final ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
 					new BasicAuthenticationCallHook(), null);
 
 			//			ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
 			//					getContext().getServiceReference(ISubjectHolderService.class.getName()));
 
-			Subject subject = new Subject();
+			final Subject subject = new Subject();
 			subject.getPrincipals().add(new SimplePrincipal("scp")); //$NON-NLS-1$
 			subject.getPrivateCredentials().add("scptestpassword"); //$NON-NLS-1$
 			Service.get(ISubjectHolder.class).setSubject(subject);
@@ -143,25 +143,25 @@ public class BasicAuthenticationITest extends RienaTestCase {
 
 			serviceReg.unregister();
 			fail("RemoteFailure with Protocol Error expected"); //$NON-NLS-1$
-		} catch (RemoteFailure e) {
+		} catch (final RemoteFailure e) {
 			assertFalse(e.getCause().getCause().getMessage().contains("401")); //$NON-NLS-1$
-			assertTrue(e.getCause().getCause().getMessage(), e.getCause().getCause().getMessage().contains(
-					"unexpected end of file")); //$NON-NLS-1$
+			assertTrue(e.getCause().getCause().getMessage(),
+					e.getCause().getCause().getMessage().contains("unexpected end of file")); //$NON-NLS-1$
 		}
 
 	}
 
 	public void testWithCallHookWithMultipleValidAuthorization() {
-		ICustomerSearch customerSearch = (ICustomerSearch) getContext().getService(
+		final ICustomerSearch customerSearch = (ICustomerSearch) getContext().getService(
 				getContext().getServiceReference(ICustomerSearch.class.getName()));
 
-		ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
+		final ServiceRegistration serviceReg = getContext().registerService(ICallHook.class.getName(),
 				new BasicAuthenticationCallHook(), null);
 
 		//		ISubjectHolderService subjectHolderService = (ISubjectHolderService) getContext().getService(
 		//				getContext().getServiceReference(ISubjectHolderService.class.getName()));
 
-		Subject subject = new Subject();
+		final Subject subject = new Subject();
 		subject.getPrincipals().add(new SimplePrincipal("scp")); //$NON-NLS-1$
 		subject.getPrivateCredentials().add("scptestpassword"); //$NON-NLS-1$
 		Service.get(ISubjectHolder.class).setSubject(subject);
@@ -171,10 +171,10 @@ public class BasicAuthenticationITest extends RienaTestCase {
 			customerSearch.findCustomer(null);
 
 			fail("RemoteFailure with Protocol Error expected"); //$NON-NLS-1$
-		} catch (RemoteFailure e) {
+		} catch (final RemoteFailure e) {
 			assertFalse(e.getCause().getCause().getMessage().contains("401")); //$NON-NLS-1$
-			assertTrue(e.getCause().getCause().getMessage(), e.getCause().getCause().getMessage().contains(
-					"unexpected end of file")); //$NON-NLS-1$
+			assertTrue(e.getCause().getCause().getMessage(),
+					e.getCause().getCause().getMessage().contains("unexpected end of file")); //$NON-NLS-1$
 		}
 
 		// second call
@@ -182,10 +182,10 @@ public class BasicAuthenticationITest extends RienaTestCase {
 			customerSearch.findCustomer(null);
 
 			fail("RemoteFailure with Protocol Error expected"); //$NON-NLS-1$
-		} catch (RemoteFailure e) {
+		} catch (final RemoteFailure e) {
 			assertFalse(e.getCause().getCause().getMessage().contains("401")); //$NON-NLS-1$
-			assertTrue(e.getCause().getCause().getMessage(), e.getCause().getCause().getMessage().contains(
-					"unexpected end of file")); //$NON-NLS-1$
+			assertTrue(e.getCause().getCause().getMessage(),
+					e.getCause().getCause().getMessage().contains("unexpected end of file")); //$NON-NLS-1$
 		}
 
 		serviceReg.unregister();

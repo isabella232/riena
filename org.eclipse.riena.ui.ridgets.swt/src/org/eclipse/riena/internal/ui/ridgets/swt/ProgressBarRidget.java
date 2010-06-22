@@ -32,18 +32,18 @@ public class ProgressBarRidget extends AbstractTraverseRidget implements ITraver
 	}
 
 	@Override
-	public void checkUIControl(Object uiControl) {
+	public void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, ProgressBar.class);
 	}
 
 	@Override
-	protected int getValue(Control control) {
+	protected int getValue(final Control control) {
 		return getUIControl() != null ? getUIControl().getSelection() : 0;
 	}
 
 	@Override
 	protected void initFromUIControl() {
-		ProgressBar bar = getUIControl();
+		final ProgressBar bar = getUIControl();
 		if (bar != null && !initialized) {
 			if (!maxInitialized) {
 				setMaximum(bar.getMaximum());
@@ -58,7 +58,7 @@ public class ProgressBarRidget extends AbstractTraverseRidget implements ITraver
 
 	@Override
 	protected void updateUIMaximum() {
-		ProgressBar control = getUIControl();
+		final ProgressBar control = getUIControl();
 		if (control != null) {
 			control.setMaximum(getMaximum());
 		}
@@ -67,7 +67,7 @@ public class ProgressBarRidget extends AbstractTraverseRidget implements ITraver
 
 	@Override
 	protected void updateUIMinimum() {
-		ProgressBar control = getUIControl();
+		final ProgressBar control = getUIControl();
 		if (control != null) {
 			control.setMinimum(getMinimum());
 		}
@@ -76,7 +76,7 @@ public class ProgressBarRidget extends AbstractTraverseRidget implements ITraver
 
 	@Override
 	protected void updateUIValue() {
-		ProgressBar control = getUIControl();
+		final ProgressBar control = getUIControl();
 		if (control != null) {
 			control.setSelection(getValue());
 		}
@@ -84,12 +84,12 @@ public class ProgressBarRidget extends AbstractTraverseRidget implements ITraver
 	}
 
 	@Override
-	protected void addSelectionListener(Control control, SelectionListener listener) {
+	protected void addSelectionListener(final Control control, final SelectionListener listener) {
 		// not needed here
 	}
 
 	@Override
-	protected void removeSelectionListener(Control control, SelectionListener listener) {
+	protected void removeSelectionListener(final Control control, final SelectionListener listener) {
 		// not needed here
 	}
 
@@ -139,13 +139,13 @@ public class ProgressBarRidget extends AbstractTraverseRidget implements ITraver
 	}
 
 	@Override
-	public void setMaximum(int maximum) {
+	public void setMaximum(final int maximum) {
 		super.setMaximum(maximum);
 		maxInitialized = true;
 	}
 
 	@Override
-	public void setMinimum(int minimum) {
+	public void setMinimum(final int minimum) {
 		super.setMinimum(minimum);
 		minInitialized = true;
 	}

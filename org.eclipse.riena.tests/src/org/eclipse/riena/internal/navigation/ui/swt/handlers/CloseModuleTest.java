@@ -126,8 +126,7 @@ public class CloseModuleTest extends RienaTestCase {
 	//////////////////
 
 	private void enableReplay() {
-		EasyMock
-				.replay(appNode, subApp1, subApp2, a1ModuleGroup1, a1ModuleGroup2, a2ModuleGroup1, a2Module1, a2Module2);
+		EasyMock.replay(appNode, subApp1, subApp2, a1ModuleGroup1, a1ModuleGroup2, a2ModuleGroup1, a2Module1, a2Module2);
 	}
 
 }

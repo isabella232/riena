@@ -67,9 +67,9 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	private List<ProgressInfoDataObject> pidos = new ArrayList<ProgressInfoDataObject>();
 	private final Map<ProcessState, ILabelFormatter> stateValueMappers = new HashMap<ProcessState, ILabelFormatter>();
 	// maps the pido´s key to a ControlHolder
-	private Map<Integer, ControlHolder> pido2controlHolder = new HashMap<Integer, ControlHolder>();
+	private final Map<Integer, ControlHolder> pido2controlHolder = new HashMap<Integer, ControlHolder>();
 	// cache for data objects
-	private Map<Integer, ProgressInfoDataObject> valueCache = new HashMap<Integer, ProgressInfoDataObject>();
+	private final Map<Integer, ProgressInfoDataObject> valueCache = new HashMap<Integer, ProgressInfoDataObject>();
 	private Label statusLabel;
 	private Label openLabel;
 	private Label noProcessActiveLable;
@@ -79,23 +79,23 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 *            the parent composite
 	 * @param style
 	 */
-	public StatuslineUIProcess(Composite parent, int style) {
+	public StatuslineUIProcess(final Composite parent, final int style) {
 		super(parent, style);
 		initStateMappers();
 		observeMoveAndResize(parent);
 	}
 
-	private void observeMoveAndResize(Composite parent) {
+	private void observeMoveAndResize(final Composite parent) {
 		//observe shell movement and resize
-		ControlAdapter listener = new ControlAdapter() {
+		final ControlAdapter listener = new ControlAdapter() {
 
 			@Override
-			public void controlMoved(ControlEvent e) {
+			public void controlMoved(final ControlEvent e) {
 				configureShell();
 			}
 
 			@Override
-			public void controlResized(ControlEvent e) {
+			public void controlResized(final ControlEvent e) {
 				configureShell();
 			}
 
@@ -103,11 +103,11 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		addControlListener(listener);
 		parent.getShell().addControlListener(listener);
 
-		Control grabCorner = locateGrabCorner();
+		final Control grabCorner = locateGrabCorner();
 		if (grabCorner != null) {
-			MouseTrackListener trackListener = new MouseTrackAdapter() {
+			final MouseTrackListener trackListener = new MouseTrackAdapter() {
 				@Override
-				public void mouseExit(MouseEvent e) {
+				public void mouseExit(final MouseEvent e) {
 					super.mouseExit(e);
 					configureShell();
 				}
@@ -123,8 +123,8 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	}
 
 	private Control locateGrabCorner() {
-		Shell shell = getShell();
-		for (Control child : shell.getChildren()) {
+		final Shell shell = getShell();
+		for (final Control child : shell.getChildren()) {
 			if ("grabcorner".equals(child.getData("sizeexecutor"))) { //$NON-NLS-1$ //$NON-NLS-2$
 				return child;
 			}
@@ -139,7 +139,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	private void initStateMappers() {
 		stateValueMappers.put(ProcessState.PENDING, new ILabelFormatter() {
 
-			public String formatValue(int value) {
+			public String formatValue(final int value) {
 				return "..."; //$NON-NLS-1$
 			}
 
@@ -147,14 +147,14 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 		stateValueMappers.put(ProcessState.RUNNING, new ILabelFormatter() {
 
-			public String formatValue(int value) {
+			public String formatValue(final int value) {
 				return value + " %"; //$NON-NLS-1$
 			}
 
 		});
 		stateValueMappers.put(ProcessState.FINISHED, new ILabelFormatter() {
 
-			public String formatValue(int value) {
+			public String formatValue(final int value) {
 				return Messages.StatuslineUIProcess_finished;
 			}
 
@@ -162,7 +162,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 		stateValueMappers.put(ProcessState.CANCELED, new ILabelFormatter() {
 
-			public String formatValue(int value) {
+			public String formatValue(final int value) {
 				return Messages.StatuslineUIProcess_canceled;
 			}
 
@@ -239,7 +239,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	class PopupController extends MouseAdapter {
 
 		@Override
-		public void mouseDown(MouseEvent e) {
+		public void mouseDown(final MouseEvent e) {
 			if (popup.getShell() == null) {
 				openPopup();
 				return;
@@ -267,15 +267,15 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 */
 	class PopupList extends ApplicationWindow {
 
-		public PopupList(Shell parentShell) {
+		public PopupList(final Shell parentShell) {
 			super(parentShell);
 		}
 
 		@Override
-		protected Control createContents(Composite parent) {
+		protected Control createContents(final Composite parent) {
 			parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
 			popupContent = parent;
-			FormLayout layout = new FormLayout();
+			final FormLayout layout = new FormLayout();
 			layout.marginLeft = 5;
 			layout.marginRight = 5;
 			layout.marginTop = 5;
@@ -285,10 +285,10 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		}
 
 		@Override
-		protected void configureShell(Shell shell) {
+		protected void configureShell(final Shell shell) {
 			super.configureShell(shell);
-			Rectangle rect = StatuslineUIProcess.this.getBounds();
-			Point display = toDisplay(new Point(rect.x, rect.y));
+			final Rectangle rect = StatuslineUIProcess.this.getBounds();
+			final Point display = toDisplay(new Point(rect.x, rect.y));
 			shell.setBounds(rect.x, display.y + 100, 100, 400);
 		}
 
@@ -305,7 +305,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	}
 
 	private void initLayout() {
-		FormLayout layout = new FormLayout();
+		final FormLayout layout = new FormLayout();
 		layout.marginRight = 5;
 		setLayout(layout);
 	}
@@ -313,7 +313,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	/**
 	 * updates uiprocess visualization directly in the StatusLine
 	 */
-	public void triggerBaseUpdate(ProgressInfoDataObject pido) {
+	public void triggerBaseUpdate(final ProgressInfoDataObject pido) {
 		if (pidoComplete(pido)) {
 			resetStatusLineProgressBar();
 			return;
@@ -322,7 +322,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		updateLabel(pido, statusLabel);
 	}
 
-	private boolean pidoComplete(ProgressInfoDataObject pido) {
+	private boolean pidoComplete(final ProgressInfoDataObject pido) {
 		return (pido.getValue() >= 100 && !pido.getProcessState().equals(ProcessState.PENDING))
 				|| ProcessState.CANCELED.equals(pido.getProcessState())
 				|| ProcessState.FINISHED.equals(pido.getProcessState());
@@ -342,7 +342,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * @param pido
 	 * @param progressBar
 	 */
-	private static void updateProgressBar(ProgressInfoDataObject pido, ProgressBar progressBar) {
+	private static void updateProgressBar(final ProgressInfoDataObject pido, final ProgressBar progressBar) {
 		if (!progressBar.isDisposed()) {
 			progressBar.setMaximum(100);
 			progressBar.setSelection(pido.getValue());
@@ -355,7 +355,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * @param pidos
 	 *            the progress info data objects
 	 */
-	public void triggerListUpdate(List<ProgressInfoDataObject> pidos) {
+	public void triggerListUpdate(final List<ProgressInfoDataObject> pidos) {
 		triggerListUpdate(pidos, false);
 	}
 
@@ -368,7 +368,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 *            determines if a list update should be forced even when there
 	 *            is no new data
 	 */
-	public void triggerListUpdate(List<ProgressInfoDataObject> pidos, boolean forceListUpdate) {
+	public void triggerListUpdate(final List<ProgressInfoDataObject> pidos, final boolean forceListUpdate) {
 		if (complete(pidos)) {
 			resetStatusLineProgressBar();
 		}
@@ -395,12 +395,12 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		}
 	}
 
-	private boolean complete(List<ProgressInfoDataObject> pidos) {
+	private boolean complete(final List<ProgressInfoDataObject> pidos) {
 		if (pidos.size() == 0) {
 			return true;
 		}
 
-		for (ProgressInfoDataObject pido : pidos) {
+		for (final ProgressInfoDataObject pido : pidos) {
 			if (!pidoComplete(pido)) {
 				return false;
 			}
@@ -409,7 +409,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	}
 
 	private boolean popVisible() {
-		Shell shell = popup.getShell();
+		final Shell shell = popup.getShell();
 		return shell != null && !shell.isDisposed();
 	}
 
@@ -419,18 +419,18 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	private void placeShell() {
 		// pack it		
 		popup.getShell().pack();
-		Point point = toDisplay(0, 0);
-		Rectangle popupBounds = popup.getShell().getBounds();
+		final Point point = toDisplay(0, 0);
+		final Rectangle popupBounds = popup.getShell().getBounds();
 		popup.getShell().setBounds(point.x + getBounds().width - popupBounds.width, point.y - popupBounds.height - 4,
 				popupBounds.width, popupBounds.height);
 	}
 
 	private void updateListProgressBars() {
 		// update ProgressBars
-		for (ProgressInfoDataObject pido : pidos) {
+		for (final ProgressInfoDataObject pido : pidos) {
 			if (freshValue(pido)) {
 				//update existing bar
-				ControlHolder holder = pido2controlHolder.get(pido.getKey());
+				final ControlHolder holder = pido2controlHolder.get(pido.getKey());
 				if (holder != null) {
 					updateProgressBar(pido, holder.progressBar);
 					updateLabel(pido, holder.label);
@@ -449,9 +449,9 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * @param pido
 	 * @param label
 	 */
-	private void updateLabel(ProgressInfoDataObject pido, Label label) {
+	private void updateLabel(final ProgressInfoDataObject pido, final Label label) {
 		if ((label != null) && (!label.isDisposed())) {
-			String strV = pido.getProcessName() + " " //$NON-NLS-1$
+			final String strV = pido.getProcessName() + " " //$NON-NLS-1$
 					+ stateValueMappers.get(pido.getProcessState()).formatValue(pido.getValue());
 			label.setText(strV);
 		}
@@ -473,7 +473,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * 
 	 * @param pido
 	 */
-	private void cacheValue(ProgressInfoDataObject pido) {
+	private void cacheValue(final ProgressInfoDataObject pido) {
 		valueCache.put(pido.getKey(), pido);
 	}
 
@@ -483,8 +483,8 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * @param pido
 	 * @return true if the {@link ProgressInfoDataObject} has changed
 	 */
-	private boolean freshValue(ProgressInfoDataObject pido) {
-		ProgressInfoDataObject cached = valueCache.get(pido.getKey());
+	private boolean freshValue(final ProgressInfoDataObject pido) {
+		final ProgressInfoDataObject cached = valueCache.get(pido.getKey());
 		return cached == null || cached.compareTo(pido) != 0;
 	}
 
@@ -504,13 +504,13 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	/**
 	 * creates a list of {@link UIProcess} infos in the popup
 	 */
-	private void createProcessList(List<ProgressInfoDataObject> pidos) {
+	private void createProcessList(final List<ProgressInfoDataObject> pidos) {
 		checkInActiveProcesses(pidos);
 		Control lastControl = null;
 		ProgressBar bar;
 		Label label;
-		Set<Integer> keys = new HashSet<Integer>();
-		for (ProgressInfoDataObject pido : pidos) {
+		final Set<Integer> keys = new HashSet<Integer>();
+		for (final ProgressInfoDataObject pido : pidos) {
 			if (!pidoComplete(pido)) {
 				keys.add(pido.getKey());
 				if (noProcessActiveLable != null) {
@@ -552,7 +552,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 	}
 
-	private void checkInActiveProcesses(List<ProgressInfoDataObject> pidos) {
+	private void checkInActiveProcesses(final List<ProgressInfoDataObject> pidos) {
 		if (complete(pidos)) {
 			cleanInactiveProcessPresentation();
 		} else {
@@ -563,7 +563,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	}
 
 	private void cleanInactiveProcessPresentation() {
-		FormData formData = new FormData();
+		final FormData formData = new FormData();
 		formData.top = new FormAttachment(5, 0);
 		formData.height = 14;
 		formData.width = 160;
@@ -583,7 +583,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * @param pido
 	 * @return the {@link ControlHolder}
 	 */
-	private ControlHolder createControlHolder(ProgressInfoDataObject pido) {
+	private ControlHolder createControlHolder(final ProgressInfoDataObject pido) {
 		ControlHolder holder;
 		holder = new ControlHolder();
 		holder.progressBar = new ProgressBar(popupContent, SWT.NONE);
@@ -603,15 +603,15 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 *            the {@link Set} of keys defining the amount of active
 	 *            {@link ProgressInfoDataObject} instances
 	 */
-	private void clearZombies(Set<Integer> activeKeys) {
+	private void clearZombies(final Set<Integer> activeKeys) {
 
 		//clear all that are no more needed
-		Iterator<Integer> registeredKeys = pido2controlHolder.keySet().iterator();
+		final Iterator<Integer> registeredKeys = pido2controlHolder.keySet().iterator();
 		while (registeredKeys.hasNext()) {
-			Integer key = registeredKeys.next();
+			final Integer key = registeredKeys.next();
 			if (!activeKeys.contains(key)) {
 				// dispose the ProgressBar
-				ControlHolder holder = pido2controlHolder.get(key);
+				final ControlHolder holder = pido2controlHolder.get(key);
 				holder.progressBar.dispose();
 				holder.label.dispose();
 				// remove entry

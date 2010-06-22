@@ -42,52 +42,52 @@ public final class SnippetDateTimeRidget001 {
 		// "utility class"
 	}
 
-	public static void main(String[] args) {
-		Display display = new Display();
+	public static void main(final String[] args) {
+		final Display display = new Display();
 		new DefaultRealm();
-		Shell shell = UIControlsFactory.createShell(display);
+		final Shell shell = UIControlsFactory.createShell(display);
 		shell.setLayout(new GridLayout(2, false));
 
 		final TypedBean<Date> value = new TypedBean<Date>(new Date());
 
-		GridDataFactory fill = GridDataFactory.fillDefaults();
+		final GridDataFactory fill = GridDataFactory.fillDefaults();
 
 		UIControlsFactory.createLabel(shell, "Value:"); //$NON-NLS-1$
-		Text txtValue = UIControlsFactory.createText(shell, SWT.READ_ONLY);
+		final Text txtValue = UIControlsFactory.createText(shell, SWT.READ_ONLY);
 		txtValue.setEnabled(false);
 		fill.applyTo(txtValue);
 
 		UIControlsFactory.createLabel(shell, "Date:"); //$NON-NLS-1$
-		DateTime dtDate = UIControlsFactory.createDate(shell, SWT.MEDIUM);
+		final DateTime dtDate = UIControlsFactory.createDate(shell, SWT.MEDIUM);
 		fill.applyTo(dtDate);
 		final IDateTimeRidget dtDateRidget = (IDateTimeRidget) SwtRidgetFactory.createRidget(dtDate);
 		dtDateRidget.bindToModel(value, TypedBean.PROP_VALUE);
 		dtDateRidget.updateFromModel();
 
 		UIControlsFactory.createLabel(shell, "Time:"); //$NON-NLS-1$
-		DateTime dtTime = UIControlsFactory.createTime(shell, SWT.MEDIUM);
+		final DateTime dtTime = UIControlsFactory.createTime(shell, SWT.MEDIUM);
 		fill.applyTo(dtTime);
 		final IDateTimeRidget dtTimeRidget = (IDateTimeRidget) SwtRidgetFactory.createRidget(dtTime);
 		dtTimeRidget.bindToModel(value, TypedBean.PROP_VALUE);
 		dtTimeRidget.updateFromModel();
 
-		Button btnSync = UIControlsFactory.createButton(shell);
+		final Button btnSync = UIControlsFactory.createButton(shell);
 		btnSync.setText("Sync"); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().span(2, 1).applyTo(btnSync);
-		IActionRidget btnSyncRidget = (IActionRidget) SwtRidgetFactory.createRidget(btnSync);
+		final IActionRidget btnSyncRidget = (IActionRidget) SwtRidgetFactory.createRidget(btnSync);
 		btnSyncRidget.addListener(new IActionListener() {
 			private long days = 0;
 
 			public void callback() {
 				days++;
-				long millis = System.currentTimeMillis() + (days * 24 * 3600 * 1000);
+				final long millis = System.currentTimeMillis() + (days * 24 * 3600 * 1000);
 				value.setValue(new Date(millis));
 				dtDateRidget.updateFromModel();
 				dtTimeRidget.updateFromModel();
 			}
 		});
 
-		DataBindingContext dbc = new DataBindingContext();
+		final DataBindingContext dbc = new DataBindingContext();
 		dbc.bindValue(WidgetProperties.text().observe(txtValue), BeansObservables.observeValue(value,
 				TypedBean.PROP_VALUE), null, new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
 

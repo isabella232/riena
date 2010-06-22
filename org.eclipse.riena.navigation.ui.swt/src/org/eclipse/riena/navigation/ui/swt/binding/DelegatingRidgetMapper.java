@@ -25,16 +25,16 @@ import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
  */
 public class DelegatingRidgetMapper implements IControlRidgetMapper<Object> {
 
-	private SwtControlRidgetMapper delegate;
+	private final SwtControlRidgetMapper delegate;
 
-	private Map<Class<? extends Object>, Class<? extends IRidget>> mappings;
+	private final Map<Class<? extends Object>, Class<? extends IRidget>> mappings;
 
-	public DelegatingRidgetMapper(SwtControlRidgetMapper delegate) {
+	public DelegatingRidgetMapper(final SwtControlRidgetMapper delegate) {
 		this.delegate = delegate;
 		this.mappings = new HashMap<Class<? extends Object>, Class<? extends IRidget>>();
 	}
 
-	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
+	public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz) {
 		if (Widget.class.isAssignableFrom(controlClazz)) {
 			delegate.addMapping(controlClazz, ridgetClazz);
 			return;
@@ -43,8 +43,8 @@ public class DelegatingRidgetMapper implements IControlRidgetMapper<Object> {
 
 	}
 
-	public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz,
-			IMappingCondition condition) {
+	public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz,
+			final IMappingCondition condition) {
 		if (Widget.class.isAssignableFrom(controlClazz)) {
 			delegate.addMapping(controlClazz, ridgetClazz, condition);
 			return;
@@ -52,7 +52,7 @@ public class DelegatingRidgetMapper implements IControlRidgetMapper<Object> {
 		mappings.put(controlClazz, ridgetClazz); // do we need condition here?
 	}
 
-	public Class<? extends IRidget> getRidgetClass(Class<? extends Object> controlClazz) {
+	public Class<? extends IRidget> getRidgetClass(final Class<? extends Object> controlClazz) {
 		if (Widget.class.isAssignableFrom(controlClazz)) {
 			return delegate.getRidgetClass(controlClazz);
 		}
@@ -60,7 +60,7 @@ public class DelegatingRidgetMapper implements IControlRidgetMapper<Object> {
 
 	}
 
-	public Class<? extends IRidget> getRidgetClass(Object control) {
+	public Class<? extends IRidget> getRidgetClass(final Object control) {
 		if (Widget.class.isAssignableFrom(control.getClass())) {
 			return delegate.getRidgetClass(control);
 		}

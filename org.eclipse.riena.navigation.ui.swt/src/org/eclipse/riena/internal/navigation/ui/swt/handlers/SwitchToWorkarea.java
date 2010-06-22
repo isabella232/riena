@@ -30,14 +30,14 @@ import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
  */
 public class SwitchToWorkarea extends AbstractHandler {
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		String viewId = getViewId(getActiveNode());
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
+		final String viewId = getViewId(getActiveNode());
 		if (viewId != null) {
-			IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
-			IWorkbenchPage page = window.getActivePage();
-			for (IViewReference viewRef : page.getViewReferences()) {
+			final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
+			final IWorkbenchPage page = window.getActivePage();
+			for (final IViewReference viewRef : page.getViewReferences()) {
 				if (viewId.equals(getFullId(viewRef))) {
-					IViewPart view = viewRef.getView(false);
+					final IViewPart view = viewRef.getView(false);
 					if (view != null) {
 						view.setFocus();
 					}
@@ -52,11 +52,11 @@ public class SwitchToWorkarea extends AbstractHandler {
 	//////////////////
 
 	private INavigationNode<?> getActiveNode() {
-		IApplicationNode appNode = ApplicationNodeManager.getApplicationNode();
+		final IApplicationNode appNode = ApplicationNodeManager.getApplicationNode();
 		return appNode.getNavigationProcessor().getSelectedNode();
 	}
 
-	private String getFullId(IViewReference viewRef) {
+	private String getFullId(final IViewReference viewRef) {
 		String result = viewRef.getId();
 		if (viewRef.getSecondaryId() != null) {
 			result = result + ":" + viewRef.getSecondaryId(); //$NON-NLS-1$
@@ -64,10 +64,10 @@ public class SwitchToWorkarea extends AbstractHandler {
 		return result;
 	}
 
-	private String getViewId(INavigationNode<?> node) {
+	private String getViewId(final INavigationNode<?> node) {
 		String result = null;
 		if (node != null) {
-			SwtViewId viewId = SwtViewProvider.getInstance().getSwtViewId(node);
+			final SwtViewId viewId = SwtViewProvider.getInstance().getSwtViewId(node);
 			if (viewId != null) {
 				result = viewId.getCompoundId();
 			}

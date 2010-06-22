@@ -30,23 +30,23 @@ public class ActionRidget extends AbstractActionRidget {
 	}
 
 	@Override
-	protected void setUIControlText(String text) {
+	protected void setUIControlText(final String text) {
 		getUIControl().setText(text);
 	}
 
 	@Override
-	protected void setUIControlImage(Image image) {
+	protected void setUIControlImage(final Image image) {
 		getUIControl().setImage(image);
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		assertType(uiControl, Button.class);
 	}
 
 	@Override
 	protected void bindUIControl() {
-		Button control = getUIControl();
+		final Button control = getUIControl();
 		if (control != null) {
 			button = control;
 			initText();

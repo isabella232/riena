@@ -52,15 +52,15 @@ public class MenuCoolBarCompositeTest extends TestCase {
 	 */
 	public void testMenuCoolBarComposite() {
 
-		MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE);
-		ToolBar toolBar = ReflectionUtils.getHidden(composite, "toolBar");
+		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE);
+		final ToolBar toolBar = ReflectionUtils.getHidden(composite, "toolBar");
 		assertNotNull(toolBar);
-		Listener[] listeners = toolBar.getListeners(SWT.MouseMove);
+		final Listener[] listeners = toolBar.getListeners(SWT.MouseMove);
 		assertEquals(1, listeners.length);
 
-		CoolBar coolBar = (CoolBar) toolBar.getParent();
+		final CoolBar coolBar = (CoolBar) toolBar.getParent();
 		assertEquals(1, coolBar.getItemCount());
-		CoolItem item = coolBar.getItem(0);
+		final CoolItem item = coolBar.getItem(0);
 		assertSame(toolBar, item.getControl());
 
 	}
@@ -70,11 +70,11 @@ public class MenuCoolBarCompositeTest extends TestCase {
 	 */
 	public void testCreateAndAddMenu() {
 
-		MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE);
+		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE);
 
-		MenuManager manager = new MenuManager("TestMenu", "0815");
-		ToolItem topItem = composite.createAndAddMenu(manager);
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final MenuManager manager = new MenuManager("TestMenu", "0815");
+		final ToolItem topItem = composite.createAndAddMenu(manager);
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		assertEquals("0815", locator.locateBindingProperty(topItem));
 		assertEquals("TestMenu", topItem.getText());
 
@@ -85,11 +85,11 @@ public class MenuCoolBarCompositeTest extends TestCase {
 	 */
 	public void testGetTopLevelItems() {
 
-		MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE);
+		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE);
 
-		MenuManager manager = new MenuManager("TestMenu", "0815");
-		ToolItem topItem = composite.createAndAddMenu(manager);
-		List<ToolItem> items = composite.getTopLevelItems();
+		final MenuManager manager = new MenuManager("TestMenu", "0815");
+		final ToolItem topItem = composite.createAndAddMenu(manager);
+		final List<ToolItem> items = composite.getTopLevelItems();
 		assertEquals(1, items.size());
 		assertTrue(items.contains(topItem));
 

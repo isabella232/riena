@@ -35,26 +35,26 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class SnippetComboRidget004 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			GridLayoutFactory.swtDefaults().numColumns(2).spacing(10, 5).applyTo(shell);
 			shell.setText(SnippetComboRidget004.class.getSimpleName());
 
 			UIControlsFactory.createLabel(shell, "ComboRidget:"); //$NON-NLS-1$
-			Combo combo = UIControlsFactory.createCombo(shell);
+			final Combo combo = UIControlsFactory.createCombo(shell);
 
 			UIControlsFactory.createLabel(shell, "Selection:"); //$NON-NLS-1$
-			Label label = UIControlsFactory.createLabel(shell, "Monday"); //$NON-NLS-1$
+			final Label label = UIControlsFactory.createLabel(shell, "Monday"); //$NON-NLS-1$
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(label);
 
-			Button buttonDel = new Button(shell, SWT.PUSH);
+			final Button buttonDel = new Button(shell, SWT.PUSH);
 			buttonDel.setText("Delete selection - shows error"); //$NON-NLS-1$
 			GridDataFactory.fillDefaults().span(2, 1).applyTo(buttonDel);
 
-			Button buttonSel = new Button(shell, SWT.PUSH);
+			final Button buttonSel = new Button(shell, SWT.PUSH);
 			buttonSel.setText("Select element - hides error"); //$NON-NLS-1$
 			GridDataFactory.fillDefaults().span(2, 1).applyTo(buttonSel);
 
@@ -67,10 +67,10 @@ public class SnippetComboRidget004 {
 
 			comboRidget.setMarkSelectionMismatch(true);
 
-			IActionRidget actionDel = (IActionRidget) SwtRidgetFactory.createRidget(buttonDel);
+			final IActionRidget actionDel = (IActionRidget) SwtRidgetFactory.createRidget(buttonDel);
 			actionDel.addListener(new IActionListener() {
 				public void callback() {
-					Object sel = comboRidget.getSelection();
+					final Object sel = comboRidget.getSelection();
 					if (sel != null) {
 						System.out.println(String.format("Removing '%s' from model", sel)); //$NON-NLS-1$
 						input.getValues().remove(sel);
@@ -79,7 +79,7 @@ public class SnippetComboRidget004 {
 				}
 			});
 
-			IActionRidget actionSel = (IActionRidget) SwtRidgetFactory.createRidget(buttonSel);
+			final IActionRidget actionSel = (IActionRidget) SwtRidgetFactory.createRidget(buttonSel);
 			actionSel.addListener(new IActionListener() {
 				public void callback() {
 					if (!input.getValues().isEmpty()) {
@@ -101,8 +101,9 @@ public class SnippetComboRidget004 {
 	}
 
 	private static ListBean createInput() {
-		List<String> values = new ArrayList<String>();
-		for (String day : new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+		final List<String> values = new ArrayList<String>();
+		for (final String day : new String[] {
+				"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 			values.add(day);
 		}
 		return new ListBean(values);

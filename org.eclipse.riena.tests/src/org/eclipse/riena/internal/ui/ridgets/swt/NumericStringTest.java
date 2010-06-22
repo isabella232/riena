@@ -32,7 +32,7 @@ public class NumericStringTest extends RienaTestCase {
 		try {
 			new NumericString(null, false);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 	}
@@ -559,11 +559,11 @@ public class NumericStringTest extends RienaTestCase {
 	// helping methods
 	//////////////////
 
-	private void assertEqualsNS(String value, NumericString ns) {
+	private void assertEqualsNS(final String value, final NumericString ns) {
 		assertEquals(TestUtils.getLocalizedNumber(value), ns.toString());
 	}
 
-	private NumericString createNumericString(String value, boolean withGrouping) {
+	private NumericString createNumericString(final String value, final boolean withGrouping) {
 		return new NumericString(TestUtils.getLocalizedNumber(value), withGrouping);
 	}
 }

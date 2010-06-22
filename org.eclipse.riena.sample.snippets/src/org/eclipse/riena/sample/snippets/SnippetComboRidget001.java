@@ -27,22 +27,22 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class SnippetComboRidget001 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setLayout(new GridLayout(2, false));
 			shell.setText(SnippetComboRidget001.class.getSimpleName());
 
 			UIControlsFactory.createLabel(shell, "ComboRidget:"); //$NON-NLS-1$
-			Combo combo = UIControlsFactory.createCombo(shell);
+			final Combo combo = UIControlsFactory.createCombo(shell);
 
 			UIControlsFactory.createLabel(shell, "Selection:"); //$NON-NLS-1$
-			Label label = UIControlsFactory.createLabel(shell, "Monday"); //$NON-NLS-1$
+			final Label label = UIControlsFactory.createLabel(shell, "Monday"); //$NON-NLS-1$
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(label);
 
-			IComboRidget comboRidget = (IComboRidget) SwtRidgetFactory.createRidget(combo);
+			final IComboRidget comboRidget = (IComboRidget) SwtRidgetFactory.createRidget(combo);
 			comboRidget.bindToModel(createInput(), ListBean.PROPERTY_VALUES, String.class, null, label, "text"); //$NON-NLS-1$
 			comboRidget.updateFromModel();
 

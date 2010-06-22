@@ -30,11 +30,11 @@ public class SimpleStoreTest extends RienaTestCase {
 	private static final String CLIENT_INFO = "unit-test";
 
 	public void testPutCollectibleAndGetCollectible() throws CoreException {
-		SimpleStore store = new SimpleStore();
-		File file = new File("file");
-		Collectible<String> collectible = new Collectible<String>(CLIENT_INFO, CATEGORY, PAYLOAD);
+		final SimpleStore store = new SimpleStore();
+		final File file = new File("file");
+		final Collectible<String> collectible = new Collectible<String>(CLIENT_INFO, CATEGORY, PAYLOAD);
 		ReflectionUtils.invokeHidden(store, "putCollectible", collectible, file);
-		Collectible<String> outCollectible = ReflectionUtils.invokeHidden(store, "getCollectible", file);
+		final Collectible<String> outCollectible = ReflectionUtils.invokeHidden(store, "getCollectible", file);
 		assertEquals(CLIENT_INFO, outCollectible.getClientInfo());
 		assertEquals(CATEGORY, outCollectible.getCategory());
 		assertEquals(PAYLOAD, outCollectible.getPayload());

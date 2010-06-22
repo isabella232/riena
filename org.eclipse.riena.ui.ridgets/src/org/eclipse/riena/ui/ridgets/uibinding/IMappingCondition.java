@@ -29,8 +29,8 @@ public interface IMappingCondition {
 	 * @param widget
 	 *            widget to check
 	 * 
-	 * @return {@code true} if the widget string matches; otherwise {@code
-	 *         false}
+	 * @return {@code true} if the widget string matches; otherwise
+	 *         {@code false}
 	 */
 	boolean isMatch(Object widget);
 }

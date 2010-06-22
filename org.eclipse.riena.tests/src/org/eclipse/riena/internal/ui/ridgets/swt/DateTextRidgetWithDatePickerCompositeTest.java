@@ -33,7 +33,7 @@ public class DateTextRidgetWithDatePickerCompositeTest extends AbstractSWTRidget
 
 	@Override
 	protected IRidget createRidget() {
-		DateTextRidget result = new DateTextRidget();
+		final DateTextRidget result = new DateTextRidget();
 		result.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		return result;
 	}
@@ -44,8 +44,8 @@ public class DateTextRidgetWithDatePickerCompositeTest extends AbstractSWTRidget
 	}
 
 	@Override
-	protected Control createWidget(Composite parent) {
-		Control result = new DatePickerComposite(getShell(), SWT.SINGLE | SWT.RIGHT);
+	protected Control createWidget(final Composite parent) {
+		final Control result = new DatePickerComposite(getShell(), SWT.SINGLE | SWT.RIGHT);
 		result.setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DATE);
 		result.setLayoutData(new RowData(100, SWT.DEFAULT));
 		return result;
@@ -64,11 +64,11 @@ public class DateTextRidgetWithDatePickerCompositeTest extends AbstractSWTRidget
 	 * DatePickerComposite instance.
 	 */
 	public void testUIControlVsTextWidgetDistinction() {
-		DateTextRidget ridget = getRidget();
+		final DateTextRidget ridget = getRidget();
 
 		assertTrue(ridget.getUIControl() instanceof DatePickerComposite);
 
-		Object textWidget = ReflectionUtils.invokeHidden(ridget, "getTextWidget", (Object[]) null);
+		final Object textWidget = ReflectionUtils.invokeHidden(ridget, "getTextWidget", (Object[]) null);
 
 		assertTrue(textWidget instanceof Text);
 	}
@@ -79,8 +79,8 @@ public class DateTextRidgetWithDatePickerCompositeTest extends AbstractSWTRidget
 	 * the DatePickerComposite is hidden but the whole composite.)
 	 */
 	public void testVisibility() {
-		DateTextRidget ridget = getRidget();
-		Text text = (Text) ReflectionUtils.invokeHidden(ridget, "getTextWidget", (Object[]) null);
+		final DateTextRidget ridget = getRidget();
+		final Text text = (Text) ReflectionUtils.invokeHidden(ridget, "getTextWidget", (Object[]) null);
 
 		assertTrue(text.isVisible());
 

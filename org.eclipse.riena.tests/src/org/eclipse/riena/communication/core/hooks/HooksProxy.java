@@ -22,7 +22,7 @@ public class HooksProxy extends AbstractHooksProxy {
 	/**
 	 * @param proxiedInstance
 	 */
-	public HooksProxy(Object proxiedInstance) {
+	public HooksProxy(final Object proxiedInstance) {
 		super(proxiedInstance);
 	}
 
@@ -30,7 +30,7 @@ public class HooksProxy extends AbstractHooksProxy {
 	 * @param proxiedInstance
 	 * @param subject
 	 */
-	public HooksProxy(Object proxiedInstance, Subject subject) {
+	public HooksProxy(final Object proxiedInstance, final Subject subject) {
 		super(proxiedInstance);
 		this.subject = subject;
 	}

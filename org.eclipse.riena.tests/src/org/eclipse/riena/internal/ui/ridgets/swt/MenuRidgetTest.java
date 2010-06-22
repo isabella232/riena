@@ -49,22 +49,22 @@ public class MenuRidgetTest extends RienaTestCase {
 	 */
 	public void testCheckUIControl() {
 
-		MyMenuRidget ridget = new MyMenuRidget();
+		final MyMenuRidget ridget = new MyMenuRidget();
 		ridget.checkUIControl(null);
 		ok("no BindingException expected");
 
-		Menu menu = new Menu(shell);
+		final Menu menu = new Menu(shell);
 		MenuItem menuItem = new MenuItem(menu, SWT.NONE);
 		try {
 			ridget.checkUIControl(menuItem);
 			fail("BindingException was expected");
-		} catch (BindingException e) {
+		} catch (final BindingException e) {
 			ok("BindingException was expected");
 		}
 		menuItem = new MenuItem(menu, SWT.CASCADE);
 		try {
 			ridget.checkUIControl(menuItem);
-		} catch (BindingException e) {
+		} catch (final BindingException e) {
 			fail("No BindingException was expected");
 		}
 
@@ -75,14 +75,14 @@ public class MenuRidgetTest extends RienaTestCase {
 	 */
 	public void testGetChild() {
 
-		MenuRidget ridget = new MenuRidget();
+		final MenuRidget ridget = new MenuRidget();
 		MenuItemRidget retRidget = ReflectionUtils.invokeHidden(ridget, "getChild", "4711");
 		assertNull(retRidget);
 
-		Menu menu = new Menu(shell);
-		MenuItem menuItem1 = new MenuItem(menu, SWT.NONE);
+		final Menu menu = new Menu(shell);
+		final MenuItem menuItem1 = new MenuItem(menu, SWT.NONE);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(menuItem1, "4711");
-		MenuItemRidget itemRidget = new MenuItemRidget();
+		final MenuItemRidget itemRidget = new MenuItemRidget();
 		itemRidget.setUIControl(menuItem1);
 		ridget.addChild(itemRidget);
 		retRidget = ReflectionUtils.invokeHidden(ridget, "getChild", "4711");
@@ -95,16 +95,16 @@ public class MenuRidgetTest extends RienaTestCase {
 	 */
 	public void testRemoveChild() {
 
-		MenuRidget ridget = new MenuRidget();
+		final MenuRidget ridget = new MenuRidget();
 
-		Menu menu = new Menu(shell);
-		MenuItem menuItem1 = new MenuItem(menu, SWT.NONE);
+		final Menu menu = new Menu(shell);
+		final MenuItem menuItem1 = new MenuItem(menu, SWT.NONE);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(menuItem1, "4711");
-		MenuItemRidget itemRidget = new MenuItemRidget();
+		final MenuItemRidget itemRidget = new MenuItemRidget();
 		itemRidget.setUIControl(menuItem1);
 		ridget.addChild(itemRidget);
 
-		MenuItem menuItem2 = new MenuItem(menu, SWT.NONE);
+		final MenuItem menuItem2 = new MenuItem(menu, SWT.NONE);
 		ReflectionUtils.invokeHidden(ridget, "removeChild", menuItem2);
 		assertEquals(1, ridget.getChildren().size());
 
@@ -120,7 +120,7 @@ public class MenuRidgetTest extends RienaTestCase {
 	private static class MyMenuRidget extends MenuRidget {
 
 		@Override
-		public void checkUIControl(Object uiControl) {
+		public void checkUIControl(final Object uiControl) {
 			super.checkUIControl(uiControl);
 		}
 

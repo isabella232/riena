@@ -23,7 +23,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	private static final String PERSPECTIVE_ID = "org.eclipse.riena.sample.app.client.rcpmail.perspective"; //$NON-NLS-1$
 
 	@Override
-	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
+	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
 		return new ApplicationWorkbenchWindowAdvisor(configurer);
 	}
 

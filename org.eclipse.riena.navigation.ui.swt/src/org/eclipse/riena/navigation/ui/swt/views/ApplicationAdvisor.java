@@ -45,15 +45,15 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 	 * @noreference This constructor is not intended to be referenced by
 	 *              clients.
 	 */
-	public ApplicationAdvisor(ApplicationController controller, IAdvisorHelper factory) {
+	public ApplicationAdvisor(final ApplicationController controller, final IAdvisorHelper factory) {
 		this.controller = controller;
 		this.advisorHelper = factory;
 	}
 
 	@Override
-	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
+	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
 		configurer.setPresentationFactory(new TitlelessStackPresentationFactory());
-		WorkbenchWindowAdvisor workbenchWindowAdvisor = new ApplicationViewAdvisor(configurer, controller,
+		final WorkbenchWindowAdvisor workbenchWindowAdvisor = new ApplicationViewAdvisor(configurer, controller,
 				advisorHelper);
 		Wire.instance(workbenchWindowAdvisor).andStart(Activator.getDefault().getContext());
 		return workbenchWindowAdvisor;
@@ -68,7 +68,7 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 	public synchronized AbstractStatusHandler getWorkbenchErrorHandler() {
 		return new AbstractStatusHandler() {
 			@Override
-			public void handle(StatusAdapter statusAdapter, int style) {
+			public void handle(final StatusAdapter statusAdapter, final int style) {
 				Service.get(IExceptionHandlerManager.class).handleException(statusAdapter.getStatus().getException(),
 						statusAdapter.getStatus().getMessage());
 			}
@@ -87,7 +87,7 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 	 */
 	@Override
 	public boolean preShutdown() {
-		boolean result = super.preShutdown();
+		final boolean result = super.preShutdown();
 		if (result) {
 			controller.getNavigationNode().dispose();
 		}
@@ -99,17 +99,18 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 	//////////////////
 
 	private void installDefaultBinding() {
-		BindingServiceFacade facade = BindingServiceFacade.getDefault();
+		final BindingServiceFacade facade = BindingServiceFacade.getDefault();
 
-		IBindingService bindingService = (IBindingService) PlatformUI.getWorkbench().getService(IBindingService.class);
-		String schemeId = advisorHelper.getKeyScheme();
-		Scheme rienaScheme = facade.getScheme(bindingService, schemeId);
+		final IBindingService bindingService = (IBindingService) PlatformUI.getWorkbench().getService(
+				IBindingService.class);
+		final String schemeId = advisorHelper.getKeyScheme();
+		final Scheme rienaScheme = facade.getScheme(bindingService, schemeId);
 		try {
 			// saving will activate (!) the scheme:
-			Binding[] bindings = facade.getBindings(bindingService);
+			final Binding[] bindings = facade.getBindings(bindingService);
 			facade.savePreferences(bindingService, rienaScheme, bindings);
-		} catch (IOException ioe) {
-			Logger logger = Log4r.getLogger(Activator.getDefault(), this.getClass());
+		} catch (final IOException ioe) {
+			final Logger logger = Log4r.getLogger(Activator.getDefault(), this.getClass());
 			logger.log(LogService.LOG_ERROR, "Could not activate scheme: " + schemeId, ioe); //$NON-NLS-1$
 		}
 	}

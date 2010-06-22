@@ -21,21 +21,21 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 public class RangeTest extends TestCase {
 
 	public void testEmptyRange() {
-		Range range = new Range("");
+		final Range range = new Range("");
 		assertFalse(range.matches(1));
 		assertFalse(range.matches(2));
 		assertFalse(range.matches(3));
 	}
 
 	public void testSingleValue() {
-		Range range = new Range("2");
+		final Range range = new Range("2");
 		assertFalse(range.matches(1));
 		assertTrue(range.matches(2));
 		assertFalse(range.matches(3));
 	}
 
 	public void testDoubleValue() {
-		Range range = new Range("2, 9");
+		final Range range = new Range("2, 9");
 		assertFalse(range.matches(1));
 		assertTrue(range.matches(2));
 		assertFalse(range.matches(3));
@@ -43,14 +43,14 @@ public class RangeTest extends TestCase {
 	}
 
 	public void testSingleRangeInterval() {
-		Range range = new Range("1..3");
+		final Range range = new Range("1..3");
 		assertTrue(range.matches(1));
 		assertTrue(range.matches(2));
 		assertTrue(range.matches(3));
 	}
 
 	public void testRangeIntervalPlusValue() {
-		Range range = new Range("1..3,5");
+		final Range range = new Range("1..3,5");
 		assertTrue(range.matches(1));
 		assertTrue(range.matches(2));
 		assertTrue(range.matches(3));
@@ -59,7 +59,7 @@ public class RangeTest extends TestCase {
 	}
 
 	public void testValuePlusRangeIntervalPlusValue() {
-		Range range = new Range("-2, 1..3 , 5");
+		final Range range = new Range("-2, 1..3 , 5");
 		assertTrue(range.matches(-2));
 		assertFalse(range.matches(-1));
 		assertFalse(range.matches(0));
@@ -71,7 +71,7 @@ public class RangeTest extends TestCase {
 	}
 
 	public void testSingleRangeOpenOpenPlusRangeCloseClose() {
-		Range range = new Range("-2..0, 10..12");
+		final Range range = new Range("-2..0, 10..12");
 		assertFalse(range.matches(-3));
 		assertTrue(range.matches(-2));
 		assertTrue(range.matches(-1));
@@ -88,7 +88,7 @@ public class RangeTest extends TestCase {
 		try {
 			new Range("n");
 			fail();
-		} catch (IllegalArgumentException t) {
+		} catch (final IllegalArgumentException t) {
 			System.out.println("Expected error: " + t);
 		}
 	}
@@ -97,7 +97,7 @@ public class RangeTest extends TestCase {
 		try {
 			new Range("1..");
 			fail();
-		} catch (IllegalArgumentException t) {
+		} catch (final IllegalArgumentException t) {
 			System.out.println("Expected error: " + t);
 		}
 	}

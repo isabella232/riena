@@ -39,35 +39,35 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class SnippetDetachedView001 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 
 		try {
-			Shell shell = new Shell();
+			final Shell shell = new Shell();
 			shell.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 			GridLayoutFactory.fillDefaults().numColumns(3).margins(10, 10).spacing(20, 10).applyTo(shell);
 
-			Button buttonShow = UIControlsFactory.createButton(shell, "Show", "buttonShow"); //$NON-NLS-1$ //$NON-NLS-2$
-			Button buttonHide = UIControlsFactory.createButton(shell, "Hide", "buttonHide"); //$NON-NLS-1$ //$NON-NLS-2$
-			Button buttonClose = UIControlsFactory.createButton(shell, "Close", "buttonClose"); //$NON-NLS-1$ //$NON-NLS-2$
+			final Button buttonShow = UIControlsFactory.createButton(shell, "Show", "buttonShow"); //$NON-NLS-1$ //$NON-NLS-2$
+			final Button buttonHide = UIControlsFactory.createButton(shell, "Hide", "buttonHide"); //$NON-NLS-1$ //$NON-NLS-2$
+			final Button buttonClose = UIControlsFactory.createButton(shell, "Close", "buttonClose"); //$NON-NLS-1$ //$NON-NLS-2$
 
 			final DetachedViewsManager dvManager = new DetachedViewsManager(shell);
 
-			IActionRidget ridgetShow = (IActionRidget) SwtRidgetFactory.createRidget(buttonShow);
+			final IActionRidget ridgetShow = (IActionRidget) SwtRidgetFactory.createRidget(buttonShow);
 			ridgetShow.addListener(new IActionListener() {
 				public void callback() {
 					dvManager.showView("myView", SampleView.class, SWT.RIGHT); //$NON-NLS-1$
 				}
 			});
 
-			IActionRidget ridgetHide = (IActionRidget) SwtRidgetFactory.createRidget(buttonHide);
+			final IActionRidget ridgetHide = (IActionRidget) SwtRidgetFactory.createRidget(buttonHide);
 			ridgetHide.addListener(new IActionListener() {
 				public void callback() {
 					dvManager.hideView("myView"); //$NON-NLS-1$
 				}
 			});
 
-			IActionRidget ridgetClose = (IActionRidget) SwtRidgetFactory.createRidget(buttonClose);
+			final IActionRidget ridgetClose = (IActionRidget) SwtRidgetFactory.createRidget(buttonClose);
 			ridgetClose.addListener(new IActionListener() {
 				public void callback() {
 					dvManager.closeView("myView"); //$NON-NLS-1$
@@ -97,9 +97,9 @@ public class SnippetDetachedView001 {
 	 */
 	public static final class SampleView extends ViewPart {
 		@Override
-		public void createPartControl(Composite parent) {
+		public void createPartControl(final Composite parent) {
 			parent.setLayout(new FillLayout());
-			String text = String.valueOf(System.currentTimeMillis());
+			final String text = String.valueOf(System.currentTimeMillis());
 			UIControlsFactory.createLabel(parent, text);
 		}
 

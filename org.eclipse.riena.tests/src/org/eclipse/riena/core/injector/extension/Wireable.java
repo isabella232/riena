@@ -24,7 +24,7 @@ public class Wireable implements IWireable {
 	/**
 	 * @see org.eclipse.riena.core.injector.extension.IWireable#setWired(boolean)
 	 */
-	public void setWired(boolean wired) {
+	public void setWired(final boolean wired) {
 		// TODO warning suppression. Ignoring FindBugs problem about
 		// writing to static field. Since this is used only for testing
 		// manipulation of multiple instances is not an issue.

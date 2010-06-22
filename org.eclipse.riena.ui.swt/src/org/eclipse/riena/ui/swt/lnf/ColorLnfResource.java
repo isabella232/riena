@@ -18,7 +18,7 @@ import org.eclipse.swt.graphics.RGB;
  */
 public class ColorLnfResource extends AbstractLnfResource<Color> {
 
-	private RGB rgb;
+	private final RGB rgb;
 
 	/**
 	 * @param red
@@ -28,7 +28,7 @@ public class ColorLnfResource extends AbstractLnfResource<Color> {
 	 * @param blue
 	 *            the amount of blue in the color
 	 */
-	public ColorLnfResource(int red, int green, int blue) {
+	public ColorLnfResource(final int red, final int green, final int blue) {
 		this(new RGB(red, green, blue));
 	}
 
@@ -40,7 +40,7 @@ public class ColorLnfResource extends AbstractLnfResource<Color> {
 	 * @param brightness
 	 *            the brightness value for the HSB color (from 0 to 1)
 	 */
-	public ColorLnfResource(float hue, float saturation, float brightness) {
+	public ColorLnfResource(final float hue, final float saturation, final float brightness) {
 		this(new RGB(hue, saturation, brightness));
 	}
 
@@ -48,7 +48,7 @@ public class ColorLnfResource extends AbstractLnfResource<Color> {
 	 * @param rgb
 	 *            the RGB values of the desired color
 	 */
-	public ColorLnfResource(RGB rgb) {
+	public ColorLnfResource(final RGB rgb) {
 		super();
 		this.rgb = rgb;
 	}

@@ -27,10 +27,10 @@ import org.eclipse.riena.navigation.ui.swt.nls.Messages;
  */
 public class ExitApplication extends AbstractHandler {
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
-		Shell shell = HandlerUtil.getActiveShell(event);
-		String message = String.format(Messages.ExitApplication_exit, getName());
-		boolean isConfirmed = MessageDialog.openConfirm(shell, Messages.ExitApplication_confirmExit, message);
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
+		final Shell shell = HandlerUtil.getActiveShell(event);
+		final String message = String.format(Messages.ExitApplication_exit, getName());
+		final boolean isConfirmed = MessageDialog.openConfirm(shell, Messages.ExitApplication_confirmExit, message);
 		if (isConfirmed) {
 			PlatformUI.getWorkbench().close();
 		}
@@ -41,7 +41,7 @@ public class ExitApplication extends AbstractHandler {
 	//////////////////
 
 	private String getName() {
-		IProduct product = Platform.getProduct();
+		final IProduct product = Platform.getProduct();
 		return product != null ? product.getName() : Messages.ExitApplication_application;
 	}
 

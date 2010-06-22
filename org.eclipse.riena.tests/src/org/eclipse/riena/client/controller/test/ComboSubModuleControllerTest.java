@@ -29,7 +29,7 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
 public class ComboSubModuleControllerTest extends AbstractSubModuleControllerTest<ComboSubModuleController> {
 
 	@Override
-	protected ComboSubModuleController createController(ISubModuleNode node) {
+	protected ComboSubModuleController createController(final ISubModuleNode node) {
 		return new ComboSubModuleController(node);
 	}
 
@@ -39,20 +39,20 @@ public class ComboSubModuleControllerTest extends AbstractSubModuleControllerTes
 	}
 
 	public void testNoSelection() {
-		IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne");
+		final IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne");
 		combo.setSelection(null);
 		assertEquals(-1, combo.getSelectionIndex());
 		assertEquals(null, combo.getSelection());
 	}
 
 	public void testSaveName() {
-		ITextRidget textFirst = getController().getRidget(ITextRidget.class, "textFirst");
-		ITextRidget textLast = getController().getRidget(ITextRidget.class, "textLast");
-		IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne");
-		IActionRidget saveButton = getController().getRidget(IActionRidget.class, "buttonSave");
+		final ITextRidget textFirst = getController().getRidget(ITextRidget.class, "textFirst");
+		final ITextRidget textLast = getController().getRidget(ITextRidget.class, "textLast");
+		final IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne");
+		final IActionRidget saveButton = getController().getRidget(IActionRidget.class, "buttonSave");
 
 		// set new name and save
-		Person newPerson = (Person) combo.getSelection();
+		final Person newPerson = (Person) combo.getSelection();
 		textFirst.setText("Jane");
 		textLast.setText("Fonda");
 
@@ -61,11 +61,11 @@ public class ComboSubModuleControllerTest extends AbstractSubModuleControllerTes
 		assertEquals(newPerson, combo.getSelection());
 	}
 
-	private void basicTestComboSelection(int index) {
-		ITextRidget textFirst = getController().getRidget(ITextRidget.class, "textFirst");
-		ITextRidget textLast = getController().getRidget(ITextRidget.class, "textLast");
-		IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne");
-		List<Person> expected = PersonFactory.createPersonList();
+	private void basicTestComboSelection(final int index) {
+		final ITextRidget textFirst = getController().getRidget(ITextRidget.class, "textFirst");
+		final ITextRidget textLast = getController().getRidget(ITextRidget.class, "textLast");
+		final IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne");
+		final List<Person> expected = PersonFactory.createPersonList();
 
 		combo.setSelection(index);
 

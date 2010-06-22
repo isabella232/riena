@@ -21,7 +21,7 @@ public class BigIntegerContainer {
 	private BigInteger value2;
 	private String name;
 
-	public BigIntegerContainer(BigInteger value1, BigInteger value2, String name) {
+	public BigIntegerContainer(final BigInteger value1, final BigInteger value2, final String name) {
 		this.value1 = value1;
 		this.value2 = value2;
 		this.name = name;
@@ -31,7 +31,7 @@ public class BigIntegerContainer {
 		return value1;
 	}
 
-	public void setValue1(BigInteger value1) {
+	public void setValue1(final BigInteger value1) {
 		this.value1 = value1;
 	}
 
@@ -39,7 +39,7 @@ public class BigIntegerContainer {
 		return value2;
 	}
 
-	public void setValue2(BigInteger value2) {
+	public void setValue2(final BigInteger value2) {
 		this.value2 = value2;
 	}
 
@@ -47,10 +47,11 @@ public class BigIntegerContainer {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
+	@Override
 	public String toString() {
 		return "value1=" + value1.toString() + " value2=" + value2.toString() + " name=" + name;
 	}
@@ -61,11 +62,11 @@ public class BigIntegerContainer {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (obj.getClass() != this.getClass()) {
 			return false;
 		}
-		BigIntegerContainer container = (BigIntegerContainer) obj;
+		final BigIntegerContainer container = (BigIntegerContainer) obj;
 		if (this.getValue1().equals(container.getValue1()) && this.getValue2().equals(container.getValue2())
 				&& this.getName().equals(container.getName())) {
 			return true;

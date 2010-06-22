@@ -47,8 +47,8 @@ public class LoginModuleTest extends RienaTestCase {
 		// set the userid,password that we try the login Module will check for
 		TestLocalLoginModule.setCredentials("testuser", "testpass");
 
-		URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
-		ILoginContext secureContext = LoginContextFactory.createContext("LocalTest", configUrl);
+		final URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
+		final ILoginContext secureContext = LoginContextFactory.createContext("LocalTest", configUrl);
 
 		secureContext.login();
 
@@ -64,13 +64,13 @@ public class LoginModuleTest extends RienaTestCase {
 			// set the userid,password that we try to verify
 			TestLocalLoginModule.setCredentials("testuser", "invalidpass");
 
-			URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
-			ILoginContext secureContext = LoginContextFactory.createContext("Local", configUrl);
+			final URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
+			final ILoginContext secureContext = LoginContextFactory.createContext("Local", configUrl);
 
 			secureContext.login();
 
 			fail("login MUST fail since the password is wrong");
-		} catch (LoginException e) {
+		} catch (final LoginException e) {
 			ok("expecting an exception");
 		}
 

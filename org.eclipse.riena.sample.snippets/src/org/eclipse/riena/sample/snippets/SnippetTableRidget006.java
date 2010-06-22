@@ -35,17 +35,17 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class SnippetTableRidget006 {
 
-	public SnippetTableRidget006(Shell shell) {
+	public SnippetTableRidget006(final Shell shell) {
 		// UI for table
 		GridLayoutFactory.fillDefaults().numColumns(1).margins(10, 10).equalWidth(false).spacing(20, 10).applyTo(shell);
 
-		Composite tableComposite = UIControlsFactory.createComposite(shell, SWT.NONE);
-		Table table = UIControlsFactory.createTable(tableComposite, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
+		final Composite tableComposite = UIControlsFactory.createComposite(shell, SWT.NONE);
+		final Table table = UIControlsFactory.createTable(tableComposite, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		GridDataFactory.fillDefaults().grab(true, true).hint(400, 200).applyTo(tableComposite);
 
 		// Output labels for displaying model state
 		UIControlsFactory.createLabel(shell, "You selected:"); //$NON-NLS-1$
-		Label outputValueLabel = UIControlsFactory.createLabel(shell, "[nothing selected]"); //$NON-NLS-1$
+		final Label outputValueLabel = UIControlsFactory.createLabel(shell, "[nothing selected]"); //$NON-NLS-1$
 		outputValueLabel.setBackground(outputValueLabel.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(outputValueLabel);
 
@@ -53,10 +53,10 @@ public class SnippetTableRidget006 {
 		final ILabelRidget outputRidget = (ILabelRidget) SwtRidgetFactory.createRidget(outputValueLabel);
 
 		// Table Ridget
-		ITableRidget tableRidget = (ITableRidget) SwtRidgetFactory.createRidget(table);
-		String[] columnPropertyNames = { "english", "german", "french", "spanish", "italian" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		String[] columnHeaders = { "English", "German", "French", "Spanish", "Italian" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		IObservableList input = new WritableList(DayPojo.createWeek(), DayPojo.class);
+		final ITableRidget tableRidget = (ITableRidget) SwtRidgetFactory.createRidget(table);
+		final String[] columnPropertyNames = { "english", "german", "french", "spanish", "italian" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		final String[] columnHeaders = { "English", "German", "French", "Spanish", "Italian" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		final IObservableList input = new WritableList(DayPojo.createWeek(), DayPojo.class);
 		tableRidget.bindToModel(input, DayPojo.class, columnPropertyNames, columnHeaders);
 		tableRidget.updateFromModel();
 
@@ -64,8 +64,8 @@ public class SnippetTableRidget006 {
 		tableRidget.bindSingleSelectionToModel(outputRidget, ILabelRidget.PROPERTY_TEXT);
 	}
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
 			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetTableRidget006.class.getSimpleName());

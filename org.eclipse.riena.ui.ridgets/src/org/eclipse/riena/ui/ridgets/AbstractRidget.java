@@ -27,7 +27,7 @@ public abstract class AbstractRidget implements IRidget {
 	public final static String PROPERTY_RIDGET = "ridget"; //$NON-NLS-1$
 
 	protected PropertyChangeSupport propertyChangeSupport;
-	private ListenerList<IFocusListener> focusListeners;
+	private final ListenerList<IFocusListener> focusListeners;
 	protected boolean savedVisibleState = true;
 
 	/**
@@ -38,11 +38,11 @@ public abstract class AbstractRidget implements IRidget {
 		focusListeners = new ListenerList<IFocusListener>(IFocusListener.class);
 	}
 
-	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+	public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		addPropertyChangeListener(null, propertyChangeListener);
 	}
 
-	public void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+	public void addPropertyChangeListener(final String propertyName, final PropertyChangeListener propertyChangeListener) {
 		Assert.isNotNull(propertyChangeListener);
 		if (!hasListener(propertyName, propertyChangeListener)) {
 			if (propertyName == null) {
@@ -53,11 +53,12 @@ public abstract class AbstractRidget implements IRidget {
 		}
 	}
 
-	public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+	public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		removePropertyChangeListener(null, propertyChangeListener);
 	}
 
-	public void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+	public void removePropertyChangeListener(final String propertyName,
+			final PropertyChangeListener propertyChangeListener) {
 		Assert.isNotNull(propertyChangeListener);
 		if (propertyName == null) {
 			propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
@@ -66,11 +67,11 @@ public abstract class AbstractRidget implements IRidget {
 		}
 	}
 
-	public void addFocusListener(IFocusListener listener) {
+	public void addFocusListener(final IFocusListener listener) {
 		focusListeners.add(listener);
 	}
 
-	public void removeFocusListener(IFocusListener listener) {
+	public void removeFocusListener(final IFocusListener listener) {
 		focusListeners.remove(listener);
 	}
 
@@ -85,6 +86,7 @@ public abstract class AbstractRidget implements IRidget {
 	 * 
 	 * @deprecated - this was never implemented - do not call
 	 */
+	@Deprecated
 	public final boolean isBlocked() {
 		return false;
 	}
@@ -92,7 +94,8 @@ public abstract class AbstractRidget implements IRidget {
 	/**
 	 * @deprecated - this was never implemented - do not call
 	 */
-	public final void setBlocked(boolean blocked) {
+	@Deprecated
+	public final void setBlocked(final boolean blocked) {
 	}
 
 	// protected methods
@@ -104,8 +107,8 @@ public abstract class AbstractRidget implements IRidget {
 	 * @param event
 	 *            the FocusEvent
 	 */
-	protected final void fireFocusLost(FocusEvent event) {
-		for (IFocusListener focusListener : focusListeners.getListeners()) {
+	protected final void fireFocusLost(final FocusEvent event) {
+		for (final IFocusListener focusListener : focusListeners.getListeners()) {
 			focusListener.focusLost(event);
 		}
 	}
@@ -116,8 +119,8 @@ public abstract class AbstractRidget implements IRidget {
 	 * @param event
 	 *            the FocusEvent
 	 */
-	protected final void fireFocusGained(FocusEvent event) {
-		for (IFocusListener focusListener : focusListeners.getListeners()) {
+	protected final void fireFocusGained(final FocusEvent event) {
+		for (final IFocusListener focusListener : focusListeners.getListeners()) {
 			focusListener.focusGained(event);
 		}
 	}
@@ -133,7 +136,7 @@ public abstract class AbstractRidget implements IRidget {
 	 * @param newValue
 	 *            The new value of the property.
 	 */
-	protected final void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+	protected final void firePropertyChange(final String propertyName, final boolean oldValue, final boolean newValue) {
 		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
 	}
 
@@ -148,7 +151,7 @@ public abstract class AbstractRidget implements IRidget {
 	 * @param newValue
 	 *            The new value of the property.
 	 */
-	protected final void firePropertyChange(String propertyName, int oldValue, int newValue) {
+	protected final void firePropertyChange(final String propertyName, final int oldValue, final int newValue) {
 		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
 	}
 
@@ -163,16 +166,16 @@ public abstract class AbstractRidget implements IRidget {
 	 * @param newValue
 	 *            The new value of the property.
 	 */
-	protected final void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+	protected final void firePropertyChange(final String propertyName, final Object oldValue, final Object newValue) {
 		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
 	}
 
 	// helping methods
 	//////////////////
 
-	private boolean hasListener(String propertyName, Object listener) {
+	private boolean hasListener(final String propertyName, final Object listener) {
 		boolean result = false;
-		PropertyChangeListener[] listeners = propertyChangeSupport.getPropertyChangeListeners(propertyName);
+		final PropertyChangeListener[] listeners = propertyChangeSupport.getPropertyChangeListeners(propertyName);
 		for (int i = 0; !result && i < listeners.length; i++) {
 			result = (listeners[i] == listener);
 		}

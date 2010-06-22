@@ -24,9 +24,10 @@ import javax.servlet.http.HttpServletResponse;
 public class BasicAuthenticationTestServlet extends HttpServlet {
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String auth = req.getHeader("Authorization"); //$NON-NLS-1$
-		String correctAuth = "Basic c2NwOnNjcHRlc3RwYXNzd29yZA==";// encoded //$NON-NLS-1$
+	protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException,
+			IOException {
+		final String auth = req.getHeader("Authorization"); //$NON-NLS-1$
+		final String correctAuth = "Basic c2NwOnNjcHRlc3RwYXNzd29yZA==";// encoded //$NON-NLS-1$
 		// version
 		// of
 		// userid=scp,

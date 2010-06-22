@@ -30,7 +30,7 @@ public class HelloServerSubModuleController extends SubModuleController {
 	private IHelloWorldService service;
 	private MessageBean messageBean;
 
-	public HelloServerSubModuleController(ISubModuleNode navigationNode) {
+	public HelloServerSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 		startServiceTracker();
 		callback = new ActionCallback();
@@ -40,11 +40,11 @@ public class HelloServerSubModuleController extends SubModuleController {
 		Inject.service(IHelloWorldService.class).into(this).andStart(Activator.getDefault().getContext());
 	}
 
-	public void bind(IHelloWorldService service) {
+	public void bind(final IHelloWorldService service) {
 		this.service = service;
 	}
 
-	public void unbind(IHelloWorldService service) {
+	public void unbind(final IHelloWorldService service) {
 		if (this.service == service) {
 			this.service = null;
 		}
@@ -78,24 +78,24 @@ public class HelloServerSubModuleController extends SubModuleController {
 
 		private String message;
 
-		private PropertyChangeSupport pcSupport;
+		private final PropertyChangeSupport pcSupport;
 
 		MessageBean() {
 			pcSupport = new PropertyChangeSupport(this);
 		}
 
 		@SuppressWarnings("unused")
-		public void addPropertyChangeListener(PropertyChangeListener listener) {
+		public void addPropertyChangeListener(final PropertyChangeListener listener) {
 			pcSupport.addPropertyChangeListener(listener);
 		}
 
 		@SuppressWarnings("unused")
-		public void removePropertyChangeListener(PropertyChangeListener listener) {
+		public void removePropertyChangeListener(final PropertyChangeListener listener) {
 			pcSupport.removePropertyChangeListener(listener);
 		}
 
-		public void setMessage(String message) {
-			String old = this.message;
+		public void setMessage(final String message) {
+			final String old = this.message;
 			this.message = message;
 			pcSupport.firePropertyChange("message", old, message); //$NON-NLS-1$
 		}

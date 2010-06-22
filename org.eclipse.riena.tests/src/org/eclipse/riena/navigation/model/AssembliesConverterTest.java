@@ -36,7 +36,7 @@ public class AssembliesConverterTest extends TestCase {
 	 */
 	public void testConvertINavigationAssemblyExtension() {
 
-		INavigationAssemblyExtension legacyAssembly = new INavigationAssemblyExtension() {
+		final INavigationAssemblyExtension legacyAssembly = new INavigationAssemblyExtension() {
 
 			public ISubApplicationNodeExtension getSubApplicationNode() {
 				return null;
@@ -97,7 +97,7 @@ public class AssembliesConverterTest extends TestCase {
 
 		};
 
-		INavigationAssembly2Extension assembly2 = AssembliesConverter.convert(legacyAssembly);
+		final INavigationAssembly2Extension assembly2 = AssembliesConverter.convert(legacyAssembly);
 		assertNotNull(assembly2);
 		assertEquals("4711", assembly2.getId());
 		assertEquals("0815", assembly2.getParentNodeId());
@@ -117,7 +117,7 @@ public class AssembliesConverterTest extends TestCase {
 	 */
 	public void testConvertISubApplicationNodeExtension() {
 
-		ISubApplicationNodeExtension legacySubApp = new ISubApplicationNodeExtension() {
+		final ISubApplicationNodeExtension legacySubApp = new ISubApplicationNodeExtension() {
 
 			public String getLabel() {
 				return "subAppLabel";
@@ -174,8 +174,8 @@ public class AssembliesConverterTest extends TestCase {
 
 		};
 
-		ISubApplicationNode2Extension subApp2 = ReflectionUtils.invokeHidden(AssembliesConverter.class, "convert",
-				legacySubApp);
+		final ISubApplicationNode2Extension subApp2 = ReflectionUtils.invokeHidden(AssembliesConverter.class,
+				"convert", legacySubApp);
 		assertNotNull(subApp2);
 		assertEquals("subAppLabel", subApp2.getName());
 		assertEquals("subAppIcon", subApp2.getIcon());
@@ -191,7 +191,7 @@ public class AssembliesConverterTest extends TestCase {
 	 */
 	public void testConvertIModuleGroupNodeExtension() {
 
-		IModuleGroupNodeExtension legacy = new IModuleGroupNodeExtension() {
+		final IModuleGroupNodeExtension legacy = new IModuleGroupNodeExtension() {
 
 			public IModuleNodeExtension[] getModuleNodes() {
 				return getChildNodes();
@@ -248,7 +248,8 @@ public class AssembliesConverterTest extends TestCase {
 
 		};
 
-		IModuleGroupNode2Extension mg2 = ReflectionUtils.invokeHidden(AssembliesConverter.class, "convert", legacy);
+		final IModuleGroupNode2Extension mg2 = ReflectionUtils.invokeHidden(AssembliesConverter.class, "convert",
+				legacy);
 		assertNotNull(mg2);
 		assertNull(mg2.getName());
 		assertNull(mg2.getIcon());
@@ -263,7 +264,7 @@ public class AssembliesConverterTest extends TestCase {
 	 */
 	public void testConvertIModuleNodeExtension() {
 
-		IModuleNodeExtension legacy = new IModuleNodeExtension() {
+		final IModuleNodeExtension legacy = new IModuleNodeExtension() {
 
 			public ISubModuleNodeExtension[] getSubModuleNodes() {
 				return getChildNodes();
@@ -349,7 +350,7 @@ public class AssembliesConverterTest extends TestCase {
 
 		};
 
-		IModuleNode2Extension m2 = ReflectionUtils.invokeHidden(AssembliesConverter.class, "convert", legacy);
+		final IModuleNode2Extension m2 = ReflectionUtils.invokeHidden(AssembliesConverter.class, "convert", legacy);
 		assertNotNull(m2);
 		assertEquals("mLabel", m2.getName());
 		assertEquals("mIcon", m2.getIcon());

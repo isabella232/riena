@@ -23,7 +23,7 @@ public class ModuleTitleBarRidget extends EmbeddedTitleBarRidget {
 	 *      (java.lang.Object)
 	 */
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, ModuleTitleBar.class);
 	}
 
@@ -39,7 +39,7 @@ public class ModuleTitleBarRidget extends EmbeddedTitleBarRidget {
 	 *            the closeable to set
 	 */
 	@Override
-	public void setCloseable(boolean closeable) {
+	public void setCloseable(final boolean closeable) {
 		if (getUIControl() != null) {
 			getUIControl().setCloseable(closeable);
 		}

@@ -78,7 +78,7 @@ public class MinLengthTest extends RienaTestCase {
 	}
 
 	public void testMinLengthAllowEmpty1() throws Exception {
-		MinLength rule = new MinLengthAllowEmpty();
+		final MinLength rule = new MinLengthAllowEmpty();
 		rule.setInitializationData(null, null, "5");
 		assertTrue(rule.validate("").isOK());
 		assertTrue(rule.validate(null).isOK());

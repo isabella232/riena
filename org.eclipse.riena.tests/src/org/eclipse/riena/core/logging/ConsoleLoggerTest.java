@@ -49,7 +49,7 @@ public class ConsoleLoggerTest extends RienaTestCase {
 	}
 
 	public void testWithExceptions() {
-		IOException ioe = new IOException("Oops!");
+		final IOException ioe = new IOException("Oops!");
 		logger.log(LogService.LOG_ERROR, "This is an error!", ioe);
 	}
 
@@ -58,8 +58,8 @@ public class ConsoleLoggerTest extends RienaTestCase {
 	}
 
 	public void testWithServiceReference() {
-		String stringService = "Very simple service";
-		ServiceRegistration sr = getContext().registerService(String.class.getName(), stringService, null);
+		final String stringService = "Very simple service";
+		final ServiceRegistration sr = getContext().registerService(String.class.getName(), stringService, null);
 		Assert.assertTrue(sr.getReference() != null);
 		logger.log(sr.getReference(), LogService.LOG_INFO, "Message with context.");
 		sr.unregister();

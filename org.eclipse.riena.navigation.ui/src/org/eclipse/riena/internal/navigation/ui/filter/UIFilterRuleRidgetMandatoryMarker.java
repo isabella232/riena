@@ -36,7 +36,7 @@ public class UIFilterRuleRidgetMandatoryMarker extends AbstractUIFilterRuleRidge
 	 * @param ridgetIdPattern
 	 *            ID
 	 */
-	public UIFilterRuleRidgetMandatoryMarker(String ridgetIdPattern) {
+	public UIFilterRuleRidgetMandatoryMarker(final String ridgetIdPattern) {
 		super(ridgetIdPattern, null);
 	}
 

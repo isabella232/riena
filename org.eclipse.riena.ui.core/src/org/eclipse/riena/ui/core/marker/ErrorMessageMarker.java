@@ -21,7 +21,7 @@ public class ErrorMessageMarker extends ErrorMarker implements IMessageMarker {
 	 * @param pMessage
 	 *            the Message of the Marker
 	 */
-	public ErrorMessageMarker(String pMessage) {
+	public ErrorMessageMarker(final String pMessage) {
 		super(false);
 		setMessage(pMessage);
 	}
@@ -39,8 +39,8 @@ public class ErrorMessageMarker extends ErrorMarker implements IMessageMarker {
 	 * @param pMessage
 	 *            the Message of the Marker
 	 */
-	public final void setMessage(String pMessage) {
-		String msg = pMessage == null ? "" : pMessage; //$NON-NLS-1$
+	public final void setMessage(final String pMessage) {
+		final String msg = pMessage == null ? "" : pMessage; //$NON-NLS-1$
 		setAttribute(MESSAGE, msg);
 	}
 

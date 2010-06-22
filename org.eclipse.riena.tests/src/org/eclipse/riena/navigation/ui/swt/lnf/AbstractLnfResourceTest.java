@@ -56,7 +56,7 @@ public class AbstractLnfResourceTest extends TestCase {
 	 */
 	public void testDispose() throws Exception {
 
-		Color color = (Color) lnfResource.getResource();
+		final Color color = lnfResource.getResource();
 		assertNotNull(color);
 		assertFalse(color.isDisposed());
 
@@ -72,13 +72,13 @@ public class AbstractLnfResourceTest extends TestCase {
 	 */
 	public void testGetResource() throws Exception {
 
-		Color color1 = (Color) lnfResource.getResource();
+		final Color color1 = lnfResource.getResource();
 		assertNotNull(color1);
 		assertFalse(color1.isDisposed());
 
 		color1.dispose();
 
-		Color color2 = (Color) lnfResource.getResource();
+		final Color color2 = lnfResource.getResource();
 		assertNotNull(color2);
 		assertFalse(color2.isDisposed());
 		assertNotSame(color1, color2);
@@ -86,14 +86,14 @@ public class AbstractLnfResourceTest extends TestCase {
 	}
 
 	public void testThatTheResourceWillNotBeDisposedIfStillInUse() throws IOException {
-		Color color1 = lnfResource.getResource();
+		final Color color1 = lnfResource.getResource();
 		assertFalse(color1.isDisposed());
 		assertEquals(1, color1.getRed());
 
 		runOutOfMemory();
 
 		lnfResource.setRed(255);
-		Color color2 = lnfResource.getResource();
+		final Color color2 = lnfResource.getResource();
 		assertEquals(1, color2.getRed());
 		assertSame(color1, color2);
 	}
@@ -102,7 +102,7 @@ public class AbstractLnfResourceTest extends TestCase {
 
 		private int red = 1;
 
-		public void setRed(int red) {
+		public void setRed(final int red) {
 			this.red = red;
 		}
 
@@ -117,11 +117,11 @@ public class AbstractLnfResourceTest extends TestCase {
 
 	private void runOutOfMemory() throws IOException {
 		try {
-			OutputStream os = new ByteArrayOutputStream();
+			final OutputStream os = new ByteArrayOutputStream();
 			while (true) {
 				os.write(new byte[1024 * 1024]);
 			}
-		} catch (OutOfMemoryError e) {
+		} catch (final OutOfMemoryError e) {
 			System.gc();
 		}
 	}

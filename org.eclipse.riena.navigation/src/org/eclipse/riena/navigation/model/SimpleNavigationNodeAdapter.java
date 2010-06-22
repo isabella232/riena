@@ -12,8 +12,8 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
 import org.eclipse.riena.navigation.INavigationNode.State;
+import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
 import org.eclipse.riena.ui.filter.IUIFilter;
 
 /**
@@ -32,7 +32,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * org.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#activated
 	 * (org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void activated(INavigationNode<?> source) {
+	public void activated(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -41,7 +41,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * @seeorg.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#
 	 * afterActivated(org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void afterActivated(INavigationNode<?> source) {
+	public void afterActivated(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -50,7 +50,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * @seeorg.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#
 	 * afterDeactivated(org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void afterDeactivated(INavigationNode<?> source) {
+	public void afterDeactivated(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -59,7 +59,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * @seeorg.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#
 	 * afterDisposed(org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void afterDisposed(INavigationNode<?> source) {
+	public void afterDisposed(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -68,7 +68,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * @seeorg.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#
 	 * beforeActivated(org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void beforeActivated(INavigationNode<?> source) {
+	public void beforeActivated(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -77,7 +77,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * @seeorg.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#
 	 * beforeDeactivated(org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void beforeDeactivated(INavigationNode<?> source) {
+	public void beforeDeactivated(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -86,7 +86,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * @seeorg.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#
 	 * beforeDisposed(org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void beforeDisposed(INavigationNode<?> source) {
+	public void beforeDisposed(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -96,7 +96,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * org.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#block
 	 * (org.eclipse.riena.navigation.INavigationNode<?>, boolean)
 	 */
-	public void block(INavigationNode<?> source, boolean block) {
+	public void block(final INavigationNode<?> source, final boolean block) {
 	}
 
 	/*
@@ -107,7 +107,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * (org.eclipse.riena.navigation.INavigationNode<?>,
 	 * org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void childAdded(INavigationNode<?> source, INavigationNode<?> childAdded) {
+	public void childAdded(final INavigationNode<?> source, final INavigationNode<?> childAdded) {
 	}
 
 	/*
@@ -118,7 +118,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * (org.eclipse.riena.navigation.INavigationNode<?>,
 	 * org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void childRemoved(INavigationNode<?> source, INavigationNode<?> childRemoved) {
+	public void childRemoved(final INavigationNode<?> source, final INavigationNode<?> childRemoved) {
 	}
 
 	/*
@@ -128,7 +128,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * org.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#deactivated
 	 * (org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void deactivated(INavigationNode<?> source) {
+	public void deactivated(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -138,7 +138,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * org.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#disposed
 	 * (org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void disposed(INavigationNode<?> source) {
+	public void disposed(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -147,7 +147,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * @seeorg.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#
 	 * expandedChanged(org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void expandedChanged(INavigationNode<?> source) {
+	public void expandedChanged(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -157,7 +157,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * org.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#iconChanged
 	 * (org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void iconChanged(INavigationNode<?> source) {
+	public void iconChanged(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -167,7 +167,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * org.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#labelChanged
 	 * (org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void labelChanged(INavigationNode<?> source) {
+	public void labelChanged(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -176,7 +176,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * @seeorg.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#
 	 * markersChanged(org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void markerChanged(INavigationNode<?> source, IMarker marker) {
+	public void markerChanged(final INavigationNode<?> source, final IMarker marker) {
 	}
 
 	/*
@@ -185,7 +185,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * @seeorg.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#
 	 * parentChanged(org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void parentChanged(INavigationNode<?> source) {
+	public void parentChanged(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -194,7 +194,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * @seeorg.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#
 	 * presentationChanged(org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void presentationChanged(INavigationNode<?> source) {
+	public void presentationChanged(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -203,7 +203,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * @seeorg.eclipse.riena.navigation.model.ISimpleNavigationNodeListener#
 	 * selectedChanged(org.eclipse.riena.navigation.INavigationNode<?>)
 	 */
-	public void selectedChanged(INavigationNode<?> source) {
+	public void selectedChanged(final INavigationNode<?> source) {
 	}
 
 	/*
@@ -215,7 +215,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * org.eclipse.riena.navigation.INavigationNode<?>.State,
 	 * org.eclipse.riena.navigation.INavigationNode<?>.State)
 	 */
-	public void stateChanged(INavigationNode<?> source, State oldState, State newState) {
+	public void stateChanged(final INavigationNode<?> source, final State oldState, final State newState) {
 	}
 
 	/*
@@ -225,7 +225,7 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * org.eclipse.riena.navigation.ISimpleNavigationNodeListener#filterChanged
 	 * (org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void filterAdded(INavigationNode<?> source, IUIFilter filter) {
+	public void filterAdded(final INavigationNode<?> source, final IUIFilter filter) {
 	}
 
 	/*
@@ -235,13 +235,13 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	 * org.eclipse.riena.navigation.ISimpleNavigationNodeListener#filterChanged
 	 * (org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void filterRemoved(INavigationNode<?> source, IUIFilter filter) {
+	public void filterRemoved(final INavigationNode<?> source, final IUIFilter filter) {
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void prepared(INavigationNode<?> source) {
+	public void prepared(final INavigationNode<?> source) {
 	}
 
 }

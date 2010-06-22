@@ -37,8 +37,8 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 public class NavigateSubModuleControllerTest extends AbstractSubModuleControllerTest<NavigateSubModuleController> {
 
 	@Override
-	protected NavigateSubModuleController createController(ISubModuleNode node) {
-		NavigateSubModuleController newInst = new NavigateSubModuleController();
+	protected NavigateSubModuleController createController(final ISubModuleNode node) {
+		final NavigateSubModuleController newInst = new NavigateSubModuleController();
 		node.setNodeId(new NavigationNodeId("org.eclipse.riena.example.navigate"));
 		newInst.setNavigationNode(node);
 		return newInst;
@@ -54,7 +54,7 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 
 		replay(getMockNavigationProcessor());
 
-		IActionRidget navigateToComboButton = getController().getRidget(IActionRidget.class, "comboAndList");
+		final IActionRidget navigateToComboButton = getController().getRidget(IActionRidget.class, "comboAndList");
 		navigateToComboButton.fireAction();
 
 		verify(getMockNavigationProcessor());
@@ -71,7 +71,7 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 	 * <code>PersonModificationBean</code> match.
 	 */
 	public void testNavigateToRidgetWithCompare() {
-		PersonModificationBean bean = new PersonModificationBean();
+		final PersonModificationBean bean = new PersonModificationBean();
 		bean.setPerson(new Person("Doe", "Jane"));
 
 		expect(
@@ -79,7 +79,7 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 						eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
 						cmp(new NavigationArgument(bean, "textFirst"), new Comparator<NavigationArgument>() {
 
-							public int compare(NavigationArgument o1, NavigationArgument o2) {
+							public int compare(final NavigationArgument o1, final NavigationArgument o2) {
 								if (o1.getParameter() instanceof PersonModificationBean
 										&& o2.getParameter() instanceof PersonModificationBean) {
 									return comparePersonModificationBeans((PersonModificationBean) o1.getParameter(),
@@ -92,7 +92,8 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 						}, LogicalOperator.EQUAL))).andReturn(createNavigationNode("org.eclipse.riena.example.combo"));
 
 		replay(getMockNavigationProcessor());
-		IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class, "btnNavigateToRidget");
+		final IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class,
+				"btnNavigateToRidget");
 		navigateToNavigateRidget.fireAction();
 		verify(getMockNavigationProcessor());
 	}
@@ -113,7 +114,8 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 				createNavigationNode("org.eclipse.riena.example.combo"));
 
 		replay(getMockNavigationProcessor());
-		IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class, "btnNavigateToRidget");
+		final IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class,
+				"btnNavigateToRidget");
 		navigateToNavigateRidget.fireAction();
 		verify(getMockNavigationProcessor());
 	}
@@ -127,7 +129,7 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 	 * a parameter that compared by the equals methods in the specific classes.
 	 */
 	public void testNavigateToRidgetWithEquals() {
-		PersonModificationBean bean = new PersonModificationBean();
+		final PersonModificationBean bean = new PersonModificationBean();
 		bean.setPerson(new Person("Doe", "Jane"));
 
 		expect(
@@ -137,13 +139,14 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 				createNavigationNode("org.eclipse.riena.example.combo"));
 
 		replay(getMockNavigationProcessor());
-		IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class, "btnNavigateToRidget");
+		final IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class,
+				"btnNavigateToRidget");
 		navigateToNavigateRidget.fireAction();
 		verify(getMockNavigationProcessor());
 	}
 
 	public void testNavigateTableTextAndTree() {
-		NavigationArgument naviAgr = new NavigationArgument();
+		final NavigationArgument naviAgr = new NavigationArgument();
 		naviAgr.setNodePositioner(NodePositioner.ADD_BEGINNING);
 		expect(
 				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
@@ -151,12 +154,13 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 				.andReturn(createNavigationNode("org.eclipse.riena.example.navigate.tableTextAndTree"));
 
 		replay(getMockNavigationProcessor());
-		IActionRidget navigateToTableTextAndTree = getController().getRidget(IActionRidget.class, "tableTextAndTree");
+		final IActionRidget navigateToTableTextAndTree = getController().getRidget(IActionRidget.class,
+				"tableTextAndTree");
 		navigateToTableTextAndTree.fireAction();
 		verify(getMockNavigationProcessor());
 	}
 
-	private int comparePersonModificationBeans(PersonModificationBean p1, PersonModificationBean p2) {
+	private int comparePersonModificationBeans(final PersonModificationBean p1, final PersonModificationBean p2) {
 		if (p1.getFirstName().equals(p2.getFirstName()) && p1.getLastName().equals(p2.getLastName())) {
 			return 0;
 		} else {
@@ -165,7 +169,7 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 	}
 
 	@SuppressWarnings("rawtypes")
-	private INavigationNode createNavigationNode(String id) {
+	private INavigationNode createNavigationNode(final String id) {
 		return new SubModuleNode(new NavigationNodeId(id));
 	}
 }

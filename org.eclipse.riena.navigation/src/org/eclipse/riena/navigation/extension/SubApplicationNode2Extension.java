@@ -51,7 +51,7 @@ public class SubApplicationNode2Extension extends Node2Extension implements ISub
 	 * @param perspectiveId
 	 *            ID of perspective
 	 */
-	public void setPerspectiveId(String perspectiveId) {
+	public void setPerspectiveId(final String perspectiveId) {
 		this.perspectiveId = perspectiveId;
 	}
 

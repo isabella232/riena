@@ -73,11 +73,11 @@ public class DefaultBindingManagerTest extends TestCase {
 	 */
 	public void testInjectRidgets() throws Exception {
 
-		List<Object> uiControls = new ArrayList<Object>(2);
-		Label label1 = new Label(shell, SWT.NONE);
+		final List<Object> uiControls = new ArrayList<Object>(2);
+		final Label label1 = new Label(shell, SWT.NONE);
 		label1.setData(BINDING_PROPERTY, "label1"); //$NON-NLS-1$
 		uiControls.add(label1);
-		Label label2 = new Label(shell, SWT.NONE);
+		final Label label2 = new Label(shell, SWT.NONE);
 		label2.setData(BINDING_PROPERTY, "label2"); //$NON-NLS-1$
 		uiControls.add(label2);
 
@@ -103,8 +103,8 @@ public class DefaultBindingManagerTest extends TestCase {
 	 */
 	public void testBind() throws Exception {
 
-		List<Object> uiControls = new ArrayList<Object>(2);
-		Label label1 = new Label(shell, SWT.NONE);
+		final List<Object> uiControls = new ArrayList<Object>(2);
+		final Label label1 = new Label(shell, SWT.NONE);
 		label1.setData(BINDING_PROPERTY, "label1"); //$NON-NLS-1$
 		uiControls.add(label1);
 
@@ -127,8 +127,8 @@ public class DefaultBindingManagerTest extends TestCase {
 	 */
 	public void testUnbind() throws Exception {
 
-		List<Object> uiControls = new ArrayList<Object>(2);
-		Label label1 = new Label(shell, SWT.NONE);
+		final List<Object> uiControls = new ArrayList<Object>(2);
+		final Label label1 = new Label(shell, SWT.NONE);
 		label1.setData(BINDING_PROPERTY, "label1"); //$NON-NLS-1$
 		uiControls.add(label1);
 
@@ -152,9 +152,9 @@ public class DefaultBindingManagerTest extends TestCase {
 	 */
 	public void testCreateRidget() {
 
-		Label label1 = new Label(shell, SWT.NONE);
+		final Label label1 = new Label(shell, SWT.NONE);
 
-		IRidget ridget = ReflectionUtils.invokeHidden(manager, "createRidget", label1);
+		final IRidget ridget = ReflectionUtils.invokeHidden(manager, "createRidget", label1);
 		assertNotNull(ridget);
 		assertTrue(ridget instanceof LabelRidget);
 
@@ -164,8 +164,8 @@ public class DefaultBindingManagerTest extends TestCase {
 
 	private static final class BindingPropertyLocator implements IBindingPropertyLocator {
 
-		public String locateBindingProperty(Object uiControl) {
-			Control control = (Control) uiControl;
+		public String locateBindingProperty(final Object uiControl) {
+			final Control control = (Control) uiControl;
 			return (String) control.getData(BINDING_PROPERTY);
 		}
 	}
@@ -175,20 +175,20 @@ public class DefaultBindingManagerTest extends TestCase {
 	 */
 	private static class ControlRidgetMapper implements IControlRidgetMapper<Object> {
 
-		public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
+		public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz) {
 			// not supported in this test
 		}
 
-		public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz,
-				IMappingCondition condition) {
+		public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz,
+				final IMappingCondition condition) {
 			// not supported in this test
 		}
 
-		public Class<? extends IRidget> getRidgetClass(Class<? extends Object> controlClazz) {
+		public Class<? extends IRidget> getRidgetClass(final Class<? extends Object> controlClazz) {
 			return LabelRidget.class;
 		}
 
-		public Class<? extends IRidget> getRidgetClass(Object control) {
+		public Class<? extends IRidget> getRidgetClass(final Object control) {
 			return LabelRidget.class;
 		}
 

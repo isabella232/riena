@@ -32,7 +32,7 @@ public class ScaleRidget extends AbstractTraverseRidget implements ITraverseRidg
 	}
 
 	@Override
-	public void checkUIControl(Object uiControl) {
+	public void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, Scale.class);
 	}
 
@@ -40,12 +40,12 @@ public class ScaleRidget extends AbstractTraverseRidget implements ITraverseRidg
 	// ////////////////
 
 	@Override
-	protected void addSelectionListener(Control control, SelectionListener listener) {
+	protected void addSelectionListener(final Control control, final SelectionListener listener) {
 		((Scale) control).addSelectionListener(listener);
 	}
 
 	@Override
-	protected int getValue(Control control) {
+	protected int getValue(final Control control) {
 		return getUIControl() != null ? getUIControl().getSelection() : 0;
 	}
 
@@ -55,13 +55,13 @@ public class ScaleRidget extends AbstractTraverseRidget implements ITraverseRidg
 	}
 
 	@Override
-	protected void removeSelectionListener(Control control, SelectionListener listener) {
+	protected void removeSelectionListener(final Control control, final SelectionListener listener) {
 		((Scale) control).removeSelectionListener(listener);
 	}
 
 	@Override
 	protected void updateUIIncrement() {
-		Scale control = getUIControl();
+		final Scale control = getUIControl();
 		if (control != null) {
 			control.setIncrement(getIncrement());
 		}
@@ -69,7 +69,7 @@ public class ScaleRidget extends AbstractTraverseRidget implements ITraverseRidg
 
 	@Override
 	protected void updateUIMaximum() {
-		Scale control = getUIControl();
+		final Scale control = getUIControl();
 		if (control != null) {
 			control.setMaximum(getMaximum());
 		}
@@ -77,7 +77,7 @@ public class ScaleRidget extends AbstractTraverseRidget implements ITraverseRidg
 
 	@Override
 	protected void updateUIMinimum() {
-		Scale control = getUIControl();
+		final Scale control = getUIControl();
 		if (control != null) {
 			control.setMinimum(getMinimum());
 		}
@@ -85,7 +85,7 @@ public class ScaleRidget extends AbstractTraverseRidget implements ITraverseRidg
 
 	@Override
 	protected void updateUIPageIncrement() {
-		Scale control = getUIControl();
+		final Scale control = getUIControl();
 		if (control != null) {
 			control.setPageIncrement(getPageIncrement());
 		}
@@ -93,7 +93,7 @@ public class ScaleRidget extends AbstractTraverseRidget implements ITraverseRidg
 
 	@Override
 	protected void updateUIValue() {
-		Scale control = getUIControl();
+		final Scale control = getUIControl();
 		if (control != null) {
 			control.setSelection(getValue());
 		}

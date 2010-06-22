@@ -34,11 +34,11 @@ public class Activator extends RienaPlugin {
 
 	private static final String REMOTE_PROTOCOL_HESSIAN = "hessian"; //$NON-NLS-1$
 
-	private Customers customers;
+	private final Customers customers;
 	private ServiceRegistration regCustomerSearch;
 	private ServiceRegistration regCustomers;
-	private HelloWorldService helloWorldService;
-	private IReceiver monitoringReceiver;
+	private final HelloWorldService helloWorldService;
+	private final IReceiver monitoringReceiver;
 	private ServiceRegistration regHelloWorldService;
 	private ServiceRegistration regCollectibleReceiver;
 	private ServiceRegistration regAttachmentService;
@@ -65,7 +65,7 @@ public class Activator extends RienaPlugin {
 	 * )
 	 */
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		startCustomerSearch(context);
 		startCustomers(context);
@@ -88,7 +88,7 @@ public class Activator extends RienaPlugin {
 	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		stopCustomerSearch();
 		stopCustomers();
 		stopHelloWorldService();
@@ -106,9 +106,9 @@ public class Activator extends RienaPlugin {
 		return plugin;
 	}
 
-	private void startCustomerSearch(BundleContext context) {
+	private void startCustomerSearch(final BundleContext context) {
 
-		Hashtable<String, String> properties = new Hashtable<String, String>(3);
+		final Hashtable<String, String> properties = new Hashtable<String, String>(3);
 
 		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
@@ -123,9 +123,9 @@ public class Activator extends RienaPlugin {
 		regCustomerSearch = null;
 	}
 
-	private void startCustomers(BundleContext context) {
+	private void startCustomers(final BundleContext context) {
 
-		Hashtable<String, String> properties = new Hashtable<String, String>(3);
+		final Hashtable<String, String> properties = new Hashtable<String, String>(3);
 
 		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
@@ -140,9 +140,9 @@ public class Activator extends RienaPlugin {
 		regCustomers = null;
 	}
 
-	private void startHelloWorldService(BundleContext context) {
+	private void startHelloWorldService(final BundleContext context) {
 
-		Hashtable<String, String> properties = new Hashtable<String, String>(3);
+		final Hashtable<String, String> properties = new Hashtable<String, String>(3);
 
 		properties.put(RSDPublisherProperties.PROP_IS_REMOTE, Boolean.TRUE.toString());
 		properties.put(RSDPublisherProperties.PROP_REMOTE_PROTOCOL, REMOTE_PROTOCOL_HESSIAN);
@@ -152,14 +152,14 @@ public class Activator extends RienaPlugin {
 				properties);
 	}
 
-	private void startCollectibleReceiver(BundleContext context) {
+	private void startCollectibleReceiver(final BundleContext context) {
 
 		regCollectibleReceiver = context.registerService(IReceiver.class.getName(), monitoringReceiver, null);
 		Publish.service(IReceiver.class).usingPath("/CollectibleReceiverWS").withProtocol(REMOTE_PROTOCOL_HESSIAN) //$NON-NLS-1$
 				.andStart(context);
 	}
 
-	private void startTestGregorianCalendar(BundleContext context) {
+	private void startTestGregorianCalendar(final BundleContext context) {
 		context.registerService(ITestGregorianCalendar.class.getName(), new TestGregorianCalendar(), null);
 		Publish.service(ITestGregorianCalendar.class).usingPath("/TestGregorianCalendarWS").withProtocol( //$NON-NLS-1$
 				REMOTE_PROTOCOL_HESSIAN).andStart(context);
@@ -176,7 +176,7 @@ public class Activator extends RienaPlugin {
 		regCollectibleReceiver = null;
 	}
 
-	private void startAttachmentService(BundleContext context) {
+	private void startAttachmentService(final BundleContext context) {
 		regAttachmentService = context.registerService(IAttachmentService.class.getName(), new AttachmentService(),
 				null);
 

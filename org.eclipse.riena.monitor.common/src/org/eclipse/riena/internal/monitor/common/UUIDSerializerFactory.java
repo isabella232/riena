@@ -26,7 +26,7 @@ public class UUIDSerializerFactory extends AbstractRienaSerializerFactory {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Deserializer getDeserializer(Class cl) throws HessianProtocolException {
+	public Deserializer getDeserializer(final Class cl) throws HessianProtocolException {
 		if (cl != UUID.class) {
 			return null;
 		}
@@ -40,7 +40,7 @@ public class UUIDSerializerFactory extends AbstractRienaSerializerFactory {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Serializer getSerializer(Class cl) throws HessianProtocolException {
+	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		return null;
 	}
 

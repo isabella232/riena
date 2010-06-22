@@ -84,43 +84,43 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 		try {
 			manager.showView("  ", FTViewPart.class, 1);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok("expected");
 		}
 
 		try {
 			manager.showView(null, FTViewPart.class, 1);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok("expected");
 		}
 
 		try {
 			manager.showView("", FTViewPart.class, 1);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok("expected");
 		}
 
 		try {
 			manager.showView("viewThree", null, SWT.TOP);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok("expected");
 		}
 
 		try {
 			manager.showView("viewThree", FTViewPart.class, -1);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok("expected");
 		}
 	}
 
 	public void testShowViewWithBounds() {
 		manager.showView("viewOne", FTViewPart.class, new Rectangle(20, 30, 400, 500));
-		Shell shellOne = manager.getShell("viewOne");
-		Rectangle shellBounds = shellOne.getBounds();
+		final Shell shellOne = manager.getShell("viewOne");
+		final Rectangle shellBounds = shellOne.getBounds();
 
 		assertEquals(20, shellBounds.x);
 		assertEquals(30, shellBounds.y);
@@ -130,7 +130,7 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 
 	public void testHideView() {
 		manager.showView("viewOne", FTViewPart.class, SWT.TOP);
-		Shell viewOne = manager.getShell("viewOne");
+		final Shell viewOne = manager.getShell("viewOne");
 
 		assertEquals(1, count);
 		assertTrue(viewOne.isVisible());
@@ -150,7 +150,7 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 		try {
 			manager.hideView(null);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok("expected");
 		}
 	}
@@ -158,8 +158,8 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 	public void testCloseView() {
 		manager.showView("viewOne", FTViewPart.class, SWT.TOP);
 		manager.showView("viewTwo", FTViewPart.class, SWT.BOTTOM);
-		Shell viewOne = manager.getShell("viewOne");
-		Shell viewTwo = manager.getShell("viewTwo");
+		final Shell viewOne = manager.getShell("viewOne");
+		final Shell viewTwo = manager.getShell("viewTwo");
 
 		assertEquals(2, count);
 		assertTrue(viewOne.isVisible());
@@ -184,7 +184,7 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 		try {
 			manager.closeView(null);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok("expected");
 		}
 	}
@@ -205,7 +205,7 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 
 		manager.showView("viewOne", FTViewPart.class, SWT.TOP);
 
-		Shell shellOne = manager.getShell("viewOne");
+		final Shell shellOne = manager.getShell("viewOne");
 		assertNotNull(shellOne);
 
 		manager.hideView("viewOne");
@@ -219,7 +219,7 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 		try {
 			manager.getShell(null);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok("expected");
 		}
 	}
@@ -249,7 +249,7 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 		private final Shell shell;
 		private IWorkbenchWindow window;
 
-		public Site(Shell shell) {
+		public Site(final Shell shell) {
 			this.shell = shell;
 		}
 
@@ -272,22 +272,22 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 			return window;
 		}
 
-		public void setSelectionProvider(ISelectionProvider provider) {
+		public void setSelectionProvider(final ISelectionProvider provider) {
 			// unused
 		}
 
 		@SuppressWarnings("rawtypes")
-		public Object getAdapter(Class adapter) {
+		public Object getAdapter(final Class adapter) {
 			return null;
 		}
 
 		@SuppressWarnings("rawtypes")
-		public Object getService(Class api) {
+		public Object getService(final Class api) {
 			return null;
 		}
 
 		@SuppressWarnings("rawtypes")
-		public boolean hasService(Class api) {
+		public boolean hasService(final Class api) {
 			return false;
 		}
 	}
@@ -300,7 +300,7 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 
 		private final Shell shell;
 
-		public WorkbenchWindow(Shell shell) {
+		public WorkbenchWindow(final Shell shell) {
 			this.shell = shell;
 		}
 
@@ -337,44 +337,44 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 			return null;
 		}
 
-		public boolean isApplicationMenu(String menuId) {
+		public boolean isApplicationMenu(final String menuId) {
 			return false;
 		}
 
-		public IWorkbenchPage openPage(IAdaptable input) throws WorkbenchException {
+		public IWorkbenchPage openPage(final IAdaptable input) throws WorkbenchException {
 			return null;
 		}
 
-		public IWorkbenchPage openPage(String perspectiveId, IAdaptable input) throws WorkbenchException {
+		public IWorkbenchPage openPage(final String perspectiveId, final IAdaptable input) throws WorkbenchException {
 			return null;
 		}
 
-		public void run(boolean fork, boolean cancelable, IRunnableWithProgress runnable)
+		public void run(final boolean fork, final boolean cancelable, final IRunnableWithProgress runnable)
 				throws InvocationTargetException, InterruptedException {
 		}
 
-		public void setActivePage(IWorkbenchPage page) {
+		public void setActivePage(final IWorkbenchPage page) {
 		}
 
-		public void addPageListener(IPageListener listener) {
+		public void addPageListener(final IPageListener listener) {
 		}
 
-		public void addPerspectiveListener(IPerspectiveListener listener) {
+		public void addPerspectiveListener(final IPerspectiveListener listener) {
 		}
 
-		public void removePageListener(IPageListener listener) {
+		public void removePageListener(final IPageListener listener) {
 		}
 
-		public void removePerspectiveListener(IPerspectiveListener listener) {
+		public void removePerspectiveListener(final IPerspectiveListener listener) {
 		}
 
 		@SuppressWarnings("rawtypes")
-		public Object getService(Class api) {
+		public Object getService(final Class api) {
 			return null;
 		}
 
 		@SuppressWarnings("rawtypes")
-		public boolean hasService(Class api) {
+		public boolean hasService(final Class api) {
 			return false;
 		}
 	}
@@ -388,7 +388,7 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 	 */
 	public static final class FTViewPart extends ViewPart {
 		@Override
-		public void createPartControl(Composite parent) {
+		public void createPartControl(final Composite parent) {
 			count++;
 		}
 
@@ -414,15 +414,15 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 	 * A SubModuleView that returns a controller.
 	 */
 	public static final class FTViewWithController extends SubModuleView {
-		private FTViewController controller = new FTViewController();
+		private final FTViewController controller = new FTViewController();
 
 		@Override
-		protected FTViewController createController(ISubModuleNode node) {
+		protected FTViewController createController(final ISubModuleNode node) {
 			return controller;
 		}
 
 		@Override
-		protected void basicCreatePartControl(Composite parent) {
+		protected void basicCreatePartControl(final Composite parent) {
 			// unused
 		}
 	}
@@ -432,7 +432,7 @@ public class DetachedViewsManagerTest extends RienaTestCase {
 	 */
 	public static final class FTViewWithoutController extends SubModuleView {
 		@Override
-		protected void basicCreatePartControl(Composite parent) {
+		protected void basicCreatePartControl(final Composite parent) {
 			// unused
 		}
 	}

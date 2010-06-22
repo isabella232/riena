@@ -42,8 +42,8 @@ public interface IProgressVisualizerObserver {
 	 * @param visualizer
 	 *            the current visualizer
 	 * @param progress
-	 *            the current progress. consider that the progress can grow in two
-	 *            different ways. (unit based and cumulative)
+	 *            the current progress. consider that the progress can grow in
+	 *            two different ways. (unit based and cumulative)
 	 */
 	void updateProgress(IProgressVisualizer visualizer, int progress);
 

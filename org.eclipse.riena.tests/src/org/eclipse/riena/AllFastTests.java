@@ -51,12 +51,12 @@ public class AllFastTests extends TestCase {
 
 	@SuppressWarnings("unchecked")
 	public static Test suite() {
-		TestSuite collected = TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), null,
+		final TestSuite collected = TestCollector.createTestSuiteWith(Activator.getDefault().getBundle(), null,
 				UITestCase.class, NonUITestCase.class);
-		Enumeration<Test> tests = collected.tests();
-		TestSuite result = new TestSuite();
+		final Enumeration<Test> tests = collected.tests();
+		final TestSuite result = new TestSuite();
 		while (tests.hasMoreElements()) {
-			Test test = tests.nextElement();
+			final Test test = tests.nextElement();
 			if (!longTests.contains(getTestName(test))) {
 				result.addTest(test);
 			} else {
@@ -69,9 +69,9 @@ public class AllFastTests extends TestCase {
 	// helping methods
 	//////////////////
 
-	private static String getTestName(Test test) {
+	private static String getTestName(final Test test) {
 		String result = test.toString();
-		int lastDot = result.lastIndexOf('.');
+		final int lastDot = result.lastIndexOf('.');
 		if (lastDot != -1) {
 			result = result.substring(lastDot + 1);
 		}

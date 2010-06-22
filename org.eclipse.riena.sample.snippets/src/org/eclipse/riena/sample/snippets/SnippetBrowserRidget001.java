@@ -33,21 +33,21 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public final class SnippetBrowserRidget001 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetBrowserRidget001.class.getSimpleName());
-			GridLayoutFactory.fillDefaults().numColumns(1).margins(10, 10).equalWidth(false).spacing(20, 10).applyTo(
-					shell);
+			GridLayoutFactory.fillDefaults().numColumns(1).margins(10, 10).equalWidth(false).spacing(20, 10)
+					.applyTo(shell);
 
-			Text text = UIControlsFactory.createText(shell, SWT.SINGLE | SWT.BORDER);
+			final Text text = UIControlsFactory.createText(shell, SWT.SINGLE | SWT.BORDER);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(text);
 
-			Browser browser = new Browser(shell, SWT.BORDER);
+			final Browser browser = new Browser(shell, SWT.BORDER);
 			GridDataFactory.fillDefaults().grab(true, true).applyTo(browser);
 
-			IBrowserRidget browserRidget = (IBrowserRidget) SwtRidgetFactory.createRidget(browser);
+			final IBrowserRidget browserRidget = (IBrowserRidget) SwtRidgetFactory.createRidget(browser);
 
 			final ITextRidget textRidget = (ITextRidget) SwtRidgetFactory.createRidget(text);
 			textRidget.setDirectWriting(false);
@@ -55,7 +55,7 @@ public final class SnippetBrowserRidget001 {
 			textRidget.setText("http://www.eclipse.org/"); //$NON-NLS-1$
 
 			browserRidget.addPropertyChangeListener(IBrowserRidget.PROPERTY_URL, new PropertyChangeListener() {
-				public void propertyChange(PropertyChangeEvent evt) {
+				public void propertyChange(final PropertyChangeEvent evt) {
 					textRidget.setText((String) evt.getNewValue());
 				}
 			});

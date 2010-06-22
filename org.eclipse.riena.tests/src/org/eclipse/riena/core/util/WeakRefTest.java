@@ -28,8 +28,8 @@ public class WeakRefTest extends RienaTestCase {
 	public void testNotRemovedByOfGarbageCollectorBecauseStillReferences() throws IOException {
 		gotNotified = false;
 
-		StringBuffer bob = new StringBuffer("go away");
-		WeakRef<StringBuffer> ref = new WeakRef<StringBuffer>(bob, new Runnable() {
+		final StringBuffer bob = new StringBuffer("go away");
+		final WeakRef<StringBuffer> ref = new WeakRef<StringBuffer>(bob, new Runnable() {
 			public void run() {
 				gotNotified = true;
 			}
@@ -45,7 +45,7 @@ public class WeakRefTest extends RienaTestCase {
 		gotNotified = false;
 
 		StringBuffer bob = new StringBuffer("go away");
-		WeakRef<StringBuffer> ref = new WeakRef<StringBuffer>(bob, new Runnable() {
+		final WeakRef<StringBuffer> ref = new WeakRef<StringBuffer>(bob, new Runnable() {
 			public void run() {
 				gotNotified = true;
 			}
@@ -60,11 +60,11 @@ public class WeakRefTest extends RienaTestCase {
 
 	private void runOutOfMemory() throws IOException {
 		try {
-			OutputStream os = new ByteArrayOutputStream();
+			final OutputStream os = new ByteArrayOutputStream();
 			while (true) {
 				os.write(new byte[1024 * 1024]);
 			}
-		} catch (OutOfMemoryError e) {
+		} catch (final OutOfMemoryError e) {
 			System.gc();
 		}
 	}

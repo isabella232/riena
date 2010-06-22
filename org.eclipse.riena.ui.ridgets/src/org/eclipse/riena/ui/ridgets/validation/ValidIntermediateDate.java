@@ -21,7 +21,7 @@ public class ValidIntermediateDate extends AbstractValidDate {
 		super(true);
 	}
 
-	public ValidIntermediateDate(String pattern) {
+	public ValidIntermediateDate(final String pattern) {
 		super(pattern, true);
 	}
 

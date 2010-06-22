@@ -96,39 +96,39 @@ public class SWTModuleControllerTest extends TestCase {
 	public void testCollapseSibling() {
 
 		// level 1
-		ISubModuleNode sm1 = new SubModuleNode(new NavigationNodeId("sm1"));
+		final ISubModuleNode sm1 = new SubModuleNode(new NavigationNodeId("sm1"));
 		moduleNode.addChild(sm1);
-		ISubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		final ISubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("sm2"));
 		moduleNode.addChild(sm2);
-		ISubModuleNode sm3 = new SubModuleNode(new NavigationNodeId("sm3"));
+		final ISubModuleNode sm3 = new SubModuleNode(new NavigationNodeId("sm3"));
 		moduleNode.addChild(sm3);
 
 		// level 2
-		ISubModuleNode sm11 = new SubModuleNode(new NavigationNodeId("sm11"));
+		final ISubModuleNode sm11 = new SubModuleNode(new NavigationNodeId("sm11"));
 		sm1.addChild(sm11);
-		ISubModuleNode sm12 = new SubModuleNode(new NavigationNodeId("sm12"));
+		final ISubModuleNode sm12 = new SubModuleNode(new NavigationNodeId("sm12"));
 		sm1.addChild(sm12);
-		ISubModuleNode sm21 = new SubModuleNode(new NavigationNodeId("sm21"));
+		final ISubModuleNode sm21 = new SubModuleNode(new NavigationNodeId("sm21"));
 		sm2.addChild(sm21);
-		ISubModuleNode sm22 = new SubModuleNode(new NavigationNodeId("sm22"));
+		final ISubModuleNode sm22 = new SubModuleNode(new NavigationNodeId("sm22"));
 		sm2.addChild(sm22);
-		ISubModuleNode sm31 = new SubModuleNode(new NavigationNodeId("sm31"));
+		final ISubModuleNode sm31 = new SubModuleNode(new NavigationNodeId("sm31"));
 		sm3.addChild(sm31);
-		ISubModuleNode sm32 = new SubModuleNode(new NavigationNodeId("sm32"));
+		final ISubModuleNode sm32 = new SubModuleNode(new NavigationNodeId("sm32"));
 		sm3.addChild(sm32);
 
 		// level 3
-		ISubModuleNode sm111 = new SubModuleNode(new NavigationNodeId("sm111"));
+		final ISubModuleNode sm111 = new SubModuleNode(new NavigationNodeId("sm111"));
 		sm11.addChild(sm111);
-		ISubModuleNode sm121 = new SubModuleNode(new NavigationNodeId("sm121"));
+		final ISubModuleNode sm121 = new SubModuleNode(new NavigationNodeId("sm121"));
 		sm12.addChild(sm121);
-		ISubModuleNode sm211 = new SubModuleNode(new NavigationNodeId("sm211"));
+		final ISubModuleNode sm211 = new SubModuleNode(new NavigationNodeId("sm211"));
 		sm21.addChild(sm211);
-		ISubModuleNode sm221 = new SubModuleNode(new NavigationNodeId("sm221"));
+		final ISubModuleNode sm221 = new SubModuleNode(new NavigationNodeId("sm221"));
 		sm22.addChild(sm221);
-		ISubModuleNode sm311 = new SubModuleNode(new NavigationNodeId("sm311"));
+		final ISubModuleNode sm311 = new SubModuleNode(new NavigationNodeId("sm311"));
 		sm31.addChild(sm311);
-		ISubModuleNode sm321 = new SubModuleNode(new NavigationNodeId("sm321"));
+		final ISubModuleNode sm321 = new SubModuleNode(new NavigationNodeId("sm321"));
 		sm32.addChild(sm321);
 
 		expandAll(moduleNode, true);
@@ -158,10 +158,10 @@ public class SWTModuleControllerTest extends TestCase {
 	 * @param expanded
 	 *            {@code true} expand nodes; {@code false} collapse nodes
 	 */
-	private void expandAll(INavigationNode<?> node, boolean expanded) {
+	private void expandAll(final INavigationNode<?> node, final boolean expanded) {
 
 		node.setExpanded(expanded);
-		for (INavigationNode<?> child : node.getChildren()) {
+		for (final INavigationNode<?> child : node.getChildren()) {
 			expandAll(child, expanded);
 		}
 

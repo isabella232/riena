@@ -51,9 +51,9 @@ public final class IconState {
 	 */
 	public static final IconState HOVER_HAS_FOCUS = new IconState("_hf_"); //$NON-NLS-1$
 
-	private String defaultMapping;
+	private final String defaultMapping;
 
-	private IconState(String defaultMapping) {
+	private IconState(final String defaultMapping) {
 		this.defaultMapping = defaultMapping;
 	}
 

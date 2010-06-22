@@ -30,7 +30,7 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 
 	private static final WorkareaDefinitionRegistryFacade INSTANCE = new WorkareaDefinitionRegistryFacade();
 
-	private SortedSet<WorkareaDefinitionRegistryWithRank> contributedRegistries;
+	private final SortedSet<WorkareaDefinitionRegistryWithRank> contributedRegistries;
 
 	public static WorkareaDefinitionRegistryFacade getInstance() {
 		return INSTANCE;
@@ -44,16 +44,16 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 	/**
 	 * {@inheritDoc}
 	 */
-	public IWorkareaDefinition getDefinition(Object id) {
+	public IWorkareaDefinition getDefinition(final Object id) {
 
-		for (IWorkareaDefinitionRegistry registry : contributedRegistries) {
+		for (final IWorkareaDefinitionRegistry registry : contributedRegistries) {
 			IWorkareaDefinition definition = registry.getDefinition(id);
 			if (definition != null) {
 				return definition;
 			}
 
 			if (id instanceof INavigationNode<?>) {
-				INavigationNode<?> node = (INavigationNode<?>) id;
+				final INavigationNode<?> node = (INavigationNode<?>) id;
 				if (node.getNodeId() != null && node.getNodeId().getTypeId() != null) {
 					definition = registry.getDefinition(node.getNodeId().getTypeId());
 					if (definition != null) {
@@ -83,9 +83,9 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 	 *            be shared, <code>false</code> otherwise
 	 * @return the registered workarea definition
 	 */
-	public IWorkareaDefinition registerDefinition(Object id, Class<? extends IController> controllerClass,
-			Object viewId, boolean shared) {
-		WorkareaDefinition def = new WorkareaDefinition(controllerClass, viewId);
+	public IWorkareaDefinition registerDefinition(final Object id, final Class<? extends IController> controllerClass,
+			final Object viewId, final boolean shared) {
+		final WorkareaDefinition def = new WorkareaDefinition(controllerClass, viewId);
 		def.setViewShared(shared);
 		return register(id, def);
 	}
@@ -93,10 +93,10 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 	/**
 	 * {@inheritDoc}
 	 */
-	public IWorkareaDefinition register(Object id, IWorkareaDefinition definition) {
+	public IWorkareaDefinition register(final Object id, final IWorkareaDefinition definition) {
 
-		for (IWorkareaDefinitionRegistry registry : contributedRegistries) {
-			IWorkareaDefinition def = registry.register(id, definition);
+		for (final IWorkareaDefinitionRegistry registry : contributedRegistries) {
+			final IWorkareaDefinition def = registry.register(id, definition);
 			if (def != null) {
 				return def;
 			}
@@ -107,9 +107,9 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 
 	private void registerExplicitDefinitionRegistry() {
 
-		BundleContext context = Activator.getDefault().getBundle().getBundleContext();
-		IWorkareaDefinitionRegistry registry = ExplicitWorkareaDefinitionRegistry.getInstance();
-		Hashtable<String, Object> props = new Hashtable<String, Object>();
+		final BundleContext context = Activator.getDefault().getBundle().getBundleContext();
+		final IWorkareaDefinitionRegistry registry = ExplicitWorkareaDefinitionRegistry.getInstance();
+		final Hashtable<String, Object> props = new Hashtable<String, Object>();
 		props.put(Constants.SERVICE_RANKING, 100);
 
 		context.registerService(IWorkareaDefinitionRegistry.class.getName(), registry, props);
@@ -118,11 +118,11 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 	/**
 	 * {@inheritDoc}
 	 */
-	public Object addingService(ServiceReference reference) {
+	public Object addingService(final ServiceReference reference) {
 
 		// get service and increase use count
-		BundleContext bundleContext = Activator.getDefault().getBundle().getBundleContext();
-		IWorkareaDefinitionRegistry registry = (IWorkareaDefinitionRegistry) bundleContext.getService(reference);
+		final BundleContext bundleContext = Activator.getDefault().getBundle().getBundleContext();
+		final IWorkareaDefinitionRegistry registry = (IWorkareaDefinitionRegistry) bundleContext.getService(reference);
 
 		// add registry
 		contributedRegistries.add(createEntry(reference, registry));
@@ -133,10 +133,10 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 	/**
 	 * {@inheritDoc}
 	 */
-	public void modifiedService(ServiceReference reference, Object service) {
+	public void modifiedService(final ServiceReference reference, final Object service) {
 
 		// maybe ranking has changed
-		WorkareaDefinitionRegistryWithRank entry = createEntry(reference, service);
+		final WorkareaDefinitionRegistryWithRank entry = createEntry(reference, service);
 		contributedRegistries.remove(entry);
 		contributedRegistries.add(entry);
 	}
@@ -144,31 +144,31 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 	/**
 	 * {@inheritDoc}
 	 */
-	public void removedService(ServiceReference reference, Object service) {
+	public void removedService(final ServiceReference reference, final Object service) {
 
 		// remove registry
 		//Object rankingProperty = reference.getProperty(Constants.SERVICE_RANKING);
 		contributedRegistries.remove(createEntry(reference, service));
 
 		// unget service and decrease use count
-		BundleContext bundleContext = Activator.getDefault().getBundle().getBundleContext();
+		final BundleContext bundleContext = Activator.getDefault().getBundle().getBundleContext();
 		bundleContext.ungetService(reference);
 	}
 
-	private WorkareaDefinitionRegistryWithRank createEntry(ServiceReference reference, Object registry) {
+	private WorkareaDefinitionRegistryWithRank createEntry(final ServiceReference reference, final Object registry) {
 
-		Object rankingProperty = reference.getProperty(Constants.SERVICE_RANKING);
-		int ranking = (rankingProperty instanceof Integer) ? ((Integer) rankingProperty).intValue() : 0;
+		final Object rankingProperty = reference.getProperty(Constants.SERVICE_RANKING);
+		final int ranking = (rankingProperty instanceof Integer) ? ((Integer) rankingProperty).intValue() : 0;
 		return new WorkareaDefinitionRegistryWithRank(ranking, (IWorkareaDefinitionRegistry) registry);
 	}
 
 	private static class WorkareaDefinitionRegistryWithRank implements IWorkareaDefinitionRegistry,
 			Comparable<WorkareaDefinitionRegistryWithRank> {
 
-		private int ranking;
-		private IWorkareaDefinitionRegistry registry;
+		private final int ranking;
+		private final IWorkareaDefinitionRegistry registry;
 
-		WorkareaDefinitionRegistryWithRank(int ranking, IWorkareaDefinitionRegistry registry) {
+		WorkareaDefinitionRegistryWithRank(final int ranking, final IWorkareaDefinitionRegistry registry) {
 			this.ranking = ranking;
 			this.registry = registry;
 		}
@@ -185,7 +185,7 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 		 * @see org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry#
 		 *      getDefinition(Object)
 		 */
-		public IWorkareaDefinition getDefinition(Object id) {
+		public IWorkareaDefinition getDefinition(final Object id) {
 			return registry.getDefinition(id);
 		}
 
@@ -193,14 +193,14 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 		 * @see org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry#register
 		 *      (java.lang.Object)
 		 */
-		public IWorkareaDefinition register(Object id, IWorkareaDefinition definition) {
+		public IWorkareaDefinition register(final Object id, final IWorkareaDefinition definition) {
 			return registry.register(id, definition);
 		}
 
 		/**
 		 * @see java.lang.Comparable#compareTo(java.lang.Object)
 		 */
-		public int compareTo(WorkareaDefinitionRegistryWithRank other) {
+		public int compareTo(final WorkareaDefinitionRegistryWithRank other) {
 
 			if (this.getRanking() != other.getRanking()) {
 				return this.getRanking() > other.getRanking() ? -1 : 1;
@@ -209,7 +209,7 @@ public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefiniti
 		}
 
 		@Override
-		public boolean equals(Object other) {
+		public boolean equals(final Object other) {
 
 			if (other instanceof WorkareaDefinitionRegistryWithRank) {
 				return registry.equals(((WorkareaDefinitionRegistryWithRank) other).getRegistry());

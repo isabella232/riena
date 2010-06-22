@@ -24,7 +24,7 @@ public class ObjectTransactionFailure extends Failure {
 	/**
 	 * @param message
 	 */
-	public ObjectTransactionFailure(String message) {
+	public ObjectTransactionFailure(final String message) {
 		super(message);
 	}
 
@@ -32,7 +32,7 @@ public class ObjectTransactionFailure extends Failure {
 	 * @param message
 	 * @param t
 	 */
-	public ObjectTransactionFailure(String message, Throwable t) {
+	public ObjectTransactionFailure(final String message, final Throwable t) {
 		super(message, t);
 	}
 

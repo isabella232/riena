@@ -27,7 +27,7 @@ public class ValidDateTest extends RienaTestCase {
 	 */
 	public final void testDateDDMMYYYYFormat() throws Exception {
 
-		ValidDate rule = new ValidDate("dd.MM.yyyy");
+		final ValidDate rule = new ValidDate("dd.MM.yyyy");
 
 		assertTrue(rule.validate("12.12.2004").isOK());
 		assertTrue(rule.validate("30.09.1999").isOK());
@@ -45,7 +45,7 @@ public class ValidDateTest extends RienaTestCase {
 	 */
 	public final void testDateMMYYYYFormat() throws Exception {
 
-		ValidDate rule = new ValidDate("MM.yyyy");
+		final ValidDate rule = new ValidDate("MM.yyyy");
 
 		assertTrue(rule.validate("12.2004").isOK());
 		assertTrue(rule.validate("09.1999").isOK());
@@ -61,7 +61,7 @@ public class ValidDateTest extends RienaTestCase {
 	 */
 	public final void testDateYYYYFormat() throws Exception {
 
-		ValidDate rule = new ValidDate("yyyy");
+		final ValidDate rule = new ValidDate("yyyy");
 
 		assertTrue(rule.validate("2004").isOK());
 
@@ -97,7 +97,7 @@ public class ValidDateTest extends RienaTestCase {
 
 	public void testException() throws Exception {
 		try {
-			ValidDate rule = new ValidDate("dd.MM");
+			final ValidDate rule = new ValidDate("dd.MM");
 			rule.validate(new Object());
 			fail("expected thrown ValidationFailure.");
 		} catch (final ValidationFailure e) {

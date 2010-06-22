@@ -55,8 +55,8 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		textAlreadyInitialized = false;
 		useRidgetIcon = false;
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
 				updateSelection(isEnabled);
 			}
 		});
@@ -64,7 +64,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 
 	@Override
 	protected void bindUIControl() {
-		DataBindingContext context = getValueBindingSupport().getContext();
+		final DataBindingContext context = getValueBindingSupport().getContext();
 		if (getUIControl() != null) {
 			controlBinding = context.bindValue(getUIControlSelectionObservable(), getRidgetObservable(),
 					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(
@@ -106,7 +106,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		return selected;
 	}
 
-	public void setSelected(boolean selected) {
+	public void setSelected(final boolean selected) {
 		if (!getMarkersOfType(OutputMarker.class).isEmpty()) {
 			/*
 			 * TODO If the Ridget has an OutputMarker all events from UI should
@@ -123,27 +123,28 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 			return;
 		}
 		if (this.selected != selected) {
-			boolean oldValue = this.selected;
+			final boolean oldValue = this.selected;
 			this.selected = selected;
 			actionObserver.widgetSelected(null);
-			firePropertyChange(IToggleButtonRidget.PROPERTY_SELECTED, Boolean.valueOf(oldValue), Boolean
-					.valueOf(selected));
+			firePropertyChange(IToggleButtonRidget.PROPERTY_SELECTED, Boolean.valueOf(oldValue),
+					Boolean.valueOf(selected));
 		}
 	}
 
-	public void addListener(IActionListener listener) {
+	public void addListener(final IActionListener listener) {
 		actionObserver.addListener(listener);
 	}
 
 	/**
 	 * @deprecated use {@link #addListener(IActionListener)}
 	 */
-	public void addListener(Object target, String action) {
-		IActionListener listener = EventHandler.create(IActionListener.class, target, action);
+	@Deprecated
+	public void addListener(final Object target, final String action) {
+		final IActionListener listener = EventHandler.create(IActionListener.class, target, action);
 		actionObserver.addListener(listener);
 	}
 
-	public void removeListener(IActionListener listener) {
+	public void removeListener(final IActionListener listener) {
 		actionObserver.removeListener(listener);
 	}
 
@@ -151,31 +152,31 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		return text;
 	}
 
-	public final void setText(String newText) {
-		String oldText = this.text;
+	public final void setText(final String newText) {
+		final String oldText = this.text;
 		this.text = newText;
 		updateUIText();
 		firePropertyChange(IActionRidget.PROPERTY_TEXT, oldText, this.text);
 	}
 
 	public String getIcon() {
-		IIconManager manager = IconManagerProvider.getInstance().getIconManager();
-		String icon = manager.getName(this.iconID);
+		final IIconManager manager = IconManagerProvider.getInstance().getIconManager();
+		final String icon = manager.getName(this.iconID);
 		return icon;
 	}
 
-	public void setIcon(String icon) {
+	public void setIcon(final String icon) {
 		setIcon(icon, IconSize.NONE);
 	}
 
 	/**
 	 * @since 2.0
 	 */
-	public void setIcon(String icon, IconSize size) {
-		boolean oldUseRidgetIcon = useRidgetIcon;
+	public void setIcon(final String icon, final IconSize size) {
+		final boolean oldUseRidgetIcon = useRidgetIcon;
 		useRidgetIcon = true;
-		String oldIconID = this.iconID;
-		IIconManager manager = IconManagerProvider.getInstance().getIconManager();
+		final String oldIconID = this.iconID;
+		final IIconManager manager = IconManagerProvider.getInstance().getIconManager();
 		this.iconID = manager.getIconID(icon, size);
 		if (hasChanged(oldIconID, iconID) || !oldUseRidgetIcon) {
 			updateUIIcon();
@@ -211,7 +212,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	 * @param isRidgetEnabled
 	 *            true if this ridget is enabled, false otherwise
 	 */
-	private void updateSelection(boolean isRidgetEnabled) {
+	private void updateSelection(final boolean isRidgetEnabled) {
 		if (getUIControl() != null && MarkerSupport.isHideDisabledRidgetContent()) {
 			if (!isRidgetEnabled) {
 				setUIControlSelection(false);
@@ -255,8 +256,8 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	 * HIDE_DISABLED_RIDGET_CONTENT is {@code false}.
 	 */
 	private final class CancelControlUpdateWhenDisabled implements IValidator {
-		public IStatus validate(Object value) {
-			boolean cancel = MarkerSupport.isHideDisabledRidgetContent() && !isEnabled();
+		public IStatus validate(final Object value) {
+			final boolean cancel = MarkerSupport.isHideDisabledRidgetContent() && !isEnabled();
 			return cancel ? Status.CANCEL_STATUS : Status.OK_STATUS;
 		}
 	}

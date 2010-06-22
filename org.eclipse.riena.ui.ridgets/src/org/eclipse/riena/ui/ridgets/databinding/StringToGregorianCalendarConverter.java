@@ -40,7 +40,7 @@ public class StringToGregorianCalendarConverter extends Converter {
 	 * 
 	 * @see org.eclipse.core.databinding.conversion.IConverter#convert(java.lang.Object)
 	 */
-	public Object convert(Object fromObject) {
+	public Object convert(final Object fromObject) {
 
 		if ((fromObject == null) || "".equals(fromObject)) { //$NON-NLS-1$
 			return null;
@@ -48,12 +48,12 @@ public class StringToGregorianCalendarConverter extends Converter {
 
 		try {
 			synchronized (FORMAT) {
-				Date date = FORMAT.parse(fromObject.toString());
-				Calendar calendar = GregorianCalendar.getInstance();
+				final Date date = FORMAT.parse(fromObject.toString());
+				final Calendar calendar = GregorianCalendar.getInstance();
 				calendar.setTime(date);
 				return calendar;
 			}
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			throw new ConversionFailure("Cannot convert \"" + fromObject + "\" to GregorianCalendar.", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 

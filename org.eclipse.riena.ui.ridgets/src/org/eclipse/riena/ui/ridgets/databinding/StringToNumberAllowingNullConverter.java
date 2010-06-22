@@ -37,9 +37,9 @@ public class StringToNumberAllowingNullConverter extends Converter {
 		return new StringToNumberAllowingNullConverter(Integer.TYPE, StringToNumberConverter.toInteger(true));
 	}
 
-	private IConverter delegate;
+	private final IConverter delegate;
 
-	protected StringToNumberAllowingNullConverter(Object toType, IConverter delegate) {
+	protected StringToNumberAllowingNullConverter(final Object toType, final IConverter delegate) {
 		super(String.class, toType);
 		this.delegate = delegate;
 	}
@@ -47,7 +47,7 @@ public class StringToNumberAllowingNullConverter extends Converter {
 	/**
 	 * @see org.eclipse.core.databinding.conversion.IConverter#convert(java.lang.Object)
 	 */
-	public Object convert(Object fromObject) {
+	public Object convert(final Object fromObject) {
 		if ("".equals(fromObject) || fromObject == null) { //$NON-NLS-1$
 			if (delegate.getToType() == Double.TYPE) {
 				return 0.0;

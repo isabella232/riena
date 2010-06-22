@@ -21,7 +21,7 @@ import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
  */
 public abstract class AbstractValueRidget extends AbstractSWTRidget implements IValueRidget {
 
-	private ValueBindingSupport valueBindingSupport;
+	private final ValueBindingSupport valueBindingSupport;
 
 	public AbstractValueRidget() {
 		valueBindingSupport = new ValueBindingSupport(this.getRidgetObservable());
@@ -33,11 +33,11 @@ public abstract class AbstractValueRidget extends AbstractSWTRidget implements I
 	 */
 	protected abstract IObservableValue getRidgetObservable();
 
-	public void bindToModel(IObservableValue observableValue) {
+	public void bindToModel(final IObservableValue observableValue) {
 		valueBindingSupport.bindToModel(observableValue);
 	}
 
-	public void bindToModel(Object valueHolder, String valuePropertyName) {
+	public void bindToModel(final Object valueHolder, final String valuePropertyName) {
 		valueBindingSupport.bindToModel(valueHolder, valuePropertyName);
 	}
 
@@ -45,7 +45,7 @@ public abstract class AbstractValueRidget extends AbstractSWTRidget implements I
 		return valueBindingSupport.getModelToUIControlConverter();
 	}
 
-	public void setModelToUIControlConverter(IConverter converter) {
+	public void setModelToUIControlConverter(final IConverter converter) {
 		valueBindingSupport.setModelToUIControlConverter(converter);
 	}
 

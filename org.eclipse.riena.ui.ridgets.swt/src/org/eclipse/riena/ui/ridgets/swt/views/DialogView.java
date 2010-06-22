@@ -27,18 +27,19 @@ import org.eclipse.riena.ui.swt.utils.SWTControlFinder;
  * 
  * @deprecated use {@link AbstractDialogView}
  */
+@Deprecated
 public abstract class DialogView extends RienaDialog {
 
 	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
 	private boolean closing;
-	private AbstractControlledView<AbstractWindowController> controlledViewDelegate;
+	private final AbstractControlledView<AbstractWindowController> controlledViewDelegate;
 	private Shell parentShell;
 
 	/**
 	 * @param parent
 	 *            the parent control.
 	 */
-	public DialogView(Composite parent) {
+	public DialogView(final Composite parent) {
 		super(null != parent ? parent.getShell() : Display.getDefault().getActiveShell());
 
 		controlledViewDelegate = new AbstractControlledView<AbstractWindowController>() {
@@ -51,10 +52,10 @@ public abstract class DialogView extends RienaDialog {
 		}
 	}
 
-	private void addUIControls(Composite composite) {
-		SWTControlFinder finder = new SWTControlFinder(composite) {
+	private void addUIControls(final Composite composite) {
+		final SWTControlFinder finder = new SWTControlFinder(composite) {
 			@Override
-			public void handleBoundControl(Control control, String bindingProperty) {
+			public void handleBoundControl(final Control control, final String bindingProperty) {
 				addUIControl(control, bindingProperty);
 			}
 		};
@@ -73,7 +74,7 @@ public abstract class DialogView extends RienaDialog {
 	 * @param shell
 	 * @param ridgetIdWindow
 	 */
-	public void addUIControl(Object uiControl, String ridgetId) {
+	public void addUIControl(final Object uiControl, final String ridgetId) {
 		controlledViewDelegate.addUIControl(uiControl, ridgetId);
 	}
 
@@ -85,7 +86,7 @@ public abstract class DialogView extends RienaDialog {
 	/**
 	 * @wbp.parser.entryPoint
 	 */
-	protected Control buildView(Composite parent) {
+	protected Control buildView(final Composite parent) {
 		return parent;
 	}
 
@@ -120,7 +121,7 @@ public abstract class DialogView extends RienaDialog {
 		closing = true;
 		onClose();
 		controlledViewDelegate.unbind(getController());
-		boolean result = super.close();
+		final boolean result = super.close();
 		closing = false;
 		return result;
 	}
@@ -139,7 +140,7 @@ public abstract class DialogView extends RienaDialog {
 		LNF_UPDATER.updateUIControls(getShell(), true);
 
 		getShell().addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+			public void widgetDisposed(final DisposeEvent e) {
 				if (!closing) {
 					close();
 				}
@@ -148,8 +149,8 @@ public abstract class DialogView extends RienaDialog {
 	}
 
 	@Override
-	protected Control createDialogArea(Composite parent) {
-		Control dlgContente = buildView(parent);
+	protected Control createDialogArea(final Composite parent) {
+		final Control dlgContente = buildView(parent);
 		addUIControl(getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
 		LNF_UPDATER.updateUIControls(parent, true);
 		return dlgContente;

@@ -48,7 +48,7 @@ public class BorderMarkerSupport extends MarkerSupport {
 	 * @param propertyChangeSupport
 	 *            this will be informed if a marker has changed
 	 */
-	public BorderMarkerSupport(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+	public BorderMarkerSupport(final IBasicMarkableRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
 	}
 
@@ -56,11 +56,11 @@ public class BorderMarkerSupport extends MarkerSupport {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void addError(Control control) {
+	protected void addError(final Control control) {
 		if (errorDecoration == null) {
 			errorDecoration = createErrorDecoration(control);
 			control.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(DisposeEvent e) {
+				public void widgetDisposed(final DisposeEvent e) {
 					errorDecoration.dispose();
 				}
 			});
@@ -72,7 +72,7 @@ public class BorderMarkerSupport extends MarkerSupport {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void clearError(Control control) {
+	protected void clearError(final Control control) {
 		if (errorDecoration != null) {
 			errorDecoration.hide();
 		}
@@ -87,11 +87,11 @@ public class BorderMarkerSupport extends MarkerSupport {
 	 *            the control to be decorated with an error marker
 	 * @return decoration of the given control
 	 */
-	protected BorderControlDecoration createErrorDecoration(Control control) {
-		RienaDefaultLnf lnf = LnfManager.getLnf();
-		int width = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_BORDER_WIDTH, 1);
-		Color borderColor = lnf.getColor(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR);
-		BorderControlDecoration ctrlDecoration = new BorderControlDecoration(control, width, borderColor);
+	protected BorderControlDecoration createErrorDecoration(final Control control) {
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
+		final int width = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_BORDER_WIDTH, 1);
+		final Color borderColor = lnf.getColor(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR);
+		final BorderControlDecoration ctrlDecoration = new BorderControlDecoration(control, width, borderColor);
 		return ctrlDecoration;
 	}
 

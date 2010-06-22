@@ -59,6 +59,7 @@ public interface IActionRidget extends IRidget {
 	 *             EventHandler.create(IActionListener.class, target, action);
 	 *             this.addListener(listener);}
 	 */
+	@Deprecated
 	void addListener(Object target, String action);
 
 	/**

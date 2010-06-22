@@ -53,13 +53,13 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	// ////////////////
 
 	public void testSetup() {
-		ITraverseRidget ridget = getRidget();
-		Control control = getWidget();
+		final ITraverseRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		assertPropertiesEqual(ridget, control);
 	}
 
-	protected void assertPropertiesEqual(ITraverseRidget ridget, Control control) {
+	protected void assertPropertiesEqual(final ITraverseRidget ridget, final Control control) {
 		assertEquals(getValue(control), ridget.getValue());
 		assertEquals(getIncrement(control), ridget.getIncrement());
 		assertEquals(getMaximum(control), ridget.getMaximum());
@@ -68,12 +68,12 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetValue() {
-		ITraverseRidget ridget = getRidget();
+		final ITraverseRidget ridget = getRidget();
 
 		/*
 		 * Test 1 - allowed values
 		 */
-		Control control = getWidget();
+		final Control control = getWidget();
 		ridget.setMaximum(30);
 		ridget.setMinimum(0);
 		ridget.setValue(10);
@@ -153,8 +153,8 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	 * differing ones.
 	 */
 	public void testSetValueRidgetBased() {
-		Control control = getWidget();
-		ITraverseRidget ridget = getRidget();
+		final Control control = getWidget();
+		final ITraverseRidget ridget = getRidget();
 
 		/*
 		 * Test 1 - value > max
@@ -200,7 +200,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetValueFiresEvents() {
-		ITraverseRidget ridget = getRidget();
+		final ITraverseRidget ridget = getRidget();
 		ridget.setMaximum(20);
 		ridget.setValue(0);
 
@@ -219,7 +219,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	 * differing ones.
 	 */
 	public void testSetValueFiresEventsRidgetBased() {
-		ITraverseRidget ridget = getRidget();
+		final ITraverseRidget ridget = getRidget();
 		ridget.setMaximum(20);
 		ridget.setValue(0);
 		assertEquals(20, ridget.getMaximum());
@@ -239,8 +239,8 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetIncrement() {
-		ITraverseRidget ridget = getRidget();
-		Control control = getWidget();
+		final ITraverseRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		/*
 		 * Valid increment
@@ -292,13 +292,13 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	 * 
 	 */
 	public void testSetIncrementRidgetBased() {
-		ITraverseRidget ridget = getRidget();
-		Control control = getWidget();
+		final ITraverseRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		/*
 		 * Test 1 - increment > max - min. Result: increment = max - min
 		 */
-		int deltaMaxMin = 10 - 7;
+		final int deltaMaxMin = 10 - 7;
 		ridget.setMinimum(7);
 		ridget.setMaximum(10);
 		assertEquals(10, ridget.getMaximum());
@@ -345,7 +345,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetIncrementFiresEvents() {
-		ITraverseRidget ridget = getRidget();
+		final ITraverseRidget ridget = getRidget();
 		ridget.setIncrement(1);
 
 		/*
@@ -373,7 +373,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	 * differing ones.
 	 */
 	public void testSetIncrementFiresEventsRidgetBased() {
-		ITraverseRidget ridget = getRidget();
+		final ITraverseRidget ridget = getRidget();
 		ridget.setIncrement(1);
 
 		/*
@@ -385,7 +385,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(20, ridget.getMaximum());
 		assertEquals(10, ridget.getMinimum());
 
-		int deltaMaxMin = 20 - 10;
+		final int deltaMaxMin = 20 - 10;
 		expectPropertyChangeEvent(ITraverseRidget.PROPERTY_INCREMENT, 1, deltaMaxMin);
 		ridget.setIncrement(20);
 		verifyPropertyChangeEvents();
@@ -397,8 +397,8 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	 * differing ones.
 	 */
 	public void testSetMaximumRidgetBased() {
-		Control control = getWidget();
-		ITraverseRidget ridget = getRidget();
+		final Control control = getWidget();
+		final ITraverseRidget ridget = getRidget();
 
 		ridget.setMaximum(40);
 		ridget.setMinimum(5);
@@ -430,7 +430,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setMaximum(4);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(20, ridget.getValue());
@@ -443,7 +443,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setMaximum(5);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(20, ridget.getValue());
@@ -456,7 +456,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setMaximum(-1);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(20, ridget.getValue());
@@ -514,8 +514,8 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testSetMaximumFiresEvents() {
 		int max = 30;
-		int min = 5;
-		ITraverseRidget ridget = getRidget();
+		final int min = 5;
+		final ITraverseRidget ridget = getRidget();
 		ridget.setMaximum(max);
 		ridget.setMinimum(min);
 		ridget.setIncrement(1);
@@ -543,7 +543,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			expectNoPropertyChangeEvent();
 			ridget.setMaximum(0);
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			verifyPropertyChangeEvents();
 		}
 
@@ -553,7 +553,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			expectNoPropertyChangeEvent();
 			ridget.setMaximum(ridget.getMinimum() - 1);
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			verifyPropertyChangeEvents();
 		}
 
@@ -565,7 +565,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setMinimum(0);
 			expectNoPropertyChangeEvent();
 			ridget.setMaximum(-1);
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			verifyPropertyChangeEvents();
 		}
 	}
@@ -575,23 +575,23 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	 * differing ones.
 	 */
 	public void testSetMaximumFiresEventsRidgetBased() {
-		ITraverseRidget ridget = getRidget();
+		final ITraverseRidget ridget = getRidget();
 
 		/*
 		 * Test 1 - increment and page increment > max - min by decreasing max
 		 */
 		resetEasyMock();
-		int max = 20;
-		int min = 10;
+		final int max = 20;
+		final int min = 10;
 		ridget.setMaximum(max);
 		ridget.setMinimum(min);
 		assertEquals(max, ridget.getMaximum());
 		assertEquals(min, ridget.getMinimum());
 
-		int deltaMaxMin = max - min;
+		final int deltaMaxMin = max - min;
 		ridget.setIncrement(deltaMaxMin);
 		ridget.setPageIncrement(deltaMaxMin);
-		int oldPageIncrement = ridget.getPageIncrement();
+		final int oldPageIncrement = ridget.getPageIncrement();
 		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_INCREMENT, deltaMaxMin,
 				deltaMaxMin - 1), new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_PAGE_INCREMENT,
 				oldPageIncrement, deltaMaxMin - 1), new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_MAXIMUM,
@@ -602,7 +602,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		/*
 		 * Test 2 - max < value. Result: value = max.
 		 */
-		int newMax = 30;
+		final int newMax = 30;
 		resetEasyMock();
 		ridget.setMaximum(50);
 		ridget.setValue(40);
@@ -622,8 +622,8 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetMinimum() {
-		ITraverseRidget ridget = getRidget();
-		Control control = getWidget();
+		final ITraverseRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		/*
 		 * Test 1 - valid min
@@ -675,7 +675,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setMinimum(100);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(20, ridget.getMinimum());
@@ -687,7 +687,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setMinimum(50);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(20, ridget.getMinimum());
@@ -699,7 +699,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setMinimum(-10);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(20, ridget.getMinimum());
@@ -707,7 +707,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetMinimumFiresEvents() {
-		ITraverseRidget ridget = getRidget();
+		final ITraverseRidget ridget = getRidget();
 		ridget.setMaximum(30);
 		ridget.setMinimum(0);
 		ridget.setValue(10);
@@ -750,7 +750,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 			resetEasyMock();
 			expectNoPropertyChangeEvent();
 			ridget.setMinimum(-1);
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			verifyPropertyChangeEvents();
 		}
 	}
@@ -760,13 +760,13 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	 * differing ones.
 	 */
 	public void testSetMinimumFiresEventsRidgetBased() {
-		ITraverseRidget ridget = getRidget();
+		final ITraverseRidget ridget = getRidget();
 
 		/*
 		 * Test 3 - increment and pageIncrement > max - min by increasing min
 		 */
-		int max = 20;
-		int min = 10;
+		final int max = 20;
+		final int min = 10;
 		resetEasyMock();
 		ridget.setMaximum(max);
 		ridget.setMinimum(min);
@@ -775,8 +775,8 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(min, ridget.getMinimum());
 		assertEquals(min, ridget.getValue());
 
-		int deltaMaxMin = max - min;
-		int newMin = min + 1;
+		final int deltaMaxMin = max - min;
+		final int newMin = min + 1;
 		ridget.setIncrement(deltaMaxMin);
 		ridget.setPageIncrement(deltaMaxMin);
 		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_VALUE, min, newMin),
@@ -789,8 +789,8 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetPageIncrement() {
-		ITraverseRidget ridget = (ITraverseRidget) createRidget();
-		Control control = getWidget();
+		final ITraverseRidget ridget = (ITraverseRidget) createRidget();
+		final Control control = getWidget();
 		ridget.setUIControl(control);
 
 		ridget.setMinimum(1);
@@ -840,13 +840,13 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	 * differing ones.
 	 */
 	public void testSetPageIncrementRidgetBased() {
-		ITraverseRidget ridget = getRidget();
-		Control control = getWidget();
+		final ITraverseRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		/*
 		 * Test 1 - pageIncrement > max - min
 		 */
-		int deltaMaxMin = 10 - 7;
+		final int deltaMaxMin = 10 - 7;
 		ridget.setMinimum(7);
 		ridget.setMaximum(10);
 		ridget.setPageIncrement(deltaMaxMin + 3);
@@ -887,7 +887,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetPageIncrementFiresEvents() {
-		ITraverseRidget ridget = getRidget();
+		final ITraverseRidget ridget = getRidget();
 		ridget.setPageIncrement(1);
 
 		/*
@@ -915,7 +915,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	 * differing ones.
 	 */
 	public void testSetPageIncrementFiresEventsRidgetBased() {
-		ITraverseRidget ridget = getRidget();
+		final ITraverseRidget ridget = getRidget();
 		ridget.setPageIncrement(1);
 
 		/*
@@ -927,7 +927,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(20, ridget.getMaximum());
 		assertEquals(10, ridget.getMinimum());
 
-		int deltaMaxMin = 20 - 10;
+		final int deltaMaxMin = 20 - 10;
 		expectPropertyChangeEvent(ITraverseRidget.PROPERTY_PAGE_INCREMENT, 1, deltaMaxMin);
 		ridget.setPageIncrement(20);
 		verifyPropertyChangeEvents();
@@ -935,8 +935,8 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetToolTip() {
-		ITraverseRidget ridget = getRidget();
-		Control control = getWidget();
+		final ITraverseRidget ridget = getRidget();
+		final Control control = getWidget();
 		ridget.setMinimum(0);
 		ridget.setMaximum(100);
 		ridget.setValue(5);
@@ -1041,7 +1041,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testApplySettingsOnBind() {
-		ITraverseRidget ridget = getRidget();
+		final ITraverseRidget ridget = getRidget();
 		ridget.setMaximum(30);
 		ridget.setMinimum(10);
 		ridget.setValue(15);
@@ -1049,7 +1049,7 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setPageIncrement(4);
 		ridget.setToolTipText("aaa");
 
-		Control control = (Control) createWidget(getShell());
+		final Control control = (Control) createWidget(getShell());
 		assertNotSame(control, getWidget());
 
 		ridget.setUIControl(control);
@@ -1063,13 +1063,13 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBind() {
-		ITraverseRidget ridget = getRidget();
-		Control control = getWidget();
+		final ITraverseRidget ridget = getRidget();
+		final Control control = getWidget();
 		ridget.setMinimum(0);
 		ridget.setValue(0);
 		ridget.setMaximum(100);
 
-		TypedBean<Integer> bean = new TypedBean<Integer>(20);
+		final TypedBean<Integer> bean = new TypedBean<Integer>(20);
 		ridget.bindToModel(bean, TypedBean.PROP_VALUE);
 
 		assertEquals(20, bean.getValue().intValue());
@@ -1104,17 +1104,17 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			getRidget().addListener(null);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 	}
 
 	public void testAddListener() {
-		ITraverseRidget ridget = getRidget();
-		Widget control = getWidget();
+		final ITraverseRidget ridget = getRidget();
+		final Widget control = getWidget();
 
-		FTActionListener listener1 = new FTActionListener();
-		FTActionListener listener2 = new FTActionListener();
+		final FTActionListener listener1 = new FTActionListener();
+		final FTActionListener listener2 = new FTActionListener();
 
 		ridget.addListener(listener1);
 		ridget.addListener(listener2);

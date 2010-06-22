@@ -72,7 +72,7 @@ public final class LnfManager {
 	 *            new default L&F
 	 * @since 1.2
 	 */
-	public static void setDefaultLnf(RienaDefaultLnf defaultLnf) {
+	public static void setDefaultLnf(final RienaDefaultLnf defaultLnf) {
 		Assert.isNotNull(defaultLnf, "defaultLnf must not be null."); //$NON-NLS-1$
 		LnfManager.defaultLnf = defaultLnf;
 		setLnf((RienaDefaultLnf) null);
@@ -90,7 +90,7 @@ public final class LnfManager {
 	 *            a string specifying the name of the class that implements the
 	 *            look and feel
 	 */
-	public static void setLnf(String currentLnfClassName) {
+	public static void setLnf(final String currentLnfClassName) {
 		setLnf(createLnf(currentLnfClassName));
 	}
 
@@ -107,7 +107,7 @@ public final class LnfManager {
 	 * @param currentLnf
 	 *            new look and feel to install.
 	 */
-	public static void setLnf(RienaDefaultLnf currentLnf) {
+	public static void setLnf(final RienaDefaultLnf currentLnf) {
 		if (LnfManager.currentLnf == currentLnf) {
 			return;
 		}
@@ -165,23 +165,23 @@ public final class LnfManager {
 
 	private static final String BUNDLE_CLASS_NAME_SEPARATOR = ":"; //$NON-NLS-1$
 
-	private static RienaDefaultLnf createLnf(String lnfClassName) {
+	private static RienaDefaultLnf createLnf(final String lnfClassName) {
 		if (lnfClassName == null) {
 			return null;
 		}
 		Class<?> lnfClass = null;
 		if (lnfClassName.contains(BUNDLE_CLASS_NAME_SEPARATOR)) {
-			String[] parts = lnfClassName.split(BUNDLE_CLASS_NAME_SEPARATOR);
-			String bundleSymbolicName = parts[0];
-			String className = parts[1];
-			Bundle bundle = Platform.getBundle(bundleSymbolicName);
+			final String[] parts = lnfClassName.split(BUNDLE_CLASS_NAME_SEPARATOR);
+			final String bundleSymbolicName = parts[0];
+			final String className = parts[1];
+			final Bundle bundle = Platform.getBundle(bundleSymbolicName);
 			if (!BundleUtil.isReady(bundle)) {
 				throw new LnfManagerFailure(
 						"can't load LnfClass '" + className + "' from bundle " + bundleSymbolicName + " because bundle is not ready."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
 			try {
 				lnfClass = bundle.loadClass(className);
-			} catch (ClassNotFoundException e) {
+			} catch (final ClassNotFoundException e) {
 				throw new LnfManagerFailure(
 						"can't load LnfClass '" + className + "' from bundle " + bundleSymbolicName + ".", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
@@ -190,15 +190,15 @@ public final class LnfManager {
 		}
 		try {
 			return (RienaDefaultLnf) lnfClass.newInstance();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new LnfManagerFailure("can't create instance for LnfClass '" + lnfClass.getName() + ".", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
-	private static Class<?> loadClass(String className) {
+	private static Class<?> loadClass(final String className) {
 		try {
 			return LnfManager.class.getClassLoader().loadClass(className);
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			throw new LnfManagerFailure("Can't load LnfClass '" + className //$NON-NLS-1$
 					+ "'. Please use the class format specified in the LnfManager or change your bundle dependencies.", //$NON-NLS-1$
 					e);
@@ -221,14 +221,14 @@ public final class LnfManager {
 		/**
 		 * @param msg
 		 */
-		public LnfManagerFailure(String msg) {
+		public LnfManagerFailure(final String msg) {
 			super(msg);
 		}
 
 		/**
 		 * @param msg
 		 */
-		public LnfManagerFailure(String msg, Throwable thrown) {
+		public LnfManagerFailure(final String msg, final Throwable thrown) {
 			super(msg, thrown);
 		}
 	};

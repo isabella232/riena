@@ -22,7 +22,7 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 public class CompositeRidget extends AbstractCompositeRidget implements ICompositeRidget {
 
 	public void layout() {
-		Composite control = getUIControl();
+		final Composite control = getUIControl();
 		if (control != null) {
 			control.layout(true, true);
 		}
@@ -37,7 +37,7 @@ public class CompositeRidget extends AbstractCompositeRidget implements IComposi
 	////////////////////
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, Composite.class);
 	}
 
@@ -48,7 +48,7 @@ public class CompositeRidget extends AbstractCompositeRidget implements IComposi
 
 	@Override
 	protected void updateEnabled() {
-		Composite control = getUIControl();
+		final Composite control = getUIControl();
 		if (control != null) {
 			control.setEnabled(isEnabled());
 		}
@@ -56,7 +56,7 @@ public class CompositeRidget extends AbstractCompositeRidget implements IComposi
 
 	@Override
 	protected void updateToolTipText() {
-		Composite control = getUIControl();
+		final Composite control = getUIControl();
 		if (control != null) {
 			control.setToolTipText(getToolTipText());
 		}
@@ -64,7 +64,7 @@ public class CompositeRidget extends AbstractCompositeRidget implements IComposi
 
 	@Override
 	protected void updateVisible() {
-		Composite control = getUIControl();
+		final Composite control = getUIControl();
 		if (control != null) {
 			control.setVisible(!isMarkedHidden());
 		}

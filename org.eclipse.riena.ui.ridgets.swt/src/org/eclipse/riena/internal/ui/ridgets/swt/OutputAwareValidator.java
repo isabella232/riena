@@ -14,6 +14,7 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 
 /**
@@ -25,12 +26,12 @@ public final class OutputAwareValidator implements IValidator {
 
 	private final IMarkableRidget ridget;
 
-	public OutputAwareValidator(IMarkableRidget ridget) {
+	public OutputAwareValidator(final IMarkableRidget ridget) {
 		Assert.isNotNull(ridget);
 		this.ridget = ridget;
 	}
 
-	public IStatus validate(Object value) {
+	public IStatus validate(final Object value) {
 		return ridget.isOutputOnly() ? Status.CANCEL_STATUS : Status.OK_STATUS;
 	}
 }

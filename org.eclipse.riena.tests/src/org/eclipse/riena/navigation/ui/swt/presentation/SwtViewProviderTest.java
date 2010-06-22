@@ -42,46 +42,46 @@ public class SwtViewProviderTest extends RienaTestCase {
 
 	public void testGetSwtViewIdSharedView() throws Exception {
 
-		ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId1"));
-		ISubModuleNode node2 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId2"));
+		final ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId1"));
+		final ISubModuleNode node2 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId2"));
 
-		SwtViewId swtViewId1 = swtPresentationManager.getSwtViewId(node1);
+		final SwtViewId swtViewId1 = swtPresentationManager.getSwtViewId(node1);
 		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId1.getId());
 		assertEquals("shared", swtViewId1.getSecondary());
 
-		SwtViewId swtViewId2 = swtPresentationManager.getSwtViewId(node2);
+		final SwtViewId swtViewId2 = swtPresentationManager.getSwtViewId(node2);
 		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId2.getId());
 		assertEquals("shared", swtViewId2.getSecondary());
 	}
 
 	public void testGetSwtViewIdNotSharedView() throws Exception {
 
-		ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("testNotSharedViewId", "testInstanceId1"));
-		ISubModuleNode node2 = new SubModuleNode(new NavigationNodeId("testNotSharedViewId", "testInstanceId2"));
+		final ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("testNotSharedViewId", "testInstanceId1"));
+		final ISubModuleNode node2 = new SubModuleNode(new NavigationNodeId("testNotSharedViewId", "testInstanceId2"));
 
-		SwtViewId swtViewId1 = swtPresentationManager.getSwtViewId(node1);
+		final SwtViewId swtViewId1 = swtPresentationManager.getSwtViewId(node1);
 		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId1.getId());
 		assertEquals("1", swtViewId1.getSecondary());
 
-		SwtViewId swtViewId2 = swtPresentationManager.getSwtViewId(node2);
+		final SwtViewId swtViewId2 = swtPresentationManager.getSwtViewId(node2);
 		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId2.getId());
 		assertEquals("2", swtViewId2.getSecondary());
 
-		SwtViewId swtViewId1Again = swtPresentationManager.getSwtViewId(node1);
+		final SwtViewId swtViewId1Again = swtPresentationManager.getSwtViewId(node1);
 		assertEquals("org.eclipse.riena.navigation.ui.swt.views.TestView", swtViewId1Again.getId());
 		assertEquals("1", swtViewId1Again.getSecondary());
 	}
 
 	public void testUnconsistentDefinitionWithAViewBothSharedAndNotShared() throws Exception {
 
-		ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId1"));
-		ISubModuleNode node2 = new SubModuleNode(new NavigationNodeId("testNotSharedViewId", "testInstanceId2"));
+		final ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId1"));
+		final ISubModuleNode node2 = new SubModuleNode(new NavigationNodeId("testNotSharedViewId", "testInstanceId2"));
 
 		swtPresentationManager.getSwtViewId(node1);
 		try {
 			swtPresentationManager.getSwtViewId(node2);
 			fail("ApplicationModelFailure expected");
-		} catch (ApplicationModelFailure expected) {
+		} catch (final ApplicationModelFailure expected) {
 			ok("ApplicationModelFailure expected");
 		}
 	}

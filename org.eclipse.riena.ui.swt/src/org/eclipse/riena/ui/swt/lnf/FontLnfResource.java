@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Display;
  */
 public class FontLnfResource extends AbstractLnfResource<Font> {
 
-	private FontData fontData;
+	private final FontData fontData;
 
 	/**
 	 * @param name
@@ -30,7 +30,7 @@ public class FontLnfResource extends AbstractLnfResource<Font> {
 	 *            style of the font (a bit or combination of NORMAL, BOLD,
 	 *            ITALIC)
 	 */
-	public FontLnfResource(String name, int height, int style) {
+	public FontLnfResource(final String name, final int height, final int style) {
 		this(new FontData(name, height, style));
 	}
 
@@ -38,7 +38,7 @@ public class FontLnfResource extends AbstractLnfResource<Font> {
 	 * @param font
 	 *            font to wrap
 	 */
-	public FontLnfResource(FontData fontData) {
+	public FontLnfResource(final FontData fontData) {
 		super();
 		this.fontData = fontData;
 	}

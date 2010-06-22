@@ -46,7 +46,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 	}
 
 	@Override
-	public void checkUIControl(Object uiControl) {
+	public void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, Spinner.class);
 	}
 
@@ -67,7 +67,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 		checkDigits(digits);
 
 		digits = preSetDigits(digits);
-		Object oldValue = this.digits;
+		final Object oldValue = this.digits;
 		this.digits = digits;
 		updateUIDigits();
 		updateToolTip();
@@ -78,25 +78,25 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 		checkTextLimit(textLimit);
 
 		textLimit = preSetTextLimit(textLimit);
-		Object oldValue = this.textLimit;
+		final Object oldValue = this.textLimit;
 		this.textLimit = textLimit;
 		updateUITextLimit();
 		firePropertyChange(ISpinnerRidget.PROPERTY_TEXT_LIMIT, oldValue, this.textLimit);
 	}
 
 	@Override
-	protected void addSelectionListener(Control control, SelectionListener listener) {
+	protected void addSelectionListener(final Control control, final SelectionListener listener) {
 		((Spinner) control).addSelectionListener(listener);
 	}
 
 	@Override
-	protected int getValue(Control control) {
+	protected int getValue(final Control control) {
 		return getUIControl().getSelection();
 	}
 
 	@Override
 	protected void initAdditionalsFromUIControl() {
-		Spinner spinner = getUIControl();
+		final Spinner spinner = getUIControl();
 		if (spinner != null) {
 			if (getTextLimit() == Integer.MIN_VALUE) {
 				setTextLimit(spinner.getTextLimit());
@@ -149,15 +149,15 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 	}
 
 	@Override
-	protected void removeSelectionListener(Control control, SelectionListener listener) {
+	protected void removeSelectionListener(final Control control, final SelectionListener listener) {
 		((Spinner) control).removeSelectionListener(listener);
 	}
 
 	@Override
-	protected String replaceToolTipPattern(String toolTipTemplate) {
+	protected String replaceToolTipPattern(final String toolTipTemplate) {
 		if (getDigits() > 0) {
-			int intSelection = getValue();
-			double value = intSelection / Math.pow(10, getDigits());
+			final int intSelection = getValue();
+			final double value = intSelection / Math.pow(10, getDigits());
 			return toolTipTemplate.replace(ITraverseRidget.VALUE_PATTERN, Double.toString(value));
 		} else {
 			return super.replaceToolTipPattern(toolTipTemplate);
@@ -178,7 +178,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 	 * Updates the digits of the uiControl with the digits of this ridget.
 	 */
 	protected void updateUIDigits() {
-		Spinner control = getUIControl();
+		final Spinner control = getUIControl();
 		if (control != null && control.getDigits() != getDigits()) {
 			control.setDigits(getDigits());
 		}
@@ -186,7 +186,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 
 	@Override
 	protected void updateUIIncrement() {
-		Spinner control = getUIControl();
+		final Spinner control = getUIControl();
 		if (control != null) {
 			control.setIncrement(getIncrement());
 		}
@@ -194,7 +194,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 
 	@Override
 	protected void updateUIMaximum() {
-		Spinner control = getUIControl();
+		final Spinner control = getUIControl();
 		if (control != null) {
 			control.setMaximum(getMaximum());
 		}
@@ -202,7 +202,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 
 	@Override
 	protected void updateUIMinimum() {
-		Spinner control = getUIControl();
+		final Spinner control = getUIControl();
 		if (control != null) {
 			control.setMinimum(getMinimum());
 		}
@@ -210,7 +210,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 
 	@Override
 	protected void updateUIPageIncrement() {
-		Spinner control = getUIControl();
+		final Spinner control = getUIControl();
 		if (control != null) {
 			control.setPageIncrement(getPageIncrement());
 		}
@@ -220,7 +220,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 	 * Updates the textLimit of the uiControl with the textLimit of this ridget.
 	 */
 	protected void updateUITextLimit() {
-		Spinner control = getUIControl();
+		final Spinner control = getUIControl();
 		if (control != null) {
 			control.setTextLimit(getTextLimit());
 		}
@@ -228,7 +228,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 
 	@Override
 	protected void updateUIValue() {
-		Spinner control = getUIControl();
+		final Spinner control = getUIControl();
 		if (control != null) {
 			control.setSelection(getValue());
 		}
@@ -245,7 +245,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 	 * @throws IllegalArgumentException
 	 *             if the given digits is not a valid value.
 	 */
-	private void checkDigits(int digits) {
+	private void checkDigits(final int digits) {
 		if (digits > getTextLimit()) {
 			new Message(Message.DIGITS_GT_TEXTLIMIT, digits, getTextLimit()).push();
 		}
@@ -259,7 +259,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 	 * @throws IllegalArgumentException
 	 *             if the given textLimit is not a valid value.
 	 */
-	private void checkTextLimit(int textLimit) {
+	private void checkTextLimit(final int textLimit) {
 		if (textLimit <= 0) {
 			new Message(Message.TEXTLIMIT_LE_ZERO, textLimit).push();
 		}
@@ -274,7 +274,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 		 * @param msgConstant
 		 * @param attributes
 		 */
-		public Message(String msgConstant, Object... attributes) {
+		public Message(final String msgConstant, final Object... attributes) {
 			super(msgConstant, attributes);
 		}
 

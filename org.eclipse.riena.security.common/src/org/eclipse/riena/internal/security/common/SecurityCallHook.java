@@ -34,11 +34,11 @@ public class SecurityCallHook implements ICallHook {
 	}
 
 	@InjectService(useRanking = true)
-	public void bind(ISessionHolder sessionHolder) {
+	public void bind(final ISessionHolder sessionHolder) {
 		this.sessionHolder = sessionHolder;
 	}
 
-	public void unbind(ISessionHolder sessionHolder) {
+	public void unbind(final ISessionHolder sessionHolder) {
 		if (this.sessionHolder == sessionHolder) {
 			this.sessionHolder = null;
 		}
@@ -51,8 +51,8 @@ public class SecurityCallHook implements ICallHook {
 	 * org.eclipse.riena.communication.core.hooks.ICallHook#beforeCall(org.eclipse
 	 * .riena.communication.core.hooks.CallContext)
 	 */
-	public void beforeCall(CallContext callback) {
-		Session session = sessionHolder.getSession();
+	public void beforeCall(final CallContext callback) {
+		final Session session = sessionHolder.getSession();
 
 		if (session != null) {
 			callback.setCookie(SSOID, session.getSessionId());
@@ -66,12 +66,12 @@ public class SecurityCallHook implements ICallHook {
 	 * org.eclipse.riena.communication.core.hooks.ICallHook#afterCall(org.eclipse
 	 * .riena.communication.core.hooks.CallContext)
 	 */
-	public void afterCall(CallContext callback) {
-		Map<String, String> map = callback.getSetCookies();
+	public void afterCall(final CallContext callback) {
+		final Map<String, String> map = callback.getSetCookies();
 		if (map == null) {
 			return;
 		}
-		String temp = map.get(SSOID);
+		final String temp = map.get(SSOID);
 		if (temp != null) {
 			sessionHolder.setSession(new Session(temp));
 		}

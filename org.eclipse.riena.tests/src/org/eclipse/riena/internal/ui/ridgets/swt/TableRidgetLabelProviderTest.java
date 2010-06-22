@@ -52,16 +52,16 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		Display display = Display.getDefault();
-		Realm realm = SWTObservables.getRealm(display);
+		final Display display = Display.getDefault();
+		final Realm realm = SWTObservables.getRealm(display);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 		colorA = display.getSystemColor(SWT.COLOR_RED);
 		colorB = display.getSystemColor(SWT.COLOR_GREEN);
 		fontA = new Font(display, "Arial", 12, SWT.NORMAL);
 		fontB = new Font(display, "Courier", 12, SWT.NORMAL);
 
-		IObservableSet elements = createElements();
-		String[] columnProperties = { "word", "upperCase" };
+		final IObservableSet elements = createElements();
+		final String[] columnProperties = { "word", "upperCase" };
 		attrMaps = BeansObservables.observeMaps(elements, WordNode.class, columnProperties);
 		formatters = new IColumnFormatter[] { null, new TestColumnFormatter() };
 		noFormatters = new IColumnFormatter[attrMaps.length];
@@ -74,14 +74,14 @@ public class TableRidgetLabelProviderTest extends TestCase {
 	}
 
 	public void testGetText() {
-		TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, noFormatters);
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, noFormatters);
 
 		assertEquals("Alpha", labelProvider.getText(elementA));
 		assertEquals("BRAVO", labelProvider.getText(elementB));
 	}
 
 	public void testGetColumnText() {
-		TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, noFormatters);
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, noFormatters);
 
 		assertEquals("Alpha", labelProvider.getColumnText(elementA, 0));
 		assertEquals("BRAVO", labelProvider.getColumnText(elementB, 0));
@@ -98,16 +98,16 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		assertNull(labelProvider.getImage(elementA));
 		assertNull(labelProvider.getImage(elementB));
 
-		IObservableSet elements = createElements();
-		String[] columnProperties = { "upperCase" };
-		IObservableMap[] attrMap = BeansObservables.observeMaps(elements, WordNode.class, columnProperties);
+		final IObservableSet elements = createElements();
+		final String[] columnProperties = { "upperCase" };
+		final IObservableMap[] attrMap = BeansObservables.observeMaps(elements, WordNode.class, columnProperties);
 		labelProvider = new TableRidgetLabelProvider(attrMap, new IColumnFormatter[1]);
 
-		Image siUnchecked = Activator.getSharedImage(SharedImages.IMG_UNCHECKED);
+		final Image siUnchecked = Activator.getSharedImage(SharedImages.IMG_UNCHECKED);
 		assertNotNull(siUnchecked);
 		assertEquals(siUnchecked, labelProvider.getImage(elementA));
 
-		Image siChecked = Activator.getSharedImage(SharedImages.IMG_CHECKED);
+		final Image siChecked = Activator.getSharedImage(SharedImages.IMG_CHECKED);
 		assertNotNull(siChecked);
 		assertEquals(siChecked, labelProvider.getImage(elementB));
 
@@ -120,12 +120,12 @@ public class TableRidgetLabelProviderTest extends TestCase {
 		assertNull(labelProvider.getColumnImage(elementA, 0));
 		assertNull(labelProvider.getColumnImage(elementB, 0));
 
-		Image siUnchecked = Activator.getSharedImage(SharedImages.IMG_UNCHECKED);
+		final Image siUnchecked = Activator.getSharedImage(SharedImages.IMG_UNCHECKED);
 		assertNotNull(siUnchecked);
 		assertEquals(siUnchecked, labelProvider.getColumnImage(elementA, 1));
 		assertTrue(labelProvider.getColumnText(elementA, 1).length() > 0);
 
-		Image siChecked = Activator.getSharedImage(SharedImages.IMG_CHECKED);
+		final Image siChecked = Activator.getSharedImage(SharedImages.IMG_CHECKED);
 		assertNotNull(siChecked);
 		assertEquals(siChecked, labelProvider.getColumnImage(elementB, 1));
 
@@ -133,12 +133,13 @@ public class TableRidgetLabelProviderTest extends TestCase {
 
 		assertEquals(null, labelProvider.getColumnImage(elementA, 99));
 
-		ColumnFormatter emptyFormatter = new ColumnFormatter() {
-			public String getText(Object element) {
+		final ColumnFormatter emptyFormatter = new ColumnFormatter() {
+			@Override
+			public String getText(final Object element) {
 				return "";
 			};
 		};
-		IColumnFormatter[] emptyTextFormatters = new IColumnFormatter[] { emptyFormatter, emptyFormatter };
+		final IColumnFormatter[] emptyTextFormatters = new IColumnFormatter[] { emptyFormatter, emptyFormatter };
 		labelProvider = new TableRidgetLabelProvider(attrMaps, emptyTextFormatters);
 		assertEquals(siUnchecked, labelProvider.getColumnImage(elementA, 1));
 		assertEquals("", labelProvider.getColumnText(elementA, 1));
@@ -146,28 +147,28 @@ public class TableRidgetLabelProviderTest extends TestCase {
 	}
 
 	public void testSetFormatters() {
-		TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
 
 		assertEquals("no", labelProvider.getColumnText(elementA, 1));
 		assertEquals("yes", labelProvider.getColumnText(elementB, 1));
 
-		Object arg2 = new IColumnFormatter[] { null, null };
+		final Object arg2 = new IColumnFormatter[] { null, null };
 		ReflectionUtils.invokeHidden(labelProvider, "setFormatters", arg2);
 
 		assertEquals("false", labelProvider.getColumnText(elementA, 1));
 		assertEquals("true", labelProvider.getColumnText(elementB, 1));
 
 		try {
-			Object arg3 = new IColumnFormatter[] { null, null, null };
+			final Object arg3 = new IColumnFormatter[] { null, null, null };
 			ReflectionUtils.invokeHidden(labelProvider, "setFormatters", arg3);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			Nop.reason("ok");
 		}
 	}
 
 	public void testGetColumnTextWithFormatter() {
-		TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
 
 		assertEquals("Alpha", labelProvider.getColumnText(elementA, 0));
 		assertEquals("BRAVO", labelProvider.getColumnText(elementB, 0));
@@ -179,16 +180,16 @@ public class TableRidgetLabelProviderTest extends TestCase {
 	}
 
 	public void testGetColumnImageWithFormatter() {
-		TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
 
 		assertNull(labelProvider.getColumnImage(elementA, 0));
 		assertNull(labelProvider.getColumnImage(elementB, 0));
 
-		Image siCollaped = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
+		final Image siCollaped = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
 		assertNotNull(siCollaped);
 		assertEquals(siCollaped, labelProvider.getColumnImage(elementA, 1));
 
-		Image siExpanded = Activator.getSharedImage(SharedImages.IMG_NODE_EXPANDED);
+		final Image siExpanded = Activator.getSharedImage(SharedImages.IMG_NODE_EXPANDED);
 		assertNotNull(siExpanded);
 		assertEquals(siExpanded, labelProvider.getColumnImage(elementB, 1));
 
@@ -198,7 +199,7 @@ public class TableRidgetLabelProviderTest extends TestCase {
 	}
 
 	public void testGetForegroundWithFormatter() {
-		TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
 
 		assertNull(labelProvider.getForeground(elementA, 0));
 		assertNull(labelProvider.getForeground(elementB, 0));
@@ -210,7 +211,7 @@ public class TableRidgetLabelProviderTest extends TestCase {
 	}
 
 	public void testGetBackgroundWithFormatter() {
-		TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
 
 		assertNull(labelProvider.getBackground(elementA, 0));
 		assertNull(labelProvider.getBackground(elementB, 0));
@@ -222,7 +223,7 @@ public class TableRidgetLabelProviderTest extends TestCase {
 	}
 
 	public void testGetFontWithFormatter() {
-		TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMaps, formatters);
 
 		assertNull(labelProvider.getFont(elementA, 0));
 		assertNull(labelProvider.getFont(elementB, 0));
@@ -237,46 +238,46 @@ public class TableRidgetLabelProviderTest extends TestCase {
 	// ////////////////
 
 	private IObservableSet createElements() {
-		Collection<WordNode> collection = new ArrayList<WordNode>();
+		final Collection<WordNode> collection = new ArrayList<WordNode>();
 		elementA = new WordNode("Alpha");
 		elementB = new WordNode("Bravo");
 		elementB.setUpperCase(true);
 		collection.add(elementA);
 		collection.add(elementB);
-		IObservableSet elements = new WritableSet(Realm.getDefault(), collection, WordNode.class);
+		final IObservableSet elements = new WritableSet(Realm.getDefault(), collection, WordNode.class);
 		return elements;
 	}
 
 	private final class TestColumnFormatter extends ColumnFormatter {
 		@Override
-		public String getText(Object element) {
-			WordNode wordNode = (WordNode) element;
+		public String getText(final Object element) {
+			final WordNode wordNode = (WordNode) element;
 			return wordNode.isUpperCase() ? "yes" : "no";
 		}
 
 		@Override
-		public Image getImage(Object element) {
-			WordNode wordNode = (WordNode) element;
-			String key = "alpha".equalsIgnoreCase(wordNode.getWord()) ? SharedImages.IMG_NODE_COLLAPSED
+		public Image getImage(final Object element) {
+			final WordNode wordNode = (WordNode) element;
+			final String key = "alpha".equalsIgnoreCase(wordNode.getWord()) ? SharedImages.IMG_NODE_COLLAPSED
 					: SharedImages.IMG_NODE_EXPANDED;
 			return Activator.getSharedImage(key);
 		}
 
 		@Override
-		public Color getForeground(Object element) {
-			WordNode wordNode = (WordNode) element;
+		public Color getForeground(final Object element) {
+			final WordNode wordNode = (WordNode) element;
 			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? colorA : colorB;
 		}
 
 		@Override
-		public Color getBackground(Object element) {
-			WordNode wordNode = (WordNode) element;
+		public Color getBackground(final Object element) {
+			final WordNode wordNode = (WordNode) element;
 			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? colorA : colorB;
 		}
 
 		@Override
-		public Font getFont(Object element) {
-			WordNode wordNode = (WordNode) element;
+		public Font getFont(final Object element) {
+			final WordNode wordNode = (WordNode) element;
 			return "alpha".equalsIgnoreCase(wordNode.getWord()) ? fontA : fontB;
 		}
 	}

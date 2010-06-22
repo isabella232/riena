@@ -29,7 +29,7 @@ import org.eclipse.riena.objecttransaction.ObjectTransactionManager;
  */
 public class ObjectTransactionContext implements IObjectTransactionContext {
 
-	private Stack<IObjectTransaction> replaced = new Stack<IObjectTransaction>();
+	private final Stack<IObjectTransaction> replaced = new Stack<IObjectTransaction>();
 	private IObjectTransaction objectTransaction;
 
 	/**
@@ -45,7 +45,7 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 	 * @param transaction
 	 *            the Transaction to activate
 	 */
-	public ObjectTransactionContext(IObjectTransaction transaction) {
+	public ObjectTransactionContext(final IObjectTransaction transaction) {
 		super();
 		objectTransaction = transaction;
 	}
@@ -93,7 +93,7 @@ public class ObjectTransactionContext implements IObjectTransactionContext {
 	 * #setObjectTransaction
 	 * (org.eclipse.riena.objecttransaction.IObjectTransaction)
 	 */
-	public void setObjectTransaction(IObjectTransaction pObjectTransaction) {
+	public void setObjectTransaction(final IObjectTransaction pObjectTransaction) {
 		this.objectTransaction = pObjectTransaction;
 		if (isActivated()) {
 			ObjectTransactionManager.getInstance().setCurrent(objectTransaction);

@@ -26,7 +26,7 @@ public abstract class AbstractBaseChange {
 	/**
 	 * @param relationName
 	 */
-	public AbstractBaseChange(String relationName) {
+	public AbstractBaseChange(final String relationName) {
 		this.relationName = relationName;
 	}
 
@@ -41,7 +41,7 @@ public abstract class AbstractBaseChange {
 	 * @param relationName
 	 *            The relationName to set.
 	 */
-	public void setRelationName(String relationName) {
+	public void setRelationName(final String relationName) {
 		this.relationName = relationName;
 	}
 }

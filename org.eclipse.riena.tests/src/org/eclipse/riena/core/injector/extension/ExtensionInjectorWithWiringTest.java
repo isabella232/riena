@@ -26,11 +26,11 @@ public class ExtensionInjectorWithWiringTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorWithWiringTest.class, "plugin_ext_wire.xml");
 
 		try {
-			ConfigurableWiredThing target = new ConfigurableWiredThing();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+			final ConfigurableWiredThing target = new ConfigurableWiredThing();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
 					.andStart(getContext());
 			try {
-				IWireData data = target.getData();
+				final IWireData data = target.getData();
 				assertNotNull(data);
 				// TODO warning suppression. Ignoring three FindBugs problems below
 				// about writing to static field. Since this is used only for testing
@@ -63,11 +63,11 @@ public class ExtensionInjectorWithWiringTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorWithWiringTest.class, "plugin_ext_wire.xml");
 
 		try {
-			ConfigurableWiredThing target = new ConfigurableWiredThing();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+			final ConfigurableWiredThing target = new ConfigurableWiredThing();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
 					.andStart(getContext());
 			try {
-				IWireData data = target.getData();
+				final IWireData data = target.getData();
 				assertNotNull(data);
 				// TODO warning suppression. Ignoring three FindBugs problems below
 				// about writing to static field. Since this is used only for testing

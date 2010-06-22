@@ -20,6 +20,7 @@ import org.eclipse.riena.ui.ridgets.validation.IValidationRuleStatus;
  * @deprecated see
  *             {@link org.eclipse.riena.ui.ridgets.validation.IValidationCallback}
  */
+@Deprecated
 public interface IValidationCallback {
 
 	/**
@@ -32,6 +33,7 @@ public interface IValidationCallback {
 	 *            The result of the validation.
 	 * @deprecated
 	 */
+	@Deprecated
 	void validationRulesChecked(IStatus status);
 
 }

@@ -17,6 +17,7 @@ import java.util.Date;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.ExtendedLogEntry;
+
 import org.eclipse.riena.core.util.IOUtils;
 
 /**
@@ -48,13 +49,13 @@ public class LogEntryTransferObject implements Serializable {
 		this.time = 0;
 	}
 
-	public LogEntryTransferObject(ExtendedLogEntry logEntry) {
+	public LogEntryTransferObject(final ExtendedLogEntry logEntry) {
 		Assert.isNotNull(logEntry, "logEntry must not be null"); //$NON-NLS-1$
 		this.bundleName = logEntry.getBundle() != null ? logEntry.getBundle().getSymbolicName() : null;
 		this.context = logEntry.getContext() != null ? logEntry.getContext().toString() : null;
 		if (logEntry.getException() != null) {
-			StringWriter string = new StringWriter();
-			PrintWriter writer = new PrintWriter(string);
+			final StringWriter string = new StringWriter();
+			final PrintWriter writer = new PrintWriter(string);
 			logEntry.getException().printStackTrace(writer);
 			IOUtils.close(writer);
 			this.exception = string.toString();

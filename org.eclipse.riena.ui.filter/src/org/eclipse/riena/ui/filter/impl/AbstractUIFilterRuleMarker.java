@@ -19,7 +19,7 @@ import org.eclipse.riena.ui.filter.IUIFilterRuleMarker;
  */
 public abstract class AbstractUIFilterRuleMarker implements IUIFilterRuleMarker {
 
-	private IMarker marker;
+	private final IMarker marker;
 
 	/**
 	 * Create a new filter rule with the given marker.
@@ -27,7 +27,7 @@ public abstract class AbstractUIFilterRuleMarker implements IUIFilterRuleMarker 
 	 * @param marker
 	 *            marker to set
 	 */
-	public AbstractUIFilterRuleMarker(IMarker marker) {
+	public AbstractUIFilterRuleMarker(final IMarker marker) {
 		this.marker = marker;
 	}
 

@@ -19,13 +19,13 @@ import org.eclipse.swt.widgets.Display;
  */
 public class DefaultRealm extends Realm {
 
-	private Realm previousRealm;
+	private final Realm previousRealm;
 
 	public DefaultRealm() {
 		previousRealm = super.setDefault(this);
 	}
 
-	DefaultRealm(Display display) {
+	DefaultRealm(final Display display) {
 		Assert.isNotNull(display);
 		previousRealm = super.setDefault(this);
 	}
@@ -39,7 +39,7 @@ public class DefaultRealm extends Realm {
 	}
 
 	@Override
-	protected void syncExec(Runnable runnable) {
+	protected void syncExec(final Runnable runnable) {
 		runnable.run();
 	}
 
@@ -47,7 +47,7 @@ public class DefaultRealm extends Realm {
 	 * @throws UnsupportedOperationException
 	 */
 	@Override
-	public void asyncExec(Runnable runnable) {
+	public void asyncExec(final Runnable runnable) {
 		throw new UnsupportedOperationException("asyncExec is unsupported"); //$NON-NLS-1$
 	}
 

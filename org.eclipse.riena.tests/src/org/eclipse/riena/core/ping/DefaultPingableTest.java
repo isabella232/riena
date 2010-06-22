@@ -23,12 +23,12 @@ public class DefaultPingableTest extends RienaTestCase {
 	 * Tests method {@link DefaultPingable#ping(PingVisitor) ping()}.
 	 */
 	public void testPing() {
-		DefaultPingable pingable = new DefaultPingable() {
+		final DefaultPingable pingable = new DefaultPingable() {
 		};
-		PingVisitor visitorMock = new PingVisitorMock();
+		final PingVisitor visitorMock = new PingVisitorMock();
 		((PingVisitorMock) visitorMock).setExpectations(pingable, visitorMock);
 
-		PingVisitor result = pingable.ping(visitorMock);
+		final PingVisitor result = pingable.ping(visitorMock);
 		assertEquals(visitorMock, result);
 	}
 
@@ -37,7 +37,7 @@ public class DefaultPingableTest extends RienaTestCase {
 	 * getPingFingerprint()}.
 	 */
 	public void testGetPingFingerprint() {
-		DefaultPingable pingable = new DefaultPingable() {
+		final DefaultPingable pingable = new DefaultPingable() {
 		};
 		assertEquals(new PingFingerprint(pingable), pingable.getPingFingerprint());
 	}

@@ -34,7 +34,7 @@ public class VariableManagerUtilTest extends RienaTestCase {
 		try {
 			fgManager = StringVariableManager.class.getDeclaredField("fgManager");
 			fgManager.setAccessible(true);
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			fail("Could not access field ´fgManager´ from StringVariableManager!");
 		}
 	}
@@ -61,7 +61,7 @@ public class VariableManagerUtilTest extends RienaTestCase {
 			VariableManagerUtil.addVariable("host", "${host}");
 			VariableManagerUtil.substitute("${host}");
 			fail();
-		} catch (CoreException e) {
+		} catch (final CoreException e) {
 			assertTrue(e.getMessage().contains("host"));
 		}
 	}
@@ -72,8 +72,8 @@ public class VariableManagerUtilTest extends RienaTestCase {
 			VariableManagerUtil.addVariable("b", "${a}");
 			VariableManagerUtil.substitute("${a}");
 			fail();
-		} catch (CoreException e) {
-			String problemVariableList = e.getMessage().substring(e.getMessage().indexOf(",") - 1,
+		} catch (final CoreException e) {
+			final String problemVariableList = e.getMessage().substring(e.getMessage().indexOf(",") - 1,
 					e.getMessage().indexOf(",") + 3);
 			assertTrue(problemVariableList.contains("a"));
 			assertTrue(problemVariableList.contains("b"));
@@ -87,8 +87,8 @@ public class VariableManagerUtilTest extends RienaTestCase {
 			VariableManagerUtil.addVariable("c", "${a}");
 			VariableManagerUtil.substitute("${a}");
 			fail();
-		} catch (CoreException e) {
-			String problemVariableList = e.getMessage().substring(e.getMessage().indexOf(",") - 1,
+		} catch (final CoreException e) {
+			final String problemVariableList = e.getMessage().substring(e.getMessage().indexOf(",") - 1,
 					e.getMessage().indexOf(",") + 6);
 			assertTrue(problemVariableList.contains("a"));
 			assertTrue(problemVariableList.contains("b"));
@@ -129,13 +129,13 @@ public class VariableManagerUtilTest extends RienaTestCase {
 		try {
 			VariableManagerUtil.substitute("${a}");
 			fail();
-		} catch (CoreException e) {
+		} catch (final CoreException e) {
 			ok();
 		}
 	}
 
 	public void testAddMultipleVariables() throws CoreException {
-		Map<String, String> toAdd = new HashMap<String, String>();
+		final Map<String, String> toAdd = new HashMap<String, String>();
 		toAdd.put("a", "1");
 		toAdd.put("b", "2");
 		toAdd.put("c", "3");
@@ -172,7 +172,7 @@ public class VariableManagerUtilTest extends RienaTestCase {
 		toAdd.put("e", "5");
 		try {
 			VariableManagerUtil.addVariables(toAdd);
-		} catch (CoreException e) {
+		} catch (final CoreException e) {
 			ok();
 		}
 	}

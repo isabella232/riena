@@ -29,7 +29,7 @@ public class ShellRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Widget createWidget(Composite parent) {
+	protected Widget createWidget(final Composite parent) {
 		return getShell();
 	}
 
@@ -87,7 +87,7 @@ public class ShellRidgetTest extends AbstractSWTRidgetTest {
 	private static class MockShellRidget extends ShellRidget {
 
 		@Override
-		public boolean hasChanged(Object oldValue, Object newValue) {
+		public boolean hasChanged(final Object oldValue, final Object newValue) {
 			return super.hasChanged(oldValue, newValue);
 		}
 

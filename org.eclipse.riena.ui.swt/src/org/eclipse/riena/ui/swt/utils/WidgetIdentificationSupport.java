@@ -43,7 +43,7 @@ public final class WidgetIdentificationSupport {
 	 * @param aShell
 	 *            shell
 	 */
-	public static void setIdentification(Shell aShell) {
+	public static void setIdentification(final Shell aShell) {
 		aShell.setData(RIENA_ID, System.getProperty("riena.testing.widgetid.mainshell", "default")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
@@ -56,10 +56,10 @@ public final class WidgetIdentificationSupport {
 	 * @param aParts
 	 *            sequence of id parts
 	 */
-	public static void setIdentification(Widget aWidget, String... aParts) {
-		StringBuilder fullId = new StringBuilder();
+	public static void setIdentification(final Widget aWidget, final String... aParts) {
+		final StringBuilder fullId = new StringBuilder();
 
-		for (String part : aParts) {
+		for (final String part : aParts) {
 			if (fullId.length() != 0) {
 				fullId.append('.');
 			}
@@ -67,8 +67,8 @@ public final class WidgetIdentificationSupport {
 			fullId.append(part);
 		}
 		if (debugOutput) {
-			LOGGER.log(LogService.LOG_DEBUG, String.format(
-					"registering widget %s, (class: %s)", fullId, aWidget.getClass())); //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_DEBUG,
+					String.format("registering widget %s, (class: %s)", fullId, aWidget.getClass())); //$NON-NLS-1$
 		}
 		aWidget.setData(RIENA_ID, fullId.toString());
 	}
@@ -80,7 +80,7 @@ public final class WidgetIdentificationSupport {
 	 * @param aWidget
 	 *            widget
 	 */
-	public static void setDefaultIdentification(Widget aWidget) {
+	public static void setDefaultIdentification(final Widget aWidget) {
 		setIdentification(aWidget, aWidget.getClass().getName());
 	}
 }

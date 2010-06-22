@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.core.injector.extension;
 
-
 @ExtensionInterface
 @DoNotReplaceSymbols
 public interface IDataModifyInterfaceOff {

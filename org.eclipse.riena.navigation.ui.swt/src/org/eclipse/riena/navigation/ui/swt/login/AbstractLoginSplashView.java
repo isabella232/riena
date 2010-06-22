@@ -28,7 +28,7 @@ public abstract class AbstractLoginSplashView extends AbstractControlledView<Abs
 
 	protected abstract AbstractWindowController createController();
 
-	public void build(Composite parent) {
+	public void build(final Composite parent) {
 
 		if (view == null) {
 			view = buildView(parent);
@@ -41,7 +41,7 @@ public abstract class AbstractLoginSplashView extends AbstractControlledView<Abs
 	}
 
 	private void createAndBindController() {
-		AbstractWindowController controller = createController();
+		final AbstractWindowController controller = createController();
 		initialize(controller);
 		bind(controller);
 	}

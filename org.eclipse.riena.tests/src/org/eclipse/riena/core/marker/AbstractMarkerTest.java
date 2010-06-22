@@ -24,7 +24,7 @@ public class AbstractMarkerTest extends RienaTestCase {
 	 */
 	public void testAbstractMarker() {
 
-		AbstractMarker marker = new DummyMarker();
+		final AbstractMarker marker = new DummyMarker();
 		assertTrue(marker.isUnique());
 
 	}
@@ -50,7 +50,7 @@ public class AbstractMarkerTest extends RienaTestCase {
 	 */
 	public void testSetAttribute() {
 
-		DummyMarker marker = new DummyMarker();
+		final DummyMarker marker = new DummyMarker();
 		assertNull(marker.getAttribute("lastname"));
 
 		marker.reset();
@@ -77,7 +77,7 @@ public class AbstractMarkerTest extends RienaTestCase {
 		try {
 			marker.setAttribute(null, 12);
 			fail("Exception expected");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			ok("Exception expected");
 		}
 		assertFalse(marker.isChangeFired());
@@ -89,7 +89,7 @@ public class AbstractMarkerTest extends RienaTestCase {
 	 */
 	public void testGetAttribute() {
 
-		DummyMarker marker = new DummyMarker();
+		final DummyMarker marker = new DummyMarker();
 
 		assertEquals("unkown", marker.getAttribute("lastname", "unkown"));
 
@@ -110,7 +110,7 @@ public class AbstractMarkerTest extends RienaTestCase {
 			init();
 		}
 
-		public DummyMarker(boolean unique) {
+		public DummyMarker(final boolean unique) {
 			super(unique);
 			init();
 		}

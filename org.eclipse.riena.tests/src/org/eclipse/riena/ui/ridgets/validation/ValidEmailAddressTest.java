@@ -135,7 +135,7 @@ public class ValidEmailAddressTest extends RienaTestCase {
 	public void testDoesNotBlockInputWhenFailing() {
 
 		final ValidEmailAddress rule = new ValidEmailAddress();
-		IStatus result = rule.validate("invalid");
+		final IStatus result = rule.validate("invalid");
 
 		assertFalse(result.isOK());
 		assertEquals(ValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE, result.getCode());

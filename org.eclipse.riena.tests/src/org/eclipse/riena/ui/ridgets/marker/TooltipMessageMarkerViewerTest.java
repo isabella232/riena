@@ -85,7 +85,7 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 
 	public void testSetMessageExistingTooltip() throws Exception {
 
-		String existingTooltip = "TestExistingTooltip";
+		final String existingTooltip = "TestExistingTooltip";
 
 		ridget.setToolTipText(existingTooltip);
 
@@ -102,7 +102,7 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 
 	public void testAddRidgetWithMarker() throws Exception {
 
-		TextRidget anotherRidget = new TextRidget();
+		final TextRidget anotherRidget = new TextRidget();
 		anotherRidget.addMarker(errorMessageMarker);
 
 		tooltipMessageMarkerViewer.addRidget(anotherRidget);
@@ -116,9 +116,9 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 
 	public void testAddAndRemoveMarkerType() throws Exception {
 
-		TextRidget anotherRidget = new TextRidget();
-		String anotherMessage = "TestAnotherMessage";
-		MessageMarker anotherMarker = new MessageMarker(anotherMessage);
+		final TextRidget anotherRidget = new TextRidget();
+		final String anotherMessage = "TestAnotherMessage";
+		final MessageMarker anotherMarker = new MessageMarker(anotherMessage);
 		anotherRidget.addMarker(anotherMarker);
 
 		tooltipMessageMarkerViewer.addRidget(anotherRidget);
@@ -154,8 +154,8 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 		assertNull(ridget.getToolTipText());
 
 		ridget.addMarker(errorMessageMarker);
-		String secondMessage = errorMessage + 2;
-		MessageMarker secondMarker = new MessageMarker(secondMessage);
+		final String secondMessage = errorMessage + 2;
+		final MessageMarker secondMarker = new MessageMarker(secondMessage);
 		tooltipMessageMarkerViewer.addMarkerType(MessageMarker.class);
 		ridget.addMarker(secondMarker);
 
@@ -186,8 +186,8 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 	 * tooltipMessageMarkerViewer
 	 */
 	public void testBug258540() {
-		TextRidget aRidget = new TextRidget();
-		Text aControl = new Text(shell, SWT.BORDER);
+		final TextRidget aRidget = new TextRidget();
+		final Text aControl = new Text(shell, SWT.BORDER);
 		aRidget.setUIControl(aControl);
 		aRidget.setToolTipText("tooltip");
 
@@ -206,8 +206,8 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 	 * is showing an error message.
 	 */
 	public void testBug258540Snippet2() {
-		TextRidget aRidget = new TextRidget();
-		Text aControl = new Text(shell, SWT.BORDER);
+		final TextRidget aRidget = new TextRidget();
+		final Text aControl = new Text(shell, SWT.BORDER);
 		aRidget.setUIControl(aControl);
 
 		tooltipMessageMarkerViewer.addRidget(aRidget);
@@ -216,7 +216,7 @@ public class TooltipMessageMarkerViewerTest extends TestCase {
 		assertEquals("tooltip", aRidget.getToolTipText());
 		assertEquals("tooltip", aControl.getToolTipText());
 
-		ErrorMessageMarker marker = new ErrorMessageMarker("errormessage");
+		final ErrorMessageMarker marker = new ErrorMessageMarker("errormessage");
 		aRidget.addMarker(marker);
 		aRidget.setToolTipText("tooltip2");
 

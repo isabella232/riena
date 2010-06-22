@@ -30,7 +30,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 *            ridget of tool item
 	 * @param propertyChangeSupport
 	 */
-	public ToolItemMarkerSupport(ToolItemRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+	public ToolItemMarkerSupport(final ToolItemRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
 	}
 
@@ -56,11 +56,11 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 * @param item
 	 *            tool item to update
 	 */
-	private void updateDisabled(ToolItem item) {
+	private void updateDisabled(final ToolItem item) {
 		if (item.isDisposed()) {
 			return;
 		}
-		boolean enabled = getRidget().isEnabled();
+		final boolean enabled = getRidget().isEnabled();
 		item.setEnabled(enabled);
 	}
 
@@ -70,14 +70,14 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 * @param item
 	 *            tool item to update
 	 */
-	private void updateVisible(ToolItem item) {
+	private void updateVisible(final ToolItem item) {
 
 		if (!hasHiddenMarkers()) {
 			getRidget().createItem();
 		} else {
-			MenuManager menuManager = getMenuManager(item);
+			final MenuManager menuManager = getMenuManager(item);
 			if (menuManager != null) {
-				MenuManagerHelper helper = new MenuManagerHelper();
+				final MenuManagerHelper helper = new MenuManagerHelper();
 				helper.removeListeners(item, menuManager.getMenu());
 			}
 			item.dispose();
@@ -94,7 +94,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 * @return the menu manager or <{@code null} if the item has no menu
 	 *         manager.
 	 */
-	private MenuManager getMenuManager(ToolItem item) {
+	private MenuManager getMenuManager(final ToolItem item) {
 
 		if (item.isDisposed()) {
 			return null;
@@ -112,7 +112,7 @@ public class ToolItemMarkerSupport extends AbstractMarkerSupport {
 	 * Updates the tool item to display the current markers.
 	 */
 	private void updateToolItem() {
-		ToolItem item = getRidget().getUIControl();
+		final ToolItem item = getRidget().getUIControl();
 		if (item != null) {
 			updateVisible(item);
 			if (!item.isDisposed()) {

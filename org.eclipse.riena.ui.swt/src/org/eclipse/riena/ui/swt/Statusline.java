@@ -42,10 +42,10 @@ public class Statusline extends Composite implements IComplexComponent {
 
 	private List<Object> uiControls;
 	private StatuslineMessage message;
-	private Class<? extends Control> spacer;
+	private final Class<? extends Control> spacer;
 
 	// factory for the creation of the contents of the statusline
-	private IStatusLineContentFactory contentFactory;
+	private final IStatusLineContentFactory contentFactory;
 
 	/**
 	 * Creates a new instance of <code>Statusline</code>.
@@ -56,7 +56,7 @@ public class Statusline extends Composite implements IComplexComponent {
 	 * @param style
 	 *            the style of widget to construct
 	 */
-	public Statusline(Composite parent, int style) {
+	public Statusline(final Composite parent, final int style) {
 		this(parent, style | SWT.NO_SCROLL, (Class<? extends Control>) null);
 	}
 
@@ -70,7 +70,7 @@ public class Statusline extends Composite implements IComplexComponent {
 	 *            the style of widget to construct
 	 * @since 1.2
 	 */
-	public Statusline(Composite parent, int style, IStatusLineContentFactory contentFactory) {
+	public Statusline(final Composite parent, final int style, final IStatusLineContentFactory contentFactory) {
 		this(parent, style | SWT.NO_SCROLL, null, contentFactory);
 	}
 
@@ -87,7 +87,7 @@ public class Statusline extends Composite implements IComplexComponent {
 	 *            factory for the creation of the contents of the
 	 *            <code>Statusline</code>
 	 */
-	public Statusline(Composite parent, int style, Class<? extends Control> pSpacer) {
+	public Statusline(final Composite parent, final int style, final Class<? extends Control> pSpacer) {
 		this(parent, style | SWT.NO_SCROLL, pSpacer, new DefaultStatuslineContentFactory());
 	}
 
@@ -105,8 +105,8 @@ public class Statusline extends Composite implements IComplexComponent {
 	 *            factory for the creation of the contents of the
 	 *            <code>Statusline</code>
 	 */
-	public Statusline(Composite parent, int style, Class<? extends Control> pSpacer,
-			IStatusLineContentFactory contentFactory) {
+	public Statusline(final Composite parent, final int style, final Class<? extends Control> pSpacer,
+			final IStatusLineContentFactory contentFactory) {
 		super(parent, style | SWT.NO_SCROLL);
 		spacer = pSpacer;
 		this.contentFactory = contentFactory;
@@ -139,11 +139,11 @@ public class Statusline extends Composite implements IComplexComponent {
 		return uiControls;
 	}
 
-	private Object getUIControl(String id) {
+	private Object getUIControl(final String id) {
 		if (id == null) {
 			return null;
 		}
-		for (Object uiControl : getUIControls()) {
+		for (final Object uiControl : getUIControls()) {
 			if (id.equals(SWTBindingPropertyLocator.getInstance().locateBindingProperty(uiControl))) {
 				return uiControl;
 			}
@@ -161,7 +161,7 @@ public class Statusline extends Composite implements IComplexComponent {
 	 *            name of the property...
 	 * @since 1.2
 	 */
-	public void addUIControl(Widget uiControl, String propertyName) {
+	public void addUIControl(final Widget uiControl, final String propertyName) {
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(uiControl, propertyName);
 		getUIControls().add(uiControl);
 	}

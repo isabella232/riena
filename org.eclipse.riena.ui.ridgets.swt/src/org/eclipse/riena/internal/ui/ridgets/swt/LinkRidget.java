@@ -47,13 +47,13 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, Link.class);
 	}
 
 	@Override
 	protected void bindUIControl() {
-		Link control = getUIControl();
+		final Link control = getUIControl();
 		if (control != null) {
 			control.addSelectionListener(selectionObserver);
 			initText();
@@ -64,7 +64,7 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 	@Override
 	protected void unbindUIControl() {
 		super.unbindUIControl();
-		Link control = getUIControl();
+		final Link control = getUIControl();
 		if (control != null) {
 			control.removeSelectionListener(selectionObserver);
 		}
@@ -80,7 +80,7 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 		return BeansObservables.observeValue(this, ILinkRidget.PROPERTY_TEXT);
 	}
 
-	public void addSelectionListener(ISelectionListener listener) {
+	public void addSelectionListener(final ISelectionListener listener) {
 		selectionObserver.addListener(listener);
 	}
 
@@ -102,18 +102,18 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 		return false;
 	}
 
-	public void removeSelectionListener(ISelectionListener listener) {
+	public void removeSelectionListener(final ISelectionListener listener) {
 		selectionObserver.removeListener(listener);
 	}
 
-	public void setText(String text) {
-		String oldText = this.text;
+	public void setText(final String text) {
+		final String oldText = this.text;
 		this.text = text;
 		updateUIText();
 		firePropertyChange(ILinkRidget.PROPERTY_TEXT, oldText, this.text);
 	}
 
-	public void setText(String text, String link) {
+	public void setText(final String text, final String link) {
 		String mergedText;
 		if (StringUtils.isDeepEmpty(text) && StringUtils.isDeepEmpty(link)) {
 			mergedText = ""; //$NON-NLS-1$
@@ -125,7 +125,7 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 		setText(mergedText);
 	}
 
-	private String convertNullToEmpty(String value) {
+	private String convertNullToEmpty(final String value) {
 		return StringUtils.isDeepEmpty(value) ? "" : value; //$NON-NLS-1$
 	}
 
@@ -133,7 +133,7 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 	//////////////////
 
 	private void updateUIText() {
-		Link control = getUIControl();
+		final Link control = getUIControl();
 		if (control != null) {
 			control.setText(convertNullToEmpty(text));
 		}
@@ -145,7 +145,7 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 	 */
 	private void initText() {
 		if (text == null && !textAlreadyInitialized) {
-			Link control = getUIControl();
+			final Link control = getUIControl();
 			if (control != null && !control.isDisposed()) {
 				text = control.getText();
 				textAlreadyInitialized = true;
@@ -161,7 +161,7 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 	 * ISelectionListeners.
 	 */
 	private static final class LinkSelectionObserver extends AbstractObserver<ISelectionListener> {
-		public LinkSelectionObserver(IRidget source) {
+		public LinkSelectionObserver(final IRidget source) {
 			super(source);
 		}
 
@@ -171,12 +171,12 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 		}
 
 		@Override
-		protected void fireAction(SelectionEvent evt) {
-			ListenerList<ISelectionListener> listeners = getListeners();
+		protected void fireAction(final SelectionEvent evt) {
+			final ListenerList<ISelectionListener> listeners = getListeners();
 			if (listeners != null) {
-				org.eclipse.riena.ui.ridgets.listener.SelectionEvent event = new org.eclipse.riena.ui.ridgets.listener.SelectionEvent(
+				final org.eclipse.riena.ui.ridgets.listener.SelectionEvent event = new org.eclipse.riena.ui.ridgets.listener.SelectionEvent(
 						getSource(), Collections.EMPTY_LIST, Arrays.asList(evt.text));
-				for (ISelectionListener listener : listeners.getListeners()) {
+				for (final ISelectionListener listener : listeners.getListeners()) {
 					listener.ridgetSelected(event);
 				}
 			}

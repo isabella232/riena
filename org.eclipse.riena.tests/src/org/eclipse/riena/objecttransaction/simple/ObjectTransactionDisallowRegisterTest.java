@@ -26,7 +26,7 @@ public class ObjectTransactionDisallowRegisterTest extends RienaTestCase {
 	 * 
 	 */
 	public void testSimpleAllowRegister() {
-		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
+		final IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.allowRegister(false);
 
 		Addresse addresse = new Addresse(true);
@@ -39,7 +39,7 @@ public class ObjectTransactionDisallowRegisterTest extends RienaTestCase {
 		showStatus("testSimpleAllNew", objectTransaction);
 	}
 
-	private void showStatus(String testName, IObjectTransaction objectTransaction) {
+	private void showStatus(final String testName, final IObjectTransaction objectTransaction) {
 		System.out.println("testname >>>>>" + testName + "<<<<<");
 		System.out.println(objectTransaction);
 	}

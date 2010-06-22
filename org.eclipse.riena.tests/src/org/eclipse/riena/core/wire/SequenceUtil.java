@@ -34,15 +34,15 @@ public final class SequenceUtil {
 	/**
 	 * @param object
 	 */
-	public static void add(Object object) {
+	public static void add(final Object object) {
 		if (sequence == null) {
 			return;
 		}
 		sequence.add(object);
 	}
 
-	public static void assertExpected(Object... objects) {
-		List<Object> temp = Arrays.asList(objects);
+	public static void assertExpected(final Object... objects) {
+		final List<Object> temp = Arrays.asList(objects);
 		Assert.assertEquals(temp, sequence);
 	}
 }

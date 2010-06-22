@@ -58,14 +58,14 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	protected void setUp() throws Exception {
 		super.setUp();
 		roots = initializeTreeModel();
-		String[] valueAccessors = new String[] { "firstname", "lastname" };
-		String[] columnHeaders = new String[] { "First Name", "Last Name" };
+		final String[] valueAccessors = new String[] { "firstname", "lastname" };
+		final String[] columnHeaders = new String[] { "First Name", "Last Name" };
 		getRidget().bindToModel(roots, PersonNode.class, "children", "parent", valueAccessors, columnHeaders);
 	}
 
 	@Override
-	protected Control createWidget(Composite parent) {
-		Tree result = new Tree(parent, SWT.MULTI);
+	protected Control createWidget(final Composite parent) {
+		final Tree result = new Tree(parent, SWT.MULTI);
 		result.setHeaderVisible(true);
 		new TreeColumn(result, SWT.NONE);
 		new TreeColumn(result, SWT.NONE);
@@ -91,13 +91,13 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	// /////////////
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(TreeTableRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testBindToModel() {
-		TreeTableRidget ridget = getRidget();
-		Tree control = getWidget();
+		final TreeTableRidget ridget = getRidget();
+		final Tree control = getWidget();
 
 		ridget.expandAll();
 
@@ -114,9 +114,9 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testTableColumnsNumAndHeader() {
-		Tree control = getWidget();
+		final Tree control = getWidget();
 
-		TreeColumn[] columns = control.getColumns();
+		final TreeColumn[] columns = control.getColumns();
 		assertEquals(2, columns.length);
 		assertEquals("First Name", columns[0].getText());
 		assertEquals("Last Name", columns[1].getText());
@@ -124,25 +124,25 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testTableColumnsNumAndHeaderWithMismatch() {
-		String[] properties1 = new String[] { "firstname", "lastname" };
-		String[] headers1 = new String[] { "First Name" };
+		final String[] properties1 = new String[] { "firstname", "lastname" };
+		final String[] headers1 = new String[] { "First Name" };
 
 		try {
 			getRidget().bindToModel(roots, PersonNode.class, "children", "parent", properties1, headers1);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 	}
 
 	public void testTableColumnsWithNullHeader() {
-		Tree control = getWidget();
+		final Tree control = getWidget();
 
 		control.setHeaderVisible(true);
 		control.getColumn(0).setText("foo");
 		control.getColumn(1).setText("bar");
 
-		String[] properties1 = new String[] { "firstname", "lastname" };
+		final String[] properties1 = new String[] { "firstname", "lastname" };
 		// null should hide the headers
 		getRidget().bindToModel(roots, PersonNode.class, "children", "parent", properties1, null);
 
@@ -150,13 +150,13 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testTableColumnsWithNullHeaderEntry() {
-		Tree control = getWidget();
+		final Tree control = getWidget();
 
 		control.getColumn(0).setText("foo");
 		control.getColumn(1).setText("bar");
 
-		String[] properties1 = new String[] { "firstname", "lastname" };
-		String[] headers = new String[] { "First Name", null };
+		final String[] properties1 = new String[] { "firstname", "lastname" };
+		final String[] headers = new String[] { "First Name", null };
 		getRidget().bindToModel(roots, PersonNode.class, "children", "parent", properties1, headers);
 
 		assertEquals("First Name", control.getColumn(0).getText());
@@ -164,7 +164,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetGroupingEnabled() {
-		TreeTableRidget ridget = getRidget();
+		final TreeTableRidget ridget = getRidget();
 
 		assertFalse(ridget.isGroupingEnabled());
 
@@ -178,7 +178,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetGroupingEnabledFiresEvents() {
-		TreeTableRidget ridget = getRidget();
+		final TreeTableRidget ridget = getRidget();
 
 		expectPropertyChangeEvent(IGroupedTreeTableRidget.PROPERTY_GROUPING_ENABLED, Boolean.FALSE, Boolean.TRUE);
 		ridget.setGroupingEnabled(true);
@@ -198,23 +198,23 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetComparator() {
-		TreeTableRidget ridget = getRidget();
-		Tree control = getWidget();
+		final TreeTableRidget ridget = getRidget();
+		final Tree control = getWidget();
 
 		// sorts from a to z
-		Comparator<Object> comparator = new TypedComparator<String>();
+		final Comparator<Object> comparator = new TypedComparator<String>();
 
 		try {
 			ridget.setComparator(-1, comparator);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			ridget.setComparator(2, comparator);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
@@ -244,12 +244,12 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testGetSortedColumn() {
-		TreeTableRidget ridget = getRidget();
+		final TreeTableRidget ridget = getRidget();
 
 		try {
 			ridget.setSortedColumn(2);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
@@ -283,19 +283,19 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testIsColumnSortable() {
-		TreeTableRidget ridget = getRidget();
+		final TreeTableRidget ridget = getRidget();
 
 		try {
 			assertFalse(ridget.isColumnSortable(-1));
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			assertFalse(ridget.isColumnSortable(2));
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
@@ -323,8 +323,8 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetSortedAscending() {
-		Tree control = getWidget();
-		TreeTableRidget ridget = getRidget();
+		final Tree control = getWidget();
+		final TreeTableRidget ridget = getRidget();
 
 		ridget.bindToModel(roots, PersonNode.class, "children", "parent", new String[] { "firstname", "lastname" },
 				null);
@@ -361,7 +361,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetSortedAscendingFiresEvents() {
-		TreeTableRidget ridget = getRidget();
+		final TreeTableRidget ridget = getRidget();
 
 		ridget.setSortedAscending(true);
 
@@ -390,12 +390,12 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetSortedColumnFiresEvents() {
-		TreeTableRidget ridget = getRidget();
+		final TreeTableRidget ridget = getRidget();
 
 		assertEquals(-1, ridget.getSortedColumn());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer
-				.valueOf(-1), Integer.valueOf(0)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN,
+				Integer.valueOf(-1), Integer.valueOf(0)));
 
 		ridget.setSortedColumn(0);
 
@@ -405,8 +405,8 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSortedColumn(0);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer
-				.valueOf(0), Integer.valueOf(1)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN,
+				Integer.valueOf(0), Integer.valueOf(1)));
 
 		ridget.setSortedColumn(1);
 
@@ -414,7 +414,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetColumnSortabilityFiresEvents() {
-		TreeTableRidget ridget = getRidget();
+		final TreeTableRidget ridget = getRidget();
 
 		expectNoPropertyChangeEvent();
 
@@ -446,8 +446,8 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testColumnHeaderChangesSortability() {
-		TreeTableRidget ridget = getRidget();
-		Tree tree = getWidget();
+		final TreeTableRidget ridget = getRidget();
+		final Tree tree = getWidget();
 
 		ridget.setColumnSortable(0, true);
 		ridget.setComparator(0, new TypedComparator<String>());
@@ -459,7 +459,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(-1, ridget.getSortedColumn());
 		assertFalse(ridget.isSortedAscending());
 
-		Event e = new Event();
+		final Event e = new Event();
 		e.type = SWT.Selection;
 		e.widget = tree.getColumn(0);
 		e.widget.notifyListeners(SWT.Selection, e);
@@ -484,10 +484,10 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSortColumnTwo() {
-		ITreeTableRidget ridget = getRidget();
-		Tree control = getWidget();
+		final ITreeTableRidget ridget = getRidget();
+		final Tree control = getWidget();
 
-		WordNode root = new WordNode("root");
+		final WordNode root = new WordNode("root");
 		new WordNode(root, "ZA");
 		new WordNode(root, "AAA");
 		new WordNode(root, "BCAA");
@@ -522,8 +522,8 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * "output only".
 	 */
 	public void testOutputSingleSelectionCannotBeChangedFromUI() {
-		ITreeTableRidget ridget = getRidget();
-		Tree control = getWidget();
+		final ITreeTableRidget ridget = getRidget();
+		final Tree control = getWidget();
 
 		ridget.setSelectionType(SelectionType.SINGLE);
 
@@ -555,8 +555,8 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * "output only".
 	 */
 	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
-		ITreeTableRidget ridget = getRidget();
-		Tree control = getWidget();
+		final ITreeTableRidget ridget = getRidget();
+		final Tree control = getWidget();
 
 		ridget.setSelectionType(SelectionType.MULTI);
 
@@ -586,7 +586,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * Tests that toggling output state on/off does not change the selection.
 	 */
 	public void testTogglingOutputDoesNotChangeSelection() {
-		ITreeTableRidget ridget = getRidget();
+		final ITreeTableRidget ridget = getRidget();
 
 		ridget.setSelection(node1);
 
@@ -606,12 +606,12 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetColumnFormatter() {
-		ITreeTableRidget ridget = getRidget();
-		Tree tree = getWidget();
-		IColumnFormatter formatter = new ColumnFormatter() {
+		final ITreeTableRidget ridget = getRidget();
+		final Tree tree = getWidget();
+		final IColumnFormatter formatter = new ColumnFormatter() {
 			@Override
-			public String getText(Object element) {
-				PersonNode node = (PersonNode) element;
+			public String getText(final Object element) {
+				final PersonNode node = (PersonNode) element;
 				return node.getLastname().toUpperCase();
 			}
 		};
@@ -621,14 +621,14 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setColumnFormatter(-1, formatter);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			ridget.setColumnFormatter(99, formatter);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
@@ -650,17 +650,17 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testAddSelectionListener() {
-		TreeTableRidget ridget = getRidget();
-		Tree control = getWidget();
+		final TreeTableRidget ridget = getRidget();
+		final Tree control = getWidget();
 
 		try {
 			ridget.addSelectionListener(null);
 			fail();
-		} catch (RuntimeException npe) {
+		} catch (final RuntimeException npe) {
 			ok();
 		}
 
-		TestSelectionListener selectionListener = new TestSelectionListener();
+		final TestSelectionListener selectionListener = new TestSelectionListener();
 		ridget.addSelectionListener(selectionListener);
 
 		ridget.setSelection(node1);
@@ -681,7 +681,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(1, ridget.getSelection().size());
 		assertEquals(1, control.getSelectionCount());
 		assertEquals(2, selectionListener.getCount());
-		SelectionEvent selectionEvent = selectionListener.getSelectionEvent();
+		final SelectionEvent selectionEvent = selectionListener.getSelectionEvent();
 		assertEquals(ridget, selectionEvent.getSource());
 		assertTrue(selectionEvent.getOldSelection().isEmpty());
 		assertEquals(ridget.getSelection(), selectionEvent.getNewSelection());
@@ -692,7 +692,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(1, ridget.getSelection().size());
 		assertEquals(1, control.getSelectionCount());
 		assertEquals(3, selectionListener.getCount());
-		SelectionEvent selectionEvent2 = selectionListener.getSelectionEvent();
+		final SelectionEvent selectionEvent2 = selectionListener.getSelectionEvent();
 		assertEquals(ridget, selectionEvent.getSource());
 		assertEquals(selectionEvent.getNewSelection(), selectionEvent2.getOldSelection());
 		assertEquals(ridget.getSelection(), selectionEvent2.getNewSelection());
@@ -705,18 +705,18 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 295305
 	 */
 	public void testAutoCreateTableColumn() {
-		ITreeTableRidget ridget = createRidget();
-		Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		final ITreeTableRidget ridget = createRidget();
+		final Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
 		ridget.setUIControl(control);
 
 		assertEquals(0, control.getColumnCount());
 
-		String[] columns3 = { "firstname", "lastname", "entry" };
+		final String[] columns3 = { "firstname", "lastname", "entry" };
 		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns3, null);
 
 		assertEquals(3, control.getColumnCount());
 
-		String[] columns1 = { "firstname" };
+		final String[] columns1 = { "firstname" };
 		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns1, null);
 
 		assertEquals(1, control.getColumnCount());
@@ -726,13 +726,13 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 295305
 	 */
 	public void testAutoCreateColumnsWithNoLayout() {
-		ITreeTableRidget ridget = createRidget();
-		Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		final ITreeTableRidget ridget = createRidget();
+		final Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
 		ridget.setUIControl(control);
 
 		getShell().setLayout(null);
 		control.setSize(300, 100);
-		String[] columns3 = { "firstname", "lastname", "entry" };
+		final String[] columns3 = { "firstname", "lastname", "entry" };
 		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns3, null);
 
 		assertEquals(null, control.getParent().getLayout());
@@ -746,15 +746,15 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 295305
 	 */
 	public void testAutoCreateColumnsWithTableLayout() {
-		ITreeTableRidget ridget = createRidget();
-		Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		final ITreeTableRidget ridget = createRidget();
+		final Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
 		control.setLayout(new TableLayout());
 		ridget.setUIControl(control);
 
-		String[] columns3 = { "firstname", "lastname", "entry" };
+		final String[] columns3 = { "firstname", "lastname", "entry" };
 		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns3, null);
 
-		Class<?> shellLayout = getShell().getLayout().getClass();
+		final Class<?> shellLayout = getShell().getLayout().getClass();
 		assertSame(shellLayout, control.getParent().getLayout().getClass());
 		assertTrue(control.getLayout() instanceof TableLayout);
 		TestUtils.assertColumnWidths(control, 3);
@@ -764,15 +764,15 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 295305
 	 */
 	public void testAutoCreateColumnsWithTreeColumnLayout() {
-		ITreeTableRidget ridget = createRidget();
-		for (Control control : getShell().getChildren()) {
+		final ITreeTableRidget ridget = createRidget();
+		for (final Control control : getShell().getChildren()) {
 			control.dispose();
 		}
-		Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		final Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
 		ridget.setUIControl(control);
 		getShell().setLayout(new TreeColumnLayout());
 
-		String[] columns3 = { "firstname", "lastname", "entry" };
+		final String[] columns3 = { "firstname", "lastname", "entry" };
 		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns3, null);
 
 		assertTrue(control.getParent().getLayout() instanceof TreeColumnLayout);
@@ -789,32 +789,32 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 295305
 	 */
 	public void testSetColumnWidths() {
-		ITreeTableRidget ridget = createRidget();
-		Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		final ITreeTableRidget ridget = createRidget();
+		final Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
 		ridget.setUIControl(control);
 
 		try {
 			ridget.setColumnWidths(new Object[] { null });
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			assertTrue(rex.getMessage().contains("null"));
 		}
 
 		try {
 			ridget.setColumnWidths(new Object[] { new Object() });
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			assertTrue(rex.getMessage().contains("Object"));
 		}
 
 		ridget.setColumnWidths(new Object[] { new ColumnPixelData(20), new ColumnPixelData(40), new ColumnPixelData(60) });
-		String[] columns3 = { "firstname", "lastname", "entry" };
+		final String[] columns3 = { "firstname", "lastname", "entry" };
 		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns3, null);
 
-		int[] expected = { 20, 40, 60 };
+		final int[] expected = { 20, 40, 60 };
 		for (int i = 0; i < 3; i++) {
-			int actual = control.getColumn(i).getWidth();
-			String msg = String.format("col #%d, exp:%d, act:%d", i, expected[i], actual);
+			final int actual = control.getColumn(i).getWidth();
+			final String msg = String.format("col #%d, exp:%d, act:%d", i, expected[i], actual);
 			assertEquals(msg, expected[i], actual);
 		}
 	}
@@ -823,22 +823,22 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 295305
 	 */
 	public void testPreserveColumnWidths() {
-		int[] widths = { 50, 100, 150 };
-		ITreeTableRidget ridget = createRidget();
-		Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
-		for (int width : widths) {
-			TreeColumn column = new TreeColumn(control, SWT.NONE);
+		final int[] widths = { 50, 100, 150 };
+		final ITreeTableRidget ridget = createRidget();
+		final Tree control = new Tree(getShell(), SWT.FULL_SELECTION | SWT.SINGLE);
+		for (final int width : widths) {
+			final TreeColumn column = new TreeColumn(control, SWT.NONE);
 			column.setWidth(width);
 		}
 		ridget.setUIControl(control);
 
-		String[] columns3 = { "firstname", "lastname", "entry" };
+		final String[] columns3 = { "firstname", "lastname", "entry" };
 		ridget.bindToModel(roots, PersonNode.class, "children", "parent", columns3, null);
 		ridget.updateFromModel();
 
 		for (int i = 0; i < 3; i++) {
-			int actual = control.getColumn(i).getWidth();
-			String msg = String.format("col #%d, exp:%d, act:%d", i, widths[i], actual);
+			final int actual = control.getColumn(i).getWidth();
+			final String msg = String.format("col #%d, exp:%d, act:%d", i, widths[i], actual);
 			assertEquals(msg, widths[i], actual);
 		}
 	}
@@ -847,7 +847,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 296639
 	 */
 	public void testSetSelectionWithNoBoundControl() {
-		ITreeRidget ridget = getRidget();
+		final ITreeRidget ridget = getRidget();
 
 		ridget.setSelection(node2);
 
@@ -865,7 +865,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 298033 comment #1
 	 */
 	public void testUpdateSingleSelectionFromModelWithNoBoundControl() {
-		ITreeRidget ridget = getRidget();
+		final ITreeRidget ridget = getRidget();
 
 		ridget.setSelectionType(SelectionType.SINGLE);
 		ridget.setSelection(node2);
@@ -885,7 +885,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 298033 comment #1
 	 */
 	public void testUpdateMultiSelectionFromModelWithNoBoundControl() {
-		ITreeRidget ridget = getRidget();
+		final ITreeRidget ridget = getRidget();
 
 		ridget.setSelectionType(SelectionType.MULTI);
 		ridget.setSelection(Arrays.asList(node2, node4));
@@ -908,7 +908,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 298033, 304733
 	 */
 	public void testUpdateSingleSelectionFromModelWithBoundControl() {
-		ITreeRidget ridget = getRidget();
+		final ITreeRidget ridget = getRidget();
 
 		ridget.setSelectionType(SelectionType.SINGLE);
 		ridget.setSelection(node2);
@@ -927,7 +927,7 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 298033, 304733
 	 */
 	public void testUpdateMultiSelectionFromModelWithBoundControl() {
-		ITreeRidget ridget = getRidget();
+		final ITreeRidget ridget = getRidget();
 
 		ridget.setSelectionType(SelectionType.MULTI);
 		ridget.setSelection(Arrays.asList(node2, node4));
@@ -950,10 +950,10 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 
 	private PersonNode[] initializeTreeModel() {
 		// root nodes
-		PersonNode root1 = new PersonNode(new Person("Root", "Benjamin"));
+		final PersonNode root1 = new PersonNode(new Person("Root", "Benjamin"));
 		node1 = root1;
-		PersonNode root2 = new PersonNode(new Person("Root", "Zebra"));
-		PersonNode root3 = new PersonNode(new Person("Root", "Adam"));
+		final PersonNode root2 = new PersonNode(new Person("Root", "Zebra"));
+		final PersonNode root3 = new PersonNode(new Person("Root", "Adam"));
 		// children beaneath node1
 		node2 = new PersonNode(node1, new Person("Benjason", "Elen"));
 		node4 = new PersonNode(node1, new Person("Benjason", "Zora"));
@@ -974,9 +974,9 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 * This method will fully expand the tree to ensure all tree items are
 	 * created.
 	 */
-	private TreeItem getUIControlItem(int index) {
+	private TreeItem getUIControlItem(final int index) {
 		getRidget().expandAll();
-		Tree control = getWidget();
+		final Tree control = getWidget();
 		switch (index) {
 		case 0:
 			return control.getItem(0);
@@ -991,9 +991,9 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 		}
 	}
 
-	private void removeNode(ITreeNode parent, ITreeNode toRemove) {
-		List<ITreeNode> children = parent.getChildren();
-		boolean removed = children.remove(toRemove);
+	private void removeNode(final ITreeNode parent, final ITreeNode toRemove) {
+		final List<ITreeNode> children = parent.getChildren();
+		final boolean removed = children.remove(toRemove);
 		assertTrue("failed to remove " + toRemove, removed);
 		parent.setChildren(children);
 	}
@@ -1007,11 +1007,11 @@ public class TreeTableRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	private static final class PersonNode extends TreeNode {
 
-		public PersonNode(Person value) {
+		public PersonNode(final Person value) {
 			super(value);
 		}
 
-		public PersonNode(PersonNode parent, Person value) {
+		public PersonNode(final PersonNode parent, final Person value) {
 			super(parent, value);
 		}
 

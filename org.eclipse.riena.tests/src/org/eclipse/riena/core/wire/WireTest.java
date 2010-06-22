@@ -26,7 +26,7 @@ import org.eclipse.riena.internal.tests.Activator;
 @NonUITestCase
 public class WireTest extends RienaTestCase {
 
-	private BundleContext context = Activator.getDefault().getContext();
+	private final BundleContext context = Activator.getDefault().getContext();
 	private ServiceRegistration schtonkReg;
 	private ServiceRegistration stunkReg;
 
@@ -55,16 +55,16 @@ public class WireTest extends RienaTestCase {
 	}
 
 	public void testWiringBean() {
-		Bean bean = new Bean();
-		WirePuller puller = Wire.instance(bean).andStart(context);
+		final Bean bean = new Bean();
+		final WirePuller puller = Wire.instance(bean).andStart(context);
 		assertTrue(bean.hasSchtonk());
 		puller.stop();
 	}
 
 	public void testWiringDeeplyAndCheckSequenceConstraint() {
-		BeanOnBean beanOnBean = new BeanOnBean();
+		final BeanOnBean beanOnBean = new BeanOnBean();
 		SequenceUtil.init();
-		WirePuller puller = Wire.instance(beanOnBean).andStart(context);
+		final WirePuller puller = Wire.instance(beanOnBean).andStart(context);
 		SequenceUtil.assertExpected(BeanWiring.class, BeanOnBeanWiring.class);
 		assertTrue(beanOnBean.hasSchtonk());
 		assertTrue(beanOnBean.hasStunk());
@@ -74,20 +74,20 @@ public class WireTest extends RienaTestCase {
 	}
 
 	public void testWiringDeeply() {
-		NoWirableBean noWirableBean = new NoWirableBean();
+		final NoWirableBean noWirableBean = new NoWirableBean();
 		SequenceUtil.init();
-		WirePuller puller = Wire.instance(noWirableBean).andStart(context);
+		final WirePuller puller = Wire.instance(noWirableBean).andStart(context);
 		SequenceUtil.assertExpected(BeanWiring.class);
 		assertTrue(noWirableBean.hasSchtonk());
 		puller.stop();
 	}
 
 	public void testWireMocking() {
-		Map<Class<?>, Class<? extends IWiring>> wiringMocks = new HashMap<Class<?>, Class<? extends IWiring>>();
+		final Map<Class<?>, Class<? extends IWiring>> wiringMocks = new HashMap<Class<?>, Class<? extends IWiring>>();
 		wiringMocks.put(Bean.class, BeanWiringMock.class);
 		WirePuller.injectWiringMocks(wiringMocks);
-		Bean bean = new Bean();
-		WirePuller puller = Wire.instance(bean).andStart(context);
+		final Bean bean = new Bean();
+		final WirePuller puller = Wire.instance(bean).andStart(context);
 		assertTrue(bean.isSchtonkSchtonk());
 		puller.stop();
 
@@ -95,9 +95,9 @@ public class WireTest extends RienaTestCase {
 	}
 
 	public void testAnnotatedServiceWiring() {
-		AnnoServiceBeanB beanB = new AnnoServiceBeanB();
+		final AnnoServiceBeanB beanB = new AnnoServiceBeanB();
 		SequenceUtil.init();
-		WirePuller puller = Wire.instance(beanB).andStart(context);
+		final WirePuller puller = Wire.instance(beanB).andStart(context);
 		SequenceUtil.assertExpected(AnnoServiceBeanA.class, AnnoServiceBeanB.class);
 		SequenceUtil.init();
 		puller.stop();
@@ -109,9 +109,9 @@ public class WireTest extends RienaTestCase {
 		addPluginXml(WireTest.class, "plugin_ext.xml");
 
 		try {
-			AnnoExtBeanB beanB = new AnnoExtBeanB();
+			final AnnoExtBeanB beanB = new AnnoExtBeanB();
 			SequenceUtil.init();
-			WirePuller puller = Wire.instance(beanB).andStart(context);
+			final WirePuller puller = Wire.instance(beanB).andStart(context);
 			SequenceUtil.assertExpected("textA", "infoB");
 			SequenceUtil.init();
 			puller.stop();

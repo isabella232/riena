@@ -49,7 +49,7 @@ public class BundleActivityCollector extends AbstractCollector implements Bundle
 	 * @see org.osgi.framework.BundleListener#bundleChanged(org.osgi.framework.
 	 * BundleEvent)
 	 */
-	public void bundleChanged(BundleEvent event) {
+	public void bundleChanged(final BundleEvent event) {
 		collect(event);
 		// TODO When do we trigger? Is this a good pattern?
 		if (activatedCounter++ % 100 == 0) {

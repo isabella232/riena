@@ -24,8 +24,8 @@ import org.eclipse.riena.security.sessionservice.SessionEntry;
  */
 public class MemoryStore implements ISessionStore {
 
-	private HashMap<String, SessionEntry> sessionTable = new HashMap<String, SessionEntry>();
-	private HashMap<Principal, SessionList> userTable = new HashMap<Principal, SessionList>();
+	private final HashMap<String, SessionEntry> sessionTable = new HashMap<String, SessionEntry>();
+	private final HashMap<Principal, SessionList> userTable = new HashMap<Principal, SessionList>();
 
 	/*
 	 * (non-Javadoc)
@@ -34,10 +34,10 @@ public class MemoryStore implements ISessionStore {
 	 * org.eclipse.riena.security.sessionservice.ISessionStore#read(java.security
 	 * .Principal)
 	 */
-	public synchronized Session[] read(Principal principal) {
-		SessionList sl = userTable.get(principal);
-		SessionEntry[] entries = sl.entries();
-		Session[] sessions = new Session[entries.length];
+	public synchronized Session[] read(final Principal principal) {
+		final SessionList sl = userTable.get(principal);
+		final SessionEntry[] entries = sl.entries();
+		final Session[] sessions = new Session[entries.length];
 		for (int i = 0; i < entries.length; i++) {
 			sessions[i] = entries[i].getSession();
 		}
@@ -51,7 +51,7 @@ public class MemoryStore implements ISessionStore {
 	 * org.eclipse.riena.security.sessionservice.ISessionStore#read(org.eclipse
 	 * .riena.security.common.session.Session)
 	 */
-	public synchronized SessionEntry read(Session session) {
+	public synchronized SessionEntry read(final Session session) {
 		return sessionTable.get(session.getSessionId());
 	}
 
@@ -62,9 +62,9 @@ public class MemoryStore implements ISessionStore {
 	 * org.eclipse.riena.security.sessionservice.ISessionStore#write(org.eclipse
 	 * .riena.security.sessionservice.SessionEntry)
 	 */
-	public synchronized void write(SessionEntry entry) {
+	public synchronized void write(final SessionEntry entry) {
 		sessionTable.put(entry.getSession().getSessionId(), entry);
-		for (Principal p : entry.getPrincipals().toArray(new Principal[entry.getPrincipals().size()])) {
+		for (final Principal p : entry.getPrincipals().toArray(new Principal[entry.getPrincipals().size()])) {
 			SessionList sl = userTable.get(p);
 			if (sl == null) {
 				sl = new SessionList();
@@ -84,16 +84,16 @@ public class MemoryStore implements ISessionStore {
 	 * 
 	 * @pre session!=null
 	 */
-	public synchronized void delete(Session session) {
+	public synchronized void delete(final Session session) {
 		// Assert.isTrue(session != null,"session must not be null" );
 
-		SessionEntry entry = sessionTable.get(session.getSessionId());
+		final SessionEntry entry = sessionTable.get(session.getSessionId());
 		if (entry == null) {
 			return;
 		}
 		sessionTable.remove(session.getSessionId());
-		for (Principal p : entry.getPrincipals().toArray(new Principal[entry.getPrincipals().size()])) {
-			SessionList sl = userTable.get(p);
+		for (final Principal p : entry.getPrincipals().toArray(new Principal[entry.getPrincipals().size()])) {
+			final SessionList sl = userTable.get(p);
 			sl.removeEntry(session);
 		}
 	}
@@ -105,16 +105,16 @@ public class MemoryStore implements ISessionStore {
 	 * org.eclipse.riena.security.sessionservice.ISessionStore#delete(java.security
 	 * .Principal)
 	 */
-	public synchronized void delete(Principal principal) {
-		SessionList sl = userTable.get(principal);
-		SessionEntry[] entries = sl.entries();
-		for (int i = 0; i < entries.length; i++) {
-			delete(entries[i].getSession());
+	public synchronized void delete(final Principal principal) {
+		final SessionList sl = userTable.get(principal);
+		final SessionEntry[] entries = sl.entries();
+		for (final SessionEntry entrie : entries) {
+			delete(entrie.getSession());
 		}
 	}
 
 	static class SessionList {
-		private HashMap<String, SessionEntry> sessions = new HashMap<String, SessionEntry>();
+		private final HashMap<String, SessionEntry> sessions = new HashMap<String, SessionEntry>();
 		private final static SessionEntry[] EMPTY_SESSION_ENTRIES = new SessionEntry[0];
 
 		/**
@@ -123,7 +123,7 @@ public class MemoryStore implements ISessionStore {
 		 * @param entry
 		 *            session entry
 		 */
-		public void addEntry(SessionEntry entry) {
+		public void addEntry(final SessionEntry entry) {
 			sessions.put(entry.getSession().getSessionId(), entry);
 		}
 
@@ -133,7 +133,7 @@ public class MemoryStore implements ISessionStore {
 		 * @param session
 		 *            session id
 		 */
-		public void removeEntry(Session session) {
+		public void removeEntry(final Session session) {
 			sessions.remove(session.getSessionId());
 		}
 
@@ -146,7 +146,7 @@ public class MemoryStore implements ISessionStore {
 			if (sessions.size() == 0) {
 				return EMPTY_SESSION_ENTRIES;
 			}
-			Collection<SessionEntry> values = sessions.values();
+			final Collection<SessionEntry> values = sessions.values();
 			return values.toArray(new SessionEntry[values.size()]);
 		}
 	}

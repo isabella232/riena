@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.objecttransaction.impl;
 
 import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.objecttransaction.IObjectTransaction;
 import org.eclipse.riena.objecttransaction.IObjectTransactionFactory;
 import org.eclipse.riena.objecttransaction.IObjectTransactionManager;
@@ -22,7 +23,7 @@ import org.eclipse.riena.objecttransaction.IObjectTransactionManager;
  */
 public class ObjectTransactionFactoryImpl implements IObjectTransactionFactory {
 
-	private IObjectTransactionManager objectTransactionManager;
+	private final IObjectTransactionManager objectTransactionManager;
 
 	/**
 	 * Create ObjectTranactionFactory setting the objecttransactionmanger in the
@@ -31,7 +32,7 @@ public class ObjectTransactionFactoryImpl implements IObjectTransactionFactory {
 	 * @param otm
 	 *            objecttransactionmanager
 	 */
-	public ObjectTransactionFactoryImpl(IObjectTransactionManager otm) {
+	public ObjectTransactionFactoryImpl(final IObjectTransactionManager otm) {
 		this.objectTransactionManager = otm;
 	}
 
@@ -39,7 +40,7 @@ public class ObjectTransactionFactoryImpl implements IObjectTransactionFactory {
 	 * @see org.eclipse.riena.objecttransaction.IObjectTransactionFactory#createObjectTransaction()
 	 */
 	public IObjectTransaction createObjectTransaction() {
-		IObjectTransaction objectTransaction = new ObjectTransactionImpl();
+		final IObjectTransaction objectTransaction = new ObjectTransactionImpl();
 		objectTransactionManager.setCurrent(objectTransaction);
 		return objectTransaction;
 	}
@@ -47,10 +48,10 @@ public class ObjectTransactionFactoryImpl implements IObjectTransactionFactory {
 	/**
 	 * @see org.eclipse.riena.objecttransaction.IObjectTransactionFactory#createSubObjectTransaction(org.eclipse.riena.objecttransaction.IObjectTransaction)
 	 */
-	public IObjectTransaction createSubObjectTransaction(IObjectTransaction parentObjectTransaction) {
+	public IObjectTransaction createSubObjectTransaction(final IObjectTransaction parentObjectTransaction) {
 		Assert.isNotNull(parentObjectTransaction, "Parameter 'parentObjectTransaction' must not be null."); //$NON-NLS-1$
 
-		IObjectTransaction objectTransaction = parentObjectTransaction.createSubObjectTransaction();
+		final IObjectTransaction objectTransaction = parentObjectTransaction.createSubObjectTransaction();
 		return objectTransaction;
 	}
 }

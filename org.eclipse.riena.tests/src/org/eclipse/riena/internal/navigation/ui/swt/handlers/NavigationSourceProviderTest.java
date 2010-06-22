@@ -75,7 +75,7 @@ public class NavigationSourceProviderTest extends TestCase {
 				}
 			});
 			fail("Expected NavigationModelFailure wasn't throw!");
-		} catch (NavigationModelFailure failure) {
+		} catch (final NavigationModelFailure failure) {
 			Nop.reason("Expected failure");
 		}
 
@@ -105,27 +105,27 @@ public class NavigationSourceProviderTest extends TestCase {
 		Map<String, String> state = provider.getCurrentState();
 		assertEquals(4, state.keySet().size());
 		assertEquals(4, state.values().size());
-		for (String value : state.values()) {
+		for (final String value : state.values()) {
 			assertTrue(StringUtils.isEmpty(value));
 		}
 
 		// navigation model but no node is active
-		IApplicationNode appNode = new ApplicationNode(new NavigationNodeId("app1"));
+		final IApplicationNode appNode = new ApplicationNode(new NavigationNodeId("app1"));
 		ApplicationNodeManager.registerApplicationNode(appNode);
-		ISubApplicationNode subApp = new SubApplicationNode(new NavigationNodeId("subApp1"));
+		final ISubApplicationNode subApp = new SubApplicationNode(new NavigationNodeId("subApp1"));
 		appNode.addChild(subApp);
-		IModuleGroupNode mg = new ModuleGroupNode(new NavigationNodeId("mg1"));
+		final IModuleGroupNode mg = new ModuleGroupNode(new NavigationNodeId("mg1"));
 		subApp.addChild(mg);
-		IModuleNode mod = new ModuleNode(new NavigationNodeId("mod1"));
+		final IModuleNode mod = new ModuleNode(new NavigationNodeId("mod1"));
 		mg.addChild(mod);
-		ISubModuleNode subMod = new SubModuleNode(new NavigationNodeId("subMod1"));
+		final ISubModuleNode subMod = new SubModuleNode(new NavigationNodeId("subMod1"));
 		mod.addChild(subMod);
-		ISubModuleNode subMod2 = new SubModuleNode(new NavigationNodeId("subMod2"));
+		final ISubModuleNode subMod2 = new SubModuleNode(new NavigationNodeId("subMod2"));
 		mod.addChild(subMod2);
 
 		state = provider.getCurrentState();
 		assertEquals(4, state.values().size());
-		for (String value : state.values()) {
+		for (final String value : state.values()) {
 			assertTrue(StringUtils.isEmpty(value));
 		}
 

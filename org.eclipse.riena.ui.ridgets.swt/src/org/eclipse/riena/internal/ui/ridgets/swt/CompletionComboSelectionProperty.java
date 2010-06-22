@@ -26,14 +26,16 @@ class CompletionComboSelectionProperty extends WidgetValueProperty {
 		super(SWT.Modify);
 	}
 
-	protected Object doGetValue(Object source) {
+	@Override
+	protected Object doGetValue(final Object source) {
 		return ((CompletionCombo) source).getText();
 	}
 
-	protected void doSetValue(Object source, Object value) {
-		String value1 = (String) value;
-		CompletionCombo ccombo = (CompletionCombo) source;
-		String items[] = ccombo.getItems();
+	@Override
+	protected void doSetValue(final Object source, final Object value) {
+		final String value1 = (String) value;
+		final CompletionCombo ccombo = (CompletionCombo) source;
+		final String items[] = ccombo.getItems();
 		int index = -1;
 		if (value1 == null) {
 			ccombo.select(-1);
@@ -52,6 +54,7 @@ class CompletionComboSelectionProperty extends WidgetValueProperty {
 		}
 	}
 
+	@Override
 	public String toString() {
 		return "CompletionCombo.selection <String>"; //$NON-NLS-1$
 	}

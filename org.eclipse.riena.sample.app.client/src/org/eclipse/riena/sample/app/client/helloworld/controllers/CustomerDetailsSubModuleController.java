@@ -29,7 +29,7 @@ public class CustomerDetailsSubModuleController extends SubModuleController {
 	public static final String RIDGET_ID_SAVE = "save"; //$NON-NLS-1$
 	public static final String RIDGET_ID_OPEN_OFFERS = "openOffers"; //$NON-NLS-1$
 
-	public CustomerDetailsSubModuleController(ISubModuleNode navigationNode) {
+	public CustomerDetailsSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
@@ -44,30 +44,30 @@ public class CustomerDetailsSubModuleController extends SubModuleController {
 
 		super.configureRidgets();
 
-		Customer customer = getCustomer();
+		final Customer customer = getCustomer();
 
-		ITextRidget customerNumber = (ITextRidget) getRidget(RIDGET_ID_CUSTOMER_NUMBER);
+		final ITextRidget customerNumber = (ITextRidget) getRidget(RIDGET_ID_CUSTOMER_NUMBER);
 		customerNumber.setOutputOnly(true);
 		customerNumber.bindToModel(customer, "customerNumber"); //$NON-NLS-1$
 		customerNumber.updateFromModel();
 
-		ITextRidget lastName = (ITextRidget) getRidget(RIDGET_ID_LAST_NAME);
+		final ITextRidget lastName = (ITextRidget) getRidget(RIDGET_ID_LAST_NAME);
 		lastName.bindToModel(customer, "lastName"); //$NON-NLS-1$
 		lastName.updateFromModel();
 
-		ITextRidget firstName = (ITextRidget) getRidget(RIDGET_ID_FIRST_NAME);
+		final ITextRidget firstName = (ITextRidget) getRidget(RIDGET_ID_FIRST_NAME);
 		firstName.bindToModel(customer, "firstName"); //$NON-NLS-1$
 		firstName.updateFromModel();
 
-		ITextRidget birthPlace = (ITextRidget) getRidget(RIDGET_ID_BIRTHPLACE);
+		final ITextRidget birthPlace = (ITextRidget) getRidget(RIDGET_ID_BIRTHPLACE);
 		birthPlace.bindToModel(customer.getBirth(), "birthPlace"); //$NON-NLS-1$
 		birthPlace.updateFromModel();
 
-		IActionRidget saveAction = (IActionRidget) getRidget(RIDGET_ID_SAVE);
+		final IActionRidget saveAction = (IActionRidget) getRidget(RIDGET_ID_SAVE);
 		saveAction.addListener(new SaveCallback());
 		saveAction.setText("Save"); //$NON-NLS-1$
 
-		IActionRidget openOffersAction = (IActionRidget) getRidget(RIDGET_ID_OPEN_OFFERS);
+		final IActionRidget openOffersAction = (IActionRidget) getRidget(RIDGET_ID_OPEN_OFFERS);
 		openOffersAction.addListener(new OffersCallback());
 		openOffersAction.setEnabled(false);
 		openOffersAction.setText("Offers"); //$NON-NLS-1$

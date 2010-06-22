@@ -23,7 +23,7 @@ import org.eclipse.riena.internal.core.test.collect.NonGatherableTestCase;
 public class AllManualTests extends TestCase {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(AllManualTests.class.getName());
+		final TestSuite suite = new TestSuite(AllManualTests.class.getName());
 		suite.addTestSuite(RemoteProgressMonitorITest.class);
 		return suite;
 	}

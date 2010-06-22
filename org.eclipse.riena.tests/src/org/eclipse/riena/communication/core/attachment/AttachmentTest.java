@@ -49,7 +49,7 @@ public class AttachmentTest extends RienaTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		file = File.createTempFile("attachTest", null);
-		PrintWriter printWriter = new PrintWriter(new FileOutputStream(file));
+		final PrintWriter printWriter = new PrintWriter(new FileOutputStream(file));
 		printWriter.write(WRITE_BUFFER);
 		printWriter.close();
 		// file = new
@@ -61,10 +61,10 @@ public class AttachmentTest extends RienaTestCase {
 	 *
 	 */
 	public void testConstruction() {
-		assertTrue("attachment does not have type FILE", (Attachment.Type) ReflectionUtils.invokeHidden(attach,
-				"getType") == Attachment.Type.FILE);
-		assertTrue("internal file object is not the passed parameter", (File) ReflectionUtils.invokeHidden(attach,
-				"getInternalFile") == file);
+		assertTrue("attachment does not have type FILE",
+				(Attachment.Type) ReflectionUtils.invokeHidden(attach, "getType") == Attachment.Type.FILE);
+		assertTrue("internal file object is not the passed parameter",
+				(File) ReflectionUtils.invokeHidden(attach, "getInternalFile") == file);
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class AttachmentTest extends RienaTestCase {
 		try {
 			stream = attach.readAsStream();
 			int attachmentCounter = 0, incCounter = 0;
-			byte[] b = new byte[BUFFER_SIZE];
+			final byte[] b = new byte[BUFFER_SIZE];
 			// read through attachment
 			while ((incCounter = stream.read(b)) > 0) {
 				attachmentCounter = attachmentCounter + incCounter;
@@ -99,19 +99,19 @@ public class AttachmentTest extends RienaTestCase {
 	 * @throws IOException
 	 */
 	public void testReadAsFile() throws IOException {
-		File tmp = attach.readAsFile("tempxxx.txt");
+		final File tmp = attach.readAsFile("tempxxx.txt");
 		InputStream stream = null;
 		try {
 			stream = new FileInputStream(tmp);
 			int incCounter, physicalFileCounter = 0;
-			byte[] b = new byte[BUFFER_SIZE];
+			final byte[] b = new byte[BUFFER_SIZE];
 			// read through physical file
 			while ((incCounter = stream.read(b)) > 0) {
 				physicalFileCounter = physicalFileCounter + incCounter;
 			}
 			assertTrue("filelength should be " + FILE_SIZE, physicalFileCounter == FILE_SIZE);
 			stream.close();
-			boolean check = tmp.delete();
+			final boolean check = tmp.delete();
 			if (!check) {
 				System.out.println("temp file " + tmp.getAbsolutePath() + " could not be deleted.");
 			}
@@ -124,15 +124,16 @@ public class AttachmentTest extends RienaTestCase {
 
 	public void testReadURL() throws IOException {
 		try {
-			SocketReader socketReader = new SocketReader(9999, this.getClass().getResource("test.txt"));
+			final SocketReader socketReader = new SocketReader(9999, this.getClass().getResource("test.txt"));
 			socketReader.start();
-			URL url = new URL("http://localhost:9999/test");
-			Attachment urlAttachment = new Attachment(url);
+			final URL url = new URL("http://localhost:9999/test");
+			final Attachment urlAttachment = new Attachment(url);
 			urlAttachment.readAsStream();
-			assertTrue("must only connect once for several calls to attachment but did connect:"
-					+ socketReader.getCount() + " times.", socketReader.getCount() == 1);
+			assertTrue(
+					"must only connect once for several calls to attachment but did connect:" + socketReader.getCount()
+							+ " times.", socketReader.getCount() == 1);
 			socketReader.stop();
-		} catch (SocketException e) {
+		} catch (final SocketException e) {
 			Nop.reason("SocketException can happen in mavenbuild....thats ok");
 		}
 	}
@@ -143,11 +144,11 @@ public class AttachmentTest extends RienaTestCase {
 	 * 
 	 */
 	static class SocketReader extends Thread {
-		private URL myUrl;
-		private int port;
+		private final URL myUrl;
+		private final int port;
 		private int count;
 
-		SocketReader(int port, URL url) {
+		SocketReader(final int port, final URL url) {
 			myUrl = url;
 			this.port = port;
 			this.count = 0;
@@ -156,20 +157,20 @@ public class AttachmentTest extends RienaTestCase {
 		@Override
 		public void run() {
 			try {
-				ServerSocket serverSocket = new ServerSocket(port);
+				final ServerSocket serverSocket = new ServerSocket(port);
 				while (true) {
 					InputStream input = null;
 					InputStream localInput = null;
 					OutputStream output = null;
 					try {
-						Socket socket = serverSocket.accept();
+						final Socket socket = serverSocket.accept();
 						count++;
 						input = socket.getInputStream();
 						// first wait until there is some input
 						while (input.available() == 0) {
 							try {
 								Thread.sleep(10);
-							} catch (InterruptedException e) {
+							} catch (final InterruptedException e) {
 								Nop.reason("nothing to do");
 							}
 						}
@@ -182,14 +183,14 @@ public class AttachmentTest extends RienaTestCase {
 									// we give the other thread
 									// some time to come up with some input
 									Thread.sleep(200);
-								} catch (InterruptedException e) {
+								} catch (final InterruptedException e) {
 									Nop.reason("ignore");
 								}
 							}
 						}
 						output = socket.getOutputStream();
 						localInput = myUrl.openStream();
-						byte[] buffer = new byte[100];
+						final byte[] buffer = new byte[100];
 						int len;
 						while (true) {
 							len = localInput.read(buffer, 0, buffer.length);
@@ -198,7 +199,7 @@ public class AttachmentTest extends RienaTestCase {
 							}
 							output.write(buffer, 0, len);
 						}
-					} catch (IOException e) {
+					} catch (final IOException e) {
 						Nop.reason("");
 					} finally {
 						if (input != null) {
@@ -212,7 +213,7 @@ public class AttachmentTest extends RienaTestCase {
 						}
 					}
 				}
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				Nop.reason("serverSocket did not work");
 			}
 		}

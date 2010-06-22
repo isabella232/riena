@@ -38,9 +38,9 @@ public class MenuItemRidgetMatcherTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 
-		Display display = Display.getDefault();
+		final Display display = Display.getDefault();
 
-		Realm realm = SWTObservables.getRealm(display);
+		final Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 
@@ -60,15 +60,15 @@ public class MenuItemRidgetMatcherTest extends TestCase {
 
 		MenuItemRidgetMatcher matcher = new MenuItemRidgetMatcher("4711");
 
-		MenuItemRidget ridget = new MenuItemRidget();
+		final MenuItemRidget ridget = new MenuItemRidget();
 		assertFalse(matcher.matches(ridget));
 
-		Menu menu = new Menu(shell);
-		MenuItem item = new MenuItem(menu, SWT.None);
+		final Menu menu = new Menu(shell);
+		final MenuItem item = new MenuItem(menu, SWT.None);
 		ridget.setUIControl(item);
 		assertFalse(matcher.matches(ridget));
 
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		locator.setBindingProperty(item, "4711");
 		assertFalse(matcher.matches(ridget));
 

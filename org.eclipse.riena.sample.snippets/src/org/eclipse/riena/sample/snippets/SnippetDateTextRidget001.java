@@ -33,29 +33,29 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public final class SnippetDateTextRidget001 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = new Shell();
+			final Shell shell = new Shell();
 			shell.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
 			UIControlsFactory.createLabel(shell, "Date (dd.MM.yyyy):"); //$NON-NLS-1$
-			Text txtInput = UIControlsFactory.createTextDate(shell);
+			final Text txtInput = UIControlsFactory.createTextDate(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtInput);
 
 			UIControlsFactory.createLabel(shell, "Output (String):"); //$NON-NLS-1$
-			Text txtOutput = UIControlsFactory.createText(shell);
+			final Text txtOutput = UIControlsFactory.createText(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtOutput);
 
-			IDateTextRidget rInput = (IDateTextRidget) SwtRidgetFactory.createRidget(txtInput);
+			final IDateTextRidget rInput = (IDateTextRidget) SwtRidgetFactory.createRidget(txtInput);
 			rInput.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 			rInput.setDirectWriting(true);
 
-			ITextRidget rOutput = (ITextRidget) SwtRidgetFactory.createRidget(txtOutput);
+			final ITextRidget rOutput = (ITextRidget) SwtRidgetFactory.createRidget(txtOutput);
 			rOutput.setOutputOnly(true);
 
-			DataBindingContext dbc = new DataBindingContext();
+			final DataBindingContext dbc = new DataBindingContext();
 			dbc.bindValue(BeansObservables.observeValue(rOutput, ITextRidget.PROPERTY_TEXT), BeansObservables
 					.observeValue(rInput, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
 					UpdateValueStrategy.POLICY_NEVER), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));

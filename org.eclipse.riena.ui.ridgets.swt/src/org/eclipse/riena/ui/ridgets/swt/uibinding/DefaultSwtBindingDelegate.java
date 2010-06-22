@@ -48,12 +48,12 @@ public class DefaultSwtBindingDelegate extends AbstractViewBindingDelegate {
 	}
 
 	@SuppressWarnings("unchecked")
-	public DefaultSwtBindingDelegate(IControlRidgetMapper mapper) {
+	public DefaultSwtBindingDelegate(final IControlRidgetMapper mapper) {
 		super(SWTBindingPropertyLocator.getInstance(), mapper);
 	}
 
 	@Override
-	public void addUIControl(Object uiControl, String bindingId) {
+	public void addUIControl(final Object uiControl, final String bindingId) {
 		super.addUIControl(uiControl, bindingId);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(uiControl, bindingId);
 

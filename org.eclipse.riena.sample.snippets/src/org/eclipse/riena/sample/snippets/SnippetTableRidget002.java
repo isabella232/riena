@@ -32,24 +32,24 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class SnippetTableRidget002 {
 
-	public SnippetTableRidget002(Shell shell) {
-		Table table = new Table(shell, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
+	public SnippetTableRidget002(final Shell shell) {
+		final Table table = new Table(shell, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		TableColumn[] columns = new TableColumn[3];
+		final TableColumn[] columns = new TableColumn[3];
 		for (int i = 0; i < 3; i++) {
 			columns[i] = new TableColumn(table, SWT.LEFT);
 		}
-		TableColumnLayout layout = new TableColumnLayout();
+		final TableColumnLayout layout = new TableColumnLayout();
 		layout.setColumnData(columns[0], new ColumnWeightData(125, 125));
 		layout.setColumnData(columns[1], new ColumnWeightData(125, 125));
 		layout.setColumnData(columns[2], new ColumnWeightData(100, 100));
 		shell.setLayout(layout);
 
-		ITableRidget tableRidget = (ITableRidget) SwtRidgetFactory.createRidget(table);
-		String[] columnPropertyNames = { "pseudonym", "name", "appearance" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
-		String[] columnHeaders = { "Pseudonym", "Name", "First appearance" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
-		IObservableList input = new WritableList(SuperHeroFactory.createInput(), SuperHero.class);
+		final ITableRidget tableRidget = (ITableRidget) SwtRidgetFactory.createRidget(table);
+		final String[] columnPropertyNames = { "pseudonym", "name", "appearance" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+		final String[] columnHeaders = { "Pseudonym", "Name", "First appearance" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+		final IObservableList input = new WritableList(SuperHeroFactory.createInput(), SuperHero.class);
 		tableRidget.bindToModel(input, SuperHero.class, columnPropertyNames, columnHeaders);
 		tableRidget.setComparator(0, new TypedComparator<String>());
 		tableRidget.setColumnSortable(1, false);
@@ -58,10 +58,10 @@ public class SnippetTableRidget002 {
 
 	}
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetTableRidget002.class.getSimpleName());
 			new SnippetTableRidget002(shell);
 			shell.pack();

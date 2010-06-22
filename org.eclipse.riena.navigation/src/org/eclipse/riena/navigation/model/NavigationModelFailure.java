@@ -22,7 +22,7 @@ public class NavigationModelFailure extends Failure {
 	 */
 	private static final long serialVersionUID = 2725327200301100618L;
 
-	public NavigationModelFailure(String msg) {
+	public NavigationModelFailure(final String msg) {
 		super(msg);
 	}
 
@@ -34,7 +34,7 @@ public class NavigationModelFailure extends Failure {
 	 * @param msg
 	 *            message text or message code.
 	 */
-	public NavigationModelFailure(String msg, Throwable cause) {
+	public NavigationModelFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 }

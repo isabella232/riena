@@ -35,7 +35,7 @@ public class UIFilterRuleRidgetDisabledMarker extends AbstractUIFilterRuleRidget
 	 * @param marker
 	 *            marker
 	 */
-	public UIFilterRuleRidgetDisabledMarker(String ridgetIdPattern) {
+	public UIFilterRuleRidgetDisabledMarker(final String ridgetIdPattern) {
 		super(ridgetIdPattern, new DisabledMarker(false));
 	}
 

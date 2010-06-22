@@ -29,7 +29,7 @@ public class ValidIntermediateDateTest extends TestCase {
 	 */
 	public void testFirstMillenniumPartiallyInvalid() throws Exception {
 
-		ValidIntermediateDate rule = new ValidIntermediateDate("dd.MM.yyyy");
+		final ValidIntermediateDate rule = new ValidIntermediateDate("dd.MM.yyyy");
 
 		assertTrue(rule.validate("01.01.").isOK());
 		assertTrue(rule.validate("01.01.0").isOK());
@@ -54,7 +54,7 @@ public class ValidIntermediateDateTest extends TestCase {
 	 */
 	public void testDatesDDMMYYYY() throws Exception {
 
-		ValidIntermediateDate rule = new ValidIntermediateDate(IDateTextRidget.FORMAT_DDMMYYYY);
+		final ValidIntermediateDate rule = new ValidIntermediateDate(IDateTextRidget.FORMAT_DDMMYYYY);
 
 		assertTrue(rule.validate("").isOK());
 		assertTrue(rule.validate("..").isOK());
@@ -73,7 +73,7 @@ public class ValidIntermediateDateTest extends TestCase {
 	 */
 	public void testDatesDDMMYYYYHHMM() throws Exception {
 
-		ValidIntermediateDate rule = new ValidIntermediateDate(IDateTextRidget.FORMAT_DDMMYYYYHHMM);
+		final ValidIntermediateDate rule = new ValidIntermediateDate(IDateTextRidget.FORMAT_DDMMYYYYHHMM);
 
 		assertFalse(rule.validate("11.1.1 11:11").isOK());
 		assertTrue(rule.validate("11.1.11 11:11").isOK());
@@ -90,7 +90,7 @@ public class ValidIntermediateDateTest extends TestCase {
 	 */
 	public void testDatesHHMM() throws Exception {
 
-		ValidIntermediateDate rule = new ValidIntermediateDate(IDateTextRidget.FORMAT_HHMM);
+		final ValidIntermediateDate rule = new ValidIntermediateDate(IDateTextRidget.FORMAT_HHMM);
 
 		assertTrue(rule.validate("11:11").isOK());
 		assertTrue(rule.validate("11:00").isOK());
@@ -107,7 +107,7 @@ public class ValidIntermediateDateTest extends TestCase {
 	 */
 	public void test601() throws Exception {
 
-		ValidIntermediateDate rule = new ValidIntermediateDate("HH:mm");
+		final ValidIntermediateDate rule = new ValidIntermediateDate("HH:mm");
 
 		assertTrue(rule.validate("11:").isOK());
 		assertFalse(rule.validate("55:").isOK());

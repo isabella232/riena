@@ -39,7 +39,7 @@ public class MillisTest extends RienaTestCase {
 		try {
 			Millis.valueOf(null);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 	}

@@ -36,7 +36,7 @@ public class TreeNodeTest extends TestCase {
 	}
 
 	public void testGetSetValue() {
-		TreeNode root = new TreeNode("value");
+		final TreeNode root = new TreeNode("value");
 		root.addPropertyChangeListener(propertyChangeListenerMock);
 
 		assertEquals("value", root.getValue());
@@ -58,23 +58,23 @@ public class TreeNodeTest extends TestCase {
 	}
 
 	public void testGetParent() {
-		TreeNode root = new TreeNode("value");
+		final TreeNode root = new TreeNode("value");
 
 		assertNull(root.getParent());
 
-		TreeNode child = new TreeNode(root, "child1");
+		final TreeNode child = new TreeNode(root, "child1");
 
 		assertNull(root.getParent());
 		assertSame(root, child.getParent());
 	}
 
 	public void testGetChildren() {
-		TreeNode root = new TreeNode("value");
+		final TreeNode root = new TreeNode("value");
 
 		assertEquals(0, root.getChildren().size());
 
-		TreeNode child1 = new TreeNode(root, "child1");
-		TreeNode child2 = new TreeNode(root, "child2");
+		final TreeNode child1 = new TreeNode(root, "child1");
+		final TreeNode child2 = new TreeNode(root, "child2");
 
 		assertEquals(2, root.getChildren().size());
 		assertTrue(root.getChildren().contains(child1));
@@ -86,15 +86,15 @@ public class TreeNodeTest extends TestCase {
 	}
 
 	public void testSetChildren() {
-		TreeNode root = new TreeNode("value");
+		final TreeNode root = new TreeNode("value");
 		root.addPropertyChangeListener(propertyChangeListenerMock);
-		TreeNode child1 = new TreeNode(root, "child1");
-		TreeNode child2 = new TreeNode(root, "child2");
+		final TreeNode child1 = new TreeNode(root, "child1");
+		final TreeNode child2 = new TreeNode(root, "child2");
 
 		assertEquals(2, root.getChildren().size());
 
-		List<ITreeNode> twoChildren = root.getChildren();
-		List<ITreeNode> oneChild = root.getChildren();
+		final List<ITreeNode> twoChildren = root.getChildren();
+		final List<ITreeNode> oneChild = root.getChildren();
 		oneChild.remove(child1);
 		expectPropertyChangeEvent(root, ITreeNode.PROPERTY_CHILDREN, twoChildren, oneChild);
 		root.setChildren(oneChild);
@@ -105,7 +105,7 @@ public class TreeNodeTest extends TestCase {
 	}
 
 	public void testSetEnabled() {
-		TreeNode root = new TreeNode("value");
+		final TreeNode root = new TreeNode("value");
 		root.addPropertyChangeListener(propertyChangeListenerMock);
 
 		assertTrue(root.isEnabled());
@@ -126,7 +126,7 @@ public class TreeNodeTest extends TestCase {
 	}
 
 	public void testSetVisible() {
-		TreeNode root = new TreeNode("value");
+		final TreeNode root = new TreeNode("value");
 		root.addPropertyChangeListener(propertyChangeListenerMock);
 
 		assertTrue(root.isVisible());
@@ -149,7 +149,7 @@ public class TreeNodeTest extends TestCase {
 	// helping methods
 	//////////////////
 
-	private PropertyChangeEvent createArgumentMatcher(PropertyChangeEvent propertyChangeEvent) {
+	private PropertyChangeEvent createArgumentMatcher(final PropertyChangeEvent propertyChangeEvent) {
 		return PropertyChangeEventEquals.eqPropertyChangeEvent(propertyChangeEvent);
 	}
 
@@ -158,15 +158,16 @@ public class TreeNodeTest extends TestCase {
 		EasyMock.replay(propertyChangeListenerMock);
 	}
 
-	private void expectPropertyChangeEvents(PropertyChangeEvent... propertyChangeEvents) {
+	private void expectPropertyChangeEvents(final PropertyChangeEvent... propertyChangeEvents) {
 		EasyMock.reset(propertyChangeListenerMock);
-		for (PropertyChangeEvent propertyChangeEvent : propertyChangeEvents) {
+		for (final PropertyChangeEvent propertyChangeEvent : propertyChangeEvents) {
 			propertyChangeListenerMock.propertyChange(createArgumentMatcher(propertyChangeEvent));
 		}
 		EasyMock.replay(propertyChangeListenerMock);
 	}
 
-	private void expectPropertyChangeEvent(Object bean, String propertyName, Object oldValue, Object newValue) {
+	private void expectPropertyChangeEvent(final Object bean, final String propertyName, final Object oldValue,
+			final Object newValue) {
 		expectPropertyChangeEvents(new PropertyChangeEvent(bean, propertyName, oldValue, newValue));
 	}
 

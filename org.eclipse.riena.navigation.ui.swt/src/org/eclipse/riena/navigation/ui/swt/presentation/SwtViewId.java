@@ -28,7 +28,7 @@ public class SwtViewId {
 	 * @param secondary
 	 *            secondary ID
 	 */
-	public SwtViewId(String id, String secondary) {
+	public SwtViewId(final String id, final String secondary) {
 		setId(id);
 		setSecondary(secondary);
 	}
@@ -41,11 +41,11 @@ public class SwtViewId {
 	 * @see #getCompoundId()
 	 * @pre compoundId != null
 	 */
-	public SwtViewId(String compoundId) {
+	public SwtViewId(final String compoundId) {
 
 		Assert.isNotNull(compoundId);
 
-		String[] ids = compoundId.split(":"); //$NON-NLS-1$
+		final String[] ids = compoundId.split(":"); //$NON-NLS-1$
 		if (ids.length != 2) {
 			throw new RuntimeException("The compound ID is not correct!"); //$NON-NLS-1$
 		}
@@ -74,7 +74,7 @@ public class SwtViewId {
 	 * @param id
 	 *            the id to set
 	 */
-	private void setId(String id) {
+	private void setId(final String id) {
 		this.id = id;
 	}
 
@@ -89,7 +89,7 @@ public class SwtViewId {
 	 * @param secondary
 	 *            the secondary to set
 	 */
-	private void setSecondary(String secondary) {
+	private void setSecondary(final String secondary) {
 		this.secondary = secondary;
 	}
 

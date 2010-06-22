@@ -86,8 +86,8 @@ public class BorderControlDecorationTest extends TestCase {
 
 		shell.setVisible(true);
 
-		BorderControlDecoration deco = new BorderControlDecoration(text, 2);
-		Rectangle decoRect = ReflectionUtils.invokeHidden(deco, "getDecorationRectangle", shell);
+		final BorderControlDecoration deco = new BorderControlDecoration(text, 2);
+		final Rectangle decoRect = ReflectionUtils.invokeHidden(deco, "getDecorationRectangle", shell);
 		assertEquals(new Rectangle(2, 4, 43, 23), decoRect);
 
 		shell.setVisible(false);

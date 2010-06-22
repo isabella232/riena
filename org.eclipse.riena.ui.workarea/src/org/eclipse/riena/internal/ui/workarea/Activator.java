@@ -10,10 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.workarea;
 
-import org.eclipse.core.runtime.Plugin;
-import org.eclipse.riena.internal.ui.workarea.registry.WorkareaDefinitionRegistryFacade;
 import org.osgi.framework.BundleContext;
 import org.osgi.util.tracker.ServiceTracker;
+
+import org.eclipse.core.runtime.Plugin;
+
+import org.eclipse.riena.internal.ui.workarea.registry.WorkareaDefinitionRegistryFacade;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -33,7 +35,7 @@ public class Activator extends Plugin {
 	}
 
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 
 		super.start(context);
 		plugin = this;
@@ -44,7 +46,7 @@ public class Activator extends Plugin {
 	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 
 		if (workareaDefinitionRegistryTracker != null) {
 			workareaDefinitionRegistryTracker.close();

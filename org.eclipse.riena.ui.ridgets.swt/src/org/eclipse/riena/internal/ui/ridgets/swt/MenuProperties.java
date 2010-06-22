@@ -22,9 +22,9 @@ import org.eclipse.swt.widgets.MenuItem;
  */
 public class MenuProperties extends MenuItemProperties {
 
-	private Decorations menuParent;
-	private int menuStyle;
-	private MenuItemProperties[] children;
+	private final Decorations menuParent;
+	private final int menuStyle;
+	private final MenuItemProperties[] children;
 
 	/**
 	 * Creates a new instance of {@code MenuProperties}. The properties of the
@@ -33,22 +33,22 @@ public class MenuProperties extends MenuItemProperties {
 	 * @param ridget
 	 *            menu ridget
 	 */
-	public MenuProperties(MenuRidget ridget) {
+	public MenuProperties(final MenuRidget ridget) {
 
 		super(ridget);
 
-		MenuItem item = ridget.getUIControl();
+		final MenuItem item = ridget.getUIControl();
 		Assert.isNotNull(item);
-		Menu menu = item.getMenu();
+		final Menu menu = item.getMenu();
 		Assert.isNotNull(menu);
 
 		menuParent = menu.getParent();
 		menuStyle = menu.getStyle();
 
-		List<MenuItemRidget> childRidgets = ridget.getChildren();
+		final List<MenuItemRidget> childRidgets = ridget.getChildren();
 		children = new MenuItemProperties[childRidgets.size()];
 		for (int i = 0; i < children.length; i++) {
-			MenuItemRidget childRidget = childRidgets.get(i);
+			final MenuItemRidget childRidget = childRidgets.get(i);
 			if (childRidget instanceof MenuRidget) {
 				children[i] = new MenuProperties((MenuRidget) childRidget);
 			} else {
@@ -66,15 +66,15 @@ public class MenuProperties extends MenuItemProperties {
 	@Override
 	protected MenuItem createItem() {
 
-		MenuItem menuItem = new MenuItem(getParent(), getStyle(), getIndex());
+		final MenuItem menuItem = new MenuItem(getParent(), getStyle(), getIndex());
 		setAllProperties(menuItem, true);
 
 		// create menu
-		Menu menu = new Menu(menuParent, menuStyle);
+		final Menu menu = new Menu(menuParent, menuStyle);
 		menuItem.setMenu(menu);
 
 		// create child items
-		for (MenuItemProperties child : children) {
+		for (final MenuItemProperties child : children) {
 			child.createItem(menu);
 			getRidget().addChild(child.getRidget());
 		}

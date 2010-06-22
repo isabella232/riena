@@ -27,15 +27,16 @@ public final class NodeFactory {
 		// prevent instantiation
 	}
 
-	public static IModuleNode createModule(NavigationNodeId nodeId, String caption, IModuleGroupNode parent) {
-		IModuleNode result = new ModuleNode(nodeId, caption);
+	public static IModuleNode createModule(final NavigationNodeId nodeId, final String caption,
+			final IModuleGroupNode parent) {
+		final IModuleNode result = new ModuleNode(nodeId, caption);
 		parent.addChild(result);
 		return result;
 	}
 
-	public static ISubModuleNode createSubMobule(NavigationNodeId nodeId, String caption, IModuleNode parent,
-			String viewId) {
-		ISubModuleNode result = new SubModuleNode(nodeId, caption);
+	public static ISubModuleNode createSubMobule(final NavigationNodeId nodeId, final String caption,
+			final IModuleNode parent, final String viewId) {
+		final ISubModuleNode result = new SubModuleNode(nodeId, caption);
 		// path found via org.eclipse.riena.ui.swt.imagePaths in plugin.xml
 		result.setIcon("generic_element.gif"); //$NON-NLS-1$
 		parent.addChild(result);

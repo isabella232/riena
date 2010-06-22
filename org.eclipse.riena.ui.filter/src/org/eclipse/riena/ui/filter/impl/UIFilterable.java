@@ -12,7 +12,6 @@ package org.eclipse.riena.ui.filter.impl;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.riena.ui.filter.IUIFilter;
@@ -24,7 +23,7 @@ import org.eclipse.riena.ui.filter.IUIFilterable;
  */
 public class UIFilterable implements IUIFilterable {
 
-	private Set<IUIFilter> filters;
+	private final Set<IUIFilter> filters;
 
 	/**
 	 * Creates a new instance of {@code UIFilterable} and an empty set of
@@ -34,7 +33,7 @@ public class UIFilterable implements IUIFilterable {
 		filters = new HashSet<IUIFilter>();
 	}
 
-	public void addFilter(IUIFilter filter) {
+	public void addFilter(final IUIFilter filter) {
 		filters.add(filter);
 	}
 
@@ -46,14 +45,13 @@ public class UIFilterable implements IUIFilterable {
 		filters.clear();
 	}
 
-	public void removeFilter(IUIFilter filter) {
+	public void removeFilter(final IUIFilter filter) {
 		filters.remove(filter);
 	}
 
-	public void removeFilter(String filterID) {
+	public void removeFilter(final String filterID) {
 
-		for (Iterator<IUIFilter> iterator = filters.iterator(); iterator.hasNext();) {
-			IUIFilter filter = iterator.next();
+		for (final IUIFilter filter : filters) {
 			if ((filter.getFilterID() != null) && (filter.getFilterID().equals(filterID))) {
 				filters.remove(filter);
 				break;

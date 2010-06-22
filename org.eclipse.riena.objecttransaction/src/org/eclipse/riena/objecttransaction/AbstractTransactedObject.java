@@ -19,7 +19,7 @@ public abstract class AbstractTransactedObject implements ITransactedObject {
 
 	private IObjectId objectId;
 	private String version;
-	private IObjectTransactionManager objectTransactionManager;
+	private final IObjectTransactionManager objectTransactionManager;
 
 	/**
 	 * Create a transacted object without a inital object id and version.
@@ -37,7 +37,7 @@ public abstract class AbstractTransactedObject implements ITransactedObject {
 	 * @param version
 	 *            initial version
 	 */
-	protected AbstractTransactedObject(IObjectId objectId, String version) {
+	protected AbstractTransactedObject(final IObjectId objectId, final String version) {
 		this();
 		setObjectId(objectId);
 		setVersion(version);
@@ -53,7 +53,7 @@ public abstract class AbstractTransactedObject implements ITransactedObject {
 	/**
 	 * @see org.eclipse.riena.objecttransaction.ITransactedObject#setObjectId(org.eclipse.riena.objecttransaction.IObjectId)
 	 */
-	public void setObjectId(IObjectId objectId) {
+	public void setObjectId(final IObjectId objectId) {
 		this.objectId = objectId;
 	}
 
@@ -67,7 +67,7 @@ public abstract class AbstractTransactedObject implements ITransactedObject {
 	/**
 	 * @see org.eclipse.riena.objecttransaction.ITransactedObject#setVersion(java.lang.String)
 	 */
-	public void setVersion(String versionString) {
+	public void setVersion(final String versionString) {
 		this.version = versionString;
 	}
 
@@ -83,7 +83,7 @@ public abstract class AbstractTransactedObject implements ITransactedObject {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object object) {
+	public boolean equals(final Object object) {
 		if (object instanceof ITransactedObject) {
 			return objectId.equals(((ITransactedObject) object).getObjectId());
 		} else {

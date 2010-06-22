@@ -39,15 +39,15 @@ public class SimpleThreadedSubjectHolder implements ISubjectHolder {
 		return subjectHolders.get().getSubject();
 	}
 
-	public void setSubject(Subject subject) {
+	public void setSubject(final Subject subject) {
 		subjectHolders.get().setSubject(subject);
 	}
 
-	public void addSubjectChangeListener(ISubjectChangeListener listener) {
+	public void addSubjectChangeListener(final ISubjectChangeListener listener) {
 		subjectHolders.get().addSubjectChangeListener(listener);
 	}
 
-	public void removeSubjectChangeListener(ISubjectChangeListener listener) {
+	public void removeSubjectChangeListener(final ISubjectChangeListener listener) {
 		subjectHolders.get().removeSubjectChangeListener(listener);
 	}
 

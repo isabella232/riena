@@ -17,8 +17,8 @@ import javax.security.auth.Subject;
  * 
  */
 public class SubjectChangeEvent {
-	private Subject oldSubject;
-	private Subject newSubject;
+	private final Subject oldSubject;
+	private final Subject newSubject;
 
 	/**
 	 * Creates an SubjectChangeEvent with the new and old Principal
@@ -26,7 +26,7 @@ public class SubjectChangeEvent {
 	 * @param newSubject
 	 * @param oldSubject
 	 */
-	public SubjectChangeEvent(Subject newSubject, Subject oldSubject) {
+	public SubjectChangeEvent(final Subject newSubject, final Subject oldSubject) {
 		super();
 		this.newSubject = newSubject;
 		this.oldSubject = oldSubject;

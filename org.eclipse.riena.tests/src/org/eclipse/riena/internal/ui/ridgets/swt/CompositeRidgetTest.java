@@ -33,8 +33,8 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Widget createWidget(Composite parent) {
-		Widget result = new Composite(parent, SWT.NONE);
+	protected Widget createWidget(final Composite parent) {
+		final Widget result = new Composite(parent, SWT.NONE);
 		result.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "pbId");
 		return result;
 	}
@@ -53,9 +53,9 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 	//////////////////
 
 	public void testCompositeToRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 
-		Composite composite = new Composite(getShell(), SWT.NONE);
+		final Composite composite = new Composite(getShell(), SWT.NONE);
 		composite.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "id1");
 
 		assertNotNull(composite.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
@@ -63,9 +63,9 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testGroupToRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 
-		Group group = new Group(getShell(), SWT.NONE);
+		final Group group = new Group(getShell(), SWT.NONE);
 		group.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "id2");
 
 		assertNotNull(group.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
@@ -73,9 +73,9 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testCompositeToRidgetMappingWithNoId() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 
-		Composite composite = new Composite(getShell(), SWT.NONE);
+		final Composite composite = new Composite(getShell(), SWT.NONE);
 
 		assertNullId(mapper, composite);
 
@@ -85,9 +85,9 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testGroupToRidgetMappingWithNoId() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 
-		Composite composite = new Composite(getShell(), SWT.NONE);
+		final Composite composite = new Composite(getShell(), SWT.NONE);
 
 		assertNullId(mapper, composite);
 
@@ -117,22 +117,22 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 	// helping methods
 	//////////////////
 
-	private void assertEmptyId(SwtControlRidgetMapper mapper, Composite control) {
+	private void assertEmptyId(final SwtControlRidgetMapper mapper, final Composite control) {
 		assertEquals("", control.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
 		try {
 			mapper.getRidgetClass(control);
 			fail();
-		} catch (BindingException bex) {
+		} catch (final BindingException bex) {
 			ok("expected");
 		}
 	}
 
-	private void assertNullId(SwtControlRidgetMapper mapper, Composite control) {
+	private void assertNullId(final SwtControlRidgetMapper mapper, final Composite control) {
 		assertEquals(null, control.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
 		try {
 			mapper.getRidgetClass(control);
 			fail();
-		} catch (BindingException bex) {
+		} catch (final BindingException bex) {
 			ok("expected");
 		}
 	}
@@ -142,13 +142,13 @@ public class CompositeRidgetTest extends AbstractSWTRidgetTest {
 	 * it. This method will create a Text widget / ridget to set that up.
 	 */
 	private void createTextWidget() {
-		Composite control = getWidget();
-		Text txt = new Text(control, SWT.BORDER);
+		final Composite control = getWidget();
+		final Text txt = new Text(control, SWT.BORDER);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(txt, "txt");
-		TextRidget txtRidget = new TextRidget();
+		final TextRidget txtRidget = new TextRidget();
 		txtRidget.setUIControl(txt);
 
-		ICompositeRidget ridget = getRidget();
+		final ICompositeRidget ridget = getRidget();
 		ridget.addRidget("txt", txtRidget);
 	}
 }

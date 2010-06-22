@@ -26,29 +26,29 @@ public class NodeEventDelegation extends SimpleNavigationNodeAdapter implements 
 	public NodeEventDelegation() {
 	}
 
-	private List<IContextUpdateListener> listeners = new ArrayList<IContextUpdateListener>();
-	private Map<Object, List<IContextUpdateListener>> context2Observers = new HashMap<Object, List<IContextUpdateListener>>();
+	private final List<IContextUpdateListener> listeners = new ArrayList<IContextUpdateListener>();
+	private final Map<Object, List<IContextUpdateListener>> context2Observers = new HashMap<Object, List<IContextUpdateListener>>();
 
 	@Override
-	public void activated(INavigationNode<?> source) {
+	public void activated(final INavigationNode<?> source) {
 		contextUpdated(source);
 	}
 
 	@Override
-	public void beforeDeactivated(INavigationNode<?> source) {
-		for (IContextUpdateListener listener : listeners) {
+	public void beforeDeactivated(final INavigationNode<?> source) {
+		for (final IContextUpdateListener listener : listeners) {
 			listener.beforeContextUpdate(source);
 		}
 	}
 
 	@Override
-	public void deactivated(INavigationNode<?> source) {
+	public void deactivated(final INavigationNode<?> source) {
 		contextUpdated(source);
 	}
 
-	private void contextUpdated(INavigationNode<?> source) {
-		List<IContextUpdateListener> toDelete = new ArrayList<IContextUpdateListener>();
-		for (IContextUpdateListener listener : listeners) {
+	private void contextUpdated(final INavigationNode<?> source) {
+		final List<IContextUpdateListener> toDelete = new ArrayList<IContextUpdateListener>();
+		for (final IContextUpdateListener listener : listeners) {
 			if (listener.contextUpdated(source)) {
 				toDelete.add(listener);
 			}
@@ -56,11 +56,11 @@ public class NodeEventDelegation extends SimpleNavigationNodeAdapter implements 
 		listeners.removeAll(toDelete);
 	}
 
-	public List<Object> getActiveContexts(List<Object> contexts) {
-		List<Object> nodes = new ArrayList<Object>();
-		for (Object object : contexts) {
+	public List<Object> getActiveContexts(final List<Object> contexts) {
+		final List<Object> nodes = new ArrayList<Object>();
+		for (final Object object : contexts) {
 			if (object instanceof INavigationNode<?>) {
-				INavigationNode<?> node = (INavigationNode<?>) object;
+				final INavigationNode<?> node = (INavigationNode<?>) object;
 				if (node.isActivated()) {
 					nodes.add(node);
 				}
@@ -69,16 +69,16 @@ public class NodeEventDelegation extends SimpleNavigationNodeAdapter implements 
 		return nodes;
 	}
 
-	public void addContextUpdateListener(IContextUpdateListener listener, Object context) {
+	public void addContextUpdateListener(final IContextUpdateListener listener, final Object context) {
 		if (context instanceof INavigationNode<?>) {
-			INavigationNode<?> node = (INavigationNode<?>) context;
+			final INavigationNode<?> node = (INavigationNode<?>) context;
 			node.addSimpleListener(this);
 			registerObserver(context, listener);
 			listeners.add(listener);
 		}
 	}
 
-	private void registerObserver(Object context, IContextUpdateListener listener) {
+	private void registerObserver(final Object context, final IContextUpdateListener listener) {
 		List<IContextUpdateListener> observers = context2Observers.get(context);
 		if (observers == null) {
 			observers = new LinkedList<IContextUpdateListener>();
@@ -87,8 +87,8 @@ public class NodeEventDelegation extends SimpleNavigationNodeAdapter implements 
 		observers.add(listener);
 	}
 
-	public void removeContextUpdateListener(IContextUpdateListener listener, Object context) {
-		List<IContextUpdateListener> observers = context2Observers.get(context);
+	public void removeContextUpdateListener(final IContextUpdateListener listener, final Object context) {
+		final List<IContextUpdateListener> observers = context2Observers.get(context);
 
 		if (observers == null) {
 			//should never happen

@@ -25,7 +25,7 @@ public class MessageMarker extends AbstractMarker implements IMessageMarker {
 	}
 
 	public String getMessage() {
-		String result = (String) super.getAttribute(MESSAGE);
+		final String result = (String) super.getAttribute(MESSAGE);
 		return result == null ? "" : result; //$NON-NLS-1$
 	}
 
@@ -35,7 +35,7 @@ public class MessageMarker extends AbstractMarker implements IMessageMarker {
 	 * @param message
 	 *            the Message of the Marker; never null
 	 */
-	public MessageMarker(String message) {
+	public MessageMarker(final String message) {
 		super();
 		Assert.isNotNull(message, "The message of the message marker must not be null"); //$NON-NLS-1$
 		setAttribute(MESSAGE, message);

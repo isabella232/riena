@@ -36,7 +36,7 @@ public class ExtensionInjectorWeakRefTest extends RienaTestCase {
 		try {
 			testWeakRef(false);
 			fail();
-		} catch (AssertionFailedError e) {
+		} catch (final AssertionFailedError e) {
 			ok();
 		}
 	}
@@ -45,7 +45,7 @@ public class ExtensionInjectorWeakRefTest extends RienaTestCase {
 		testWeakRef(true);
 	}
 
-	private void testWeakRef(boolean withNulling) throws IOException {
+	private void testWeakRef(final boolean withNulling) throws IOException {
 		printTestName();
 		addPluginXml(ExtensionInjectorWeakRefTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorWeakRefTest.class, "plugin_ext1.xml");
@@ -53,14 +53,15 @@ public class ExtensionInjectorWeakRefTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorWeakRefTest.class, "plugin_ext3.xml");
 		try {
 			ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target).andStart(getContext());
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target)
+					.andStart(getContext());
 			try {
 				assertEquals(3, target.getData().length);
 				target = null;
 				runOutOfMemory();
-				WeakRef<Object> ref = ReflectionUtils.getHidden(injector, "targetRef");
+				final WeakRef<Object> ref = ReflectionUtils.getHidden(injector, "targetRef");
 				assertNull(ref.get());
-				List<IRegistryEventListener> injectorListeners = ReflectionUtils.getHidden(injector,
+				final List<IRegistryEventListener> injectorListeners = ReflectionUtils.getHidden(injector,
 						"injectorListeners");
 				assertEquals(0, injectorListeners.size());
 			} finally {
@@ -76,11 +77,11 @@ public class ExtensionInjectorWeakRefTest extends RienaTestCase {
 
 	private void runOutOfMemory() throws IOException {
 		try {
-			OutputStream os = new ByteArrayOutputStream();
+			final OutputStream os = new ByteArrayOutputStream();
 			while (true) {
 				os.write(new byte[1024 * 1024]);
 			}
-		} catch (OutOfMemoryError e) {
+		} catch (final OutOfMemoryError e) {
 			System.gc();
 		}
 	}

@@ -186,7 +186,7 @@ public interface IMessageBoxRidget extends IRidget {
 		 * @param label
 		 *            The button label.
 		 */
-		public MessageBoxOption(String label) {
+		public MessageBoxOption(final String label) {
 			this.label = label;
 		}
 

@@ -38,9 +38,9 @@ public final class IconSize {
 	/** Size f (128x128). */
 	public static final IconSize F128 = new IconSize("f"); //$NON-NLS-1$
 
-	private String defaultMapping;
+	private final String defaultMapping;
 
-	private IconSize(String defaultMapping) {
+	private IconSize(final String defaultMapping) {
 		this.defaultMapping = defaultMapping;
 	}
 

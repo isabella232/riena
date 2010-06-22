@@ -65,9 +65,9 @@ public final class RestoreFocusOnEscListener extends KeyAdapter implements Liste
 	/**
 	 * Return the first CoolBar in this composite or null.
 	 */
-	public static CoolBar findCoolBar(Composite composite) {
+	public static CoolBar findCoolBar(final Composite composite) {
 		CoolBar result = null;
-		for (Control child : composite.getChildren()) {
+		for (final Control child : composite.getChildren()) {
 			if (child instanceof CoolBar) {
 				result = (CoolBar) child;
 				break;
@@ -84,13 +84,13 @@ public final class RestoreFocusOnEscListener extends KeyAdapter implements Liste
 	 *            occur inside this Shell and outside of the tracked coolbars.
 	 * @see #addControl(CoolBar)]
 	 */
-	public RestoreFocusOnEscListener(Shell shell) {
+	public RestoreFocusOnEscListener(final Shell shell) {
 		Assert.isNotNull(shell);
 		controlSet = new HashSet<CoolBar>();
 		this.shell = shell;
 		this.shell.getDisplay().addFilter(SWT.FocusIn, this);
 		this.shell.addListener(SWT.Dispose, new Listener() {
-			public void handleEvent(Event event) {
+			public void handleEvent(final Event event) {
 				event.display.removeFilter(SWT.FocusIn, this);
 			}
 		});
@@ -107,10 +107,10 @@ public final class RestoreFocusOnEscListener extends KeyAdapter implements Liste
 		Assert.isNotNull(coolbar);
 		Assert.isTrue(coolbar.getShell() == shell, "coolbar must be on same shell as this listener"); //$NON-NLS-1$
 		if (controlSet.add(coolbar)) {
-			for (Control coolbarChild : coolbar.getChildren()) {
+			for (final Control coolbarChild : coolbar.getChildren()) {
 				coolbarChild.addKeyListener(this);
 				coolbarChild.addDisposeListener(new DisposeListener() {
-					public void widgetDisposed(DisposeEvent e) {
+					public void widgetDisposed(final DisposeEvent e) {
 						((Control) e.widget).removeKeyListener(RestoreFocusOnEscListener.this);
 					}
 				});
@@ -124,10 +124,10 @@ public final class RestoreFocusOnEscListener extends KeyAdapter implements Liste
 	 * @param coolbar
 	 *            a non-null {@link CoolBar}
 	 */
-	public void removeControl(CoolBar coolbar) {
+	public void removeControl(final CoolBar coolbar) {
 		Assert.isNotNull(coolbar);
 		if (controlSet.remove(coolbar)) {
-			for (Control coolbarChild : coolbar.getChildren()) {
+			for (final Control coolbarChild : coolbar.getChildren()) {
 				coolbarChild.removeKeyListener(this);
 			}
 		}
@@ -140,7 +140,7 @@ public final class RestoreFocusOnEscListener extends KeyAdapter implements Liste
 	 * that had it before the menu bar became focused.
 	 */
 	@Override
-	public void keyReleased(KeyEvent e) {
+	public void keyReleased(final KeyEvent e) {
 		if (e.keyCode == 27) { // 27 is ESC
 			// System.out.println("ESC on " + e.widget);
 			if (!SwtUtilities.isDisposed(savedFocusControl)) {
@@ -152,9 +152,9 @@ public final class RestoreFocusOnEscListener extends KeyAdapter implements Liste
 	/**
 	 * Should not be called directly.
 	 */
-	public void handleEvent(Event event) {
+	public void handleEvent(final Event event) {
 		if (event.widget instanceof Control) {
-			Control control = (Control) event.widget;
+			final Control control = (Control) event.widget;
 			if (contains(shell, control) && !contains(controlSet, control)) {
 				// System.out.println("savedFocusControl: " + control);
 				savedFocusControl = control;
@@ -165,7 +165,7 @@ public final class RestoreFocusOnEscListener extends KeyAdapter implements Liste
 	// helping methods
 	//////////////////
 
-	private boolean contains(Composite container, Control control) {
+	private boolean contains(final Composite container, final Control control) {
 		boolean result = container == control;
 		Composite parent = control.getParent();
 		while (!result && parent != null) {
@@ -175,9 +175,9 @@ public final class RestoreFocusOnEscListener extends KeyAdapter implements Liste
 		return result;
 	}
 
-	private boolean contains(Collection<CoolBar> containers, Control control) {
+	private boolean contains(final Collection<CoolBar> containers, final Control control) {
 		boolean result = false;
-		for (Composite container : containers) {
+		for (final Composite container : containers) {
 			result = result || contains(container, control);
 			if (result) {
 				break;

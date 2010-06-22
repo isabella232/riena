@@ -22,7 +22,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
  */
 public class ActionObserver extends AbstractObserver<IActionListener> {
 
-	public ActionObserver(IRidget source) {
+	public ActionObserver(final IRidget source) {
 		super(source);
 	}
 
@@ -32,10 +32,10 @@ public class ActionObserver extends AbstractObserver<IActionListener> {
 	}
 
 	@Override
-	protected void fireAction(SelectionEvent evt) {
-		ListenerList<IActionListener> listeners = getListeners();
+	protected void fireAction(final SelectionEvent evt) {
+		final ListenerList<IActionListener> listeners = getListeners();
 		if (listeners != null) {
-			for (IActionListener listener : listeners.getListeners()) {
+			for (final IActionListener listener : listeners.getListeners()) {
 				listener.callback();
 			}
 		}

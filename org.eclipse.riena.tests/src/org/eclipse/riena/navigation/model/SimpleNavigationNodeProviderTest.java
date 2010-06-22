@@ -79,11 +79,11 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 		assertEquals(1, subApplication.getChildren().size());
 		assertTrue(subApplication.isActivated());
 
-		SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
-		INavigationAssembler assembler = new TestSecondModuleGroupNodeAssembler();
+		final SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
+		final INavigationAssembler assembler = new TestSecondModuleGroupNodeAssembler();
 		provider.registerNavigationAssembler("myTestAssemberId", assembler);
 
-		NavigationArgument naviArg = new NavigationArgument(new Integer(4711), new NavigationNodeId(
+		final NavigationArgument naviArg = new NavigationArgument(new Integer(4711), new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.subApplication"));
 		INavigationNode<?> node = provider.provideNode(subModule, new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.secondModuleGroup"), naviArg);
@@ -114,8 +114,8 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 	 */
 	public void testRegister() {
 
-		SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
-		NavigationAssembly2Extension assembly = new NavigationAssembly2Extension();
+		final SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
+		final NavigationAssembly2Extension assembly = new NavigationAssembly2Extension();
 		assembly.setId("test4711");
 		assembly.setParentNodeId("parent0815");
 		assembly.setStartOrder(123);
@@ -128,7 +128,7 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 		assertEquals(123, assembler.getStartOrder());
 
 		provider.cleanUp();
-		INavigationAssembler naviAssembler = new TestSecondModuleGroupNodeAssembler();
+		final INavigationAssembler naviAssembler = new TestSecondModuleGroupNodeAssembler();
 		assembly.setAssembler(naviAssembler);
 		provider.register(assembly);
 		assembler = provider.getNavigationAssembler(assembly.getId());
@@ -142,7 +142,7 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 	 */
 	public void testFindNode() {
 
-		MyProvider provider = new MyProvider();
+		final MyProvider provider = new MyProvider();
 		INavigationNode<?> node = provider.findNode(applicationNode, new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.module"));
 		assertSame(module, node);
@@ -156,12 +156,12 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the <i>private</i> method {@code
-	 * prepareAll(INavigationNode<?>,NavigationArgument)}.
+	 * Tests the <i>private</i> method
+	 * {@code prepareAll(INavigationNode<?>,NavigationArgument)}.
 	 */
 	public void testPrepareAll() {
 
-		SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
+		final SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
 		ReflectionUtils.invokeHidden(provider, "prepareAll", subApplication);
 		assertFalse(applicationNode.isPrepared());
 		assertTrue(subApplication.isPrepared());
@@ -172,14 +172,14 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the <i>private</i> method {@code
-	 * getParentTypeId(NavigationArgument, INavigationAssembler)}.
+	 * Tests the <i>private</i> method
+	 * {@code getParentTypeId(NavigationArgument, INavigationAssembler)}.
 	 */
 	public void testGetParentTypeId() {
 
-		SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
+		final SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
 		NavigationArgument naviArg = new NavigationArgument(null, new NavigationNodeId("one"));
-		INavigationAssembler naviAssembler = new TestSecondModuleGroupNodeAssembler();
+		final INavigationAssembler naviAssembler = new TestSecondModuleGroupNodeAssembler();
 		NavigationNodeId parentId = ReflectionUtils.invokeHidden(provider, "getParentTypeId", naviArg, naviAssembler);
 		assertEquals("one", parentId.getTypeId());
 
@@ -195,14 +195,14 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 	public void testGetSortedStartupNodeInfos() {
 
 		// no assembler is registered => empty list
-		SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
+		final SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
 		provider.cleanUp();
 		List<StartupNodeInfo> startupNodeInfos = provider.getSortedStartupNodeInfos();
 		assertNotNull(startupNodeInfos);
 		assertTrue(startupNodeInfos.isEmpty());
 
 		// one assembler without an assembly is registered => empty list
-		INavigationAssembler naviAssembler = new TestSecondModuleGroupNodeAssembler();
+		final INavigationAssembler naviAssembler = new TestSecondModuleGroupNodeAssembler();
 		naviAssembler.setId("ass1");
 		naviAssembler.setStartOrder(1);
 		provider.registerNavigationAssembler(naviAssembler.getId(), naviAssembler);
@@ -211,7 +211,7 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 		assertTrue(startupNodeInfos.isEmpty());
 
 		// one assembler with an assembly is registered but assembly has no children => list with one "custom" entry 
-		NavigationAssembly2Extension assembly = new NavigationAssembly2Extension();
+		final NavigationAssembly2Extension assembly = new NavigationAssembly2Extension();
 		naviAssembler.setAssembly(assembly);
 		assembly.setNavigationAssembler(naviAssembler.getClass().getName());
 		startupNodeInfos = provider.getSortedStartupNodeInfos();
@@ -221,7 +221,7 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 		assertEquals(new StartupNodeInfo(Level.CUSTOM, 1, "ass1"), startupNodeInfo);
 
 		// one assembler with an assembly is registered; the assembly has one child module => list with one "module" entry 
-		ModuleNode2Extension moduleExt = new ModuleNode2Extension();
+		final ModuleNode2Extension moduleExt = new ModuleNode2Extension();
 		moduleExt.setNodeId("mod1");
 		assembly.setModules(new IModuleNode2Extension[] { moduleExt });
 		startupNodeInfos = provider.getSortedStartupNodeInfos();
@@ -236,8 +236,8 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 	 */
 	public void testGetRootNode() {
 
-		MyProvider provider = new MyProvider();
-		INavigationNode<?> root = provider.getRootNode(subModule);
+		final MyProvider provider = new MyProvider();
+		final INavigationNode<?> root = provider.getRootNode(subModule);
 		assertSame(applicationNode, root);
 
 	}
@@ -253,7 +253,7 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 		 * Visibility changed.
 		 */
 		@Override
-		public INavigationNode<?> findNode(INavigationNode<?> node, NavigationNodeId targetId) {
+		public INavigationNode<?> findNode(final INavigationNode<?> node, final NavigationNodeId targetId) {
 			return super.findNode(node, targetId);
 		}
 
@@ -263,7 +263,7 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 		 * Visibility changed.
 		 */
 		@Override
-		protected INavigationNode<?> getRootNode(INavigationNode<?> node) {
+		protected INavigationNode<?> getRootNode(final INavigationNode<?> node) {
 			return super.getRootNode(node);
 		}
 

@@ -31,18 +31,18 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	private String originalStatuslineMessage;
 	private IStatuslineRidget statusline = null;
 
-	private PropertyChangeListener markerPropertyChangeListener = new MarkerPropertyChangeListener();
-	private IFocusListener ridgetFocusListener = new RidgetFocusListener();
+	private final PropertyChangeListener markerPropertyChangeListener = new MarkerPropertyChangeListener();
+	private final IFocusListener ridgetFocusListener = new RidgetFocusListener();
 
 	enum Severity {
 		NONE(0), INFO(1), WARNING(2), ERROR(3);
 		private int index;
 
-		Severity(int index) {
+		Severity(final int index) {
 			this.index = index;
 		}
 
-		boolean isLower(Severity other) {
+		boolean isLower(final Severity other) {
 			return index < other.index;
 		}
 	}
@@ -51,23 +51,23 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	 * @param statuslineridget
 	 *            The status line.
 	 */
-	public StatuslineMessageMarkerViewer(IStatuslineRidget statuslineRidget) {
+	public StatuslineMessageMarkerViewer(final IStatuslineRidget statuslineRidget) {
 		this.statusline = statuslineRidget;
 	}
 
 	@Override
-	public void addRidget(IBasicMarkableRidget markableRidget) {
+	public void addRidget(final IBasicMarkableRidget markableRidget) {
 		super.addRidget(markableRidget);
 		markableRidget.addPropertyChangeListener(markerPropertyChangeListener);
 		markableRidget.addFocusListener(ridgetFocusListener);
 	}
 
 	@Override
-	protected void showMessages(IBasicMarkableRidget markableRidget) {
+	protected void showMessages(final IBasicMarkableRidget markableRidget) {
 		if (markableRidget.hasFocus()) {
-			Collection<IMessageMarker> messageMarker = this.getMessageMarker(markableRidget);
-			String message = constructMessage(messageMarker, getMessageSeparator());
-			Severity severity = getMaxSeverity(messageMarker);
+			final Collection<IMessageMarker> messageMarker = this.getMessageMarker(markableRidget);
+			final String message = constructMessage(messageMarker, getMessageSeparator());
+			final Severity severity = getMaxSeverity(messageMarker);
 			// show the message only if there is something to show
 			if (message.length() > 0 && isVisible()) {
 				setStatuslineMessage(message, severity);
@@ -78,7 +78,7 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	@Override
-	protected void hideMessages(IBasicMarkableRidget ridget) {
+	protected void hideMessages(final IBasicMarkableRidget ridget) {
 		if (ridget.hasFocus()) {
 			resetStatuslineMessage();
 		}
@@ -89,7 +89,7 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		return " "; //$NON-NLS-1$
 	}
 
-	private void setStatuslineMessage(String message, Severity severity) {
+	private void setStatuslineMessage(final String message, final Severity severity) {
 		if (getStatusLine() != null) {
 			if (statuslineMessage == null) {
 				originalStatuslineMessage = getStatusLine().getMessage();
@@ -123,11 +123,11 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		}
 	}
 
-	private Severity getMaxSeverity(Collection<IMessageMarker> messageMarkers) {
+	private Severity getMaxSeverity(final Collection<IMessageMarker> messageMarkers) {
 
 		Severity severity = Severity.NONE;
 
-		for (IMessageMarker messageMarker : messageMarkers) {
+		for (final IMessageMarker messageMarker : messageMarkers) {
 			if (messageMarker instanceof ErrorMarker) {
 				if (severity.isLower(Severity.ERROR)) {
 					severity = Severity.ERROR;
@@ -155,7 +155,7 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
 	private class MarkerPropertyChangeListener implements PropertyChangeListener {
 
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(final PropertyChangeEvent evt) {
 			if (evt.getPropertyName().equals(IBasicMarkableRidget.PROPERTY_MARKER)
 					&& evt.getSource() instanceof IBasicMarkableRidget
 					&& ((IBasicMarkableRidget) evt.getSource()).hasFocus()) {
@@ -167,13 +167,13 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
 	private class RidgetFocusListener implements IFocusListener {
 
-		public void focusGained(FocusEvent event) {
+		public void focusGained(final FocusEvent event) {
 			if (event.getNewFocusOwner() instanceof IBasicMarkableRidget) {
 				showMessages((IBasicMarkableRidget) event.getNewFocusOwner());
 			}
 		}
 
-		public void focusLost(FocusEvent event) {
+		public void focusLost(final FocusEvent event) {
 			if (event.getOldFocusOwner() instanceof IBasicMarkableRidget) {
 				resetStatuslineMessage();
 			}

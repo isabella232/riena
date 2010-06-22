@@ -20,11 +20,11 @@ import org.eclipse.riena.core.util.StringUtils;
  */
 public class NavigationNodeId {
 
-	private String instanceId;
-	private String typeId;
+	private final String instanceId;
+	private final String typeId;
 	private int hash = 0;
 
-	public NavigationNodeId(String typeId, String instanceId) {
+	public NavigationNodeId(final String typeId, final String instanceId) {
 		if (!checkId(typeId)) {
 			throw new IllegalArgumentException("ID with illegal characters: " + typeId); //$NON-NLS-1$
 		}
@@ -32,7 +32,7 @@ public class NavigationNodeId {
 		this.instanceId = instanceId;
 	}
 
-	public NavigationNodeId(String typeId) {
+	public NavigationNodeId(final String typeId) {
 		this(typeId, null);
 	}
 
@@ -64,7 +64,7 @@ public class NavigationNodeId {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals(Object other) {
+	public boolean equals(final Object other) {
 		if (this == other) {
 			return true;
 		}
@@ -74,7 +74,7 @@ public class NavigationNodeId {
 		if (getClass() != other.getClass()) {
 			return false;
 		}
-		NavigationNodeId otherId = (NavigationNodeId) other;
+		final NavigationNodeId otherId = (NavigationNodeId) other;
 		return StringUtils.equals(typeId, otherId.typeId) && StringUtils.equals(instanceId, otherId.instanceId);
 	}
 
@@ -83,7 +83,7 @@ public class NavigationNodeId {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("NavNodeId:"); //$NON-NLS-1$
+		final StringBuilder sb = new StringBuilder("NavNodeId:"); //$NON-NLS-1$
 		if (typeId != null) {
 			sb.append(typeId);
 		} else {
@@ -122,7 +122,7 @@ public class NavigationNodeId {
 	 *            ID
 	 * @return <code>true</code> if the ID is OK; otherwise <code>false</code>
 	 */
-	private boolean checkId(String id) {
+	private boolean checkId(final String id) {
 
 		if (id == null) {
 			return true;

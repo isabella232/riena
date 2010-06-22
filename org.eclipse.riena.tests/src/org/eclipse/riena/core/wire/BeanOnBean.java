@@ -18,11 +18,11 @@ public class BeanOnBean extends Bean {
 
 	private Stunk stunk;
 
-	public void bind(Stunk stunk) {
+	public void bind(final Stunk stunk) {
 		this.stunk = stunk;
 	}
 
-	public void unbind(Stunk stunk) {
+	public void unbind(final Stunk stunk) {
 		this.stunk = stunk;
 	}
 

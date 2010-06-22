@@ -56,7 +56,7 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 
 		assertEquals("Fails for " + getRidget(), "foo", getRidget().getToolTipText());
 
-		Control aControl = (Control) getWidget();
+		final Control aControl = (Control) getWidget();
 		aControl.setToolTipText(null);
 		getRidget().setUIControl(aControl);
 
@@ -71,7 +71,7 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 			return;
 		}
 
-		IRidget aRidget = getRidget();
+		final IRidget aRidget = getRidget();
 
 		assertTrue("Fails for " + aRidget, aRidget.isFocusable());
 
@@ -91,8 +91,8 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 			return;
 		}
 
-		IRidget aRidget = getRidget();
-		Control aControl = (Control) getWidget();
+		final IRidget aRidget = getRidget();
+		final Control aControl = (Control) getWidget();
 		getOtherControl().moveAbove(aControl);
 
 		aControl.setFocus();
@@ -122,7 +122,7 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 			return;
 		}
 
-		Control aControl = (Control) getWidget();
+		final Control aControl = (Control) getWidget();
 		aControl.setFocus();
 		if (aControl.isFocusControl()) { // skip if control cannot receive focus
 			assertTrue("Fails for " + getOtherControl(), getOtherControl().setFocus());
@@ -132,12 +132,12 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 
 			final List<FocusEvent> focusGainedEvents = new ArrayList<FocusEvent>();
 			final List<FocusEvent> focusLostEvents = new ArrayList<FocusEvent>();
-			IFocusListener focusListener = new IFocusListener() {
-				public void focusGained(FocusEvent event) {
+			final IFocusListener focusListener = new IFocusListener() {
+				public void focusGained(final FocusEvent event) {
 					focusGainedEvents.add(event);
 				}
 
-				public void focusLost(FocusEvent event) {
+				public void focusLost(final FocusEvent event) {
 					focusLostEvents.add(event);
 				}
 			};
@@ -173,13 +173,13 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 	 * Tests that a control becomes visible after toggling ridget.setVisible().
 	 */
 	public void testBug257484() {
-		Widget theWidget = getWidget();
+		final Widget theWidget = getWidget();
 		if (!(theWidget instanceof Control)) {
 			// skip if not a control - only controls can be hidden / visible
 			return;
 		}
-		IRidget theRidget = getRidget();
-		Control control = (Control) theWidget;
+		final IRidget theRidget = getRidget();
+		final Control control = (Control) theWidget;
 
 		assertTrue("Fails for " + theRidget, theRidget.isVisible());
 		assertTrue("Fails for " + control, control.isVisible());
@@ -211,7 +211,7 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 		theRidget.setUIControl(control);
 
 		// check implicit visibility
-		Composite parent = control.getParent();
+		final Composite parent = control.getParent();
 		if (parent != null) {
 			parent.setVisible(false);
 			assertFalse("Fails for " + theRidget, theRidget.isVisible());

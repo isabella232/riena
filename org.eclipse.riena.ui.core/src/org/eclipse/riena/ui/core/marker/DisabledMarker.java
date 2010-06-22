@@ -21,7 +21,7 @@ public class DisabledMarker extends AbstractMarker {
 		super();
 	}
 
-	public DisabledMarker(boolean unique) {
+	public DisabledMarker(final boolean unique) {
 		super(unique);
 	}
 

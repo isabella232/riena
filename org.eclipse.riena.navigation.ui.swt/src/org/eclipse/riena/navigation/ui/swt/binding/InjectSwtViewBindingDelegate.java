@@ -29,7 +29,7 @@ public class InjectSwtViewBindingDelegate extends DefaultSwtBindingDelegate {
 		super();
 	}
 
-	public InjectSwtViewBindingDelegate(IControlRidgetMapper<Object> ridgetMapper) {
+	public InjectSwtViewBindingDelegate(final IControlRidgetMapper<Object> ridgetMapper) {
 		super(ridgetMapper);
 	}
 
@@ -38,8 +38,8 @@ public class InjectSwtViewBindingDelegate extends DefaultSwtBindingDelegate {
 	 *      org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper)
 	 */
 	@Override
-	protected IBindingManager createBindingManager(IBindingPropertyLocator propertyStrategy,
-			IControlRidgetMapper<Object> mapper) {
+	protected IBindingManager createBindingManager(final IBindingPropertyLocator propertyStrategy,
+			final IControlRidgetMapper<Object> mapper) {
 		return new InjectBindingManager(propertyStrategy, mapper);
 	}
 

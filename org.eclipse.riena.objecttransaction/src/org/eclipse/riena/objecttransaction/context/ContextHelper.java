@@ -27,7 +27,7 @@ public final class ContextHelper {
 	 * @param pContext
 	 *            context
 	 */
-	public static void activateContext(IContext pContext) {
+	public static void activateContext(final IContext pContext) {
 		if (pContext != null) {
 			pContext.activate();
 		}
@@ -39,7 +39,7 @@ public final class ContextHelper {
 	 * @param pContext
 	 *            context
 	 */
-	public static void passivateContext(IContext pContext) {
+	public static void passivateContext(final IContext pContext) {
 		if (pContext != null) {
 			pContext.passivate();
 		}
@@ -53,7 +53,7 @@ public final class ContextHelper {
 	 * @param pContext
 	 *            context
 	 */
-	public static IContext setContext(IContext pOldContext, IContext pNewContext) {
+	public static IContext setContext(final IContext pOldContext, final IContext pNewContext) {
 		return pNewContext;
 	}
 

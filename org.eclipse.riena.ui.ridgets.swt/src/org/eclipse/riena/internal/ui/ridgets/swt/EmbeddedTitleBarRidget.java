@@ -35,10 +35,10 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 
 	private String text = EMPTY_STRING;
 	private String icon;
-	private ListenerList<IWindowRidgetListener> windowRidgetListeners;
+	private final ListenerList<IWindowRidgetListener> windowRidgetListeners;
 	private boolean closeable;
 	private boolean active;
-	private IEmbeddedTitleBarListener titleBarListener;
+	private final IEmbeddedTitleBarListener titleBarListener;
 	private DefaultActionManager actionManager;
 
 	/**
@@ -57,7 +57,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	 * @param window
 	 *            UI Control
 	 */
-	public EmbeddedTitleBarRidget(EmbeddedTitleBar window) {
+	public EmbeddedTitleBarRidget(final EmbeddedTitleBar window) {
 		this();
 		setUIControl(window);
 	}
@@ -72,8 +72,8 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		return (EmbeddedTitleBar) super.getUIControl();
 	}
 
-	public void setTitle(String title) {
-		String oldValue = this.text;
+	public void setTitle(final String title) {
+		final String oldValue = this.text;
 		this.text = title;
 		updateTextInControl();
 		firePropertyChange(ILabelRidget.PROPERTY_TEXT, oldValue, this.text);
@@ -88,8 +88,8 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		return text;
 	}
 
-	public void setIcon(String icon) {
-		String oldIcon = this.icon;
+	public void setIcon(final String icon) {
+		final String oldIcon = this.icon;
 		this.icon = icon;
 		if (hasChanged(oldIcon, icon)) {
 			updateIconInControl();
@@ -114,7 +114,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, EmbeddedTitleBar.class);
 	}
 
@@ -132,7 +132,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	 * <b>Implementation note:</b> activation, deactivation and disposal of the
 	 * returned {@link IDefaultActionManager} must be handled by the controller.
 	 */
-	public IDefaultActionManager addDefaultAction(IRidget focusRidget, IActionRidget actionRidget) {
+	public IDefaultActionManager addDefaultAction(final IRidget focusRidget, final IActionRidget actionRidget) {
 		if (actionManager == null) {
 			actionManager = new DefaultActionManager(this);
 		}
@@ -140,7 +140,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		return actionManager;
 	}
 
-	public void addWindowRidgetListener(IWindowRidgetListener listener) {
+	public void addWindowRidgetListener(final IWindowRidgetListener listener) {
 		windowRidgetListeners.add(listener);
 	}
 
@@ -162,25 +162,25 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	}
 
 	public void layout() {
-		EmbeddedTitleBar control = getUIControl();
+		final EmbeddedTitleBar control = getUIControl();
 		if (control != null) {
 			// we want to layout the whole view, which is the parent of the EmbeddedTitleBar
 			control.getParent().layout(true, true);
 		}
 	}
 
-	public void removeWindowRidgetListener(IWindowRidgetListener listener) {
+	public void removeWindowRidgetListener(final IWindowRidgetListener listener) {
 		windowRidgetListeners.remove(listener);
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(final boolean active) {
 		if (this.active == active) {
 			this.active = active;
 			updateActive();
 		}
 	}
 
-	public void setCloseable(boolean closeable) {
+	public void setCloseable(final boolean closeable) {
 		if (this.closeable != closeable) {
 			this.closeable = closeable;
 			updateCloseable();
@@ -191,7 +191,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	 * Updates the text of the UI control.
 	 */
 	private void updateTextInControl() {
-		EmbeddedTitleBar control = getUIControl();
+		final EmbeddedTitleBar control = getUIControl();
 		if (control != null) {
 			control.setTitle(this.text);
 		}
@@ -201,7 +201,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	 * Updates the icon of the UI control.
 	 */
 	private void updateIconInControl() {
-		EmbeddedTitleBar control = getUIControl();
+		final EmbeddedTitleBar control = getUIControl();
 		if (control != null) {
 			Image image = null;
 			if (icon != null) {
@@ -215,14 +215,14 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	}
 
 	private void updateCloseable() {
-		EmbeddedTitleBar control = getUIControl();
+		final EmbeddedTitleBar control = getUIControl();
 		if (control != null) {
 			control.setCloseable(closeable);
 		}
 	}
 
 	private void updateActive() {
-		EmbeddedTitleBar control = getUIControl();
+		final EmbeddedTitleBar control = getUIControl();
 		if (control != null) {
 			control.setWindowActive(active);
 		}
@@ -232,14 +232,14 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	 * Listener of the title bar.
 	 */
 	private class TitleBarListener implements IEmbeddedTitleBarListener {
-		public void windowActivated(MouseEvent e) {
-			for (IWindowRidgetListener listener : windowRidgetListeners.getListeners()) {
+		public void windowActivated(final MouseEvent e) {
+			for (final IWindowRidgetListener listener : windowRidgetListeners.getListeners()) {
 				listener.activated();
 			}
 		}
 
-		public void windowClosed(MouseEvent e) {
-			for (IWindowRidgetListener listener : windowRidgetListeners.getListeners()) {
+		public void windowClosed(final MouseEvent e) {
+			for (final IWindowRidgetListener listener : windowRidgetListeners.getListeners()) {
 				listener.closed();
 			}
 		}

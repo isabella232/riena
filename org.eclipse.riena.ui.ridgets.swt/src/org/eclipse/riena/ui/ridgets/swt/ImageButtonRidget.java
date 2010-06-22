@@ -55,7 +55,7 @@ public class ImageButtonRidget extends AbstractActionRidget {
 	 *            an image button
 	 */
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		assertType(uiControl, ImageButton.class);
 	}
 
@@ -81,7 +81,7 @@ public class ImageButtonRidget extends AbstractActionRidget {
 	 * 
 	 */
 	@Override
-	protected void setUIControlText(String text) {
+	protected void setUIControlText(final String text) {
 		LOGGER.log(LogService.LOG_WARNING, "The " + ImageButton.class.getSimpleName() //$NON-NLS-1$
 				+ " does not support the property \"text\""); //$NON-NLS-1$
 	}
@@ -94,7 +94,7 @@ public class ImageButtonRidget extends AbstractActionRidget {
 	 */
 	@Override
 	protected void bindUIControl() {
-		ImageButton control = getUIControl();
+		final ImageButton control = getUIControl();
 		if (control != null) {
 			button = control;
 			button.addSelectionListener(actionObserver);
@@ -120,7 +120,7 @@ public class ImageButtonRidget extends AbstractActionRidget {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void setUIControlImage(Image image) {
+	protected void setUIControlImage(final Image image) {
 		getUIControl().setImage(image);
 	}
 
@@ -135,10 +135,10 @@ public class ImageButtonRidget extends AbstractActionRidget {
 
 		super.updateUIIcon();
 
-		ImageButton control = getUIControl();
+		final ImageButton control = getUIControl();
 		if (control != null) {
 
-			IIconManager manager = IconManagerProvider.getInstance().getIconManager();
+			final IIconManager manager = IconManagerProvider.getInstance().getIconManager();
 			String iconName = null;
 			String iconId = getIcon();
 			if (iconId != null) {
@@ -146,7 +146,7 @@ public class ImageButtonRidget extends AbstractActionRidget {
 			}
 
 			if (iconName != null) {
-				IconSize size = manager.getSize(iconId);
+				final IconSize size = manager.getSize(iconId);
 				iconId = manager.getIconID(iconName, size, IconState.DISABLED);
 				control.setDisabledImage(ImageStore.getInstance().getImage(iconId));
 				iconId = manager.getIconID(iconName, size, IconState.HOVER);

@@ -39,7 +39,7 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */
-	public SubModuleNode(NavigationNodeId nodeId) {
+	public SubModuleNode(final NavigationNodeId nodeId) {
 		super(nodeId);
 	}
 
@@ -52,7 +52,7 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	 *            Label of the sub module displayed in the sub modules title
 	 *            bar.
 	 */
-	public SubModuleNode(NavigationNodeId nodeId, String label) {
+	public SubModuleNode(final NavigationNodeId nodeId, final String label) {
 		super(nodeId, label);
 	}
 
@@ -63,7 +63,7 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	 *            Label of the sub module displayed in the sub modules title
 	 *            bar.
 	 */
-	public SubModuleNode(String label) {
+	public SubModuleNode(final String label) {
 		this(null, label);
 	}
 
@@ -77,7 +77,7 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	/**
 	 * @since 1.2
 	 */
-	public void setSelectable(boolean folderNode) {
+	public void setSelectable(final boolean folderNode) {
 		this.selectable = folderNode;
 	}
 

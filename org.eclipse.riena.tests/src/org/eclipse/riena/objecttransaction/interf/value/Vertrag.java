@@ -35,7 +35,7 @@ public class Vertrag extends AbstractTransactedObject implements IVertrag {
 	/**
 	 * @param vertragsnummer
 	 */
-	public Vertrag(String vertragsnummer) {
+	public Vertrag(final String vertragsnummer) {
 		super(new GenericOID("vertrag", "vertragsnr", vertragsnummer), "1");
 		if (getCurrentObjectTransaction().isCleanModus()) {
 			getCurrentObjectTransaction().register(this);
@@ -56,7 +56,7 @@ public class Vertrag extends AbstractTransactedObject implements IVertrag {
 	 * @param vertragsNummer
 	 *            The vertragsNummer to set.
 	 */
-	public void setVertragsNummer(String vertragsNummer) {
+	public void setVertragsNummer(final String vertragsNummer) {
 		if (getCurrentObjectTransaction().isCleanModus()) {
 			this.vertragsNummer = vertragsNummer;
 		}
@@ -74,7 +74,7 @@ public class Vertrag extends AbstractTransactedObject implements IVertrag {
 	 * @param vertragsBeschreibung
 	 *            The vertragsBeschreibung to set.
 	 */
-	public void setVertragsBeschreibung(String vertragsBeschreibung) {
+	public void setVertragsBeschreibung(final String vertragsBeschreibung) {
 		if (getCurrentObjectTransaction().isCleanModus()) {
 			this.vertragsBeschreibung = vertragsBeschreibung;
 		}
@@ -92,7 +92,7 @@ public class Vertrag extends AbstractTransactedObject implements IVertrag {
 	 * @param vertragsSumme
 	 *            The vertragsSumme to set.
 	 */
-	public void setVertragsSumme(Long vertragsSumme) {
+	public void setVertragsSumme(final Long vertragsSumme) {
 		if (getCurrentObjectTransaction().isCleanModus()) {
 			this.vertragsSumme = vertragsSumme;
 		}

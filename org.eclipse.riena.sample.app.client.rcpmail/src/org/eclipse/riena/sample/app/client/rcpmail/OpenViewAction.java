@@ -22,7 +22,7 @@ public class OpenViewAction extends Action {
 	private int instanceNum = 0;
 	private final String viewId;
 
-	public OpenViewAction(IWorkbenchWindow window, String label, String viewId) {
+	public OpenViewAction(final IWorkbenchWindow window, final String label, final String viewId) {
 		this.window = window;
 		this.viewId = viewId;
 		setText(label);
@@ -39,7 +39,7 @@ public class OpenViewAction extends Action {
 		if (window != null) {
 			try {
 				window.getActivePage().showView(viewId, Integer.toString(instanceNum++), IWorkbenchPage.VIEW_ACTIVATE);
-			} catch (PartInitException e) {
+			} catch (final PartInitException e) {
 				MessageDialog.openError(window.getShell(), "Error", "Error opening view:" + e.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}

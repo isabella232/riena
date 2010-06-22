@@ -27,19 +27,19 @@ public class AggregatorWiring extends AbstractWiring {
 	private ExtensionInjector senderInjector;
 
 	@Override
-	public void wire(Object bean, BundleContext context) {
-		clientInfoProviderInjector = Inject.extension(IClientInfoProviderExtension.ID).expectingMinMax(0, 1).useType(
-				IClientInfoProviderExtension.class).into(bean).andStart(context);
+	public void wire(final Object bean, final BundleContext context) {
+		clientInfoProviderInjector = Inject.extension(IClientInfoProviderExtension.ID).expectingMinMax(0, 1)
+				.useType(IClientInfoProviderExtension.class).into(bean).andStart(context);
 		collectorsInjector = Inject.extension(ICollectorExtension.ID).useType(ICollectorExtension.class).into(bean)
 				.andStart(context);
-		storeInjector = Inject.extension(IStoreExtension.ID).expectingMinMax(0, 1).useType(IStoreExtension.class).into(
-				bean).andStart(context);
+		storeInjector = Inject.extension(IStoreExtension.ID).expectingMinMax(0, 1).useType(IStoreExtension.class)
+				.into(bean).andStart(context);
 		senderInjector = Inject.extension(ISenderExtension.ID).expectingMinMax(0, 1).useType(ISenderExtension.class)
 				.into(bean).andStart(context);
 	}
 
 	@Override
-	public void unwire(Object bean, BundleContext context) {
+	public void unwire(final Object bean, final BundleContext context) {
 		clientInfoProviderInjector.stop();
 		collectorsInjector.stop();
 		storeInjector.stop();

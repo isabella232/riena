@@ -22,7 +22,7 @@ public class InvalidTransactedObjectFailure extends ObjectTransactionFailure {
 	/**
 	 * @param message
 	 */
-	public InvalidTransactedObjectFailure(String message) {
+	public InvalidTransactedObjectFailure(final String message) {
 		super(message);
 	}
 

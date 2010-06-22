@@ -18,7 +18,7 @@ public final class WorkareaManager {
 
 	static private WorkareaManager instance = new WorkareaManager();
 
-	private WorkareaDefinitionRegistryFacade registry;
+	private final WorkareaDefinitionRegistryFacade registry;
 
 	static public WorkareaManager getInstance() {
 		return instance;
@@ -28,42 +28,44 @@ public final class WorkareaManager {
 		registry = WorkareaDefinitionRegistryFacade.getInstance();
 	}
 
-	public IWorkareaDefinition getDefinition(Object key) {
+	public IWorkareaDefinition getDefinition(final Object key) {
 		return registry.getDefinition(key);
 	}
 
-	public IWorkareaDefinition registerDefinition(INavigationNode<?> node, Object viewId) {
+	public IWorkareaDefinition registerDefinition(final INavigationNode<?> node, final Object viewId) {
 		return registerDefinition(node, null, viewId, false);
 	}
 
-	public IWorkareaDefinition registerDefinition(String id, Object viewId) {
+	public IWorkareaDefinition registerDefinition(final String id, final Object viewId) {
 		return registerDefinition(id, null, viewId, false);
 	}
 
-	public IWorkareaDefinition registerDefinition(INavigationNode<?> node, Object viewId, boolean isViewShared) {
+	public IWorkareaDefinition registerDefinition(final INavigationNode<?> node, final Object viewId,
+			final boolean isViewShared) {
 		return registerDefinition(node, null, viewId, isViewShared);
 	}
 
-	public IWorkareaDefinition registerDefinition(String id, Object viewId, boolean isViewShared) {
+	public IWorkareaDefinition registerDefinition(final String id, final Object viewId, final boolean isViewShared) {
 		return registerDefinition(id, null, viewId, isViewShared);
 	}
 
-	public IWorkareaDefinition registerDefinition(INavigationNode<?> node,
-			Class<? extends IController> controllerClass, Object viewId) {
+	public IWorkareaDefinition registerDefinition(final INavigationNode<?> node,
+			final Class<? extends IController> controllerClass, final Object viewId) {
 		return registerDefinition(node, controllerClass, viewId, false);
 	}
 
-	public IWorkareaDefinition registerDefinition(String id, Class<? extends IController> controllerClass, Object viewId) {
+	public IWorkareaDefinition registerDefinition(final String id, final Class<? extends IController> controllerClass,
+			final Object viewId) {
 		return registerDefinition(id, controllerClass, viewId, false);
 	}
 
-	public IWorkareaDefinition registerDefinition(INavigationNode<?> node,
-			Class<? extends IController> controllerClass, Object viewId, boolean isViewShared) {
+	public IWorkareaDefinition registerDefinition(final INavigationNode<?> node,
+			final Class<? extends IController> controllerClass, final Object viewId, final boolean isViewShared) {
 		return registry.registerDefinition(node, controllerClass, viewId, isViewShared);
 	}
 
-	public IWorkareaDefinition registerDefinition(String id, Class<? extends IController> controllerClass,
-			Object viewId, boolean isViewShared) {
+	public IWorkareaDefinition registerDefinition(final String id, final Class<? extends IController> controllerClass,
+			final Object viewId, final boolean isViewShared) {
 		return registry.registerDefinition(id, controllerClass, viewId, isViewShared);
 	}
 }

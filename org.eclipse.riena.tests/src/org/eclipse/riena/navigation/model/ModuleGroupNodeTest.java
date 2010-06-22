@@ -25,11 +25,11 @@ public class ModuleGroupNodeTest extends TestCase {
 	 */
 	public void testIsVisible() {
 
-		ModuleGroupNode node = new ModuleGroupNode();
+		final ModuleGroupNode node = new ModuleGroupNode();
 		node.setNavigationProcessor(new NavigationProcessor());
 		assertFalse(node.isVisible());
 
-		ModuleNode mn = new ModuleNode();
+		final ModuleNode mn = new ModuleNode();
 		node.addChild(mn);
 		assertTrue(node.isVisible());
 

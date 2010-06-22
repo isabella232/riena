@@ -22,7 +22,7 @@ public class NumberLabel extends CLabel {
 
 	private int fixWidth;
 
-	public NumberLabel(Composite parent, int style) {
+	public NumberLabel(final Composite parent, final int style) {
 		super(parent, style);
 		fixWidth = SWT.NONE;
 	}
@@ -33,8 +33,8 @@ public class NumberLabel extends CLabel {
 	 * Returns a fix width, if it was set before.
 	 */
 	@Override
-	public Point computeSize(int wHint, int hHint, boolean changed) {
-		Point size = super.computeSize(wHint, hHint, changed);
+	public Point computeSize(final int wHint, final int hHint, final boolean changed) {
+		final Point size = super.computeSize(wHint, hHint, changed);
 		if (getFixWidth() != SWT.NONE) {
 			size.x = getFixWidth();
 		}
@@ -45,7 +45,7 @@ public class NumberLabel extends CLabel {
 		return fixWidth;
 	}
 
-	public void setFixWidth(int fixWidth) {
+	public void setFixWidth(final int fixWidth) {
 		this.fixWidth = fixWidth;
 	}
 

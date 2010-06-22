@@ -31,30 +31,30 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class SnippetListRidget001 {
 
-	public SnippetListRidget001(Shell shell) {
+	public SnippetListRidget001(final Shell shell) {
 		shell.setLayout(new FillLayout());
-		org.eclipse.swt.widgets.List list = UIControlsFactory.createList(shell, false, true);
+		final org.eclipse.swt.widgets.List list = UIControlsFactory.createList(shell, false, true);
 
-		IListRidget listRidget = (IListRidget) SwtRidgetFactory.createRidget(list);
+		final IListRidget listRidget = (IListRidget) SwtRidgetFactory.createRidget(list);
 		listRidget.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		IObservableList input = new WritableList(DayPojo.createWeek(), DayPojo.class);
+		final IObservableList input = new WritableList(DayPojo.createWeek(), DayPojo.class);
 		listRidget.bindToModel(input, DayPojo.class, "english"); //$NON-NLS-1$
 		listRidget.updateFromModel();
 
 		final TypedBean<DayPojo> selection = new TypedBean<DayPojo>(null);
 		selection.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				DayPojo node = selection.getValue();
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final DayPojo node = selection.getValue();
 				System.out.println("Selection: " + node.getEnglish()); //$NON-NLS-1$
 			}
 		});
 		listRidget.bindSingleSelectionToModel(selection, "value"); //$NON-NLS-1$
 	}
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = new Shell();
+			final Shell shell = new Shell();
 			shell.setText(SnippetListRidget001.class.getSimpleName());
 			new SnippetListRidget001(shell);
 			shell.pack();

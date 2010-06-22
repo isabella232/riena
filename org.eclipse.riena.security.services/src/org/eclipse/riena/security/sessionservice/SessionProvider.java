@@ -21,7 +21,7 @@ import org.eclipse.riena.security.common.session.Session;
  */
 public class SessionProvider implements ISessionProvider {
 
-	private SecureRandom random;
+	private final SecureRandom random;
 
 	/**
 	 * Creates a new instance of <code>SessionProvider</code>
@@ -38,7 +38,7 @@ public class SessionProvider implements ISessionProvider {
 	 * org.eclipse.riena.security.sessionservice.ISessionProvider#createSession
 	 * (java.security.Principal[])
 	 */
-	public Session createSession(Principal[] principals) {
+	public Session createSession(final Principal[] principals) {
 		// we could use information from the principal parameter here
 		return new Session("ssoid##" + Long.valueOf(random.nextLong() + System.currentTimeMillis()).toString() + "##"); //$NON-NLS-1$ //$NON-NLS-2$
 	}

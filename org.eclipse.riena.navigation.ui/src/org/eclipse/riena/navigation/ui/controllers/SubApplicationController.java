@@ -21,13 +21,13 @@ import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
 public class SubApplicationController extends NavigationNodeController<ISubApplicationNode> {
 
 	private IUIProcessRidget uiProcessRidget;
-	private NodeEventDelegation contextUpdater = new NodeEventDelegation();
+	private final NodeEventDelegation contextUpdater = new NodeEventDelegation();
 
 	/**
 	 * Create a new Controller, find the corresponding subApplication for the
 	 * passed ID
 	 */
-	public SubApplicationController(ISubApplicationNode pSubApplication) {
+	public SubApplicationController(final ISubApplicationNode pSubApplication) {
 		super(pSubApplication);
 	}
 
@@ -62,9 +62,9 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	 *            id of the menu item
 	 * @return action ridget; {@code null} if no action ridget was found
 	 */
-	public IActionRidget getMenuActionRidget(String id) {
+	public IActionRidget getMenuActionRidget(final String id) {
 
-		String menuItemId = IActionRidget.BASE_ID_MENUACTION + id;
+		final String menuItemId = IActionRidget.BASE_ID_MENUACTION + id;
 		return getActionRidget(menuItemId);
 
 	}
@@ -76,9 +76,9 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	 *            id of the tool bar button
 	 * @return action ridget; {@code null} if no action ridget was found
 	 */
-	public IActionRidget getToolbarActionRidget(String id) {
+	public IActionRidget getToolbarActionRidget(final String id) {
 
-		String menuItemId = IActionRidget.BASE_ID_TOOLBARACTION + id;
+		final String menuItemId = IActionRidget.BASE_ID_TOOLBARACTION + id;
 		return getActionRidget(menuItemId);
 
 	}
@@ -90,9 +90,9 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	 *            id of the ridget
 	 * @return action ridget; {@code null} if no action ridget was found
 	 */
-	private IActionRidget getActionRidget(String id) {
+	private IActionRidget getActionRidget(final String id) {
 
-		IRidget ridget = getRidget(id);
+		final IRidget ridget = getRidget(id);
 		if (ridget instanceof IActionRidget) {
 			return (IActionRidget) ridget;
 		} else {
@@ -112,7 +112,7 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	 * @param uiProcessRidget
 	 *            the progressBoxRidget to set
 	 */
-	public void setUiProcessRidget(IUIProcessRidget uiProcessRidget) {
+	public void setUiProcessRidget(final IUIProcessRidget uiProcessRidget) {
 		this.uiProcessRidget = uiProcessRidget;
 	}
 

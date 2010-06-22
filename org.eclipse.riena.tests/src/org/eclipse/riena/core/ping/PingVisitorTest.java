@@ -31,7 +31,7 @@ public class PingVisitorTest extends RienaTestCase {
 		private boolean expectPingCalled = true;
 		private boolean fail;
 
-		public void setExpectPingCalled(boolean expectation) {
+		public void setExpectPingCalled(final boolean expectation) {
 			expectPingCalled = expectation;
 		}
 
@@ -52,7 +52,7 @@ public class PingVisitorTest extends RienaTestCase {
 		/**
 		 * @see DefaultPingable#ping(PingVisitor)
 		 */
-		public PingVisitor ping(PingVisitor visitor) {
+		public PingVisitor ping(final PingVisitor visitor) {
 			pingCalled = true;
 			if (fail) {
 				throw newException();
@@ -79,7 +79,7 @@ public class PingVisitorTest extends RienaTestCase {
 		private boolean expectPingDBCalled = true;
 		private boolean pingDBFail;
 
-		public void setExpectPingDBCalled(boolean expectation) {
+		public void setExpectPingDBCalled(final boolean expectation) {
 			expectPingDBCalled = expectation;
 		}
 
@@ -137,7 +137,7 @@ public class PingVisitorTest extends RienaTestCase {
 	 * 
 	 * @param arg0
 	 */
-	public PingVisitorTest(String arg0) {
+	public PingVisitorTest(final String arg0) {
 		super(arg0);
 	}
 
@@ -166,49 +166,49 @@ public class PingVisitorTest extends RienaTestCase {
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
 			@SuppressWarnings("unused")
-			private IPingable pingable1 = mock4;
+			private final IPingable pingable1 = mock4;
 			@SuppressWarnings("unused")
-			private IPingable pingable2 = mock5;
+			private final IPingable pingable2 = mock5;
 		};
 		mock2 = new PingMock();
 		mock1 = new PingMock() {
 			@SuppressWarnings("unused")
-			private IPingable pingable1 = mock2;
+			private final IPingable pingable1 = mock2;
 			@SuppressWarnings("unused")
-			private IPingable pingable2 = mock3;
+			private final IPingable pingable2 = mock3;
 		};
 
 		mock4.letPingFail();
-		PingMethodAdapter mock3PingDB = new PingMethodAdapter(mock3, PingMockWithPingMethods.class
-				.getDeclaredMethod("pingDB"));
+		final PingMethodAdapter mock3PingDB = new PingMethodAdapter(mock3,
+				PingMockWithPingMethods.class.getDeclaredMethod("pingDB"));
 
 		PingVisitor visitor = new PingVisitor();
 		visitor = visitor.ping(mock1);
 		assertNotNull(visitor);
 
-		Iterable<PingResult> pingResults = visitor.getPingResults();
+		final Iterable<PingResult> pingResults = visitor.getPingResults();
 		assertResultContainsAll(pingResults, mock1);
-		PingResult mock1Result = getPingResultFor(mock1, pingResults);
+		final PingResult mock1Result = getPingResultFor(mock1, pingResults);
 		assertNull(mock1Result.getPingFailure());
 		assertResultContainsAll(mock1Result.getNestedResults(), mock2, mock3);
 
-		PingResult mock2Result = getPingResultFor(mock2, mock1Result.getNestedResults());
+		final PingResult mock2Result = getPingResultFor(mock2, mock1Result.getNestedResults());
 		assertNull(mock2Result.getPingFailure());
 		assertResultContainsAll(mock2Result.getNestedResults());
 
-		PingResult mock3Result = getPingResultFor(mock3, mock1Result.getNestedResults());
+		final PingResult mock3Result = getPingResultFor(mock3, mock1Result.getNestedResults());
 		assertNull(mock3Result.getPingFailure());
 		assertResultContainsAll(mock3Result.getNestedResults(), mock4, mock5, mock3PingDB);
 
-		PingResult mock4Result = getPingResultFor(mock4, mock3Result.getNestedResults());
+		final PingResult mock4Result = getPingResultFor(mock4, mock3Result.getNestedResults());
 		assertPingFailureContains(mock4Result, "RuntimeException", "ping");
 		assertResultContainsAll(mock4Result.getNestedResults());
 
-		PingResult mock5Result = getPingResultFor(mock5, mock3Result.getNestedResults());
+		final PingResult mock5Result = getPingResultFor(mock5, mock3Result.getNestedResults());
 		assertNull(mock5Result.getPingFailure());
 		assertResultContainsAll(mock5Result.getNestedResults());
 
-		PingResult mock3PingDBResult = getPingResultFor(mock3PingDB, mock3Result.getNestedResults());
+		final PingResult mock3PingDBResult = getPingResultFor(mock3PingDB, mock3Result.getNestedResults());
 		assertNull(mock3PingDBResult.getPingFailure());
 		assertResultContainsAll(mock3PingDBResult.getNestedResults());
 	}
@@ -222,50 +222,50 @@ public class PingVisitorTest extends RienaTestCase {
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
 			@SuppressWarnings("unused")
-			private IPingable pingable1 = mock4;
+			private final IPingable pingable1 = mock4;
 			@SuppressWarnings("unused")
-			private IPingable pingable2 = mock5;
+			private final IPingable pingable2 = mock5;
 		};
 		mock2 = new PingMock();
 		mock1 = new PingMock() {
 			@SuppressWarnings("unused")
-			private IPingable pingable1 = mock2;
+			private final IPingable pingable1 = mock2;
 			@SuppressWarnings("unused")
-			private IPingable pingable2 = mock3;
+			private final IPingable pingable2 = mock3;
 		};
 
 		((PingMockWithPingMethods) mock3).letPingDBFail();
 
-		PingMethodAdapter mock3PingDB = new PingMethodAdapter(mock3, PingMockWithPingMethods.class
-				.getDeclaredMethod("pingDB"));
+		final PingMethodAdapter mock3PingDB = new PingMethodAdapter(mock3,
+				PingMockWithPingMethods.class.getDeclaredMethod("pingDB"));
 
 		PingVisitor visitor = new PingVisitor();
 		visitor = visitor.ping(mock1);
 		assertNotNull(visitor);
 
-		Iterable<PingResult> pingResults = visitor.getPingResults();
+		final Iterable<PingResult> pingResults = visitor.getPingResults();
 		assertResultContainsAll(pingResults, mock1);
-		PingResult mock1Result = getPingResultFor(mock1, pingResults);
+		final PingResult mock1Result = getPingResultFor(mock1, pingResults);
 		assertNull(mock1Result.getPingFailure());
 		assertResultContainsAll(mock1Result.getNestedResults(), mock2, mock3);
 
-		PingResult mock2Result = getPingResultFor(mock2, mock1Result.getNestedResults());
+		final PingResult mock2Result = getPingResultFor(mock2, mock1Result.getNestedResults());
 		assertNull(mock2Result.getPingFailure());
 		assertResultContainsAll(mock2Result.getNestedResults());
 
-		PingResult mock3Result = getPingResultFor(mock3, mock1Result.getNestedResults());
+		final PingResult mock3Result = getPingResultFor(mock3, mock1Result.getNestedResults());
 		assertNull(mock3Result.getPingFailure());
 		assertResultContainsAll(mock3Result.getNestedResults(), mock4, mock5, mock3PingDB);
 
-		PingResult mock4Result = getPingResultFor(mock4, mock3Result.getNestedResults());
+		final PingResult mock4Result = getPingResultFor(mock4, mock3Result.getNestedResults());
 		assertNull(mock4Result.getPingFailure());
 		assertResultContainsAll(mock4Result.getNestedResults());
 
-		PingResult mock5Result = getPingResultFor(mock5, mock3Result.getNestedResults());
+		final PingResult mock5Result = getPingResultFor(mock5, mock3Result.getNestedResults());
 		assertNull(mock5Result.getPingFailure());
 		assertResultContainsAll(mock5Result.getNestedResults());
 
-		PingResult mock3PingDBResult = getPingResultFor(mock3PingDB, mock3Result.getNestedResults());
+		final PingResult mock3PingDBResult = getPingResultFor(mock3PingDB, mock3Result.getNestedResults());
 		assertPingFailureContains(mock3PingDBResult, "RuntimeException", "pingDB");
 		assertResultContainsAll(mock3PingDBResult.getNestedResults());
 	}
@@ -278,27 +278,27 @@ public class PingVisitorTest extends RienaTestCase {
 		mock5 = new PingMock() {
 			// cycle
 			@SuppressWarnings("unused")
-			private IPingable pingable1 = this;
+			private final IPingable pingable1 = this;
 		};
 		mock3 = new PingMockWithPingMethods() {
 			@SuppressWarnings("unused")
-			private IPingable pingable1 = mock4;
+			private final IPingable pingable1 = mock4;
 			@SuppressWarnings("unused")
-			private IPingable pingable2 = mock5;
+			private final IPingable pingable2 = mock5;
 		};
 		mock2 = new PingMock() {
 			// cycle
 			@SuppressWarnings("unused")
-			private IPingable pingable1 = this;
+			private final IPingable pingable1 = this;
 		};
 		mock1 = new PingMock() {
 			@SuppressWarnings("unused")
-			private IPingable pingable1 = mock2;
+			private final IPingable pingable1 = mock2;
 			@SuppressWarnings("unused")
-			private IPingable pingable2 = mock3;
+			private final IPingable pingable2 = mock3;
 		};
 
-		PingVisitor visitor = new PingVisitor();
+		final PingVisitor visitor = new PingVisitor();
 		mock1.ping(visitor);
 
 		mock1.verify();
@@ -316,7 +316,7 @@ public class PingVisitorTest extends RienaTestCase {
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
 			@SuppressWarnings("unused")
-			private IPingable pingable1 = mock4;
+			private final IPingable pingable1 = mock4;
 
 			@SuppressWarnings("unused")
 			private Iterable<IPingable> getAdditionalPingables() {
@@ -326,12 +326,12 @@ public class PingVisitorTest extends RienaTestCase {
 		mock2 = new PingMock();
 		mock1 = new PingMock() {
 			@SuppressWarnings("unused")
-			private IPingable pingable1 = mock2;
+			private final IPingable pingable1 = mock2;
 			@SuppressWarnings("unused")
-			private IPingable pingable2 = mock3;
+			private final IPingable pingable2 = mock3;
 		};
 
-		PingVisitor visitor = new PingVisitor();
+		final PingVisitor visitor = new PingVisitor();
 		mock1.ping(visitor);
 
 		mock1.verify();
@@ -346,9 +346,9 @@ public class PingVisitorTest extends RienaTestCase {
 	 */
 	public void testVisitorReturnsThis() {
 		mock1 = new PingMock();
-		PingVisitor visitor = new PingVisitor();
+		final PingVisitor visitor = new PingVisitor();
 
-		PingVisitor result = mock1.ping(visitor);
+		final PingVisitor result = mock1.ping(visitor);
 
 		assertSame(visitor, result);
 		mock1.verify();
@@ -365,9 +365,9 @@ public class PingVisitorTest extends RienaTestCase {
 		mock2 = new PingMock();
 		mock1 = new PingMockWithPingMethods() {
 			@SuppressWarnings("unused")
-			private IPingable pingable1 = mock2;
+			private final IPingable pingable1 = mock2;
 			@SuppressWarnings("unused")
-			private IPingable pingable2 = mock3;
+			private final IPingable pingable2 = mock3;
 
 			@SuppressWarnings("unused")
 			private Iterable<IPingable> getAdditionalPingables() {
@@ -375,8 +375,8 @@ public class PingVisitorTest extends RienaTestCase {
 			}
 		};
 
-		PingVisitor visitor = new PingVisitor();
-		Collection<IPingable> set = visitor.getChildPingablesOf(mock1);
+		final PingVisitor visitor = new PingVisitor();
+		final Collection<IPingable> set = visitor.getChildPingablesOf(mock1);
 
 		assertEquals(5, set.size());
 		assertTrue(set.remove(mock2));
@@ -384,7 +384,7 @@ public class PingVisitorTest extends RienaTestCase {
 		assertTrue(set.remove(mock4));
 		assertTrue(set.remove(mock5));
 
-		IPingable pingable = set.iterator().next();
+		final IPingable pingable = set.iterator().next();
 		assertTrue(pingable instanceof PingMethodAdapter);
 		pingable.ping(visitor);
 		assertTrue(((PingMockWithPingMethods) mock1).isPingDBCalled());
@@ -395,9 +395,9 @@ public class PingVisitorTest extends RienaTestCase {
 	 * collectPingMethods()}.
 	 */
 	public void testCollectPingMethods() {
-		PingVisitor visitor = new PingVisitor();
-		PingMockWithPingMethods mock = new PingMockWithPingMethods();
-		Set<IPingable> set = new HashSet<IPingable>();
+		final PingVisitor visitor = new PingVisitor();
+		final PingMockWithPingMethods mock = new PingMockWithPingMethods();
+		final Set<IPingable> set = new HashSet<IPingable>();
 
 		visitor.collectPingMethods(mock, set);
 
@@ -413,15 +413,15 @@ public class PingVisitorTest extends RienaTestCase {
 	public void testCollectPingableMembers() {
 		mock3 = new PingMock();
 		mock2 = new PingMock();
-		PingMock mock1 = new PingMock() {
+		final PingMock mock1 = new PingMock() {
 			@SuppressWarnings("unused")
-			private IPingable pingable1 = mock2;
+			private final IPingable pingable1 = mock2;
 			@SuppressWarnings("unused")
-			private IPingable pingable2 = mock3;
+			private final IPingable pingable2 = mock3;
 		};
 
-		Set<IPingable> set = new HashSet<IPingable>();
-		PingVisitor visitor = new PingVisitor();
+		final Set<IPingable> set = new HashSet<IPingable>();
+		final PingVisitor visitor = new PingVisitor();
 		visitor.collectPingableMembers(mock1, set);
 
 		assertEquals(2, set.size());
@@ -437,15 +437,15 @@ public class PingVisitorTest extends RienaTestCase {
 	public void testCollectAdditionalPingables() {
 		mock3 = new PingMock();
 		mock2 = new PingMock();
-		PingMock mock1 = new PingMock() {
+		final PingMock mock1 = new PingMock() {
 			@SuppressWarnings("unused")
 			private Iterable<IPingable> getAdditionalPingables() {
 				return Arrays.asList(new IPingable[] { mock2, mock3 });
 			}
 		};
 
-		Set<IPingable> set = new HashSet<IPingable>();
-		PingVisitor visitor = new PingVisitor();
+		final Set<IPingable> set = new HashSet<IPingable>();
+		final PingVisitor visitor = new PingVisitor();
 		visitor.collectAdditionalPingables(mock1, set);
 
 		assertEquals(2, set.size());
@@ -461,15 +461,15 @@ public class PingVisitorTest extends RienaTestCase {
 	public void testCollectAdditionalPingablesWithWildcards() {
 		mock3 = new PingMock();
 		mock2 = new PingMock();
-		PingMock mock1 = new PingMock() {
+		final PingMock mock1 = new PingMock() {
 			@SuppressWarnings("unused")
 			private Iterable<? extends IPingable> getAdditionalPingables() {
 				return Arrays.asList(new IPingable[] { mock2, mock3 });
 			}
 		};
 
-		Set<IPingable> set = new HashSet<IPingable>();
-		PingVisitor visitor = new PingVisitor();
+		final Set<IPingable> set = new HashSet<IPingable>();
+		final PingVisitor visitor = new PingVisitor();
 		visitor.collectAdditionalPingables(mock1, set);
 
 		assertEquals(2, set.size());
@@ -486,7 +486,7 @@ public class PingVisitorTest extends RienaTestCase {
 		mock5 = new PingMock();
 		mock3 = new PingMockWithPingMethods() {
 			@SuppressWarnings("unused")
-			private IPingable pingable1 = mock4;
+			private final IPingable pingable1 = mock4;
 
 			@SuppressWarnings("unused")
 			private Iterable<IPingable> getAdditionalPingables() {
@@ -496,64 +496,64 @@ public class PingVisitorTest extends RienaTestCase {
 		mock2 = new PingMock();
 		mock1 = new PingMock() {
 			@SuppressWarnings("unused")
-			private IPingable pingable2 = mock3;
+			private final IPingable pingable2 = mock3;
 			@SuppressWarnings("unused")
-			private IPingable pingable1 = mock2;
+			private final IPingable pingable1 = mock2;
 		};
-		PingMethodAdapter mock3PingDB = new PingMethodAdapter(mock3, PingMockWithPingMethods.class
-				.getDeclaredMethod("pingDB"));
+		final PingMethodAdapter mock3PingDB = new PingMethodAdapter(mock3,
+				PingMockWithPingMethods.class.getDeclaredMethod("pingDB"));
 
 		PingVisitor visitor = new PingVisitor();
 		visitor = visitor.ping(mock1);
 		assertNotNull(visitor);
 
-		Iterable<PingResult> pingResults = visitor.getPingResults();
+		final Iterable<PingResult> pingResults = visitor.getPingResults();
 		assertResultContainsAll(pingResults, mock1);
-		PingResult mock1Result = getPingResultFor(mock1, pingResults);
+		final PingResult mock1Result = getPingResultFor(mock1, pingResults);
 		assertNull(mock1Result.getPingFailure());
 		assertResultContainsAll(mock1Result.getNestedResults(), mock2, mock3);
 
-		PingResult mock2Result = getPingResultFor(mock2, mock1Result.getNestedResults());
+		final PingResult mock2Result = getPingResultFor(mock2, mock1Result.getNestedResults());
 		assertNull(mock2Result.getPingFailure());
 		assertResultContainsAll(mock2Result.getNestedResults());
 
-		PingResult mock3Result = getPingResultFor(mock3, mock1Result.getNestedResults());
+		final PingResult mock3Result = getPingResultFor(mock3, mock1Result.getNestedResults());
 		assertNull(mock3Result.getPingFailure());
 		assertResultContainsAll(mock3Result.getNestedResults(), mock4, mock5, mock3PingDB);
 
-		PingResult mock4Result = getPingResultFor(mock4, mock3Result.getNestedResults());
+		final PingResult mock4Result = getPingResultFor(mock4, mock3Result.getNestedResults());
 		assertNull(mock4Result.getPingFailure());
 		assertResultContainsAll(mock4Result.getNestedResults());
 
-		PingResult mock5Result = getPingResultFor(mock5, mock3Result.getNestedResults());
+		final PingResult mock5Result = getPingResultFor(mock5, mock3Result.getNestedResults());
 		assertNull(mock5Result.getPingFailure());
 		assertResultContainsAll(mock5Result.getNestedResults());
 
-		PingResult mock3PingDBResult = getPingResultFor(mock3PingDB, mock3Result.getNestedResults());
+		final PingResult mock3PingDBResult = getPingResultFor(mock3PingDB, mock3Result.getNestedResults());
 		assertNull(mock3PingDBResult.getPingFailure());
 		assertResultContainsAll(mock3PingDBResult.getNestedResults());
 	}
 
-	private void assertResultContainsAll(Iterable<PingResult> resultList, IPingable... expected) {
+	private void assertResultContainsAll(final Iterable<PingResult> resultList, final IPingable... expected) {
 		assertNotNull(resultList);
 		int size = 0;
-		for (IPingable pingable : expected) {
+		for (final IPingable pingable : expected) {
 			++size;
 			assertResultContains(resultList, pingable);
 		}
 		assertEquals(expected.length, size);
 	}
 
-	private PingResult assertResultContains(Iterable<PingResult> resultList, IPingable expected) {
-		PingResult pingResult = getPingResultFor(expected, resultList);
+	private PingResult assertResultContains(final Iterable<PingResult> resultList, final IPingable expected) {
+		final PingResult pingResult = getPingResultFor(expected, resultList);
 		if (pingResult == null) {
 			fail("Pingable " + expected + " not contained in " + resultList);
 		}
 		return pingResult;
 	}
 
-	private PingResult getPingResultFor(IPingable pingable, Iterable<PingResult> resultList) {
-		for (PingResult pingResult : resultList) {
+	private PingResult getPingResultFor(final IPingable pingable, final Iterable<PingResult> resultList) {
+		for (final PingResult pingResult : resultList) {
 			if (pingResult.getPingableName().equals(pingable.getPingFingerprint().getName())) {
 				return pingResult;
 			}
@@ -561,17 +561,17 @@ public class PingVisitorTest extends RienaTestCase {
 		return null;
 	}
 
-	private void assertPingFailureContains(PingResult pingResult, String... failureParts) {
+	private void assertPingFailureContains(final PingResult pingResult, final String... failureParts) {
 		assertNotNull("expected failures '" + failureParts + "' but is <null>", pingResult.getPingFailure());
-		for (String part : failureParts) {
+		for (final String part : failureParts) {
 			assertTrue(part + " not contained in failure message '" + pingResult.getPingFailure() + "'", pingResult
 					.getPingFailure().contains(part));
 		}
 	}
 
-	private List<String> getFingerprintNames(List<PingResult> list) {
-		List<String> result = new ArrayList<String>();
-		for (PingResult pingResult : list) {
+	private List<String> getFingerprintNames(final List<PingResult> list) {
+		final List<String> result = new ArrayList<String>();
+		for (final PingResult pingResult : list) {
 			result.add(pingResult.getPingableName());
 		}
 		return result;

@@ -26,7 +26,7 @@ public class NavigationNodeIdTest extends TestCase {
 	 */
 	public void testCheckId() {
 
-		NavigationNodeId nodeId = new NavigationNodeId("1", "2");
+		final NavigationNodeId nodeId = new NavigationNodeId("1", "2");
 		boolean result = ReflectionUtils.invokeHidden(nodeId, "checkId", "");
 		assertTrue(result);
 		result = ReflectionUtils.invokeHidden(nodeId, "checkId", "4711");
@@ -65,18 +65,18 @@ public class NavigationNodeIdTest extends TestCase {
 		nodeId2 = new NavigationNodeId("1", "2");
 		assertFalse(nodeId.equals(nodeId2));
 
-		MyNavigationNodeId nodeId3 = new MyNavigationNodeId("1");
+		final MyNavigationNodeId nodeId3 = new MyNavigationNodeId("1");
 		assertFalse(nodeId.equals(nodeId3));
 		assertTrue(nodeId3.equals(nodeId3));
 
-		MyNavigationNodeId nodeId4 = new MyNavigationNodeId("1");
+		final MyNavigationNodeId nodeId4 = new MyNavigationNodeId("1");
 		assertTrue(nodeId3.equals(nodeId4));
 
 	}
 
 	private class MyNavigationNodeId extends NavigationNodeId {
 
-		public MyNavigationNodeId(String typeId) {
+		public MyNavigationNodeId(final String typeId) {
 			super(typeId);
 		}
 

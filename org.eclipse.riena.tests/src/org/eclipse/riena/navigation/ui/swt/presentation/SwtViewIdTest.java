@@ -24,7 +24,7 @@ public class SwtViewIdTest extends RienaTestCase {
 	 */
 	public void testSwtViewIdStringString() {
 
-		SwtViewId viewId = new SwtViewId("a", "b");
+		final SwtViewId viewId = new SwtViewId("a", "b");
 		assertEquals("a", viewId.getId());
 		assertEquals("b", viewId.getSecondary());
 
@@ -35,28 +35,28 @@ public class SwtViewIdTest extends RienaTestCase {
 	 */
 	public void testSwtViewIdString() {
 
-		SwtViewId viewId = new SwtViewId("a:b");
+		final SwtViewId viewId = new SwtViewId("a:b");
 		assertEquals("a", viewId.getId());
 		assertEquals("b", viewId.getSecondary());
 
 		try {
 			new SwtViewId(null);
 			fail("Exception expected");
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			ok("Exception expected");
 		}
 
 		try {
 			new SwtViewId("ab");
 			fail("Exception expected");
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			ok("Exception expected");
 		}
 
 		try {
 			new SwtViewId(null);
 			fail("Exception expected");
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			ok("Exception expected");
 		}
 
@@ -67,7 +67,7 @@ public class SwtViewIdTest extends RienaTestCase {
 	 */
 	public void testGetCompoundId() {
 
-		SwtViewId viewId = new SwtViewId("a", "b");
+		final SwtViewId viewId = new SwtViewId("a", "b");
 		assertEquals("a:b", viewId.getCompoundId());
 
 	}

@@ -19,7 +19,7 @@ import org.eclipse.riena.ui.swt.ChoiceComposite;
  */
 public final class MultipleChoiceCondition implements IMappingCondition {
 
-	public boolean isMatch(Object widget) {
+	public boolean isMatch(final Object widget) {
 		boolean result = false;
 		if (widget instanceof ChoiceComposite) {
 			result = ((ChoiceComposite) widget).isMultipleSelection();

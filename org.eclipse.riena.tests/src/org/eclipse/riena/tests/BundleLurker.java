@@ -37,11 +37,11 @@ public class BundleLurker {
 	 * @param bundleName
 	 *            symbolic bundle name
 	 */
-	public BundleLurker(String bundleName) {
+	public BundleLurker(final String bundleName) {
 		this.bundleName = bundleName;
 		Activator.getDefault().getBundle().getBundleContext().addBundleListener(new StartedListener());
-		Bundle[] bundles = Activator.getDefault().getBundle().getBundleContext().getBundles();
-		for (Bundle bundle : bundles) {
+		final Bundle[] bundles = Activator.getDefault().getBundle().getBundleContext().getBundles();
+		for (final Bundle bundle : bundles) {
 			if (bundle.getSymbolicName().equals(bundleName) && bundle.getState() == Bundle.ACTIVE) {
 				latch.countDown();
 				return;
@@ -60,10 +60,10 @@ public class BundleLurker {
 	 * @return true everything ok; otherwise false (e.g. timeout,
 	 *         InterruptedException)
 	 */
-	public boolean awaitActive(long timeout, TimeUnit unit) {
+	public boolean awaitActive(final long timeout, final TimeUnit unit) {
 		try {
 			return latch.await(timeout, unit);
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			return false;
 		}
 	}
@@ -77,14 +77,14 @@ public class BundleLurker {
 		try {
 			latch.await();
 			return true;
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			return false;
 		}
 	}
 
 	private class StartedListener implements BundleListener {
 
-		public void bundleChanged(BundleEvent event) {
+		public void bundleChanged(final BundleEvent event) {
 			if (event.getBundle().getSymbolicName().equals(bundleName) && event.getType() == BundleEvent.STARTED) {
 				Activator.getDefault().getBundle().getBundleContext().removeBundleListener(this);
 				latch.countDown();

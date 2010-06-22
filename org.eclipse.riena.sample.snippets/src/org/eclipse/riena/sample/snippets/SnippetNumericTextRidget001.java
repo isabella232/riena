@@ -34,36 +34,36 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public final class SnippetNumericTextRidget001 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = new Shell();
+			final Shell shell = new Shell();
 			shell.setText(SnippetNumericTextRidget001.class.getSimpleName());
 			shell.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
 			UIControlsFactory.createLabel(shell, "###,###:"); //$NON-NLS-1$
-			Text txtInput = UIControlsFactory.createTextNumeric(shell);
+			final Text txtInput = UIControlsFactory.createTextNumeric(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtInput);
 
 			UIControlsFactory.createLabel(shell, "Output:"); //$NON-NLS-1$
-			Text txtOutput = UIControlsFactory.createText(shell);
+			final Text txtOutput = UIControlsFactory.createText(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtOutput);
 
-			INumericTextRidget rInput = (INumericTextRidget) SwtRidgetFactory.createRidget(txtInput);
+			final INumericTextRidget rInput = (INumericTextRidget) SwtRidgetFactory.createRidget(txtInput);
 			rInput.setDirectWriting(true);
 			rInput.setMaxLength(6);
 
-			ITextRidget rOutput = (ITextRidget) SwtRidgetFactory.createRidget(txtOutput);
+			final ITextRidget rOutput = (ITextRidget) SwtRidgetFactory.createRidget(txtOutput);
 			rOutput.setOutputOnly(true);
 
-			DataBindingContext dbc = new DataBindingContext();
+			final DataBindingContext dbc = new DataBindingContext();
 			dbc.bindValue(BeansObservables.observeValue(rOutput, ITextRidget.PROPERTY_TEXT),
 					BeansObservables.observeValue(rInput, ITextRidget.PROPERTY_TEXT), null, new UpdateValueStrategy());
 			rInput.bindToModel(new IntegerBean(12345), IntegerBean.PROP_VALUE);
 			rInput.updateFromModel();
 
-			Button b = new Button(shell, SWT.PUSH);
+			final Button b = new Button(shell, SWT.PUSH);
 
 			shell.setSize(300, 200);
 			shell.open();

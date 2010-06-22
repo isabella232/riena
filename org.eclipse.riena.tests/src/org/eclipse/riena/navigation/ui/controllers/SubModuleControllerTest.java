@@ -44,20 +44,20 @@ public class SubModuleControllerTest extends TestCase {
 	 */
 	public void testGetFullTitle() {
 
-		ModuleNode module = new ModuleNode("m");
+		final ModuleNode module = new ModuleNode("m");
 		new ModuleController(module);
 
-		SubModuleNode subModule1 = new SubModuleNode(new NavigationNodeId("sm", "sm1"), "sm1");
+		final SubModuleNode subModule1 = new SubModuleNode(new NavigationNodeId("sm", "sm1"), "sm1");
 		subModule1.setParent(module);
 		module.addChild(subModule1);
-		MySubModuleController smController1 = new MySubModuleController(subModule1);
+		final MySubModuleController smController1 = new MySubModuleController(subModule1);
 		assertEquals("m", smController1.getFullTitle());
 
 		module.setPresentSingleSubModule(true);
 		assertEquals("m - sm1", smController1.getFullTitle());
 
-		SubModuleNode subModule2 = new SubModuleNode(new NavigationNodeId("sm", "sm2"), "sm2");
-		MySubModuleController smController2 = new MySubModuleController(subModule2);
+		final SubModuleNode subModule2 = new SubModuleNode(new NavigationNodeId("sm", "sm2"), "sm2");
+		final MySubModuleController smController2 = new MySubModuleController(subModule2);
 		subModule2.setParent(module);
 		module.addChild(subModule2);
 		assertEquals("m - sm1", smController1.getFullTitle());
@@ -67,8 +67,8 @@ public class SubModuleControllerTest extends TestCase {
 		assertEquals("m - sm1", smController1.getFullTitle());
 		assertEquals("m - sm2", smController2.getFullTitle());
 
-		SubModuleNode subModule3 = new SubModuleNode(new NavigationNodeId("sm", "sm3"), "sm3");
-		MySubModuleController smController3 = new MySubModuleController(subModule3);
+		final SubModuleNode subModule3 = new SubModuleNode(new NavigationNodeId("sm", "sm3"), "sm3");
+		final MySubModuleController smController3 = new MySubModuleController(subModule3);
 		subModule3.setParent(subModule1);
 		subModule1.addChild(subModule3);
 		assertEquals("m - sm1", smController1.getFullTitle());
@@ -82,17 +82,17 @@ public class SubModuleControllerTest extends TestCase {
 	 */
 	public void testUpdateIcon() {
 
-		EmbeddedTitleBarRidget windowRidget = new EmbeddedTitleBarRidget();
+		final EmbeddedTitleBarRidget windowRidget = new EmbeddedTitleBarRidget();
 
-		ModuleNode module = new ModuleNode("m");
+		final ModuleNode module = new ModuleNode("m");
 		module.setIcon("mIcon");
 		new ModuleController(module);
 
-		SubModuleNode subModule1 = new SubModuleNode(new NavigationNodeId("sm", "sm1"), "sm1");
+		final SubModuleNode subModule1 = new SubModuleNode(new NavigationNodeId("sm", "sm1"), "sm1");
 		subModule1.setIcon("sm1Icon");
 		subModule1.setParent(module);
 		module.addChild(subModule1);
-		MySubModuleController smController1 = new MySubModuleController(subModule1);
+		final MySubModuleController smController1 = new MySubModuleController(subModule1);
 		smController1.updateIcon(windowRidget);
 		assertEquals("mIcon", windowRidget.getIcon());
 
@@ -101,9 +101,9 @@ public class SubModuleControllerTest extends TestCase {
 		smController1.updateIcon(windowRidget);
 		assertEquals("sm1Icon", windowRidget.getIcon());
 
-		SubModuleNode subModule2 = new SubModuleNode(new NavigationNodeId("sm", "sm2"), "sm2");
+		final SubModuleNode subModule2 = new SubModuleNode(new NavigationNodeId("sm", "sm2"), "sm2");
 		subModule2.setIcon("sm2Icon");
-		MySubModuleController smController2 = new MySubModuleController(subModule2);
+		final MySubModuleController smController2 = new MySubModuleController(subModule2);
 		subModule2.setParent(module);
 		module.addChild(subModule2);
 		smController1.updateIcon(windowRidget);
@@ -118,12 +118,12 @@ public class SubModuleControllerTest extends TestCase {
 	 */
 	public void testIsInvisibleInTree() {
 
-		SubModuleNode subModule1 = new SubModuleNode(new NavigationNodeId("sm", "sm1"), "sm1");
-		SubModuleController smController1 = new SubModuleController(subModule1);
+		final SubModuleNode subModule1 = new SubModuleNode(new NavigationNodeId("sm", "sm1"), "sm1");
+		final SubModuleController smController1 = new SubModuleController(subModule1);
 		boolean ret = ReflectionUtils.invokeHidden(smController1, "isInvisibleInTree");
 		assertFalse(ret);
 
-		ModuleNode module = new ModuleNode("m");
+		final ModuleNode module = new ModuleNode("m");
 		new ModuleController(module);
 		subModule1.setParent(module);
 		module.addChild(subModule1);
@@ -135,9 +135,9 @@ public class SubModuleControllerTest extends TestCase {
 		assertFalse(ret);
 
 		module.setPresentSingleSubModule(false);
-		SubModuleNode subModule2 = new SubModuleNode(new NavigationNodeId("sm", "sm2"), "sm2");
+		final SubModuleNode subModule2 = new SubModuleNode(new NavigationNodeId("sm", "sm2"), "sm2");
 		subModule2.setIcon("sm2Icon");
-		SubModuleController smController2 = new SubModuleController(subModule2);
+		final SubModuleController smController2 = new SubModuleController(subModule2);
 		subModule2.setParent(module);
 		module.addChild(subModule2);
 		ret = ReflectionUtils.invokeHidden(smController1, "isInvisibleInTree");
@@ -149,37 +149,37 @@ public class SubModuleControllerTest extends TestCase {
 
 	public void testUpdateAllRidgetsFromModel() {
 
-		Display display = Display.getDefault();
-		Shell shell = new Shell(display);
+		final Display display = Display.getDefault();
+		final Shell shell = new Shell(display);
 		shell.pack();
 		shell.setVisible(true);
 
-		Realm realm = SWTObservables.getRealm(display);
+		final Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 
-		SubModuleNode node = new SubModuleNode();
+		final SubModuleNode node = new SubModuleNode();
 		node.setNavigationProcessor(new NavigationProcessor());
-		SubModuleController controller = new SubModuleController(node);
+		final SubModuleController controller = new SubModuleController(node);
 
-		LabelRidget labelRidget = new LabelRidget();
+		final LabelRidget labelRidget = new LabelRidget();
 		controller.addRidget("label", labelRidget);
 		assertNotNull(controller.getRidgets());
 		assertEquals(1, controller.getRidgets().size());
 
-		ComboRidget comboRidget = new ComboRidget();
+		final ComboRidget comboRidget = new ComboRidget();
 		controller.addRidget("combo ridget", comboRidget);
 		assertNotNull(controller.getRidgets());
 		assertEquals(2, controller.getRidgets().size());
 
 		if (RienaStatus.isDevelopment()) {
-			PrintStream beforeErr = System.err;
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			PrintStream err = new PrintStream(baos);
+			final PrintStream beforeErr = System.err;
+			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			final PrintStream err = new PrintStream(baos);
 			System.setErr(err);
 			controller.updateAllRidgetsFromModel();
 			System.setErr(beforeErr);
-			String string = baos.toString();
+			final String string = baos.toString();
 			assertEquals(String.format("Expected 'unsucessful' in '%s'", string), true, string.contains("unsuccessful"));
 			assertEquals(String.format("Expected 'ridget' in '%s'", string), true, string.contains("ridget"));
 		}
@@ -191,7 +191,7 @@ public class SubModuleControllerTest extends TestCase {
 	 */
 	private static class MySubModuleController extends SubModuleController {
 
-		public MySubModuleController(ISubModuleNode navigationNode) {
+		public MySubModuleController(final ISubModuleNode navigationNode) {
 			super(navigationNode);
 		}
 
@@ -201,7 +201,7 @@ public class SubModuleControllerTest extends TestCase {
 		}
 
 		@Override
-		public void updateIcon(IWindowRidget windowRidget) {
+		public void updateIcon(final IWindowRidget windowRidget) {
 			super.updateIcon(windowRidget);
 		}
 

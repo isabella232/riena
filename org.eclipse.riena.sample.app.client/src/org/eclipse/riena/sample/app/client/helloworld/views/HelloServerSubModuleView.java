@@ -30,41 +30,41 @@ public class HelloServerSubModuleView extends SubModuleView {
 	public final static String ID = HelloServerSubModuleView.class.getName();
 
 	@Override
-	public void basicCreatePartControl(Composite parent) {
+	public void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		FormLayout layout = new FormLayout();
+		final FormLayout layout = new FormLayout();
 		parent.setLayout(layout);
 
-		Button messageButton = new Button(parent, SWT.PUSH);
+		final Button messageButton = new Button(parent, SWT.PUSH);
 		messageButton.setText("Get Message"); //$NON-NLS-1$
 		addUIControl(messageButton, "actionFacade"); //$NON-NLS-1$
 
-		Text messageText = new Text(parent, SWT.NONE);
+		final Text messageText = new Text(parent, SWT.NONE);
 		messageText.setBackground(new Color(parent.getDisplay(), new RGB(135, 206, 235)));
 		addUIControl(messageText, "textFacade"); //$NON-NLS-1$
 
-		Label info = new Label(parent, SWT.None);
+		final Label info = new Label(parent, SWT.None);
 		info.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 		info.setEnabled(false);
 		info.setText("This sample demonstrates usage of riena communication in a view."); //$NON-NLS-1$
 		info.setSize(300, 200);
 
 		// layout
-		FormData data1 = new FormData();
+		final FormData data1 = new FormData();
 		data1.height = 20;
 		data1.width = 90;
 		data1.top = new FormAttachment(0, 25);
 		data1.left = new FormAttachment(0, 5);
 		messageButton.setLayoutData(data1);
 
-		FormData data2 = new FormData();
+		final FormData data2 = new FormData();
 		data2.height = 20;
 		data2.width = 215;
 		data2.top = new FormAttachment(0, 25);
 		data2.left = new FormAttachment(messageButton, 5);
 		messageText.setLayoutData(data2);
 
-		FormData data3 = new FormData();
+		final FormData data3 = new FormData();
 		data3.height = 20;
 		data3.width = 400;
 		data3.top = new FormAttachment(messageButton, 25);
@@ -78,7 +78,7 @@ public class HelloServerSubModuleView extends SubModuleView {
 	}
 
 	@Override
-	protected HelloServerSubModuleController createController(ISubModuleNode subModuleNode) {
+	protected HelloServerSubModuleController createController(final ISubModuleNode subModuleNode) {
 		return new HelloServerSubModuleController(subModuleNode);
 	}
 

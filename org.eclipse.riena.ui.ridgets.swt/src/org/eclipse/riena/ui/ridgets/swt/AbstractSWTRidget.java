@@ -32,7 +32,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	 * sub-module view.
 	 */
 	private static final String IS_SUB_MODULE_VIEW_COMPOSITE = "isSubModuleViewComposite"; //$NON-NLS-1$
-	private FocusManager focusManager = new FocusManager();
+	private final FocusManager focusManager = new FocusManager();
 	private boolean focusable;
 
 	/**
@@ -45,10 +45,10 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	 * @throws BindingException
 	 *             if the uiControl is not of the given type
 	 */
-	public static void assertType(Object uiControl, Class<?> type) {
+	public static void assertType(final Object uiControl, final Class<?> type) {
 		if ((uiControl != null) && !(type.isAssignableFrom(uiControl.getClass()))) {
-			String expectedClassName = type.getSimpleName();
-			String controlClassName = uiControl.getClass().getSimpleName();
+			final String expectedClassName = type.getSimpleName();
+			final String controlClassName = uiControl.getClass().getSimpleName();
 			throw new BindingException("uiControl of  must be a " + expectedClassName + " but was a " //$NON-NLS-1$ //$NON-NLS-2$
 					+ controlClassName);
 		}
@@ -67,7 +67,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	public final void requestFocus() {
 		if (isFocusable()) {
 			if (getUIControl() != null) {
-				Control control = getUIControl();
+				final Control control = getUIControl();
 				control.setFocus();
 			}
 		}
@@ -76,7 +76,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	@Override
 	public final boolean hasFocus() {
 		if (getUIControl() != null) {
-			Control control = getUIControl();
+			final Control control = getUIControl();
 			return control.isFocusControl();
 		}
 		return false;
@@ -88,7 +88,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	}
 
 	@Override
-	public final void setFocusable(boolean focusable) {
+	public final void setFocusable(final boolean focusable) {
 		if (this.focusable != focusable) {
 			this.focusable = focusable;
 		}
@@ -121,7 +121,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	 * @return {@code true} if control is composite of a sub-module; otherwise
 	 *         {@code false}
 	 */
-	private boolean isSubModuleViewComposite(Control uiControl) {
+	private boolean isSubModuleViewComposite(final Control uiControl) {
 
 		if (!(uiControl instanceof Composite)) {
 			return false;
@@ -145,10 +145,10 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	 * @return {@code true} if control is child of a sub-module; otherwise
 	 *         {@code false}
 	 */
-	private boolean isChildOfSubModuleView(Control uiControl) {
+	private boolean isChildOfSubModuleView(final Control uiControl) {
 
 		if (uiControl.getVisible()) {
-			Composite parent = uiControl.getParent();
+			final Composite parent = uiControl.getParent();
 			if (parent == null) {
 				return false;
 			}
@@ -173,10 +173,10 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	 *            UI control
 	 * @return {@code true} if control is visible; otherwise {@code false}
 	 */
-	private boolean isControlVisible(Control uiControl) {
+	private boolean isControlVisible(final Control uiControl) {
 
 		if (uiControl.getVisible()) {
-			Composite parent = uiControl.getParent();
+			final Composite parent = uiControl.getParent();
 			if (parent == null) {
 				return true;
 			}
@@ -260,17 +260,17 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 
 		private boolean clickToFocus;
 
-		public void focusGained(FocusEvent e) {
+		public void focusGained(final FocusEvent e) {
 			if (isFocusable()) {
 				fireFocusGained(new org.eclipse.riena.ui.ridgets.listener.FocusEvent(null, AbstractSWTRidget.this));
 			} else {
-				Control control = (Control) e.widget;
-				Composite parent = control.getParent();
+				final Control control = (Control) e.widget;
+				final Composite parent = control.getParent();
 				Control target = findFocusTarget(control, parent.getTabList());
 				if (target != null) {
 					target.setFocus();
 				} else { // no suitable control found, try one level up
-					Composite pParent = parent.getParent();
+					final Composite pParent = parent.getParent();
 					if (pParent != null) {
 						target = findFocusTarget(parent, pParent.getTabList());
 						if (target != null) {
@@ -281,7 +281,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 			}
 		}
 
-		public void focusLost(FocusEvent e) {
+		public void focusLost(final FocusEvent e) {
 			if (isFocusable()) {
 				clickToFocus = false;
 				fireFocusLost(new org.eclipse.riena.ui.ridgets.listener.FocusEvent(AbstractSWTRidget.this, null));
@@ -289,7 +289,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 		}
 
 		@Override
-		public void mouseDown(MouseEvent e) {
+		public void mouseDown(final MouseEvent e) {
 			if (focusable && isOutputOnly()) {
 				clickToFocus = true;
 				((Control) e.widget).setFocus();
@@ -300,7 +300,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 			return (focusable && !isOutputOnly()) || clickToFocus;
 		}
 
-		private Control findFocusTarget(Control control, Control[] controls) {
+		private Control findFocusTarget(final Control control, final Control[] controls) {
 			int myIndex = -1;
 			// find index for control
 			for (int i = 0; myIndex == -1 && i < controls.length; i++) {
@@ -311,14 +311,14 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 			// find next possible control
 			int result = -1;
 			for (int i = myIndex + 1; result == -1 && i < controls.length; i++) {
-				Control candidate = controls[i];
+				final Control candidate = controls[i];
 				if (canGetFocus(candidate)) {
 					result = i;
 				}
 			}
 			// find previous possible control
 			for (int i = 0; result == -1 && i < myIndex; i++) {
-				Control candidate = controls[i];
+				final Control candidate = controls[i];
 				if (canGetFocus(candidate)) {
 					result = i;
 				}
@@ -331,10 +331,10 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 		 * 
 		 * @param control
 		 *            UI control
-		 * @return {@code true} if control can get the focus; otherwise {@code
-		 *         false}.
+		 * @return {@code true} if control can get the focus; otherwise
+		 *         {@code false}.
 		 */
-		private boolean canGetFocus(Control control) {
+		private boolean canGetFocus(final Control control) {
 
 			if (!control.isEnabled()) {
 				return false;

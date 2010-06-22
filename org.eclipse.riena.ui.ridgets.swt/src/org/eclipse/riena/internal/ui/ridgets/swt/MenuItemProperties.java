@@ -14,17 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * This class stores the properties of a menu item ridget.
  */
 public class MenuItemProperties extends AbstractItemProperties {
 
-	private Menu parent;
+	private final Menu parent;
 	private List<String> prevSiblingIds;
 
 	/**
@@ -34,11 +35,11 @@ public class MenuItemProperties extends AbstractItemProperties {
 	 * @param ridget
 	 *            menu ridget
 	 */
-	public MenuItemProperties(MenuItemRidget ridget) {
+	public MenuItemProperties(final MenuItemRidget ridget) {
 
 		super(ridget);
 
-		MenuItem item = ridget.getUIControl();
+		final MenuItem item = ridget.getUIControl();
 		parent = item.getParent();
 		storePreviousSiblings(item);
 	}
@@ -49,9 +50,9 @@ public class MenuItemProperties extends AbstractItemProperties {
 	 * @param item
 	 *            item of tool bar
 	 */
-	private void storePreviousSiblings(MenuItem item) {
-		int index = parent.indexOf(item);
-		Item[] siblings = parent.getItems();
+	private void storePreviousSiblings(final MenuItem item) {
+		final int index = parent.indexOf(item);
+		final Item[] siblings = parent.getItems();
 		prevSiblingIds = new ArrayList<String>();
 		for (int i = 0; i < index; i++) {
 			prevSiblingIds.add(SWTBindingPropertyLocator.getInstance().locateBindingProperty(siblings[i]));
@@ -68,9 +69,9 @@ public class MenuItemProperties extends AbstractItemProperties {
 
 		int index = 0;
 
-		Item[] siblings = parent.getItems();
-		for (int i = 0; i < siblings.length; i++) {
-			String id = SWTBindingPropertyLocator.getInstance().locateBindingProperty(siblings[i]);
+		final Item[] siblings = parent.getItems();
+		for (final Item sibling : siblings) {
+			final String id = SWTBindingPropertyLocator.getInstance().locateBindingProperty(sibling);
 			if (prevSiblingIds.contains(id)) {
 				index++;
 			}
@@ -97,8 +98,8 @@ public class MenuItemProperties extends AbstractItemProperties {
 	 *            parent menu
 	 * @return menu item
 	 */
-	protected MenuItem createItem(Menu parent) {
-		IContributionItem contributionItem = getContributionItem();
+	protected MenuItem createItem(final Menu parent) {
+		final IContributionItem contributionItem = getContributionItem();
 		MenuItem menuItem;
 		if (contributionItem != null) {
 			contributionItem.fill(parent, getIndex());

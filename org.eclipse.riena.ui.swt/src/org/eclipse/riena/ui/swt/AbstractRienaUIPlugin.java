@@ -47,7 +47,7 @@ public abstract class AbstractRienaUIPlugin extends AbstractUIPlugin implements 
 	 * @return the logger
 	 */
 	@Deprecated
-	public Logger getLogger(String name) {
+	public Logger getLogger(final String name) {
 		return Log4r.getLogger(this, name);
 	}
 
@@ -61,7 +61,7 @@ public abstract class AbstractRienaUIPlugin extends AbstractUIPlugin implements 
 	 * @return the logger
 	 */
 	@Deprecated
-	public Logger getLogger(Class<?> clazz) {
+	public Logger getLogger(final Class<?> clazz) {
 		return Log4r.getLogger(this, clazz);
 	}
 

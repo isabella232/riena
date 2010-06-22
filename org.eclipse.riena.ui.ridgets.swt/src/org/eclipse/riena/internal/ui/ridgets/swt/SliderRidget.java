@@ -114,7 +114,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	}
 
 	@Override
-	public void checkUIControl(Object uiControl) {
+	public void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, Slider.class);
 	}
 
@@ -127,17 +127,17 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 		return (Slider) super.getUIControl();
 	}
 
-	public void setThumb(int thumb) {
+	public void setThumb(final int thumb) {
 		checkThumb(thumb);
 
-		Object oldValue = this.thumb;
+		final Object oldValue = this.thumb;
 		this.thumb = thumb;
 		updateUIThumb();
 		firePropertyChange(ISliderRidget.PROPERTY_THUMB, oldValue, this.thumb);
 	}
 
 	@Override
-	protected void addSelectionListener(Control control, SelectionListener listener) {
+	protected void addSelectionListener(final Control control, final SelectionListener listener) {
 		((Slider) control).addSelectionListener(listener);
 	}
 
@@ -151,7 +151,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 *             if the given maximum is not a valid value.
 	 */
 	@Override
-	protected void checkMaximum(int maximum) {
+	protected void checkMaximum(final int maximum) {
 		if (!initialized) {
 			return;
 		}
@@ -173,7 +173,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 *             if the given minimum is not a valid value.
 	 */
 	@Override
-	protected void checkMinimum(int minimum) {
+	protected void checkMinimum(final int minimum) {
 		if (!initialized) {
 			return;
 		}
@@ -195,7 +195,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 * @throws IllegalArgumentException
 	 *             if the given thumb is not a valid value.
 	 */
-	protected void checkThumb(int thumb) {
+	protected void checkThumb(final int thumb) {
 		if (thumb <= 0) {
 			new Message(Message.THUMB_LE_ZERO, thumb).push();
 		}
@@ -205,13 +205,13 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	}
 
 	@Override
-	protected int getValue(Control control) {
+	protected int getValue(final Control control) {
 		return getUIControl() != null ? getUIControl().getSelection() : 0;
 	}
 
 	@Override
 	protected void initAdditionalsFromUIControl() {
-		Slider slider = getUIControl();
+		final Slider slider = getUIControl();
 		if (slider != null) {
 			if (getThumb() == Integer.MIN_VALUE) {
 				setThumb(slider.getThumb());
@@ -257,14 +257,14 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 * @return an adjusted maximum
 	 */
 	@Override
-	protected int preSetMaximum(int maximum) {
+	protected int preSetMaximum(final int maximum) {
 		if (!initialized) {
 			return maximum;
 		}
 		if (calcInternalMaximum(maximum) < getValue()) {
 			setValue(calcInternalMaximum(maximum));
 		}
-		int deltaMaxMin = calcInternalMaximum(maximum) - getMinimum();
+		final int deltaMaxMin = calcInternalMaximum(maximum) - getMinimum();
 		if (deltaMaxMin < getIncrement()) {
 			setIncrement(deltaMaxMin);
 		}
@@ -287,14 +287,14 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 * @return an adjusted minimum
 	 */
 	@Override
-	protected int preSetMinimum(int minimum) {
+	protected int preSetMinimum(final int minimum) {
 		if (!initialized) {
 			return minimum;
 		}
 		if (getValue() < minimum) {
 			setValue(minimum);
 		}
-		int deltaMaxMin = calcInternalMaximum() - minimum;
+		final int deltaMaxMin = calcInternalMaximum() - minimum;
 		if (deltaMaxMin < getIncrement()) {
 			setIncrement(deltaMaxMin);
 		}
@@ -356,7 +356,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	}
 
 	@Override
-	protected void removeSelectionListener(Control control, SelectionListener listener) {
+	protected void removeSelectionListener(final Control control, final SelectionListener listener) {
 		((Slider) control).removeSelectionListener(listener);
 	}
 
@@ -375,7 +375,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 
 	@Override
 	protected void updateUIIncrement() {
-		Slider control = getUIControl();
+		final Slider control = getUIControl();
 		if (control != null) {
 			control.setIncrement(getIncrement());
 		}
@@ -383,7 +383,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 
 	@Override
 	protected void updateUIMaximum() {
-		Slider control = getUIControl();
+		final Slider control = getUIControl();
 		if (control != null) {
 			control.setMaximum(getMaximum());
 		}
@@ -391,7 +391,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 
 	@Override
 	protected void updateUIMinimum() {
-		Slider control = getUIControl();
+		final Slider control = getUIControl();
 		if (control != null) {
 			control.setMinimum(getMinimum());
 		}
@@ -399,14 +399,14 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 
 	@Override
 	protected void updateUIPageIncrement() {
-		Slider control = getUIControl();
+		final Slider control = getUIControl();
 		if (control != null) {
 			control.setPageIncrement(getPageIncrement());
 		}
 	}
 
 	protected void updateUIThumb() {
-		Slider control = getUIControl();
+		final Slider control = getUIControl();
 		if (control != null) {
 			control.setThumb(getThumb());
 		}
@@ -414,7 +414,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 
 	@Override
 	protected void updateUIValue() {
-		Slider control = getUIControl();
+		final Slider control = getUIControl();
 		if (control != null) {
 			control.setSelection(getValue());
 		}
@@ -438,7 +438,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 	 * @param maximum
 	 * @return maximum - thumb
 	 */
-	private int calcInternalMaximum(int maximum) {
+	private int calcInternalMaximum(final int maximum) {
 		return maximum - getThumb();
 	}
 
@@ -453,7 +453,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 		 * @param msgConstant
 		 * @param attributes
 		 */
-		public Message(String msgConstant, Object... attributes) {
+		public Message(final String msgConstant, final Object... attributes) {
 			super(msgConstant, attributes);
 		}
 

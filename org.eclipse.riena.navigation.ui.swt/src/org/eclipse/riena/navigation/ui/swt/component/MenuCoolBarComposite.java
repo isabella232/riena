@@ -51,7 +51,7 @@ public class MenuCoolBarComposite extends Composite {
 	 * @param style
 	 *            the style of widget to construct
 	 */
-	public MenuCoolBarComposite(Composite parent, int style) {
+	public MenuCoolBarComposite(final Composite parent, final int style) {
 		super(parent, style);
 		create();
 	}
@@ -61,18 +61,18 @@ public class MenuCoolBarComposite extends Composite {
 	 * 
 	 * @param menuManager
 	 */
-	public ToolItem createAndAddMenu(MenuManager menuManager) {
-		ToolItem toolItem = new ToolItem(toolBar, SWT.CHECK);
+	public ToolItem createAndAddMenu(final MenuManager menuManager) {
+		final ToolItem toolItem = new ToolItem(toolBar, SWT.CHECK);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(toolItem, menuManager.getId());
 		toolItem.setText(menuManager.getMenuText());
-		MenuManagerHelper helper = new MenuManagerHelper();
+		final MenuManagerHelper helper = new MenuManagerHelper();
 		helper.createMenu(toolBar, toolItem, menuManager);
 		calcSize(coolItem);
 		return toolItem;
 	}
 
 	public List<ToolItem> getTopLevelItems() {
-		ToolItem[] toolItems = toolBar.getItems();
+		final ToolItem[] toolItems = toolBar.getItems();
 		return Arrays.asList(toolItems);
 	}
 
@@ -85,8 +85,8 @@ public class MenuCoolBarComposite extends Composite {
 	 * @param item
 	 *            item of cool bar
 	 */
-	private void calcSize(CoolItem item) {
-		Control control = item.getControl();
+	private void calcSize(final CoolItem item) {
+		final Control control = item.getControl();
 		Point pt = control.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 		pt = item.computeSize(pt.x, pt.y);
 		item.setSize(pt);
@@ -97,7 +97,7 @@ public class MenuCoolBarComposite extends Composite {
 	 * sub-application.
 	 */
 	private void create() {
-		CoolBar coolBar = new CoolBar(this, SWT.FLAT);
+		final CoolBar coolBar = new CoolBar(this, SWT.FLAT);
 		coolItem = CoolbarUtils.initCoolBar(coolBar, getMenuBarFont());
 
 		toolBar = (ToolBar) coolItem.getControl();
@@ -118,19 +118,19 @@ public class MenuCoolBarComposite extends Composite {
 	 * <i>Does not work, if menu is visible.</i>
 	 */
 	private static final class ToolBarMouseListener implements MouseMoveListener {
-		public void mouseMove(MouseEvent e) {
+		public void mouseMove(final MouseEvent e) {
 			if (e.getSource() instanceof ToolBar) {
-				ToolBar toolBar = (ToolBar) e.getSource();
+				final ToolBar toolBar = (ToolBar) e.getSource();
 
 				ToolItem selectedItem = null;
-				ToolItem[] items = toolBar.getItems();
-				for (int i = 0; i < items.length; i++) {
-					if (items[i].getSelection()) {
-						selectedItem = items[i];
+				final ToolItem[] items = toolBar.getItems();
+				for (final ToolItem item : items) {
+					if (item.getSelection()) {
+						selectedItem = item;
 					}
 				}
 
-				ToolItem hoverItem = toolBar.getItem(new Point(e.x, e.y));
+				final ToolItem hoverItem = toolBar.getItem(new Point(e.x, e.y));
 				if (hoverItem != null) {
 					if (!hoverItem.getSelection() && (selectedItem != null)) {
 						selectedItem.setSelection(false);

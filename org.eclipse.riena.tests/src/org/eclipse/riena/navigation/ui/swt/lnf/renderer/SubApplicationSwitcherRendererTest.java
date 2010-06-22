@@ -50,21 +50,21 @@ public class SubApplicationSwitcherRendererTest extends TestCase {
 	 */
 	public void testGetVisibleItems() {
 
-		SubApplicationSwitcherRenderer renderer = new SubApplicationSwitcherRenderer();
+		final SubApplicationSwitcherRenderer renderer = new SubApplicationSwitcherRenderer();
 		List<SubApplicationItem> visibleItems = ReflectionUtils.invokeHidden(renderer, "getVisibleItems",
 				new Object[] {});
 		assertTrue(visibleItems.isEmpty());
 
-		SubApplicationNode node1 = new SubApplicationNode();
+		final SubApplicationNode node1 = new SubApplicationNode();
 		node1.setNavigationProcessor(new NavigationProcessor());
-		SubApplicationItem item1 = new SubApplicationItem(shell, node1);
-		SubApplicationNode node2 = new SubApplicationNode();
+		final SubApplicationItem item1 = new SubApplicationItem(shell, node1);
+		final SubApplicationNode node2 = new SubApplicationNode();
 		node2.setNavigationProcessor(new NavigationProcessor());
-		SubApplicationItem item2 = new SubApplicationItem(shell, node2);
-		SubApplicationNode node3 = new SubApplicationNode();
+		final SubApplicationItem item2 = new SubApplicationItem(shell, node2);
+		final SubApplicationNode node3 = new SubApplicationNode();
 		node3.setNavigationProcessor(new NavigationProcessor());
-		SubApplicationItem item3 = new SubApplicationItem(shell, node3);
-		List<SubApplicationItem> items = new ArrayList<SubApplicationItem>(3);
+		final SubApplicationItem item3 = new SubApplicationItem(shell, node3);
+		final List<SubApplicationItem> items = new ArrayList<SubApplicationItem>(3);
 		items.add(item1);
 		items.add(item2);
 		items.add(item3);
@@ -93,8 +93,8 @@ public class SubApplicationSwitcherRendererTest extends TestCase {
 	 */
 	public void testGetItems() {
 
-		SubApplicationSwitcherRenderer renderer = new SubApplicationSwitcherRenderer();
-		List<SubApplicationItem> items = ReflectionUtils.invokeHidden(renderer, "getItems", new Object[] {});
+		final SubApplicationSwitcherRenderer renderer = new SubApplicationSwitcherRenderer();
+		final List<SubApplicationItem> items = ReflectionUtils.invokeHidden(renderer, "getItems", new Object[] {});
 		assertTrue(items.isEmpty());
 
 		List<SubApplicationItem> items2 = ReflectionUtils.invokeHidden(renderer, "getItems", new Object[] {});
@@ -106,11 +106,11 @@ public class SubApplicationSwitcherRendererTest extends TestCase {
 		assertTrue(items2.isEmpty());
 		assertNotSame(items, items2);
 
-		SubApplicationNode node1 = new SubApplicationNode();
-		SubApplicationItem item1 = new SubApplicationItem(shell, node1);
-		SubApplicationNode node2 = new SubApplicationNode();
-		SubApplicationItem item2 = new SubApplicationItem(shell, node2);
-		List<SubApplicationItem> items3 = new ArrayList<SubApplicationItem>(2);
+		final SubApplicationNode node1 = new SubApplicationNode();
+		final SubApplicationItem item1 = new SubApplicationItem(shell, node1);
+		final SubApplicationNode node2 = new SubApplicationNode();
+		final SubApplicationItem item2 = new SubApplicationItem(shell, node2);
+		final List<SubApplicationItem> items3 = new ArrayList<SubApplicationItem>(2);
 		items3.add(item1);
 		items3.add(item2);
 		renderer.setItems(items3);

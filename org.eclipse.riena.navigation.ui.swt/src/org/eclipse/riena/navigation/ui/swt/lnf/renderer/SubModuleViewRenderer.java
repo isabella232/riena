@@ -35,7 +35,7 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void paint(GC gc, Object value) {
+	public void paint(final GC gc, final Object value) {
 
 		super.paint(gc, value);
 
@@ -60,7 +60,7 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	 *            outer bounds
 	 * @return inner bounds
 	 */
-	public Rectangle computeInnerBounds(Rectangle outerBounds) {
+	public Rectangle computeInnerBounds(final Rectangle outerBounds) {
 
 		return getBorderRenderer().computeInnerBounds(outerBounds);
 
@@ -73,7 +73,7 @@ public class SubModuleViewRenderer extends AbstractLnfRenderer {
 	 *            inner bounds
 	 * @return outer bounds
 	 */
-	public Rectangle computeOuterBounds(Rectangle innerBounds) {
+	public Rectangle computeOuterBounds(final Rectangle innerBounds) {
 
 		return getBorderRenderer().computeOuterBounds(innerBounds);
 

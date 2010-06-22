@@ -28,9 +28,9 @@ import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
  */
 public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
-	private IMessageBoxRidget messageBoxRidget;
+	private final IMessageBoxRidget messageBoxRidget;
 
-	public MessageBoxMessageMarkerViewer(IMessageBoxRidget messageBoxRidget) {
+	public MessageBoxMessageMarkerViewer(final IMessageBoxRidget messageBoxRidget) {
 		this.messageBoxRidget = messageBoxRidget;
 		setVisible(false);
 	}
@@ -39,7 +39,7 @@ public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	 * @see org.eclipse.riena.ui.internal.ridgets.marker.AbstractMessageMarkerViewer#hideMessages(org.eclipse.riena.ui.internal.ridgets.IBasicMarkableRidget)
 	 */
 	@Override
-	protected void hideMessages(IBasicMarkableRidget ridget) {
+	protected void hideMessages(final IBasicMarkableRidget ridget) {
 		// automatically hidden when the message box is closed
 	}
 
@@ -47,9 +47,9 @@ public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	 * @see org.eclipse.riena.ui.internal.ridgets.marker.AbstractMessageMarkerViewer#showMessages(org.eclipse.riena.ui.internal.ridgets.IBasicMarkableRidget)
 	 */
 	@Override
-	protected void showMessages(IBasicMarkableRidget ridget) {
+	protected void showMessages(final IBasicMarkableRidget ridget) {
 		if (isVisible()) {
-			String message = getMessage();
+			final String message = getMessage();
 			if (message.length() > 0) {
 				messageBoxRidget.setText(message);
 				messageBoxRidget.show();
@@ -69,15 +69,15 @@ public class MessageBoxMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	 * @return a complete Message
 	 */
 	private String getMessage() {
-		Collection<IMessageMarker> allMessageMarker = new LinkedHashSet<IMessageMarker>();
+		final Collection<IMessageMarker> allMessageMarker = new LinkedHashSet<IMessageMarker>();
 		IBasicMarkableRidget nextMarkableAdapter = null;
-		Collection<IBasicMarkableRidget> localMarkableAdapter = new HashSet<IBasicMarkableRidget>();
+		final Collection<IBasicMarkableRidget> localMarkableAdapter = new HashSet<IBasicMarkableRidget>();
 		localMarkableAdapter.addAll(getRidgets());
-		for (Iterator<IBasicMarkableRidget> i = localMarkableAdapter.iterator(); i.hasNext();) {
+		for (final Iterator<IBasicMarkableRidget> i = localMarkableAdapter.iterator(); i.hasNext();) {
 			nextMarkableAdapter = i.next();
 			allMessageMarker.addAll(getMessageMarker(nextMarkableAdapter, false));
 		}
-		List<IMessageMarker> sortedMarkers = new ArrayList<IMessageMarker>(allMessageMarker);
+		final List<IMessageMarker> sortedMarkers = new ArrayList<IMessageMarker>(allMessageMarker);
 		Collections.sort(sortedMarkers, new MessageMarkerComparator());
 		return constructMessage(sortedMarkers, getMessageSeparator());
 	}

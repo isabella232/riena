@@ -99,8 +99,8 @@ public class MessageBoxMessageMarkerViewerTest extends TestCase {
 		EasyMock.expect(messageBoxRidget.show()).andReturn(IMessageBoxRidget.OK);
 		EasyMock.replay(messageBoxRidget);
 
-		TextRidget anotherRidget = new TextRidget();
-		String anotherMessage = errorMessage + "2";
+		final TextRidget anotherRidget = new TextRidget();
+		final String anotherMessage = errorMessage + "2";
 		anotherRidget.addMarker(new MessageMarker(anotherMessage));
 		messageMarkerViewer.addRidget(anotherRidget);
 		messageMarkerViewer.setVisible(true);

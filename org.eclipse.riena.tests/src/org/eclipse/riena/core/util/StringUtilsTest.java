@@ -59,7 +59,7 @@ public class StringUtilsTest extends TestCase {
 		assertFalse(StringUtils.equals(null, ""));
 		assertFalse(StringUtils.equals("", null));
 
-		String c = "c";
+		final String c = "c";
 		assertTrue(StringUtils.equals(c, c));
 
 		assertTrue(StringUtils.equals("c", "c"));

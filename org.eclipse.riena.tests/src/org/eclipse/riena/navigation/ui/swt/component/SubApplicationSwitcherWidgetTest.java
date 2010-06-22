@@ -44,7 +44,7 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		shell = new Shell();
-		IApplicationNode node = new ApplicationNode();
+		final IApplicationNode node = new ApplicationNode();
 		switcher = new SubApplicationSwitcherWidget(shell, SWT.NONE, node);
 	}
 
@@ -59,20 +59,20 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 	 */
 	public void testCreate() {
 
-		IApplicationNode node = new ApplicationNode();
-		SubApplicationNode subNode1 = new SubApplicationNode(new NavigationNodeId("sap", "sub1"), "sub1");
+		final IApplicationNode node = new ApplicationNode();
+		final SubApplicationNode subNode1 = new SubApplicationNode(new NavigationNodeId("sap", "sub1"), "sub1");
 		subNode1.setIcon("icon1");
 		List<SubApplicationNodeListener> listeners = ReflectionUtils.invokeHidden(subNode1, "getListeners",
 				(Object[]) null);
 		assertNotNull(listeners);
 		assertTrue(listeners.isEmpty());
 		node.addChild(subNode1);
-		SubApplicationNode subNode2 = new SubApplicationNode(new NavigationNodeId("sap", "sub2"), "sub2");
+		final SubApplicationNode subNode2 = new SubApplicationNode(new NavigationNodeId("sap", "sub2"), "sub2");
 		subNode2.setIcon("icon2");
 		node.addChild(subNode2);
 		switcher = new SubApplicationSwitcherWidget(shell, SWT.NONE, node);
 
-		List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
+		final List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
 		assertNotNull(items);
 		assertEquals(2, items.size());
 		assertEquals("sub1", items.get(0).getLabel());
@@ -98,18 +98,18 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 	 */
 	public void testIsTabEnabled() {
 
-		SubApplicationNode node = new SubApplicationNode();
+		final SubApplicationNode node = new SubApplicationNode();
 		node.setNavigationProcessor(new NavigationProcessor());
-		SubApplicationItem item = new SubApplicationItem(switcher, node);
+		final SubApplicationItem item = new SubApplicationItem(switcher, node);
 		boolean ret = ReflectionUtils.invokeHidden(switcher, "isTabEnabled", new Object[] { item });
 		assertTrue(ret);
 
-		DisabledMarker disabledMarker = new DisabledMarker();
+		final DisabledMarker disabledMarker = new DisabledMarker();
 		node.addMarker(disabledMarker);
 		ret = ReflectionUtils.invokeHidden(switcher, "isTabEnabled", new Object[] { item });
 		assertFalse(ret);
 
-		HiddenMarker hiddenMarker = new HiddenMarker();
+		final HiddenMarker hiddenMarker = new HiddenMarker();
 		node.removeMarker(disabledMarker);
 		node.addMarker(hiddenMarker);
 		ret = ReflectionUtils.invokeHidden(switcher, "isTabEnabled", new Object[] { item });
@@ -126,9 +126,9 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 	 */
 	public void testGetItemPoint() {
 
-		SubApplicationNode node = new SubApplicationNode();
-		SubApplicationItem item = new SubApplicationItem(switcher, node);
-		List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
+		final SubApplicationNode node = new SubApplicationNode();
+		final SubApplicationItem item = new SubApplicationItem(switcher, node);
+		final List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
 
 		Point point = new Point(0, 0);
 		SubApplicationItem retItem = ReflectionUtils.invokeHidden(switcher, "getItem", new Object[] { point });
@@ -144,8 +144,8 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 		assertNotNull(retItem);
 		assertSame(item, retItem);
 
-		SubApplicationNode node2 = new SubApplicationNode();
-		SubApplicationItem item2 = new SubApplicationItem(switcher, node2);
+		final SubApplicationNode node2 = new SubApplicationNode();
+		final SubApplicationItem item2 = new SubApplicationItem(switcher, node2);
 		items.add(item2);
 		item2.setBounds(new Rectangle(20, 20, 10, 10));
 		point = new Point(20, 20);
@@ -164,11 +164,11 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 	 */
 	public void testGetItemChar() {
 
-		SubApplicationNode node1 = new SubApplicationNode("abcd");
+		final SubApplicationNode node1 = new SubApplicationNode("abcd");
 		ReflectionUtils.invokeHidden(switcher, "registerSubApplication", node1);
-		SubApplicationNode node2 = new SubApplicationNode("e&fgh");
+		final SubApplicationNode node2 = new SubApplicationNode("e&fgh");
 		ReflectionUtils.invokeHidden(switcher, "registerSubApplication", node2);
-		SubApplicationNode node3 = new SubApplicationNode("IJ&K&L");
+		final SubApplicationNode node3 = new SubApplicationNode("IJ&K&L");
 		ReflectionUtils.invokeHidden(switcher, "registerSubApplication", node3);
 
 		SubApplicationItem retItem = ReflectionUtils.invokeHidden(switcher, "getItem", new Object[] { 'a' });
@@ -193,15 +193,15 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 
 	public void testDisposeSubApplication() throws Exception {
 
-		IApplicationNode node = new ApplicationNode();
-		SubApplicationNode subNode1 = new SubApplicationNode(new NavigationNodeId("sm", "sub1"), "sub1");
+		final IApplicationNode node = new ApplicationNode();
+		final SubApplicationNode subNode1 = new SubApplicationNode(new NavigationNodeId("sm", "sub1"), "sub1");
 		subNode1.setIcon("icon1");
 		node.addChild(subNode1);
-		SubApplicationNode subNode2 = new SubApplicationNode(new NavigationNodeId("sm", "sub2"), "sub2");
+		final SubApplicationNode subNode2 = new SubApplicationNode(new NavigationNodeId("sm", "sub2"), "sub2");
 		subNode2.setIcon("icon2");
 		node.addChild(subNode2);
 		switcher = new SubApplicationSwitcherWidget(shell, SWT.NONE, node);
-		List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
+		final List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
 
 		subNode1.dispose();
 
@@ -214,15 +214,15 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 
 	public void testRemoveSubApplication() throws Exception {
 
-		IApplicationNode node = new ApplicationNode();
-		SubApplicationNode subNode1 = new SubApplicationNode(new NavigationNodeId("sm", "sub1"), "sub1");
+		final IApplicationNode node = new ApplicationNode();
+		final SubApplicationNode subNode1 = new SubApplicationNode(new NavigationNodeId("sm", "sub1"), "sub1");
 		subNode1.setIcon("icon1");
 		node.addChild(subNode1);
-		SubApplicationNode subNode2 = new SubApplicationNode(new NavigationNodeId("sm", "sub2"), "sub2");
+		final SubApplicationNode subNode2 = new SubApplicationNode(new NavigationNodeId("sm", "sub2"), "sub2");
 		subNode2.setIcon("icon2");
 		node.addChild(subNode2);
 		switcher = new SubApplicationSwitcherWidget(shell, SWT.NONE, node);
-		List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
+		final List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
 
 		node.removeChild(subNode1);
 
@@ -235,17 +235,17 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 
 	public void testAddSubApplication() throws Exception {
 
-		IApplicationNode node = new ApplicationNode();
-		SubApplicationNode subNode1 = new SubApplicationNode(new NavigationNodeId("sm", "sub1"), "sub1");
+		final IApplicationNode node = new ApplicationNode();
+		final SubApplicationNode subNode1 = new SubApplicationNode(new NavigationNodeId("sm", "sub1"), "sub1");
 		subNode1.setIcon("icon1");
 		node.addChild(subNode1);
-		SubApplicationNode subNode2 = new SubApplicationNode(new NavigationNodeId("sm", "sub2"), "sub2");
+		final SubApplicationNode subNode2 = new SubApplicationNode(new NavigationNodeId("sm", "sub2"), "sub2");
 		subNode2.setIcon("icon2");
 		node.addChild(subNode2);
 		switcher = new SubApplicationSwitcherWidget(shell, SWT.NONE, node);
-		List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
+		final List<SubApplicationItem> items = ReflectionUtils.invokeHidden(switcher, "getItems", (Object[]) null);
 
-		SubApplicationNode subNode3 = new SubApplicationNode("sub3");
+		final SubApplicationNode subNode3 = new SubApplicationNode("sub3");
 		subNode2.setIcon("icon3");
 		node.addChild(subNode3);
 

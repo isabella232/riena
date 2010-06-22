@@ -158,6 +158,7 @@ public abstract class SWTFacade {
 	 * 
 	 * @deprecated - RAP now supports display.getCursorControl();
 	 */
+	@Deprecated
 	public abstract Control getCursorControl(Display display);
 
 	/**

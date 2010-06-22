@@ -70,8 +70,8 @@ public class DialogViewTest extends RienaTestCase {
 	}
 
 	private void createDefaultRealm() {
-		Display display = Display.getDefault();
-		Realm realm = SWTObservables.getRealm(display);
+		final Display display = Display.getDefault();
+		final Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 	}
@@ -104,12 +104,12 @@ public class DialogViewTest extends RienaTestCase {
 		/**
 		 * @param parent
 		 */
-		public DialogViewStub(Composite parent) {
+		public DialogViewStub(final Composite parent) {
 			super(parent.getShell());
 		}
 
 		@Override
-		protected Control buildView(Composite parent) {
+		protected Control buildView(final Composite parent) {
 			txtFirstName = UIControlsFactory.createText(parent);
 			addUIControl(txtFirstName, BINDING_ID_FIRSTNAME);
 
@@ -133,7 +133,7 @@ public class DialogViewTest extends RienaTestCase {
 
 	private final class AbstractWindowControllerStub extends AbstractWindowController {
 
-		private Person person;
+		private final Person person;
 
 		private AbstractWindowControllerStub() {
 			person = new Person(VALUE_LASTNAME, VALUE_FIRSTNAME);
@@ -143,11 +143,11 @@ public class DialogViewTest extends RienaTestCase {
 		public void configureRidgets() {
 			super.configureRidgets();
 
-			ITextRidget txtFirstName = (ITextRidget) getRidget(BINDING_ID_FIRSTNAME);
+			final ITextRidget txtFirstName = (ITextRidget) getRidget(BINDING_ID_FIRSTNAME);
 			txtFirstName.bindToModel(person, "firstname");
 			txtFirstName.updateFromModel();
 
-			ITextRidget txtLastName = (ITextRidget) getRidget(BINDING_ID_LASTNAME);
+			final ITextRidget txtLastName = (ITextRidget) getRidget(BINDING_ID_LASTNAME);
 			txtLastName.bindToModel(person, "lastname");
 			txtLastName.updateFromModel();
 		}

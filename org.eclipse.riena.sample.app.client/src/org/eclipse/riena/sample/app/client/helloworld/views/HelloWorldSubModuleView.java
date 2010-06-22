@@ -35,15 +35,15 @@ public class HelloWorldSubModuleView extends SubModuleView {
 	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	public void basicCreatePartControl(Composite parent) {
+	public void basicCreatePartControl(final Composite parent) {
 		final Label helloLabel = new Label(parent, SWT.CENTER);
 
-		FormLayout layout = new FormLayout();
+		final FormLayout layout = new FormLayout();
 		parent.setLayout(layout);
 		addUIControl(helloLabel, "labelRidget"); //$NON-NLS-1$
 
 		// layout
-		FormData data = new FormData();
+		final FormData data = new FormData();
 		data.height = 20;
 		data.width = 90;
 		data.top = new FormAttachment(0, 25);
@@ -52,7 +52,7 @@ public class HelloWorldSubModuleView extends SubModuleView {
 	}
 
 	@Override
-	protected HelloWorldSubModuleController createController(ISubModuleNode subModuleNode) {
+	protected HelloWorldSubModuleController createController(final ISubModuleNode subModuleNode) {
 		return new HelloWorldSubModuleController(subModuleNode);
 	}
 

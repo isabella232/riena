@@ -45,17 +45,17 @@ public class ToolItemPropertiesTest extends TestCase {
 	 */
 	public void testToolItemProperties() {
 
-		ToolItemRidget ridget = new ToolItemRidget();
-		ToolBar toolbar = new ToolBar(shell, SWT.BORDER);
-		ToolItem item = new ToolItem(toolbar, SWT.PUSH);
+		final ToolItemRidget ridget = new ToolItemRidget();
+		final ToolBar toolbar = new ToolBar(shell, SWT.BORDER);
+		final ToolItem item = new ToolItem(toolbar, SWT.PUSH);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, "item1");
 		ridget.setUIControl(item);
 
-		MyToolItemProperties itemProperties = new MyToolItemProperties(ridget);
-		ToolBar parent = ReflectionUtils.getHidden(itemProperties, "parent");
+		final MyToolItemProperties itemProperties = new MyToolItemProperties(ridget);
+		final ToolBar parent = ReflectionUtils.getHidden(itemProperties, "parent");
 		assertSame(ridget, itemProperties.getRidget());
 		assertSame(toolbar, parent);
-		int index = ReflectionUtils.invokeHidden(itemProperties, "getIndex");
+		final int index = ReflectionUtils.invokeHidden(itemProperties, "getIndex");
 		assertEquals(0, index);
 
 	}
@@ -65,18 +65,18 @@ public class ToolItemPropertiesTest extends TestCase {
 	 */
 	public void testCreateItem() {
 
-		ToolItemRidget ridget = new ToolItemRidget();
-		ToolBar toolbar = new ToolBar(shell, SWT.BORDER);
-		ToolItem item = new ToolItem(toolbar, SWT.PUSH);
-		String text = "toolItem0815";
+		final ToolItemRidget ridget = new ToolItemRidget();
+		final ToolBar toolbar = new ToolBar(shell, SWT.BORDER);
+		final ToolItem item = new ToolItem(toolbar, SWT.PUSH);
+		final String text = "toolItem0815";
 		item.setText(text);
 		ridget.setUIControl(item);
 
-		MyToolItemProperties itemProperties = new MyToolItemProperties(ridget);
+		final MyToolItemProperties itemProperties = new MyToolItemProperties(ridget);
 		item.dispose();
 		assertEquals(0, toolbar.getItemCount());
 
-		ToolItem item2 = itemProperties.createItem();
+		final ToolItem item2 = itemProperties.createItem();
 		assertSame(item2, ridget.getUIControl());
 		assertSame(toolbar, item2.getParent());
 		assertEquals(1, toolbar.getItemCount());
@@ -86,7 +86,7 @@ public class ToolItemPropertiesTest extends TestCase {
 
 	private static class MyToolItemProperties extends ToolItemProperties {
 
-		public MyToolItemProperties(ToolItemRidget ridget) {
+		public MyToolItemProperties(final ToolItemRidget ridget) {
 			super(ridget);
 		}
 

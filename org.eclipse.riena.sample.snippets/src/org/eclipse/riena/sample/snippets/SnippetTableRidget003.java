@@ -40,31 +40,31 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class SnippetTableRidget003 {
 
 	public SnippetTableRidget003(final Shell shell) {
-		Table table = new Table(shell, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
+		final Table table = new Table(shell, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		TableColumn[] columns = new TableColumn[2];
+		final TableColumn[] columns = new TableColumn[2];
 		for (int i = 0; i < columns.length; i++) {
 			columns[i] = new TableColumn(table, SWT.LEFT);
 		}
-		TableColumnLayout layout = new TableColumnLayout();
-		for (int i = 0; i < columns.length; i++) {
-			layout.setColumnData(columns[i], new ColumnWeightData(50, 200));
+		final TableColumnLayout layout = new TableColumnLayout();
+		for (final TableColumn column : columns) {
+			layout.setColumnData(column, new ColumnWeightData(50, 200));
 		}
 		shell.setLayout(layout);
 
-		ITableRidget tableRidget = (ITableRidget) SwtRidgetFactory.createRidget(table);
-		String[] columnPropertyNames = { "description", "date" }; //$NON-NLS-1$ //$NON-NLS-2$
-		String[] columnHeaders = { "Description", "Date" }; //$NON-NLS-1$ //$NON-NLS-2$
-		List<Holiday> input = createInput();
+		final ITableRidget tableRidget = (ITableRidget) SwtRidgetFactory.createRidget(table);
+		final String[] columnPropertyNames = { "description", "date" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] columnHeaders = { "Description", "Date" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final List<Holiday> input = createInput();
 		tableRidget.setColumnFormatter(1, new DateColumnFormatter("MM/dd/yyyy") { //$NON-NLS-1$
 					@Override
-					protected Date getDate(Object element) {
+					protected Date getDate(final Object element) {
 						return ((Holiday) element).getDate();
 					}
 
 					@Override
-					public Color getForeground(Object element) {
+					public Color getForeground(final Object element) {
 						return shell.getDisplay().getSystemColor(SWT.COLOR_RED);
 					}
 				});
@@ -76,10 +76,10 @@ public class SnippetTableRidget003 {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetTableRidget003.class.getSimpleName());
 			new SnippetTableRidget003(shell);
 			shell.pack();
@@ -98,7 +98,7 @@ public class SnippetTableRidget003 {
 	//////////////////
 
 	private List<Holiday> createInput() {
-		List<Holiday> result = new ArrayList<Holiday>(7);
+		final List<Holiday> result = new ArrayList<Holiday>(7);
 		result.add(new Holiday("New Year's Day", createDate(2009, 1, 1))); //$NON-NLS-1$
 		result.add(new Holiday("Martin Luther King Day", createDate(2009, 1, 19))); //$NON-NLS-1$
 		result.add(new Holiday("Memorial Day", createDate(2009, 5, 25))); //$NON-NLS-1$
@@ -110,8 +110,8 @@ public class SnippetTableRidget003 {
 		return result;
 	}
 
-	private Date createDate(int year, int month, int day) {
-		Calendar calendar = GregorianCalendar.getInstance();
+	private Date createDate(final int year, final int month, final int day) {
+		final Calendar calendar = GregorianCalendar.getInstance();
 		calendar.set(year, month - 1, day); // month value is 0-based
 		return calendar.getTime();
 	}
@@ -126,7 +126,7 @@ public class SnippetTableRidget003 {
 		private final String descr;
 		private final Date date;
 
-		public Holiday(String descr, Date date) {
+		public Holiday(final String descr, final Date date) {
 			this.descr = descr;
 			this.date = date;
 		}

@@ -20,8 +20,8 @@ import org.eclipse.riena.ui.swt.lnf.renderer.UIProcessFinishedFlasher;
  */
 public class FlasherSupportForRenderer {
 
-	private ILnfRenderer renderer;
-	private Runnable updater;
+	private final ILnfRenderer renderer;
+	private final Runnable updater;
 
 	/**
 	 * Creates a new instance of the support.
@@ -31,7 +31,7 @@ public class FlasherSupportForRenderer {
 	 * @param updater
 	 *            instance to updated the control of the renderer.
 	 */
-	public FlasherSupportForRenderer(ILnfRenderer renderer, Runnable updater) {
+	public FlasherSupportForRenderer(final ILnfRenderer renderer, final Runnable updater) {
 		this.renderer = renderer;
 		this.updater = updater;
 	}
@@ -41,8 +41,8 @@ public class FlasherSupportForRenderer {
 	 */
 	public void startFlasher() {
 
-		Collection<UIProcessFinishedMarker> markers = renderer.getMarkersOfType(UIProcessFinishedMarker.class);
-		for (UIProcessFinishedMarker processMarker : markers) {
+		final Collection<UIProcessFinishedMarker> markers = renderer.getMarkersOfType(UIProcessFinishedMarker.class);
+		for (final UIProcessFinishedMarker processMarker : markers) {
 			if (!processMarker.isActivated()) {
 				startFlasher(processMarker);
 			}
@@ -58,8 +58,8 @@ public class FlasherSupportForRenderer {
 	 */
 	public boolean isProcessMarkerVisible() {
 
-		Collection<UIProcessFinishedMarker> markers = renderer.getMarkersOfType(UIProcessFinishedMarker.class);
-		for (UIProcessFinishedMarker processMarker : markers) {
+		final Collection<UIProcessFinishedMarker> markers = renderer.getMarkersOfType(UIProcessFinishedMarker.class);
+		for (final UIProcessFinishedMarker processMarker : markers) {
 			if (processMarker.isOn()) {
 				return true;
 			}
@@ -73,8 +73,8 @@ public class FlasherSupportForRenderer {
 	 * @since 1.2
 	 */
 	public boolean isFlashing() {
-		Collection<UIProcessFinishedMarker> markers = renderer.getMarkersOfType(UIProcessFinishedMarker.class);
-		for (UIProcessFinishedMarker processMarker : markers) {
+		final Collection<UIProcessFinishedMarker> markers = renderer.getMarkersOfType(UIProcessFinishedMarker.class);
+		for (final UIProcessFinishedMarker processMarker : markers) {
 			if (processMarker.isFlashing()) {
 				return true;
 			}
@@ -90,7 +90,7 @@ public class FlasherSupportForRenderer {
 	 */
 	private synchronized void startFlasher(final UIProcessFinishedMarker processMarker) {
 
-		UIProcessFinishedFlasher flasher = new UIProcessFinishedFlasher(processMarker, updater);
+		final UIProcessFinishedFlasher flasher = new UIProcessFinishedFlasher(processMarker, updater);
 		processMarker.activate();
 		flasher.start();
 

@@ -59,7 +59,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	public void setUp() throws Exception {
 		super.setUp();
 		manager = new PersonManager(createPersonList());
-		Iterator<Person> it = manager.getPersons().iterator();
+		final Iterator<Person> it = manager.getPersons().iterator();
 		selection1 = it.next();
 		selection2 = it.next();
 		selection3 = it.next();
@@ -81,11 +81,11 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	///////////////
 
 	public void testBindingWithNullProperty() throws Exception {
-		AbstractComboRidget ridget = getRidget();
+		final AbstractComboRidget ridget = getRidget();
 		ridget.setUIControl(createWidget(getShell()));
 
-		ProductHolder model = new ProductHolder();
-		List<Product> products = new ArrayList<Product>();
+		final ProductHolder model = new ProductHolder();
+		final List<Product> products = new ArrayList<Product>();
 		products.add(new Product("one"));
 		products.add(new Product("two"));
 		products.add(new Product(null));
@@ -97,7 +97,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.updateFromModel();
 			fail();
-		} catch (NullPointerException npe) {
+		} catch (final NullPointerException npe) {
 			ok("expected");
 		}
 
@@ -106,11 +106,11 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindingWithNullElement() throws Exception {
-		AbstractComboRidget ridget = getRidget();
+		final AbstractComboRidget ridget = getRidget();
 		ridget.setUIControl(createWidget(getShell()));
 
-		ProductHolder model = new ProductHolder();
-		List<Product> products = new ArrayList<Product>();
+		final ProductHolder model = new ProductHolder();
+		final List<Product> products = new ArrayList<Product>();
 		products.add(new Product("one"));
 		products.add(new Product("two"));
 		products.add(null);
@@ -122,7 +122,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.updateFromModel();
 			fail();
-		} catch (NullPointerException npe) {
+		} catch (final NullPointerException npe) {
 			ok("expected");
 		}
 
@@ -131,7 +131,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetUIControl() {
-		AbstractComboRidget ridget = getRidget();
+		final AbstractComboRidget ridget = getRidget();
 
 		ridget.setUIControl(null);
 		assertNull(ridget.getUIControl());
@@ -141,33 +141,33 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetUIControlInvalid() {
-		AbstractComboRidget ridget = getRidget();
+		final AbstractComboRidget ridget = getRidget();
 
 		try {
 			ridget.setUIControl(getShell());
 			fail();
-		} catch (BindingException bex) {
+		} catch (final BindingException bex) {
 			ok();
 		}
 	}
 
 	public void testGetEmptySelectionItem() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
-		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 		ridget.updateFromModel();
 
 		assertNull(ridget.getEmptySelectionItem());
 
-		Object emptySelectionItem = "A";
+		final Object emptySelectionItem = "A";
 		ridget.setEmptySelectionItem(emptySelectionItem);
 
 		assertSame(emptySelectionItem, ridget.getEmptySelectionItem());
 
 		ridget.setSelection("A");
 
-		int controlSelectedItemIndex = getSelectionIndex(control);
+		final int controlSelectedItemIndex = getSelectionIndex(control);
 		assertEquals(-1, ridget.getSelectionIndex());
 		assertEquals(0, controlSelectedItemIndex);
 		assertEquals(null, ridget.getSelection());
@@ -178,8 +178,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	public void testBindToModelWithDomainObjects() {
 		manager.setSelectedPerson(selection1);
 
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		assertEquals(null, getSelectedString(control));
 		assertEquals(0, getItemCount(control));
@@ -195,7 +195,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(manager.getPersons().size(), getItemCount(control));
 
 		for (int i = 0; i < getItemCount(control); i++) {
-			String item = getItem(control, i);
+			final String item = getItem(control, i);
 			if (!find(manager, item)) {
 				fail();
 			}
@@ -217,8 +217,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	public void testBindToModelWithDomainObjectsUsingColumnPropertyName() {
 		manager.setSelectedPerson(selection1);
 
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		assertEquals(null, getSelectedString(control));
 		assertEquals(0, getItemCount(control));
@@ -254,14 +254,14 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testBindToModelWithStrings() {
 		final StringManager aManager = new StringManager("A", "B", "C", "D", "E");
-		Iterator<String> it = aManager.getItems().iterator();
+		final Iterator<String> it = aManager.getItems().iterator();
 		final String aSelection1 = it.next();
 		final String aSelection2 = it.next();
 		final String aSelection3 = it.next();
 		aManager.setSelectedItem(aSelection1);
 
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		assertEquals(-1, getSelectionIndex(control));
 		assertEquals(0, getItemCount(control));
@@ -296,8 +296,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToModelWithNoControl() {
-		AbstractComboRidget ridget = (AbstractComboRidget) createRidget();
-		Control control = (Control) createWidget(getShell());
+		final AbstractComboRidget ridget = (AbstractComboRidget) createRidget();
+		final Control control = (Control) createWidget(getShell());
 
 		ridget.bindToModel(manager, "persons", String.class, "getListEntry", manager, "selectedPerson");
 		ridget.updateFromModel();
@@ -312,8 +312,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	public void testFirePropertyChangeSelection() {
 		manager.setSelectedPerson(selection1);
 
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		assertEquals(null, getSelectedString(control));
 		assertEquals(0, getItemCount(control));
@@ -341,8 +341,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromModel() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
 
@@ -350,7 +350,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.updateFromModel();
 
-		int oldSize = manager.getPersons().size();
+		final int oldSize = manager.getPersons().size();
 		assertEquals(oldSize, getItemCount(control));
 
 		// remove 1 person
@@ -364,8 +364,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateSelection() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 		manager.setSelectedPerson(selection1);
 
 		assertEquals(null, getSelectedString(control));
@@ -393,9 +393,9 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testGetObservableListWithStrings() {
-		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		final StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 
-		AbstractComboRidget ridget = getRidget();
+		final AbstractComboRidget ridget = getRidget();
 		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 
 		assertEquals(0, ridget.getObservableList().size());
@@ -403,15 +403,15 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		ridget.updateFromModel();
 
 		assertEquals(aManager.getItems().size(), ridget.getObservableList().size());
-		for (String item : new String[] { "A", "B", "C", "D", "E" }) {
+		for (final String item : new String[] { "A", "B", "C", "D", "E" }) {
 			assertTrue(ridget.getObservableList().contains(item));
 		}
 	}
 
 	public void testGetSelectionIndex() {
-		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		final StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 
-		AbstractComboRidget ridget = getRidget();
+		final AbstractComboRidget ridget = getRidget();
 		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 		ridget.updateFromModel();
 
@@ -425,8 +425,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testGetSelection() {
-		AbstractComboRidget ridget = getRidget();
-		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		final AbstractComboRidget ridget = getRidget();
+		final StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 		ridget.updateFromModel();
 
@@ -442,9 +442,9 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetSelectionInt() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = ridget.getUIControl();
-		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = ridget.getUIControl();
+		final StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 		ridget.updateFromModel();
 
@@ -479,15 +479,15 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setSelection(999);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 	}
 
 	public void testSetSelectionString() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = ridget.getUIControl();
-		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = ridget.getUIControl();
+		final StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 		ridget.updateFromModel();
 
@@ -527,20 +527,20 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetSelectionWhenNotBoundToModel() {
-		AbstractComboRidget ridget = getRidget();
+		final AbstractComboRidget ridget = getRidget();
 
 		try {
 			ridget.setSelection(new Object());
 			fail();
-		} catch (BindingException bex) {
+		} catch (final BindingException bex) {
 			ok();
 		}
 	}
 
 	public void testOutputCannotBeChangedFromUI() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
-		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 		ridget.updateFromModel();
 
@@ -563,8 +563,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testOutputControlIsDisabledAndHasText() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
 		ridget.updateFromModel();
 		ridget.setSelection(selection1);
@@ -594,8 +594,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testOuputControlIsUpdatedOnBind() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		ridget.setUIControl(null);
 		ridget.setOutputOnly(true);
@@ -624,8 +624,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 			return;
 		}
 
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
 		ridget.updateFromModel();
 
@@ -664,8 +664,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 			return;
 		}
 
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
 
 		manager.setSelectedPerson(selection1);
@@ -700,11 +700,11 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	 * (because the combo is modified internally).
 	 */
 	public void testDisabledDoesNotFireSelection() {
-		AbstractComboRidget ridget = getRidget();
+		final AbstractComboRidget ridget = getRidget();
 		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
 		ridget.updateFromModel();
 
-		FTPropertyChangeListener pcl = new FTPropertyChangeListener();
+		final FTPropertyChangeListener pcl = new FTPropertyChangeListener();
 		ridget.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, pcl);
 
 		ridget.setSelection(selection1);
@@ -728,8 +728,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	 * Check that disabling / enabling works when we don't have a bound model.
 	 */
 	public void testDisableWithoutBoundModel() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		assertTrue(ridget.getObservableList().isEmpty());
 
@@ -749,8 +749,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	 * the ridget.
 	 */
 	public void testDisableAndClearOnBind() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		ridget.setUIControl(null);
 		ridget.setEnabled(false);
@@ -816,19 +816,19 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	 * 290463).
 	 */
 	public void testValueConversion() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		final Person[] persons = new Person[] { new Person("Einstein", "Albert"), new Person("Da Vinci", "Leonardo"),
 				new Person("Curie", "Marie") };
 		ridget.setModelToUIControlConverter(new Converter(Person.class, String.class) {
-			public Object convert(Object fromObject) {
+			public Object convert(final Object fromObject) {
 				return getInitials((Person) fromObject);
 			}
 		});
 		ridget.setUIControlToModelConverter(new Converter(String.class, Person.class) {
-			public Object convert(Object fromObject) {
-				for (Person person : persons) {
+			public Object convert(final Object fromObject) {
+				for (final Person person : persons) {
 					if (fromObject.equals(getInitials(person))) {
 						return person;
 					}
@@ -836,8 +836,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 				return null;
 			}
 		});
-		WritableList options = new WritableList(Arrays.asList(persons), Person.class);
-		WritableValue selection = new WritableValue(persons[0], Person.class);
+		final WritableList options = new WritableList(Arrays.asList(persons), Person.class);
+		final WritableValue selection = new WritableValue(persons[0], Person.class);
 		ridget.bindToModel(options, Person.class, null, selection);
 		ridget.updateFromModel();
 
@@ -853,20 +853,20 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testAddSelectionListener() throws InterruptedException {
-		IComboRidget ridget = getRidget();
-		Control control = getWidget();
-		StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		final IComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final StringManager aManager = new StringManager("A", "B", "C", "D", "E");
 		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
 		ridget.updateFromModel();
 
 		try {
 			ridget.addSelectionListener(null);
 			fail();
-		} catch (RuntimeException npe) {
+		} catch (final RuntimeException npe) {
 			ok();
 		}
 
-		TestSelectionListener selectionListener = new TestSelectionListener();
+		final TestSelectionListener selectionListener = new TestSelectionListener();
 
 		ridget.addSelectionListener(selectionListener);
 		assertEquals(null, ridget.getSelection());
@@ -879,7 +879,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertNotNull(ridget.getSelection());
 		assertEquals(0, getSelectionIndex(control));
 		assertEquals(1, selectionListener.getCount());
-		SelectionEvent selectionEvent = selectionListener.getSelectionEvent();
+		final SelectionEvent selectionEvent = selectionListener.getSelectionEvent();
 		assertEquals(ridget, selectionEvent.getSource());
 		assertTrue(selectionEvent.getOldSelection().isEmpty());
 		assertEquals(ridget.getSelection(), selectionEvent.getNewSelection().get(0));
@@ -890,7 +890,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertNotNull(ridget.getSelection());
 		assertEquals(1, getSelectionIndex(control));
 		assertEquals(2, selectionListener.getCount());
-		SelectionEvent selectionEvent2 = selectionListener.getSelectionEvent();
+		final SelectionEvent selectionEvent2 = selectionListener.getSelectionEvent();
 		assertEquals(ridget, selectionEvent.getSource());
 		assertEquals(selectionEvent.getNewSelection(), selectionEvent2.getOldSelection());
 		assertEquals(ridget.getSelection(), selectionEvent2.getNewSelection().get(0));
@@ -907,18 +907,18 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 293000
 	 */
 	public void testSelectionListenerWithObjectsOtherThanString() {
-		AbstractComboRidget ridget = getRidget();
-		WritableList options = new WritableList();
+		final AbstractComboRidget ridget = getRidget();
+		final WritableList options = new WritableList();
 		options.add(selection1);
 		options.add(selection2);
-		WritableValue selection = new WritableValue(null, Person.class);
+		final WritableValue selection = new WritableValue(null, Person.class);
 		ridget.bindToModel(options, Person.class, null, selection);
 		ridget.updateFromModel();
 
-		FTValueChangeListener valueListener = new FTValueChangeListener();
+		final FTValueChangeListener valueListener = new FTValueChangeListener();
 		selection.addValueChangeListener(valueListener);
 
-		FTSelectionListener selectionListener = new FTSelectionListener();
+		final FTSelectionListener selectionListener = new FTSelectionListener();
 		ridget.addSelectionListener(selectionListener);
 
 		assertEquals(0, valueListener.getCount());
@@ -936,12 +936,12 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 292679.
 	 */
 	public void testChangeSelectionViaAPIWhenRidgetIsOutputOnly() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
-		WritableList options = new WritableList();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final WritableList options = new WritableList();
 		options.add(selection1);
 		options.add(selection2);
-		WritableValue selection = new WritableValue(null, Person.class);
+		final WritableValue selection = new WritableValue(null, Person.class);
 		ridget.setUIControl(control);
 		ridget.bindToModel(options, Person.class, null, selection);
 		ridget.updateFromModel();
@@ -960,12 +960,12 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testChangeSelectionViaBeanWhenRidgetIsOutputOnly() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
-		WritableList options = new WritableList();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final WritableList options = new WritableList();
 		options.add(selection1);
 		options.add(selection2);
-		WritableValue selection = new WritableValue(null, Person.class);
+		final WritableValue selection = new WritableValue(null, Person.class);
 		ridget.setUIControl(control);
 		ridget.bindToModel(options, Person.class, null, selection);
 		ridget.updateFromModel();
@@ -988,8 +988,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 304733
 	 */
 	public void testSetMarkSelectionMismatch() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 		ridget.bindToModel(manager, "persons", Person.class, null, manager, "selectedPerson");
 		ridget.updateFromModel();
 
@@ -1020,8 +1020,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 304733
 	 */
 	public void testHideSelectionMismatchViaSetSelection() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 		ridget.bindToModel(manager, "persons", Person.class, null, manager, "selectedPerson");
 		ridget.updateFromModel();
 
@@ -1054,8 +1054,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 304733
 	 */
 	public void testHideSelectionMismatchViaWidgetSelection() {
-		AbstractComboRidget ridget = getRidget();
-		Control control = getWidget();
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
 		ridget.bindToModel(manager, "persons", Person.class, null, manager, "selectedPerson");
 		ridget.updateFromModel();
 
@@ -1088,21 +1088,21 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 307592
 	 */
 	public void testUpdateMandatoryMarkerOnUpdateFromModelWithPojo() {
-		AbstractComboRidget ridget = getRidget();
+		final AbstractComboRidget ridget = getRidget();
 		ridget.setMandatory(true);
 
 		assertMandatory(ridget, 1, false);
 
 		ridget.addSelectionListener(new ISelectionListener() {
-			public void ridgetSelected(SelectionEvent event) {
+			public void ridgetSelected(final SelectionEvent event) {
 				if (event.getNewSelection().isEmpty()) {
 					throw new NullPointerException("im a bad listener");
 				}
 			}
 		});
 
-		StringPojo selection = new StringPojo("a");
-		WritableList values = new WritableList(Arrays.asList("a", "b", "c"), String.class);
+		final StringPojo selection = new StringPojo("a");
+		final WritableList values = new WritableList(Arrays.asList("a", "b", "c"), String.class);
 		ridget.bindToModel(values, String.class, null, PojoObservables.observeValue(selection, "value"));
 		ridget.updateFromModel();
 
@@ -1120,25 +1120,25 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	// helping methods
 	// ////////////////
 
-	private void assertMandatory(IMarkableRidget ridget, int count, boolean isDisabled) {
-		Collection<MandatoryMarker> markers = ridget.getMarkersOfType(MandatoryMarker.class);
+	private void assertMandatory(final IMarkableRidget ridget, final int count, final boolean isDisabled) {
+		final Collection<MandatoryMarker> markers = ridget.getMarkersOfType(MandatoryMarker.class);
 		assertEquals(count, markers.size());
-		for (MandatoryMarker marker : markers) {
+		for (final MandatoryMarker marker : markers) {
 			assertEquals(isDisabled, marker.isDisabled());
 		}
 	}
 
-	private void checkPersonList(PersonManager manager) {
-		Control control = getWidget();
+	private void checkPersonList(final PersonManager manager) {
+		final Control control = getWidget();
 
 		assertEquals(manager.getPersons().size(), getItemCount(control));
 
-		Collection<String> listEntries = new ArrayList<String>();
-		for (Person person : manager.getPersons()) {
+		final Collection<String> listEntries = new ArrayList<String>();
+		for (final Person person : manager.getPersons()) {
 			listEntries.add(person.getListEntry());
 		}
 		for (int i = 0; i < getItemCount(control); i++) {
-			String item = getItem(control, i);
+			final String item = getItem(control, i);
 			if (!listEntries.contains(item)) {
 				fail();
 			}
@@ -1146,7 +1146,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	private Collection<Person> createPersonList() {
-		Collection<Person> newList = new ArrayList<Person>();
+		final Collection<Person> newList = new ArrayList<Person>();
 
 		Person person = new Person("Doe", "John");
 		person.setEyeColor(1);
@@ -1183,27 +1183,27 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		return newList;
 	}
 
-	private boolean find(PersonManager manager, String item) {
+	private boolean find(final PersonManager manager, final String item) {
 		boolean result = false;
-		Iterator<Person> iter = manager.getPersons().iterator();
+		final Iterator<Person> iter = manager.getPersons().iterator();
 		while (!result && iter.hasNext()) {
 			result = iter.next().toString().equals(item);
 		}
 		return result;
 	}
 
-	private static String getInitials(Person person) {
+	private static String getInitials(final Person person) {
 		if (person == null) {
 			return null;
 		}
-		String first = person.getFirstname();
-		String last = person.getLastname();
-		String f = first.length() > 0 ? String.valueOf(first.charAt(0)) : "?";
-		String l = last.length() > 0 ? String.valueOf(last.charAt(0)) : "?";
+		final String first = person.getFirstname();
+		final String last = person.getLastname();
+		final String f = first.length() > 0 ? String.valueOf(first.charAt(0)) : "?";
+		final String l = last.length() > 0 ? String.valueOf(last.charAt(0)) : "?";
 		return f + l;
 	}
 
-	private String getItem(Control control, int index) {
+	private String getItem(final Control control, final int index) {
 		if (control instanceof Combo) {
 			return ((Combo) control).getItem(index);
 		}
@@ -1216,7 +1216,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		throw new IllegalArgumentException("unknown widget type: " + control);
 	}
 
-	private int getItemCount(Control control) {
+	private int getItemCount(final Control control) {
 		if (control instanceof Combo) {
 			return ((Combo) control).getItemCount();
 		}
@@ -1229,7 +1229,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		throw new IllegalArgumentException("unknown widget type: " + control);
 	}
 
-	private int getSelectionIndex(Control control) {
+	private int getSelectionIndex(final Control control) {
 		if (control instanceof Combo) {
 			return ((Combo) control).getSelectionIndex();
 		}
@@ -1242,12 +1242,12 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		throw new IllegalArgumentException("unknown widget type: " + control);
 	}
 
-	private String getSelectedString(Control control) {
-		int index = getSelectionIndex(control);
+	private String getSelectedString(final Control control) {
+		final int index = getSelectionIndex(control);
 		return index == -1 ? null : getItem(control, index);
 	}
 
-	private String getText(Control control) {
+	private String getText(final Control control) {
 		if (control instanceof Combo) {
 			return ((Combo) control).getText();
 		}
@@ -1260,7 +1260,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		throw new IllegalArgumentException("unknown widget type: " + control);
 	}
 
-	private void select(Control control, int index) {
+	private void select(final Control control, final int index) {
 		if (control instanceof Combo) {
 			((Combo) control).select(index);
 		} else if (control instanceof CCombo) {
@@ -1272,8 +1272,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		}
 	}
 
-	private void selectA(Control control) {
-		Display display = control.getDisplay();
+	private void selectA(final Control control) {
+		final Display display = control.getDisplay();
 		if (control instanceof Combo) {
 			UITestHelper.sendString(display, "A");
 		} else if (control instanceof CCombo) {
@@ -1293,7 +1293,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		private static final long serialVersionUID = 4711L;
 
-		public SelectionPropertyChangeEvent(Object oldValue, Object newValue) {
+		public SelectionPropertyChangeEvent(final Object oldValue, final Object newValue) {
 			super(getRidget(), IComboRidget.PROPERTY_SELECTION, oldValue, newValue);
 		}
 	}
@@ -1302,7 +1302,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		private static final long serialVersionUID = 4711L;
 
-		public TextPropertyChangeEvent(Object oldValue, Object newValue) {
+		public TextPropertyChangeEvent(final Object oldValue, final Object newValue) {
 			super(getRidget(), IComboRidget.PROPERTY_TEXT, ((Person) oldValue).getListEntry(), ((Person) newValue)
 					.getListEntry());
 		}
@@ -1313,7 +1313,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		private int count;
 		private Runnable runnable;
 
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(final PropertyChangeEvent evt) {
 			count++;
 			if (runnable != null) {
 				runnable.run();
@@ -1324,7 +1324,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 			return count;
 		}
 
-		void setRunnable(Runnable runnable) {
+		void setRunnable(final Runnable runnable) {
 			this.runnable = runnable;
 		}
 	}
@@ -1333,7 +1333,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		private int count;
 
-		public void handleValueChange(ValueChangeEvent event) {
+		public void handleValueChange(final ValueChangeEvent event) {
 			count++;
 		}
 
@@ -1346,7 +1346,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		private int count;
 
-		public void ridgetSelected(SelectionEvent event) {
+		public void ridgetSelected(final SelectionEvent event) {
 			count++;
 		}
 
@@ -1360,7 +1360,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		private List<Product> products;
 		private Product selectedProducts;
 
-		public void setProducts(List<Product> policenProdukte) {
+		public void setProducts(final List<Product> policenProdukte) {
 			this.products = policenProdukte;
 		}
 
@@ -1370,7 +1370,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		}
 
 		@SuppressWarnings("unused")
-		public void setSelectedProducts(Product selectedPolicenProdukt) {
+		public void setSelectedProducts(final Product selectedPolicenProdukt) {
 			this.selectedProducts = selectedPolicenProdukt;
 		}
 
@@ -1382,9 +1382,9 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 	private static final class Product {
 
-		private String name;
+		private final String name;
 
-		public Product(String name) {
+		public Product(final String name) {
 			this.name = name;
 		}
 

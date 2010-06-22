@@ -67,7 +67,7 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 	 */
 	public void testPaintTitle() {
 
-		DialogLnf lnf = new DialogLnf();
+		final DialogLnf lnf = new DialogLnf();
 		LnfManager.setLnf(lnf);
 		lnf.setHideOsBorder(true);
 		shell.setText("Hello");
@@ -91,17 +91,17 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 	 */
 	public void testPaintImage() {
 
-		DialogLnf lnf = new DialogLnf();
+		final DialogLnf lnf = new DialogLnf();
 		LnfManager.setLnf(lnf);
 		lnf.setHideOsBorder(true);
-		Image image = ImageStore.getInstance().getImage(ICON_ECLIPSE);
+		final Image image = ImageStore.getInstance().getImage(ICON_ECLIPSE);
 
 		if (Activator.getDefault() != null) { // osgi running?
 			assertNotNull(image);
 
 			shell.setImage(image);
 
-			Rectangle bounds = renderer.paintImage(gc);
+			final Rectangle bounds = renderer.paintImage(gc);
 			assertFalse(bounds.equals(new Rectangle(0, 0, 0, 0)));
 			assertEquals(image.getBounds().width, bounds.width);
 			assertEquals(image.getBounds().height, bounds.height);
@@ -130,8 +130,8 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 			putLnfResource(LnfKeyConstants.DIALOG_FONT, new FontLnfResource("Arial", 12, SWT.NONE));
 		}
 
-		public void setHideOsBorder(boolean hide) {
-			Map<String, Object> settingTable = ReflectionUtils.getHidden(DialogLnf.this, "settingTable");
+		public void setHideOsBorder(final boolean hide) {
+			final Map<String, Object> settingTable = ReflectionUtils.getHidden(DialogLnf.this, "settingTable");
 			settingTable.put(LnfKeyConstants.DIALOG_HIDE_OS_BORDER, hide);
 		}
 
@@ -144,12 +144,12 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 	private static class OpenDialogTitleBarRenderer extends DialogTitleBarRenderer {
 
 		@Override
-		public Rectangle paintTitle(GC gc) {
+		public Rectangle paintTitle(final GC gc) {
 			return super.paintTitle(gc);
 		}
 
 		@Override
-		public Rectangle paintImage(GC gc) {
+		public Rectangle paintImage(final GC gc) {
 			return super.paintImage(gc);
 		}
 

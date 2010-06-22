@@ -66,7 +66,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @param theme
 	 *            the theme this look and feel will use
 	 */
-	public RienaDefaultLnf(ILnfTheme theme) {
+	public RienaDefaultLnf(final ILnfTheme theme) {
 		setTheme(theme);
 	}
 
@@ -77,27 +77,27 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 		this(null);
 	}
 
-	public ILnfResource<?> getLnfResource(String key) {
+	public ILnfResource<?> getLnfResource(final String key) {
 		return resourceTable.get(key);
 	}
 
-	public ILnfResource<?> putLnfResource(String key, ILnfResource<?> resource) {
-		int dot = key.indexOf('.');
+	public ILnfResource<?> putLnfResource(final String key, final ILnfResource<?> resource) {
+		final int dot = key.indexOf('.');
 		if (dot != -1) {
 			resourcePrefixes.add(key.substring(0, dot));
 		}
 		return resourceTable.put(key, resource);
 	}
 
-	public boolean containsLnfResourcePrefix(String prefix) {
+	public boolean containsLnfResourcePrefix(final String prefix) {
 		return resourcePrefixes.contains(prefix);
 	}
 
-	public Object getLnfSetting(String key) {
+	public Object getLnfSetting(final String key) {
 		return settingTable.get(key);
 	}
 
-	public Object putLnfSetting(String key, Object setting) {
+	public Object putLnfSetting(final String key, final Object setting) {
 		return settingTable.put(key, setting);
 	}
 
@@ -119,13 +119,13 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 */
 	private void readSystemProperties() {
 
-		Properties sysProps = System.getProperties();
-		Set<Object> sysPropKeys = sysProps.keySet();
-		for (Object propKey : sysPropKeys) {
-			String propKeyName = propKey.toString();
+		final Properties sysProps = System.getProperties();
+		final Set<Object> sysPropKeys = sysProps.keySet();
+		for (final Object propKey : sysPropKeys) {
+			final String propKeyName = propKey.toString();
 			if (propKeyName.startsWith(SYSTEM_PROPERTY_LNF_SETTING_PREFIX)) {
-				String lnfKey = propKeyName.substring(SYSTEM_PROPERTY_LNF_SETTING_PREFIX.length());
-				Object lnfValue = sysProps.get(propKeyName);
+				final String lnfKey = propKeyName.substring(SYSTEM_PROPERTY_LNF_SETTING_PREFIX.length());
+				final Object lnfValue = sysProps.get(propKeyName);
 				putLnfSetting(lnfKey, lnfValue);
 			}
 		}
@@ -151,10 +151,10 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @since 1.2
 	 */
 	@InjectExtension
-	public void update(ILnfRendererExtension[] rendererExtensions) {
+	public void update(final ILnfRendererExtension[] rendererExtensions) {
 		rendererTable.clear();
-		for (ILnfRendererExtension rendererExtension : rendererExtensions) {
-			String id = rendererExtension.getLnfId();
+		for (final ILnfRendererExtension rendererExtension : rendererExtensions) {
+			final String id = rendererExtension.getLnfId();
 			if (StringUtils.isEmpty(id) || id.equals(getLnfId())) {
 				if (StringUtils.isEmpty(id)) {
 					if (rendererTable.get(rendererExtension.getLnfKey()) != null) {
@@ -174,7 +174,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @since 2.0
 	 */
 	@InjectExtension
-	public void update(ILnfMarkerSupportExtension[] markerSupportExtensions) {
+	public void update(final ILnfMarkerSupportExtension[] markerSupportExtensions) {
 		markerSupportList = markerSupportExtensions;
 	}
 
@@ -189,10 +189,10 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 *         was found
 	 * @since 2.0
 	 */
-	public AbstractMarkerSupport getMarkerSupport(Class<? extends IRidget> ridgetClass) {
-		String markerSupportID = getStringSetting(LnfKeyConstants.MARKER_SUPPORT_ID);
+	public AbstractMarkerSupport getMarkerSupport(final Class<? extends IRidget> ridgetClass) {
+		final String markerSupportID = getStringSetting(LnfKeyConstants.MARKER_SUPPORT_ID);
 
-		for (ILnfMarkerSupportExtension lnfMarkerSupportExtension : markerSupportList) {
+		for (final ILnfMarkerSupportExtension lnfMarkerSupportExtension : markerSupportList) {
 			if (StringUtils.isEmpty(lnfMarkerSupportExtension.getId())) {
 				continue;
 			}
@@ -229,8 +229,8 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @return the resource to which this map maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
-	public Resource getResource(String key) {
-		ILnfResource<?> value = resourceTable.get(key);
+	public Resource getResource(final String key) {
+		final ILnfResource<?> value = resourceTable.get(key);
 		if (value != null) {
 			return value.getResource();
 		} else {
@@ -246,7 +246,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @return the color to which this map maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
-	public Color getColor(String key) {
+	public Color getColor(final String key) {
 		return getColor(key, null);
 	}
 
@@ -260,8 +260,8 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * 
 	 * @since 2.0
 	 */
-	public Color getColor(String key, Color defaultValue) {
-		Resource value = getResource(key);
+	public Color getColor(final String key, final Color defaultValue) {
+		final Resource value = getResource(key);
 		if (value instanceof Color) {
 			return (Color) value;
 		}
@@ -276,8 +276,8 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @return the font to which this map maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
-	public Font getFont(String key) {
-		Resource value = getResource(key);
+	public Font getFont(final String key) {
+		final Resource value = getResource(key);
 		if (value instanceof Font) {
 			return (Font) value;
 		} else {
@@ -304,8 +304,8 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 *         mapping for this lnfKeyConstants key.
 	 * @since 1.2
 	 */
-	public Font getFont(String key, int height, int style) {
-		FontDescriptor fontDescriptor = new FontDescriptor(key, height, style, this);
+	public Font getFont(final String key, final int height, final int style) {
+		final FontDescriptor fontDescriptor = new FontDescriptor(key, height, style, this);
 		return fontDescriptor.getFont();
 	}
 
@@ -317,8 +317,8 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @return the image to which this map maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
-	public Image getImage(String key) {
-		Resource value = getResource(key);
+	public Image getImage(final String key) {
+		final Resource value = getResource(key);
 		if (value instanceof Image) {
 			return (Image) value;
 		} else {
@@ -334,7 +334,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @return the renderer to which this renderer maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
-	public ILnfRenderer getRenderer(String key) {
+	public ILnfRenderer getRenderer(final String key) {
 		return rendererTable.get(key);
 	}
 
@@ -346,7 +346,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
-	public Object getSetting(String key) {
+	public Object getSetting(final String key) {
 		return settingTable.get(key);
 	}
 
@@ -358,8 +358,8 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
-	public Integer getIntegerSetting(String key) {
-		Object value = getSetting(key);
+	public Integer getIntegerSetting(final String key) {
+		final Object value = getSetting(key);
 		if (value == null) {
 			if (Beans.isDesignTime()) { // in case of design time we return a "0" so that dependent code does not fail
 				return new Integer(0);
@@ -370,10 +370,10 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 		if (value instanceof Integer) {
 			return (Integer) value;
 		} else {
-			String strgValue = value.toString();
+			final String strgValue = value.toString();
 			try {
 				return new Integer(strgValue);
-			} catch (NumberFormatException e) {
+			} catch (final NumberFormatException e) {
 				if (Beans.isDesignTime()) { // in case of design time we return a "0" so that dependent code does not fail
 					return new Integer(0);
 				} else {
@@ -395,7 +395,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 *         default value if the map contains no mapping for this key.
 	 * @since 1.2
 	 */
-	public Integer getIntegerSetting(String key, Integer defaultValue) {
+	public Integer getIntegerSetting(final String key, final Integer defaultValue) {
 		Integer value = getIntegerSetting(key);
 		if (value == null) {
 			value = defaultValue;
@@ -411,8 +411,8 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>false</code> if the map contains no mapping for this key.
 	 */
-	public Boolean getBooleanSetting(String key) {
-		Object value = getSetting(key);
+	public Boolean getBooleanSetting(final String key) {
+		final Object value = getSetting(key);
 		if (value == null) {
 			return null;
 		}
@@ -434,7 +434,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 *         {@code defaultValue} if the map contains no mapping for this key.
 	 * @since 1.2
 	 */
-	public Boolean getBooleanSetting(String key, boolean defaultValue) {
+	public Boolean getBooleanSetting(final String key, final boolean defaultValue) {
 		Boolean value = getBooleanSetting(key);
 		if (value == null) {
 			value = defaultValue;
@@ -450,8 +450,8 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
-	public String getStringSetting(String key) {
-		Object value = getSetting(key);
+	public String getStringSetting(final String key) {
+		final Object value = getSetting(key);
 		if (value == null) {
 			return null;
 		}
@@ -472,8 +472,8 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @return the setting to which this setting maps the specified key, or
 	 *         <code>null</code> if the map contains no mapping for this key.
 	 */
-	public String getStringSetting(String key, String defaultValue) {
-		Object value = getSetting(key);
+	public String getStringSetting(final String key, final String defaultValue) {
+		final Object value = getSetting(key);
 		if (value == null) {
 			return defaultValue;
 		}
@@ -506,7 +506,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @param newTheme
 	 *            the theme to be used
 	 */
-	public void setTheme(ILnfTheme newTheme) {
+	public void setTheme(final ILnfTheme newTheme) {
 		if (theme != newTheme) {
 			theme = newTheme;
 			setInitialized(false);
@@ -525,7 +525,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 	 * @param initialize
 	 *            the initialize to set
 	 */
-	private void setInitialized(boolean initialized) {
+	private void setInitialized(final boolean initialized) {
 		this.initialized = initialized;
 	}
 

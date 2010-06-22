@@ -23,7 +23,7 @@ import org.eclipse.riena.internal.core.test.collect.NonGatherableTestCase;
 public class AllTests extends TestCase {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(AllTests.class.getName());
+		final TestSuite suite = new TestSuite(AllTests.class.getName());
 		suite.addTest(org.eclipse.riena.navigation.ui.controllers.AllTests.suite());
 		return suite;
 	}

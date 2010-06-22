@@ -44,7 +44,7 @@ public abstract class NodePositioner {
 		private final NodePositioner delegate = indexed(0);
 
 		@Override
-		public void addChildToParent(INavigationNode parent, INavigationNode child) {
+		public void addChildToParent(final INavigationNode parent, final INavigationNode child) {
 			delegate.addChildToParent(parent, child);
 		}
 	};
@@ -55,7 +55,7 @@ public abstract class NodePositioner {
 	public final static NodePositioner ADD_END = new NodePositioner() {
 
 		@Override
-		public void addChildToParent(INavigationNode parent, INavigationNode child) {
+		public void addChildToParent(final INavigationNode parent, final INavigationNode child) {
 			assertMode(parent, Mode.FIXED);
 			parent.addChild(child);
 		}
@@ -70,7 +70,7 @@ public abstract class NodePositioner {
 		return new NodePositioner() {
 
 			@Override
-			public void addChildToParent(INavigationNode parent, INavigationNode child) {
+			public void addChildToParent(final INavigationNode parent, final INavigationNode child) {
 				assertMode(parent, Mode.FIXED);
 				if (index < 0) {
 					throw new NavigationModelFailure("Cannot add child " + child + " to parent " + parent //$NON-NLS-1$//$NON-NLS-2$
@@ -97,7 +97,7 @@ public abstract class NodePositioner {
 		return new NodePositioner() {
 
 			@Override
-			public void addChildToParent(INavigationNode parent, INavigationNode child) {
+			public void addChildToParent(final INavigationNode parent, final INavigationNode child) {
 				assertMode(parent, Mode.ORDINAL);
 				child.setContext(POSITIONING_ORDINALITY_KEY, ordinality);
 
@@ -106,7 +106,7 @@ public abstract class NodePositioner {
 					return;
 				}
 
-				List<INavigationNode> oldChildren = parent.getChildren();
+				final List<INavigationNode> oldChildren = parent.getChildren();
 				int ix = 0;
 				while (ix < oldChildren.size()
 						&& ordinality >= (Integer) oldChildren.get(ix).getContext(POSITIONING_ORDINALITY_KEY)) {
@@ -123,12 +123,12 @@ public abstract class NodePositioner {
 		};
 	}
 
-	private static void assertMode(INavigationNode node, Mode expected) {
+	private static void assertMode(final INavigationNode node, final Mode expected) {
 		if (node.getChildren().size() == 0) {
 			return;
 		}
-		INavigationNode firstChild = (INavigationNode) node.getChildren().get(0);
-		Mode currentMode = firstChild.getContext(POSITIONING_ORDINALITY_KEY) != null ? Mode.ORDINAL : Mode.FIXED;
+		final INavigationNode firstChild = (INavigationNode) node.getChildren().get(0);
+		final Mode currentMode = firstChild.getContext(POSITIONING_ORDINALITY_KEY) != null ? Mode.ORDINAL : Mode.FIXED;
 		if (!currentMode.equals(expected)) {
 			throw new NavigationModelFailure("Node " + node + " cannot be added with NodePositioningMode " + expected //$NON-NLS-1$ //$NON-NLS-2$
 					+ " as the current mode is " + currentMode); //$NON-NLS-1$

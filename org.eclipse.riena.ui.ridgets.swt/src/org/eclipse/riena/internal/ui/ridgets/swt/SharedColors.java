@@ -34,29 +34,29 @@ public final class SharedColors {
 
 	private Map<String, Color> sharedColors;
 
-	SharedColors(Display display) {
-		Object[] values = { COLOR_MANDATORY, new RGB(255, 255, 175), COLOR_OUTPUT, new RGB(231, 233, 245),
+	SharedColors(final Display display) {
+		final Object[] values = { COLOR_MANDATORY, new RGB(255, 255, 175), COLOR_OUTPUT, new RGB(231, 233, 245),
 				COLOR_MANDATORY_OUTPUT, new RGB(255, 249, 216), COLOR_FLASH_ERROR, new RGB(250, 190, 190),
 				COLOR_NEGATIVE, new RGB(255, 0, 0) };
 		sharedColors = new HashMap<String, Color>();
 		for (int i = 0; i < values.length; i = i + 2) {
-			String key = (String) values[i];
-			RGB rgb = (RGB) values[i + 1];
-			Color color = new Color(display, rgb);
+			final String key = (String) values[i];
+			final RGB rgb = (RGB) values[i + 1];
+			final Color color = new Color(display, rgb);
 			sharedColors.put(key, color);
 		}
 	}
 
-	Color getSharedColor(String colorKey) {
+	Color getSharedColor(final String colorKey) {
 		Assert.isNotNull(sharedColors, "Shared colors are disposed"); //$NON-NLS-1$
-		Color result = sharedColors.get(colorKey);
+		final Color result = sharedColors.get(colorKey);
 		Assert.isNotNull(result, "Could not find color with key: " + colorKey); //$NON-NLS-1$
 		return result;
 	}
 
 	void dispose() {
 		if (sharedColors != null) {
-			for (Color color : sharedColors.values()) {
+			for (final Color color : sharedColors.values()) {
 				color.dispose();
 			}
 			sharedColors = null;

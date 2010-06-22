@@ -33,9 +33,9 @@ import org.eclipse.riena.internal.ui.core.Activator;
  */
 public class UICallbackDispatcher extends ProgressProvider implements IUIMonitorContainer {
 
-	private IUISynchronizer syncher;
-	private List<IUIMonitor> uiMonitors;
-	private ProcessInfo pInfo;
+	private final IUISynchronizer syncher;
+	private final List<IUIMonitor> uiMonitors;
+	private final ProcessInfo pInfo;
 	private ThreadSwitcher threadSwitcher;
 
 	/**
@@ -44,7 +44,7 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	 * @param syncher
 	 *            - the {@link IUISynchronizer} for the widget toolkit
 	 */
-	public UICallbackDispatcher(IUISynchronizer syncher) {
+	public UICallbackDispatcher(final IUISynchronizer syncher) {
 		this.uiMonitors = new ArrayList<IUIMonitor>();
 		this.syncher = syncher;
 		this.pInfo = new ProcessInfo();
@@ -57,8 +57,8 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	/**
 	 * @see IUIMonitorContainer#addUIMonitor(IUIMonitor)
 	 */
-	public void addUIMonitor(IUIMonitor uiMontitor) {
-		IProcessInfoAware processInfoAware = (IProcessInfoAware) uiMontitor.getAdapter(IProcessInfoAware.class);
+	public void addUIMonitor(final IUIMonitor uiMontitor) {
+		final IProcessInfoAware processInfoAware = (IProcessInfoAware) uiMontitor.getAdapter(IProcessInfoAware.class);
 		if (processInfoAware != null) {
 			processInfoAware.setProcessInfo(pInfo);
 		}
@@ -73,7 +73,7 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	}
 
 	@Override
-	public final IProgressMonitor createMonitor(Job job) {
+	public final IProgressMonitor createMonitor(final Job job) {
 		threadSwitcher = createThreadSwitcher();
 		observeJob(job);
 		return threadSwitcher;
@@ -83,11 +83,11 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 		return new ThreadSwitcher(createWrappedMonitor());
 	}
 
-	private void observeJob(Job job) {
+	private void observeJob(final Job job) {
 		job.addJobChangeListener(new JobChangeAdapter() {
 
 			@Override
-			public void done(IJobChangeEvent event) {
+			public void done(final IJobChangeEvent event) {
 				super.done(event);
 				jobDone();
 			}
@@ -112,16 +112,16 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 		 */
 		return new NullProgressMonitor() {
 			@Override
-			public void beginTask(String name, int totalWork) {
+			public void beginTask(final String name, final int totalWork) {
 				pInfo.setMaxProgress(totalWork);
-				for (IUIMonitor monitor : getMonitors()) {
+				for (final IUIMonitor monitor : getMonitors()) {
 					monitor.initialUpdateUI(totalWork);
 				}
 			}
 
 			@Override
-			public void worked(int work) {
-				for (IUIMonitor monitor : getMonitors()) {
+			public void worked(final int work) {
+				for (final IUIMonitor monitor : getMonitors()) {
 					monitor.updateProgress(work);
 				}
 			}
@@ -137,10 +137,10 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 		synchronize(new Runnable() {
 
 			public void run() {
-				for (IUIMonitor monitor : getMonitors()) {
+				for (final IUIMonitor monitor : getMonitors()) {
 					try {
 						monitor.finalUpdateUI();
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						Service.get(Activator.getDefault().getContext(), IExceptionHandlerManager.class)
 								.handleException(e);
 					}
@@ -157,9 +157,9 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	 */
 	private final class ThreadSwitcher extends NullProgressMonitor {
 
-		private IProgressMonitor delegate;
+		private final IProgressMonitor delegate;
 
-		public ThreadSwitcher(IProgressMonitor wrappedMonitor) {
+		public ThreadSwitcher(final IProgressMonitor wrappedMonitor) {
 			this.delegate = wrappedMonitor;
 		}
 
@@ -189,7 +189,7 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 
 	}
 
-	private void synchronize(Runnable runnable) {
+	private void synchronize(final Runnable runnable) {
 		syncher.syncExec(runnable);
 	}
 

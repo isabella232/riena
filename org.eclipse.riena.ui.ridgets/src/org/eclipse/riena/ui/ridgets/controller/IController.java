@@ -38,8 +38,8 @@ public interface IController extends IRidgetContainer {
 	 * Returns true if user input for the view to which this controller is bound
 	 * is blocked.
 	 * 
-	 * @return {@code true} if input is blocked for the view; otherwise {@code
-	 *         false}
+	 * @return {@code true} if input is blocked for the view; otherwise
+	 *         {@code false}
 	 */
 	boolean isBlocked();
 }

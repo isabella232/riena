@@ -21,7 +21,7 @@ public class ValidationMessageMarker extends AbstractMarker implements IMessageM
 
 	private static final String MESSAGE_MARKER_ATTRIBUTE = "wrappedMessageMarker"; //$NON-NLS-1$
 
-	private IValidator validationRule;
+	private final IValidator validationRule;
 
 	/**
 	 * Create a new {@link ValidationMessageMarker} with the given messageMarker
@@ -29,7 +29,7 @@ public class ValidationMessageMarker extends AbstractMarker implements IMessageM
 	 * @param messageMarker
 	 *            an {@link IMessageMarker}; never null
 	 */
-	public ValidationMessageMarker(IMessageMarker messageMarker) {
+	public ValidationMessageMarker(final IMessageMarker messageMarker) {
 		this(messageMarker, null);
 	}
 
@@ -42,7 +42,7 @@ public class ValidationMessageMarker extends AbstractMarker implements IMessageM
 	 *            the validationRule associated with the {@link MessageMarker};
 	 *            may be null
 	 */
-	public ValidationMessageMarker(IMessageMarker messageMarker, IValidator validationRule) {
+	public ValidationMessageMarker(final IMessageMarker messageMarker, final IValidator validationRule) {
 		super(false);
 		Assert.isNotNull(messageMarker, "messageMarker cannot be null"); //$NON-NLS-1$
 		setAttribute(MESSAGE_MARKER_ATTRIBUTE, messageMarker);
@@ -68,9 +68,9 @@ public class ValidationMessageMarker extends AbstractMarker implements IMessageM
 	}
 
 	@Override
-	public boolean equals(Object other) {
+	public boolean equals(final Object other) {
 		if (other instanceof ValidationMessageMarker) {
-			ValidationMessageMarker otherValidationMessageMarker = (ValidationMessageMarker) other;
+			final ValidationMessageMarker otherValidationMessageMarker = (ValidationMessageMarker) other;
 			return super.equals(other)
 					&& ((getValidationRule() == null && otherValidationMessageMarker.getValidationRule() == null) || (getValidationRule() != null && getValidationRule()
 							.equals(otherValidationMessageMarker.getValidationRule())));

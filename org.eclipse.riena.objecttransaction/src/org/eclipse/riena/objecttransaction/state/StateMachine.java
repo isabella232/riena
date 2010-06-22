@@ -32,7 +32,7 @@ public final class StateMachine {
 	 * @return initialState
 	 * @throws InvalidActionFailure
 	 */
-	public static State initAction(Action action) throws InvalidActionFailure {
+	public static State initAction(final Action action) throws InvalidActionFailure {
 		if (action.equals(Action.NEW) || action.equals(Action.ADD) || action.equals(Action.SET)) {
 			return State.CREATED;
 		} else if (action.equals(Action.DELETE) || action.equals(Action.REMOVE)) {
@@ -52,7 +52,7 @@ public final class StateMachine {
 	 * @throws InvalidActionFailure
 	 * @pre currentState!=null
 	 */
-	public static State processAction(State currentState, Action action) throws InvalidActionFailure {
+	public static State processAction(final State currentState, final Action action) throws InvalidActionFailure {
 		Assert.isNotNull(currentState, "currentState cannot be null"); //$NON-NLS-1$
 		// CREATED
 		if (currentState.equals(State.CREATED)) {
@@ -88,7 +88,8 @@ public final class StateMachine {
 				return State.DELETED;
 			}
 		}
-		throw new InvalidActionFailure("unknown action for currentState state is " + State.toString(currentState) + " action is " + Action.toString(action)); //$NON-NLS-1$ //$NON-NLS-2$
+		throw new InvalidActionFailure(
+				"unknown action for currentState state is " + State.toString(currentState) + " action is " + Action.toString(action)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
@@ -101,7 +102,7 @@ public final class StateMachine {
 	 * @return State the new state after the merge
 	 * @throws InvalidActionFailure
 	 */
-	public static State mergeStates(State currentState, State newState) throws InvalidActionFailure {
+	public static State mergeStates(final State currentState, final State newState) throws InvalidActionFailure {
 		if (currentState.equals(newState)) {
 			return currentState;
 		}
@@ -111,21 +112,25 @@ public final class StateMachine {
 			} else {
 				return State.CREATED;
 			}
-		} else if (currentState.equals(State.MODIFIED) && (newState.equals(State.DELETED) || newState.equals(State.VANISHED))) {
+		} else if (currentState.equals(State.MODIFIED)
+				&& (newState.equals(State.DELETED) || newState.equals(State.VANISHED))) {
 			return State.DELETED;
 		} else if (currentState.equals(State.MODIFIED) && newState.equals(State.CREATED)) {
 			return State.MODIFIED;
 		} else if (currentState.equals(State.DELETED) || currentState.equals(State.VANISHED)) {
-			throw new InvalidActionFailure("current State is " + State.toString(currentState) + " new State is " + State.toString(newState) + " invalid change"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			throw new InvalidActionFailure(
+					"current State is " + State.toString(currentState) + " new State is " + State.toString(newState) + " invalid change"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		} else if (currentState.equals(State.CLEAN)) {
 			if (newState.equals(State.MODIFIED) || newState.equals(State.DELETED)) {
 				return newState;
 			}
 			if (newState.equals(State.VANISHED)) {
-				throw new InvalidActionFailure("current State is " + State.toString(currentState) + " new State is " + State.toString(newState) //$NON-NLS-1$ //$NON-NLS-2$
-						+ " invalid change"); //$NON-NLS-1$
+				throw new InvalidActionFailure(
+						"current State is " + State.toString(currentState) + " new State is " + State.toString(newState) //$NON-NLS-1$ //$NON-NLS-2$
+								+ " invalid change"); //$NON-NLS-1$
 			}
 		}
-		throw new InvalidActionFailure("unknown current State " + State.toString(currentState) + " and new State " + State.toString(newState)); //$NON-NLS-1$ //$NON-NLS-2$
+		throw new InvalidActionFailure(
+				"unknown current State " + State.toString(currentState) + " and new State " + State.toString(newState)); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

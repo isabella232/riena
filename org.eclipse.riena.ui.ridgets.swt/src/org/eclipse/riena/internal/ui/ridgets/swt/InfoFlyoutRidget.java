@@ -41,7 +41,7 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 		syncher = new SwtUISynchronizer();
 	}
 
-	public InfoFlyoutRidget(InfoFlyout infoFlyout) {
+	public InfoFlyoutRidget(final InfoFlyout infoFlyout) {
 		setUIControl(infoFlyout);
 	}
 
@@ -49,23 +49,23 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 		return infoFlyout;
 	}
 
-	public void setUIControl(Object uiControl) {
+	public void setUIControl(final Object uiControl) {
 		infoFlyout = (InfoFlyout) uiControl;
 	}
 
 	public String getID() {
-		IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		return locator.locateBindingProperty(getUIControl());
 	}
 
-	public void addInfo(InfoFlyoutData info) {
+	public void addInfo(final InfoFlyoutData info) {
 		if (worker == null) {
 			worker = new Worker();
 			worker.start();
 		}
 		try {
 			infos.put(info);
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			new ConsoleLogger(InfoFlyoutRidget.class.getName()).log(LogService.LOG_ERROR,
 					"Queueing info failed: " + info, e); //$NON-NLS-1$
 		}
@@ -73,7 +73,7 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 
 	private class Worker extends Thread {
 
-		private int sleepTime = LnfManager.getLnf().getIntegerSetting(
+		private final int sleepTime = LnfManager.getLnf().getIntegerSetting(
 				LnfKeyConstants.INFO_FLYOUT_SHOW_AND_HIDE_ANIMATION_TIME)
 				* 2
 				+ LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.INFO_FLYOUT_WAIT_ANIMATION_TIME)
@@ -87,7 +87,7 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 					info = infos.take();
 					processInfo(info);
 					Thread.sleep(sleepTime);
-				} catch (InterruptedException e) {
+				} catch (final InterruptedException e) {
 					Thread.currentThread().interrupt();
 					break;
 				}
@@ -125,7 +125,7 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
-	public void setFocusable(boolean focusable) {
+	public void setFocusable(final boolean focusable) {
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
@@ -133,7 +133,7 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
-	public void setToolTipText(String toolTipText) {
+	public void setToolTipText(final String toolTipText) {
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
@@ -141,7 +141,7 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(final boolean enabled) {
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
@@ -149,7 +149,7 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 

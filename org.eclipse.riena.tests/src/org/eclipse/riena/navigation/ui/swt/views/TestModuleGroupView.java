@@ -21,7 +21,7 @@ public class TestModuleGroupView extends ModuleGroupView {
 	 * @param parent
 	 * @param style
 	 */
-	public TestModuleGroupView(Composite parent, int style) {
+	public TestModuleGroupView(final Composite parent, final int style) {
 		super(parent, style);
 	}
 

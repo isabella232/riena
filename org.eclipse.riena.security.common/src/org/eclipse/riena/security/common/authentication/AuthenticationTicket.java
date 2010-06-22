@@ -48,7 +48,7 @@ public class AuthenticationTicket implements Serializable {
 	 * @pre session != null
 	 * @pre authenticationContext != nul
 	 */
-	public AuthenticationTicket(Session session) {
+	public AuthenticationTicket(final Session session) {
 		super();
 		Assert.isNotNull(session, "Missing session"); //$NON-NLS-1$
 		this.session = session;
@@ -80,7 +80,7 @@ public class AuthenticationTicket implements Serializable {
 	 * @param session
 	 *            The session to set.
 	 */
-	public void setSession(Session session) {
+	public void setSession(final Session session) {
 		this.session = session;
 	}
 

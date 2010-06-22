@@ -18,11 +18,11 @@ public class Bean implements IBean {
 
 	private Schtonk schtonk;
 
-	public void bind(Schtonk schtonk) {
+	public void bind(final Schtonk schtonk) {
 		this.schtonk = schtonk;
 	}
 
-	public void unbind(Schtonk schtonk) {
+	public void unbind(final Schtonk schtonk) {
 		this.schtonk = schtonk;
 	}
 

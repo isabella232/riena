@@ -68,7 +68,7 @@ public class DetachedViewsManager {
 	 * @param site
 	 *            the workbench site; never null
 	 */
-	public DetachedViewsManager(IWorkbenchSite site) {
+	public DetachedViewsManager(final IWorkbenchSite site) {
 		this(site.getShell());
 	}
 
@@ -81,7 +81,7 @@ public class DetachedViewsManager {
 	 *            the main shell; never null; detached windows will use this
 	 *            shell as their parent shell
 	 */
-	public DetachedViewsManager(Shell shell) {
+	public DetachedViewsManager(final Shell shell) {
 		Assert.isNotNull(shell);
 		id2shell = new HashMap<String, Shell>();
 		this.mainShell = shell;
@@ -94,9 +94,9 @@ public class DetachedViewsManager {
 	 *            id of the view to show; must be unique within this instance;
 	 *            never null
 	 */
-	public void closeView(String id) {
+	public void closeView(final String id) {
 		Assert.isNotNull(id);
-		Shell shell = id2shell.remove(id);
+		final Shell shell = id2shell.remove(id);
 		if (shell != null) {
 			if (!shell.isDisposed()) {
 				shell.dispose();
@@ -109,8 +109,8 @@ public class DetachedViewsManager {
 	 * {@link #dispose()} instances when no longer needed.
 	 */
 	public void dispose() {
-		String[] keys = id2shell.keySet().toArray(new String[id2shell.size()]);
-		for (String id : keys) {
+		final String[] keys = id2shell.keySet().toArray(new String[id2shell.size()]);
+		for (final String id : keys) {
 			closeView(id);
 		}
 	}
@@ -122,7 +122,7 @@ public class DetachedViewsManager {
 	 *            the view / shell id; never null
 	 * @return a Shell instance or null
 	 */
-	public Shell getShell(String id) {
+	public Shell getShell(final String id) {
 		Assert.isNotNull(id);
 		return id2shell.get(id);
 	}
@@ -133,9 +133,9 @@ public class DetachedViewsManager {
 	 * @param id
 	 *            id of the view / shell to hide; never null
 	 */
-	public void hideView(String id) {
+	public void hideView(final String id) {
 		Assert.isNotNull(id);
-		Shell shell = id2shell.get(id);
+		final Shell shell = id2shell.get(id);
 		if (shell != null) {
 			shell.setVisible(false);
 		}
@@ -158,7 +158,7 @@ public class DetachedViewsManager {
 	 *            position prefference is only applied if a new shell is
 	 *            created.
 	 */
-	public void showView(String id, Class<? extends ViewPart> viewClazz, int position) {
+	public void showView(final String id, final Class<? extends ViewPart> viewClazz, final int position) {
 		Assert.isNotNull(id, "id"); //$NON-NLS-1$
 		Assert.isLegal(id.trim().length() > 0, String.format("id cannot be null or empty: '%s'", id)); //$NON-NLS-1$
 		Assert.isNotNull(viewClazz);
@@ -167,7 +167,7 @@ public class DetachedViewsManager {
 			int x;
 			int y;
 			Rectangle bounds;
-			Rectangle viewBounds = this.mainShell.getBounds();
+			final Rectangle viewBounds = this.mainShell.getBounds();
 			switch (position) {
 			case SWT.RIGHT:
 				x = viewBounds.x + viewBounds.width;
@@ -217,7 +217,7 @@ public class DetachedViewsManager {
 	 *            relative to the display. Note that this is applied only if a
 	 *            new shell is created.
 	 */
-	public void showView(String viewId, Class<? extends ViewPart> viewClazz, Rectangle bounds) {
+	public void showView(final String viewId, final Class<? extends ViewPart> viewClazz, final Rectangle bounds) {
 		Shell shell = id2shell.get(viewId);
 		if (shell == null) {
 			shell = openShell(viewClazz, bounds);
@@ -249,17 +249,17 @@ public class DetachedViewsManager {
 	// helping methods
 	//////////////////
 
-	private void showShell(Shell shell) {
+	private void showShell(final Shell shell) {
 		shell.setVisible(true);
 	}
 
-	private Shell openShell(Class<? extends ViewPart> viewClazz, Rectangle bounds) {
+	private Shell openShell(final Class<? extends ViewPart> viewClazz, final Rectangle bounds) {
 		Shell result = null;
 
 		result = new Shell(this.mainShell, getShellStyle());
 		result.addShellListener(new ShellAdapter() {
 			@Override
-			public void shellClosed(ShellEvent e) {
+			public void shellClosed(final ShellEvent e) {
 				e.doit = false; // prevent manual close just in case
 			}
 		});
@@ -267,19 +267,19 @@ public class DetachedViewsManager {
 			final IViewPart viewPart = ReflectionUtils.newInstance(viewClazz, (Object[]) null);
 			viewPart.createPartControl(result);
 			result.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(DisposeEvent e) {
+				public void widgetDisposed(final DisposeEvent e) {
 					// dispose part when shell is disposed
 					viewPart.dispose();
 				}
 			});
 			if (!checkController(viewPart)) {
-				String msg = String.format("%s does not override %s()", viewPart.getClass().getName(), //$NON-NLS-1$
+				final String msg = String.format("%s does not override %s()", viewPart.getClass().getName(), //$NON-NLS-1$
 						METHOD_CREATE_CONTROLLER);
 				LOGGER.log(LogService.LOG_WARNING, msg);
 			}
-		} catch (Exception exc) {
+		} catch (final Exception exc) {
 			// calling unknown code - catch exception just in case
-			String msg = "Exception while creating view: " + viewClazz.getName(); //$NON-NLS-1$
+			final String msg = "Exception while creating view: " + viewClazz.getName(); //$NON-NLS-1$
 			LOGGER.log(LogService.LOG_ERROR, msg, exc);
 		}
 		result.setBounds(bounds);
@@ -293,12 +293,12 @@ public class DetachedViewsManager {
 	 * @return true if the check passed; false otherwise.
 	 */
 	@SuppressWarnings("rawtypes")
-	boolean checkController(IViewPart viewPart) {
+	boolean checkController(final IViewPart viewPart) {
 		boolean result = true;
-		Class clazz = viewPart.getClass();
-		Method method = findMethod(clazz, METHOD_CREATE_CONTROLLER);
+		final Class clazz = viewPart.getClass();
+		final Method method = findMethod(clazz, METHOD_CREATE_CONTROLLER);
 		if (method != null) {
-			String declClazz = method.getDeclaringClass().getName();
+			final String declClazz = method.getDeclaringClass().getName();
 			if (declClazz.equals("org.eclipse.riena.navigation.ui.swt.views.SubModuleView")) { //$NON-NLS-1$
 				result = false;
 			}
@@ -310,16 +310,16 @@ public class DetachedViewsManager {
 	 * Return the first Method matching {@code methodName} or null. Will start
 	 * at the most specific class and search upwards.
 	 */
-	private Method findMethod(final Class<?> viewClazz, String methodName) {
+	private Method findMethod(final Class<?> viewClazz, final String methodName) {
 		Method result = null;
-		List<Method> declaredMethods = new ArrayList<Method>();
+		final List<Method> declaredMethods = new ArrayList<Method>();
 		Class<?> clazz = viewClazz;
 		while (clazz != null) {
 			declaredMethods.addAll(Arrays.asList(clazz.getDeclaredMethods()));
 			clazz = clazz.getSuperclass();
 		}
 		for (int i = 0; result == null && i < declaredMethods.size(); i++) {
-			Method method = declaredMethods.get(i);
+			final Method method = declaredMethods.get(i);
 			if (methodName.equals(method.getName())) {
 				result = method;
 			}

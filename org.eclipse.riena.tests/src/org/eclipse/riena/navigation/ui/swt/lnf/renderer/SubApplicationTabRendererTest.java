@@ -67,16 +67,16 @@ public class SubApplicationTabRendererTest extends TestCase {
 	 */
 	public void testGetImageTextWidth() {
 
-		SubApplicationTabRenderer renderer = new SubApplicationTabRenderer();
+		final SubApplicationTabRenderer renderer = new SubApplicationTabRenderer();
 
 		renderer.setLabel("Hello &World!");
-		int widthWithoutMnemonic = ReflectionUtils.invokeHidden(renderer, "getImageTextWidth", gc);
+		final int widthWithoutMnemonic = ReflectionUtils.invokeHidden(renderer, "getImageTextWidth", gc);
 		renderer.setLabel("Hello World!");
-		int widthWithMnemonic = ReflectionUtils.invokeHidden(renderer, "getImageTextWidth", gc);
+		final int widthWithMnemonic = ReflectionUtils.invokeHidden(renderer, "getImageTextWidth", gc);
 		assertEquals(widthWithoutMnemonic, widthWithMnemonic);
 
 		renderer.setIcon(null);
-		int widthWithoutIcon = ReflectionUtils.invokeHidden(renderer, "getImageTextWidth", gc);
+		final int widthWithoutIcon = ReflectionUtils.invokeHidden(renderer, "getImageTextWidth", gc);
 		renderer.setIcon("eclipse.gif");
 		int widthWithIcon = ReflectionUtils.invokeHidden(renderer, "getImageTextWidth", gc);
 		assertEquals(widthWithoutIcon, widthWithIcon);
@@ -92,7 +92,7 @@ public class SubApplicationTabRendererTest extends TestCase {
 	 */
 	private class MyLnf extends RienaDefaultLnf {
 
-		public void setShowIcon(boolean show) {
+		public void setShowIcon(final boolean show) {
 			putLnfSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, show);
 		}
 

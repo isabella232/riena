@@ -37,33 +37,34 @@ public class SnippetComboRidget002 {
 		YES, NO, MAYBE
 	}
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setLayout(new GridLayout(2, false));
 			shell.setText(SnippetComboRidget002.class.getSimpleName());
 
 			UIControlsFactory.createLabel(shell, "ComboRidget:"); //$NON-NLS-1$
-			Combo combo = UIControlsFactory.createCombo(shell);
+			final Combo combo = UIControlsFactory.createCombo(shell);
 
 			UIControlsFactory.createLabel(shell, "Selection:"); //$NON-NLS-1$
-			Label label = UIControlsFactory.createLabel(shell, ""); //$NON-NLS-1$
+			final Label label = UIControlsFactory.createLabel(shell, ""); //$NON-NLS-1$
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(label);
 
-			IComboRidget comboRidget = (IComboRidget) SwtRidgetFactory.createRidget(combo);
-			WritableList values = new WritableList(Arrays.asList(Answer.YES, Answer.NO, Answer.MAYBE), Answer.class);
-			WritableValue selection = new WritableValue(Answer.YES, Answer.class);
+			final IComboRidget comboRidget = (IComboRidget) SwtRidgetFactory.createRidget(combo);
+			final WritableList values = new WritableList(Arrays.asList(Answer.YES, Answer.NO, Answer.MAYBE),
+					Answer.class);
+			final WritableValue selection = new WritableValue(Answer.YES, Answer.class);
 
-			ConverterFactory<?, ?> factory = new ConverterFactory<Answer, String>(Answer.class, String.class).add(
-					Answer.YES, "Yes").add(Answer.NO, "No").add(Answer.MAYBE, "Maybe").add(null, ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			final ConverterFactory<?, ?> factory = new ConverterFactory<Answer, String>(Answer.class, String.class)
+					.add(Answer.YES, "Yes").add(Answer.NO, "No").add(Answer.MAYBE, "Maybe").add(null, ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			comboRidget.setModelToUIControlConverter(factory.createFromToConverter());
 			comboRidget.setUIControlToModelConverter(factory.createToFromConverter());
 			comboRidget.bindToModel(values, Answer.class, null, selection);
 			comboRidget.updateFromModel();
 
-			DataBindingContext dbc = new DataBindingContext();
+			final DataBindingContext dbc = new DataBindingContext();
 			dbc.bindValue(SWTObservables.observeText(label), selection);
 
 			shell.pack();

@@ -52,7 +52,7 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 		private int asyncExecCalls = 0;
 
 		@Override
-		public void syncExec(Runnable runnable) {
+		public void syncExec(final Runnable runnable) {
 			try {
 				runnable.run();
 			} finally {
@@ -61,7 +61,7 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 		}
 
 		@Override
-		public void asyncExec(Runnable runnable) {
+		public void asyncExec(final Runnable runnable) {
 			new Thread(runnable).start();
 			asyncExecCalls++;
 		}
@@ -71,7 +71,7 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 		}
 
 		@Override
-		protected void create(DeviceData data) {
+		protected void create(final DeviceData data) {
 		}
 
 		@Override
@@ -86,14 +86,14 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 	}
 
 	private static class DummyJob implements Runnable {
-		private AtomicBoolean done = new AtomicBoolean(false);
+		private final AtomicBoolean done = new AtomicBoolean(false);
 		private long sleepTime = 0;
-		private CountDownLatch latch = new CountDownLatch(1);
+		private final CountDownLatch latch = new CountDownLatch(1);
 
 		public void run() {
 			try {
 				Thread.sleep(sleepTime);
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				e.printStackTrace();
 			}
 			done.set(true);
@@ -108,11 +108,11 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 			return;
 		}
 		final MockDisplay mockDisplay = new MockDisplay();
-		DummyJob job = new DummyJob();
+		final DummyJob job = new DummyJob();
 		job.sleepTime = 4000;
 		provideDisplay.set(false);
 
-		SwtUISynchronizer synchronizer = new SwtUISynchronizer() {
+		final SwtUISynchronizer synchronizer = new SwtUISynchronizer() {
 
 			@Override
 			public Display getDisplay() {
@@ -127,13 +127,13 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 		};
 		long start = System.currentTimeMillis();
 		synchronizer.asyncExec(job);
-		long end = System.currentTimeMillis();
+		final long end = System.currentTimeMillis();
 		assertTrue(end - start < job.sleepTime);
 		// as the display does not yet exist the job must not done
 		assertFalse(job.done.get());
 
-		Timer timer = new Timer();
-		long taskDelay = 3000;
+		final Timer timer = new Timer();
+		final long taskDelay = 3000;
 		timer.schedule(new TimerTask() {
 
 			@Override
@@ -149,7 +149,7 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 		try {
 			// wait for the job to concurrently execute
 			assertCalls = job.latch.await(10000, TimeUnit.MILLISECONDS);
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			e.printStackTrace();
 		}
 
@@ -171,7 +171,7 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 		job.sleepTime = 4000;
 		provideDisplay.set(false);
 
-		SwtUISynchronizer synchronizer = new SwtUISynchronizer() {
+		final SwtUISynchronizer synchronizer = new SwtUISynchronizer() {
 
 			@Override
 			public Display getDisplay() {
@@ -189,8 +189,8 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 		job.sleepTime = 4000;
 		provideDisplay.set(false);
 
-		Timer timer = new Timer();
-		long taskDelay = 5000;
+		final Timer timer = new Timer();
+		final long taskDelay = 5000;
 		timer.schedule(new TimerTask() {
 
 			@Override
@@ -199,7 +199,7 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 			}
 		}, taskDelay);
 
-		long start = System.currentTimeMillis();
+		final long start = System.currentTimeMillis();
 		synchronizer.syncExec(job);
 		// this thread has been waiting for execution of the job (syncExec),
 		// ie the job must be done and syncExec must have been called
@@ -217,7 +217,7 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 		final MockDisplay mockDisplay = new MockDisplay();
 		provideDisplay.set(false);
 
-		SwtUISynchronizer synchronizer = new SwtUISynchronizer() {
+		final SwtUISynchronizer synchronizer = new SwtUISynchronizer() {
 			@Override
 			public Display getDisplay() {
 				return provideDisplay.get() ? mockDisplay : null;
@@ -231,8 +231,8 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 
 		provideDisplay.set(false);
 
-		Timer timer = new Timer();
-		long taskDelay = 5000;
+		final Timer timer = new Timer();
+		final long taskDelay = 5000;
 
 		timer.schedule(new TimerTask() {
 
@@ -241,8 +241,8 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 				provideDisplay.set(true);
 			}
 		}, taskDelay);
-		List<DummyJob> jobs = new ArrayList<DummyJob>();
-		DummyJob exceptionJob = new DummyJob() {
+		final List<DummyJob> jobs = new ArrayList<DummyJob>();
+		final DummyJob exceptionJob = new DummyJob() {
 			@Override
 			public void run() {
 				super.run();
@@ -253,20 +253,20 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 		synchronizer.asyncExec(exceptionJob);
 		mockDisplay.asyncExecCalls = 0;
 		for (int i = 0; i < 25; i++) {
-			DummyJob jobI = new DummyJob();
+			final DummyJob jobI = new DummyJob();
 			jobs.add(jobI);
 			synchronizer.asyncExec(jobI);
 			try {
 				Thread.sleep(80);
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 		assertNotNull(ReflectionUtils.getHidden(synchronizer, "displayObserver"));
-		for (DummyJob dummyJob : jobs) {
+		for (final DummyJob dummyJob : jobs) {
 			try {
 				dummyJob.latch.await(25 * 80 + taskDelay + 5000, TimeUnit.MILLISECONDS);
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
@@ -274,14 +274,14 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 		assertNull(ReflectionUtils.getHidden(synchronizer, "displayObserver"));
 
 		// all jobs must be done by now
-		for (DummyJob job : jobs) {
+		for (final DummyJob job : jobs) {
 			assertTrue(job.done.get());
 		}
 	}
 
 	public void testSyncExec() {
 		final MockDisplay mockDisplay = new MockDisplay();
-		SwtUISynchronizer synchronizer = new SwtUISynchronizer() {
+		final SwtUISynchronizer synchronizer = new SwtUISynchronizer() {
 			@Override
 			public Display getDisplay() {
 				return mockDisplay;
@@ -300,7 +300,7 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 
 	public void testAsyncExec() {
 		final MockDisplay mockDisplay = new MockDisplay();
-		SwtUISynchronizer synchronizer = new SwtUISynchronizer() {
+		final SwtUISynchronizer synchronizer = new SwtUISynchronizer() {
 			@Override
 			public Display getDisplay() {
 				return mockDisplay;

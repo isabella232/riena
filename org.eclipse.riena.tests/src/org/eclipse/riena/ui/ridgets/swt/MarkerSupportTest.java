@@ -83,11 +83,11 @@ public class MarkerSupportTest extends RienaTestCase {
 	 *             handled by JUnit
 	 */
 	public void testCreateErrorDecoration() throws Exception {
-		RienaDefaultLnf originalLnf = LnfManager.getLnf();
-		DefaultRealm realm = new DefaultRealm();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
+		final DefaultRealm realm = new DefaultRealm();
 		try {
 			final Text text = new Text(shell, SWT.NONE);
-			ITextRidget ridget = new TextRidget();
+			final ITextRidget ridget = new TextRidget();
 			ridget.setUIControl(text);
 			MarkerSupport support = new MarkerSupport(ridget, null);
 
@@ -110,20 +110,21 @@ public class MarkerSupportTest extends RienaTestCase {
 	}
 
 	private static boolean getHideDisabledRidgetContent() throws IOException {
-		MarkSupportClassLoader freshLoader = new MarkSupportClassLoader();
-		Class<?> markerSupportClass = freshLoader.getFreshMarkSupportClass();
+		final MarkSupportClassLoader freshLoader = new MarkSupportClassLoader();
+		final Class<?> markerSupportClass = freshLoader.getFreshMarkSupportClass();
 		return ReflectionUtils.getHidden(markerSupportClass, HIDE_DISABLED_RIDGET_CONTENT);
 	}
 
 	public void testDisabledMarker() throws Exception {
-		DefaultRealm realm = new DefaultRealm();
+		final DefaultRealm realm = new DefaultRealm();
 		try {
 			final Label control = new Label(shell, SWT.NONE);
 
-			LabelRidget ridget = new LabelRidget();
+			final LabelRidget ridget = new LabelRidget();
 			ridget.setUIControl(control);
-			BasicMarkerSupport msup = ReflectionUtils.invokeHidden(ridget, "createMarkerSupport");
-			Object visualizer = ReflectionUtils.invokeHidden(msup, "getDisabledMarkerVisualizer", (Object[]) null);
+			final BasicMarkerSupport msup = ReflectionUtils.invokeHidden(ridget, "createMarkerSupport");
+			final Object visualizer = ReflectionUtils
+					.invokeHidden(msup, "getDisabledMarkerVisualizer", (Object[]) null);
 
 			assertNotNull(visualizer);
 
@@ -141,17 +142,17 @@ public class MarkerSupportTest extends RienaTestCase {
 
 	public void testClearAllMarkes() {
 
-		DefaultRealm realm = new DefaultRealm();
+		final DefaultRealm realm = new DefaultRealm();
 		try {
 
-			Text control = new Text(shell, SWT.NONE);
+			final Text control = new Text(shell, SWT.NONE);
 			shell.setVisible(true);
-			Color background = control.getBackground();
-			Color foreground = control.getForeground();
+			final Color background = control.getBackground();
+			final Color foreground = control.getForeground();
 
-			ITextRidget ridget = new TextRidget();
+			final ITextRidget ridget = new TextRidget();
 			ridget.setUIControl(control);
-			MyMarkerSupport markerSupport = new MyMarkerSupport();
+			final MyMarkerSupport markerSupport = new MyMarkerSupport();
 			markerSupport.init(ridget, null);
 
 			ridget.addMarker(new MandatoryMarker());
@@ -177,7 +178,7 @@ public class MarkerSupportTest extends RienaTestCase {
 
 			ridget.addMarker(new ErrorMarker());
 			markerSupport.updateMarkers();
-			ControlDecoration errorDecoration = ReflectionUtils.getHidden(markerSupport, "errorDecoration");
+			final ControlDecoration errorDecoration = ReflectionUtils.getHidden(markerSupport, "errorDecoration");
 			assertNotNull(errorDecoration);
 			assertTrue(errorDecoration.isVisible());
 
@@ -204,16 +205,16 @@ public class MarkerSupportTest extends RienaTestCase {
 		}
 
 		public Class<?> getFreshMarkSupportClass() throws IOException {
-			String resource = MarkerSupport.class.getName().replace('.', '/') + ".class";
-			URL classURL = MarkerSupportTest.class.getClassLoader().getResource(resource);
-			InputStream is = classURL.openStream();
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			final String resource = MarkerSupport.class.getName().replace('.', '/') + ".class";
+			final URL classURL = MarkerSupportTest.class.getClassLoader().getResource(resource);
+			final InputStream is = classURL.openStream();
+			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			int ch = -1;
 			while ((ch = is.read()) != -1) {
 				baos.write(ch);
 			}
-			byte[] bytes = baos.toByteArray();
-			Class<?> cl = super.defineClass(MarkerSupport.class.getName(), bytes, 0, bytes.length);
+			final byte[] bytes = baos.toByteArray();
+			final Class<?> cl = super.defineClass(MarkerSupport.class.getName(), bytes, 0, bytes.length);
 			resolveClass(cl);
 			return cl;
 		}
@@ -239,9 +240,10 @@ public class MarkerSupportTest extends RienaTestCase {
 		@Override
 		protected void initializeTheme() {
 			super.initializeTheme();
-			Map<String, ILnfResource> resourceTable = ReflectionUtils.getHidden(MyNonsenseLnf.this, "resourceTable");
+			final Map<String, ILnfResource> resourceTable = ReflectionUtils.getHidden(MyNonsenseLnf.this,
+					"resourceTable");
 			resourceTable.clear();
-			Map<String, Object> settingTable = ReflectionUtils.getHidden(MyNonsenseLnf.this, "settingTable");
+			final Map<String, Object> settingTable = ReflectionUtils.getHidden(MyNonsenseLnf.this, "settingTable");
 			settingTable.clear();
 		}
 
@@ -254,7 +256,7 @@ public class MarkerSupportTest extends RienaTestCase {
 	private static class MyMarkerSupport extends MarkerSupport {
 
 		@Override
-		public void clearAllMarkers(Control control) {
+		public void clearAllMarkers(final Control control) {
 			super.clearAllMarkers(control);
 		}
 

@@ -32,12 +32,12 @@ public class MenuItemMarkerSupportTest extends TestCase {
 	 */
 	public void testUpdateMarkers() {
 
-		Shell shell = new Shell();
-		Menu menu = new Menu(shell, SWT.NONE);
-		MenuItem item = new MenuItem(menu, SWT.NONE);
-		MenuItemRidget ridget = new MenuItemRidget();
+		final Shell shell = new Shell();
+		final Menu menu = new Menu(shell, SWT.NONE);
+		final MenuItem item = new MenuItem(menu, SWT.NONE);
+		final MenuItemRidget ridget = new MenuItemRidget();
 
-		MenuItemMarkerSupport markerSupport = new MenuItemMarkerSupport(ridget, null);
+		final MenuItemMarkerSupport markerSupport = new MenuItemMarkerSupport(ridget, null);
 		ridget.setEnabled(false);
 		assertTrue(item.isEnabled());
 
@@ -54,15 +54,15 @@ public class MenuItemMarkerSupportTest extends TestCase {
 	 */
 	public void testUpdateVisible() {
 
-		Shell shell = new Shell();
-		Menu menu = new Menu(shell, SWT.NONE);
-		MenuItem item = new MenuItem(menu, SWT.CASCADE);
-		Menu menu2 = new Menu(shell, SWT.DROP_DOWN);
+		final Shell shell = new Shell();
+		final Menu menu = new Menu(shell, SWT.NONE);
+		final MenuItem item = new MenuItem(menu, SWT.CASCADE);
+		final Menu menu2 = new Menu(shell, SWT.DROP_DOWN);
 		item.setMenu(menu2);
-		MenuRidget ridget = new MenuRidget();
+		final MenuRidget ridget = new MenuRidget();
 		ridget.setUIControl(item);
 
-		MenuItemMarkerSupport markerSupport = new MenuItemMarkerSupport(ridget, null);
+		final MenuItemMarkerSupport markerSupport = new MenuItemMarkerSupport(ridget, null);
 		ridget.setVisible(false);
 
 		ReflectionUtils.invokeHidden(markerSupport, "updateVisible", item);

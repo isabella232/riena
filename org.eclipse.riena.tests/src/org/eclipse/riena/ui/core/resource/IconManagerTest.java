@@ -25,7 +25,7 @@ public class IconManagerTest extends TestCase {
 	 */
 	public void testGetIconID() {
 
-		IIconManager manager = new IconManager();
+		final IIconManager manager = new IconManager();
 
 		String iconID = manager.getIconID(null, null, null);
 		assertNull(iconID);
@@ -34,7 +34,7 @@ public class IconManagerTest extends TestCase {
 		assertNull(iconID);
 
 		iconID = manager.getIconID("star", IconSize.B22, IconState.HOVER);
-		String expectedID = "star" + IconState.HOVER.getDefaultMapping() + IconSize.B22.getDefaultMapping();
+		final String expectedID = "star" + IconState.HOVER.getDefaultMapping() + IconSize.B22.getDefaultMapping();
 		assertEquals(expectedID, iconID);
 
 	}
@@ -44,7 +44,7 @@ public class IconManagerTest extends TestCase {
 	 */
 	public void testGetName() {
 
-		IIconManager manager = new IconManager();
+		final IIconManager manager = new IconManager();
 		String name = manager.getName(null);
 		assertNull(name);
 
@@ -66,7 +66,7 @@ public class IconManagerTest extends TestCase {
 	 */
 	public void testGetSize() {
 
-		IIconManager manager = new IconManager();
+		final IIconManager manager = new IconManager();
 		IconSize size = manager.getSize(null);
 		assertNull(size);
 
@@ -92,7 +92,7 @@ public class IconManagerTest extends TestCase {
 	 */
 	public void testGetState() {
 
-		IIconManager manager = new IconManager();
+		final IIconManager manager = new IconManager();
 		IconState state = manager.getState(null);
 		assertNull(state);
 
@@ -118,7 +118,7 @@ public class IconManagerTest extends TestCase {
 	 */
 	public void testHasExtension() {
 
-		IIconManager manager = new IconManager();
+		final IIconManager manager = new IconManager();
 
 		String abc = "123";
 		assertFalse(manager.hasExtension(abc));

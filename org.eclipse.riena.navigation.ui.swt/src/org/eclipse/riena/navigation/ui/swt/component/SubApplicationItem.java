@@ -12,18 +12,19 @@ package org.eclipse.riena.navigation.ui.swt.component;
 
 import java.util.Collection;
 
-import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+
+import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 
 /**
  * An item of a sub-application, used by the sub-application switcher.
  */
 public class SubApplicationItem {
 
-	private Composite parent;
-	private ISubApplicationNode subApplicationNode;
+	private final Composite parent;
+	private final ISubApplicationNode subApplicationNode;
 	private Rectangle bounds;
 	private String label;
 	private String icon;
@@ -32,12 +33,12 @@ public class SubApplicationItem {
 	 * Constructs a new instance of this class.
 	 * 
 	 * @param parent
-	 *            switcher for sub-applications which will be the parent of
-	 *            the new instance
+	 *            switcher for sub-applications which will be the parent of the
+	 *            new instance
 	 * @param subApplicationNode
 	 *            node of the sub-application (model)
 	 */
-	public SubApplicationItem(Composite parent, ISubApplicationNode subApplicationNode) {
+	public SubApplicationItem(final Composite parent, final ISubApplicationNode subApplicationNode) {
 		this.parent = parent;
 		this.subApplicationNode = subApplicationNode;
 		bounds = new Rectangle(0, 0, 0, 0);
@@ -81,7 +82,7 @@ public class SubApplicationItem {
 	 * @param bounds
 	 *            the bounds to set
 	 */
-	public void setBounds(Rectangle bounds) {
+	public void setBounds(final Rectangle bounds) {
 		this.bounds = bounds;
 	}
 
@@ -103,7 +104,7 @@ public class SubApplicationItem {
 	 * @param label
 	 *            the label to set
 	 */
-	public void setLabel(String label) {
+	public void setLabel(final String label) {
 		this.label = label;
 	}
 
@@ -118,7 +119,7 @@ public class SubApplicationItem {
 	 * @param icon
 	 *            the icon to set
 	 */
-	public void setIcon(String icon) {
+	public void setIcon(final String icon) {
 		this.icon = icon;
 	}
 
@@ -138,7 +139,7 @@ public class SubApplicationItem {
 	 *            the type of markers.
 	 * @return markers corresponding to a certain type.
 	 */
-	public <T extends IMarker> Collection<T> getMarkersOfType(Class<T> type) {
+	public <T extends IMarker> Collection<T> getMarkersOfType(final Class<T> type) {
 		return getSubApplicationNode().getMarkersOfType(type);
 	}
 

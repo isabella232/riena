@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Spacer or separator between the composites of the status line.
@@ -30,7 +31,7 @@ public class StatuslineSpacer extends AbstractStatuslineComposite {
 	 * @param parent
 	 * @param style
 	 */
-	public StatuslineSpacer(Composite parent, int style) {
+	public StatuslineSpacer(final Composite parent, final int style) {
 		super(parent, style | SWT.NO_FOCUS);
 
 	}

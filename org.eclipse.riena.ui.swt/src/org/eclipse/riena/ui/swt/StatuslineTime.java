@@ -37,16 +37,16 @@ public class StatuslineTime extends AbstractStatuslineComposite {
 	 * Creates a new instance of <code>StatuslineTime</code>.
 	 * 
 	 * @param parent
-	 *            a widget which will be the parent of the new instance
-	 *            (cannot be null)
+	 *            a widget which will be the parent of the new instance (cannot
+	 *            be null)
 	 * @param style
 	 *            the style of widget to construct
 	 */
-	public StatuslineTime(Composite parent, int style) {
+	public StatuslineTime(final Composite parent, final int style) {
 
 		super(parent, style | SWT.NO_FOCUS);
 		timer = new Timer();
-		StatuslineUpdateTask task = new StatuslineUpdateTask();
+		final StatuslineUpdateTask task = new StatuslineUpdateTask();
 		timer.scheduleAtFixedRate(task, 0, 1000);
 
 	}
@@ -103,7 +103,7 @@ public class StatuslineTime extends AbstractStatuslineComposite {
 			date = new Date();
 		}
 		date.setTime(System.currentTimeMillis());
-		String timeStrg = getFormat().format(date);
+		final String timeStrg = getFormat().format(date);
 		if ((timeLabel != null) && (!timeLabel.isDisposed())) {
 			timeLabel.setText(timeStrg);
 		}

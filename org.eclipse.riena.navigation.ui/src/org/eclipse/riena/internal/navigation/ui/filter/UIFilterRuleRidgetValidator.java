@@ -43,7 +43,8 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator i
 	 * @param validationTime
 	 *            time of validation
 	 */
-	public UIFilterRuleRidgetValidator(String ridgetIdPattern, IValidator validator, ValidationTime validationTime) {
+	public UIFilterRuleRidgetValidator(final String ridgetIdPattern, final IValidator validator,
+			final ValidationTime validationTime) {
 		super(validator, validationTime);
 		this.ridgetIdPattern = ridgetIdPattern;
 	}
@@ -65,7 +66,7 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator i
 	 * 
 	 * @see org.eclipse.riena.ui.internal.IUIFilterRule.IUIFilterAttribute#matches(java.lang.Object)
 	 */
-	public boolean matches(Object... args) {
+	public boolean matches(final Object... args) {
 		if ((args == null) || (args.length <= 0)) {
 			return false;
 		}
@@ -78,10 +79,10 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator i
 	 * 
 	 * @see org.eclipse.riena.ui.internal.IUIFilterRule.IUIFilterAttribute#apply(java.lang.Object)
 	 */
-	public void apply(Object object) {
+	public void apply(final Object object) {
 
 		if (object instanceof IEditableRidget) {
-			IEditableRidget editableRidget = (IEditableRidget) object;
+			final IEditableRidget editableRidget = (IEditableRidget) object;
 			editableRidget.addValidationRule(getValidator(), getValidationTime());
 			editableRidget.updateFromModel();
 		}
@@ -94,17 +95,17 @@ public class UIFilterRuleRidgetValidator extends AbstractUIFilterRuleValidator i
 	 * 
 	 * @see org.eclipse.riena.ui.internal.IUIFilterRule.IUIFilterAttribute#remove(java.lang.Object)
 	 */
-	public void remove(Object object) {
+	public void remove(final Object object) {
 
 		if (object instanceof IEditableRidget) {
-			IEditableRidget editableRidget = (IEditableRidget) object;
+			final IEditableRidget editableRidget = (IEditableRidget) object;
 			editableRidget.removeValidationRule(getValidator());
 			editableRidget.updateFromModel();
 		}
 
 	}
 
-	public void setId(String idPattern) {
+	public void setId(final String idPattern) {
 		this.ridgetIdPattern = idPattern;
 		matcher = null;
 	}

@@ -25,7 +25,7 @@ public class SessionEntry {
 	/** <code>session</code> */
 	private Session session;
 	/** <code>principals</code> */
-	private Set<Principal> principalSet;
+	private final Set<Principal> principalSet;
 
 	private boolean valid;
 
@@ -36,10 +36,10 @@ public class SessionEntry {
 	 * @param principal
 	 * @param credential
 	 */
-	public SessionEntry(Session session, Principal[] principals) {
+	public SessionEntry(final Session session, final Principal[] principals) {
 		this.session = session;
 		principalSet = new HashSet<Principal>();
-		for (Principal p : principals) {
+		for (final Principal p : principals) {
 			principalSet.add(p);
 		}
 		this.valid = true;
@@ -56,7 +56,7 @@ public class SessionEntry {
 	 * @param session
 	 *            The session to set.
 	 */
-	public void setSession(Session session) {
+	public void setSession(final Session session) {
 		this.session = session;
 	}
 
@@ -77,7 +77,7 @@ public class SessionEntry {
 	/**
 	 * @param valid
 	 */
-	public void setValid(boolean valid) {
+	public void setValid(final boolean valid) {
 		this.valid = valid;
 	}
 }

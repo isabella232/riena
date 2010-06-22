@@ -60,12 +60,12 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	@Override
 	protected void setUp() throws Exception {
 
-		Display display = Display.getDefault();
+		final Display display = Display.getDefault();
 		shell = new Shell(display);
 		shell.pack();
 		shell.setVisible(true);
 
-		Realm realm = SWTObservables.getRealm(display);
+		final Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 
@@ -87,12 +87,12 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	 */
 	public void testAddRidget() {
 
-		LabelRidget ridget = new LabelRidget();
+		final LabelRidget ridget = new LabelRidget();
 		controller.addRidget("4711", ridget);
 		assertNotNull(controller.getRidgets());
 		assertEquals(1, controller.getRidgets().size());
 
-		PropertyChangeSupport support = ReflectionUtils.getHidden(ridget, "propertyChangeSupport");
+		final PropertyChangeSupport support = ReflectionUtils.getHidden(ridget, "propertyChangeSupport");
 		assertNotNull(support.getPropertyChangeListeners());
 		assertEquals(2, support.getPropertyChangeListeners().length);
 
@@ -103,7 +103,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	 */
 	public void testUpdateNavigationNodeMarkers() {
 
-		TextRidget ridget = new TextRidget();
+		final TextRidget ridget = new TextRidget();
 		ridget.setUIControl(new Text(shell, 0));
 		ridget.addMarker(new ErrorMarker());
 		controller.addRidget("4711", ridget);
@@ -131,19 +131,19 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	 */
 	public void testGetRidgetMarkers() {
 
-		TextRidget ridget = new TextRidget();
+		final TextRidget ridget = new TextRidget();
 		ridget.setUIControl(new Text(shell, 0));
 		controller.addRidget("4711", ridget);
-		TextRidget ridget2 = new TextRidget();
+		final TextRidget ridget2 = new TextRidget();
 		ridget2.setUIControl(new Text(shell, 0));
 		controller.addRidget("0815", ridget2);
 
 		Collection<IMarker> markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", (Object[]) null);
 		assertNotNull(markers);
 
-		ErrorMarker errorMarker = new ErrorMarker();
+		final ErrorMarker errorMarker = new ErrorMarker();
 		ridget.addMarker(errorMarker);
-		OutputMarker outputMarker = new OutputMarker();
+		final OutputMarker outputMarker = new OutputMarker();
 		ridget2.addMarker(outputMarker);
 		markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", (Object[]) null);
 		assertNotNull(markers);
@@ -151,12 +151,12 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		assertTrue(markers.contains(errorMarker));
 		assertTrue(markers.contains(outputMarker));
 
-		CompositeRidget compositeRidget = new CompositeRidget();
-		TextRidget ridget3 = new TextRidget();
+		final CompositeRidget compositeRidget = new CompositeRidget();
+		final TextRidget ridget3 = new TextRidget();
 		ridget3.setUIControl(new Text(shell, 0));
 		compositeRidget.addRidget("label3", ridget3);
 		controller.addRidget("comp", compositeRidget);
-		MandatoryMarker mandatoryMarker = new MandatoryMarker();
+		final MandatoryMarker mandatoryMarker = new MandatoryMarker();
 		ridget3.addMarker(mandatoryMarker);
 		markers = ReflectionUtils.invokeHidden(controller, "getRidgetMarkers", (Object[]) null);
 		assertNotNull(markers);
@@ -173,7 +173,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		try {
 			ridget = controller.getRidget(IMockRidget.class, "myMockInterface");
 			fail("BindingException expected");
-		} catch (BindingException e) {
+		} catch (final BindingException e) {
 			ok("BindingException expected");
 		} finally {
 			System.getProperties().put(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false"); //$NON-NLS-1$
@@ -185,17 +185,17 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	 */
 	public void testHiddenAndDisabledMarkersBlockAllRidgetMarkers() throws Exception {
 
-		TextRidget ridget = new TextRidget();
+		final TextRidget ridget = new TextRidget();
 		ridget.setUIControl(new Text(shell, 0));
 		controller.addRidget("4711", ridget);
-		TextRidget ridget2 = new TextRidget();
+		final TextRidget ridget2 = new TextRidget();
 		ridget2.setUIControl(new Text(shell, 0));
 		controller.addRidget("0815", ridget2);
 
-		IMarker errorMarker = new ErrorMarker();
-		IMarker mandatoryMarker = new MandatoryMarker();
-		IMarker hiddenMarker = new HiddenMarker();
-		IMarker disabledMarker = new DisabledMarker();
+		final IMarker errorMarker = new ErrorMarker();
+		final IMarker mandatoryMarker = new MandatoryMarker();
+		final IMarker hiddenMarker = new HiddenMarker();
+		final IMarker disabledMarker = new DisabledMarker();
 
 		ridget.addMarker(errorMarker);
 		ridget.addMarker(mandatoryMarker);
@@ -236,13 +236,13 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	 * {@link INavigationNodeController#navigationArgumentChanged(NavigationArgument)}
 	 */
 	public void testNavigationArgumentChanged() throws Exception {
-		ModuleNode module = new ModuleNode(new NavigationNodeId("myModuleNode"));
+		final ModuleNode module = new ModuleNode(new NavigationNodeId("myModuleNode"));
 		module.setNavigationProcessor(navigationProcessor);
 		module.addChild(node);
-		SubModuleNode node2 = new SubModuleNode();
+		final SubModuleNode node2 = new SubModuleNode();
 		module.addChild(node2);
 		node2.activate();
-		NavigationArgument arg = new NavigationArgument(new Object());
+		final NavigationArgument arg = new NavigationArgument(new Object());
 
 		assertNull(controller.lastArgument);
 		node2.navigate(new NavigationNodeId(subModule1TypeId), arg);
@@ -255,7 +255,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 
 		NavigationArgument lastArgument = null;
 
-		public MyNavigationNodeController(ISubModuleNode navigationNode) {
+		public MyNavigationNodeController(final ISubModuleNode navigationNode) {
 			super(navigationNode);
 		}
 
@@ -265,7 +265,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		}
 
 		@Override
-		public void navigationArgumentChanged(NavigationArgument argument) {
+		public void navigationArgumentChanged(final NavigationArgument argument) {
 			lastArgument = argument;
 		}
 
@@ -287,39 +287,41 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 			return null;
 		}
 
-		public void setUIControl(Object uiControl) {
+		public void setUIControl(final Object uiControl) {
 		}
 
-		public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		public void addPropertyChangeListener(final String propertyName,
+				final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
 		}
 
-		public void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener) {
+		public void removePropertyChangeListener(final String propertyName,
+				final PropertyChangeListener propertyChangeListener) {
 		}
 
 		public boolean isVisible() {
 			return false;
 		}
 
-		public void setVisible(boolean visible) {
+		public void setVisible(final boolean visible) {
 		}
 
 		public boolean isEnabled() {
 			return false;
 		}
 
-		public void setEnabled(boolean enabled) {
+		public void setEnabled(final boolean enabled) {
 		}
 
-		public void addFocusListener(IFocusListener listener) {
+		public void addFocusListener(final IFocusListener listener) {
 		}
 
-		public void removeFocusListener(IFocusListener listener) {
+		public void removeFocusListener(final IFocusListener listener) {
 		}
 
 		public void updateFromModel() {
@@ -336,21 +338,21 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 			return false;
 		}
 
-		public void setFocusable(boolean focusable) {
+		public void setFocusable(final boolean focusable) {
 		}
 
 		public String getToolTipText() {
 			return null;
 		}
 
-		public void setToolTipText(String toolTipText) {
+		public void setToolTipText(final String toolTipText) {
 		}
 
 		public boolean isBlocked() {
 			return false;
 		}
 
-		public void setBlocked(boolean blocked) {
+		public void setBlocked(final boolean blocked) {
 		}
 
 		public String getID() {

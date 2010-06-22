@@ -40,8 +40,8 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected MenuItem createWidget(Composite parent) {
-		Menu menu = new Menu(parent);
+	protected MenuItem createWidget(final Composite parent) {
+		final Menu menu = new Menu(parent);
 		return new MenuItem(menu, SWT.NONE);
 	}
 
@@ -82,22 +82,22 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testMenuItemRidget() {
 
-		MenuItemRidget item = new MenuItemRidget();
-		boolean textAlreadyInitialized = ReflectionUtils.getHidden(item, "textAlreadyInitialized");
+		final MenuItemRidget item = new MenuItemRidget();
+		final boolean textAlreadyInitialized = ReflectionUtils.getHidden(item, "textAlreadyInitialized");
 		assertFalse(textAlreadyInitialized);
-		boolean useRidgetIcon = ReflectionUtils.getHidden(item, "useRidgetIcon");
+		final boolean useRidgetIcon = ReflectionUtils.getHidden(item, "useRidgetIcon");
 		assertFalse(useRidgetIcon);
 
 	}
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(MenuItemRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public final void testSetText() throws Exception {
-		MenuItemRidget ridget = getRidget();
-		MenuItem widget = getWidget();
+		final MenuItemRidget ridget = getRidget();
+		final MenuItem widget = getWidget();
 
 		ridget.setText("");
 
@@ -107,7 +107,7 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setText(null);
 			fail();
-		} catch (IllegalArgumentException iae) {
+		} catch (final IllegalArgumentException iae) {
 			ok();
 		}
 
@@ -133,8 +133,8 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public final void testSetIcon() {
 
-		MenuItemRidget ridget = getRidget();
-		MenuItem widget = ridget.getUIControl();
+		final MenuItemRidget ridget = getRidget();
+		final MenuItem widget = ridget.getUIControl();
 
 		ridget.setIcon(ICON_ECLIPSE);
 
@@ -147,7 +147,7 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 		assertNull(widget.getImage());
 
 		MenuItem button = createWidget(getShell());
-		Image buttonImage = button.getDisplay().getSystemImage(SWT.ICON_INFORMATION);
+		final Image buttonImage = button.getDisplay().getSystemImage(SWT.ICON_INFORMATION);
 		button.setImage(buttonImage);
 		IActionRidget buttonRidget = createRidget();
 		// binding doesn't remove image of button, because the icon of the ridget is null and the method #setIcon wasn't called yet.
@@ -178,8 +178,8 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 	 * Tests the method {@code initText}
 	 */
 	public void testInitText() {
-		MenuItemRidget ridget = getRidget();
-		MenuItem widget = ridget.getUIControl();
+		final MenuItemRidget ridget = getRidget();
+		final MenuItem widget = ridget.getUIControl();
 
 		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false);
 		ReflectionUtils.setHidden(ridget, "text", null);
@@ -197,11 +197,11 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testAddListener() {
-		MenuItem widget = getWidget();
-		MenuItemRidget ridget = getRidget();
+		final MenuItem widget = getWidget();
+		final MenuItemRidget ridget = getRidget();
 
-		FTActionListener listener1 = new FTActionListener();
-		FTActionListener listener2 = new FTActionListener();
+		final FTActionListener listener1 = new FTActionListener();
+		final FTActionListener listener2 = new FTActionListener();
 
 		ridget.addListener(listener1);
 		ridget.addListener(listener2);
@@ -239,8 +239,8 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	@Override
 	public void testApplyEnabledToUIControl() {
-		IRidget ridget = createRidget();
-		MenuItem item = createWidget(getShell());
+		final IRidget ridget = createRidget();
+		final MenuItem item = createWidget(getShell());
 
 		item.setEnabled(false);
 		ridget.setEnabled(true);

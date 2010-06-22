@@ -34,7 +34,7 @@ public class RowErrorMessageMarker extends ErrorMessageMarker implements IMessag
 	 * @param rowValue
 	 *            the row value to mark; never null
 	 */
-	public RowErrorMessageMarker(String pMessage, Object rowValue) {
+	public RowErrorMessageMarker(final String pMessage, final Object rowValue) {
 		super(pMessage);
 		Assert.isNotNull(rowValue);
 		this.rowValue = rowValue;
@@ -59,7 +59,7 @@ public class RowErrorMessageMarker extends ErrorMessageMarker implements IMessag
 	 * error message is not considered.
 	 */
 	@Override
-	public boolean equals(Object other) {
+	public boolean equals(final Object other) {
 		if (!(other instanceof RowErrorMessageMarker)) {
 			return false;
 		}

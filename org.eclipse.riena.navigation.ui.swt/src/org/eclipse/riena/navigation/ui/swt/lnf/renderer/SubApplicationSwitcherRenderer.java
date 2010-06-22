@@ -40,7 +40,7 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void paint(GC gc, Object value) {
+	public void paint(final GC gc, final Object value) {
 
 		super.paint(gc, value);
 
@@ -53,31 +53,31 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 		Assert.isTrue(value instanceof Control);
 		control = (Control) value;
 
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 
-		SubApplicationTabRenderer tabRenderer = getRenderer();
+		final SubApplicationTabRenderer tabRenderer = getRenderer();
 
 		// calculate width of all tab items
 		int allTabWidth = 0;
-		for (SubApplicationItem item : getVisibleItems()) {
+		for (final SubApplicationItem item : getVisibleItems()) {
 			tabRenderer.setLabel(item.getLabel());
 			tabRenderer.setActive(item.isActivated());
-			Point size = tabRenderer.computeSize(gc, null);
+			final Point size = tabRenderer.computeSize(gc, null);
 			allTabWidth += size.x;
 		}
 
 		// line below tab items
-		Color bottomColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR);
+		final Color bottomColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR);
 		gc.setForeground(bottomColor);
 		int x = 0;
 		int y = getBounds().height - 1;
-		int x2 = getBounds().width;
-		int y2 = y;
+		final int x2 = getBounds().width;
+		final int y2 = y;
 		gc.drawLine(x, y, x2, y2);
 
 		// all NOT active tab items
 		int xPosition = 0;
-		int position = lnf.getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION);
+		final int position = lnf.getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION);
 		if (position == SWT.LEFT) {
 			xPosition = 10;
 		} else if (position == SWT.RIGHT) {
@@ -86,9 +86,9 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 			xPosition = getBounds().width / 2 - allTabWidth / 2;
 		}
 		x = xPosition;
-		for (SubApplicationItem item : getVisibleItems()) {
+		for (final SubApplicationItem item : getVisibleItems()) {
 			initItemRenderer(tabRenderer, item);
-			Point size = tabRenderer.computeSize(gc, null);
+			final Point size = tabRenderer.computeSize(gc, null);
 			y = getBounds().height - size.y;
 			tabRenderer.setBounds(x, y, size.x, size.y);
 			if (!item.isActivated()) {
@@ -100,9 +100,9 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 
 		// active tab item
 		x = xPosition;
-		for (SubApplicationItem item : getVisibleItems()) {
+		for (final SubApplicationItem item : getVisibleItems()) {
 			initItemRenderer(tabRenderer, item);
-			Point size = tabRenderer.computeSize(gc, null);
+			final Point size = tabRenderer.computeSize(gc, null);
 			if (item.isActivated()) {
 				y = getBounds().height - size.y;
 				tabRenderer.setBounds(x, y, size.x, size.y);
@@ -121,9 +121,9 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 	 */
 	private List<SubApplicationItem> getVisibleItems() {
 
-		List<SubApplicationItem> visibleItems = new ArrayList<SubApplicationItem>();
+		final List<SubApplicationItem> visibleItems = new ArrayList<SubApplicationItem>();
 
-		for (SubApplicationItem item : getItems()) {
+		for (final SubApplicationItem item : getItems()) {
 			if (item.getMarkersOfType(HiddenMarker.class).isEmpty()) {
 				visibleItems.add(item);
 			}
@@ -141,7 +141,7 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 	 *            renderer of an item
 	 * @param item
 	 */
-	private void initItemRenderer(SubApplicationTabRenderer tabRenderer, SubApplicationItem item) {
+	private void initItemRenderer(final SubApplicationTabRenderer tabRenderer, final SubApplicationItem item) {
 
 		tabRenderer.setLabel(item.getLabel());
 		tabRenderer.setIcon(item.getIcon());
@@ -154,7 +154,7 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#dispose()
 	 */
 	public void dispose() {
-		for (SubApplicationItem item : getItems()) {
+		for (final SubApplicationItem item : getItems()) {
 			item.dispose();
 		}
 	}
@@ -173,7 +173,7 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 	 * @param items
 	 *            the items to set
 	 */
-	public void setItems(List<SubApplicationItem> items) {
+	public void setItems(final List<SubApplicationItem> items) {
 		this.items = items;
 	}
 

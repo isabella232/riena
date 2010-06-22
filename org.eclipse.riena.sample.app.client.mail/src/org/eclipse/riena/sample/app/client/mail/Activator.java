@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.app.client.mail;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
 import org.osgi.framework.BundleContext;
+
+import org.eclipse.jface.resource.ImageDescriptor;
+
+import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -32,13 +34,13 @@ public class Activator extends AbstractRienaUIPlugin {
 	}
 
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
 	}
@@ -60,7 +62,7 @@ public class Activator extends AbstractRienaUIPlugin {
 	 *            the path
 	 * @return the image descriptor
 	 */
-	public static ImageDescriptor getImageDescriptor(String path) {
+	public static ImageDescriptor getImageDescriptor(final String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 }

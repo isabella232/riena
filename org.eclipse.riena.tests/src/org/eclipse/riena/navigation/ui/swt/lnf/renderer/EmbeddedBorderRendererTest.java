@@ -30,9 +30,9 @@ public class EmbeddedBorderRendererTest extends TestCase {
 	 */
 	public void testComputeInnerBounds() throws Exception {
 
-		Rectangle outerBounds = new Rectangle(12, 24, 36, 48);
-		EmbeddedBorderRenderer renderer = new EmbeddedBorderRenderer();
-		Rectangle innerBounds = renderer.computeInnerBounds(outerBounds);
+		final Rectangle outerBounds = new Rectangle(12, 24, 36, 48);
+		final EmbeddedBorderRenderer renderer = new EmbeddedBorderRenderer();
+		final Rectangle innerBounds = renderer.computeInnerBounds(outerBounds);
 		assertEquals(outerBounds.x + 2, innerBounds.x);
 		assertEquals(outerBounds.y + 2, innerBounds.y);
 		assertEquals(outerBounds.width - 4, innerBounds.width);

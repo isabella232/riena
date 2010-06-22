@@ -27,9 +27,9 @@ public class UIFilterRuleRidgetMandatoryMarkerTest extends TestCase {
 	 */
 	public void testGetMarker() {
 
-		AbstractUIFilterRuleMarker rule = new UIFilterRuleRidgetMandatoryMarker();
-		IMarker marker1 = rule.getMarker();
-		IMarker marker2 = rule.getMarker();
+		final AbstractUIFilterRuleMarker rule = new UIFilterRuleRidgetMandatoryMarker();
+		final IMarker marker1 = rule.getMarker();
+		final IMarker marker2 = rule.getMarker();
 		assertEquals(marker1, marker2);
 		assertNotSame(marker1, marker2);
 

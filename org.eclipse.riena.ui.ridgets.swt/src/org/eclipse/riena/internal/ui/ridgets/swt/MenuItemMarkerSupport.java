@@ -28,7 +28,7 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	 *            ridget of menu item
 	 * @param propertyChangeSupport
 	 */
-	public MenuItemMarkerSupport(MenuItemRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+	public MenuItemMarkerSupport(final MenuItemRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
 	}
 
@@ -54,11 +54,11 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	 * @param item
 	 *            menu item to update
 	 */
-	private void updateDisabled(MenuItem item) {
+	private void updateDisabled(final MenuItem item) {
 		if (item.isDisposed()) {
 			return;
 		}
-		boolean enabled = getRidget().isEnabled();
+		final boolean enabled = getRidget().isEnabled();
 		item.setEnabled(enabled);
 	}
 
@@ -68,7 +68,7 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	 * @param item
 	 *            menu item to update
 	 */
-	private void updateVisible(MenuItem item) {
+	private void updateVisible(final MenuItem item) {
 
 		if (!hasHiddenMarkers()) {
 			getRidget().createItem();
@@ -85,7 +85,7 @@ public class MenuItemMarkerSupport extends AbstractMarkerSupport {
 	 * Updates the menu item to display the current markers.
 	 */
 	private void updateMenuItem() {
-		MenuItem item = getRidget().getUIControl();
+		final MenuItem item = getRidget().getUIControl();
 		if (item != null) {
 			updateVisible(item);
 			if (!item.isDisposed()) {

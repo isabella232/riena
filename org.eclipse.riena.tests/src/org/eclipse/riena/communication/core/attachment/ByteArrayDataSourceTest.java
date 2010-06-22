@@ -37,7 +37,7 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 		super.setUp();
 	}
 
-	private void setUpDataSourceMock(int length) throws Exception {
+	private void setUpDataSourceMock(final int length) throws Exception {
 		dataSourceMock = EasyMock.createMock(IDataSource.class);
 
 		EasyMock.expect(dataSourceMock.getName()).andReturn(NAME);
@@ -46,8 +46,8 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 		EasyMock.replay(dataSourceMock);
 	}
 
-	private InputStream getInputStream(int length) {
-		byte[] bytes = new byte[length];
+	private InputStream getInputStream(final int length) {
+		final byte[] bytes = new byte[length];
 		for (int i = 0; i < length; i++) {
 			bytes[i] = (byte) i;
 		}
@@ -108,7 +108,7 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 	 */
 	public void testNullDataSource() throws Exception {
 		// This creation should not fail!
-		ByteArrayDataSource dataSource = new ByteArrayDataSource(null);
+		final ByteArrayDataSource dataSource = new ByteArrayDataSource(null);
 
 		assertNull(dataSource.getName());
 		assertNull(dataSource.getInputStream());
@@ -120,16 +120,16 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 	 * @param length
 	 * @throws Exception
 	 */
-	private void checkDataSource(int length) throws Exception {
+	private void checkDataSource(final int length) throws Exception {
 		setUpDataSourceMock(length);
-		long before = System.currentTimeMillis();
-		ByteArrayDataSource dataSource = new ByteArrayDataSource(dataSourceMock);
+		final long before = System.currentTimeMillis();
+		final ByteArrayDataSource dataSource = new ByteArrayDataSource(dataSourceMock);
 		println("Run with " + length + " bytes took " + (System.currentTimeMillis() - before) + " ms.");
 		assertEquals(getInputStream(length), dataSource.getInputStream());
 		assertEquals(NAME, dataSource.getName());
 	}
 
-	private void assertEquals(InputStream inputStream1, InputStream inputStream2) {
+	private void assertEquals(final InputStream inputStream1, final InputStream inputStream2) {
 		int byte1 = 0;
 		int byte2 = 0;
 		while (byte1 != -1 && byte2 != -1) {
@@ -137,7 +137,7 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 				byte1 = inputStream1.read();
 				byte2 = inputStream2.read();
 				assertEquals(byte1, byte2);
-			} catch (IOException ioe) {
+			} catch (final IOException ioe) {
 				fail(ioe.getMessage());
 			}
 		}

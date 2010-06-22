@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets;
 
-import org.eclipse.riena.core.RienaPlugin;
 import org.osgi.framework.BundleContext;
+
+import org.eclipse.riena.core.RienaPlugin;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -31,13 +32,13 @@ public class Activator extends RienaPlugin {
 	}
 
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
 	}
 
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		Activator.plugin = null;
 		super.stop(context);
 	}

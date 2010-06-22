@@ -22,6 +22,7 @@ import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.ui.ridgets.nls.Messages;
+import org.eclipse.riena.ui.ridgets.validation.ValidExpression.Option;
 
 /**
  * Implementation for a regular expression check. If the rule fails it will
@@ -127,7 +128,7 @@ public class ValidExpression implements IValidator, IExecutableExtension {
 		if (matcher.match("/" + pattern + "/" + options, string)) { //$NON-NLS-1$//$NON-NLS-2$
 			return ValidationRuleStatus.ok();
 		}
-		String message = NLS.bind(Messages.ValidExpression_error_noMatch, string, pattern);
+		final String message = NLS.bind(Messages.ValidExpression_error_noMatch, string, pattern);
 		return ValidationRuleStatus.error(false, message);
 	}
 
@@ -141,11 +142,11 @@ public class ValidExpression implements IValidator, IExecutableExtension {
 	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
 	 *      java.lang.String, java.lang.Object)
 	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray(data);
+			final String[] args = PropertiesUtils.asArray(data);
 			pattern = args[0];
 		}
 

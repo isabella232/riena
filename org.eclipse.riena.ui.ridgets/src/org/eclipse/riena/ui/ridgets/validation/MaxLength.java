@@ -34,36 +34,36 @@ public class MaxLength implements IValidator, IExecutableExtension {
 	 */
 	protected int maxLength;
 
-	private boolean isBlocking;
+	private final boolean isBlocking;
 
 	public MaxLength() {
 		this(0, true);
 	}
 
-	public MaxLength(int length) {
+	public MaxLength(final int length) {
 		this(length, true);
 	}
 
 	/**
 	 * @since 1.2
 	 */
-	protected MaxLength(int length, boolean isBlocking) {
+	protected MaxLength(final int length, final boolean isBlocking) {
 		this.maxLength = length;
 		this.isBlocking = isBlocking;
 	}
 
-	public IStatus validate(Object value) {
+	public IStatus validate(final Object value) {
 
 		if (value == null || maxLength < 0) {
 			return ValidationRuleStatus.ok();
 		}
 
 		if (value instanceof String) {
-			String string = (String) value;
-			int length = string.length();
+			final String string = (String) value;
+			final int length = string.length();
 
 			if (length > maxLength) {
-				String message = NLS.bind(Messages.MaxLength_error_tooLong, string, Integer.valueOf(maxLength));
+				final String message = NLS.bind(Messages.MaxLength_error_tooLong, string, Integer.valueOf(maxLength));
 				return ValidationRuleStatus.error(isBlocking, message);
 			}
 			return ValidationRuleStatus.ok();
@@ -74,7 +74,7 @@ public class MaxLength implements IValidator, IExecutableExtension {
 
 	@Override
 	public String toString() {
-		StringBuilder buffer = new StringBuilder(this.getClass().getSimpleName());
+		final StringBuilder buffer = new StringBuilder(this.getClass().getSimpleName());
 		buffer.append("[maxLength="); //$NON-NLS-1$
 		buffer.append(maxLength);
 		buffer.append("]"); //$NON-NLS-1$
@@ -91,11 +91,11 @@ public class MaxLength implements IValidator, IExecutableExtension {
 	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
 	 *      java.lang.String, java.lang.Object)
 	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray(data);
+			final String[] args = PropertiesUtils.asArray(data);
 			maxLength = Integer.parseInt(args[0]);
 		}
 

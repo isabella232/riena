@@ -52,7 +52,7 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 	 * @param windowRidget
 	 *            a {@link IWindowRidget}; never null.
 	 */
-	public DefaultActionManager(IWindowRidget windowRidget) {
+	public DefaultActionManager(final IWindowRidget windowRidget) {
 		Assert.isNotNull(windowRidget);
 		this.windowRidget = windowRidget;
 		ridget2button = new HashMap<IRidget, IActionRidget>(1);
@@ -73,7 +73,7 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 	 * @param actionRidget
 	 *            an {@link IActionRidget}; never null
 	 */
-	public void addAction(IRidget focusRidget, IActionRidget actionRidget) {
+	public void addAction(final IRidget focusRidget, final IActionRidget actionRidget) {
 		Assert.isNotNull(focusRidget);
 		Assert.isNotNull(actionRidget);
 		ridget2button.put(focusRidget, actionRidget);
@@ -85,11 +85,11 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 			shell = ((Control) windowRidget.getUIControl()).getShell();
 			display = shell.getDisplay();
 			control2button = new HashMap<Control, Button>();
-			for (Map.Entry<IRidget, IActionRidget> entry : ridget2button.entrySet()) {
-				Control control = (Control) entry.getKey().getUIControl();
+			for (final Map.Entry<IRidget, IActionRidget> entry : ridget2button.entrySet()) {
+				final Control control = (Control) entry.getKey().getUIControl();
 				Assert.isNotNull(control);
 
-				Button button = (Button) entry.getValue().getUIControl();
+				final Button button = (Button) entry.getValue().getUIControl();
 				Assert.isNotNull(button);
 
 				control2button.put(control, button);
@@ -119,9 +119,9 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 	/**
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
-	public void handleEvent(Event event) {
+	public void handleEvent(final Event event) {
 		if (SWT.FocusIn == event.type && event.widget instanceof Control) {
-			Control control = (Control) event.widget;
+			final Control control = (Control) event.widget;
 			updateDefaultButton(control);
 		}
 	}
@@ -129,7 +129,7 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 	// helping methods
 	//////////////////
 
-	private void clearDefaultButton(Shell shell) {
+	private void clearDefaultButton(final Shell shell) {
 		if (!SwtUtilities.isDisposed(shell)) {
 			// the setDefaultButton(...) API is strange! The first call
 			// will just reset the saved button to null, the second call will 
@@ -139,7 +139,7 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 		}
 	}
 
-	private Button findDefaultButton(Control start) {
+	private Button findDefaultButton(final Control start) {
 		Button result = null;
 		Control control = start;
 		while (result == null && control != null) {
@@ -149,8 +149,8 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 		return result;
 	}
 
-	private void updateDefaultButton(Control control) {
-		Button button = findDefaultButton(control);
+	private void updateDefaultButton(final Control control) {
+		final Button button = findDefaultButton(control);
 		if (SwtUtilities.isDisposed(button)) {
 			clearDefaultButton(shell);
 			return;

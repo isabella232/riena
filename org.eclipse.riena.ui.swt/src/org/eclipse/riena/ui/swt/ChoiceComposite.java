@@ -45,7 +45,7 @@ public class ChoiceComposite extends Composite {
 	 * @param style
 	 *            the SWT style of the Composite
 	 */
-	public ChoiceComposite(Composite parent, int style) {
+	public ChoiceComposite(final Composite parent, final int style) {
 		this(parent, style, true);
 	}
 
@@ -62,7 +62,7 @@ public class ChoiceComposite extends Composite {
 	 *            true to allow multiple selection (=check boxes), false for
 	 *            single selection (=radio buttons)
 	 */
-	public ChoiceComposite(Composite parent, int style, boolean multipleSelection) {
+	public ChoiceComposite(final Composite parent, final int style, final boolean multipleSelection) {
 		super(parent, style);
 		this.isMulti = multipleSelection;
 		this.orientation = SWT.VERTICAL;
@@ -93,11 +93,11 @@ public class ChoiceComposite extends Composite {
 	 * The value will be propagated to children of this composite.
 	 */
 	@Override
-	public final void setBackground(Color color) {
+	public final void setBackground(final Color color) {
 		setRedraw(false);
 		try {
 			super.setBackground(color);
-			for (Control child : getChildren()) {
+			for (final Control child : getChildren()) {
 				child.setBackground(color);
 			}
 		} finally {
@@ -106,11 +106,11 @@ public class ChoiceComposite extends Composite {
 	}
 
 	@Override
-	public final void setEnabled(boolean enabled) {
+	public final void setEnabled(final boolean enabled) {
 		setRedraw(false);
 		try {
 			super.setEnabled(enabled);
-			for (Control child : getChildren()) {
+			for (final Control child : getChildren()) {
 				child.setEnabled(enabled);
 			}
 		} finally {
@@ -124,11 +124,11 @@ public class ChoiceComposite extends Composite {
 	 * The value will be propagated to children of this composite.
 	 */
 	@Override
-	public final void setForeground(Color color) {
+	public final void setForeground(final Color color) {
 		setRedraw(false);
 		try {
 			super.setForeground(color);
-			for (Control child : getChildren()) {
+			for (final Control child : getChildren()) {
 				child.setForeground(color);
 			}
 		} finally {
@@ -146,7 +146,7 @@ public class ChoiceComposite extends Composite {
 	 * @throws RuntimeException
 	 *             if orientation has an unsupported value
 	 */
-	public final void setOrientation(int orientation) {
+	public final void setOrientation(final int orientation) {
 		Assert.isLegal(orientation == SWT.VERTICAL || orientation == SWT.HORIZONTAL);
 		if (this.orientation != orientation) {
 			this.orientation = orientation;
@@ -161,7 +161,7 @@ public class ChoiceComposite extends Composite {
 		if (orientation == SWT.VERTICAL) {
 			setLayout(new FillLayout(SWT.VERTICAL));
 		} else {
-			RowLayout layout = new RowLayout(SWT.HORIZONTAL);
+			final RowLayout layout = new RowLayout(SWT.HORIZONTAL);
 			layout.marginLeft = 0;
 			layout.marginRight = 0;
 			layout.marginTop = 0;

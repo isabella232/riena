@@ -28,7 +28,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 public class ProgressBarRidgetTest extends AbstractSWTRidgetTest {
 
 	@Override
-	protected Widget createWidget(Composite parent) {
+	protected Widget createWidget(final Composite parent) {
 		return new ProgressBar(parent, SWT.NONE);
 	}
 
@@ -46,7 +46,7 @@ public class ProgressBarRidgetTest extends AbstractSWTRidgetTest {
 	// ////////////
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(ProgressBarRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
@@ -55,8 +55,8 @@ public class ProgressBarRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testInitFromUIControl() {
 
-		MyProgressBarRidget ridget = (MyProgressBarRidget) getRidget();
-		ProgressBar widget = getWidget();
+		final MyProgressBarRidget ridget = (MyProgressBarRidget) getRidget();
+		final ProgressBar widget = getWidget();
 
 		assertEquals(widget.getMaximum(), ridget.getMaximum());
 		assertEquals(widget.getMinimum(), ridget.getMinimum());

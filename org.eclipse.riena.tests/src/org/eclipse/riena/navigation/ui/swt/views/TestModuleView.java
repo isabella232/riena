@@ -20,7 +20,7 @@ public class TestModuleView extends ModuleView {
 	/**
 	 * @param parent
 	 */
-	public TestModuleView(Composite parent) {
+	public TestModuleView(final Composite parent) {
 		super(parent);
 	}
 

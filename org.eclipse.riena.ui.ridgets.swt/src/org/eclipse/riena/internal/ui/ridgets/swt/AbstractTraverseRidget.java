@@ -129,7 +129,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 		addPropertyChangeListener(IRidget.PROPERTY_TOOLTIP, tooltipChangedHandler);
 	}
 
-	public final void addListener(IActionListener listener) {
+	public final void addListener(final IActionListener listener) {
 		actionObserver.addListener(listener);
 	}
 
@@ -139,7 +139,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 
 	@Override
 	public void bindUIControl() {
-		Control control = getUIControl();
+		final Control control = getUIControl();
 		if (control != null) {
 			initFromUIControl();
 			addSelectionListener(control, actionObserver);
@@ -176,7 +176,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 		return true;
 	}
 
-	public final void removeListener(IActionListener listener) {
+	public final void removeListener(final IActionListener listener) {
 		actionObserver.removeListener(listener);
 	}
 
@@ -186,7 +186,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 			val = getValue();
 		}
 		disableMandatoryMarkers(true);
-		IStatus status = checkAllRules(val, new ValidationCallback(false));
+		final IStatus status = checkAllRules(val, new ValidationCallback(false));
 		if (status.isOK()) {
 			getValueBindingSupport().updateFromTarget();
 		}
@@ -195,28 +195,28 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 
 	public void setIncrement(int increment) {
 		increment = preSetIncrement(increment);
-		Object oldValue = this.increment;
+		final Object oldValue = this.increment;
 		this.increment = increment;
 		updateUIIncrement();
 		firePropertyChange(ITraverseRidget.PROPERTY_INCREMENT, oldValue, this.getIncrement());
 	}
 
-	public void setMaximum(int maximum) {
+	public void setMaximum(final int maximum) {
 		checkMaximum(maximum);
 
 		preSetMaximum(maximum);
-		Object oldValue = this.maximum;
+		final Object oldValue = this.maximum;
 		this.maximum = maximum;
 		updateUIMaximum();
 		firePropertyChange(ITraverseRidget.PROPERTY_MAXIMUM, oldValue, this.maximum);
 	}
 
-	public void setMinimum(int minimum) {
+	public void setMinimum(final int minimum) {
 		checkMinimum(minimum);
 
 		preSetMinimum(minimum);
 
-		Object oldValue = this.minimum;
+		final Object oldValue = this.minimum;
 		this.minimum = minimum;
 		updateUIMinimum();
 		firePropertyChange(ITraverseRidget.PROPERTY_MINIMUM, oldValue, this.minimum);
@@ -224,7 +224,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 
 	public void setPageIncrement(int pageIncrement) {
 		pageIncrement = preSetPageIncrement(pageIncrement);
-		Object oldValue = this.pageIncrement;
+		final Object oldValue = this.pageIncrement;
 		this.pageIncrement = pageIncrement;
 		updateUIPageIncrement();
 		firePropertyChange(ITraverseRidget.PROPERTY_PAGE_INCREMENT, oldValue, this.pageIncrement);
@@ -232,7 +232,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 
 	public void setValue(int value) {
 		value = preSetValue(value);
-		Object oldValue = this.value;
+		final Object oldValue = this.value;
 		this.value = value;
 		updateUIValue();
 		tooltipChangedHandler.updateTooltipPattern();
@@ -262,7 +262,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * @throws IllegalArgumentException
 	 *             if the given maximum is not a valid value.
 	 */
-	protected void checkMaximum(int maximum) {
+	protected void checkMaximum(final int maximum) {
 		if (maximum <= minimum) {
 			new Message(Message.MAX_LE_MIN, maximum, minimum).push();
 		}
@@ -281,7 +281,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * @throws IllegalArgumentException
 	 *             if the given minimum is not a valid value.
 	 */
-	protected void checkMinimum(int minimum) {
+	protected void checkMinimum(final int minimum) {
 		if (minimum >= maximum) {
 			new Message(Message.MIN_GE_MAX, minimum, maximum).push();
 		}
@@ -390,14 +390,14 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 *            the maximum to set
 	 * @return an adjusted maximum
 	 */
-	protected int preSetMaximum(int maximum) {
+	protected int preSetMaximum(final int maximum) {
 		if (!initialized) {
 			return maximum;
 		}
 		if (maximum < value) {
 			setValue(maximum);
 		}
-		int deltaMaxMin = maximum - minimum;
+		final int deltaMaxMin = maximum - minimum;
 		if (deltaMaxMin < increment) {
 			setIncrement(deltaMaxMin);
 		}
@@ -419,14 +419,14 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 *            the minimum to set
 	 * @return an adjusted minimum
 	 */
-	protected int preSetMinimum(int minimum) {
+	protected int preSetMinimum(final int minimum) {
 		if (!initialized) {
 			return minimum;
 		}
 		if (value < minimum) {
 			setValue(minimum);
 		}
-		int deltaMaxMin = maximum - minimum;
+		final int deltaMaxMin = maximum - minimum;
 		if (deltaMaxMin < increment) {
 			setIncrement(deltaMaxMin);
 		}
@@ -499,15 +499,15 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 * Replaces the tooltip pattern ( <code>ITraverseRidget.VALUE_PATTERN</code>
 	 * ) with the value of this ridget.
 	 */
-	protected String replaceToolTipPattern(String toolTipText) {
-		String strgValue = Integer.toString(getValue());
+	protected String replaceToolTipPattern(final String toolTipText) {
+		final String strgValue = Integer.toString(getValue());
 		return toolTipText.replace(ITraverseRidget.VALUE_PATTERN, strgValue);
 	}
 
 	@Override
 	protected void unbindUIControl() {
 		super.unbindUIControl();
-		Control control = getUIControl();
+		final Control control = getUIControl();
 		if (control != null) {
 			addSelectionListener(control, actionObserver);
 		}
@@ -560,7 +560,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	private final class ActionListener implements IActionListener {
 		public void callback() {
 			if (getUIControl() != null) {
-				int selection = getValue(getUIControl());
+				final int selection = getValue(getUIControl());
 				setValue(selection);
 			}
 		}
@@ -574,14 +574,14 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 		private String acceptedPatternTooltip;
 		private boolean updateMode;
 
-		public void propertyChange(PropertyChangeEvent event) {
+		public void propertyChange(final PropertyChangeEvent event) {
 			// if updateMode, the method does nothing.
 			if (updateMode) {
 				return;
 			}
 			// if the newValue == null, reset the acceptedPatternTooltip and
 			// return.
-			String newValue = (String) event.getNewValue();
+			final String newValue = (String) event.getNewValue();
 			if (newValue == null || newValue.equals("")) { //$NON-NLS-1$
 				acceptedPatternTooltip = null;
 				return;
@@ -597,7 +597,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 				// the newValue. If it does not, i can not be a normalized
 				// patternTooltip, because the current selection of the
 				// uiControl would already have been inserted in the tooltip.
-				String testReplaced = replaceToolTipPattern(acceptedPatternTooltip);
+				final String testReplaced = replaceToolTipPattern(acceptedPatternTooltip);
 				if (!testReplaced.equals(newValue)) {
 					acceptedPatternTooltip = null;
 				} else {
@@ -618,13 +618,13 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 		 * pattern.
 		 */
 		protected void updateTooltipPattern() {
-			Control control = getUIControl();
+			final Control control = getUIControl();
 			if (control == null) {
 				return;
 			}
 
 			if (acceptedPatternTooltip != null) {
-				String toolTipText = replaceToolTipPattern(acceptedPatternTooltip);
+				final String toolTipText = replaceToolTipPattern(acceptedPatternTooltip);
 				try {
 					updateMode = true;
 					setToolTipText(toolTipText);
@@ -645,9 +645,9 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 		public static final String MIN_GE_MAX = "The minimum value of %d must be lower than the maximum value of %d"; //$NON-NLS-1$
 		public static final String MIN_LT_ZERO = "The minimum value of %d must be greater than zero"; //$NON-NLS-1$
 
-		private String message;
+		private final String message;
 
-		protected Message(String msgConstant, Object... attributes) {
+		protected Message(final String msgConstant, final Object... attributes) {
 			message = String.format(msgConstant, attributes);
 		}
 

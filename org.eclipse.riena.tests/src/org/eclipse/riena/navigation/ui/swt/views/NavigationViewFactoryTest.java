@@ -27,56 +27,56 @@ import org.eclipse.riena.navigation.ui.controllers.ModuleGroupController;
 public class NavigationViewFactoryTest extends RienaTestCase {
 
 	public void testNormalWithoutInjectionBehaviour() {
-		NavigationViewFactory viewFactory = new NavigationViewFactory();
+		final NavigationViewFactory viewFactory = new NavigationViewFactory();
 
-		ModuleView moduleView = viewFactory.createModuleView(new Shell());
+		final ModuleView moduleView = viewFactory.createModuleView(new Shell());
 
 		assertNotNull(moduleView);
 		assertTrue(moduleView.getClass() == ModuleView.class);
 
-		ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
+		final ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
 
 		assertNotNull(moduleGroupView);
 		assertTrue(moduleGroupView.getClass() == ModuleGroupView.class);
 	}
 
 	public void testNormalWithInjectionBehaviour() {
-		NavigationViewFactory viewFactory = new NavigationViewFactory();
+		final NavigationViewFactory viewFactory = new NavigationViewFactory();
 		Wire.instance(viewFactory).andStart(getContext());
 
-		ModuleView moduleView = viewFactory.createModuleView(new Shell());
+		final ModuleView moduleView = viewFactory.createModuleView(new Shell());
 
 		assertNotNull(moduleView);
 		assertTrue(moduleView.getClass() == ModuleView.class);
 
-		ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
+		final ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
 
 		assertNotNull(moduleGroupView);
 		assertTrue(moduleGroupView.getClass() == ModuleGroupView.class);
 	}
 
 	public void testConfiguredNavigationViewFactory() {
-		NavigationViewFactory viewFactory = new NavigationViewFactory();
+		final NavigationViewFactory viewFactory = new NavigationViewFactory();
 		addPluginXml(this.getClass(), "pluginXmlNavigationViewFactory.xml");
 
 		try {
 			Wire.instance(viewFactory).andStart(getContext());
 
-			ModuleView moduleView = viewFactory.createModuleView(new Shell());
+			final ModuleView moduleView = viewFactory.createModuleView(new Shell());
 
 			assertNotNull(moduleView);
 			assertTrue(moduleView.getClass() == TestModuleView.class);
 
-			ModuleController moduleController = viewFactory.createModuleController(new ModuleNode());
+			final ModuleController moduleController = viewFactory.createModuleController(new ModuleNode());
 			assertNotNull(moduleController);
 			assertTrue(moduleController.getClass() == SWTModuleController.class);
 
-			ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
+			final ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
 
 			assertNotNull(moduleGroupView);
 			assertTrue(moduleGroupView.getClass() == TestModuleGroupView.class);
 
-			ModuleGroupController moduleGroupController = viewFactory
+			final ModuleGroupController moduleGroupController = viewFactory
 					.createModuleGroupController(new ModuleGroupNode());
 			assertNotNull(moduleGroupController);
 			assertTrue(moduleGroupController.getClass() == ModuleGroupController.class);
@@ -87,27 +87,27 @@ public class NavigationViewFactoryTest extends RienaTestCase {
 	}
 
 	public void testConfiguredNavigationViewFactorySecond() {
-		NavigationViewFactory viewFactory = new NavigationViewFactory();
+		final NavigationViewFactory viewFactory = new NavigationViewFactory();
 		addPluginXml(this.getClass(), "pluginXmlNavigationViewFactoryWithController.xml");
 
 		try {
 			Wire.instance(viewFactory).andStart(getContext());
 
-			ModuleView moduleView = viewFactory.createModuleView(new Shell());
+			final ModuleView moduleView = viewFactory.createModuleView(new Shell());
 
 			assertNotNull(moduleView);
 			assertTrue(moduleView.getClass() == TestModuleView.class);
 
-			ModuleController moduleController = viewFactory.createModuleController(new ModuleNode());
+			final ModuleController moduleController = viewFactory.createModuleController(new ModuleNode());
 			assertNotNull(moduleController);
 			assertTrue(moduleController.getClass() == TestModuleController.class);
 
-			ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
+			final ModuleGroupView moduleGroupView = viewFactory.createModuleGroupView(new Shell());
 
 			assertNotNull(moduleGroupView);
 			assertTrue(moduleGroupView.getClass() == TestModuleGroupView.class);
 
-			ModuleGroupController moduleGroupController = viewFactory
+			final ModuleGroupController moduleGroupController = viewFactory
 					.createModuleGroupController(new ModuleGroupNode());
 			assertNotNull(moduleGroupController);
 			assertTrue(moduleGroupController.getClass() == TestModuleGroupController.class);

@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.model;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IDynamicVariable;
 import org.eclipse.core.variables.IDynamicVariableResolver;
@@ -32,7 +33,7 @@ public class ThreadLocalMapResolver implements IDynamicVariableResolver {
 	public ThreadLocalMapResolver() {
 	}
 
-	public static void configure(Map<String, Object> mapping) {
+	public static void configure(final Map<String, Object> mapping) {
 		variableMapping.set(mapping);
 	}
 
@@ -47,19 +48,19 @@ public class ThreadLocalMapResolver implements IDynamicVariableResolver {
 	 * org.eclipse.core.variables.IDynamicVariableResolver#resolveValue(org.
 	 * eclipse.core.variables.IDynamicVariable, java.lang.String)
 	 */
-	public String resolveValue(IDynamicVariable variable, String argument) throws CoreException {
+	public String resolveValue(final IDynamicVariable variable, final String argument) throws CoreException {
 
-		Map<String, Object> currentMapping = variableMapping.get();
+		final Map<String, Object> currentMapping = variableMapping.get();
 		if (currentMapping == null) {
 			return null;
 		} else {
-			Object obj = currentMapping.get(variable.getName());
+			final Object obj = currentMapping.get(variable.getName());
 			if (argument == null) {
 				return obj == null ? null : String.valueOf(obj);
 			} else {
 				try {
 					return BeanUtils.getProperty(obj, argument);
-				} catch (Exception ex) {
+				} catch (final Exception ex) {
 					return obj == null ? null : String.valueOf(obj);
 				}
 			}

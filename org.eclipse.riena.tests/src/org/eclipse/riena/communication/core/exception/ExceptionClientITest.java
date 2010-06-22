@@ -42,11 +42,11 @@ public class ExceptionClientITest extends RienaTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		regExceptionService = Register.remoteProxy(IExceptionService.class).usingUrl(
-				"http://localhost:8080/hessian/ExceptionService").withProtocol("hessian").andStart(
-				Activator.getDefault().getContext());
-		exceptionService = (IExceptionService) Activator.getDefault().getContext().getService(
-				Activator.getDefault().getContext().getServiceReference(IExceptionService.class.getName()));
+		regExceptionService = Register.remoteProxy(IExceptionService.class)
+				.usingUrl("http://localhost:8080/hessian/ExceptionService").withProtocol("hessian")
+				.andStart(Activator.getDefault().getContext());
+		exceptionService = (IExceptionService) Activator.getDefault().getContext()
+				.getService(Activator.getDefault().getContext().getServiceReference(IExceptionService.class.getName()));
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class ExceptionClientITest extends RienaTestCase {
 		try {
 			exceptionService.throwException("java.io.IOException");
 			fail("This call should throw an exception!");
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			LOGGER.log(LogService.LOG_INFO, "Exception: " + e);
 			LOGGER.log(LogService.LOG_INFO, "Exception Type: " + e.getClass());
 			LOGGER.log(LogService.LOG_INFO, "Exception.getMessage(): " + e.getMessage());
@@ -91,14 +91,14 @@ public class ExceptionClientITest extends RienaTestCase {
 		try {
 			exceptionService.throwException("java.lang.ClassNotFoundException");
 			fail("This call should throw an exception!");
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			LOGGER.log(LogService.LOG_INFO, "Exception: " + e);
 			LOGGER.log(LogService.LOG_INFO, "Exception Type: " + e.getClass());
 			LOGGER.log(LogService.LOG_INFO, "Exception.getMessage(): " + e.getMessage());
 
 			assertTrue(e instanceof ClassNotFoundException);
-			assertTrue(e.getMessage().trim().equals(
-					"ExceptionService: Here is your requested java.lang.ClassNotFoundException..."));
+			assertTrue(e.getMessage().trim()
+					.equals("ExceptionService: Here is your requested java.lang.ClassNotFoundException..."));
 			assertNull(e.getCause());
 			assertNotNull(e.getStackTrace());
 		}
@@ -114,14 +114,14 @@ public class ExceptionClientITest extends RienaTestCase {
 		try {
 			exceptionService.throwException("java.lang.NullPointerException");
 			fail("This call should throw an exception!");
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			LOGGER.log(LogService.LOG_INFO, "Exception: " + e);
 			LOGGER.log(LogService.LOG_INFO, "Exception Type: " + e.getClass());
 			LOGGER.log(LogService.LOG_INFO, "Exception.getMessage(): " + e.getMessage());
 
 			assertTrue(e instanceof NullPointerException);
-			assertTrue(e.getMessage().trim().equals(
-					"ExceptionService: Here is your requested java.lang.NullPointerException..."));
+			assertTrue(e.getMessage().trim()
+					.equals("ExceptionService: Here is your requested java.lang.NullPointerException..."));
 			assertNull(e.getCause());
 			assertNotNull(e.getStackTrace());
 		}
@@ -137,14 +137,14 @@ public class ExceptionClientITest extends RienaTestCase {
 		try {
 			exceptionService.throwException("java.lang.ArrayIndexOutOfBoundsException");
 			fail("This call should throw an exception!");
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			LOGGER.log(LogService.LOG_INFO, "Exception: " + e);
 			LOGGER.log(LogService.LOG_INFO, "Exception Type: " + e.getClass());
 			LOGGER.log(LogService.LOG_INFO, "Exception.getMessage(): " + e.getMessage());
 
 			assertTrue(e instanceof java.lang.ArrayIndexOutOfBoundsException);
-			assertTrue(e.getMessage().trim().equals(
-					"ExceptionService: Here is your requested java.lang.ArrayIndexOutOfBoundsException..."));
+			assertTrue(e.getMessage().trim()
+					.equals("ExceptionService: Here is your requested java.lang.ArrayIndexOutOfBoundsException..."));
 			assertNull(e.getCause());
 			assertNotNull(e.getStackTrace());
 		}
@@ -160,14 +160,14 @@ public class ExceptionClientITest extends RienaTestCase {
 		try {
 			exceptionService.throwRuntimeException("java.lang.RuntimeException");
 			fail("This call should throw an exception!");
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			LOGGER.log(LogService.LOG_INFO, "Exception: " + e);
 			LOGGER.log(LogService.LOG_INFO, "Exception Type: " + e.getClass());
 			LOGGER.log(LogService.LOG_INFO, "Exception.getMessage(): " + e.getMessage());
 
 			assertTrue(e instanceof java.lang.RuntimeException);
-			assertTrue(e.getMessage().trim().equals(
-					"ExceptionService: Here is your requested java.lang.RuntimeException..."));
+			assertTrue(e.getMessage().trim()
+					.equals("ExceptionService: Here is your requested java.lang.RuntimeException..."));
 			assertNull(e.getCause());
 			assertNotNull(e.getStackTrace());
 		}
@@ -183,9 +183,9 @@ public class ExceptionClientITest extends RienaTestCase {
 		try {
 			exceptionService.throwException("org.eclipse.riena.core.exception.ExceptionFailure");
 			fail("This call should throw an exception!");
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			assertTrue(e instanceof ExceptionFailure);
-			Failure failure = (Failure) e;
+			final Failure failure = (Failure) e;
 			assertNotNull(failure.getMessage());
 			assertTrue(failure.getMessage().indexOf(
 					"ExceptionService: Here is your requested org.eclipse.riena.core.exception.ExceptionFailure...") > -1);
@@ -207,9 +207,9 @@ public class ExceptionClientITest extends RienaTestCase {
 		try {
 			exceptionService.throwException("org.eclipse.riena.communication.core.RemoteFailure");
 			fail("This call should throw an exception!");
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			assertTrue(e instanceof RemoteFailure);
-			Failure failure = (Failure) e;
+			final Failure failure = (Failure) e;
 			assertNotNull(failure.getMessage());
 			assertTrue(failure.getMessage().indexOf(
 					"ExceptionService: Here is your requested org.eclipse.riena.communication.core.RemoteFailure...") > -1);
@@ -224,7 +224,7 @@ public class ExceptionClientITest extends RienaTestCase {
 		try {
 			exceptionService.throwNestedException();
 			fail("This call should throw an exception!");
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			assertTrue(e instanceof Exception);
 			assertTrue(e.getCause() instanceof NullPointerException);
 			// e.printStackTrace();

@@ -49,19 +49,19 @@ public abstract class Node2Extension implements INode2Extension {
 		return childNodes;
 	}
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
-	public void setNodeId(String nodeId) {
+	public void setNodeId(final String nodeId) {
 		this.nodeId = nodeId;
 	}
 
-	public void setIcon(String icon) {
+	public void setIcon(final String icon) {
 		this.icon = icon;
 	}
 
-	public void setChildNodes(INode2Extension[] childNodes) {
+	public void setChildNodes(final INode2Extension[] childNodes) {
 		this.childNodes = childNodes;
 	}
 

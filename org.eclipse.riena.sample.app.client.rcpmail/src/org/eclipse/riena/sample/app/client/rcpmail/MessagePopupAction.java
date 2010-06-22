@@ -18,7 +18,7 @@ public class MessagePopupAction extends Action {
 
 	private final IWorkbenchWindow window;
 
-	MessagePopupAction(String text, IWorkbenchWindow window) {
+	MessagePopupAction(final String text, final IWorkbenchWindow window) {
 		super(text);
 		this.window = window;
 		// The id is used to refer to the action in a menu or toolbar

@@ -55,7 +55,7 @@ public class DatePickerComposite extends Composite {
 	private DatePicker datePicker;
 	private IDateConverterStrategy dateConverterStrategy;
 
-	public DatePickerComposite(Composite parent, int textStyles) {
+	public DatePickerComposite(final Composite parent, final int textStyles) {
 		super(parent, SWT.BORDER);
 
 		GridLayoutFactory.fillDefaults().numColumns(2).spacing(0, 0).applyTo(this);
@@ -68,7 +68,7 @@ public class DatePickerComposite extends Composite {
 				.applyTo(pickerButton);
 		pickerButton.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(final SelectionEvent e) {
 				handleClick();
 			}
 		});
@@ -92,18 +92,18 @@ public class DatePickerComposite extends Composite {
 		return textfield;
 	}
 
-	public void setDateConverterStrategy(IDateConverterStrategy dateConverterStrategy) {
+	public void setDateConverterStrategy(final IDateConverterStrategy dateConverterStrategy) {
 		this.dateConverterStrategy = dateConverterStrategy;
 	}
 
 	@Override
-	public void setForeground(Color color) {
+	public void setForeground(final Color color) {
 		super.setForeground(color);
 		textfield.setForeground(color);
 	}
 
 	@Override
-	public void setBackground(Color color) {
+	public void setBackground(final Color color) {
 		super.setBackground(color);
 		textfield.setBackground(color);
 	}
@@ -133,7 +133,7 @@ public class DatePickerComposite extends Composite {
 			datePicker = new DatePicker(this);
 		}
 		if (!datePicker.isVisible()) {
-			Point p = textfield.toDisplay(textfield.getLocation().x, textfield.getLocation().y);
+			final Point p = textfield.toDisplay(textfield.getLocation().x, textfield.getLocation().y);
 			datePicker.setLocation(p.x, p.y + textfield.getBounds().height);
 			datePicker.open(parseDate(textfield.getText()));
 		} else {
@@ -145,9 +145,9 @@ public class DatePickerComposite extends Composite {
 		return pickerButton;
 	}
 
-	private Calendar parseDate(String dateString) {
+	private Calendar parseDate(final String dateString) {
 		Calendar result = null;
-		Date date = getDateConverterStrategy().getDateFromTextField(dateString);
+		final Date date = getDateConverterStrategy().getDateFromTextField(dateString);
 		if (date != null) {
 			result = Calendar.getInstance();
 			result.setTime(date);
@@ -226,7 +226,7 @@ public class DatePickerComposite extends Composite {
 				private int win32clicks = init();
 
 				@Override
-				public void mouseUp(MouseEvent e) {
+				public void mouseUp(final MouseEvent e) {
 					if (e.button != 1) {
 						return;
 					}
@@ -238,7 +238,7 @@ public class DatePickerComposite extends Composite {
 						}
 					}
 					if (win32clicks == 0) {
-						Calendar cal = Calendar.getInstance();
+						final Calendar cal = Calendar.getInstance();
 						cal.set(Calendar.YEAR, calendar.getYear());
 						cal.set(Calendar.MONTH, calendar.getMonth());
 						cal.set(Calendar.DAY_OF_MONTH, calendar.getDay());
@@ -256,9 +256,9 @@ public class DatePickerComposite extends Composite {
 
 			calendar.addFocusListener(new FocusAdapter() {
 				@Override
-				public void focusLost(FocusEvent e) {
-					Display display = e.widget.getDisplay();
-					Control focusControl = display.getCursorControl();
+				public void focusLost(final FocusEvent e) {
+					final Display display = e.widget.getDisplay();
+					final Control focusControl = display.getCursorControl();
 					if (focusControl != datePicker.getPickerButton()) {
 						close();
 					}
@@ -272,7 +272,7 @@ public class DatePickerComposite extends Composite {
 			}
 		}
 
-		public void setLocation(int x, int y) {
+		public void setLocation(final int x, final int y) {
 			shell.setLocation(x, y);
 		}
 
@@ -307,7 +307,7 @@ public class DatePickerComposite extends Composite {
 			calendar.setDay(newDate.get(Calendar.DAY_OF_MONTH));
 		}
 
-		private void setDateToTextfield(Date date) {
+		private void setDateToTextfield(final Date date) {
 			datePicker.getDateConverterStrategy().setDateToTextField(date);
 		}
 	}
@@ -320,23 +320,23 @@ public class DatePickerComposite extends Composite {
 	 */
 	private static class RegexDateConverterStrategy implements IDateConverterStrategy {
 
-		private Text textfield;
+		private final Text textfield;
 
-		public RegexDateConverterStrategy(Text textfield) {
+		public RegexDateConverterStrategy(final Text textfield) {
 			this.textfield = textfield;
 		}
 
-		public void setDateToTextField(Date date) {
-			String dateString = new SimpleDateFormat("dd.MM.yyyy").format(date); //$NON-NLS-1$
+		public void setDateToTextField(final Date date) {
+			final String dateString = new SimpleDateFormat("dd.MM.yyyy").format(date); //$NON-NLS-1$
 
-			String oldText = textfield.getText();
+			final String oldText = textfield.getText();
 
 			if (oldText.contains(":")) { //$NON-NLS-1$
-				Pattern pattern = Pattern.compile("([ \\d\\.]+)\\s+(.*?:.*?)"); //$NON-NLS-1$
-				Matcher matcher = pattern.matcher(oldText);
+				final Pattern pattern = Pattern.compile("([ \\d\\.]+)\\s+(.*?:.*?)"); //$NON-NLS-1$
+				final Matcher matcher = pattern.matcher(oldText);
 
 				if (matcher.matches()) {
-					String oldTime = matcher.group(2);
+					final String oldTime = matcher.group(2);
 					textfield.setText(dateString + " " + oldTime); //$NON-NLS-1$
 				}
 			} else {
@@ -345,10 +345,10 @@ public class DatePickerComposite extends Composite {
 			textfield.setFocus();
 		}
 
-		public Date getDateFromTextField(String dateString) {
+		public Date getDateFromTextField(final String dateString) {
 			Calendar result = null;
-			Pattern pattern = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+).*?"); //$NON-NLS-1$
-			Matcher matcher = pattern.matcher(dateString);
+			final Pattern pattern = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+).*?"); //$NON-NLS-1$
+			final Matcher matcher = pattern.matcher(dateString);
 
 			if (matcher.matches() && matcher.groupCount() == 3) {
 				int month = Integer.parseInt(matcher.group(2));

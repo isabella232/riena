@@ -92,8 +92,8 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	 * @param locale
 	 *            the locale.
 	 */
-	public ValidDecimal(final boolean partialCheckSupported, int numberOfFractionDigits, int maxLength,
-			boolean withSign, final Locale locale) {
+	public ValidDecimal(final boolean partialCheckSupported, final int numberOfFractionDigits, final int maxLength,
+			final boolean withSign, final Locale locale) {
 		Assert.isNotNull(locale);
 		this.partialCheckSupported = partialCheckSupported;
 		this.numberOfFractionDigits = numberOfFractionDigits;
@@ -122,23 +122,23 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 				final ScanResult scanned = scan(string);
 				if (!partialCheckSupported) {
 					if (scanned.decimalSeperatorIndex < 0) {
-						Character decSep = Character.valueOf(getSymbols().getDecimalSeparator());
-						String message = NLS.bind(Messages.ValidDecimal_error_noDecSep, decSep, string);
+						final Character decSep = Character.valueOf(getSymbols().getDecimalSeparator());
+						final String message = NLS.bind(Messages.ValidDecimal_error_noDecSep, decSep, string);
 						return ValidationRuleStatus.error(true, message);
 					}
 					// test if grouping character is behind decimal separator:
 					if (scanned.groupingSeparatorIndex > scanned.decimalSeperatorIndex) {
-						Character groupSep = Character.valueOf(getSymbols().getGroupingSeparator());
-						Character decSep = Character.valueOf(getSymbols().getDecimalSeparator());
-						String message = NLS.bind(Messages.ValidDecimal_error_trailingGroupSep, new Object[] {
+						final Character groupSep = Character.valueOf(getSymbols().getGroupingSeparator());
+						final Character decSep = Character.valueOf(getSymbols().getDecimalSeparator());
+						final String message = NLS.bind(Messages.ValidDecimal_error_trailingGroupSep, new Object[] {
 								groupSep, decSep, string });
 						return ValidationRuleStatus.error(true, message);
 					}
 				}
 				// test if alien character present:
 				if (scanned.lastAlienCharIndex > -1) {
-					String message = NLS.bind(Messages.ValidDecimal_error_alienChar, Character
-							.valueOf(scanned.lastAlienCharacter), string);
+					final String message = NLS.bind(Messages.ValidDecimal_error_alienChar,
+							Character.valueOf(scanned.lastAlienCharacter), string);
 					return ValidationRuleStatus.error(true, message);
 				}
 				try {
@@ -146,7 +146,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 						getFormat().parse(string);
 					}
 				} catch (final ParseException e) {
-					String message = NLS.bind(Messages.ValidDecimal_error_cannotParse, string);
+					final String message = NLS.bind(Messages.ValidDecimal_error_cannotParse, string);
 					return ValidationRuleStatus.error(true, message);
 				}
 			}
@@ -268,9 +268,9 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	 * @param localArgs
 	 *            language, country, variant
 	 */
-	protected void setLocal(String[] localArgs) {
+	protected void setLocal(final String[] localArgs) {
 		if (localArgs.length > 0) {
-			String language = localArgs[0];
+			final String language = localArgs[0];
 			String country = ""; //$NON-NLS-1$
 			String variant = ""; //$NON-NLS-1$
 			if (localArgs.length > 1) {
@@ -284,7 +284,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 
 	}
 
-	private void setLocale(Locale locale) {
+	private void setLocale(final Locale locale) {
 		this.locale = locale;
 	}
 
@@ -301,11 +301,11 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	 *      java.lang.String, java.lang.Object)
 	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocal(java.lang.String[])
 	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray(data);
+			final String[] args = PropertiesUtils.asArray(data);
 			int localStart = 0;
 			if (args.length > 0) {
 				if (args[0].equals(Boolean.TRUE.toString())) {
@@ -333,11 +333,11 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 							}
 						}
 					}
-				} catch (NumberFormatException e1) {
+				} catch (final NumberFormatException e1) {
 				}
 			}
 			if (args.length > localStart) {
-				String[] localArgs = ArraysUtil.copyRange(args, localStart, args.length);
+				final String[] localArgs = ArraysUtil.copyRange(args, localStart, args.length);
 				setLocal(localArgs);
 			}
 		}

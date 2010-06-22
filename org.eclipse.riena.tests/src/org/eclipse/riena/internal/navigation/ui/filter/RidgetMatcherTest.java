@@ -42,9 +42,9 @@ public class RidgetMatcherTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 
-		Display display = Display.getDefault();
+		final Display display = Display.getDefault();
 
-		Realm realm = SWTObservables.getRealm(display);
+		final Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 
@@ -67,14 +67,14 @@ public class RidgetMatcherTest extends TestCase {
 
 		assertFalse(matcher.matches(new Object()));
 
-		Label control = new Label(shell, SWT.NONE);
-		ILabelRidget ridget = new LabelRidget(control);
+		final Label control = new Label(shell, SWT.NONE);
+		final ILabelRidget ridget = new LabelRidget(control);
 		assertFalse(matcher.matches(ridget));
 
 		control.setData(SWTBindingPropertyLocator.BINDING_PROPERTY, "4711");
 		assertTrue(matcher.matches(ridget));
 
-		INavigationNode<ISubModuleNode> node = new SubModuleNode(new NavigationNodeId("subMod0815"));
+		final INavigationNode<ISubModuleNode> node = new SubModuleNode(new NavigationNodeId("subMod0815"));
 		assertFalse(matcher.matches(node, ridget));
 
 		matcher = new RidgetMatcher("*4711");

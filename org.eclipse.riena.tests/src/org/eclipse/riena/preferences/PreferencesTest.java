@@ -27,7 +27,7 @@ import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
 public class PreferencesTest extends TestCase {
 
 	public void testIt() throws BackingStoreException {
-		IEclipsePreferences prefs = Platform.getPreferencesService().getRootNode();
+		final IEclipsePreferences prefs = Platform.getPreferencesService().getRootNode();
 		diggIn(prefs, 0);
 	}
 
@@ -36,20 +36,20 @@ public class PreferencesTest extends TestCase {
 	 * @param i
 	 * @throws BackingStoreException
 	 */
-	private void diggIn(Preferences prefs, int i) throws BackingStoreException {
+	private void diggIn(final Preferences prefs, int i) throws BackingStoreException {
 		String indent = "";
 		for (int j = 0; j < i; j++) {
 			indent = indent + "  ";
 		}
 		System.out.println(indent + prefs.name() + "(" + prefs.absolutePath() + "," + prefs.getClass() + ")");
-		String[] keys = prefs.keys();
-		for (String key : keys) {
+		final String[] keys = prefs.keys();
+		for (final String key : keys) {
 			System.out.println(indent + "-" + key + "=" + prefs.get(key, "?"));
 		}
-		String[] kids = prefs.childrenNames();
+		final String[] kids = prefs.childrenNames();
 		i++;
-		for (String kid : kids) {
-			Preferences kidPrefs = prefs.node(kid);
+		for (final String kid : kids) {
+			final Preferences kidPrefs = prefs.node(kid);
 			diggIn(kidPrefs, i);
 		}
 

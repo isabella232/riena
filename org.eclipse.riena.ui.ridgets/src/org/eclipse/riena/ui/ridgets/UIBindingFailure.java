@@ -22,7 +22,7 @@ public class UIBindingFailure extends Failure {
 	/**
 	 * @param msg
 	 */
-	public UIBindingFailure(String msg) {
+	public UIBindingFailure(final String msg) {
 		super(msg);
 	}
 
@@ -30,7 +30,7 @@ public class UIBindingFailure extends Failure {
 	 * @param msg
 	 * @param cause
 	 */
-	public UIBindingFailure(String msg, Throwable cause) {
+	public UIBindingFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 

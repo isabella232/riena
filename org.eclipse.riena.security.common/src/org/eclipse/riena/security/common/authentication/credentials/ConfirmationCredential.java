@@ -15,15 +15,15 @@ package org.eclipse.riena.security.common.authentication.credentials;
  */
 public class ConfirmationCredential extends AbstractCredential {
 
-	private int messageType;
-	private int optionType;
-	private int defaultOption;
+	private final int messageType;
+	private final int optionType;
+	private final int defaultOption;
 	private int selectedIndex;
 
 	/**
 	 * @param prompt
 	 */
-	public ConfirmationCredential(int messageType, int optionType, int defaultOption) {
+	public ConfirmationCredential(final int messageType, final int optionType, final int defaultOption) {
 		super(null);
 		this.messageType = messageType;
 		this.optionType = optionType;
@@ -46,7 +46,7 @@ public class ConfirmationCredential extends AbstractCredential {
 		return selectedIndex;
 	}
 
-	public void setSelectedIndex(int selectedIndex) {
+	public void setSelectedIndex(final int selectedIndex) {
 		this.selectedIndex = selectedIndex;
 	}
 

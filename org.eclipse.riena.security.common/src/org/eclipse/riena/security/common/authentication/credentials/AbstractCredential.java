@@ -12,9 +12,9 @@ package org.eclipse.riena.security.common.authentication.credentials;
 
 public abstract class AbstractCredential {
 
-	private String prompt;
+	private final String prompt;
 
-	public AbstractCredential(String prompt) {
+	public AbstractCredential(final String prompt) {
 		super();
 		this.prompt = prompt;
 	}

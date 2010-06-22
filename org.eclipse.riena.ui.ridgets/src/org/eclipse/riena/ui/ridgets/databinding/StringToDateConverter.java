@@ -34,7 +34,7 @@ public class StringToDateConverter extends Converter {
 	 * @param pattern
 	 *            The pattern to match e.g. MM/dd/yyyy.
 	 */
-	public StringToDateConverter(String pattern) {
+	public StringToDateConverter(final String pattern) {
 		super(String.class, Date.class);
 		format = new SimpleDateFormat(pattern);
 		if (!hasTimeZone(pattern)) {
@@ -44,17 +44,17 @@ public class StringToDateConverter extends Converter {
 		}
 	}
 
-	public Object convert(Object fromObject) {
+	public Object convert(final Object fromObject) {
 		if (fromObject == null || "".equals(fromObject) //$NON-NLS-1$
 				|| Utils.isEmptyDate(((String) fromObject))) {
 			return null;
 		}
 		try {
 			synchronized (format) {
-				Date parsedDate = format.parse((String) fromObject);
+				final Date parsedDate = format.parse((String) fromObject);
 				return createGMTDate(parsedDate);
 			}
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			throw new ConversionFailure("Cannot convert \"" + fromObject + "\" to a java.util.Date.", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
@@ -65,17 +65,17 @@ public class StringToDateConverter extends Converter {
 	/**
 	 * If necessary convert from 'local' date into a GMT Date.
 	 */
-	private Date createGMTDate(Date date) {
+	private Date createGMTDate(final Date date) {
 		Date result = date;
 		if (timezone != null) {
-			long time = date.getTime();
-			int offset = timezone.getOffset(time);
+			final long time = date.getTime();
+			final int offset = timezone.getOffset(time);
 			result = new Date(time + offset);
 		}
 		return result;
 	}
 
-	private boolean hasTimeZone(String pattern) {
+	private boolean hasTimeZone(final String pattern) {
 		return pattern.contains("zzz") || pattern.contains("ZZZZ"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

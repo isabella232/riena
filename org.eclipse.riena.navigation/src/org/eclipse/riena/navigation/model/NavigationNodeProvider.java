@@ -67,7 +67,7 @@ public final class NavigationNodeProvider {
 	 * @since 1.2
 	 */
 	@InjectExtension
-	public void update(INavigationNodeProviderExtension[] availableExtensions) {
+	public void update(final INavigationNodeProviderExtension[] availableExtensions) {
 
 		if (provider != null) {
 			provider.cleanUp();
@@ -76,8 +76,8 @@ public final class NavigationNodeProvider {
 		int maxPriority = Integer.MIN_VALUE;
 
 		provider = null;
-		for (INavigationNodeProviderExtension probe : availableExtensions) {
-			int p = probe.getPriority();
+		for (final INavigationNodeProviderExtension probe : availableExtensions) {
+			final int p = probe.getPriority();
 			if (found == null || p > maxPriority) {
 				found = probe;
 				maxPriority = p;

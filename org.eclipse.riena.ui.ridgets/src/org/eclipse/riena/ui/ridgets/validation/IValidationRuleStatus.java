@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Status;
  * 
  * @deprecated use {@link Status} or {@link IStatus}
  */
+@Deprecated
 public interface IValidationRuleStatus extends IStatus {
 
 	/**
@@ -29,6 +30,7 @@ public interface IValidationRuleStatus extends IStatus {
 	 * 
 	 * @deprecated use {@link ValidationRuleStatus#ERROR_BLOCK_WITH_FLASH}
 	 */
+	@Deprecated
 	int ERROR_BLOCK_WITH_FLASH = ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH;
 
 	/**
@@ -40,6 +42,7 @@ public interface IValidationRuleStatus extends IStatus {
 	 * 
 	 * @deprecated use {@link ValidationRuleStatus#ERROR_ALLOW_WITH_MESSAGE}
 	 */
+	@Deprecated
 	int ERROR_ALLOW_WITH_MESSAGE = ValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
 
 }

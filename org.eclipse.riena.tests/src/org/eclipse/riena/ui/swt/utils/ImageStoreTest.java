@@ -31,8 +31,8 @@ public class ImageStoreTest extends RienaTestCase {
 	 */
 	public void testGetFullName() {
 
-		ImageStore store = ImageStore.getInstance();
-		String fullName = ReflectionUtils.invokeHidden(store, "getFullName", "abc", ImageFileExtension.JPG);
+		final ImageStore store = ImageStore.getInstance();
+		final String fullName = ReflectionUtils.invokeHidden(store, "getFullName", "abc", ImageFileExtension.JPG);
 		assertEquals("abc.jpg", fullName);
 
 	}
@@ -42,14 +42,14 @@ public class ImageStoreTest extends RienaTestCase {
 	 */
 	public void testGetImage() {
 
-		Shell shell = new Shell();
+		final Shell shell = new Shell();
 
-		ImageStore store = ImageStore.getInstance();
+		final ImageStore store = ImageStore.getInstance();
 		store.update(new IImagePathExtension[] {});
 		Image image = store.getImage("spirit");
 		assertNull(image);
 
-		IImagePathExtension extension = new IImagePathExtension() {
+		final IImagePathExtension extension = new IImagePathExtension() {
 
 			public Bundle getContributingBundle() {
 				return Activator.getDefault().getBundle();
@@ -73,10 +73,10 @@ public class ImageStoreTest extends RienaTestCase {
 	 */
 	public void testGetImageImageFileExtension() {
 
-		Shell shell = new Shell();
-		ImageStore store = ImageStore.getInstance();
+		final Shell shell = new Shell();
+		final ImageStore store = ImageStore.getInstance();
 
-		IImagePathExtension extension = new IImagePathExtension() {
+		final IImagePathExtension extension = new IImagePathExtension() {
 
 			public Bundle getContributingBundle() {
 				return Activator.getDefault().getBundle();

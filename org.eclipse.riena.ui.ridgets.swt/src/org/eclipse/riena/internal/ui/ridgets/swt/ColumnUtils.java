@@ -59,7 +59,7 @@ public final class ColumnUtils {
 	 *            array may be null, in that case the available width is
 	 *            distributed equally to all columns
 	 */
-	public static void applyColumnWidths(Table control, ColumnLayoutData[] columnWidths) {
+	public static void applyColumnWidths(final Table control, final ColumnLayoutData[] columnWidths) {
 		applyColumnWidths(control, columnWidths, control.getColumnCount());
 	}
 
@@ -92,7 +92,7 @@ public final class ColumnUtils {
 	 *            array may be null, in that case the available width is
 	 *            distributed equally to all columns
 	 */
-	public static void applyColumnWidths(Tree control, ColumnLayoutData[] columnWidths) {
+	public static void applyColumnWidths(final Tree control, final ColumnLayoutData[] columnWidths) {
 		applyColumnWidths(control, columnWidths, control.getColumnCount());
 	}
 
@@ -106,19 +106,19 @@ public final class ColumnUtils {
 	 *             if the array contains types other than subclasses of
 	 *             {@link ColumnLayoutData}
 	 */
-	public static ColumnLayoutData[] copyWidths(Object[] source) {
+	public static ColumnLayoutData[] copyWidths(final Object[] source) {
 		ColumnLayoutData[] result = null;
 		if (source != null) {
 			result = new ColumnLayoutData[source.length];
 			for (int i = 0; i < source.length; i++) {
 				if (source[i] instanceof ColumnPixelData) {
-					ColumnPixelData data = (ColumnPixelData) source[i];
+					final ColumnPixelData data = (ColumnPixelData) source[i];
 					result[i] = new ColumnPixelData(data.width, data.resizable, data.addTrim);
 				} else if (source[i] instanceof ColumnWeightData) {
-					ColumnWeightData data = (ColumnWeightData) source[i];
+					final ColumnWeightData data = (ColumnWeightData) source[i];
 					result[i] = new ColumnWeightData(data.weight, data.minimumWidth, data.resizable);
 				} else {
-					String msg = String.format("Unsupported type in column #%d: %s", i, source[i]); //$NON-NLS-1$
+					final String msg = String.format("Unsupported type in column #%d: %s", i, source[i]); //$NON-NLS-1$
 					throw new IllegalArgumentException(msg);
 				}
 			}
@@ -129,7 +129,8 @@ public final class ColumnUtils {
 	// helping methods
 	//////////////////
 
-	private static void applyColumnWidths(Composite control, ColumnLayoutData[] columnWidths, final int expectedCols) {
+	private static void applyColumnWidths(final Composite control, final ColumnLayoutData[] columnWidths,
+			final int expectedCols) {
 		final ColumnLayoutData[] columnData;
 		if (columnWidths == null || columnWidths.length != expectedCols) {
 			columnData = new ColumnLayoutData[expectedCols];
@@ -139,33 +140,31 @@ public final class ColumnUtils {
 		} else {
 			columnData = columnWidths;
 		}
-		Composite parent = control.getParent();
+		final Composite parent = control.getParent();
 		if (control.getLayout() instanceof TableLayout) {
 			// TableLayout: use columnData instance for each column, apply to control
-			TableLayout layout = new TableLayout();
+			final TableLayout layout = new TableLayout();
 			for (int index = 0; index < expectedCols; index++) {
 				layout.addColumnData(columnData[index]);
 			}
 			control.setLayout(layout);
 			parent.layout(true, true);
 		} else if ((control instanceof Tree && control.getLayout() == null && parent.getLayout() == null && parent
-				.getChildren().length == 1)
-				|| parent.getLayout() instanceof TreeColumnLayout) {
+				.getChildren().length == 1) || parent.getLayout() instanceof TreeColumnLayout) {
 			// TreeColumnLayout: use columnData instance for each column, apply to parent
-			TreeColumnLayout layout = getOrCreateTreeColumnLayout(parent);
+			final TreeColumnLayout layout = getOrCreateTreeColumnLayout(parent);
 			for (int index = 0; index < expectedCols; index++) {
-				Widget column = getColumn(control, index);
+				final Widget column = getColumn(control, index);
 				layout.setColumnData(column, columnData[index]);
 			}
 			parent.setLayout(layout);
 			parent.layout();
 		} else if ((control instanceof Table && control.getLayout() == null && parent.getLayout() == null && parent
-				.getChildren().length == 1)
-				|| parent.getLayout() instanceof TableColumnLayout) {
+				.getChildren().length == 1) || parent.getLayout() instanceof TableColumnLayout) {
 			// TableColumnLayout: use columnData instance for each column, apply to parent
-			TableColumnLayout layout = getOrCreateTableColumnLayout(parent);
+			final TableColumnLayout layout = getOrCreateTableColumnLayout(parent);
 			for (int index = 0; index < expectedCols; index++) {
-				Widget column = getColumn(control, index);
+				final Widget column = getColumn(control, index);
 				layout.setColumnData(column, columnData[index]);
 			}
 			parent.setLayout(layout);
@@ -179,9 +178,9 @@ public final class ColumnUtils {
 			int widthRemaining = control.getClientArea().width;
 			int totalWeights = 0;
 			for (int index = 0; index < expectedCols; index++) {
-				ColumnLayoutData data = columnData[index];
+				final ColumnLayoutData data = columnData[index];
 				if (data instanceof ColumnPixelData) {
-					ColumnPixelData pixelData = (ColumnPixelData) data;
+					final ColumnPixelData pixelData = (ColumnPixelData) data;
 					int width = pixelData.width;
 					if (pixelData.addTrim) {
 						width = width + getColumnTrim();
@@ -192,19 +191,19 @@ public final class ColumnUtils {
 					totalWeights = totalWeights + ((ColumnWeightData) data).weight;
 				}
 			}
-			int slice = totalWeights > 0 ? Math.max(0, widthRemaining / totalWeights) : 0;
+			final int slice = totalWeights > 0 ? Math.max(0, widthRemaining / totalWeights) : 0;
 			for (int index = 0; index < expectedCols; index++) {
 				if (columnData[index] instanceof ColumnWeightData) {
-					ColumnWeightData data = (ColumnWeightData) columnData[index];
-					int width = Math.max(data.minimumWidth, data.weight * slice);
+					final ColumnWeightData data = (ColumnWeightData) columnData[index];
+					final int width = Math.max(data.minimumWidth, data.weight * slice);
 					configureColumn(control, index, width, data.resizable);
 				}
 			}
 		}
 	}
 
-	private static void configureColumn(Control control, int index, int width, boolean resizable) {
-		Widget column = getColumn(control, index);
+	private static void configureColumn(final Control control, final int index, final int width, final boolean resizable) {
+		final Widget column = getColumn(control, index);
 		if (column instanceof TreeColumn) {
 			((TreeColumn) column).setWidth(width);
 			((TreeColumn) column).setResizable(resizable);
@@ -214,7 +213,7 @@ public final class ColumnUtils {
 		}
 	}
 
-	private static Widget getColumn(Control control, int index) {
+	private static Widget getColumn(final Control control, final int index) {
 		if (control instanceof Table) {
 			return ((Table) control).getColumn(index);
 		}
@@ -237,7 +236,7 @@ public final class ColumnUtils {
 	/*
 	 * Workaround for Bug 295404 - reusing existing TableColumnLayout
 	 */
-	private static TableColumnLayout getOrCreateTableColumnLayout(Composite parent) {
+	private static TableColumnLayout getOrCreateTableColumnLayout(final Composite parent) {
 		TableColumnLayout result;
 		if (parent.getLayout() instanceof TableColumnLayout) {
 			result = (TableColumnLayout) parent.getLayout();
@@ -250,7 +249,7 @@ public final class ColumnUtils {
 	/*
 	 * Workaround for Bug 295404 - reusing existing TreeColumnLayout
 	 */
-	private static TreeColumnLayout getOrCreateTreeColumnLayout(Composite parent) {
+	private static TreeColumnLayout getOrCreateTreeColumnLayout(final Composite parent) {
 		TreeColumnLayout result;
 		if (parent.getLayout() instanceof TreeColumnLayout) {
 			result = (TreeColumnLayout) parent.getLayout();

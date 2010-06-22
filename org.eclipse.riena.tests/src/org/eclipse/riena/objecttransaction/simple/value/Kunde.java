@@ -43,7 +43,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	/**
 	 * @param kundennr
 	 */
-	public Kunde(String kundennr) {
+	public Kunde(final String kundennr) {
 		super(new GenericOID("kunde", "kundennrpk", kundennr), "1");
 		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			ObjectTransactionManager.getInstance().getCurrent().register(this);
@@ -65,7 +65,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 * @param kundennr
 	 *            The kundennr to set.
 	 */
-	public void setKundennr(String kundennr) {
+	public void setKundennr(final String kundennr) {
 		if (((GenericOID) getObjectId()).getProperties().get("primkey") != null) {
 			throw new UnsupportedOperationException("cannot change kundennr (once it is set)");
 		}
@@ -88,7 +88,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 * @param nachname
 	 *            The nachname to set.
 	 */
-	public void setNachname(String nachname) {
+	public void setNachname(final String nachname) {
 		// changeEvent
 		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			this.nachname = nachname;
@@ -108,7 +108,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 * @param vorname
 	 *            The vorname to set.
 	 */
-	public void setVorname(String vorname) {
+	public void setVorname(final String vorname) {
 		// changeEvent
 		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			this.vorname = vorname;
@@ -128,7 +128,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 * @param addresse
 	 *            The addresse to set.
 	 */
-	public void setAddresse(Addresse addresse) {
+	public void setAddresse(final Addresse addresse) {
 		// changeEvent
 		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			this.addresse = addresse;
@@ -140,7 +140,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	/**
 	 * @param vertrag
 	 */
-	public void addVertrag(Vertrag vertrag) {
+	public void addVertrag(final Vertrag vertrag) {
 		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			vertraege.add(vertrag);
 		} else {
@@ -151,8 +151,8 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	/**
 	 * @param vertragsNummer
 	 */
-	public void removeVertrag(String vertragsNummer) {
-		Vertrag tempVertrag = getVertrag(vertragsNummer);
+	public void removeVertrag(final String vertragsNummer) {
+		final Vertrag tempVertrag = getVertrag(vertragsNummer);
 		// changeEvent
 		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			vertraege.remove(getVertrag(vertragsNummer));
@@ -164,7 +164,7 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	/**
 	 * @param vertrag
 	 */
-	public void removeVertrag(Vertrag vertrag) {
+	public void removeVertrag(final Vertrag vertrag) {
 		// changeEvent
 		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			vertraege.remove(vertrag);
@@ -177,11 +177,11 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 * @param vertragsNummer
 	 * @return
 	 */
-	public Vertrag getVertrag(String vertragsNummer) {
-		Vertrag[] tempVertraege = listVertrag();
-		for (int i = 0; i < tempVertraege.length; i++) {
-			if (tempVertraege[i].getVertragsNummer().equals(vertragsNummer)) {
-				return tempVertraege[i];
+	public Vertrag getVertrag(final String vertragsNummer) {
+		final Vertrag[] tempVertraege = listVertrag();
+		for (final Vertrag element : tempVertraege) {
+			if (element.getVertragsNummer().equals(vertragsNummer)) {
+				return element;
 			}
 		}
 		return null;
@@ -191,8 +191,8 @@ public class Kunde extends AbstractTransactedObject implements ITransactedObject
 	 * @return
 	 */
 	public Vertrag[] listVertrag() {
-		Set<?> vertraegeSet = ObjectTransactionManager.getInstance().getCurrent().listReference(this, "vertrag",
-				vertraege);
+		final Set<?> vertraegeSet = ObjectTransactionManager.getInstance().getCurrent()
+				.listReference(this, "vertrag", vertraege);
 		if (vertraegeSet.size() == 0) {
 			return new Vertrag[0];
 		}

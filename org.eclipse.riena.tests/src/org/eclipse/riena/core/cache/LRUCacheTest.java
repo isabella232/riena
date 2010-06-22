@@ -80,7 +80,7 @@ public class LRUCacheTest extends RienaTestCase {
 	 */
 	public void testMultiThread() throws Exception {
 		genericCache2 = new LRUCache<Integer, TestRunner>();
-		Thread[] runner = new Thread[10];
+		final Thread[] runner = new Thread[10];
 		for (int i = 0; i < 10; i++) {
 			runner[i] = new TestRunner(i * 20, i * 20 + 19, 10);
 		}
@@ -93,7 +93,7 @@ public class LRUCacheTest extends RienaTestCase {
 	 */
 	public void testMultiThreadSameRange() throws Exception {
 		genericCache2 = new LRUCache<Integer, TestRunner>();
-		Thread[] runner = new Thread[10];
+		final Thread[] runner = new Thread[10];
 		for (int i = 0; i < 10; i++) {
 			runner[i] = new TestRunner(0, 20, 10);
 		}
@@ -106,7 +106,7 @@ public class LRUCacheTest extends RienaTestCase {
 	 */
 	public void testMultiThreadLargeNoOfThreadsSameRange() throws Exception {
 		genericCache2 = new LRUCache<Integer, TestRunner>();
-		Thread[] runner = new Thread[100];
+		final Thread[] runner = new Thread[100];
 		for (int i = 0; i < 100; i++) {
 			runner[i] = new TestRunner(0, 20, 100);
 		}
@@ -119,7 +119,7 @@ public class LRUCacheTest extends RienaTestCase {
 	 */
 	public void testMultiThreadLargeNoOfThreads() throws Exception {
 		genericCache2 = new LRUCache<Integer, TestRunner>();
-		Thread[] runner = new Thread[100];
+		final Thread[] runner = new Thread[100];
 		for (int i = 0; i < 100; i++) {
 			runner[i] = new TestRunner(i * 20, i * 20 + 19, 100);
 		}
@@ -127,25 +127,25 @@ public class LRUCacheTest extends RienaTestCase {
 		genericCache2.clear();
 	}
 
-	private void runAndCheckThreads(Thread[] runner) {
-		for (int i = 0; i < runner.length; i++) {
+	private void runAndCheckThreads(final Thread[] runner) {
+		for (final Thread element : runner) {
 			//			trace("starting thread " + i);
-			runner[i].start();
+			element.start();
 		}
 		int count = 0; // number of running threads
 		boolean first = true;
 		Thread.yield();
 		while (count != 0 || first) {
 			count = 0;
-			for (int i = 0; i < runner.length; i++) {
-				if (runner[i].isAlive()) {
+			for (final Thread element : runner) {
+				if (element.isAlive()) {
 					count++;
 				}
 			}
 			first = false;
 			try {
 				Thread.sleep(100);
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				Nop.reason("no action");
 			}
 
@@ -153,11 +153,11 @@ public class LRUCacheTest extends RienaTestCase {
 	}
 
 	class TestRunner extends Thread {
-		private int lowRange;
-		private int highRange;
-		private int runs;
+		private final int lowRange;
+		private final int highRange;
+		private final int runs;
 
-		TestRunner(int lowRange, int highRange, int runs) {
+		TestRunner(final int lowRange, final int highRange, final int runs) {
 			this.lowRange = lowRange;
 			this.highRange = highRange;
 			this.runs = runs;

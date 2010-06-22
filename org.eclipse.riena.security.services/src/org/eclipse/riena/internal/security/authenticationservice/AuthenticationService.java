@@ -63,21 +63,21 @@ public class AuthenticationService implements IAuthenticationService {
 		super();
 	}
 
-	public void bind(ISessionService sessionService) {
+	public void bind(final ISessionService sessionService) {
 		this.sessionService = sessionService;
 	}
 
-	public void unbind(ISessionService sessionService) {
+	public void unbind(final ISessionService sessionService) {
 		if (this.sessionService == sessionService) {
 			this.sessionService = null;
 		}
 	}
 
-	public void bind(ISubjectHolder subjectHolder) {
+	public void bind(final ISubjectHolder subjectHolder) {
 		this.subjectHolder = subjectHolder;
 	}
 
-	public void unbind(ISubjectHolder subjectHolder) {
+	public void unbind(final ISubjectHolder subjectHolder) {
 		if (this.subjectHolder == subjectHolder) {
 			this.subjectHolder = null;
 		}
@@ -93,11 +93,11 @@ public class AuthenticationService implements IAuthenticationService {
 	// }
 	// }
 
-	public void bind(ISessionHolder sessionHolder) {
+	public void bind(final ISessionHolder sessionHolder) {
 		this.sessionHolder = sessionHolder;
 	}
 
-	public void unbind(ISessionHolder sessionHolder) {
+	public void unbind(final ISessionHolder sessionHolder) {
 		if (this.sessionHolder == sessionHolder) {
 			this.sessionHolder = null;
 		}
@@ -112,37 +112,37 @@ public class AuthenticationService implements IAuthenticationService {
 	 * org.eclipse.riena.security.common.authentication.
 	 * credentials.AbstractCredential[])
 	 */
-	public AuthenticationTicket login(String loginContext, AbstractCredential[] credentials)
+	public AuthenticationTicket login(final String loginContext, final AbstractCredential[] credentials)
 			throws AuthenticationFailure {
 		try {
-			Callback[] callbacks = Callback2CredentialConverter.credentials2Callbacks(credentials);
+			final Callback[] callbacks = Callback2CredentialConverter.credentials2Callbacks(credentials);
 			// create login context and login
 			//			LoginContext lc = new LoginContext(loginContext, new MyCallbackHandler(callbacks));
 			//			lc.login();
-			ILoginContext secureContext = LoginContextFactory.createContext(loginContext);
+			final ILoginContext secureContext = LoginContextFactory.createContext(loginContext);
 			AuthenticationServiceCallbackHandler.setCallbacks(callbacks);
 
 			secureContext.login();
 			// if login was successful, create session and add principals to
 			// session
-			Set<Principal> principals = secureContext.getSubject().getPrincipals();
+			final Set<Principal> principals = secureContext.getSubject().getPrincipals();
 			// add only new principals to ticket (not the ones that might exist
 			// in the session)
-			AuthenticationTicket ticket = new AuthenticationTicket();
+			final AuthenticationTicket ticket = new AuthenticationTicket();
 			Session session = sessionHolder.getSession();
 			if (session != null) {
 				sessionService.invalidateSession(session);
 			}
-			Principal[] pArray = principals.toArray(new Principal[principals.size()]);
+			final Principal[] pArray = principals.toArray(new Principal[principals.size()]);
 			session = sessionService.generateSession(pArray);
 			sessionHolder.setSession(session);
-			for (Principal p : principals) {
+			for (final Principal p : principals) {
 				ticket.getPrincipals().add(p);
 			}
 			// add session object to authentication ticket
 			ticket.setSession(session);
 			return ticket;
-		} catch (LoginException e) {
+		} catch (final LoginException e) {
 			throw new AuthenticationFailure("AuthenticationService login failed", e); //$NON-NLS-1$
 		} finally {
 			AuthenticationServiceCallbackHandler.setCallbacks(null);
@@ -150,7 +150,7 @@ public class AuthenticationService implements IAuthenticationService {
 	}
 
 	public void logout() throws AuthenticationFailure {
-		Session session = sessionHolder.getSession();
+		final Session session = sessionHolder.getSession();
 		if (session == null) {
 			throw new AuthenticationFailure("no valid session"); //$NON-NLS-1$
 		}

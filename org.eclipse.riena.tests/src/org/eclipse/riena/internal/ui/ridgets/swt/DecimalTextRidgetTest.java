@@ -50,8 +50,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Control createWidget(Composite parent) {
-		Control result = new Text(getShell(), SWT.RIGHT | SWT.BORDER | SWT.SINGLE);
+	protected Control createWidget(final Composite parent) {
+		final Control result = new Text(getShell(), SWT.RIGHT | SWT.BORDER | SWT.SINGLE);
 		result.setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DECIMAL);
 		result.setLayoutData(new RowData(100, SWT.DEFAULT));
 		return result;
@@ -66,7 +66,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	///////////////
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(DecimalTextRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
@@ -90,22 +90,22 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetText() {
-		IDecimalTextRidget ridget = getRidget();
+		final IDecimalTextRidget ridget = getRidget();
 		ridget.setGrouping(true);
 		ridget.setPrecision(2);
-		Text control = getWidget();
+		final Text control = getWidget();
 
 		ridget.setText(localize("12345"));
 
 		assertEquals(localize("12.345,00"), control.getText());
 		assertEquals(localize("12.345"), ridget.getText());
 
-		String controlLastText = control.getText();
-		String ridgetLastText = ridget.getText();
+		final String controlLastText = control.getText();
+		final String ridgetLastText = ridget.getText();
 		try {
 			ridget.setText("abc");
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			assertEquals(controlLastText, control.getText());
 			assertEquals(ridgetLastText, ridget.getText());
 		}
@@ -115,21 +115,21 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	 * Test that setText(x) with x = {"", null } clears the number.
 	 */
 	public void testSetTextNull() {
-		ITextRidget ridget = getRidget();
-		Text control = getWidget();
+		final ITextRidget ridget = getRidget();
+		final Text control = getWidget();
 
-		String[] testValues = new String[] { null, "" };
+		final String[] testValues = new String[] { null, "" };
 
-		for (String value : testValues) {
+		for (final String value : testValues) {
 			ridget.setText(localize("42,2"));
 
 			assertEquals(localize("42,2"), ridget.getText());
 
-			DoubleBean doubleBean = new DoubleBean(3.14d);
+			final DoubleBean doubleBean = new DoubleBean(3.14d);
 			ridget.bindToModel(doubleBean, DoubleBean.PROP_VALUE);
 			ridget.setText(value);
 
-			String msg = String.format("setText('%s')", value);
+			final String msg = String.format("setText('%s')", value);
 
 			assertEquals(msg, "", ridget.getText());
 			assertEquals(msg, localize(","), control.getText());
@@ -138,13 +138,13 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testDeleteDecimalSeparator() {
-		IDecimalTextRidget ridget = getRidget();
+		final IDecimalTextRidget ridget = getRidget();
 		ridget.setMaxLength(6);
 		ridget.setPrecision(4);
 		ridget.setGrouping(true);
 		ridget.setDirectWriting(true);
-		Text control = getWidget();
-		Display display = control.getDisplay();
+		final Text control = getWidget();
+		final Display display = control.getDisplay();
 
 		ridget.setText(localize("1234,9876"));
 
@@ -208,12 +208,12 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testDeleteNegativeSign() {
-		IDecimalTextRidget ridget = getRidget();
+		final IDecimalTextRidget ridget = getRidget();
 		ridget.setSigned(true);
 		ridget.setText(localize("1234,56"));
 		ridget.setDirectWriting(true);
-		Text control = getWidget();
-		Display display = control.getDisplay();
+		final Text control = getWidget();
+		final Display display = control.getDisplay();
 
 		assertTrue(ridget.isMarkNegative());
 
@@ -235,13 +235,13 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testReplaceSelection() throws Exception {
-		IDecimalTextRidget ridget = getRidget();
+		final IDecimalTextRidget ridget = getRidget();
 		ridget.setMaxLength(6);
 		ridget.setPrecision(2);
 		ridget.setGrouping(true);
 		ridget.setDirectWriting(true);
-		Text control = getWidget();
-		Display display = control.getDisplay();
+		final Text control = getWidget();
+		final Display display = control.getDisplay();
 
 		ridget.setText(localize("123.456,78"));
 		control.setSelection(0, 7);
@@ -283,10 +283,10 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testJumpOverDecimalSeparator() {
-		IDecimalTextRidget ridget = getRidget();
+		final IDecimalTextRidget ridget = getRidget();
 		ridget.setGrouping(true);
-		Text control = getWidget();
-		Display display = control.getDisplay();
+		final Text control = getWidget();
+		final Display display = control.getDisplay();
 
 		// jump when directly at the left of the decimal separator 
 		ridget.setText(localize("123.456,78"));
@@ -316,7 +316,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			}
 		};
 
-		IDecimalTextRidget ridget = getRidget();
+		final IDecimalTextRidget ridget = getRidget();
 		ridget.setMaxLength(16);
 		ridget.setPrecision(3);
 		ridget.bindToModel(doubleValueBean, DoubleBean.PROP_VALUE);
@@ -327,8 +327,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromModel() {
-		IDecimalTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
 
 		assertEquals(2, ridget.getPrecision());
 		assertEquals(localize("0,00"), control.getText());
@@ -337,7 +337,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setMaxLength(6);
 		ridget.setPrecision(3);
 
-		StringBean bean = new StringBean(localize("1,2"));
+		final StringBean bean = new StringBean(localize("1,2"));
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 		ridget.updateFromModel();
 
@@ -356,8 +356,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(localize("0"), ridget.getText());
 		assertEquals(localize("0,0"), bean.getValue());
 
-		String oldControlValue = control.getText();
-		String oldRidgetValue = ridget.getText();
+		final String oldControlValue = control.getText();
+		final String oldRidgetValue = ridget.getText();
 		bean.setValue("abc");
 		ridget.updateFromModel();
 
@@ -368,13 +368,13 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromModelNull() {
-		IDecimalTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
 
 		assertEquals(2, ridget.getPrecision());
 
 		ridget.setText(localize("3,14"));
-		DoubleBean bean = new DoubleBean(null);
+		final DoubleBean bean = new DoubleBean(null);
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 		ridget.updateFromModel();
 
@@ -384,11 +384,11 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testMaxLength() {
-		IDecimalTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
 		ridget.setMaxLength(6);
 		ridget.setPrecision(3);
-		StringBean bean = new StringBean();
+		final StringBean bean = new StringBean();
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
 		control.setFocus();
@@ -400,19 +400,19 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testGetSetMaxLength() {
-		IDecimalTextRidget ridget = getRidget();
+		final IDecimalTextRidget ridget = getRidget();
 
 		try {
 			ridget.setMaxLength(0);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			ridget.setMaxLength(-1);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
@@ -429,11 +429,11 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testPrecision() throws Exception {
-		IDecimalTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
 		ridget.setMaxLength(6);
 		ridget.setPrecision(3);
-		StringBean bean = new StringBean();
+		final StringBean bean = new StringBean();
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
 		control.setFocus();
@@ -464,12 +464,12 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testGetSetPrecision() {
-		IDecimalTextRidget ridget = getRidget();
+		final IDecimalTextRidget ridget = getRidget();
 
 		try {
 			ridget.setPrecision(-1);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
@@ -492,8 +492,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testExceedPrecisionWithSetText() {
-		IDecimalTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
 
 		assertEquals(2, ridget.getPrecision());
 
@@ -502,7 +502,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setText(localize("3,145"));
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			// expected
 			assertEquals(localize("1,23"), ridget.getText());
 			assertEquals(localize("1,23"), control.getText());
@@ -510,9 +510,9 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testExceedPrecisionWithUpdate() {
-		IDecimalTextRidget ridget = getRidget();
-		Text control = getWidget();
-		DoubleBean value = new DoubleBean(1.23d);
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final DoubleBean value = new DoubleBean(1.23d);
 		ridget.bindToModel(value, DoubleBean.PROP_VALUE);
 
 		assertEquals(2, ridget.getPrecision());
@@ -523,7 +523,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			value.setValue(3.145d);
 			ridget.updateFromModel();
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			// expected
 			assertEquals(localize("1,23"), ridget.getText());
 			assertEquals(localize("1,23"), control.getText());
@@ -531,8 +531,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testExceedMaxLengthWithSetText() {
-		IDecimalTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
 
 		ridget.setMaxLength(3);
 
@@ -543,7 +543,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setText(localize("1234,00"));
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			// expected
 			assertEquals(localize("123"), ridget.getText());
 			assertEquals(localize("123,00"), control.getText());
@@ -553,7 +553,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setText(localize("1234"));
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			// expected
 			assertEquals(localize("-321"), ridget.getText());
 			assertEquals(localize("-321,00"), control.getText());
@@ -561,14 +561,14 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testExceedMaxLengthWithUpdate() {
-		IDecimalTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
 
 		ridget.setMaxLength(3);
 
 		assertEquals(3, ridget.getMaxLength());
 
-		DoubleBean value = new DoubleBean(123.00d);
+		final DoubleBean value = new DoubleBean(123.00d);
 		ridget.bindToModel(value, DoubleBean.PROP_VALUE);
 		ridget.updateFromModel();
 
@@ -576,7 +576,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			value.setValue(1234.12d);
 			ridget.updateFromModel();
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			// expected
 			assertEquals(localize("123"), ridget.getText());
 			assertEquals(localize("123,00"), control.getText());
@@ -588,7 +588,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			value.setValue(1234d);
 			ridget.updateFromModel();
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			// expected
 			assertEquals(localize("-321"), ridget.getText());
 			assertEquals(localize("-321,00"), control.getText());
@@ -596,10 +596,10 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testIsSetWithSign() {
-		IDecimalTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
 		ridget.setPrecision(3);
-		StringBean bean = new StringBean();
+		final StringBean bean = new StringBean();
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
 		assertTrue(ridget.isSigned());
@@ -631,11 +631,11 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testPadFractionDigitsOnFocusOut() {
-		IDecimalTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
 		ridget.setPrecision(3);
 		ridget.setSigned(true);
-		StringBean bean = new StringBean();
+		final StringBean bean = new StringBean();
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
 		control.setFocus();
@@ -683,9 +683,9 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testMandatoryMarkerFromUI() {
-		IDecimalTextRidget ridget = getRidget();
+		final IDecimalTextRidget ridget = getRidget();
 		ridget.setDirectWriting(true);
-		Text control = getWidget();
+		final Text control = getWidget();
 
 		ridget.setMandatory(true);
 		ridget.setText("");
@@ -707,7 +707,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testMandatoryMarker() {
-		IDecimalTextRidget ridget = getRidget();
+		final IDecimalTextRidget ridget = getRidget();
 		ridget.setMandatory(true);
 
 		ridget.setText(localize("12,34"));
@@ -724,8 +724,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testDisabledMarker() {
-		IDecimalTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
 
 		ridget.setText(localize("12,00"));
 
@@ -759,16 +759,16 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationAfterUpdate() {
-		IDecimalTextRidget ridget = getRidget();
+		final IDecimalTextRidget ridget = getRidget();
 		ridget.addValidationRule(new IValidator() {
-			public IStatus validate(Object input) {
+			public IStatus validate(final Object input) {
 				IStatus result = ValidationRuleStatus.ok();
 				try {
-					double value = Double.parseDouble(input.toString());
+					final double value = Double.parseDouble(input.toString());
 					if (value == 0d) {
 						result = ValidationRuleStatus.error(false, "cannot be 0");
 					}
-				} catch (NumberFormatException nfe) {
+				} catch (final NumberFormatException nfe) {
 					result = ValidationRuleStatus.error(false, "number format exception");
 				}
 				return result;
@@ -782,7 +782,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 		assertTrue(ridget.isErrorMarked());
 
-		DoubleBean bean = new DoubleBean(0d);
+		final DoubleBean bean = new DoubleBean(0d);
 		ridget.bindToModel(bean, DoubleBean.PROP_VALUE);
 		ridget.updateFromModel();
 
@@ -803,7 +803,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	 * As per bug #275134.
 	 */
 	public void testSetSignedThrowsException() {
-		INumericTextRidget ridget = getRidget();
+		final INumericTextRidget ridget = getRidget();
 		ridget.setText(localize("1234,56"));
 
 		ridget.setSigned(false);
@@ -811,7 +811,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setText(localize("-47,11"));
 			fail();
-		} catch (RuntimeException exc) {
+		} catch (final RuntimeException exc) {
 			ok("expected");
 		}
 		assertEquals(localize("1.234,56"), ridget.getText());
@@ -821,10 +821,10 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	 * As per bug #280603.
 	 */
 	public void testSetPrecisionBeforeBindAndUpdateFromModel() {
-		IDecimalTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
 
-		DoubleBean doubleBean = new DoubleBean(3.141592d);
+		final DoubleBean doubleBean = new DoubleBean(3.141592d);
 		ridget.setPrecision(6);
 		ridget.bindToModel(doubleBean, DoubleBean.PROP_VALUE);
 		ridget.updateFromModel();
@@ -837,10 +837,10 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	 * As per bug #280603.
 	 */
 	public void testSetPrecisionAfterBindAndUpdateFromModel() {
-		IDecimalTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
 
-		DoubleBean doubleBean = new DoubleBean(0.123456789d);
+		final DoubleBean doubleBean = new DoubleBean(0.123456789d);
 		ridget.bindToModel(doubleBean, DoubleBean.PROP_VALUE);
 		ridget.setPrecision(9);
 		ridget.updateFromModel();
@@ -853,8 +853,8 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 313255
 	 */
 	public void testHideEmptyValueWhenOutputOnly() {
-		IDecimalTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
 
 		ridget.setText("");
 
@@ -885,7 +885,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	// helping methods
 	//////////////////
 
-	private String localize(String number) {
+	private String localize(final String number) {
 		return TestUtils.getLocalizedNumber(number);
 	}
 

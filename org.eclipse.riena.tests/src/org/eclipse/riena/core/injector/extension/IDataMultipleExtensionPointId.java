@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.core.injector.extension;
 
-
 @ExtensionInterface
 public interface IDataMultipleExtensionPointId {
 

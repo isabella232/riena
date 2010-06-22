@@ -27,18 +27,18 @@ import org.eclipse.riena.ui.ridgets.IRidget;
  */
 public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
-	private PropertyChangeListener markerPropertyChangeListener = new MarkerPropertyChangeListener();
+	private final PropertyChangeListener markerPropertyChangeListener = new MarkerPropertyChangeListener();
 
-	private HashMap<IBasicMarkableRidget, Tooltip> tooltips = new LinkedHashMap<IBasicMarkableRidget, Tooltip>();
+	private final HashMap<IBasicMarkableRidget, Tooltip> tooltips = new LinkedHashMap<IBasicMarkableRidget, Tooltip>();
 
 	@Override
-	public void addRidget(IBasicMarkableRidget markableRidget) {
+	public void addRidget(final IBasicMarkableRidget markableRidget) {
 		super.addRidget(markableRidget);
 		markableRidget.addPropertyChangeListener(markerPropertyChangeListener);
 	}
 
 	@Override
-	public void removeRidget(IBasicMarkableRidget markableRidget) {
+	public void removeRidget(final IBasicMarkableRidget markableRidget) {
 		markableRidget.removePropertyChangeListener(markerPropertyChangeListener);
 		super.removeRidget(markableRidget);
 	}
@@ -47,11 +47,11 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	////////////////////
 
 	@Override
-	protected void showMessages(IBasicMarkableRidget markableRidget) {
-		Collection<IMessageMarker> messageMarker = this.getMessageMarker(markableRidget);
-		String message = constructMessage(messageMarker, getMessageSeparator());
+	protected void showMessages(final IBasicMarkableRidget markableRidget) {
+		final Collection<IMessageMarker> messageMarker = this.getMessageMarker(markableRidget);
+		final String message = constructMessage(messageMarker, getMessageSeparator());
 		// show the message only if there is something to show
-		String current = markableRidget.getToolTipText();
+		final String current = markableRidget.getToolTipText();
 		if (message.length() > 0 && isVisible()) {
 			if (!message.equals(current)) {
 				Tooltip tooltip = tooltips.get(markableRidget);
@@ -69,9 +69,9 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	}
 
 	@Override
-	protected void hideMessages(IBasicMarkableRidget markableRidget) {
+	protected void hideMessages(final IBasicMarkableRidget markableRidget) {
 		if (tooltips.containsKey(markableRidget)) {
-			String tooltip = tooltips.get(markableRidget).originalTooltip;
+			final String tooltip = tooltips.get(markableRidget).originalTooltip;
 			markableRidget.setToolTipText(tooltip);
 			tooltips.remove(markableRidget);
 		}
@@ -87,15 +87,15 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 
 	private final class MarkerPropertyChangeListener implements PropertyChangeListener {
 
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(final PropertyChangeEvent evt) {
 			if (evt.getSource() instanceof IBasicMarkableRidget) {
 				if (IBasicMarkableRidget.PROPERTY_MARKER.equals(evt.getPropertyName())) {
-					IBasicMarkableRidget ridget = (IBasicMarkableRidget) evt.getSource();
+					final IBasicMarkableRidget ridget = (IBasicMarkableRidget) evt.getSource();
 					showMessages(ridget);
 				} else if (IRidget.PROPERTY_TOOLTIP.equals(evt.getPropertyName())) {
-					IBasicMarkableRidget ridget = (IBasicMarkableRidget) evt.getSource();
-					String newTooltip = (String) evt.getNewValue();
-					Tooltip tip = tooltips.get(ridget);
+					final IBasicMarkableRidget ridget = (IBasicMarkableRidget) evt.getSource();
+					final String newTooltip = (String) evt.getNewValue();
+					final Tooltip tip = tooltips.get(ridget);
 					if (tip != null && !StringUtils.equals(newTooltip, tip.originalTooltip)) {
 						showMessages(ridget);
 						/*
@@ -124,7 +124,7 @@ public class TooltipMessageMarkerViewer extends AbstractMessageMarkerViewer {
 		/** Tooltip value for the 'message' tooltip. */
 		private String messageTooltip;
 
-		Tooltip(String originalTooltip, String messageTooltip) {
+		Tooltip(final String originalTooltip, final String messageTooltip) {
 			this.originalTooltip = originalTooltip;
 			this.messageTooltip = messageTooltip;
 		}

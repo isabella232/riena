@@ -55,12 +55,12 @@ public class AuthenticationClientITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.core", null);
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		stopBundles("org\\.eclipse\\.riena.example.client", null);
-		sessionServiceRegistration = Register.remoteProxy(ISessionService.class).usingUrl(
-				"http://localhost:8080/hessian/SessionService").withProtocol("hessian").andStart(
-				Activator.getDefault().getContext());
-		authenticationServiceRegistration = Register.remoteProxy(IAuthenticationService.class).usingUrl(
-				"http://localhost:8080/hessian/AuthenticationService").withProtocol("hessian").andStart(
-				Activator.getDefault().getContext());
+		sessionServiceRegistration = Register.remoteProxy(ISessionService.class)
+				.usingUrl("http://localhost:8080/hessian/SessionService").withProtocol("hessian")
+				.andStart(Activator.getDefault().getContext());
+		authenticationServiceRegistration = Register.remoteProxy(IAuthenticationService.class)
+				.usingUrl("http://localhost:8080/hessian/AuthenticationService").withProtocol("hessian")
+				.andStart(Activator.getDefault().getContext());
 
 	}
 
@@ -80,21 +80,21 @@ public class AuthenticationClientITest extends RienaTestCase {
 	public void testLogin() throws Exception {
 		trace("Looking up Authentication Service...: ");
 
-		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
-		IAuthenticationService authenticationService = (IAuthenticationService) getContext().getService(ref);
+		final ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
+		final IAuthenticationService authenticationService = (IAuthenticationService) getContext().getService(ref);
 
 		trace("Service looked up: " + authenticationService.getClass().getName());
 
-		AbstractCredential[] creds = new AbstractCredential[2];
-		NameCredential nc = new NameCredential("username: ", "xx");
+		final AbstractCredential[] creds = new AbstractCredential[2];
+		final NameCredential nc = new NameCredential("username: ", "xx");
 		nc.setName("testuser1");
 		creds[0] = nc;
-		PasswordCredential pc = new PasswordCredential("password: ", false);
+		final PasswordCredential pc = new PasswordCredential("password: ", false);
 		pc.setPassword("testpass2".toCharArray());
 		creds[1] = pc;
 		trace("Add credential: " + Arrays.toString(creds));
 
-		AuthenticationTicket ticket = authenticationService.login("CentralSecurity", creds);
+		final AuthenticationTicket ticket = authenticationService.login("CentralSecurity", creds);
 
 		trace("Return from login() - ticket: " + ticket);
 
@@ -113,41 +113,41 @@ public class AuthenticationClientITest extends RienaTestCase {
 	public void testInvalidLogin() throws Exception {
 
 		try {
-			ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
-			IAuthenticationService authenticationService = (IAuthenticationService) getContext().getService(ref);
-			AbstractCredential[] creds = new AbstractCredential[2];
-			NameCredential nc = new NameCredential("username: ", "xx");
+			final ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
+			final IAuthenticationService authenticationService = (IAuthenticationService) getContext().getService(ref);
+			final AbstractCredential[] creds = new AbstractCredential[2];
+			final NameCredential nc = new NameCredential("username: ", "xx");
 			nc.setName("john");
 			creds[0] = nc;
-			PasswordCredential pc = new PasswordCredential("password: ", false);
+			final PasswordCredential pc = new PasswordCredential("password: ", false);
 			pc.setPassword("jane".toCharArray());
 			creds[1] = pc;
 			authenticationService.login("Test", creds);
 			fail("exception expected");
-		} catch (AuthenticationFailure e) {
+		} catch (final AuthenticationFailure e) {
 			ok("exception expected");
 		}
 	}
 
 	public void testSubjectLogin() throws Exception {
-		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
-		IAuthenticationService authenticationService = (IAuthenticationService) getContext().getService(ref);
+		final ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
+		final IAuthenticationService authenticationService = (IAuthenticationService) getContext().getService(ref);
 
 		trace("Service looked up: " + authenticationService.getClass().getName());
 
-		AbstractCredential[] creds = new AbstractCredential[2];
-		NameCredential nc = new NameCredential("username: ", "xx");
+		final AbstractCredential[] creds = new AbstractCredential[2];
+		final NameCredential nc = new NameCredential("username: ", "xx");
 		nc.setName("testuser1");
 		creds[0] = nc;
-		PasswordCredential pc = new PasswordCredential("password: ", false);
+		final PasswordCredential pc = new PasswordCredential("password: ", false);
 		pc.setPassword("testpass2".toCharArray());
 		creds[1] = pc;
 
-		AuthenticationTicket ticket = authenticationService.login("CentralSecurity", creds);
+		final AuthenticationTicket ticket = authenticationService.login("CentralSecurity", creds);
 
 		trace("Return from login() - ticket: " + ticket);
-		Subject subject = new Subject();
-		for (Principal p : ticket.getPrincipals()) {
+		final Subject subject = new Subject();
+		for (final Principal p : ticket.getPrincipals()) {
 			subject.getPrincipals().add(p);
 		}
 		//		ServiceReference ref2 = getContext().getServiceReference(ISubjectHolderService.class.getName());
@@ -157,7 +157,7 @@ public class AuthenticationClientITest extends RienaTestCase {
 		assertTrue(Service.get(ISubjectHolder.class).getSubject() == subject);
 	}
 
-	private void trace(String msg) {
+	private void trace(final String msg) {
 		LOGGER.log(LogService.LOG_INFO, "|--->" + msg);
 	}
 

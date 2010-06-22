@@ -11,8 +11,6 @@
 package org.eclipse.riena.sample.app.client.rcpmail;
 
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.riena.ui.ridgets.controller.IController;
-import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -24,22 +22,25 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 
+import org.eclipse.riena.ui.ridgets.controller.IController;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
+
 public class MessageView extends ViewPart {
 
 	public static final String ID = "org.eclipse.riena.sample.app.client.rcpmail.view"; //$NON-NLS-1$
 
-	private DefaultSwtBindingDelegate delegate = new DefaultSwtBindingDelegate();
-	private IController controller = new MessageController();
+	private final DefaultSwtBindingDelegate delegate = new DefaultSwtBindingDelegate();
+	private final IController controller = new MessageController();
 
 	@Override
-	public void createPartControl(Composite parent) {
-		Composite top = new Composite(parent, SWT.NONE);
+	public void createPartControl(final Composite parent) {
+		final Composite top = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		top.setLayout(layout);
 		// top banner
-		Composite banner = new Composite(top, SWT.NONE);
+		final Composite banner = new Composite(top, SWT.NONE);
 		banner.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL, GridData.VERTICAL_ALIGN_BEGINNING, true,
 				false));
 		layout = new GridLayout();
@@ -49,7 +50,7 @@ public class MessageView extends ViewPart {
 		banner.setLayout(layout);
 
 		// setup bold font
-		Font boldFont = JFaceResources.getFontRegistry().getBold(JFaceResources.DEFAULT_FONT);
+		final Font boldFont = JFaceResources.getFontRegistry().getBold(JFaceResources.DEFAULT_FONT);
 
 		Label l = new Label(banner, SWT.WRAP);
 		l.setText("Subject:"); //$NON-NLS-1$
@@ -67,13 +68,13 @@ public class MessageView extends ViewPart {
 		delegate.addUIControl(new Label(banner, SWT.WRAP), "date"); //$NON-NLS-1$
 
 		// message contents
-		Text text = new Text(top, SWT.MULTI | SWT.WRAP);
+		final Text text = new Text(top, SWT.MULTI | SWT.WRAP);
 		text.setLayoutData(new GridData(GridData.FILL_BOTH));
 		delegate.addUIControl(text, "message"); //$NON-NLS-1$
 
 		delegate.injectAndBind(controller);
 		parent.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+			public void widgetDisposed(final DisposeEvent e) {
 				delegate.unbind(controller);
 			}
 		});

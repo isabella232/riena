@@ -40,12 +40,12 @@ public class CoreNetProxySelectorTest extends RienaTestCase {
 		TestServer server = null;
 		try {
 			server = new TestServer(80, getFile("pac42.js").getParentFile());
-			ProxySelector selector = new CoreNetProxySelector();
-			List<Proxy> proxies = selector.select(new URI("http://www.eclipse.org"));
+			final ProxySelector selector = new CoreNetProxySelector();
+			final List<Proxy> proxies = selector.select(new URI("http://www.eclipse.org"));
 			assertEquals(2, proxies.size());
 			assertEquals("idproxy", ((InetSocketAddress) proxies.get(0).address()).getHostName());
 			assertEquals(3128, ((InetSocketAddress) proxies.get(0).address()).getPort());
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			fail();
 		} finally {
 			server.stop();

@@ -35,15 +35,15 @@ public final class NavigationNodeUtility {
 	 *            navigation node
 	 * @return long ID
 	 */
-	public static String getNodeLongId(INavigationNode<?> node) {
+	public static String getNodeLongId(final INavigationNode<?> node) {
 
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		addToNodeLongId(builder, node);
 		return builder.toString();
 
 	}
 
-	private static void addToNodeLongId(StringBuilder builder, INavigationNode<?> node) {
+	private static void addToNodeLongId(final StringBuilder builder, final INavigationNode<?> node) {
 
 		if (node != null) {
 			if (node.getNodeId() != null) {
@@ -70,10 +70,10 @@ public final class NavigationNodeUtility {
 	 *            start mode
 	 * @return found node or {@code null} if none was found
 	 */
-	public static INavigationNode<?> findNode(String id, INavigationNode<?> node) {
+	public static INavigationNode<?> findNode(final String id, final INavigationNode<?> node) {
 
 		return findNode(id, node, new IIdClosure() {
-			public String getId(INavigationNode<?> node) {
+			public String getId(final INavigationNode<?> node) {
 				if (node.getNodeId() == null) {
 					return null;
 				} else {
@@ -98,10 +98,10 @@ public final class NavigationNodeUtility {
 	 * 
 	 * @see #getNodeLongId(INavigationNode)
 	 */
-	public static INavigationNode<?> findNodeLongId(String id, INavigationNode<?> node) {
+	public static INavigationNode<?> findNodeLongId(final String id, final INavigationNode<?> node) {
 
 		return findNode(id, node, new IIdClosure() {
-			public String getId(INavigationNode<?> node) {
+			public String getId(final INavigationNode<?> node) {
 				return getNodeLongId(node);
 			}
 		});
@@ -122,20 +122,20 @@ public final class NavigationNodeUtility {
 	 *            returns the ID of a node
 	 * @return found node or {@code null} if none was found
 	 */
-	private static INavigationNode<?> findNode(String id, INavigationNode<?> node, IIdClosure closure) {
+	private static INavigationNode<?> findNode(final String id, final INavigationNode<?> node, final IIdClosure closure) {
 
 		Assert.isNotNull(id);
 		Assert.isNotNull(node);
 
-		StringMatcher matcher = new StringMatcher(id);
-		String nodeId = closure.getId(node);
+		final StringMatcher matcher = new StringMatcher(id);
+		final String nodeId = closure.getId(node);
 		if (matcher.match(nodeId)) {
 			return node;
 		}
-		List<?> children = node.getChildren();
-		for (Object child : children) {
+		final List<?> children = node.getChildren();
+		for (final Object child : children) {
 			if (child instanceof INavigationNode<?>) {
-				INavigationNode<?> findNode = findNode(id, (INavigationNode<?>) child, closure);
+				final INavigationNode<?> findNode = findNode(id, (INavigationNode<?>) child, closure);
 				if (findNode != null) {
 					return findNode;
 				}

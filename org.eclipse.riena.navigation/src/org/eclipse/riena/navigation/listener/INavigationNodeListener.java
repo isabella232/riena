@@ -196,8 +196,8 @@ public interface INavigationNodeListener<S extends INavigationNode<C>, C extends
 	 * @param source
 	 *            the node which has been blocked or unblocked
 	 * @param block
-	 *            {@code true} if the node has been blocked; otherwise {@code
-	 *            false}
+	 *            {@code true} if the node has been blocked; otherwise
+	 *            {@code false}
 	 */
 	void block(S source, boolean block);
 

@@ -20,14 +20,14 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
  * View bound to a controller.
  */
 public abstract class AbstractControlledView<C extends IController> {
-	private AbstractViewBindingDelegate binding;
+	private final AbstractViewBindingDelegate binding;
 	private C controller;
 
 	public C getController() {
 		return controller;
 	}
 
-	protected void setController(C controller) {
+	protected void setController(final C controller) {
 
 		this.controller = controller;
 	}
@@ -37,7 +37,7 @@ public abstract class AbstractControlledView<C extends IController> {
 		binding = createBinding();
 	}
 
-	public void initialize(C controller) {
+	public void initialize(final C controller) {
 		if (!Beans.isDesignTime()) {
 			binding.injectRidgets(controller);
 		}
@@ -52,7 +52,7 @@ public abstract class AbstractControlledView<C extends IController> {
 		return new DefaultSwtBindingDelegate();
 	}
 
-	public void bind(C controller) {
+	public void bind(final C controller) {
 
 		if (getController() != null) {
 			unbind(getController());
@@ -67,7 +67,7 @@ public abstract class AbstractControlledView<C extends IController> {
 		}
 	}
 
-	public void unbind(C controller) {
+	public void unbind(final C controller) {
 		if (!Beans.isDesignTime()) {
 			binding.unbind(controller);
 		}
@@ -82,7 +82,7 @@ public abstract class AbstractControlledView<C extends IController> {
 	 * @param propertyName
 	 *            the name for binding the control.
 	 */
-	protected void addUIControl(Object uiControl, String propertyName) {
+	protected void addUIControl(final Object uiControl, final String propertyName) {
 		binding.addUIControl(uiControl, propertyName);
 	}
 }

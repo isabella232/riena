@@ -37,7 +37,7 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
 public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 
 	@Override
-	protected Control createWidget(Composite parent) {
+	protected Control createWidget(final Composite parent) {
 		return new Text(parent, SWT.SINGLE);
 	}
 
@@ -55,7 +55,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 	// /////////////
 
 	public void testSetEnabled() {
-		IMarkableRidget ridget = getRidget();
+		final IMarkableRidget ridget = getRidget();
 
 		assertTrue(ridget.isEnabled());
 
@@ -69,7 +69,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetErrorMarked() {
-		IMarkableRidget ridget = getRidget();
+		final IMarkableRidget ridget = getRidget();
 
 		assertFalse(ridget.isErrorMarked());
 
@@ -83,7 +83,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetMandatory() {
-		IMarkableRidget ridget = getRidget();
+		final IMarkableRidget ridget = getRidget();
 
 		assertFalse(ridget.isMandatory());
 
@@ -97,7 +97,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testIsDisableMandatoryMarker() {
-		IMarkableRidget ridget = getRidget();
+		final IMarkableRidget ridget = getRidget();
 		ridget.setMandatory(true);
 
 		assertFalse(ridget.isDisableMandatoryMarker());
@@ -120,7 +120,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetOutputOnly() {
-		IMarkableRidget ridget = getRidget();
+		final IMarkableRidget ridget = getRidget();
 
 		assertFalse(ridget.isOutputOnly());
 
@@ -135,9 +135,9 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void testAddMarker() throws Exception {
-		IMarkableRidget ridget = getRidget();
-		IMarker marker1 = new ErrorMarker();
-		IMarker marker2 = new MandatoryMarker();
+		final IMarkableRidget ridget = getRidget();
+		final IMarker marker1 = new ErrorMarker();
+		final IMarker marker2 = new MandatoryMarker();
 
 		expectNoPropertyChangeEvent();
 
@@ -184,11 +184,11 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testRemoveMarker() throws Exception {
-		IMarkableRidget ridget = getRidget();
+		final IMarkableRidget ridget = getRidget();
 
-		IMarker marker1 = new ErrorMarker();
-		IMarker marker2 = new MandatoryMarker();
-		IMarker marker3 = new AbstractMarker() {
+		final IMarker marker1 = new ErrorMarker();
+		final IMarker marker2 = new MandatoryMarker();
+		final IMarker marker3 = new AbstractMarker() {
 			/**/
 		};
 		ridget.addMarker(marker1);
@@ -201,14 +201,14 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 
 		verifyPropertyChangeEvents();
 
-		Collection<?> newValue = new HashSet<IMarker>(ridget.getMarkers());
+		final Collection<?> newValue = new HashSet<IMarker>(ridget.getMarkers());
 		newValue.remove(marker1);
 		expectPropertyChangeEvents(new ExpectedMarkerPropertyChangeEvent(ridget.getMarkers(), newValue, false));
 
 		ridget.removeMarker(marker1);
 
 		verifyPropertyChangeEvents();
-		Collection<?> markers = ridget.getMarkers();
+		final Collection<?> markers = ridget.getMarkers();
 		assertEquals(1, markers.size());
 		assertTrue(markers.contains(marker2));
 
@@ -222,13 +222,13 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testRemoveAllMarkers() throws Exception {
-		IMarkableRidget ridget = getRidget();
-		IMarker marker1 = new ErrorMarker();
-		IMarker marker2 = new MandatoryMarker();
+		final IMarkableRidget ridget = getRidget();
+		final IMarker marker1 = new ErrorMarker();
+		final IMarker marker2 = new MandatoryMarker();
 		ridget.addMarker(marker1);
 		ridget.addMarker(marker2);
 
-		Collection<IMarker> newValue = new HashSet<IMarker>(ridget.getMarkers());
+		final Collection<IMarker> newValue = new HashSet<IMarker>(ridget.getMarkers());
 		newValue.clear();
 		expectPropertyChangeEvents(new ExpectedMarkerPropertyChangeEvent(ridget.getMarkers(), newValue, false));
 
@@ -249,23 +249,23 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testGetMarkers() throws Exception {
-		IMarkableRidget ridget = getRidget();
-		IMarker marker = new ErrorMarker();
+		final IMarkableRidget ridget = getRidget();
+		final IMarker marker = new ErrorMarker();
 
-		Collection<?> markers = ridget.getMarkers();
+		final Collection<?> markers = ridget.getMarkers();
 		assertNotNull(markers);
 
 		ridget.addMarker(marker);
-		Collection<?> markers2 = ridget.getMarkers();
+		final Collection<?> markers2 = ridget.getMarkers();
 
 		assertEquals(0, markers.size());
 		assertEquals(1, markers2.size());
 	}
 
 	public void testGetMarkersOfType() throws Exception {
-		IMarkableRidget ridget = getRidget();
-		ErrorMarker errorMarker = new ErrorMarker();
-		MandatoryMarker mandatoryMarker = new MandatoryMarker();
+		final IMarkableRidget ridget = getRidget();
+		final ErrorMarker errorMarker = new ErrorMarker();
+		final MandatoryMarker mandatoryMarker = new MandatoryMarker();
 
 		Collection<? extends IMarker> markers = ridget.getMarkersOfType(null);
 		assertNotNull(markers);
@@ -297,8 +297,8 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testFireMarkerAttributeEvents() throws Exception {
-		IMarkableRidget ridget = getRidget();
-		ErrorMessageMarker errorMessageMarker = new ErrorMessageMarker("Message");
+		final IMarkableRidget ridget = getRidget();
+		final ErrorMessageMarker errorMessageMarker = new ErrorMessageMarker("Message");
 		ridget.addMarker(errorMessageMarker);
 
 		expectPropertyChangeEvents(new ExpectedMarkerPropertyChangeEvent(null, ridget.getMarkers(), true));
@@ -307,7 +307,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 
 		verifyPropertyChangeEvents();
 
-		Collection<IMarker> newValue = new HashSet<IMarker>(ridget.getMarkers());
+		final Collection<IMarker> newValue = new HashSet<IMarker>(ridget.getMarkers());
 		newValue.remove(errorMessageMarker);
 		expectPropertyChangeEvents(new ExpectedMarkerPropertyChangeEvent(ridget.getMarkers(), newValue, false));
 
@@ -328,9 +328,10 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 	private class ExpectedMarkerPropertyChangeEvent extends PropertyChangeEvent implements IMarkerPropertyChangeEvent {
 		private static final long serialVersionUID = 4711L;
 
-		private boolean attributeRelated;
+		private final boolean attributeRelated;
 
-		public ExpectedMarkerPropertyChangeEvent(Object oldValue, Object newValue, boolean attributeRelated) {
+		public ExpectedMarkerPropertyChangeEvent(final Object oldValue, final Object newValue,
+				final boolean attributeRelated) {
 			super(getRidget(), IMarkableRidget.PROPERTY_MARKER, oldValue, newValue);
 			this.attributeRelated = attributeRelated;
 		}

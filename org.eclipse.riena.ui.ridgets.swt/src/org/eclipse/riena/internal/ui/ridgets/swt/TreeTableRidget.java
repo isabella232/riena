@@ -66,9 +66,9 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	@Override
 	protected void bindUIControl() {
 		super.bindUIControl();
-		Tree control = getUIControl();
+		final Tree control = getUIControl();
 		if (control != null) {
-			for (TreeColumn column : control.getColumns()) {
+			for (final TreeColumn column : control.getColumns()) {
 				column.addSelectionListener(sortListener);
 			}
 			applyComparator();
@@ -79,22 +79,22 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	@Override
 	protected void unbindUIControl() {
 		super.unbindUIControl();
-		Tree control = getUIControl();
+		final Tree control = getUIControl();
 		if (control != null) {
-			for (TreeColumn column : control.getColumns()) {
+			for (final TreeColumn column : control.getColumns()) {
 				column.removeSelectionListener(sortListener);
 			}
-			SWTFacade facade = SWTFacade.getDefault();
+			final SWTFacade facade = SWTFacade.getDefault();
 			facade.removeEraseItemListener(control, GROUPED_ITEM_ERASER);
 		}
 	}
 
 	@Override
-	protected IColumnFormatter[] getColumnFormatters(int numColumns) {
+	protected IColumnFormatter[] getColumnFormatters(final int numColumns) {
 		Assert.isLegal(numColumns >= 0);
-		IColumnFormatter[] result = new IColumnFormatter[numColumns];
+		final IColumnFormatter[] result = new IColumnFormatter[numColumns];
 		for (int i = 0; i < numColumns; i++) {
-			IColumnFormatter columnFormatter = formatterMap.get(Integer.valueOf(i));
+			final IColumnFormatter columnFormatter = formatterMap.get(Integer.valueOf(i));
 			if (columnFormatter != null) {
 				result[i] = columnFormatter;
 			}
@@ -103,19 +103,20 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	}
 
 	@Override
-	protected void applyColumnWidths(Tree control) {
+	protected void applyColumnWidths(final Tree control) {
 		ColumnUtils.applyColumnWidths(control, columnWidths);
 	}
 
 	// ITreeTableRidget methods
 	// /////////////////////////
 
-	public void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
-			String parentAccessor, String[] valueAccessors, String[] columnHeaders) {
-		String noEnablementAccessor = null;
-		String noVisibilityAccessor = null;
-		String noImageAccessor = null;
-		String noOpenImageAccessor = null;
+	public void bindToModel(final Object[] treeRoots, final Class<? extends Object> treeElementClass,
+			final String childrenAccessor, final String parentAccessor, final String[] valueAccessors,
+			final String[] columnHeaders) {
+		final String noEnablementAccessor = null;
+		final String noVisibilityAccessor = null;
+		final String noImageAccessor = null;
+		final String noOpenImageAccessor = null;
 		super.bindToModel(treeRoots, treeElementClass, childrenAccessor, parentAccessor, valueAccessors, columnHeaders,
 				noEnablementAccessor, noVisibilityAccessor, noImageAccessor, noOpenImageAccessor);
 	}
@@ -127,8 +128,8 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 		return isGroupingEnabled;
 	}
 
-	public void setGroupingEnabled(boolean grouping) {
-		boolean oldValue = isGroupingEnabled;
+	public void setGroupingEnabled(final boolean grouping) {
+		final boolean oldValue = isGroupingEnabled;
 		isGroupingEnabled = grouping;
 		if (oldValue != isGroupingEnabled) {
 			firePropertyChange(IGroupedTreeTableRidget.PROPERTY_GROUPING_ENABLED, oldValue, isGroupingEnabled);
@@ -140,15 +141,15 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	// //////////////////////////
 
 	public int getSortedColumn() {
-		boolean isSorted = sortedColumn != -1 && isColumnSortable(sortedColumn);
+		final boolean isSorted = sortedColumn != -1 && isColumnSortable(sortedColumn);
 		return isSorted ? sortedColumn : -1;
 	}
 
-	public boolean isColumnSortable(int columnIndex) {
+	public boolean isColumnSortable(final int columnIndex) {
 		checkColumnRange(columnIndex);
 		boolean result = false;
-		Integer key = Integer.valueOf(columnIndex);
-		Boolean sortable = sortableColumnsMap.get(columnIndex);
+		final Integer key = Integer.valueOf(columnIndex);
+		final Boolean sortable = sortableColumnsMap.get(columnIndex);
 		if (sortable == null || Boolean.TRUE.equals(sortable)) {
 			result = comparatorMap.get(key) != null;
 		}
@@ -159,10 +160,10 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 		return getSortedColumn() != -1 && isSortedAscending;
 	}
 
-	public void setColumnSortable(int columnIndex, boolean sortable) {
+	public void setColumnSortable(final int columnIndex, final boolean sortable) {
 		checkColumnRange(columnIndex);
-		Integer key = Integer.valueOf(columnIndex);
-		Boolean newValue = Boolean.valueOf(sortable);
+		final Integer key = Integer.valueOf(columnIndex);
+		final Boolean newValue = Boolean.valueOf(sortable);
 		Boolean oldValue = sortableColumnsMap.put(key, newValue);
 		if (oldValue == null) {
 			oldValue = Boolean.TRUE;
@@ -181,17 +182,17 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	 * @throws RuntimeException
 	 *             if an unsupported array element is encountered
 	 */
-	public void setColumnWidths(Object[] widths) {
+	public void setColumnWidths(final Object[] widths) {
 		columnWidths = ColumnUtils.copyWidths(widths);
-		Tree control = getUIControl();
+		final Tree control = getUIControl();
 		if (control != null) {
 			applyColumnWidths(control);
 		}
 	}
 
-	public void setComparator(int columnIndex, Comparator<Object> compi) {
+	public void setComparator(final int columnIndex, final Comparator<Object> compi) {
 		checkColumnRange(columnIndex);
-		Integer key = Integer.valueOf(columnIndex);
+		final Integer key = Integer.valueOf(columnIndex);
 		if (compi != null) {
 			comparatorMap.put(key, compi);
 		} else {
@@ -202,33 +203,33 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 		}
 	}
 
-	public void setSortedAscending(boolean ascending) {
+	public void setSortedAscending(final boolean ascending) {
 		if (isSortedAscending != ascending) {
-			boolean oldSortedAscending = isSortedAscending;
+			final boolean oldSortedAscending = isSortedAscending;
 			isSortedAscending = ascending;
 			applyComparator();
 			firePropertyChange(ISortableByColumn.PROPERTY_SORT_ASCENDING, oldSortedAscending, isSortedAscending);
 		}
 	}
 
-	public void setSortedColumn(int columnIndex) {
+	public void setSortedColumn(final int columnIndex) {
 		if (columnIndex != -1) {
 			checkColumnRange(columnIndex);
 		}
 		if (sortedColumn != columnIndex) {
-			int oldSortedColumn = sortedColumn;
+			final int oldSortedColumn = sortedColumn;
 			sortedColumn = columnIndex;
 			applyComparator();
 			firePropertyChange(ISortableByColumn.PROPERTY_SORTED_COLUMN, oldSortedColumn, sortedColumn);
 		}
 	}
 
-	public void setColumnFormatter(int columnIndex, IColumnFormatter formatter) {
+	public void setColumnFormatter(final int columnIndex, final IColumnFormatter formatter) {
 		checkColumnRange(columnIndex);
 		if (formatter != null) {
 			Assert.isLegal(formatter instanceof ColumnFormatter, "formatter must sublass ColumnFormatter"); //$NON-NLS-1$
 		}
-		Integer key = Integer.valueOf(columnIndex);
+		final Integer key = Integer.valueOf(columnIndex);
 		formatterMap.put(key, formatter);
 	}
 
@@ -236,22 +237,22 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	// ////////////////
 
 	private void applyComparator() {
-		TreeViewer viewer = getViewer();
+		final TreeViewer viewer = getViewer();
 		if (viewer != null) {
-			Tree tree = viewer.getTree();
+			final Tree tree = viewer.getTree();
 			tree.setRedraw(false);
 			try {
 				Comparator<Object> compi = null;
 				if (sortedColumn != -1) {
-					Integer key = Integer.valueOf(sortedColumn);
+					final Integer key = Integer.valueOf(sortedColumn);
 					compi = comparatorMap.get(key);
 				}
 				if (compi != null) {
-					TreeColumn column = tree.getColumn(sortedColumn);
+					final TreeColumn column = tree.getColumn(sortedColumn);
 					tree.setSortColumn(column);
-					int direction = isSortedAscending ? SWT.UP : SWT.DOWN;
+					final int direction = isSortedAscending ? SWT.UP : SWT.DOWN;
 					tree.setSortDirection(direction);
-					SortableComparator sortableComparator = new SortableComparator(this, compi);
+					final SortableComparator sortableComparator = new SortableComparator(this, compi);
 					viewer.setComparator(new TableComparator(sortableComparator));
 				} else {
 					viewer.setComparator(null);
@@ -267,11 +268,11 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	}
 
 	private void applyGrouping() {
-		Tree control = getUIControl();
+		final Tree control = getUIControl();
 		if (control != null) {
 			control.setRedraw(false);
 			try {
-				SWTFacade facade = SWTFacade.getDefault();
+				final SWTFacade facade = SWTFacade.getDefault();
 				facade.removeEraseItemListener(control, GROUPED_ITEM_ERASER);
 				if (isGroupingEnabled) {
 					facade.addEraseItemListener(control, GROUPED_ITEM_ERASER);
@@ -283,10 +284,10 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 		}
 	}
 
-	private void checkColumnRange(int columnIndex) {
-		Tree tree = getUIControl(); // tree may be null if unbound
-		int range = tree.getColumnCount();
-		String msg = "columnIndex out of range (0 - " + range + " ): " + columnIndex; //$NON-NLS-1$ //$NON-NLS-2$
+	private void checkColumnRange(final int columnIndex) {
+		final Tree tree = getUIControl(); // tree may be null if unbound
+		final int range = tree.getColumnCount();
+		final String msg = "columnIndex out of range (0 - " + range + " ): " + columnIndex; //$NON-NLS-1$ //$NON-NLS-2$
 		Assert.isLegal(-1 < columnIndex, msg);
 		Assert.isLegal(columnIndex < range, msg);
 	}
@@ -300,10 +301,10 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	 */
 	private final class ColumnSortListener extends SelectionAdapter {
 		@Override
-		public void widgetSelected(SelectionEvent e) {
-			TreeColumn column = (TreeColumn) e.widget;
-			int columnIndex = column.getParent().indexOf(column);
-			int direction = column.getParent().getSortDirection();
+		public void widgetSelected(final SelectionEvent e) {
+			final TreeColumn column = (TreeColumn) e.widget;
+			final int columnIndex = column.getParent().indexOf(column);
+			final int direction = column.getParent().getSortDirection();
 			if (columnIndex == sortedColumn) {
 				if (direction == SWT.UP) {
 					setSortedAscending(false);
@@ -329,7 +330,8 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 	 * cells content. We do not register a PaintListener, meaning that we do NOT
 	 * paint anything.
 	 * 
-	 * @see '<a href="http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
+	 * @see '<a href=
+	 *      "http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
 	 *      >Custom Drawing Table and Tree Items</a>'
 	 */
 	private final static class GroupedTableEraseListener implements Listener {
@@ -337,8 +339,8 @@ public class TreeTableRidget extends TreeRidget implements IGroupedTreeTableRidg
 		/*
 		 * Called EXTREMELY frequently. Must be as efficient as possible.
 		 */
-		public void handleEvent(Event event) {
-			TreeItem item = (TreeItem) event.item;
+		public void handleEvent(final Event event) {
+			final TreeItem item = (TreeItem) event.item;
 			/*
 			 * let SWT draw the cell content if: (a) the item has no children or
 			 * (b) we are in the first column

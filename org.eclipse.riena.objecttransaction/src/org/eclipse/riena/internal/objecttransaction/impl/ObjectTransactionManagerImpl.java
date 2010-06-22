@@ -35,9 +35,10 @@ public class ObjectTransactionManagerImpl implements IObjectTransactionManager {
 	/**
 	 * @see org.eclipse.riena.objecttransaction.IObjectTransactionManager#setCurrent(org.eclipse.riena.objecttransaction.IObjectTransaction)
 	 */
-	public void setCurrent(IObjectTransaction currentObjectTransaction) {
+	public void setCurrent(final IObjectTransaction currentObjectTransaction) {
 		if (currentObjectTransaction != null && currentObjectTransaction.isInvalid()) {
-			throw new InvalidTransactionFailure("an invalid object transaction cannot be set to be the current object transaction"); //$NON-NLS-1$
+			throw new InvalidTransactionFailure(
+					"an invalid object transaction cannot be set to be the current object transaction"); //$NON-NLS-1$
 		}
 		this.objectTransaction = currentObjectTransaction;
 	}

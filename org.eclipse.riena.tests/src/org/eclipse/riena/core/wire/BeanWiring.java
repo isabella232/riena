@@ -23,13 +23,13 @@ public class BeanWiring extends AbstractWiring {
 	private ServiceInjector injector;
 
 	@Override
-	public void wire(Object bean, BundleContext context) {
+	public void wire(final Object bean, final BundleContext context) {
 		injector = Inject.service(Schtonk.class).into(bean).andStart(context);
 		SequenceUtil.add(BeanWiring.class);
 	}
 
 	@Override
-	public void unwire(Object bean, BundleContext context) {
+	public void unwire(final Object bean, final BundleContext context) {
 		injector.stop();
 		SequenceUtil.add(BeanWiring.class);
 	}

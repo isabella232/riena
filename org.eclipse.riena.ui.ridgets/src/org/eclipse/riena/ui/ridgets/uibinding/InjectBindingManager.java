@@ -35,7 +35,7 @@ import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 public class InjectBindingManager extends DefaultBindingManager {
 
 	// cache for PropertyDescriptors
-	private Map<String, PropertyDescriptor> binding2PropertyDesc;
+	private final Map<String, PropertyDescriptor> binding2PropertyDesc;
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), InjectBindingManager.class);
 
@@ -48,7 +48,8 @@ public class InjectBindingManager extends DefaultBindingManager {
 	 * @param mapper
 	 *            mapping for UI control-classes to ridget-classes
 	 */
-	public InjectBindingManager(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper<Object> mapper) {
+	public InjectBindingManager(final IBindingPropertyLocator propertyStrategy,
+			final IControlRidgetMapper<Object> mapper) {
 		super(propertyStrategy, mapper);
 		binding2PropertyDesc = new HashMap<String, PropertyDescriptor>();
 	}
@@ -58,51 +59,59 @@ public class InjectBindingManager extends DefaultBindingManager {
 	 *      java.lang.String, org.eclipse.riena.ui.internal.ridgets.IRidget)
 	 */
 	@Override
-	protected void injectRidget(IRidgetContainer ridgetContainer, String bindingProperty, IRidget ridget) {
+	protected void injectRidget(final IRidgetContainer ridgetContainer, final String bindingProperty,
+			final IRidget ridget) {
 		super.injectRidget(ridgetContainer, bindingProperty, ridget);
 		try {
 			injectIntoController(ridget, ridgetContainer, bindingProperty);
-		} catch (ReflectionFailure e) {
-			UIBindingFailure ee = new UIBindingFailure("Cannot create ridget for ridget property '" //$NON-NLS-1$
+		} catch (final ReflectionFailure e) {
+			final UIBindingFailure ee = new UIBindingFailure("Cannot create ridget for ridget property '" //$NON-NLS-1$
 					+ bindingProperty + "' of ridget container " + ridgetContainer, e); //$NON-NLS-1$
 			LOGGER.log(LogService.LOG_ERROR, ee.getMessage(), ee);
 			throw ee;
 		}
 	}
 
-	private void injectIntoController(IRidget ridget, IRidgetContainer controller, String bindingProperty) {
-		PropertyDescriptor desc = getPropertyDescriptor(bindingProperty, controller);
+	private void injectIntoController(final IRidget ridget, final IRidgetContainer controller,
+			final String bindingProperty) {
+		final PropertyDescriptor desc = getPropertyDescriptor(bindingProperty, controller);
 		if (desc == null) {
-			String msg = String.format("No method '%s' on %s", bindingProperty, controller.getClass().getSimpleName()); //$NON-NLS-1$
+			final String msg = String.format(
+					"No method '%s' on %s", bindingProperty, controller.getClass().getSimpleName()); //$NON-NLS-1$
 			throw new UnsupportedOperationException(msg);
 		}
 		BeanPropertyUtils.setPropertyValue(controller, desc, ridget);
 	}
 
-	private PropertyDescriptor getPropertyDescriptor(String bindingProperty, IRidgetContainer ridgetContainer) {
-		PropertyDescriptor desc = binding2PropertyDesc.get(bindingProperty);
+	private PropertyDescriptor getPropertyDescriptor(final String bindingProperty,
+			final IRidgetContainer ridgetContainer) {
+		final PropertyDescriptor desc = binding2PropertyDesc.get(bindingProperty);
 		if (desc != null) {
 			return desc;
 		}
 		return createPropertyDescriptor(bindingProperty, ridgetContainer);
 	}
 
-	private PropertyDescriptor createPropertyDescriptor(String bindingProperty, IRidgetContainer ridgetContainer) {
+	private PropertyDescriptor createPropertyDescriptor(final String bindingProperty,
+			final IRidgetContainer ridgetContainer) {
 		try {
-			PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(ridgetContainer, bindingProperty);
+			final PropertyDescriptor desc = PropertyUtils.getPropertyDescriptor(ridgetContainer, bindingProperty);
 			binding2PropertyDesc.put(bindingProperty, desc);
 			return desc;
-		} catch (IllegalAccessException e) {
-			UIBindingFailure bindingFailure = new UIBindingFailure("Cannot access ridget property '" + bindingProperty //$NON-NLS-1$
-					+ "' of ridget container " + ridgetContainer, e); //$NON-NLS-1$
+		} catch (final IllegalAccessException e) {
+			final UIBindingFailure bindingFailure = new UIBindingFailure(
+					"Cannot access ridget property '" + bindingProperty //$NON-NLS-1$
+							+ "' of ridget container " + ridgetContainer, e); //$NON-NLS-1$
 			LOGGER.log(LogService.LOG_ERROR, bindingFailure.getMessage(), bindingFailure);
-		} catch (InvocationTargetException e) {
-			UIBindingFailure bindingFailure = new UIBindingFailure("Cannot access ridget property '" + bindingProperty //$NON-NLS-1$
-					+ "' of ridget container " + ridgetContainer, e); //$NON-NLS-1$
+		} catch (final InvocationTargetException e) {
+			final UIBindingFailure bindingFailure = new UIBindingFailure(
+					"Cannot access ridget property '" + bindingProperty //$NON-NLS-1$
+							+ "' of ridget container " + ridgetContainer, e); //$NON-NLS-1$
 			LOGGER.log(LogService.LOG_ERROR, bindingFailure.getMessage(), bindingFailure);
-		} catch (NoSuchMethodException e) {
-			UIBindingFailure bindingFailure = new UIBindingFailure("Cannot access ridget property '" + bindingProperty //$NON-NLS-1$
-					+ "' of ridget container " + ridgetContainer, e); //$NON-NLS-1$
+		} catch (final NoSuchMethodException e) {
+			final UIBindingFailure bindingFailure = new UIBindingFailure(
+					"Cannot access ridget property '" + bindingProperty //$NON-NLS-1$
+							+ "' of ridget container " + ridgetContainer, e); //$NON-NLS-1$
 			LOGGER.log(LogService.LOG_ERROR, bindingFailure.getMessage(), bindingFailure);
 		}
 		return null;
@@ -113,8 +122,8 @@ public class InjectBindingManager extends DefaultBindingManager {
 	 *      org.eclipse.riena.ui.internal.ridgets.IRidgetContainer)
 	 */
 	@Override
-	protected IRidget getRidget(String bindingProperty, IRidgetContainer controller) {
-		PropertyDescriptor desc = getPropertyDescriptor(bindingProperty, controller);
+	protected IRidget getRidget(final String bindingProperty, final IRidgetContainer controller) {
+		final PropertyDescriptor desc = getPropertyDescriptor(bindingProperty, controller);
 		return (IRidget) BeanPropertyUtils.getPropertyValue(controller, desc);
 	}
 

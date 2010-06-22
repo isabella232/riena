@@ -28,7 +28,7 @@ public class ConversionFailure extends Failure {
 	 * @param msg
 	 *            A message.
 	 */
-	public ConversionFailure(String msg) {
+	public ConversionFailure(final String msg) {
 		super(msg);
 	}
 
@@ -40,7 +40,7 @@ public class ConversionFailure extends Failure {
 	 * @param cause
 	 *            The cause.
 	 */
-	ConversionFailure(String msg, Throwable cause) {
+	ConversionFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 

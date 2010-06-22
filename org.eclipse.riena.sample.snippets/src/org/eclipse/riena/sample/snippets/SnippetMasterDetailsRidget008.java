@@ -45,28 +45,28 @@ public final class SnippetMasterDetailsRidget008 {
 	 */
 	private static final class PersonMasterDetails extends MasterDetailsComposite {
 
-		PersonMasterDetails(Composite parent, int style) {
+		PersonMasterDetails(final Composite parent, final int style) {
 			super(parent, style, SWT.BOTTOM);
 		}
 
 		@Override
-		protected Composite createButtons(Composite parent) {
+		protected Composite createButtons(final Composite parent) {
 			return null; // do not create any buttons
 		}
 
 		@Override
-		protected void createDetails(Composite parent) {
+		protected void createDetails(final Composite parent) {
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(20, 20).spacing(10, 10).equalWidth(false)
 					.applyTo(parent);
-			GridDataFactory hFill = GridDataFactory.fillDefaults().hint(150, SWT.DEFAULT).grab(true, false);
+			final GridDataFactory hFill = GridDataFactory.fillDefaults().hint(150, SWT.DEFAULT).grab(true, false);
 
 			UIControlsFactory.createLabel(parent, "Last Name:"); //$NON-NLS-1$
-			Text txtLast = UIControlsFactory.createText(parent);
+			final Text txtLast = UIControlsFactory.createText(parent);
 			hFill.applyTo(txtLast);
 			addUIControl(txtLast, "txtLast"); //$NON-NLS-1$
 
 			UIControlsFactory.createLabel(parent, "First Name:"); //$NON-NLS-1$
-			Text txtFirst = UIControlsFactory.createText(parent);
+			final Text txtFirst = UIControlsFactory.createText(parent);
 			hFill.applyTo(txtFirst);
 			addUIControl(txtFirst, "txtFirst"); //$NON-NLS-1$
 		}
@@ -79,21 +79,21 @@ public final class SnippetMasterDetailsRidget008 {
 
 		private final Person workingCopy = createWorkingCopy();
 
-		public void configureRidgets(IRidgetContainer container) {
-			ITextRidget txtLast = (ITextRidget) container.getRidget("txtLast"); //$NON-NLS-1$
+		public void configureRidgets(final IRidgetContainer container) {
+			final ITextRidget txtLast = (ITextRidget) container.getRidget("txtLast"); //$NON-NLS-1$
 			txtLast.setOutputOnly(true);
 			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
 
-			ITextRidget txtFirst = (ITextRidget) container.getRidget("txtFirst"); //$NON-NLS-1$
+			final ITextRidget txtFirst = (ITextRidget) container.getRidget("txtFirst"); //$NON-NLS-1$
 			txtFirst.setOutputOnly(true);
 			txtFirst.bindToModel(workingCopy, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 		}
 
-		public Person copyBean(Object source, Object target) {
-			Person from = source != null ? (Person) source : createWorkingCopy();
-			Person to = target != null ? (Person) target : createWorkingCopy();
+		public Person copyBean(final Object source, final Object target) {
+			final Person from = source != null ? (Person) source : createWorkingCopy();
+			final Person to = target != null ? (Person) target : createWorkingCopy();
 			to.setFirstname(from.getFirstname());
 			to.setLastname(from.getLastname());
 			return to;
@@ -108,23 +108,23 @@ public final class SnippetMasterDetailsRidget008 {
 		}
 
 		@Override
-		public boolean isChanged(Object source, Object target) {
+		public boolean isChanged(final Object source, final Object target) {
 			return false; // non-editable: always return false
 		}
 	}
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
-		Shell shell = new Shell(display);
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
+		final Shell shell = new Shell(display);
 		shell.setLayout(new FillLayout());
 
-		PersonMasterDetails details = new PersonMasterDetails(shell, SWT.NONE);
+		final PersonMasterDetails details = new PersonMasterDetails(shell, SWT.NONE);
 
-		IMasterDetailsRidget ridget = (IMasterDetailsRidget) SwtRidgetFactory.createRidget(details);
+		final IMasterDetailsRidget ridget = (IMasterDetailsRidget) SwtRidgetFactory.createRidget(details);
 		ridget.setDelegate(new PersonDelegate());
-		WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
-		String[] properties = { Person.PROPERTY_LASTNAME, Person.PROPERTY_FIRSTNAME };
-		String[] headers = { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
+		final String[] properties = { Person.PROPERTY_LASTNAME, Person.PROPERTY_FIRSTNAME };
+		final String[] headers = { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 		ridget.bindToModel(input, Person.class, properties, headers);
 		ridget.updateFromModel();
 

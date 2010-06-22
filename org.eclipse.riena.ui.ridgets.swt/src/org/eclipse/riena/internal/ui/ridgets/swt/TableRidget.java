@@ -136,7 +136,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		comparatorMap = new HashMap<Integer, Comparator<Object>>();
 		formatterMap = new HashMap<Integer, IColumnFormatter>();
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				if (isOutputOnly()) {
 					disposeMultipleSelectionBinding();
 				} else {
@@ -147,7 +147,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, Table.class);
 	}
 
@@ -163,7 +163,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 			dbc = new DataBindingContext();
 			// viewer to single selection binding
-			IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
+			final IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
 			dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
 					UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
 					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
@@ -173,12 +173,12 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 				createMultipleSelectionBinding();
 			}
 
-			for (TableColumn column : control.getColumns()) {
+			for (final TableColumn column : control.getColumns()) {
 				column.addSelectionListener(sortListener);
 			}
 			control.addSelectionListener(selectionTypeEnforcer);
 			control.addMouseListener(clickForwarder);
-			SWTFacade facade = SWTFacade.getDefault();
+			final SWTFacade facade = SWTFacade.getDefault();
 			facade.addMouseTrackListener(control, tooltipManager);
 			facade.addEraseItemListener(control, itemEraser);
 		}
@@ -192,14 +192,14 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			dbc.dispose();
 			dbc = null;
 		}
-		Table control = getUIControl();
+		final Table control = getUIControl();
 		if (control != null) {
-			for (TableColumn column : control.getColumns()) {
+			for (final TableColumn column : control.getColumns()) {
 				column.removeSelectionListener(sortListener);
 			}
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(clickForwarder);
-			SWTFacade facade = SWTFacade.getDefault();
+			final SWTFacade facade = SWTFacade.getDefault();
 			facade.removeMouseTrackListener(control, tooltipManager);
 			facade.removeEraseItemListener(control, itemEraser);
 		}
@@ -211,7 +211,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		return viewerObservables;
 	}
 
-	public void addClickListener(IClickListener listener) {
+	public void addClickListener(final IClickListener listener) {
 		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
 		if (clickListeners == null) {
 			clickListeners = new ListenerList<IClickListener>(IClickListener.class);
@@ -219,7 +219,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		clickListeners.add(listener);
 	}
 
-	public void addDoubleClickListener(IActionListener listener) {
+	public void addDoubleClickListener(final IActionListener listener) {
 		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
 		if (doubleClickListeners == null) {
 			doubleClickListeners = new ListenerList<IActionListener>(IActionListener.class);
@@ -227,10 +227,10 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		doubleClickListeners.add(listener);
 	}
 
-	public void bindToModel(IObservableList rowObservables, Class<? extends Object> aRowClass,
-			String[] columnPropertyNames, String[] columnHeaders) {
+	public void bindToModel(final IObservableList rowObservables, final Class<? extends Object> aRowClass,
+			final String[] columnPropertyNames, final String[] columnHeaders) {
 		if (columnHeaders != null) {
-			String msg = "Mismatch between number of columnPropertyNames and columnHeaders"; //$NON-NLS-1$
+			final String msg = "Mismatch between number of columnPropertyNames and columnHeaders"; //$NON-NLS-1$
 			Assert.isLegal(columnPropertyNames.length == columnHeaders.length, msg);
 		}
 		unbindUIControl();
@@ -251,8 +251,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		bindUIControl();
 	}
 
-	public void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
-			String[] columnPropertyNames, String[] columnHeaders) {
+	public void bindToModel(final Object listHolder, final String listPropertyName,
+			final Class<? extends Object> rowClass, final String[] columnPropertyNames, final String[] columnHeaders) {
 		IObservableList rowValues;
 		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
 			rowValues = BeansObservables.observeList(listHolder, listPropertyName);
@@ -266,7 +266,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		return viewerObservables;
 	}
 
-	public Object getOption(int index) {
+	@Override
+	public Object getOption(final int index) {
 		if (getRowObservables() == null || index < 0 || index >= getOptionCount()) {
 			throw new IllegalArgumentException("index: " + index); //$NON-NLS-1$
 		}
@@ -276,18 +277,20 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		return getRowObservables().get(index); // unsorted
 	}
 
+	@Override
 	public int getSelectionIndex() {
-		Table control = getUIControl();
+		final Table control = getUIControl();
 		return control == null ? -1 : control.getSelectionIndex();
 	}
 
+	@Override
 	public int[] getSelectionIndices() {
-		Table control = getUIControl();
+		final Table control = getUIControl();
 		return control == null ? new int[0] : control.getSelectionIndices();
 	}
 
 	public int getSortedColumn() {
-		boolean isSorted = sortedColumn != -1 && isColumnSortable(sortedColumn);
+		final boolean isSorted = sortedColumn != -1 && isColumnSortable(sortedColumn);
 		return isSorted ? sortedColumn : -1;
 	}
 
@@ -301,11 +304,11 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	}
 
 	@Override
-	public int indexOfOption(Object option) {
-		Table control = getUIControl();
+	public int indexOfOption(final Object option) {
+		final Table control = getUIControl();
 		if (control != null) {
 			// implies viewer != null
-			int optionCount = control.getItemCount();
+			final int optionCount = control.getItemCount();
 			for (int i = 0; i < optionCount; i++) {
 				if (viewer.getElementAt(i).equals(option)) {
 					return i;
@@ -315,11 +318,11 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		return -1;
 	}
 
-	public boolean isColumnSortable(int columnIndex) {
+	public boolean isColumnSortable(final int columnIndex) {
 		checkColumnRange(columnIndex);
 		boolean result = false;
-		Integer key = Integer.valueOf(columnIndex);
-		Boolean sortable = sortableColumnsMap.get(columnIndex);
+		final Integer key = Integer.valueOf(columnIndex);
+		final Boolean sortable = sortableColumnsMap.get(columnIndex);
 		if (sortable == null || Boolean.TRUE.equals(sortable)) {
 			result = comparatorMap.get(key) != null;
 		}
@@ -339,37 +342,37 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		return getSortedColumn() != -1 && isSortedAscending;
 	}
 
-	public void refresh(Object node) {
+	public void refresh(final Object node) {
 		if (viewer != null) {
 			viewer.refresh(node, true);
 		}
 	}
 
-	public void removeDoubleClickListener(IActionListener listener) {
+	public void removeDoubleClickListener(final IActionListener listener) {
 		if (doubleClickListeners != null) {
 			doubleClickListeners.remove(listener);
 		}
 	}
 
-	public void removeClickListener(IClickListener listener) {
+	public void removeClickListener(final IClickListener listener) {
 		if (clickListeners != null) {
 			clickListeners.remove(listener);
 		}
 	}
 
-	public void setColumnFormatter(int columnIndex, IColumnFormatter formatter) {
+	public void setColumnFormatter(final int columnIndex, final IColumnFormatter formatter) {
 		checkColumnRange(columnIndex);
 		if (formatter != null) {
 			Assert.isLegal(formatter instanceof ColumnFormatter, "formatter must sublass ColumnFormatter"); //$NON-NLS-1$
 		}
-		Integer key = Integer.valueOf(columnIndex);
+		final Integer key = Integer.valueOf(columnIndex);
 		formatterMap.put(key, formatter);
 	}
 
-	public void setColumnSortable(int columnIndex, boolean sortable) {
+	public void setColumnSortable(final int columnIndex, final boolean sortable) {
 		checkColumnRange(columnIndex);
-		Integer key = Integer.valueOf(columnIndex);
-		Boolean newValue = Boolean.valueOf(sortable);
+		final Integer key = Integer.valueOf(columnIndex);
+		final Boolean newValue = Boolean.valueOf(sortable);
 		Boolean oldValue = sortableColumnsMap.put(key, newValue);
 		if (oldValue == null) {
 			oldValue = Boolean.TRUE;
@@ -388,17 +391,17 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	 * @throws RuntimeException
 	 *             if an unsupported array element is encountered
 	 */
-	public void setColumnWidths(Object[] widths) {
+	public void setColumnWidths(final Object[] widths) {
 		columnWidths = ColumnUtils.copyWidths(widths);
-		Table control = getUIControl();
+		final Table control = getUIControl();
 		if (control != null) {
 			applyColumnWidths(control);
 		}
 	}
 
-	public void setComparator(int columnIndex, Comparator<Object> compi) {
+	public void setComparator(final int columnIndex, final Comparator<Object> compi) {
 		checkColumnRange(columnIndex);
-		Integer key = Integer.valueOf(columnIndex);
+		final Integer key = Integer.valueOf(columnIndex);
 		if (compi != null) {
 			comparatorMap.put(key, compi);
 		} else {
@@ -409,31 +412,31 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 	}
 
-	public void setMoveableColumns(boolean moveableColumns) {
+	public void setMoveableColumns(final boolean moveableColumns) {
 		if (this.moveableColumns != moveableColumns) {
 			this.moveableColumns = moveableColumns;
-			Table control = getUIControl();
+			final Table control = getUIControl();
 			if (control != null) {
 				applyColumnsMoveable(control);
 			}
 		}
 	}
 
-	public void setSortedAscending(boolean ascending) {
+	public void setSortedAscending(final boolean ascending) {
 		if (isSortedAscending != ascending) {
-			boolean oldSortedAscending = isSortedAscending;
+			final boolean oldSortedAscending = isSortedAscending;
 			isSortedAscending = ascending;
 			applyComparator();
 			firePropertyChange(ISortableByColumn.PROPERTY_SORT_ASCENDING, oldSortedAscending, isSortedAscending);
 		}
 	}
 
-	public void setSortedColumn(int columnIndex) {
+	public void setSortedColumn(final int columnIndex) {
 		if (columnIndex != -1) {
 			checkColumnRange(columnIndex);
 		}
 		if (sortedColumn != columnIndex) {
-			int oldSortedColumn = sortedColumn;
+			final int oldSortedColumn = sortedColumn;
 			sortedColumn = columnIndex;
 			applyComparator();
 			firePropertyChange(ISortableByColumn.PROPERTY_SORTED_COLUMN, oldSortedColumn, sortedColumn);
@@ -445,7 +448,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	public void updateFromModel() {
 		super.updateFromModel();
 		if (modelObservables != null) {
-			List<Object> copy = new ArrayList<Object>(modelObservables);
+			final List<Object> copy = new ArrayList<Object>(modelObservables);
 			viewerObservables = new WritableList(copy, rowClass);
 		}
 		if (viewer != null) {
@@ -460,10 +463,10 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 	}
 
-	private void applyColumns(Table control) {
+	private void applyColumns(final Table control) {
 		final int expectedCols = renderingMethods.length;
 		if (control.getColumnCount() != expectedCols) {
-			for (TableColumn column : control.getColumns()) {
+			for (final TableColumn column : control.getColumns()) {
 				column.dispose();
 			}
 			for (int i = 0; i < expectedCols; i++) {
@@ -473,30 +476,30 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 	}
 
-	private void applyColumnWidths(Table control) {
+	private void applyColumnWidths(final Table control) {
 		ColumnUtils.applyColumnWidths(control, columnWidths);
 	}
 
-	private void applyColumnsMoveable(Table control) {
-		for (TableColumn column : control.getColumns()) {
+	private void applyColumnsMoveable(final Table control) {
+		for (final TableColumn column : control.getColumns()) {
 			column.setMoveable(moveableColumns);
 		}
 	}
 
 	private void applyComparator() {
 		if (viewer != null) {
-			Table table = viewer.getTable();
+			final Table table = viewer.getTable();
 			Comparator<Object> compi = null;
 			if (sortedColumn != -1) {
-				Integer key = Integer.valueOf(sortedColumn);
+				final Integer key = Integer.valueOf(sortedColumn);
 				compi = comparatorMap.get(key);
 			}
 			if (compi != null) {
-				TableColumn column = table.getColumn(sortedColumn);
+				final TableColumn column = table.getColumn(sortedColumn);
 				table.setSortColumn(column);
-				int direction = isSortedAscending ? SWT.UP : SWT.DOWN;
+				final int direction = isSortedAscending ? SWT.UP : SWT.DOWN;
 				table.setSortDirection(direction);
-				SortableComparator sortableComparator = new SortableComparator(this, compi);
+				final SortableComparator sortableComparator = new SortableComparator(this, compi);
 				viewer.setComparator(new TableComparator(sortableComparator));
 			} else {
 				viewer.setComparator(null);
@@ -506,11 +509,11 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 	}
 
-	private void applyTableColumnHeaders(Table control) {
-		boolean headersVisible = columnHeaders != null;
+	private void applyTableColumnHeaders(final Table control) {
+		final boolean headersVisible = columnHeaders != null;
 		control.setHeaderVisible(headersVisible);
 		if (headersVisible) {
-			TableColumn[] columns = control.getColumns();
+			final TableColumn[] columns = control.getColumns();
 			for (int i = 0; i < columns.length; i++) {
 				String columnHeader = ""; //$NON-NLS-1$
 				if (i < columnHeaders.length && columnHeaders[i] != null) {
@@ -521,11 +524,11 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 	}
 
-	private void checkColumnRange(int columnIndex) {
-		Table table = getUIControl();
+	private void checkColumnRange(final int columnIndex) {
+		final Table table = getUIControl();
 		if (table != null) {
-			int range = table.getColumnCount();
-			String msg = "columnIndex out of range (0 - " + range + " ): " + columnIndex; //$NON-NLS-1$ //$NON-NLS-2$
+			final int range = table.getColumnCount();
+			final String msg = "columnIndex out of range (0 - " + range + " ): " + columnIndex; //$NON-NLS-1$ //$NON-NLS-2$
 			Assert.isLegal(-1 < columnIndex, msg);
 			Assert.isLegal(columnIndex < range, msg);
 		}
@@ -533,15 +536,15 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	private void createMultipleSelectionBinding() {
 		if (viewerMSB == null && dbc != null && viewer != null) {
-			StructuredSelection currentSelection = new StructuredSelection(getSelection());
-			IViewerObservableList viewerSelections = ViewersObservables.observeMultiSelection(viewer);
+			final StructuredSelection currentSelection = new StructuredSelection(getSelection());
+			final IViewerObservableList viewerSelections = ViewersObservables.observeMultiSelection(viewer);
 			viewerMSB = dbc.bindList(viewerSelections, getMultiSelectionObservable(), new UpdateListStrategy(
 					UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_UPDATE));
 			viewer.setSelection(currentSelection);
 		}
 	}
 
-	private void configureControl(Table control) {
+	private void configureControl(final Table control) {
 		if (renderingMethods != null) {
 			applyColumns(control);
 		}
@@ -550,15 +553,15 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		applyComparator();
 	}
 
-	private void configureViewer(TableViewer viewer) {
-		ObservableListContentProvider viewerCP = new ObservableListContentProvider();
+	private void configureViewer(final TableViewer viewer) {
+		final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
 		IObservableMap[] attrMap;
 		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
 			attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowClass, renderingMethods);
 		} else {
 			attrMap = PojoObservables.observeMaps(viewerCP.getKnownElements(), rowClass, renderingMethods);
 		}
-		IColumnFormatter[] formatters = getColumnFormatters(attrMap.length);
+		final IColumnFormatter[] formatters = getColumnFormatters(attrMap.length);
 		viewer.setLabelProvider(new TableRidgetLabelProvider(attrMap, formatters));
 		viewer.setContentProvider(viewerCP);
 		viewer.setInput(viewerObservables);
@@ -572,11 +575,11 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 	}
 
-	private IColumnFormatter[] getColumnFormatters(int numColumns) {
+	private IColumnFormatter[] getColumnFormatters(final int numColumns) {
 		Assert.isLegal(numColumns >= 0);
-		IColumnFormatter[] result = new IColumnFormatter[numColumns];
+		final IColumnFormatter[] result = new IColumnFormatter[numColumns];
 		for (int i = 0; i < numColumns; i++) {
-			IColumnFormatter columnFormatter = formatterMap.get(Integer.valueOf(i));
+			final IColumnFormatter columnFormatter = formatterMap.get(Integer.valueOf(i));
 			if (columnFormatter != null) {
 				result[i] = columnFormatter;
 			}
@@ -588,12 +591,12 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		return viewer.getLabelProvider() instanceof TableRidgetLabelProvider;
 	}
 
-	private void refreshViewer(TableViewer viewer) {
+	private void refreshViewer(final TableViewer viewer) {
 		viewer.getControl().setRedraw(false); // prevent flicker during update
-		StructuredSelection currentSelection = new StructuredSelection(getSelection());
+		final StructuredSelection currentSelection = new StructuredSelection(getSelection());
 		try {
-			TableRidgetLabelProvider labelProvider = (TableRidgetLabelProvider) viewer.getLabelProvider();
-			IColumnFormatter[] formatters = getColumnFormatters(labelProvider.getColumnCount());
+			final TableRidgetLabelProvider labelProvider = (TableRidgetLabelProvider) viewer.getLabelProvider();
+			final IColumnFormatter[] formatters = getColumnFormatters(labelProvider.getColumnCount());
 			labelProvider.setFormatters(formatters);
 			viewer.setInput(viewerObservables);
 		} finally {
@@ -615,19 +618,19 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	 */
 	private final class SelectionTypeEnforcer extends SelectionAdapter {
 		@Override
-		public void widgetSelected(SelectionEvent e) {
+		public void widgetSelected(final SelectionEvent e) {
 			if (isOutputOnly()) {
 				// undo user selection when "output only"
 				viewer.setSelection(new StructuredSelection(getSelection()));
 			} else if (SelectionType.SINGLE.equals(getSelectionType())) {
-				Table control = (Table) e.widget;
+				final Table control = (Table) e.widget;
 				if (control.getSelectionCount() > 1) {
 					// ignore this event
 					e.doit = false;
 					// set selection to most recent item
 					control.setSelection(control.getSelectionIndex());
 					// fire event
-					Event event = new Event();
+					final Event event = new Event();
 					event.type = SWT.Selection;
 					event.doit = true;
 					control.notifyListeners(SWT.Selection, event);
@@ -646,7 +649,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	 * {@link RowErrorMessageMarker} (unless disabled)</li>
 	 * </ul>
 	 * 
-	 * @see '<a href="http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
+	 * @see '<a href=
+	 *      "http://www.eclipse.org/articles/article.php?file=Article-CustomDrawingTableAndTreeItems/index.html"
 	 *      >Custom Drawing Table and Tree Items</a>'
 	 */
 	private final class TableItemEraser implements Listener {
@@ -662,7 +666,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		/*
 		 * Called EXTREMELY frequently. Must be as efficient as possible.
 		 */
-		public void handleEvent(Event event) {
+		public void handleEvent(final Event event) {
 			if (isHidingWhenDisabled()) {
 				hideContent(event);
 			} else {
@@ -675,7 +679,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		// helping methods
 		//////////////////
 
-		private void hideContent(Event event) {
+		private void hideContent(final Event event) {
 			// we indicate custom fg drawing, but don't draw foreground => hide
 			event.detail &= ~SWT.FOREGROUND;
 		}
@@ -684,10 +688,10 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			return !isEnabled() && MarkerSupport.isHideDisabledRidgetContent();
 		}
 
-		private boolean isMarked(Widget item) {
-			Object data = item.getData();
-			Collection<RowErrorMessageMarker> markers = getMarkersOfType(RowErrorMessageMarker.class);
-			for (RowErrorMessageMarker marker : markers) {
+		private boolean isMarked(final Widget item) {
+			final Object data = item.getData();
+			final Collection<RowErrorMessageMarker> markers = getMarkersOfType(RowErrorMessageMarker.class);
+			for (final RowErrorMessageMarker marker : markers) {
 				if (marker.getRowValue() == data) {
 					return true;
 				}
@@ -695,18 +699,18 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			return false;
 		}
 
-		private void markRow(Event event) {
-			GC gc = event.gc;
-			Color oldForeground = gc.getForeground();
+		private void markRow(final Event event) {
+			final GC gc = event.gc;
+			final Color oldForeground = gc.getForeground();
 			gc.setForeground(borderColor);
 			try {
-				Table table = (Table) event.widget;
-				int colCount = table.getColumnCount();
+				final Table table = (Table) event.widget;
+				final int colCount = table.getColumnCount();
 				if (colCount > 0) {
-					TableItem item = (TableItem) event.item;
+					final TableItem item = (TableItem) event.item;
 					int x = 0, y = 0, width = 0, height = 0;
 					for (int i = 0; i < colCount; i++) {
-						Rectangle bounds = item.getBounds(i);
+						final Rectangle bounds = item.getBounds(i);
 						if (i == 0) {
 							// start 3px to the left of first column
 							x = bounds.x - 3;
@@ -720,8 +724,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 					height = Math.max(0, height - 1);
 					gcFacade.drawRoundRectangle(gc, x, y, width, height, 3, 3);
 				} else {
-					int width = Math.max(0, event.width - 1);
-					int height = Math.max(0, event.height - 1);
+					final int width = Math.max(0, event.width - 1);
+					final int height = Math.max(0, event.height - 1);
 					gcFacade.drawRoundRectangle(gc, event.x, event.y, width, height, 3, 3);
 				}
 			} finally {
@@ -740,16 +744,16 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		private String savedToolTip;
 
 		@Override
-		public void mouseExit(MouseEvent event) {
-			Table table = (Table) event.widget;
+		public void mouseExit(final MouseEvent event) {
+			final Table table = (Table) event.widget;
 			restoreToolTip(table);
 		}
 
 		@Override
-		public void mouseHover(MouseEvent event) {
-			Table table = (Table) event.widget;
-			TableItem item = table.getItem(new Point(event.x, event.y));
-			String errorToolTip = getErrorToolTip(item);
+		public void mouseHover(final MouseEvent event) {
+			final Table table = (Table) event.widget;
+			final TableItem item = table.getItem(new Point(event.x, event.y));
+			final String errorToolTip = getErrorToolTip(item);
 			if (errorToolTip != null && errorToolTip.length() > 0) {
 				saveToolTip(table);
 				table.setToolTipText(errorToolTip);
@@ -761,11 +765,11 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		// helping methods
 		//////////////////
 
-		private String getErrorToolTip(TableItem item) {
+		private String getErrorToolTip(final TableItem item) {
 			if (item != null) {
-				Object data = item.getData();
-				Collection<RowErrorMessageMarker> markers = getMarkersOfType(RowErrorMessageMarker.class);
-				for (RowErrorMessageMarker marker : markers) {
+				final Object data = item.getData();
+				final Collection<RowErrorMessageMarker> markers = getMarkersOfType(RowErrorMessageMarker.class);
+				for (final RowErrorMessageMarker marker : markers) {
 					if (marker.getRowValue() == data) {
 						return marker.getMessage();
 					}
@@ -774,7 +778,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			return null;
 		}
 
-		private void restoreToolTip(Table table) {
+		private void restoreToolTip(final Table table) {
 			if (restore) {
 				table.setToolTipText(savedToolTip);
 				savedToolTip = null;
@@ -782,7 +786,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 		}
 
-		private void saveToolTip(Table table) {
+		private void saveToolTip(final Table table) {
 			if (!restore) {
 				restore = true;
 				savedToolTip = table.getToolTipText();
@@ -797,19 +801,19 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private final class ClickForwarder extends MouseAdapter {
 
 		@Override
-		public void mouseDown(MouseEvent e) {
+		public void mouseDown(final MouseEvent e) {
 			if (clickListeners != null) {
-				ClickEvent event = createClickEvent(e);
-				for (IClickListener listener : clickListeners.getListeners()) {
+				final ClickEvent event = createClickEvent(e);
+				for (final IClickListener listener : clickListeners.getListeners()) {
 					listener.callback(event);
 				}
 			}
 		}
 
 		@Override
-		public void mouseDoubleClick(MouseEvent e) {
+		public void mouseDoubleClick(final MouseEvent e) {
 			if (doubleClickListeners != null) {
-				for (IActionListener listener : doubleClickListeners.getListeners()) {
+				for (final IActionListener listener : doubleClickListeners.getListeners()) {
 					listener.callback();
 				}
 			}
@@ -818,13 +822,13 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		// helping methods
 		//////////////////
 
-		private ClickEvent createClickEvent(MouseEvent e) {
-			Table table = (Table) e.widget;
-			int colIndex = findColumn(table, new Point(e.x, e.y));
+		private ClickEvent createClickEvent(final MouseEvent e) {
+			final Table table = (Table) e.widget;
+			final int colIndex = findColumn(table, new Point(e.x, e.y));
 			// x = 0 gets us an item even not using SWT.FULL_SELECTION
-			TableItem item = table.getItem(new Point(0, e.y));
-			Object rowData = item != null ? item.getData() : null;
-			ClickEvent event = new ClickEvent(colIndex, e.button, rowData);
+			final TableItem item = table.getItem(new Point(0, e.y));
+			final Object rowData = item != null ? item.getData() : null;
+			final ClickEvent event = new ClickEvent(colIndex, e.button, rowData);
 			return event;
 		}
 
@@ -836,18 +840,18 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		 * Will return -1 if no column could be computed -- this is the case
 		 * when all columns are resized to have width 0.
 		 */
-		private int findColumn(Table table, Point pt) {
+		private int findColumn(final Table table, final Point pt) {
 			int width = 0;
-			int[] colOrder = table.getColumnOrder();
+			final int[] colOrder = table.getColumnOrder();
 			// compute the current column ordering
-			TableColumn[] columns = new TableColumn[colOrder.length];
+			final TableColumn[] columns = new TableColumn[colOrder.length];
 			for (int i = 0; i < colOrder.length; i++) {
-				int idx = colOrder[i];
+				final int idx = colOrder[i];
 				columns[i] = table.getColumn(idx);
 			}
 			// find the column under Point pt\
-			for (TableColumn col : columns) {
-				int colWidth = col.getWidth();
+			for (final TableColumn col : columns) {
+				final int colWidth = col.getWidth();
 				if (width < pt.x && pt.x < width + colWidth) {
 					return table.indexOf(col);
 				}
@@ -863,10 +867,10 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	 */
 	private final class ColumnSortListener extends SelectionAdapter {
 		@Override
-		public void widgetSelected(SelectionEvent e) {
-			TableColumn column = (TableColumn) e.widget;
-			int columnIndex = column.getParent().indexOf(column);
-			int direction = column.getParent().getSortDirection();
+		public void widgetSelected(final SelectionEvent e) {
+			final TableColumn column = (TableColumn) e.widget;
+			final int columnIndex = column.getParent().indexOf(column);
+			final int direction = column.getParent().getSortDirection();
 			if (columnIndex == sortedColumn) {
 				if (direction == SWT.UP) {
 					setSortedAscending(false);

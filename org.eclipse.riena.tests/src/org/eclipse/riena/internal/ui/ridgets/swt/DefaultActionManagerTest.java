@@ -149,8 +149,8 @@ public class DefaultActionManagerTest extends TestCase {
 	// helping methods
 	//////////////////
 
-	private Shell createUI(Display display) {
-		Shell result = new Shell(display, SWT.ON_TOP);
+	private Shell createUI(final Display display) {
+		final Shell result = new Shell(display, SWT.ON_TOP);
 		GridLayoutFactory.fillDefaults().numColumns(2).applyTo(result);
 
 		text1 = new Text(result, SWT.BORDER);

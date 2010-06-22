@@ -17,9 +17,9 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.INavigationNode.State;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.INavigationNode.State;
 import org.eclipse.riena.ui.filter.IUIFilter;
 
 /**
@@ -28,16 +28,16 @@ import org.eclipse.riena.ui.filter.IUIFilter;
  */
 public class NavigationTreeObserver {
 
-	private IApplicationNodeListener applicationNodeListener;
-	private Set<IApplicationNodeListener> applicationNodeListeners;
-	private ISubApplicationNodeListener subApplicationListener;
-	private Set<ISubApplicationNodeListener> subApplicationListeners;
-	private IModuleGroupNodeListener moduleGroupNodeListener;
-	private Set<IModuleGroupNodeListener> moduleGroupNodeListeners;
-	private IModuleNodeListener moduleNodeListener;
-	private Set<IModuleNodeListener> moduleNodeListeners;
-	private ISubModuleNodeListener subModuleNodeListener;
-	private Set<ISubModuleNodeListener> subModuleNodeListeners;
+	private final IApplicationNodeListener applicationNodeListener;
+	private final Set<IApplicationNodeListener> applicationNodeListeners;
+	private final ISubApplicationNodeListener subApplicationListener;
+	private final Set<ISubApplicationNodeListener> subApplicationListeners;
+	private final IModuleGroupNodeListener moduleGroupNodeListener;
+	private final Set<IModuleGroupNodeListener> moduleGroupNodeListeners;
+	private final IModuleNodeListener moduleNodeListener;
+	private final Set<IModuleNodeListener> moduleNodeListeners;
+	private final ISubModuleNodeListener subModuleNodeListener;
+	private final Set<ISubModuleNodeListener> subModuleNodeListeners;
 
 	/**
 	 * creates the instance
@@ -62,7 +62,7 @@ public class NavigationTreeObserver {
 	 * @param pListener
 	 *            the listener to add
 	 */
-	public void addListener(IApplicationNodeListener pListener) {
+	public void addListener(final IApplicationNodeListener pListener) {
 		applicationNodeListeners.add(pListener);
 	}
 
@@ -72,7 +72,7 @@ public class NavigationTreeObserver {
 	 * @param pListener
 	 *            the listener to remove
 	 */
-	public void removeListener(IApplicationNodeListener pListener) {
+	public void removeListener(final IApplicationNodeListener pListener) {
 		applicationNodeListeners.remove(pListener);
 	}
 
@@ -82,7 +82,7 @@ public class NavigationTreeObserver {
 	 * @param pListener
 	 *            the listener to add
 	 */
-	public void addListener(ISubApplicationNodeListener pListener) {
+	public void addListener(final ISubApplicationNodeListener pListener) {
 		subApplicationListeners.add(pListener);
 	}
 
@@ -92,7 +92,7 @@ public class NavigationTreeObserver {
 	 * @param pListener
 	 *            the listener to remove
 	 */
-	public void removeListener(ISubApplicationNodeListener pListener) {
+	public void removeListener(final ISubApplicationNodeListener pListener) {
 		subApplicationListeners.remove(pListener);
 	}
 
@@ -102,7 +102,7 @@ public class NavigationTreeObserver {
 	 * @param pListener
 	 *            the listener to add
 	 */
-	public void addListener(IModuleGroupNodeListener pListener) {
+	public void addListener(final IModuleGroupNodeListener pListener) {
 		moduleGroupNodeListeners.add(pListener);
 	}
 
@@ -112,7 +112,7 @@ public class NavigationTreeObserver {
 	 * @param pListener
 	 *            the listener to remove
 	 */
-	public void removeListener(IModuleGroupNodeListener pListener) {
+	public void removeListener(final IModuleGroupNodeListener pListener) {
 		moduleGroupNodeListeners.remove(pListener);
 	}
 
@@ -122,7 +122,7 @@ public class NavigationTreeObserver {
 	 * @param pListener
 	 *            the listener to add
 	 */
-	public void addListener(IModuleNodeListener pListener) {
+	public void addListener(final IModuleNodeListener pListener) {
 		moduleNodeListeners.add(pListener);
 	}
 
@@ -132,7 +132,7 @@ public class NavigationTreeObserver {
 	 * @param pListener
 	 *            the listener to remove
 	 */
-	public void removeListener(IModuleNodeListener pListener) {
+	public void removeListener(final IModuleNodeListener pListener) {
 		moduleNodeListeners.remove(pListener);
 	}
 
@@ -142,7 +142,7 @@ public class NavigationTreeObserver {
 	 * @param pListener
 	 *            the listener to add
 	 */
-	public void addListener(ISubModuleNodeListener pListener) {
+	public void addListener(final ISubModuleNodeListener pListener) {
 		subModuleNodeListeners.add(pListener);
 	}
 
@@ -152,7 +152,7 @@ public class NavigationTreeObserver {
 	 * @param pListener
 	 *            the listener to remove
 	 */
-	public void removeListener(ISubModuleNodeListener pListener) {
+	public void removeListener(final ISubModuleNodeListener pListener) {
 		subModuleNodeListeners.remove(pListener);
 	}
 
@@ -191,71 +191,71 @@ public class NavigationTreeObserver {
 		return subModuleNodeListeners;
 	}
 
-	public void addListenerTo(IApplicationNode pApplicationNode) {
+	public void addListenerTo(final IApplicationNode pApplicationNode) {
 		pApplicationNode.addListener(applicationNodeListener);
-		for (ISubApplicationNode next : pApplicationNode.getChildren()) {
+		for (final ISubApplicationNode next : pApplicationNode.getChildren()) {
 			addListenerTo(next);
 		}
 	}
 
-	public void addListenerTo(ISubApplicationNode pSubApplication) {
+	public void addListenerTo(final ISubApplicationNode pSubApplication) {
 		pSubApplication.addListener(subApplicationListener);
-		for (IModuleGroupNode next : pSubApplication.getChildren()) {
+		for (final IModuleGroupNode next : pSubApplication.getChildren()) {
 			addListenerTo(next);
 		}
 	}
 
-	public void addListenerTo(IModuleGroupNode pModuleGroupNode) {
+	public void addListenerTo(final IModuleGroupNode pModuleGroupNode) {
 		pModuleGroupNode.addListener(moduleGroupNodeListener);
-		for (IModuleNode next : pModuleGroupNode.getChildren()) {
+		for (final IModuleNode next : pModuleGroupNode.getChildren()) {
 			addListenerTo(next);
 		}
 	}
 
-	public void addListenerTo(IModuleNode pModuleNode) {
+	public void addListenerTo(final IModuleNode pModuleNode) {
 		pModuleNode.addListener(moduleNodeListener);
-		for (ISubModuleNode next : pModuleNode.getChildren()) {
+		for (final ISubModuleNode next : pModuleNode.getChildren()) {
 			addListenerTo(next);
 		}
 	}
 
-	public void addListenerTo(ISubModuleNode pSubModuleNode) {
+	public void addListenerTo(final ISubModuleNode pSubModuleNode) {
 		pSubModuleNode.addListener(subModuleNodeListener);
-		for (ISubModuleNode next : pSubModuleNode.getChildren()) {
+		for (final ISubModuleNode next : pSubModuleNode.getChildren()) {
 			addListenerTo(next);
 		}
 	}
 
-	public void removeListenerFrom(IApplicationNode pApplicationNode) {
-		for (ISubApplicationNode next : pApplicationNode.getChildren()) {
+	public void removeListenerFrom(final IApplicationNode pApplicationNode) {
+		for (final ISubApplicationNode next : pApplicationNode.getChildren()) {
 			removeListenerFrom(next);
 		}
 		pApplicationNode.removeListener(applicationNodeListener);
 	}
 
-	public void removeListenerFrom(ISubApplicationNode pSubApplication) {
-		for (IModuleGroupNode next : pSubApplication.getChildren()) {
+	public void removeListenerFrom(final ISubApplicationNode pSubApplication) {
+		for (final IModuleGroupNode next : pSubApplication.getChildren()) {
 			removeListenerFrom(next);
 		}
 		pSubApplication.removeListener(subApplicationListener);
 	}
 
-	public void removeListenerFrom(IModuleGroupNode pModuleGroupNode) {
-		for (IModuleNode next : pModuleGroupNode.getChildren()) {
+	public void removeListenerFrom(final IModuleGroupNode pModuleGroupNode) {
+		for (final IModuleNode next : pModuleGroupNode.getChildren()) {
 			removeListenerFrom(next);
 		}
 		pModuleGroupNode.removeListener(moduleGroupNodeListener);
 	}
 
-	public void removeListenerFrom(IModuleNode pModuleNode) {
-		for (ISubModuleNode next : pModuleNode.getChildren()) {
+	public void removeListenerFrom(final IModuleNode pModuleNode) {
+		for (final ISubModuleNode next : pModuleNode.getChildren()) {
 			removeListenerFrom(next);
 		}
 		pModuleNode.removeListener(moduleNodeListener);
 	}
 
-	public void removeListenerFrom(ISubModuleNode pSubModuleNode) {
-		for (ISubModuleNode next : pSubModuleNode.getChildren()) {
+	public void removeListenerFrom(final ISubModuleNode pSubModuleNode) {
+		for (final ISubModuleNode next : pSubModuleNode.getChildren()) {
 			removeListenerFrom(next);
 		}
 		pSubModuleNode.removeListener(subModuleNodeListener);
@@ -264,17 +264,17 @@ public class NavigationTreeObserver {
 	private class MyApplicationNodeListener extends ApplicationNodeListener {
 
 		@Override
-		public void filterAdded(IApplicationNode source, IUIFilter filter) {
+		public void filterAdded(final IApplicationNode source, final IUIFilter filter) {
 			super.filterAdded(source, filter);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.filterAdded(source, filter);
 			}
 		}
 
 		@Override
-		public void filterRemoved(IApplicationNode source, IUIFilter filter) {
+		public void filterRemoved(final IApplicationNode source, final IUIFilter filter) {
 			super.filterRemoved(source, filter);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.filterRemoved(source, filter);
 			}
 		}
@@ -283,9 +283,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void activated(IApplicationNode source) {
+		public void activated(final IApplicationNode source) {
 			super.activated(source);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.activated(source);
 			}
 		}
@@ -294,18 +294,18 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeActivated(IApplicationNode source) {
+		public void beforeActivated(final IApplicationNode source) {
 			super.beforeActivated(source);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.beforeActivated(source);
 			}
 		}
 
 		@Override
-		public void block(IApplicationNode source, boolean block) {
+		public void block(final IApplicationNode source, final boolean block) {
 
 			super.block(source, block);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.block(source, block);
 			}
 		}
@@ -314,9 +314,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterActivated(IApplicationNode source) {
+		public void afterActivated(final IApplicationNode source) {
 			super.afterActivated(source);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.afterActivated(source);
 			}
 		}
@@ -325,9 +325,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#deactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void deactivated(IApplicationNode source) {
+		public void deactivated(final IApplicationNode source) {
 			super.deactivated(source);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.deactivated(source);
 			}
 		}
@@ -336,9 +336,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeDeactivated(IApplicationNode source) {
+		public void beforeDeactivated(final IApplicationNode source) {
 			super.beforeDeactivated(source);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.beforeDeactivated(source);
 			}
 		}
@@ -347,9 +347,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterDeactivated(IApplicationNode source) {
+		public void afterDeactivated(final IApplicationNode source) {
 			super.afterDeactivated(source);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.afterDeactivated(source);
 			}
 		}
@@ -358,9 +358,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void disposed(IApplicationNode source) {
+		public void disposed(final IApplicationNode source) {
 			super.disposed(source);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.disposed(source);
 			}
 		}
@@ -369,9 +369,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeDisposed(IApplicationNode source) {
+		public void beforeDisposed(final IApplicationNode source) {
 			super.beforeDisposed(source);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.beforeDisposed(source);
 			}
 		}
@@ -380,9 +380,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterDisposed(IApplicationNode source) {
+		public void afterDisposed(final IApplicationNode source) {
 			super.afterDisposed(source);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.afterDisposed(source);
 			}
 		}
@@ -392,10 +392,10 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void childAdded(IApplicationNode source, ISubApplicationNode childAdded) {
+		public void childAdded(final IApplicationNode source, final ISubApplicationNode childAdded) {
 			super.childAdded(source, childAdded);
 			addListenerTo(childAdded);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.childAdded(source, childAdded);
 			}
 		}
@@ -405,10 +405,10 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void childRemoved(IApplicationNode source, ISubApplicationNode childRemoved) {
+		public void childRemoved(final IApplicationNode source, final ISubApplicationNode childRemoved) {
 			super.childRemoved(source, childRemoved);
 			removeListenerFrom(childRemoved);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.childRemoved(source, childRemoved);
 			}
 		}
@@ -417,9 +417,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void expandedChanged(IApplicationNode source) {
+		public void expandedChanged(final IApplicationNode source) {
 			super.expandedChanged(source);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.expandedChanged(source);
 			}
 		}
@@ -428,9 +428,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#labelChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void labelChanged(IApplicationNode source) {
+		public void labelChanged(final IApplicationNode source) {
 			super.labelChanged(source);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.labelChanged(source);
 			}
 		}
@@ -440,9 +440,9 @@ public class NavigationTreeObserver {
 		 *      IMarker)
 		 */
 		@Override
-		public void markerChanged(IApplicationNode source, IMarker marker) {
+		public void markerChanged(final IApplicationNode source, final IMarker marker) {
 			super.markerChanged(source, marker);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.markerChanged(source, marker);
 			}
 		}
@@ -451,9 +451,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#parentChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void parentChanged(IApplicationNode source) {
+		public void parentChanged(final IApplicationNode source) {
 			super.parentChanged(source);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.parentChanged(source);
 			}
 		}
@@ -462,9 +462,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void presentationChanged(IApplicationNode source) {
+		public void presentationChanged(final IApplicationNode source) {
 			super.presentationChanged(source);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.presentationChanged(source);
 			}
 		}
@@ -473,9 +473,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void selectedChanged(IApplicationNode source) {
+		public void selectedChanged(final IApplicationNode source) {
 			super.selectedChanged(source);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.selectedChanged(source);
 			}
 		}
@@ -486,9 +486,9 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode.State)
 		 */
 		@Override
-		public void stateChanged(IApplicationNode source, State oldState, State newState) {
+		public void stateChanged(final IApplicationNode source, final State oldState, final State newState) {
 			super.stateChanged(source, oldState, newState);
-			for (IApplicationNodeListener next : getApplicationNodeListeners()) {
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
 				next.stateChanged(source, oldState, newState);
 			}
 		}
@@ -501,33 +501,33 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void activated(ISubApplicationNode source) {
+		public void activated(final ISubApplicationNode source) {
 			super.activated(source);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.activated(source);
 			}
 		}
 
 		@Override
-		public void filterAdded(ISubApplicationNode source, IUIFilter filter) {
+		public void filterAdded(final ISubApplicationNode source, final IUIFilter filter) {
 			super.filterAdded(source, filter);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.filterAdded(source, filter);
 			}
 		}
 
 		@Override
-		public void filterRemoved(ISubApplicationNode source, IUIFilter filter) {
+		public void filterRemoved(final ISubApplicationNode source, final IUIFilter filter) {
 			super.filterRemoved(source, filter);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.filterRemoved(source, filter);
 			}
 		}
 
 		@Override
-		public void block(ISubApplicationNode source, boolean block) {
+		public void block(final ISubApplicationNode source, final boolean block) {
 			super.block(source, block);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.block(source, block);
 			}
 		}
@@ -536,9 +536,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeActivated(ISubApplicationNode source) {
+		public void beforeActivated(final ISubApplicationNode source) {
 			super.beforeActivated(source);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.beforeActivated(source);
 			}
 		}
@@ -547,9 +547,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterActivated(ISubApplicationNode source) {
+		public void afterActivated(final ISubApplicationNode source) {
 			super.afterActivated(source);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.afterActivated(source);
 			}
 		}
@@ -558,9 +558,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#deactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void deactivated(ISubApplicationNode source) {
+		public void deactivated(final ISubApplicationNode source) {
 			super.deactivated(source);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.deactivated(source);
 			}
 		}
@@ -569,9 +569,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeDeactivated(ISubApplicationNode source) {
+		public void beforeDeactivated(final ISubApplicationNode source) {
 			super.beforeDeactivated(source);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.beforeDeactivated(source);
 			}
 		}
@@ -580,9 +580,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterDeactivated(ISubApplicationNode source) {
+		public void afterDeactivated(final ISubApplicationNode source) {
 			super.afterDeactivated(source);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.afterDeactivated(source);
 			}
 		}
@@ -591,9 +591,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void disposed(ISubApplicationNode source) {
+		public void disposed(final ISubApplicationNode source) {
 			super.disposed(source);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.disposed(source);
 			}
 		}
@@ -602,9 +602,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeDisposed(ISubApplicationNode source) {
+		public void beforeDisposed(final ISubApplicationNode source) {
 			super.beforeDisposed(source);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.beforeDisposed(source);
 			}
 		}
@@ -613,9 +613,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterDisposed(ISubApplicationNode source) {
+		public void afterDisposed(final ISubApplicationNode source) {
 			super.afterDisposed(source);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.afterDisposed(source);
 			}
 		}
@@ -625,10 +625,10 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void childAdded(ISubApplicationNode source, IModuleGroupNode childAdded) {
+		public void childAdded(final ISubApplicationNode source, final IModuleGroupNode childAdded) {
 			super.childAdded(source, childAdded);
 			addListenerTo(childAdded);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.childAdded(source, childAdded);
 			}
 		}
@@ -638,10 +638,10 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void childRemoved(ISubApplicationNode source, IModuleGroupNode childRemoved) {
+		public void childRemoved(final ISubApplicationNode source, final IModuleGroupNode childRemoved) {
 			super.childRemoved(source, childRemoved);
 			removeListenerFrom(childRemoved);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.childRemoved(source, childRemoved);
 			}
 		}
@@ -650,9 +650,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void expandedChanged(ISubApplicationNode source) {
+		public void expandedChanged(final ISubApplicationNode source) {
 			super.expandedChanged(source);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.expandedChanged(source);
 			}
 		}
@@ -661,9 +661,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#labelChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void labelChanged(ISubApplicationNode source) {
+		public void labelChanged(final ISubApplicationNode source) {
 			super.labelChanged(source);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.labelChanged(source);
 			}
 		}
@@ -673,9 +673,9 @@ public class NavigationTreeObserver {
 		 *      IMarker)
 		 */
 		@Override
-		public void markerChanged(ISubApplicationNode source, IMarker marker) {
+		public void markerChanged(final ISubApplicationNode source, final IMarker marker) {
 			super.markerChanged(source, marker);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.markerChanged(source, marker);
 			}
 		}
@@ -684,9 +684,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#parentChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void parentChanged(ISubApplicationNode source) {
+		public void parentChanged(final ISubApplicationNode source) {
 			super.parentChanged(source);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.parentChanged(source);
 			}
 		}
@@ -695,9 +695,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void presentationChanged(ISubApplicationNode source) {
+		public void presentationChanged(final ISubApplicationNode source) {
 			super.presentationChanged(source);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.presentationChanged(source);
 			}
 		}
@@ -706,9 +706,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void selectedChanged(ISubApplicationNode source) {
+		public void selectedChanged(final ISubApplicationNode source) {
 			super.selectedChanged(source);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.selectedChanged(source);
 			}
 		}
@@ -719,9 +719,9 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode.State)
 		 */
 		@Override
-		public void stateChanged(ISubApplicationNode source, State oldState, State newState) {
+		public void stateChanged(final ISubApplicationNode source, final State oldState, final State newState) {
 			super.stateChanged(source, oldState, newState);
-			for (ISubApplicationNodeListener next : getSubApplicationListeners()) {
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
 				next.stateChanged(source, oldState, newState);
 			}
 		}
@@ -731,17 +731,17 @@ public class NavigationTreeObserver {
 	private class MyModuleGroupNodeListener extends ModuleGroupNodeListener {
 
 		@Override
-		public void filterAdded(IModuleGroupNode source, IUIFilter filter) {
+		public void filterAdded(final IModuleGroupNode source, final IUIFilter filter) {
 			super.filterAdded(source, filter);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.filterAdded(source, filter);
 			}
 		}
 
 		@Override
-		public void filterRemoved(IModuleGroupNode source, IUIFilter filter) {
+		public void filterRemoved(final IModuleGroupNode source, final IUIFilter filter) {
 			super.filterRemoved(source, filter);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.filterRemoved(source, filter);
 			}
 		}
@@ -750,17 +750,17 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void activated(IModuleGroupNode source) {
+		public void activated(final IModuleGroupNode source) {
 			super.activated(source);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.activated(source);
 			}
 		}
 
 		@Override
-		public void block(IModuleGroupNode source, boolean block) {
+		public void block(final IModuleGroupNode source, final boolean block) {
 			super.block(source, block);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.block(source, block);
 			}
 		}
@@ -769,9 +769,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeActivated(IModuleGroupNode source) {
+		public void beforeActivated(final IModuleGroupNode source) {
 			super.beforeActivated(source);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.beforeActivated(source);
 			}
 		}
@@ -780,9 +780,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterActivated(IModuleGroupNode source) {
+		public void afterActivated(final IModuleGroupNode source) {
 			super.afterActivated(source);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.afterActivated(source);
 			}
 		}
@@ -791,9 +791,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#deactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void deactivated(IModuleGroupNode source) {
+		public void deactivated(final IModuleGroupNode source) {
 			super.deactivated(source);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.deactivated(source);
 			}
 		}
@@ -802,9 +802,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeDeactivated(IModuleGroupNode source) {
+		public void beforeDeactivated(final IModuleGroupNode source) {
 			super.beforeDeactivated(source);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.beforeDeactivated(source);
 			}
 		}
@@ -813,9 +813,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterDeactivated(IModuleGroupNode source) {
+		public void afterDeactivated(final IModuleGroupNode source) {
 			super.afterDeactivated(source);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.afterDeactivated(source);
 			}
 		}
@@ -824,9 +824,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void disposed(IModuleGroupNode source) {
+		public void disposed(final IModuleGroupNode source) {
 			super.disposed(source);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.disposed(source);
 			}
 		}
@@ -835,9 +835,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeDisposed(IModuleGroupNode source) {
+		public void beforeDisposed(final IModuleGroupNode source) {
 			super.beforeDisposed(source);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.beforeDisposed(source);
 			}
 		}
@@ -846,9 +846,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterDisposed(IModuleGroupNode source) {
+		public void afterDisposed(final IModuleGroupNode source) {
 			super.afterDisposed(source);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.afterDisposed(source);
 			}
 		}
@@ -858,10 +858,10 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void childAdded(IModuleGroupNode source, IModuleNode childAdded) {
+		public void childAdded(final IModuleGroupNode source, final IModuleNode childAdded) {
 			super.childAdded(source, childAdded);
 			addListenerTo(childAdded);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.childAdded(source, childAdded);
 			}
 		}
@@ -871,10 +871,10 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void childRemoved(IModuleGroupNode source, IModuleNode childRemoved) {
+		public void childRemoved(final IModuleGroupNode source, final IModuleNode childRemoved) {
 			super.childRemoved(source, childRemoved);
 			removeListenerFrom(childRemoved);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.childRemoved(source, childRemoved);
 			}
 		}
@@ -883,9 +883,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void expandedChanged(IModuleGroupNode source) {
+		public void expandedChanged(final IModuleGroupNode source) {
 			super.expandedChanged(source);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.expandedChanged(source);
 			}
 		}
@@ -894,9 +894,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#labelChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void labelChanged(IModuleGroupNode source) {
+		public void labelChanged(final IModuleGroupNode source) {
 			super.labelChanged(source);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.labelChanged(source);
 			}
 		}
@@ -906,9 +906,9 @@ public class NavigationTreeObserver {
 		 *      IMarker)
 		 */
 		@Override
-		public void markerChanged(IModuleGroupNode source, IMarker marker) {
+		public void markerChanged(final IModuleGroupNode source, final IMarker marker) {
 			super.markerChanged(source, marker);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.markerChanged(source, marker);
 			}
 		}
@@ -917,9 +917,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#parentChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void parentChanged(IModuleGroupNode source) {
+		public void parentChanged(final IModuleGroupNode source) {
 			super.parentChanged(source);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.parentChanged(source);
 			}
 		}
@@ -928,9 +928,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void presentationChanged(IModuleGroupNode source) {
+		public void presentationChanged(final IModuleGroupNode source) {
 			super.presentationChanged(source);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.presentationChanged(source);
 			}
 		}
@@ -939,9 +939,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void selectedChanged(IModuleGroupNode source) {
+		public void selectedChanged(final IModuleGroupNode source) {
 			super.selectedChanged(source);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.selectedChanged(source);
 			}
 		}
@@ -952,9 +952,9 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode.State)
 		 */
 		@Override
-		public void stateChanged(IModuleGroupNode source, State oldState, State newState) {
+		public void stateChanged(final IModuleGroupNode source, final State oldState, final State newState) {
 			super.stateChanged(source, oldState, newState);
-			for (IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
 				next.stateChanged(source, oldState, newState);
 			}
 		}
@@ -963,17 +963,17 @@ public class NavigationTreeObserver {
 	private class MyModuleNodeListener extends ModuleNodeListener {
 
 		@Override
-		public void filterAdded(IModuleNode source, IUIFilter filter) {
+		public void filterAdded(final IModuleNode source, final IUIFilter filter) {
 			super.filterAdded(source, filter);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.filterAdded(source, filter);
 			}
 		}
 
 		@Override
-		public void filterRemoved(IModuleNode source, IUIFilter filter) {
+		public void filterRemoved(final IModuleNode source, final IUIFilter filter) {
 			super.filterRemoved(source, filter);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.filterRemoved(source, filter);
 			}
 		}
@@ -982,17 +982,17 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void activated(IModuleNode source) {
+		public void activated(final IModuleNode source) {
 			super.activated(source);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.activated(source);
 			}
 		}
 
 		@Override
-		public void block(IModuleNode source, boolean block) {
+		public void block(final IModuleNode source, final boolean block) {
 			super.block(source, block);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.block(source, block);
 			}
 		}
@@ -1001,9 +1001,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeActivated(IModuleNode source) {
+		public void beforeActivated(final IModuleNode source) {
 			super.beforeActivated(source);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.beforeActivated(source);
 			}
 		}
@@ -1012,9 +1012,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterActivated(IModuleNode source) {
+		public void afterActivated(final IModuleNode source) {
 			super.afterActivated(source);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.afterActivated(source);
 			}
 		}
@@ -1023,9 +1023,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#deactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void deactivated(IModuleNode source) {
+		public void deactivated(final IModuleNode source) {
 			super.deactivated(source);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.deactivated(source);
 			}
 		}
@@ -1034,9 +1034,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeDeactivated(IModuleNode source) {
+		public void beforeDeactivated(final IModuleNode source) {
 			super.beforeDeactivated(source);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.beforeDeactivated(source);
 			}
 		}
@@ -1045,9 +1045,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterDeactivated(IModuleNode source) {
+		public void afterDeactivated(final IModuleNode source) {
 			super.afterDeactivated(source);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.afterDeactivated(source);
 			}
 		}
@@ -1056,9 +1056,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void disposed(IModuleNode source) {
+		public void disposed(final IModuleNode source) {
 			super.disposed(source);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.disposed(source);
 			}
 		}
@@ -1067,9 +1067,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeDisposed(IModuleNode source) {
+		public void beforeDisposed(final IModuleNode source) {
 			super.beforeDisposed(source);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.beforeDisposed(source);
 			}
 		}
@@ -1078,9 +1078,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterDisposed(IModuleNode source) {
+		public void afterDisposed(final IModuleNode source) {
 			super.afterDisposed(source);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.afterDisposed(source);
 			}
 		}
@@ -1090,10 +1090,10 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void childAdded(IModuleNode source, ISubModuleNode childAdded) {
+		public void childAdded(final IModuleNode source, final ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
 			addListenerTo(childAdded);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.childAdded(source, childAdded);
 			}
 		}
@@ -1103,10 +1103,10 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void childRemoved(IModuleNode source, ISubModuleNode childRemoved) {
+		public void childRemoved(final IModuleNode source, final ISubModuleNode childRemoved) {
 			super.childRemoved(source, childRemoved);
 			removeListenerFrom(childRemoved);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.childRemoved(source, childRemoved);
 			}
 		}
@@ -1115,9 +1115,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void expandedChanged(IModuleNode source) {
+		public void expandedChanged(final IModuleNode source) {
 			super.expandedChanged(source);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.expandedChanged(source);
 			}
 		}
@@ -1126,9 +1126,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#labelChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void labelChanged(IModuleNode source) {
+		public void labelChanged(final IModuleNode source) {
 			super.labelChanged(source);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.labelChanged(source);
 			}
 		}
@@ -1138,9 +1138,9 @@ public class NavigationTreeObserver {
 		 *      IMarker)
 		 */
 		@Override
-		public void markerChanged(IModuleNode source, IMarker marker) {
+		public void markerChanged(final IModuleNode source, final IMarker marker) {
 			super.markerChanged(source, marker);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.markerChanged(source, marker);
 			}
 		}
@@ -1149,9 +1149,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#parentChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void parentChanged(IModuleNode source) {
+		public void parentChanged(final IModuleNode source) {
 			super.parentChanged(source);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.parentChanged(source);
 			}
 		}
@@ -1160,9 +1160,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void presentationChanged(IModuleNode source) {
+		public void presentationChanged(final IModuleNode source) {
 			super.presentationChanged(source);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.presentationChanged(source);
 			}
 		}
@@ -1171,9 +1171,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void selectedChanged(IModuleNode source) {
+		public void selectedChanged(final IModuleNode source) {
 			super.selectedChanged(source);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.selectedChanged(source);
 			}
 		}
@@ -1184,9 +1184,9 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode.State)
 		 */
 		@Override
-		public void stateChanged(IModuleNode source, State oldState, State newState) {
+		public void stateChanged(final IModuleNode source, final State oldState, final State newState) {
 			super.stateChanged(source, oldState, newState);
-			for (IModuleNodeListener next : getModuleNodeListeners()) {
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.stateChanged(source, oldState, newState);
 			}
 		}
@@ -1195,25 +1195,25 @@ public class NavigationTreeObserver {
 	private class MySubModuleNodeListener extends SubModuleNodeListener {
 
 		@Override
-		public void filterAdded(ISubModuleNode source, IUIFilter filter) {
+		public void filterAdded(final ISubModuleNode source, final IUIFilter filter) {
 			super.filterAdded(source, filter);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.filterAdded(source, filter);
 			}
 		}
 
 		@Override
-		public void filterRemoved(ISubModuleNode source, IUIFilter filter) {
+		public void filterRemoved(final ISubModuleNode source, final IUIFilter filter) {
 			super.filterRemoved(source, filter);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.filterRemoved(source, filter);
 			}
 		}
 
 		@Override
-		public void block(ISubModuleNode source, boolean block) {
+		public void block(final ISubModuleNode source, final boolean block) {
 			super.block(source, block);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.block(source, block);
 			}
 		}
@@ -1222,9 +1222,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void activated(ISubModuleNode source) {
+		public void activated(final ISubModuleNode source) {
 			super.activated(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.activated(source);
 			}
 		}
@@ -1233,9 +1233,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeActivated(ISubModuleNode source) {
+		public void beforeActivated(final ISubModuleNode source) {
 			super.beforeActivated(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.beforeActivated(source);
 			}
 		}
@@ -1244,9 +1244,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterActivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterActivated(ISubModuleNode source) {
+		public void afterActivated(final ISubModuleNode source) {
 			super.afterActivated(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.afterActivated(source);
 			}
 		}
@@ -1255,9 +1255,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#deactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void deactivated(ISubModuleNode source) {
+		public void deactivated(final ISubModuleNode source) {
 			super.deactivated(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.deactivated(source);
 			}
 		}
@@ -1266,9 +1266,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeDeactivated(ISubModuleNode source) {
+		public void beforeDeactivated(final ISubModuleNode source) {
 			super.beforeDeactivated(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.beforeDeactivated(source);
 			}
 		}
@@ -1277,9 +1277,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterDeactivated(ISubModuleNode source) {
+		public void afterDeactivated(final ISubModuleNode source) {
 			super.afterDeactivated(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.afterDeactivated(source);
 			}
 		}
@@ -1288,9 +1288,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void disposed(ISubModuleNode source) {
+		public void disposed(final ISubModuleNode source) {
 			super.disposed(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.disposed(source);
 			}
 		}
@@ -1299,9 +1299,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void beforeDisposed(ISubModuleNode source) {
+		public void beforeDisposed(final ISubModuleNode source) {
 			super.beforeDisposed(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.beforeDisposed(source);
 			}
 		}
@@ -1310,9 +1310,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void afterDisposed(ISubModuleNode source) {
+		public void afterDisposed(final ISubModuleNode source) {
 			super.afterDisposed(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.afterDisposed(source);
 			}
 		}
@@ -1322,10 +1322,10 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void childAdded(ISubModuleNode source, ISubModuleNode childAdded) {
+		public void childAdded(final ISubModuleNode source, final ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
 			addListenerTo(childAdded);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.childAdded(source, childAdded);
 			}
 		}
@@ -1335,10 +1335,10 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void childRemoved(ISubModuleNode source, ISubModuleNode childRemoved) {
+		public void childRemoved(final ISubModuleNode source, final ISubModuleNode childRemoved) {
 			super.childRemoved(source, childRemoved);
 			removeListenerFrom(childRemoved);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.childRemoved(source, childRemoved);
 			}
 		}
@@ -1347,9 +1347,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void expandedChanged(ISubModuleNode source) {
+		public void expandedChanged(final ISubModuleNode source) {
 			super.expandedChanged(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.expandedChanged(source);
 			}
 		}
@@ -1358,9 +1358,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#labelChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void labelChanged(ISubModuleNode source) {
+		public void labelChanged(final ISubModuleNode source) {
 			super.labelChanged(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.labelChanged(source);
 			}
 		}
@@ -1370,9 +1370,9 @@ public class NavigationTreeObserver {
 		 *      IMarker)
 		 */
 		@Override
-		public void markerChanged(ISubModuleNode source, IMarker marker) {
+		public void markerChanged(final ISubModuleNode source, final IMarker marker) {
 			super.markerChanged(source, marker);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.markerChanged(source, marker);
 			}
 		}
@@ -1381,9 +1381,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#parentChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void parentChanged(ISubModuleNode source) {
+		public void parentChanged(final ISubModuleNode source) {
 			super.parentChanged(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.parentChanged(source);
 			}
 		}
@@ -1392,9 +1392,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void presentationChanged(ISubModuleNode source) {
+		public void presentationChanged(final ISubModuleNode source) {
 			super.presentationChanged(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.presentationChanged(source);
 			}
 		}
@@ -1403,9 +1403,9 @@ public class NavigationTreeObserver {
 		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void selectedChanged(ISubModuleNode source) {
+		public void selectedChanged(final ISubModuleNode source) {
 			super.selectedChanged(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.selectedChanged(source);
 			}
 		}
@@ -1416,9 +1416,9 @@ public class NavigationTreeObserver {
 		 *      org.eclipse.riena.navigation.INavigationNode.State)
 		 */
 		@Override
-		public void stateChanged(ISubModuleNode source, State oldState, State newState) {
+		public void stateChanged(final ISubModuleNode source, final State oldState, final State newState) {
 			super.stateChanged(source, oldState, newState);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.stateChanged(source, oldState, newState);
 			}
 		}
@@ -1430,9 +1430,9 @@ public class NavigationTreeObserver {
 		 * now.
 		 */
 		@Override
-		public void prepared(ISubModuleNode source) {
+		public void prepared(final ISubModuleNode source) {
 			super.prepared(source);
-			for (ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
 				next.prepared(source);
 			}
 		}

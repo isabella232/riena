@@ -16,9 +16,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Rectangle;
+
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessWindow;
-import org.eclipse.swt.graphics.Rectangle;
 
 /**
  * A {@link VisualizerContainer} is related to a visual context in the
@@ -44,7 +45,7 @@ class VisualizerContainer extends HashMap<IProgressVisualizer, Integer> {
 	}
 
 	private IProgressVisualizer getFreshestVisualizer() {
-		List<IProgressVisualizer> visualizers = new LinkedList<IProgressVisualizer>(keySet());
+		final List<IProgressVisualizer> visualizers = new LinkedList<IProgressVisualizer>(keySet());
 		// use the comparator
 		Collections.sort(visualizers, new VisualizerComparator());
 		if (visualizers.size() > 0) {
@@ -61,7 +62,7 @@ class VisualizerContainer extends HashMap<IProgressVisualizer, Integer> {
 	 */
 	class VisualizerComparator implements Comparator<IProgressVisualizer> {
 
-		public int compare(IProgressVisualizer o1, IProgressVisualizer o2) {
+		public int compare(final IProgressVisualizer o1, final IProgressVisualizer o2) {
 			Integer time1 = get(o1);
 			if (time1 == null) {
 				time1 = -1;
@@ -85,7 +86,7 @@ class VisualizerContainer extends HashMap<IProgressVisualizer, Integer> {
 	 * manage bounds of the {@link UIProcessWindow}
 	 */
 
-	public void setBounds(Rectangle bounds) {
+	public void setBounds(final Rectangle bounds) {
 		this.bounds = bounds;
 	}
 

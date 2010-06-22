@@ -25,21 +25,21 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 public class LiteralTest extends TestCase {
 
 	public void testCreateLiteralMap() {
-		Map<String, Integer> kids = Literal.map("Emil", 2).map("Anja", 5);
+		final Map<String, Integer> kids = Literal.map("Emil", 2).map("Anja", 5);
 		assertEquals(2, kids.size());
 		assertEquals(2, (int) kids.get("Emil"));
 		assertEquals(5, (int) kids.get("Anja"));
 	}
 
 	public void testCreateLiteralList() {
-		List<String> kids = Literal.list("Emil").list("Anja");
+		final List<String> kids = Literal.list("Emil").list("Anja");
 		assertEquals(2, kids.size());
 		assertEquals("Emil", kids.get(0));
 		assertEquals("Anja", kids.get(1));
 	}
 
 	public void testCreateLiteralSet() {
-		Set<String> kids = Literal.set("Emil").set("Anja");
+		final Set<String> kids = Literal.set("Emil").set("Anja");
 		assertEquals(2, kids.size());
 		assertTrue(kids.contains("Emil"));
 		assertTrue(kids.contains("Anja"));

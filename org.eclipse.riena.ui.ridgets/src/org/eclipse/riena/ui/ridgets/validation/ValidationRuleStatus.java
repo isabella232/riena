@@ -77,7 +77,8 @@ public final class ValidationRuleStatus {
 	 * 
 	 * @deprecated use {@link #error(boolean, String)}
 	 */
-	public static IStatus error(boolean blocker, String message, IValidator source) {
+	@Deprecated
+	public static IStatus error(final boolean blocker, final String message, final IValidator source) {
 		return error(blocker, message);
 	}
 
@@ -95,8 +96,8 @@ public final class ValidationRuleStatus {
 	 * 
 	 * @since 1.2
 	 */
-	public static IStatus error(boolean blocker, String message) {
-		int code = blocker ? ERROR_BLOCK_WITH_FLASH : ERROR_ALLOW_WITH_MESSAGE;
+	public static IStatus error(final boolean blocker, final String message) {
+		final int code = blocker ? ERROR_BLOCK_WITH_FLASH : ERROR_ALLOW_WITH_MESSAGE;
 		return new Status(IStatus.ERROR, Activator.PLUGIN_ID, code, message, null);
 	}
 
@@ -109,14 +110,14 @@ public final class ValidationRuleStatus {
 	 *            The statuses to join.
 	 * @return The joined status.
 	 */
-	public static IStatus join(IStatus[] statuses) {
+	public static IStatus join(final IStatus[] statuses) {
 		IStatus result;
 		if (statuses.length == 1) {
 			result = statuses[0];
 		} else {
 			int code = ValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE;
-			StringBuilder allMessages = new StringBuilder();
-			for (IStatus status : statuses) {
+			final StringBuilder allMessages = new StringBuilder();
+			for (final IStatus status : statuses) {
 				if (status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH) {
 					code = ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH;
 				}
@@ -124,7 +125,7 @@ public final class ValidationRuleStatus {
 					allMessages.append(status.getMessage() + "\n"); //$NON-NLS-1$
 				}
 			}
-			String message = allMessages.length() == 0 ? null : allMessages.toString();
+			final String message = allMessages.length() == 0 ? null : allMessages.toString();
 			result = new MultiStatus(Activator.PLUGIN_ID, code, statuses, message, null);
 		}
 		return result;

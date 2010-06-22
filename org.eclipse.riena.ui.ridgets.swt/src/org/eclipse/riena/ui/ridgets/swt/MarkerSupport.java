@@ -74,7 +74,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 		super();
 	}
 
-	public MarkerSupport(IBasicMarkableRidget ridget, PropertyChangeSupport propertyChangeSupport) {
+	public MarkerSupport(final IBasicMarkableRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
 	}
 
@@ -83,11 +83,11 @@ public class MarkerSupport extends BasicMarkerSupport {
 		return (IMarkableRidget) super.getRidget();
 	}
 
-	protected void addError(Control control) {
+	protected void addError(final Control control) {
 		if (errorDecoration == null) {
 			errorDecoration = createErrorDecoration(control);
 			control.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(DisposeEvent e) {
+				public void widgetDisposed(final DisposeEvent e) {
 					errorDecoration.dispose();
 				}
 			});
@@ -96,7 +96,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	}
 
 	@Override
-	protected void clearAllMarkers(Control control) {
+	protected void clearAllMarkers(final Control control) {
 		super.clearAllMarkers(control);
 		clearError(control);
 		clearMandatory(control);
@@ -104,7 +104,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 		clearOutput(control);
 	}
 
-	protected void clearError(Control control) {
+	protected void clearError(final Control control) {
 		if (errorDecoration != null) {
 			errorDecoration.hide();
 		}
@@ -137,7 +137,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	 * <ol>
 	 */
 	@Override
-	protected void updateUIControl(Control control) {
+	protected void updateUIControl(final Control control) {
 		updateVisible(control);
 		updateDisabled(control);
 		updateOutput(control);
@@ -149,10 +149,10 @@ public class MarkerSupport extends BasicMarkerSupport {
 	// helping methods
 	//////////////////
 
-	protected void addMandatory(Control control) {
+	protected void addMandatory(final Control control) {
 		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) == null) {
 			control.setData(PRE_MANDATORY_BACKGROUND_KEY, control.getBackground());
-			RienaDefaultLnf lnf = LnfManager.getLnf();
+			final RienaDefaultLnf lnf = LnfManager.getLnf();
 			Color color = lnf.getColor(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND);
 			if (color == null) {
 				color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY);
@@ -165,35 +165,35 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
-	private void addNegative(Control control) {
+	private void addNegative(final Control control) {
 		if (control.getData(PRE_NEGATIVE_FOREGROUND_KEY) == null) {
 			control.setData(PRE_NEGATIVE_FOREGROUND_KEY, control.getForeground());
 			control.setForeground(control.getDisplay().getSystemColor(SWT.COLOR_RED));
 		}
 	}
 
-	protected void addOutput(Control control, Color color) {
+	protected void addOutput(final Control control, final Color color) {
 		if (control.getData(PRE_OUTPUT_BACKGROUND_KEY) == null) {
 			control.setData(PRE_OUTPUT_BACKGROUND_KEY, control.getBackground());
 			control.setBackground(color);
 		}
 	}
 
-	protected void clearMandatory(Control control) {
+	protected void clearMandatory(final Control control) {
 		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) != null) {
 			control.setBackground((Color) control.getData(PRE_MANDATORY_BACKGROUND_KEY));
 			control.setData(PRE_MANDATORY_BACKGROUND_KEY, null);
 		}
 	}
 
-	private void clearNegative(Control control) {
+	private void clearNegative(final Control control) {
 		if (control.getData(PRE_NEGATIVE_FOREGROUND_KEY) != null) {
 			control.setForeground((Color) control.getData(PRE_NEGATIVE_FOREGROUND_KEY));
 			control.setData(PRE_NEGATIVE_FOREGROUND_KEY, null);
 		}
 	}
 
-	protected void clearOutput(Control control) {
+	protected void clearOutput(final Control control) {
 		if (control.getData(PRE_OUTPUT_BACKGROUND_KEY) != null) {
 			control.setBackground((Color) control.getData(PRE_OUTPUT_BACKGROUND_KEY));
 			control.setData(PRE_OUTPUT_BACKGROUND_KEY, null);
@@ -212,17 +212,17 @@ public class MarkerSupport extends BasicMarkerSupport {
 	 *            the control to be decorated with an error marker
 	 * @return decoration of the given control
 	 */
-	private ControlDecoration createErrorDecoration(Control control) {
-		RienaDefaultLnf lnf = LnfManager.getLnf();
-		int margin = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
+	private ControlDecoration createErrorDecoration(final Control control) {
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
+		final int margin = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
 
-		MarkerControlDecoration ctrlDecoration = new MarkerControlDecoration(control, getDecorationPosition(lnf),
+		final MarkerControlDecoration ctrlDecoration = new MarkerControlDecoration(control, getDecorationPosition(lnf),
 				margin, getDecorationImage(lnf));
 
 		return ctrlDecoration;
 	}
 
-	private Image getDecorationImage(RienaDefaultLnf lnf) {
+	private Image getDecorationImage(final RienaDefaultLnf lnf) {
 		Image image = null;
 		if (Platform.getBundle(Activator.PLUGIN_ID) != null) {
 			// ensure OSGi is available before calling this
@@ -234,16 +234,16 @@ public class MarkerSupport extends BasicMarkerSupport {
 		return image;
 	}
 
-	private int getDecorationPosition(RienaDefaultLnf lnf) {
+	private int getDecorationPosition(final RienaDefaultLnf lnf) {
 		int result = SWT.NONE;
-		int hPos = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.LEFT);
+		final int hPos = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.LEFT);
 		if (hPos == SWT.RIGHT || hPos == SWT.LEFT) {
 			result |= hPos;
 		} else {
 			LOGGER.log(LogService.LOG_WARNING, "Invalid horizonal error marker position!"); //$NON-NLS-1$
 			result |= SWT.LEFT;
 		}
-		int vPos = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.TOP);
+		final int vPos = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.TOP);
 		if (vPos == SWT.TOP || vPos == SWT.CENTER || vPos == SWT.BOTTOM) {
 			result |= vPos;
 		} else {
@@ -253,20 +253,20 @@ public class MarkerSupport extends BasicMarkerSupport {
 		return result;
 	}
 
-	private boolean isButton(Control control) {
+	private boolean isButton(final Control control) {
 		return control instanceof Button || getRidget() instanceof AbstractActionRidget;
 	}
 
-	private boolean isMandatory(IMarkableRidget ridget) {
+	private boolean isMandatory(final IMarkableRidget ridget) {
 		boolean result = false;
-		Iterator<MandatoryMarker> iter = getRidget().getMarkersOfType(MandatoryMarker.class).iterator();
+		final Iterator<MandatoryMarker> iter = getRidget().getMarkersOfType(MandatoryMarker.class).iterator();
 		while (!result && iter.hasNext()) {
 			result = !iter.next().isDisabled();
 		}
 		return result;
 	}
 
-	private void updateError(Control control) {
+	private void updateError(final Control control) {
 		if (getRidget().isErrorMarked() && getRidget().isEnabled() && getRidget().isVisible()) {
 			if (!(isButton(control) && getRidget().isOutputOnly())) {
 				addError(control);
@@ -278,7 +278,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
-	private void updateMandatory(Control control) {
+	private void updateMandatory(final Control control) {
 		if (isMandatory(getRidget()) && !getRidget().isOutputOnly() && getRidget().isEnabled()) {
 			addMandatory(control);
 		} else {
@@ -286,7 +286,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
-	private void updateNegative(Control control) {
+	private void updateNegative(final Control control) {
 		if (!getRidget().getMarkersOfType(NegativeMarker.class).isEmpty() && getRidget().isEnabled()) {
 			addNegative(control);
 		} else {
@@ -294,11 +294,11 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
-	private void updateOutput(Control control) {
+	private void updateOutput(final Control control) {
 		if (getRidget().isOutputOnly() && getRidget().isEnabled()) {
 			clearMandatory(control);
 			clearOutput(control);
-			RienaDefaultLnf lnf = LnfManager.getLnf();
+			final RienaDefaultLnf lnf = LnfManager.getLnf();
 			if (isMandatory(getRidget())) {
 				Color color = lnf.getColor(LnfKeyConstants.MANDATORY_OUTPUT_MARKER_BACKGROUND);
 				if (color == null) {
@@ -306,7 +306,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 				}
 				addOutput(control, color);
 			} else {
-				Color color = lnf.getColor(LnfKeyConstants.OUTPUT_MARKER_BACKGROUND);
+				final Color color = lnf.getColor(LnfKeyConstants.OUTPUT_MARKER_BACKGROUND);
 				addOutput(control, color);
 			}
 		} else {
@@ -322,7 +322,8 @@ public class MarkerSupport extends BasicMarkerSupport {
 	 */
 	private static class MarkerControlDecoration extends ControlDecoration {
 
-		public MarkerControlDecoration(Control control, int position, int marginWidth, Image image) {
+		public MarkerControlDecoration(final Control control, final int position, final int marginWidth,
+				final Image image) {
 			super(control, position, getScrolledComposite(control));
 			// TODO [ev] ControlDecorations are only stubs in RAP - need something else
 			if (SWTFacade.isRCP()) {
@@ -332,7 +333,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 			}
 		}
 
-		private static ScrolledComposite getScrolledComposite(Control control) {
+		private static ScrolledComposite getScrolledComposite(final Control control) {
 
 			if (control == null) {
 				return null;

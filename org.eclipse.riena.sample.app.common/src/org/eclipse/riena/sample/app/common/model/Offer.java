@@ -11,10 +11,10 @@
 package org.eclipse.riena.sample.app.common.model;
 
 public class Offer {
-	private Integer customerNumber;
-	private Integer productId;
+	private final Integer customerNumber;
+	private final Integer productId;
 
-	public Offer(Integer customerNumber, Integer productId) {
+	public Offer(final Integer customerNumber, final Integer productId) {
 
 		super();
 

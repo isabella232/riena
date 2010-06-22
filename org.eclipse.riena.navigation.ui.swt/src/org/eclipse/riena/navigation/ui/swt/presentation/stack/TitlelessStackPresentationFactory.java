@@ -20,7 +20,7 @@ import org.eclipse.ui.presentations.StackPresentation;
 
 public class TitlelessStackPresentationFactory extends AbstractPresentationFactory {
 
-	private Map<IStackPresentationSite, StackPresentation> presentations;
+	private final Map<IStackPresentationSite, StackPresentation> presentations;
 
 	public TitlelessStackPresentationFactory() {
 		presentations = new HashMap<IStackPresentationSite, StackPresentation>();
@@ -31,7 +31,7 @@ public class TitlelessStackPresentationFactory extends AbstractPresentationFacto
 	 *      org.eclipse.ui.presentations.IStackPresentationSite)
 	 */
 	@Override
-	public StackPresentation createEditorPresentation(Composite parent, IStackPresentationSite site) {
+	public StackPresentation createEditorPresentation(final Composite parent, final IStackPresentationSite site) {
 		return getPresentation(parent, site);
 	}
 
@@ -40,8 +40,8 @@ public class TitlelessStackPresentationFactory extends AbstractPresentationFacto
 	 *      org.eclipse.ui.presentations.IStackPresentationSite, boolean)
 	 */
 	@Override
-	public StackPresentation createStandaloneViewPresentation(Composite parent, IStackPresentationSite site,
-			boolean showTitle) {
+	public StackPresentation createStandaloneViewPresentation(final Composite parent,
+			final IStackPresentationSite site, final boolean showTitle) {
 		return null;
 	}
 
@@ -50,18 +50,18 @@ public class TitlelessStackPresentationFactory extends AbstractPresentationFacto
 	 *      org.eclipse.ui.presentations.IStackPresentationSite)
 	 */
 	@Override
-	public StackPresentation createViewPresentation(Composite parent, IStackPresentationSite site) {
+	public StackPresentation createViewPresentation(final Composite parent, final IStackPresentationSite site) {
 		return getPresentation(parent, site);
 	}
 
-	private StackPresentation getPresentation(Composite parent, IStackPresentationSite site) {
+	private StackPresentation getPresentation(final Composite parent, final IStackPresentationSite site) {
 		if (presentations.get(site) == null) {
 			presentations.put(site, new TitlelessStackPresentation(parent, site));
 		}
 		return getPresentation(site);
 	}
 
-	public StackPresentation getPresentation(IStackPresentationSite site) {
+	public StackPresentation getPresentation(final IStackPresentationSite site) {
 		return presentations.get(site);
 	}
 

@@ -85,9 +85,9 @@ public class InfoFlyout implements IPropertyNameProvider {
 	private int endY;
 
 	private CountDownLatch latch;
-	private Color bgColor;
+	private final Color bgColor;
 
-	public InfoFlyout(Composite parent) {
+	public InfoFlyout(final Composite parent) {
 		this.parent = parent;
 		message = ""; //$NON-NLS-1$
 		icon = null;
@@ -113,15 +113,15 @@ public class InfoFlyout implements IPropertyNameProvider {
 	/**
 	 * @param message
 	 */
-	public void setMessage(String message) {
+	public void setMessage(final String message) {
 		this.message = message;
 	}
 
-	public void setIcon(String icon) {
+	public void setIcon(final String icon) {
 		this.icon = icon;
 	}
 
-	public final void setPropertyName(String bindingId) {
+	public final void setPropertyName(final String bindingId) {
 		this.bindingId = bindingId;
 	}
 
@@ -135,7 +135,7 @@ public class InfoFlyout implements IPropertyNameProvider {
 	public void waitForClosing() {
 		try {
 			latch.await();
-		} catch (InterruptedException e) {
+		} catch (final InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
 	}
@@ -145,7 +145,7 @@ public class InfoFlyout implements IPropertyNameProvider {
 	private void initializeLayout() {
 		Assert.isTrue(shell == null); // only call once
 
-		Shell parentShell = parent.getShell();
+		final Shell parentShell = parent.getShell();
 		parentShell.addControlListener(new CloseOnParentMove());
 
 		shell = new Shell(parentShell, SWT.MODELESS | SWT.NO_TRIM);
@@ -190,8 +190,8 @@ public class InfoFlyout implements IPropertyNameProvider {
 
 		tShow.addCallback(new TimelineCallbackAdapter() {
 			@Override
-			public void onTimelineStateChanged(TimelineState oldState, TimelineState newState, float durationFraction,
-					float timelinePosition) {
+			public void onTimelineStateChanged(final TimelineState oldState, final TimelineState newState,
+					final float durationFraction, final float timelinePosition) {
 				if (newState == TimelineState.DONE) {
 					tWait.play();
 				}
@@ -200,8 +200,8 @@ public class InfoFlyout implements IPropertyNameProvider {
 
 		tWait.addCallback(new TimelineCallbackAdapter() {
 			@Override
-			public void onTimelineStateChanged(TimelineState oldState, TimelineState newState, float durationFraction,
-					float timelinePosition) {
+			public void onTimelineStateChanged(final TimelineState oldState, final TimelineState newState,
+					final float durationFraction, final float timelinePosition) {
 				if (newState == TimelineState.DONE) {
 					tHide.play();
 				}
@@ -210,8 +210,8 @@ public class InfoFlyout implements IPropertyNameProvider {
 
 		tHide.addCallback(new TimelineCallbackAdapter() {
 			@Override
-			public void onTimelineStateChanged(TimelineState oldState, TimelineState newState, float durationFraction,
-					float timelinePosition) {
+			public void onTimelineStateChanged(final TimelineState oldState, final TimelineState newState,
+					final float durationFraction, final float timelinePosition) {
 				if (newState == TimelineState.DONE) {
 					tWaitAtEnd.play();
 
@@ -221,8 +221,8 @@ public class InfoFlyout implements IPropertyNameProvider {
 
 		tWaitAtEnd.addCallback(new TimelineCallbackAdapter() {
 			@Override
-			public void onTimelineStateChanged(TimelineState oldState, TimelineState newState, float durationFraction,
-					float timelinePosition) {
+			public void onTimelineStateChanged(final TimelineState oldState, final TimelineState newState,
+					final float durationFraction, final float timelinePosition) {
 				if (newState == TimelineState.DONE) {
 					synchronized (this) {
 						latch.countDown();
@@ -242,7 +242,7 @@ public class InfoFlyout implements IPropertyNameProvider {
 	}
 
 	private void updateLayoutData() {
-		int topIndent = (HEIGHT - rightLabel.getBounds().height) / 2;
+		final int topIndent = (HEIGHT - rightLabel.getBounds().height) / 2;
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(ICON_LEFT_MARGIN, topIndent)
 				.applyTo(leftLabel);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(TEXT_LEFT_MARGIN, topIndent)
@@ -251,7 +251,7 @@ public class InfoFlyout implements IPropertyNameProvider {
 	}
 
 	private void updateLocation() {
-		Shell topLevelShell = parent.getShell();
+		final Shell topLevelShell = parent.getShell();
 		topLevelShellBounds = topLevelShell.getBounds();
 		xPosition = topLevelShellBounds.x + topLevelShellBounds.width - WIDTH - SHELL_RIGHT_INDENT;
 		startY = parent.getDisplay().map(parent.getParent(), null, parent.getBounds()).y;
@@ -276,16 +276,16 @@ public class InfoFlyout implements IPropertyNameProvider {
 
 	private static final class BorderPainter implements PaintListener {
 
-		public void paintControl(PaintEvent e) {
-			Control control = (Control) e.widget;
-			GC gc = e.gc;
+		public void paintControl(final PaintEvent e) {
+			final Control control = (Control) e.widget;
+			final GC gc = e.gc;
 
-			Color oldFg = gc.getForeground();
-			int oldWidth = gc.getLineWidth();
+			final Color oldFg = gc.getForeground();
+			final int oldWidth = gc.getLineWidth();
 			gc.setForeground(LnfManager.getLnf().getColor(LnfKeyConstants.INFO_FLYOUT_BORDER_COLOR));
 			gc.setLineWidth(1);
 
-			Rectangle bounds = control.getBounds();
+			final Rectangle bounds = control.getBounds();
 			gc.drawLine(0, 0, bounds.width - 1, 0);
 			gc.drawLine(0, 0, 0, bounds.height - 1);
 			gc.drawLine(bounds.width - 1, 0, bounds.width - 1, bounds.height);
@@ -301,11 +301,11 @@ public class InfoFlyout implements IPropertyNameProvider {
 	 */
 	private final class CloseOnParentMove implements ControlListener {
 
-		public void controlMoved(ControlEvent e) {
+		public void controlMoved(final ControlEvent e) {
 			close();
 		}
 
-		public void controlResized(ControlEvent e) {
+		public void controlResized(final ControlEvent e) {
 			close();
 		}
 

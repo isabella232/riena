@@ -34,7 +34,7 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		Display display = Display.getDefault();
+		final Display display = Display.getDefault();
 
 		shell = new Shell(display);
 		shell.setLayout(new FillLayout());
@@ -59,19 +59,19 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		try {
 			new ChoiceComposite(null, SWT.NONE, false);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
-		ChoiceComposite control1 = new ChoiceComposite(shell, SWT.NONE, false);
+		final ChoiceComposite control1 = new ChoiceComposite(shell, SWT.NONE, false);
 		assertFalse(control1.isMultipleSelection());
 
-		ChoiceComposite control2 = new ChoiceComposite(shell, SWT.NONE, true);
+		final ChoiceComposite control2 = new ChoiceComposite(shell, SWT.NONE, true);
 		assertTrue(control2.isMultipleSelection());
 	}
 
 	public void testSetOrientation() {
-		ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
 
 		assertEquals(SWT.VERTICAL, control.getOrientation());
 
@@ -90,17 +90,17 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		try {
 			control.setOrientation(SWT.NONE);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			// expected and unchanged
 			assertEquals(SWT.VERTICAL, control.getOrientation());
 		}
 	}
 
 	public void testSetForeground() {
-		ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
-		Button child1 = new Button(control, SWT.RADIO);
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		final Button child1 = new Button(control, SWT.RADIO);
 
-		Color colorGreen = control.getDisplay().getSystemColor(SWT.COLOR_GREEN);
+		final Color colorGreen = control.getDisplay().getSystemColor(SWT.COLOR_GREEN);
 
 		assertTrue(!colorGreen.equals(control.getForeground()));
 
@@ -111,10 +111,10 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	}
 
 	public void testSetBackground() {
-		ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
-		Button child1 = new Button(control, SWT.RADIO);
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		final Button child1 = new Button(control, SWT.RADIO);
 
-		Color colorRed = control.getDisplay().getSystemColor(SWT.COLOR_RED);
+		final Color colorRed = control.getDisplay().getSystemColor(SWT.COLOR_RED);
 
 		assertTrue(!colorRed.equals(control.getBackground()));
 
@@ -125,8 +125,8 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	}
 
 	public void testSetEnabled() {
-		ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
-		Button child1 = new Button(control, SWT.RADIO);
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		final Button child1 = new Button(control, SWT.RADIO);
 
 		assertTrue(control.getEnabled());
 		assertTrue(child1.getEnabled());

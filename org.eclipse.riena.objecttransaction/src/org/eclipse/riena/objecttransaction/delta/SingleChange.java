@@ -22,7 +22,7 @@ public class SingleChange extends AbstractBaseChange {
 	 * @param relationName
 	 * @param childObject
 	 */
-	public SingleChange(String relationName, Object childObject) {
+	public SingleChange(final String relationName, final Object childObject) {
 		super(relationName);
 		this.childObject = childObject;
 	}
@@ -38,7 +38,7 @@ public class SingleChange extends AbstractBaseChange {
 	 * @param childObject
 	 *            The childObject to set.
 	 */
-	public void setChildObject(Object childObject) {
+	public void setChildObject(final Object childObject) {
 		this.childObject = childObject;
 	}
 

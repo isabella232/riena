@@ -42,7 +42,7 @@ public class SegmentedStringTest extends RienaTestCase {
 		try {
 			new SegmentedString("ddabcMM");
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 	}

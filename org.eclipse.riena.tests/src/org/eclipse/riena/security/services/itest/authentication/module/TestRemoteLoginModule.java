@@ -74,8 +74,8 @@ public class TestRemoteLoginModule implements LoginModule {
 	 * , javax.security.auth.callback.CallbackHandler, java.util.Map,
 	 * java.util.Map)
 	 */
-	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState,
-			Map<String, ?> options) {
+	public void initialize(final Subject subject, final CallbackHandler callbackHandler,
+			final Map<String, ?> sharedState, final Map<String, ?> options) {
 		if (callbackHandler == null) {
 			LOGGER.log(LogService.LOG_ERROR, "callbackhandler cant be null");
 			throw new RuntimeException("callbackhandler cant be null");
@@ -92,23 +92,23 @@ public class TestRemoteLoginModule implements LoginModule {
 	 */
 	public boolean login() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "login");
-		Callback[] callbacks = new Callback[2];
+		final Callback[] callbacks = new Callback[2];
 		callbacks[0] = new NameCallback("username: ");
 		callbacks[1] = new PasswordCallback("password: ", false);
 		try {
 			callbackHandler.handle(callbacks);
 			username = ((NameCallback) callbacks[0]).getName();
-			char[] password2 = ((PasswordCallback) callbacks[1]).getPassword();
+			final char[] password2 = ((PasswordCallback) callbacks[1]).getPassword();
 			if (password2 == null) {
 				password = null;
 			} else {
 				password = new String(password2);
 			}
 			return remoteLoginProxy.login(callbacks);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			return false;
-		} catch (UnsupportedCallbackException e) {
+		} catch (final UnsupportedCallbackException e) {
 			e.printStackTrace();
 			return false;
 		}

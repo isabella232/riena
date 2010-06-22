@@ -97,7 +97,7 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	 * @param viewId
 	 *            ID of the view
 	 */
-	public void setViewId(String viewId) {
+	public void setViewId(final String viewId) {
 		this.viewId = viewId;
 	}
 
@@ -108,7 +108,7 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	 * @param controller
 	 *            controller of the sub module
 	 */
-	public void setController(Class<? extends IController> controller) {
+	public void setController(final Class<? extends IController> controller) {
 		this.controller = controller;
 	}
 
@@ -120,7 +120,7 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	 *            {@code true} if the specified view should be a shared view,
 	 *            {@code false} otherwise
 	 */
-	public void setSharedView(boolean sharedView) {
+	public void setSharedView(final boolean sharedView) {
 		this.sharedView = sharedView;
 	}
 
@@ -130,7 +130,7 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	 * @param selectable
 	 *            {@code true} if selectable, otherwise {@code false}
 	 */
-	public void setSelectable(boolean selectable) {
+	public void setSelectable(final boolean selectable) {
 		this.selectable = selectable;
 	}
 
@@ -142,7 +142,7 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	 * @param requiresPreparation
 	 *            {@code true} should be prepared; otherwise {@code false}
 	 */
-	public void setRequiresPreparation(boolean requiresPreparation) {
+	public void setRequiresPreparation(final boolean requiresPreparation) {
 		this.requiresPreparation = requiresPreparation;
 	}
 
@@ -160,7 +160,7 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	 * @param expanded
 	 *            {@code true} should be expanded; otherwise {@code false}
 	 */
-	public void setExpanded(boolean expanded) {
+	public void setExpanded(final boolean expanded) {
 		this.expanded = expanded;
 	}
 
@@ -170,7 +170,7 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	 * @param expanded
 	 *            {@code true} should be visible; otherwise {@code false}
 	 */
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		this.visible = visible;
 	}
 

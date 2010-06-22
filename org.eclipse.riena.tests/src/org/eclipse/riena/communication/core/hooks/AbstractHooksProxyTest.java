@@ -28,7 +28,7 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 public class AbstractHooksProxyTest extends RienaTestCase {
 
 	public void testProxySameInterfaceAsDelegate() {
-		IAdder adder = (IAdder) newHooksProxy(new Adder());
+		final IAdder adder = (IAdder) newHooksProxy(new Adder());
 		assertEquals("Hello World", adder.add("Hello ", "World"));
 		assertEquals("12", adder.add((Number) 1, (Number) 2));
 		assertEquals("3", adder.add(1, 2));
@@ -36,7 +36,7 @@ public class AbstractHooksProxyTest extends RienaTestCase {
 	}
 
 	public void testProxySameInterfaceAsDelegateWithSubject() {
-		IAdder adder = (IAdder) newHooksProxy(new Adder(), new Subject());
+		final IAdder adder = (IAdder) newHooksProxy(new Adder(), new Subject());
 		assertEquals("Hello World", adder.add("Hello ", "World"));
 		assertEquals("12", adder.add((Number) 1, (Number) 2));
 		assertEquals("3", adder.add(1, 2));
@@ -44,7 +44,7 @@ public class AbstractHooksProxyTest extends RienaTestCase {
 	}
 
 	public void testProxyCallsProxyWithSameInterface() {
-		IAdder adder = (IAdder) newHooksProxy(newHooksProxy(new Adder()));
+		final IAdder adder = (IAdder) newHooksProxy(newHooksProxy(new Adder()));
 		assertEquals("Hello World", adder.add("Hello ", "World"));
 		assertEquals("12", adder.add((Number) 1, (Number) 2));
 		assertEquals("3", adder.add(1, 2));
@@ -52,7 +52,7 @@ public class AbstractHooksProxyTest extends RienaTestCase {
 	}
 
 	public void testProxyCallsProxyWithSameInterfaceWithSubject() {
-		IAdder adder = (IAdder) newHooksProxy(newHooksProxy(new Adder(), new Subject()));
+		final IAdder adder = (IAdder) newHooksProxy(newHooksProxy(new Adder(), new Subject()));
 		assertEquals("Hello World", adder.add("Hello ", "World"));
 		assertEquals("12", adder.add((Number) 1, (Number) 2));
 		assertEquals("3", adder.add(1, 2));
@@ -60,7 +60,7 @@ public class AbstractHooksProxyTest extends RienaTestCase {
 	}
 
 	public void testProxyCallsObjectWithSameMethodButNotInInterface() {
-		IAdder adder = (IAdder) newHooksProxy(new FreeAdder());
+		final IAdder adder = (IAdder) newHooksProxy(new FreeAdder());
 		assertEquals("Hello World", adder.add("Hello ", "World"));
 		assertEquals("12", adder.add((Number) 1, (Number) 2));
 		assertEquals("3", adder.add(1, 2));
@@ -68,19 +68,19 @@ public class AbstractHooksProxyTest extends RienaTestCase {
 	}
 
 	public void testProxyCallsObjectWithSameMethodButNotInInterfaceWithSubject() {
-		IAdder adder = (IAdder) newHooksProxy(new FreeAdder(), new Subject());
+		final IAdder adder = (IAdder) newHooksProxy(new FreeAdder(), new Subject());
 		assertEquals("Hello World", adder.add("Hello ", "World"));
 		assertEquals("12", adder.add((Number) 1, (Number) 2));
 		assertEquals("3", adder.add(1, 2));
 		assertMethodTableUsage(true, adder);
 	}
 
-	private Object newHooksProxy(Object delegate) {
+	private Object newHooksProxy(final Object delegate) {
 		return Proxy.newProxyInstance(AbstractHooksProxyTest.class.getClassLoader(), new Class<?>[] { IAdder.class },
 				new HooksProxy(delegate));
 	}
 
-	private Object newHooksProxy(Object delegate, Subject subject) {
+	private Object newHooksProxy(final Object delegate, final Subject subject) {
 		return Proxy.newProxyInstance(AbstractHooksProxyTest.class.getClassLoader(), new Class<?>[] { IAdder.class },
 				new HooksProxy(delegate, subject));
 	}
@@ -92,12 +92,12 @@ public class AbstractHooksProxyTest extends RienaTestCase {
 	 * @param proxy
 	 * @return
 	 */
-	private void assertMethodTableUsage(boolean expected, Object proxy) {
-		InvocationHandler handler = Proxy.getInvocationHandler(proxy);
+	private void assertMethodTableUsage(final boolean expected, final Object proxy) {
+		final InvocationHandler handler = Proxy.getInvocationHandler(proxy);
 		try {
-			AtomicReference<?> ref = ReflectionUtils.getHidden(handler, "methodTableRef");
+			final AtomicReference<?> ref = ReflectionUtils.getHidden(handler, "methodTableRef");
 			assertEquals(expected, ref.get() != null);
-		} catch (ReflectionFailure f) {
+		} catch (final ReflectionFailure f) {
 			System.err.println("Culd not access 'methodTableRef' field.");
 		}
 	}

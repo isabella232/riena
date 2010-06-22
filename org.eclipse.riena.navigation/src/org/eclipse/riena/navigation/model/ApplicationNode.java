@@ -46,7 +46,7 @@ public class ApplicationNode extends NavigationNode<IApplicationNode, ISubApplic
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */
-	public ApplicationNode(NavigationNodeId nodeId) {
+	public ApplicationNode(final NavigationNodeId nodeId) {
 		super(nodeId);
 		initializeNavigationProcessor();
 	}
@@ -60,7 +60,7 @@ public class ApplicationNode extends NavigationNode<IApplicationNode, ISubApplic
 	 * @param label
 	 *            Label of the application displayed in the title bar.
 	 */
-	public ApplicationNode(NavigationNodeId nodeId, String label) {
+	public ApplicationNode(final NavigationNodeId nodeId, final String label) {
 		this(nodeId);
 		setLabel(label);
 	}
@@ -72,7 +72,7 @@ public class ApplicationNode extends NavigationNode<IApplicationNode, ISubApplic
 	 * @param label
 	 *            Label of the application displayed in the title bar.
 	 */
-	public ApplicationNode(String label) {
+	public ApplicationNode(final String label) {
 		this(new NavigationNodeId(ApplicationNode.DEFAULT_APPLICATION_TYPEID), label);
 	}
 
@@ -88,7 +88,7 @@ public class ApplicationNode extends NavigationNode<IApplicationNode, ISubApplic
 	 *      addNavigationHistoryListener
 	 *      (org.eclipse.riena.navigation.INavigationHistoryListener)
 	 */
-	public void addNavigationHistoryListener(INavigationHistoryListener listener) {
+	public void addNavigationHistoryListener(final INavigationHistoryListener listener) {
 		getNavigationProcessor().addNavigationHistoryListener(listener);
 	}
 
@@ -97,7 +97,7 @@ public class ApplicationNode extends NavigationNode<IApplicationNode, ISubApplic
 	 *      removeNavigationHistoryListener
 	 *      (org.eclipse.riena.navigation.INavigationHistoryListener)
 	 */
-	public void removeNavigationHistoryListener(INavigationHistoryListener listener) {
+	public void removeNavigationHistoryListener(final INavigationHistoryListener listener) {
 		getNavigationProcessor().removeNavigationHistoryListener(listener);
 	}
 

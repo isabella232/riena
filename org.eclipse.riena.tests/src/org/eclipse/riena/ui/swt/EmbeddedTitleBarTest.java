@@ -65,7 +65,7 @@ public class EmbeddedTitleBarTest extends TestCase {
 	 */
 	public void testGetLnfTitlebarRenderer() {
 
-		EmbeddedTitlebarRenderer renderer = ReflectionUtils.invokeHidden(titleBar, "getLnfTitlebarRenderer",
+		final EmbeddedTitlebarRenderer renderer = ReflectionUtils.invokeHidden(titleBar, "getLnfTitlebarRenderer",
 				new Object[] {});
 		assertNotNull(renderer);
 
@@ -179,7 +179,7 @@ public class EmbeddedTitleBarTest extends TestCase {
 		changed = ReflectionUtils.invokeHidden(titleBar, "hasChanged", strg1, strg2);
 		assertTrue(changed);
 
-		BigInteger bigInt1 = BigInteger.valueOf(1);
+		final BigInteger bigInt1 = BigInteger.valueOf(1);
 		BigInteger bigInt2 = BigInteger.valueOf(2);
 		changed = ReflectionUtils.invokeHidden(titleBar, "hasChanged", bigInt1, bigInt2);
 		assertTrue(changed);
@@ -188,7 +188,7 @@ public class EmbeddedTitleBarTest extends TestCase {
 		changed = ReflectionUtils.invokeHidden(titleBar, "hasChanged", bigInt1, bigInt2);
 		assertFalse(changed);
 
-		boolean b1 = true;
+		final boolean b1 = true;
 		boolean b2 = false;
 		changed = ReflectionUtils.invokeHidden(titleBar, "hasChanged", b1, b2);
 		assertTrue(changed);
@@ -197,7 +197,7 @@ public class EmbeddedTitleBarTest extends TestCase {
 		changed = ReflectionUtils.invokeHidden(titleBar, "hasChanged", b1, b2);
 		assertFalse(changed);
 
-		int i1 = 11;
+		final int i1 = 11;
 		int i2 = 12;
 		changed = ReflectionUtils.invokeHidden(titleBar, "hasChanged", i1, i2);
 		assertTrue(changed);
@@ -216,7 +216,7 @@ public class EmbeddedTitleBarTest extends TestCase {
 
 		private boolean redrawCalled;
 
-		public EmbeddedTitleBarMock(Composite parent, int style) {
+		public EmbeddedTitleBarMock(final Composite parent, final int style) {
 			super(parent, style);
 			resetRedrawCalled();
 		}

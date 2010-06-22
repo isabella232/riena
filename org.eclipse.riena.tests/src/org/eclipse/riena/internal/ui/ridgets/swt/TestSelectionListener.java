@@ -21,7 +21,7 @@ public class TestSelectionListener implements ISelectionListener {
 	private int count;
 	private SelectionEvent selectionEvent;
 
-	public void setSelectionEvent(SelectionEvent e) {
+	public void setSelectionEvent(final SelectionEvent e) {
 		this.selectionEvent = e;
 	}
 
@@ -33,7 +33,7 @@ public class TestSelectionListener implements ISelectionListener {
 		return count;
 	}
 
-	public void ridgetSelected(SelectionEvent e) {
+	public void ridgetSelected(final SelectionEvent e) {
 		setSelectionEvent(e);
 		count++;
 	}

@@ -28,7 +28,7 @@ public class ToolItemRidget extends AbstractItemRidget implements IToolItemRidge
 	@Override
 	protected void bindUIControl() {
 		super.bindUIControl();
-		ToolItem toolItem = getUIControl();
+		final ToolItem toolItem = getUIControl();
 		if (toolItem != null) {
 			toolItem.addSelectionListener(getActionObserver());
 		}
@@ -37,7 +37,7 @@ public class ToolItemRidget extends AbstractItemRidget implements IToolItemRidge
 	@Override
 	protected void unbindUIControl() {
 		savedVisibleState = isVisible();
-		ToolItem toolItem = getUIControl();
+		final ToolItem toolItem = getUIControl();
 		if ((toolItem != null) && !toolItem.isDisposed()) {
 			toolItem.removeSelectionListener(getActionObserver());
 		}
@@ -45,7 +45,7 @@ public class ToolItemRidget extends AbstractItemRidget implements IToolItemRidge
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		assertType(uiControl, ToolItem.class);
 	}
 
@@ -82,18 +82,18 @@ public class ToolItemRidget extends AbstractItemRidget implements IToolItemRidge
 	@Override
 	protected boolean updateUIIcon() {
 
-		boolean newImage = super.updateUIIcon();
+		final boolean newImage = super.updateUIIcon();
 		if (newImage) {
-			ToolItem control = getUIControl();
+			final ToolItem control = getUIControl();
 			if ((control != null) && (!control.isDisposed())) {
-				IIconManager manager = IconManagerProvider.getInstance().getIconManager();
+				final IIconManager manager = IconManagerProvider.getInstance().getIconManager();
 				String iconName = null;
 				String iconId = getIcon();
 				if (iconId != null) {
 					iconName = manager.getName(iconId);
 				}
 				if (iconName != null) {
-					IconSize size = manager.getSize(iconId);
+					final IconSize size = manager.getSize(iconId);
 					iconId = manager.getIconID(iconName, size, IconState.HOVER);
 					control.setHotImage(ImageStore.getInstance().getImage(iconId));
 				}

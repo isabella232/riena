@@ -20,7 +20,7 @@ import org.eclipse.riena.ui.swt.StatuslineUIProcess;
  */
 public class DefaultProcessDetailComparator implements Comparator<ProcessDetail> {
 
-	public int compare(ProcessDetail detail1, ProcessDetail detail2) {
+	public int compare(final ProcessDetail detail1, final ProcessDetail detail2) {
 		return ((Long) detail2.getStartupTS()).compareTo(detail1.getStartupTS());
 	}
 

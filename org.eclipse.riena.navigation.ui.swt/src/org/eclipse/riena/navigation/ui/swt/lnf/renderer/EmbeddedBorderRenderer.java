@@ -35,11 +35,11 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void paint(GC gc, Object value) {
+	public void paint(final GC gc, final Object value) {
 
 		super.paint(gc, value);
 
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 
 		// Border
 		Color borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
@@ -98,7 +98,7 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 		return active;
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(final boolean active) {
 		this.active = active;
 	}
 
@@ -118,7 +118,7 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @return bounds of the inner border
 	 */
-	public Rectangle computeInnerBounds(Rectangle outerBounds) {
+	public Rectangle computeInnerBounds(final Rectangle outerBounds) {
 		return new Rectangle(outerBounds.x + BORDER_WIDTH, outerBounds.y + BORDER_WIDTH, outerBounds.width
 				- BORDER_WIDTH * 2, outerBounds.height - BORDER_WIDTH * 2);
 	}
@@ -131,7 +131,7 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @return bounds of the outer border
 	 */
-	public Rectangle computeOuterBounds(Rectangle innerBounds) {
+	public Rectangle computeOuterBounds(final Rectangle innerBounds) {
 		return new Rectangle(innerBounds.x - BORDER_WIDTH, innerBounds.y - BORDER_WIDTH, innerBounds.width
 				+ BORDER_WIDTH * 2, innerBounds.height + BORDER_WIDTH * 2);
 	}
@@ -144,7 +144,7 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @return outer border height
 	 */
-	public int computeOuterHeight(int innerHeight) {
+	public int computeOuterHeight(final int innerHeight) {
 		return innerHeight + BORDER_WIDTH * 2;
 	}
 
@@ -156,7 +156,7 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 	 * 
 	 * @return outer border width
 	 */
-	public int computeOuterWidth(int innerWidth) {
+	public int computeOuterWidth(final int innerWidth) {
 		return innerWidth + BORDER_WIDTH * 2;
 	}
 

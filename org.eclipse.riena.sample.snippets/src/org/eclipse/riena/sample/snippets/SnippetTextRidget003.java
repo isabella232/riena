@@ -31,18 +31,18 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public final class SnippetTextRidget003 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetTextRidget003.class.getSimpleName());
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
 			UIControlsFactory.createLabel(shell, "Name (mandatory):"); //$NON-NLS-1$
-			Text text = UIControlsFactory.createText(shell);
+			final Text text = UIControlsFactory.createText(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(text);
 
-			ITextRidget textRidget = (ITextRidget) SwtRidgetFactory.createRidget(text);
+			final ITextRidget textRidget = (ITextRidget) SwtRidgetFactory.createRidget(text);
 
 			textRidget.setMandatory(true);
 			textRidget.setDirectWriting(true);

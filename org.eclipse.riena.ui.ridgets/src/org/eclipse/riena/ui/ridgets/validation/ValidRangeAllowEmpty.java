@@ -32,14 +32,14 @@ public class ValidRangeAllowEmpty extends ValidRange {
 	/**
 	 * @see ValidRange(Number min, Number max)
 	 */
-	public ValidRangeAllowEmpty(Number min, Number max) {
+	public ValidRangeAllowEmpty(final Number min, final Number max) {
 		super(min, max);
 	}
 
 	/*
 	 * @see ValidRange(Number min, Number max, Locale locale)d
 	 */
-	public ValidRangeAllowEmpty(Number min, Number max, Locale locale) {
+	public ValidRangeAllowEmpty(final Number min, final Number max, final Locale locale) {
 		super(min, max, locale);
 	}
 
@@ -51,7 +51,7 @@ public class ValidRangeAllowEmpty extends ValidRange {
 	 * .Object)
 	 */
 	@Override
-	public IStatus validate(Object value) {
+	public IStatus validate(final Object value) {
 		if (value == null) {
 			return ValidationRuleStatus.ok();
 		}

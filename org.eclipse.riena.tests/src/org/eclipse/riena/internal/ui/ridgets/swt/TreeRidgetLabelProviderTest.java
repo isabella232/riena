@@ -63,8 +63,8 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-		Display display = Display.getDefault();
-		Realm realm = SWTObservables.getRealm(display);
+		final Display display = Display.getDefault();
+		final Realm realm = SWTObservables.getRealm(display);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 		colorA = display.getSystemColor(SWT.COLOR_RED);
 		colorB = display.getSystemColor(SWT.COLOR_GREEN);
@@ -74,7 +74,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		shell = new Shell(display);
 		viewer = new TreeViewer(createTree(shell));
 
-		IObservableSet elements = createElements();
+		final IObservableSet elements = createElements();
 		formatters = new IColumnFormatter[] { new TestColumnFormatter(), null };
 		noFormatters = new IColumnFormatter[COLUMN_PROPERTIES.length];
 		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements,
@@ -110,16 +110,16 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 	public void testGetImage() {
 		viewer.collapseAll();
 
-		Image siCollapsed = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
+		final Image siCollapsed = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
 		assertNotNull(siCollapsed);
-		Image nodeCollapsed = labelProvider.getImage(node);
+		final Image nodeCollapsed = labelProvider.getImage(node);
 		assertSame(siCollapsed, nodeCollapsed);
 
 		viewer.expandAll();
 
-		Image siExpanded = Activator.getSharedImage(SharedImages.IMG_NODE_EXPANDED);
+		final Image siExpanded = Activator.getSharedImage(SharedImages.IMG_NODE_EXPANDED);
 		assertNotNull(siExpanded);
-		Image nodeExpanded = labelProvider.getImage(node);
+		final Image nodeExpanded = labelProvider.getImage(node);
 		assertSame(siExpanded, nodeExpanded);
 
 		viewer.collapseToLevel(node, 1);
@@ -130,9 +130,9 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 
 		assertSame(siExpanded, labelProvider.getImage(node));
 
-		Image siLeaf = Activator.getSharedImage(SharedImages.IMG_LEAF);
+		final Image siLeaf = Activator.getSharedImage(SharedImages.IMG_LEAF);
 		assertNotNull(siLeaf);
-		Image imgLeaf = labelProvider.getImage(leaf);
+		final Image imgLeaf = labelProvider.getImage(leaf);
 		assertSame(siLeaf, imgLeaf);
 
 		// sanity check
@@ -142,13 +142,13 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 	}
 
 	public void testGetImageFromProviderMethod() {
-		WordNodeWithIcon nodeWithIcon = new WordNodeWithIcon("nwi");
+		final WordNodeWithIcon nodeWithIcon = new WordNodeWithIcon("nwi");
 		nodeWithIcon.setIcon("closed_16.gif");
 		nodeWithIcon.setOpenIcon("open_16.gif");
-		WordNodeWithIcon leafWithIcon = new WordNodeWithIcon(nodeWithIcon, "lwi");
+		final WordNodeWithIcon leafWithIcon = new WordNodeWithIcon(nodeWithIcon, "lwi");
 		leafWithIcon.setIcon("eclipse.gif");
-		IObservableSet elements = new WritableSet(Realm.getDefault(), Arrays.asList(new WordNode[] { nodeWithIcon,
-				leafWithIcon }), WordNodeWithIcon.class);
+		final IObservableSet elements = new WritableSet(Realm.getDefault(), Arrays.asList(new WordNode[] {
+				nodeWithIcon, leafWithIcon }), WordNodeWithIcon.class);
 		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNodeWithIcon.class, elements,
 				COLUMN_PROPERTIES, null, "icon", "openIcon", noFormatters);
 		viewer.setLabelProvider(labelProvider);
@@ -156,21 +156,21 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 
 		viewer.collapseAll();
 
-		Image siCollapsed = Activator.getSharedImage("closed_16.gif");
+		final Image siCollapsed = Activator.getSharedImage("closed_16.gif");
 		assertNotNull(siCollapsed);
-		Image nodeCollapsed = labelProvider.getImage(nodeWithIcon);
+		final Image nodeCollapsed = labelProvider.getImage(nodeWithIcon);
 		assertSame(siCollapsed, nodeCollapsed);
 
 		viewer.expandAll();
 
-		Image siExpanded = Activator.getSharedImage("open_16.gif");
+		final Image siExpanded = Activator.getSharedImage("open_16.gif");
 		assertNotNull(siExpanded);
-		Image nodeExpanded = labelProvider.getImage(nodeWithIcon);
+		final Image nodeExpanded = labelProvider.getImage(nodeWithIcon);
 		assertSame(siExpanded, nodeExpanded);
 
-		Image siLeaf = Activator.getSharedImage("eclipse.gif");
+		final Image siLeaf = Activator.getSharedImage("eclipse.gif");
 		assertNotNull(siLeaf);
-		Image imgLeaf = labelProvider.getImage(leafWithIcon);
+		final Image imgLeaf = labelProvider.getImage(leafWithIcon);
 		assertSame(siLeaf, imgLeaf);
 
 		// sanity check
@@ -182,20 +182,20 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 	public void testGetColumnImage() {
 		viewer.collapseAll();
 
-		Image siCollapsed = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
+		final Image siCollapsed = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
 		assertNotNull(siCollapsed);
 		assertSame(siCollapsed, labelProvider.getColumnImage(node, 0));
 
-		Image siLeaf = Activator.getSharedImage(SharedImages.IMG_LEAF);
+		final Image siLeaf = Activator.getSharedImage(SharedImages.IMG_LEAF);
 		assertNotNull(siLeaf);
 		assertSame(siLeaf, labelProvider.getColumnImage(leaf, 0));
 		assertNotSame(siLeaf, siCollapsed);
 
-		Image siUnchecked = Activator.getSharedImage(SharedImages.IMG_UNCHECKED);
+		final Image siUnchecked = Activator.getSharedImage(SharedImages.IMG_UNCHECKED);
 		assertNotNull(siUnchecked);
 		assertEquals(siUnchecked, labelProvider.getColumnImage(node, 1));
 
-		Image siChecked = Activator.getSharedImage(SharedImages.IMG_CHECKED);
+		final Image siChecked = Activator.getSharedImage(SharedImages.IMG_CHECKED);
 		assertNotNull(siChecked);
 		assertEquals(siChecked, labelProvider.getColumnImage(leaf, 1));
 
@@ -205,18 +205,18 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 	}
 
 	public void testGetForeground() {
-		IObservableSet elements = createElements();
-		WordNode wordNode = leaf;
+		final IObservableSet elements = createElements();
+		final WordNode wordNode = leaf;
 		// using upperCase as the enablement accessor; true => enabled; false => disabled
 		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNode.class, elements,
 				COLUMN_PROPERTIES, "upperCase", null, null, noFormatters);
 
 		wordNode.setUpperCase(true);
-		Color colorEnabled = labelProvider.getForeground(wordNode);
+		final Color colorEnabled = labelProvider.getForeground(wordNode);
 		assertNull(colorEnabled);
 
 		wordNode.setUpperCase(false);
-		Color colorDisabled = labelProvider.getForeground(wordNode);
+		final Color colorDisabled = labelProvider.getForeground(wordNode);
 		assertNotNull(colorDisabled);
 	}
 
@@ -235,11 +235,11 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		key = ReflectionUtils.invokeHidden(labelProvider, "getImageKey", node);
 		assertEquals(SharedImages.IMG_NODE_EXPANDED, key);
 
-		WordNodeWithIcon nodeWithIcon1 = new WordNodeWithIcon("node");
-		WordNodeWithIcon nodeWithIcon2 = new WordNodeWithIcon("node");
-		WordNodeWithIcon nodeWithIcon3 = new WordNodeWithIcon("node");
-		IObservableSet elements = new WritableSet(Realm.getDefault(), Arrays.asList(new WordNode[] { nodeWithIcon1,
-				nodeWithIcon2, nodeWithIcon3 }), WordNode.class);
+		final WordNodeWithIcon nodeWithIcon1 = new WordNodeWithIcon("node");
+		final WordNodeWithIcon nodeWithIcon2 = new WordNodeWithIcon("node");
+		final WordNodeWithIcon nodeWithIcon3 = new WordNodeWithIcon("node");
+		final IObservableSet elements = new WritableSet(Realm.getDefault(), Arrays.asList(new WordNode[] {
+				nodeWithIcon1, nodeWithIcon2, nodeWithIcon3 }), WordNode.class);
 		labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer, WordNodeWithIcon.class, elements,
 				COLUMN_PROPERTIES, null, "icon", null, noFormatters);
 
@@ -273,17 +273,18 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 	}
 
 	public void testGetColumnImageWithFormatter() {
-		IColumnFormatter[] formatters2 = new IColumnFormatter[] { new TestColumnFormatter(), new TestColumnFormatter() };
+		final IColumnFormatter[] formatters2 = new IColumnFormatter[] { new TestColumnFormatter(),
+				new TestColumnFormatter() };
 		ReflectionUtils.invokeHidden(labelProvider, "setFormatters", (Object) formatters2);
-		Image siNode = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
-		Image siLeaf = Activator.getSharedImage(SharedImages.IMG_LEAF);
-		Image siError = Activator.getSharedImage(SharedImages.IMG_ERROR_DECO);
+		final Image siNode = Activator.getSharedImage(SharedImages.IMG_NODE_COLLAPSED);
+		final Image siLeaf = Activator.getSharedImage(SharedImages.IMG_LEAF);
+		final Image siError = Activator.getSharedImage(SharedImages.IMG_ERROR_DECO);
 
 		assertSame(siNode, labelProvider.getColumnImage(node, 0));
 		assertSame(siError, labelProvider.getColumnImage(leaf, 0));
 		assertSame(siLeaf, labelProvider.getColumnImage(alpha, 0));
 
-		Image siUnchecked = Activator.getSharedImage(SharedImages.IMG_UNCHECKED);
+		final Image siUnchecked = Activator.getSharedImage(SharedImages.IMG_UNCHECKED);
 		assertSame(siUnchecked, labelProvider.getColumnImage(alpha, 1));
 
 		assertNull(labelProvider.getColumnImage(node, 99));
@@ -335,7 +336,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 	// ////////////////
 
 	private IObservableSet createElements() {
-		Collection<WordNode> collection = new ArrayList<WordNode>();
+		final Collection<WordNode> collection = new ArrayList<WordNode>();
 		node = new WordNode("Node");
 		alpha = new WordNode(node, "Alpha");
 		leaf = new WordNode("Leaf");
@@ -343,16 +344,16 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		collection.add(node);
 		collection.add(leaf);
 		collection.add(alpha);
-		IObservableSet elements = new WritableSet(Realm.getDefault(), collection, WordNode.class);
+		final IObservableSet elements = new WritableSet(Realm.getDefault(), collection, WordNode.class);
 		return elements;
 	}
 
-	private Tree createTree(Shell shell) {
+	private Tree createTree(final Shell shell) {
 		shell.setLayout(new FillLayout());
-		Tree result = new Tree(shell, SWT.SINGLE | SWT.BORDER);
-		TreeColumn tc1 = new TreeColumn(result, SWT.NONE);
+		final Tree result = new Tree(shell, SWT.SINGLE | SWT.BORDER);
+		final TreeColumn tc1 = new TreeColumn(result, SWT.NONE);
 		tc1.setWidth(200);
-		TreeColumn tc2 = new TreeColumn(result, SWT.NONE);
+		final TreeColumn tc2 = new TreeColumn(result, SWT.NONE);
 		tc2.setWidth(200);
 		return result;
 	}
@@ -361,19 +362,19 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 	// ////////////////
 
 	private static final class FTTreeContentProvider implements ITreeContentProvider {
-		public Object[] getChildren(Object element) {
+		public Object[] getChildren(final Object element) {
 			return ((WordNode) element).getChildren().toArray();
 		}
 
-		public Object getParent(Object element) {
+		public Object getParent(final Object element) {
 			return ((WordNode) element).getParent();
 		}
 
-		public boolean hasChildren(Object element) {
+		public boolean hasChildren(final Object element) {
 			return ((WordNode) element).getChildren().size() > 0;
 		}
 
-		public Object[] getElements(Object inputElement) {
+		public Object[] getElements(final Object inputElement) {
 			return (Object[]) inputElement;
 		}
 
@@ -381,7 +382,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 			// unused
 		}
 
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		public void inputChanged(final Viewer viewer, final Object oldInput, final Object newInput) {
 			// unused
 		}
 	}
@@ -390,11 +391,11 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		private String icon;
 		private String openIcon;
 
-		public WordNodeWithIcon(String word) {
+		public WordNodeWithIcon(final String word) {
 			super(word);
 		}
 
-		public WordNodeWithIcon(WordNodeWithIcon parent, String word) {
+		public WordNodeWithIcon(final WordNodeWithIcon parent, final String word) {
 			super(parent, word);
 		}
 
@@ -408,28 +409,28 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 			return openIcon;
 		}
 
-		public void setIcon(String icon) {
+		public void setIcon(final String icon) {
 			this.icon = icon;
 		}
 
-		public void setOpenIcon(String openIcon) {
+		public void setOpenIcon(final String openIcon) {
 			this.openIcon = openIcon;
 		}
 	}
 
 	private final class TestColumnFormatter extends ColumnFormatter {
 		@Override
-		public String getText(Object element) {
+		public String getText(final Object element) {
 			if (element == leaf || element == node) {
-				WordNode wordNode = (WordNode) element;
+				final WordNode wordNode = (WordNode) element;
 				return wordNode.isUpperCase() ? "yes" : "no";
 			}
 			return null;
 		}
 
 		@Override
-		public Image getImage(Object element) {
-			String word = ((WordNode) element).getWord();
+		public Image getImage(final Object element) {
+			final String word = ((WordNode) element).getWord();
 			if ("Leaf".equalsIgnoreCase(word)) {
 				return Activator.getSharedImage(SharedImages.IMG_ERROR_DECO);
 			}
@@ -437,8 +438,8 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		}
 
 		@Override
-		public Color getForeground(Object element) {
-			String word = ((WordNode) element).getWord();
+		public Color getForeground(final Object element) {
+			final String word = ((WordNode) element).getWord();
 			if ("Node".equalsIgnoreCase(word)) {
 				return colorA;
 			}
@@ -449,8 +450,8 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		}
 
 		@Override
-		public Color getBackground(Object element) {
-			String word = ((WordNode) element).getWord();
+		public Color getBackground(final Object element) {
+			final String word = ((WordNode) element).getWord();
 			if ("Node".equalsIgnoreCase(word)) {
 				return colorA;
 			}
@@ -461,8 +462,8 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		}
 
 		@Override
-		public Font getFont(Object element) {
-			String word = ((WordNode) element).getWord();
+		public Font getFont(final Object element) {
+			final String word = ((WordNode) element).getWord();
 			if ("Node".equalsIgnoreCase(word)) {
 				return fontA;
 			}

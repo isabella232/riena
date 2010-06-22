@@ -28,7 +28,7 @@ public class ObjectTransactionContextFailure extends ObjectTransactionFailure {
 	 * @param message
 	 *            the message to show.
 	 */
-	public ObjectTransactionContextFailure(String message) {
+	public ObjectTransactionContextFailure(final String message) {
 		super(message);
 	}
 

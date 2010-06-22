@@ -75,15 +75,15 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		if (null == uiControl) {
 			return;
 		}
 
-		boolean isValidDatePicker = isValidType(uiControl, DatePickerComposite.class);
+		final boolean isValidDatePicker = isValidType(uiControl, DatePickerComposite.class);
 
 		if (isValidDatePicker) {
-			DatePickerComposite datePicker = (DatePickerComposite) uiControl;
+			final DatePickerComposite datePicker = (DatePickerComposite) uiControl;
 			datePicker.setDateConverterStrategy(new RidgetAwareDateConverterStrategy());
 		}
 
@@ -95,7 +95,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	}
 
 	@Override
-	protected final synchronized void addListeners(Text control) {
+	protected final synchronized void addListeners(final Text control) {
 		control.addVerifyListener(verifyListener);
 		control.addKeyListener(keyListener);
 		control.addFocusListener(focusListener);
@@ -110,7 +110,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	 * is in output only mode. Otherwise same behavior as super.
 	 */
 	@Override
-	protected final String getTextBasedOnMarkerState(String value) {
+	protected final String getTextBasedOnMarkerState(final String value) {
 		if (isOutputOnly() && !isNotEmpty(value)) {
 			return ""; //$NON-NLS-1$
 		}
@@ -127,7 +127,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	@Override
 	protected Text getTextWidget() {
 		Text result;
-		Control control = super.getUIControl();
+		final Control control = super.getUIControl();
 		if (control instanceof DatePickerComposite) {
 			result = ((DatePickerComposite) control).getTextfield();
 		} else {
@@ -137,7 +137,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	}
 
 	@Override
-	protected final synchronized void removeListeners(Text control) {
+	protected final synchronized void removeListeners(final Text control) {
 		// control.removePaintListener(paintListener);
 		control.removeFocusListener(focusListener);
 		control.removeKeyListener(keyListener);
@@ -146,16 +146,16 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	}
 
 	@Override
-	protected boolean isNotEmpty(String input) {
+	protected boolean isNotEmpty(final String input) {
 		boolean result = false;
 		if (pattern != null) {
-			String emptyString = new SegmentedString(pattern).toString();
+			final String emptyString = new SegmentedString(pattern).toString();
 			result = !emptyString.equals(input);
 		}
 		return result;
 	}
 
-	public final void setFormat(String datePattern) {
+	public final void setFormat(final String datePattern) {
 		removeValidationRule(validDateRule);
 		removeValidationRule(validIntermediateDateRule);
 
@@ -171,7 +171,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		setModelToUIControlConverter(modelToUIControlConverter);
 		getValueBindingSupport().rebindToModel();
 
-		boolean isBound = getValueBindingSupport().getModelObservable() != null;
+		final boolean isBound = getValueBindingSupport().getModelObservable() != null;
 		if (isBound && getValueBindingSupport().getModelObservable().getValueType() == Date.class) {
 			updateFromModel();
 		} else {
@@ -195,23 +195,23 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	 *             "12.ab", "12122008", "12/12/2008"
 	 */
 	@Override
-	public synchronized void setText(String text) {
-		String newText = checkAndFormatValue(text);
+	public synchronized void setText(final String text) {
+		final String newText = checkAndFormatValue(text);
 		super.setText(newText);
 	}
 
 	// helping methods
 	//////////////////
 
-	private boolean isValidType(Object uiControl, Class<?> type) {
+	private boolean isValidType(final Object uiControl, final Class<?> type) {
 		return ((uiControl != null) && (type.isAssignableFrom(uiControl.getClass())));
 	}
 
-	private String checkAndFormatValue(String text) {
-		SegmentedString ss = new SegmentedString(pattern);
+	private String checkAndFormatValue(final String text) {
+		final SegmentedString ss = new SegmentedString(pattern);
 		if (text != null) {
 			if (!ss.isValidPartialMatch(text)) {
-				String msg = String.format("'%s' is no partial match for '%s'", text, pattern); //$NON-NLS-1$
+				final String msg = String.format("'%s' is no partial match for '%s'", text, pattern); //$NON-NLS-1$
 				throw new IllegalArgumentException(msg);
 			}
 			ss.insert(0, text);
@@ -219,13 +219,13 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		return ss.toString();
 	}
 
-	private String computeAutoFill(String input) {
+	private String computeAutoFill(final String input) {
 		String result = null;
-		int index = pattern.lastIndexOf("yyyy"); //$NON-NLS-1$
+		final int index = pattern.lastIndexOf("yyyy"); //$NON-NLS-1$
 		if (index != -1 && pattern.length() == input.length()) {
 			String yyyy = input.substring(index, index + 4);
 			if (Pattern.matches("  \\d\\d", yyyy)) { //$NON-NLS-1$
-				String yy = yyyy.substring(2);
+				final String yy = yyyy.substring(2);
 				if (Integer.parseInt(yy) < Y2K_CUTOFF) {
 					yyyy = "20" + yy; //$NON-NLS-1$
 				} else {
@@ -237,7 +237,7 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		return result;
 	}
 
-	private synchronized void forceTextToControl(Text control, String text) {
+	private synchronized void forceTextToControl(final Text control, final String text) {
 		verifyListener.setEnabled(false);
 		control.setText(text);
 		verifyListener.setEnabled(true);
@@ -259,18 +259,18 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		 * SimpleDateFormat instead of the DateToStringConverter /
 		 * StringToDateConverter
 		 */
-		public void setDateToTextField(Date date) {
-			SimpleDateFormat format = new SimpleDateFormat(pattern);
-			String text = format.format(date);
+		public void setDateToTextField(final Date date) {
+			final SimpleDateFormat format = new SimpleDateFormat(pattern);
+			final String text = format.format(date);
 			setText(text);
 		}
 
-		public Date getDateFromTextField(String dateString) {
+		public Date getDateFromTextField(final String dateString) {
 			Date result;
 			try {
-				SimpleDateFormat format = new SimpleDateFormat(pattern);
+				final SimpleDateFormat format = new SimpleDateFormat(pattern);
 				result = format.parse(dateString);
-			} catch (Exception exc) {
+			} catch (final Exception exc) {
 				result = null; // dateString not parseable, fallback: null
 			}
 			return result;
@@ -286,20 +286,20 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 
 		private volatile boolean isEnabled = true;
 
-		public void setEnabled(boolean isEnabled) {
+		public void setEnabled(final boolean isEnabled) {
 			this.isEnabled = isEnabled;
 		}
 
-		public void verifyText(VerifyEvent e) {
+		public void verifyText(final VerifyEvent e) {
 			if (!e.doit || !isEnabled) {
 				return;
 			}
-			Text control = (Text) e.widget;
-			String oldText = control.getText();
+			final Text control = (Text) e.widget;
+			final String oldText = control.getText();
 
-			int oldPos = control.getCaretPosition();
+			final int oldPos = control.getCaretPosition();
 			int newPos = -1;
-			SegmentedString ss = new SegmentedString(pattern, oldText);
+			final SegmentedString ss = new SegmentedString(pattern, oldText);
 			if (e.character == '\b' || e.keyCode == 127) {// backspace, del
 				newPos = ss.delete(e.start, e.end - 1);
 				if (newPos == -1) {
@@ -350,15 +350,15 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 		private boolean shiftDown = false;
 
 		@Override
-		public void keyReleased(KeyEvent e) {
+		public void keyReleased(final KeyEvent e) {
 			if (131072 == e.keyCode) {
 				shiftDown = false;
 			}
 		}
 
 		@Override
-		public void keyPressed(KeyEvent e) {
-			Text control = (Text) e.widget;
+		public void keyPressed(final KeyEvent e) {
+			final Text control = (Text) e.widget;
 			if (131072 == e.keyCode) {
 				shiftDown = true;
 			} else {
@@ -367,19 +367,19 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 				final int selectionCount = control.getSelectionCount();
 				if (16777219 == e.keyCode && selectionCount == 0 && !shiftDown) {// left arrow
 					e.doit = false;
-					SegmentedString ss = new SegmentedString(pattern, text);
-					int index = ss.findNewCursorPosition(caret, -1);
+					final SegmentedString ss = new SegmentedString(pattern, text);
+					final int index = ss.findNewCursorPosition(caret, -1);
 					control.setSelection(index);
 				} else if (16777220 == e.keyCode && selectionCount == 0 && !shiftDown) { //right arrow
 					e.doit = false;
-					SegmentedString ss = new SegmentedString(pattern, text);
-					int index = ss.findNewCursorPosition(caret, 1);
+					final SegmentedString ss = new SegmentedString(pattern, text);
+					final int index = ss.findNewCursorPosition(caret, 1);
 					control.setSelection(index);
 				} else if (127 == e.keyCode && selectionCount == 0 && !shiftDown) {
 					// delete on the left of a separator; no selection
 					if (caret < text.length() && SegmentedString.isSeparator(text.charAt(caret))) {
 						e.doit = false;
-						SegmentedString ss = new SegmentedString(pattern, text);
+						final SegmentedString ss = new SegmentedString(pattern, text);
 						int index = ss.findNewCursorPosition(caret, 1);
 						// if index (right) is a digit, delete
 						if (index < text.length() && SegmentedString.isDigit(text.charAt(index))) {
@@ -393,8 +393,8 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 					// backspace on the right of a separator; no selection
 					if (caret > 0 && SegmentedString.isSeparator(text.charAt(caret - 1))) {
 						e.doit = false;
-						SegmentedString ss = new SegmentedString(pattern, text);
-						int index = ss.findNewCursorPosition(caret, -1);
+						final SegmentedString ss = new SegmentedString(pattern, text);
+						final int index = ss.findNewCursorPosition(caret, -1);
 						// if index (left) is a digit, delete
 						if (index > 0 && SegmentedString.isDigit(text.charAt(index - 1))) {
 							ss.delete(index - 1, caret - 1);
@@ -413,9 +413,9 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	 */
 	private final class DateFocusListener extends FocusAdapter {
 		@Override
-		public void focusLost(FocusEvent e) {
-			Text control = (Text) e.widget;
-			String autoFill = computeAutoFill(control.getText());
+		public void focusLost(final FocusEvent e) {
+			final Text control = (Text) e.widget;
+			final String autoFill = computeAutoFill(control.getText());
 			if (autoFill != null) {
 				forceTextToControl(control, autoFill);
 			}

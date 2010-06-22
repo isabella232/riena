@@ -42,15 +42,15 @@ public final class UITestHelper {
 		// prevent instantiation
 	}
 
-	public static void fireSelectionEvent(Widget widget) {
-		Event event = new Event();
+	public static void fireSelectionEvent(final Widget widget) {
+		final Event event = new Event();
 		event.type = SWT.Selection;
 		event.widget = widget;
 		widget.notifyListeners(SWT.Selection, event);
 	}
 
-	public static void readAndDispatch(Widget control) {
-		Display display = control.getDisplay();
+	public static void readAndDispatch(final Widget control) {
+		final Display display = control.getDisplay();
 		while (display.readAndDispatch()) {
 			Nop.reason("keep going"); //$NON-NLS-1$
 		}
@@ -64,8 +64,8 @@ public final class UITestHelper {
 	 * @param keyCode
 	 *            a SWT key code
 	 */
-	public static void sendKeyAction(Display display, int keyCode) {
-		EventSender sender = new EventSender(display, keyCode);
+	public static void sendKeyAction(final Display display, final int keyCode) {
+		final EventSender sender = new EventSender(display, keyCode);
 		send(display, sender);
 	}
 
@@ -77,14 +77,14 @@ public final class UITestHelper {
 	 * @param message
 	 *            a non-null String
 	 */
-	public static void sendString(Display display, String message) {
-		EventSender sender = new EventSender(display, message);
+	public static void sendString(final Display display, final String message) {
+		final EventSender sender = new EventSender(display, message);
 		send(display, sender);
 	}
 
-	private static void send(Display display, Runnable runnable) {
-		Thread thread = new Thread(runnable);
-		Shell activeShell = display.getActiveShell();
+	private static void send(final Display display, final Runnable runnable) {
+		final Thread thread = new Thread(runnable);
+		final Shell activeShell = display.getActiveShell();
 		if (activeShell != null) {
 			activeShell.forceActive();
 		}
@@ -92,12 +92,12 @@ public final class UITestHelper {
 		waitAndDispatch(display, thread);
 	}
 
-	private static void waitAndDispatch(Display display, Thread thread) {
-		Shell shell = display.getActiveShell();
+	private static void waitAndDispatch(final Display display, final Thread thread) {
+		final Shell shell = display.getActiveShell();
 		while (!shell.isDisposed() && thread.isAlive()) {
 			try {
 				display.readAndDispatch();
-			} catch (SWTException exc) {
+			} catch (final SWTException exc) {
 				// swallow this kind of exception
 				if (!exc.toString().contains("Workbench has not been created yet.")) { //$NON-NLS-1$
 					throw exc;
@@ -119,14 +119,14 @@ public final class UITestHelper {
 		private final String message;
 		private final SWTFacade swtFacade;
 
-		EventSender(Display display, int keyCode) {
+		EventSender(final Display display, final int keyCode) {
 			this.display = display;
 			this.keyCode = keyCode;
 			this.message = null;
 			this.swtFacade = SWTFacade.getDefault();
 		}
 
-		EventSender(Display display, String message) {
+		EventSender(final Display display, final String message) {
 			this.display = display;
 			this.keyCode = 0;
 			this.message = message;
@@ -151,8 +151,8 @@ public final class UITestHelper {
 		 */
 		private void sendMessage() {
 			for (int i = 0; i < message.length(); i++) {
-				char ch = message.charAt(i);
-				boolean isShift = doShift(ch);
+				final char ch = message.charAt(i);
+				final boolean isShift = doShift(ch);
 				if (isShift) {
 					postShift(true);
 				}
@@ -169,7 +169,7 @@ public final class UITestHelper {
 		 * @return whether the character necessitates sending 'Shift' KeyDown/Up
 		 *         events
 		 */
-		private boolean doShift(char ch) {
+		private boolean doShift(final char ch) {
 			boolean result = false;
 			if (Character.isLetter(ch)) {
 				result = Character.isUpperCase(ch);
@@ -180,7 +180,7 @@ public final class UITestHelper {
 		}
 
 		private void sendKeyEvent() {
-			Event event = new Event();
+			final Event event = new Event();
 			event.type = SWT.KeyDown;
 			event.keyCode = keyCode;
 			doSleep(MS_LONG_WAIT);
@@ -191,8 +191,8 @@ public final class UITestHelper {
 			doSleep(MS_LONG_WAIT);
 		}
 
-		private void postCharacter(char ch) {
-			Event event = new Event();
+		private void postCharacter(final char ch) {
+			final Event event = new Event();
 			event.type = SWT.KeyDown;
 			event.character = ch;
 			doSleep(MS_LONG_WAIT);
@@ -204,7 +204,7 @@ public final class UITestHelper {
 		}
 
 		private void postShift(final boolean keyDown) {
-			Event event = new Event();
+			final Event event = new Event();
 			event.keyCode = SWT.SHIFT;
 			event.type = keyDown ? SWT.KeyDown : SWT.KeyUp;
 			post(event);
@@ -215,10 +215,10 @@ public final class UITestHelper {
 			return swtFacade.postEvent(display, event);
 		}
 
-		private void doSleep(int millis) {
+		private void doSleep(final int millis) {
 			try {
 				Thread.sleep(millis);
-			} catch (InterruptedException iex) {
+			} catch (final InterruptedException iex) {
 				Nop.reason("ignore"); //$NON-NLS-1$
 			}
 		}

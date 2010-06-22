@@ -71,7 +71,7 @@ public class ImageButton extends Composite {
 
 	private static int idealHeight = -1;
 
-	private Image[] images = { null, null, null, null, null, null };
+	private final Image[] images = { null, null, null, null, null, null };
 
 	private boolean useIdealHeight;
 	private boolean pressed;
@@ -102,7 +102,7 @@ public class ImageButton extends Composite {
 	 *            and buttons background that is only visible if the mouse
 	 *            pointer is over the {@code ImageButton}.
 	 */
-	public ImageButton(Composite parent, int style) {
+	public ImageButton(final Composite parent, final int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 
 		if (hasHotStyle()) {
@@ -123,11 +123,11 @@ public class ImageButton extends Composite {
 	 * @param listener
 	 *            listener to add
 	 */
-	public void addSelectionListener(SelectionListener listener) {
+	public void addSelectionListener(final SelectionListener listener) {
 		Assert.isNotNull(listener);
 		if (selectionListeners == null) {
 			selectionListeners = new ArrayList<SelectionListener>();
-			TypedListener delegate = createSelectionDelegate();
+			final TypedListener delegate = createSelectionDelegate();
 			addListener(SWT.Selection, delegate);
 			addListener(SWT.DefaultSelection, delegate);
 		}
@@ -148,23 +148,23 @@ public class ImageButton extends Composite {
 	 * @return button size
 	 */
 	@Override
-	public Point computeSize(int wHint, int hHint, boolean changed) {
+	public Point computeSize(final int wHint, final int hHint, final boolean changed) {
 		checkWidget();
 
-		Point size = new Point(0, 0);
+		final Point size = new Point(0, 0);
 		if (isUseIdealHeight()) {
 			size.y = getIdealHeight();
 		}
-		for (Image oneImage : images) {
+		for (final Image oneImage : images) {
 			if ((oneImage != null) && (!oneImage.isDisposed())) {
-				Rectangle bounds = oneImage.getBounds();
+				final Rectangle bounds = oneImage.getBounds();
 				size.x = Math.max(size.x, bounds.width);
 				size.y = Math.max(size.y, bounds.height);
 			}
 		}
 
 		if (hoverButton != null) {
-			Point btnSize = hoverButton.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+			final Point btnSize = hoverButton.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 			if (size.x < btnSize.x) {
 				size.x = btnSize.x;
 			}
@@ -269,7 +269,7 @@ public class ImageButton extends Composite {
 	 * @param listener
 	 *            listener to remove
 	 */
-	public void removeSelectionListener(SelectionListener listener) {
+	public void removeSelectionListener(final SelectionListener listener) {
 		if (selectionListeners != null) {
 			selectionListeners.remove(listener);
 		}
@@ -279,7 +279,7 @@ public class ImageButton extends Composite {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setBackground(Color color) {
+	public void setBackground(final Color color) {
 		super.setBackground(color);
 		if (hoverButton != null) {
 			hoverButton.setBackground(color);
@@ -292,12 +292,12 @@ public class ImageButton extends Composite {
 	 * @param image
 	 *            the image to set
 	 */
-	public void setDisabledImage(Image image) {
+	public void setDisabledImage(final Image image) {
 		images[DISABLED_IMAGE_INDEX] = image;
 	}
 
 	@Override
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		setPressed(false);
 		setHover(false);
@@ -310,7 +310,7 @@ public class ImageButton extends Composite {
 	 * @param image
 	 *            the image to set
 	 */
-	public void setFocusedImage(Image image) {
+	public void setFocusedImage(final Image image) {
 		images[FOCUSED_IMAGE_INDEX] = image;
 	}
 
@@ -321,7 +321,7 @@ public class ImageButton extends Composite {
 	 *            left and right margin
 	 * 
 	 */
-	public void setHorizontalMargin(Point horizontalMargin) {
+	public void setHorizontalMargin(final Point horizontalMargin) {
 		this.horizontalMargin = new Point(horizontalMargin.x, horizontalMargin.y);
 	}
 
@@ -332,7 +332,7 @@ public class ImageButton extends Composite {
 	 * @param image
 	 *            the image to set
 	 */
-	public void setHoverFocusedImage(Image image) {
+	public void setHoverFocusedImage(final Image image) {
 		images[HOVER_FOCUSED_IMAGE_INDEX] = image;
 	}
 
@@ -342,7 +342,7 @@ public class ImageButton extends Composite {
 	 * @param image
 	 *            the image to set
 	 */
-	public void setHoverImage(Image image) {
+	public void setHoverImage(final Image image) {
 		images[HOVER_IMAGE_INDEX] = image;
 	}
 
@@ -352,7 +352,7 @@ public class ImageButton extends Composite {
 	 * @param image
 	 *            the image to set
 	 */
-	public void setImage(Image image) {
+	public void setImage(final Image image) {
 		if (image != this.images[IMAGE_INDEX]) {
 			images[IMAGE_INDEX] = image;
 			redraw();
@@ -365,7 +365,7 @@ public class ImageButton extends Composite {
 	 * @param image
 	 *            the image to set
 	 */
-	public void setPressedImage(Image image) {
+	public void setPressedImage(final Image image) {
 		images[PRESSED_IMAGE_INDEX] = image;
 	}
 
@@ -377,7 +377,7 @@ public class ImageButton extends Composite {
 	 * @param useIdealHeight
 	 *            {@code true} use ideal height; otherwise {@code false}
 	 */
-	public void setUseIdealHeight(boolean useIdealHeight) {
+	public void setUseIdealHeight(final boolean useIdealHeight) {
 		this.useIdealHeight = useIdealHeight;
 	}
 
@@ -390,7 +390,7 @@ public class ImageButton extends Composite {
 	 */
 	private void addHoverButton() {
 		hoverButton = new Button(this, SWT.PUSH);
-		FormData data = new FormData();
+		final FormData data = new FormData();
 		data.left = new FormAttachment(0, 0);
 		data.right = new FormAttachment(100, 0);
 		data.top = new FormAttachment(0, 0);
@@ -404,7 +404,7 @@ public class ImageButton extends Composite {
 	 * exists).
 	 */
 	private void addListeners() {
-		SWTFacade swtFacade = SWTFacade.getDefault();
+		final SWTFacade swtFacade = SWTFacade.getDefault();
 
 		paintListener = new PaintDelegation();
 		swtFacade.addPaintListener(this, paintListener);
@@ -426,14 +426,14 @@ public class ImageButton extends Composite {
 		addKeyListener(keyListener);
 
 		traverseListener = new TraverseListener() {
-			public void keyTraversed(TraverseEvent e) {
+			public void keyTraversed(final TraverseEvent e) {
 				e.doit = true;
 			}
 		};
 		addTraverseListener(traverseListener);
 
 		disposeListener = new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+			public void widgetDisposed(final DisposeEvent e) {
 				onDispose(e);
 			}
 		};
@@ -449,12 +449,12 @@ public class ImageButton extends Composite {
 	 *            the image to draw
 	 * @return position of image
 	 */
-	private Point computeImagePos(PaintEvent event, Image image) {
+	private Point computeImagePos(final PaintEvent event, final Image image) {
 		int x = 0;
 		int y = 0;
 
 		if ((image != null) && (event != null)) {
-			Rectangle imgBounds = image.getBounds();
+			final Rectangle imgBounds = image.getBounds();
 			x = (event.width - imgBounds.width) / 2;
 			if (x < 0) {
 				x = 0;
@@ -473,14 +473,14 @@ public class ImageButton extends Composite {
 
 	private TypedListener createSelectionDelegate() {
 		return new TypedListener(new SelectionListener() {
-			public void widgetSelected(SelectionEvent e) {
-				for (SelectionListener sl : selectionListeners) {
+			public void widgetSelected(final SelectionEvent e) {
+				for (final SelectionListener sl : selectionListeners) {
 					sl.widgetSelected(e);
 				}
 			}
-	
-			public void widgetDefaultSelected(SelectionEvent e) {
-				for (SelectionListener sl : selectionListeners) {
+
+			public void widgetDefaultSelected(final SelectionEvent e) {
+				for (final SelectionListener sl : selectionListeners) {
 					sl.widgetDefaultSelected(e);
 				}
 			}
@@ -495,7 +495,7 @@ public class ImageButton extends Composite {
 	 */
 	private int getIdealHeight() {
 		if (idealHeight < 0) {
-			Button button = new Button(this, SWT.PUSH);
+			final Button button = new Button(this, SWT.PUSH);
 			idealHeight = button.computeSize(SWT.DEFAULT, SWT.DEFAULT).y;
 			button.dispose();
 		}
@@ -558,7 +558,7 @@ public class ImageButton extends Composite {
 	 *         {@code false}
 	 */
 	private boolean hasHotStyle() {
-		int style = getStyle();
+		final int style = getStyle();
 		return (style & SWT.HOT) == SWT.HOT;
 	}
 
@@ -597,7 +597,7 @@ public class ImageButton extends Composite {
 	 * @param event
 	 *            an event containing information about the dispose
 	 */
-	private void onDispose(DisposeEvent event) {
+	private void onDispose(final DisposeEvent event) {
 		if (event.widget != this) {
 			return;
 		}
@@ -611,15 +611,15 @@ public class ImageButton extends Composite {
 	 * @param event
 	 *            e an event containing information about the paint
 	 */
-	private void onPaint(PaintEvent event) {
+	private void onPaint(final PaintEvent event) {
 		if (hoverButton != null && hoverButton.isVisible()) {
 			return;
 		}
 
-		Image image = getImageToDraw();
+		final Image image = getImageToDraw();
 		if (image != null) {
-			Point pos = computeImagePos(event, image);
-			GC gc = event.gc;
+			final Point pos = computeImagePos(event, image);
+			final GC gc = event.gc;
 			gc.drawImage(image, pos.x, pos.y);
 		}
 	}
@@ -629,7 +629,7 @@ public class ImageButton extends Composite {
 	 * button (if exists).
 	 */
 	private void removeListeners() {
-		SWTFacade swtFacade = SWTFacade.getDefault();
+		final SWTFacade swtFacade = SWTFacade.getDefault();
 
 		if (disposeListener != null) {
 			removeDisposeListener(disposeListener);
@@ -676,7 +676,7 @@ public class ImageButton extends Composite {
 	 *            {@code true} if the button has the focus; otherwise
 	 *            {@code false}
 	 */
-	private void setFocused(boolean focused) {
+	private void setFocused(final boolean focused) {
 		if (isFocused() != focused) {
 			this.focused = focused;
 			redraw();
@@ -691,7 +691,7 @@ public class ImageButton extends Composite {
 	 *            {@code false}
 	 * 
 	 */
-	private void setHover(boolean hover) {
+	private void setHover(final boolean hover) {
 		if (this.hover != hover) {
 			this.hover = hover;
 			redraw();
@@ -704,7 +704,7 @@ public class ImageButton extends Composite {
 	 * @param pressed
 	 *            {@code true} if button is pressed; otherwise {@code false}
 	 */
-	private void setPressed(boolean pressed) {
+	private void setPressed(final boolean pressed) {
 		if (this.pressed != pressed) {
 			this.pressed = pressed;
 			redraw();
@@ -716,7 +716,7 @@ public class ImageButton extends Composite {
 	 */
 	private void updateHoverButton() {
 		if (hoverButton != null) {
-			boolean visible = isHover() || isPressed();
+			final boolean visible = isHover() || isPressed();
 			if (visible != hoverButton.isVisible()) {
 				hoverButton.setVisible(visible);
 			}
@@ -737,7 +737,7 @@ public class ImageButton extends Composite {
 		/**
 		 * {@inheritDoc}
 		 */
-		public void focusGained(FocusEvent e) {
+		public void focusGained(final FocusEvent e) {
 			setFocused(true);
 			updateHoverButton();
 		}
@@ -745,7 +745,7 @@ public class ImageButton extends Composite {
 		/**
 		 * {@inheritDoc}
 		 */
-		public void focusLost(FocusEvent e) {
+		public void focusLost(final FocusEvent e) {
 			setFocused(false);
 			updateHoverButton();
 		}
@@ -761,7 +761,7 @@ public class ImageButton extends Composite {
 		/**
 		 * {@inheritDoc}
 		 */
-		public void keyPressed(KeyEvent e) {
+		public void keyPressed(final KeyEvent e) {
 			if (!isEnabled()) {
 				return;
 			}
@@ -774,13 +774,13 @@ public class ImageButton extends Composite {
 		/**
 		 * {@inheritDoc}
 		 */
-		public void keyReleased(KeyEvent e) {
+		public void keyReleased(final KeyEvent e) {
 			if (!isEnabled()) {
 				return;
 			}
 			if (!ignore(e)) {
 				if (isPressed()) {
-					Event event = new Event();
+					final Event event = new Event();
 					notifyListeners(SWT.Selection, event);
 				}
 				setPressed(false);
@@ -792,7 +792,7 @@ public class ImageButton extends Composite {
 		 * Ignores mouse events if the component is null, not enabled, or the
 		 * event is not associated with the left mouse button.
 		 */
-		private boolean ignore(KeyEvent e) {
+		private boolean ignore(final KeyEvent e) {
 			return e.character != ' ';
 		}
 
@@ -806,7 +806,7 @@ public class ImageButton extends Composite {
 		/**
 		 * {@inheritDoc}
 		 */
-		public void mouseDoubleClick(MouseEvent e) {
+		public void mouseDoubleClick(final MouseEvent e) {
 			// do nothing
 		}
 
@@ -815,7 +815,7 @@ public class ImageButton extends Composite {
 		 * <p>
 		 * Sets the pressed state of the button.
 		 */
-		public void mouseDown(MouseEvent e) {
+		public void mouseDown(final MouseEvent e) {
 			if (!isEnabled()) {
 				return;
 			}
@@ -830,12 +830,12 @@ public class ImageButton extends Composite {
 		 * <p>
 		 * Sets the hover state of the button.
 		 */
-		public void mouseEnter(MouseEvent e) {
+		public void mouseEnter(final MouseEvent e) {
 			if (!isEnabled()) {
 				return;
 			}
 			if (!ignoreWidget(e)) {
-				boolean oldHover = isHover();
+				final boolean oldHover = isHover();
 				setHover(true);
 				if (oldHover != isHover()) {
 					updateHoverButton();
@@ -848,12 +848,12 @@ public class ImageButton extends Composite {
 		 * <p>
 		 * Removes the hover state of the button.
 		 */
-		public void mouseExit(MouseEvent e) {
+		public void mouseExit(final MouseEvent e) {
 			if (!isEnabled()) {
 				return;
 			}
 			if (!ignoreWidget(e)) {
-				boolean oldHover = isHover();
+				final boolean oldHover = isHover();
 				setHover(false);
 				if (oldHover != isHover()) {
 					updateHoverButton();
@@ -864,7 +864,7 @@ public class ImageButton extends Composite {
 		/**
 		 * {@inheritDoc}
 		 */
-		public void mouseHover(MouseEvent e) {
+		public void mouseHover(final MouseEvent e) {
 			// do nothing
 		}
 
@@ -874,14 +874,14 @@ public class ImageButton extends Composite {
 		 * Sets or removes the hover state of the button according the mouse
 		 * pointer is over the button.
 		 */
-		public void mouseMove(MouseEvent e) {
+		public void mouseMove(final MouseEvent e) {
 			if (!isEnabled()) {
 				return;
 			}
 			if (!ignoreWidget(e)) {
 				if ((e.stateMask & SWT.BUTTON_MASK) != 0) {
-					boolean oldHover = isHover();
-					Point point = new Point(e.x, e.y);
+					final boolean oldHover = isHover();
+					final Point point = new Point(e.x, e.y);
 					if (isOverButton(point)) {
 						setPressed(true);
 					} else {
@@ -901,13 +901,13 @@ public class ImageButton extends Composite {
 		 * pointer is over the button.<br>
 		 * Removes the pressed state of the button.
 		 */
-		public void mouseUp(MouseEvent e) {
+		public void mouseUp(final MouseEvent e) {
 			if (!isEnabled()) {
 				return;
 			}
 			if (!ignoreMouseButton(e) && !ignoreWidget(e)) {
 				if (isPressed() && isHover() && isOverButton(new Point(e.x, e.y))) {
-					Event event = new Event();
+					final Event event = new Event();
 					notifyListeners(SWT.Selection, event);
 				}
 				setPressed(false);
@@ -923,7 +923,7 @@ public class ImageButton extends Composite {
 		 *            mouse event
 		 * @return {@code true} ignore event; otherwise {@code false}
 		 */
-		private boolean ignoreMouseButton(MouseEvent e) {
+		private boolean ignoreMouseButton(final MouseEvent e) {
 			return e.button != 1;
 		}
 
@@ -934,7 +934,7 @@ public class ImageButton extends Composite {
 		 *            mouse event
 		 * @return {@code true} ignore event; otherwise {@code false}
 		 */
-		private boolean ignoreWidget(MouseEvent e) {
+		private boolean ignoreWidget(final MouseEvent e) {
 			if (hoverButton != null) {
 				if (hoverButton.isVisible()) {
 					return e.widget != hoverButton;
@@ -954,7 +954,7 @@ public class ImageButton extends Composite {
 		 * @return {@code true} if point is inside the button; otherwise
 		 *         {@code false}
 		 */
-		private boolean isOverButton(Point point) {
+		private boolean isOverButton(final Point point) {
 			return (point.x <= getBounds().width && point.x >= 0) && (point.y <= getBounds().height && point.y >= 0);
 		}
 
@@ -970,7 +970,7 @@ public class ImageButton extends Composite {
 		 * <p>
 		 * Paints the {@code ImageButton}.
 		 */
-		public void paintControl(PaintEvent e) {
+		public void paintControl(final PaintEvent e) {
 			onPaint(e);
 		}
 	}

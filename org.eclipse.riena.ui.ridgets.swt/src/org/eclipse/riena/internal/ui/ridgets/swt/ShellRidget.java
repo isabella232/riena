@@ -38,10 +38,10 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	private boolean titleAlreadyInitialized;
 	private String title;
 	private String icon;
-	private ListenerList<IWindowRidgetListener> windowRidgetListeners;
+	private final ListenerList<IWindowRidgetListener> windowRidgetListeners;
 	private DefaultActionManager actionManager;
 
-	private ShellListener shellListener;
+	private final ShellListener shellListener;
 
 	public ShellRidget() {
 		super();
@@ -52,7 +52,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		shellListener = new RidgetShellListener();
 	}
 
-	public ShellRidget(Shell shell) {
+	public ShellRidget(final Shell shell) {
 		this();
 		setUIControl(shell);
 	}
@@ -65,7 +65,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	 * see {@link AbstractWindowController#afterBind()}. Deactivation and
 	 * disposal is handled by this ridget.
 	 */
-	public IDefaultActionManager addDefaultAction(IRidget focusRidget, IActionRidget actionRidget) {
+	public IDefaultActionManager addDefaultAction(final IRidget focusRidget, final IActionRidget actionRidget) {
 		if (actionManager == null) {
 			actionManager = new DefaultActionManager(this);
 		}
@@ -73,12 +73,12 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		return actionManager;
 	}
 
-	public void addWindowRidgetListener(IWindowRidgetListener listener) {
+	public void addWindowRidgetListener(final IWindowRidgetListener listener) {
 		windowRidgetListeners.add(listener);
 	}
 
 	public void dispose() {
-		Shell control = getUIControl();
+		final Shell control = getUIControl();
 		if (control != null) {
 			control.dispose();
 		}
@@ -125,13 +125,13 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	}
 
 	public void layout() {
-		Shell control = getUIControl();
+		final Shell control = getUIControl();
 		if (control != null) {
 			control.layout(true, true);
 		}
 	}
 
-	public void removeWindowRidgetListener(IWindowRidgetListener listener) {
+	public void removeWindowRidgetListener(final IWindowRidgetListener listener) {
 		windowRidgetListeners.remove(listener);
 	}
 
@@ -142,26 +142,26 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		}
 	}
 
-	public void setActive(boolean active) {
+	public void setActive(final boolean active) {
 		setEnabled(active);
 	}
 
-	public void setCloseable(boolean closeable) {
+	public void setCloseable(final boolean closeable) {
 		if (this.closeable != closeable) {
 			this.closeable = closeable;
 			updateCloseable();
 		}
 	}
 
-	public void setIcon(String icon) {
-		String oldIcon = this.icon;
+	public void setIcon(final String icon) {
+		final String oldIcon = this.icon;
 		this.icon = icon;
 		if (hasChanged(oldIcon, icon)) {
 			updateIcon();
 		}
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		titleAlreadyInitialized = true;
 		if (title != null && !this.title.equals(title)) {
 			this.title = title;
@@ -192,7 +192,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		if (uiControl != null && !(uiControl instanceof Shell)) {
 			throw new UIBindingFailure("uiControl of a ShellRidget must be a Shell but was a " //$NON-NLS-1$
 					+ uiControl.getClass().getSimpleName());
@@ -216,7 +216,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	 * @return true, if value has changed; otherwise false
 	 */
 	@Override
-	protected boolean hasChanged(Object oldValue, Object newValue) {
+	protected boolean hasChanged(final Object oldValue, final Object newValue) {
 		if (oldValue == null && newValue == null) {
 			return false;
 		}
@@ -269,7 +269,7 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	 * Updates the icon of the UI control.
 	 */
 	private void updateIcon() {
-		Shell control = getUIControl();
+		final Shell control = getUIControl();
 		if (control != null) {
 			Image image = null;
 			if (icon != null) {
@@ -296,15 +296,15 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 	private final class RidgetShellListener extends ShellAdapter {
 
 		@Override
-		public void shellActivated(ShellEvent e) {
-			for (IWindowRidgetListener l : windowRidgetListeners.getListeners()) {
+		public void shellActivated(final ShellEvent e) {
+			for (final IWindowRidgetListener l : windowRidgetListeners.getListeners()) {
 				l.activated();
 			}
 		}
 
 		@Override
-		public void shellClosed(ShellEvent e) {
-			for (IWindowRidgetListener l : windowRidgetListeners.getListeners()) {
+		public void shellClosed(final ShellEvent e) {
+			for (final IWindowRidgetListener l : windowRidgetListeners.getListeners()) {
 				l.closed();
 			}
 		}

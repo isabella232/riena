@@ -48,7 +48,7 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 	 * @see org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget#setNumber(java.lang
 	 *      .Integer)
 	 */
-	public void setNumber(Integer number) {
+	public void setNumber(final Integer number) {
 		this.number = number;
 
 		if (this.number == null) {
@@ -66,7 +66,7 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 	 * @see org.eclipse.riena.ui.ridgets.IStatuslineNumberRidget#setNumberString(java
 	 *      .lang.String)
 	 */
-	public void setNumberString(String numberStrg) {
+	public void setNumberString(final String numberStrg) {
 		this.numberString = numberStrg;
 
 		if (this.numberString == null) {
@@ -75,7 +75,7 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 			// TODO use Numberformatter instead of toString()
 			try {
 				number = Integer.valueOf(numberString);
-			} catch (NumberFormatException e) {
+			} catch (final NumberFormatException e) {
 				number = 0;
 			}
 		}
@@ -95,7 +95,7 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 	 *      (java.lang.Object)
 	 */
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, StatuslineNumber.class);
 	}
 

@@ -36,7 +36,7 @@ public class CompoundProxySelectorTest extends RienaTestCase {
 	static {
 		try {
 			uri = new URI("http://www.eclipse.org");
-		} catch (URISyntaxException e) {
+		} catch (final URISyntaxException e) {
 			fail();
 		}
 	}
@@ -46,39 +46,39 @@ public class CompoundProxySelectorTest extends RienaTestCase {
 		try {
 			new CompoundProxySelector(null);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			Nop.reason("ok - expected");
 		}
 	}
 
 	@SuppressWarnings("restriction")
 	public void testNullSelect() {
-		CompoundProxySelector compoundPS = new CompoundProxySelector(new ArrayList<ProxySelector>());
+		final CompoundProxySelector compoundPS = new CompoundProxySelector(new ArrayList<ProxySelector>());
 		try {
 			compoundPS.select(null);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			Nop.reason("ok - expected");
 		}
 	}
 
 	@SuppressWarnings("restriction")
 	public void testSelectWithOneSelector() {
-		List<ProxySelector> selectors = new ArrayList<ProxySelector>();
+		final List<ProxySelector> selectors = new ArrayList<ProxySelector>();
 		selectors.add(new TestProxySelector(PROXY_1));
-		CompoundProxySelector compoundPS = new CompoundProxySelector(selectors);
-		List<Proxy> proxies = compoundPS.select(uri);
+		final CompoundProxySelector compoundPS = new CompoundProxySelector(selectors);
+		final List<Proxy> proxies = compoundPS.select(uri);
 		assertEquals(PROXY_1, proxies.get(0));
 		assertEquals(Proxy.NO_PROXY, proxies.get(1));
 	}
 
 	@SuppressWarnings("restriction")
 	public void testSelectWithTwoSelectors() {
-		List<ProxySelector> selectors = new ArrayList<ProxySelector>();
+		final List<ProxySelector> selectors = new ArrayList<ProxySelector>();
 		selectors.add(new TestProxySelector(PROXY_1));
 		selectors.add(new TestProxySelector(PROXY_2));
-		CompoundProxySelector compoundPS = new CompoundProxySelector(selectors);
-		List<Proxy> proxies = compoundPS.select(uri);
+		final CompoundProxySelector compoundPS = new CompoundProxySelector(selectors);
+		final List<Proxy> proxies = compoundPS.select(uri);
 		assertEquals(PROXY_1, proxies.get(0));
 		assertEquals(PROXY_2, proxies.get(1));
 		assertEquals(Proxy.NO_PROXY, proxies.get(2));
@@ -86,12 +86,12 @@ public class CompoundProxySelectorTest extends RienaTestCase {
 
 	@SuppressWarnings("restriction")
 	public void testConnectFailedWithTwoSelectors() {
-		List<ProxySelector> selectors = new ArrayList<ProxySelector>();
-		TestProxySelector selector1 = new TestProxySelector(PROXY_1);
+		final List<ProxySelector> selectors = new ArrayList<ProxySelector>();
+		final TestProxySelector selector1 = new TestProxySelector(PROXY_1);
 		selectors.add(selector1);
-		TestProxySelector selector2 = new TestProxySelector(PROXY_2);
+		final TestProxySelector selector2 = new TestProxySelector(PROXY_2);
 		selectors.add(selector2);
-		CompoundProxySelector compoundPS = new CompoundProxySelector(selectors);
+		final CompoundProxySelector compoundPS = new CompoundProxySelector(selectors);
 		List<Proxy> proxies = compoundPS.select(uri);
 		assertEquals(3, proxies.size());
 		assertEquals(PROXY_1, proxies.get(0));

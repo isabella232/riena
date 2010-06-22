@@ -25,13 +25,13 @@ public class StringToUpperCaseConverter extends Converter {
 		super(String.class, String.class);
 	}
 
-	public Object convert(Object fromObject) {
+	public Object convert(final Object fromObject) {
 		String result = null;
 		if (fromObject != null) {
-			String input = (String) fromObject;
-			StringBuilder builder = new StringBuilder();
+			final String input = (String) fromObject;
+			final StringBuilder builder = new StringBuilder();
 			for (int i = 0; i < input.length(); i++) {
-				char ch = input.charAt(i);
+				final char ch = input.charAt(i);
 				builder.append(Character.toUpperCase(ch));
 			}
 			result = builder.toString();

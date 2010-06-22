@@ -65,7 +65,7 @@ public class ModuleGroupViewTest extends TestCase {
 	 * Tests the method {@code calculateBounds(int)}.
 	 */
 	public void testCalculateBounds() {
-		RienaDefaultLnf originalLnf = LnfManager.getLnf();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
 
 		try {
 			LnfManager.setLnf(new MyLnF());
@@ -73,16 +73,16 @@ public class ModuleGroupViewTest extends TestCase {
 			int y = view.calculateBounds(10);
 			assertEquals(10, y);
 
-			ModuleView moduleView = new ModuleView(shell);
+			final ModuleView moduleView = new ModuleView(shell);
 			moduleView.setModuleGroupNode(node);
-			ModuleNode moduleNode = new ModuleNode();
+			final ModuleNode moduleNode = new ModuleNode();
 			node.addChild(moduleNode);
 			moduleView.bind(moduleNode);
 
 			view.registerModuleView(moduleView);
 			y = view.calculateBounds(10);
 			assertTrue(y > 10);
-			FormData data = (FormData) view.getLayoutData();
+			final FormData data = (FormData) view.getLayoutData();
 			assertEquals(10, data.top.offset);
 			assertTrue((data.bottom.offset > 10) && (data.bottom.offset < y));
 
@@ -96,7 +96,7 @@ public class ModuleGroupViewTest extends TestCase {
 
 	public void testUnbind() throws Exception {
 
-		List<ModuleGroupNodeListener> listeners = ReflectionUtils.getHidden(node, "listeners");
+		final List<ModuleGroupNodeListener> listeners = ReflectionUtils.getHidden(node, "listeners");
 
 		assertEquals(1, listeners.size());
 
@@ -110,11 +110,11 @@ public class ModuleGroupViewTest extends TestCase {
 	 */
 	public void testEqualsFormDatat() {
 
-		FormData fd1 = new FormData();
+		final FormData fd1 = new FormData();
 		boolean ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd1);
 		assertTrue(ret);
 
-		FormData fd2 = new FormData();
+		final FormData fd2 = new FormData();
 		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
 		assertTrue(ret);
 
@@ -134,9 +134,9 @@ public class ModuleGroupViewTest extends TestCase {
 		ret = ReflectionUtils.invokeHidden(view, "equals", fd1, fd2);
 		assertTrue(ret);
 
-		FormAttachment fa1 = new FormAttachment(1, 2);
-		FormAttachment fa2 = new FormAttachment(11, 22);
-		FormAttachment fa3 = new FormAttachment(1, 2);
+		final FormAttachment fa1 = new FormAttachment(1, 2);
+		final FormAttachment fa2 = new FormAttachment(11, 22);
+		final FormAttachment fa3 = new FormAttachment(1, 2);
 
 		fd1.bottom = fa1;
 		fd2.bottom = fa2;
@@ -182,11 +182,11 @@ public class ModuleGroupViewTest extends TestCase {
 	 */
 	public void testEqualsFormAttachment() {
 
-		FormAttachment fa1 = new FormAttachment();
+		final FormAttachment fa1 = new FormAttachment();
 		boolean ret = ReflectionUtils.invokeHidden(view, "equals", fa1, fa1);
 		assertTrue(ret);
 
-		FormAttachment fa2 = new FormAttachment();
+		final FormAttachment fa2 = new FormAttachment();
 		ret = ReflectionUtils.invokeHidden(view, "equals", fa1, fa2);
 		assertTrue(ret);
 

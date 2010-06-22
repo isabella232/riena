@@ -23,23 +23,23 @@ import org.eclipse.riena.ui.filter.IUIFilterRule;
 public class UIFilter implements IUIFilter {
 
 	private String filterID;
-	private Collection<IUIFilterRule> rules;
+	private final Collection<IUIFilterRule> rules;
 
 	public UIFilter() {
 		rules = new HashSet<IUIFilterRule>();
 	}
 
-	public UIFilter(String id) {
+	public UIFilter(final String id) {
 		this();
 		filterID = id;
 	}
 
-	public UIFilter(Collection<? extends IUIFilterRule> rules) {
+	public UIFilter(final Collection<? extends IUIFilterRule> rules) {
 		this();
 		this.rules.addAll(rules);
 	}
 
-	public UIFilter(String id, Collection<? extends IUIFilterRule> rule) {
+	public UIFilter(final String id, final Collection<? extends IUIFilterRule> rule) {
 		this();
 		filterID = id;
 		this.rules.addAll(rule);
@@ -58,7 +58,7 @@ public class UIFilter implements IUIFilter {
 		return filterID;
 	}
 
-	public void setFilterID(String id) {
+	public void setFilterID(final String id) {
 		filterID = id;
 	}
 

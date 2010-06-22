@@ -27,11 +27,11 @@ public class AuthorizationService implements IAuthorizationService {
 		super();
 	}
 
-	public void bind(IPermissionStore permStore) {
+	public void bind(final IPermissionStore permStore) {
 		this.permStore = permStore;
 	}
 
-	public void unbind(IPermissionStore permStore) {
+	public void unbind(final IPermissionStore permStore) {
 		if (this.permStore == permStore) {
 			this.permStore = null;
 		}
@@ -44,12 +44,12 @@ public class AuthorizationService implements IAuthorizationService {
 	 * org.eclipse.riena.security.common.authorization.IAuthorizationService
 	 * #getPermissions(java.security.Principal[])
 	 */
-	public Permissions[] getPermissions(Principal[] principals) {
+	public Permissions[] getPermissions(final Principal[] principals) {
 		if (permStore != null) {
-			Permissions[] allPerms = new Permissions[principals.length];
+			final Permissions[] allPerms = new Permissions[principals.length];
 			int i = 0;
-			for (Principal p : principals) {
-				Permissions perms = permStore.loadPermissions(p);
+			for (final Principal p : principals) {
+				final Permissions perms = permStore.loadPermissions(p);
 				allPerms[i++] = perms;
 			}
 			return allPerms;

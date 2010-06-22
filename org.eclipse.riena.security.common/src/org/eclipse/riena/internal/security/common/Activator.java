@@ -51,14 +51,14 @@ public class Activator extends RienaPlugin {
 	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
 
 		context.registerService(ISessionHolder.class.getName(), ContainerModel.isClient() ? new SimpleSessionHolder()
 				: new SimpleThreadedSessionHolder(), null);
 
-		ICallHook hook = new SecurityCallHook();
+		final ICallHook hook = new SecurityCallHook();
 		Wire.instance(hook).andStart(context);
 		context.registerService(ICallHook.class.getName(), hook, null);
 
@@ -71,16 +71,16 @@ public class Activator extends RienaPlugin {
 	}
 
 	private void createSentinelServiceAndInjectors() {
-		ISentinelService sentinelService = new SentinelServiceImpl();
+		final ISentinelService sentinelService = new SentinelServiceImpl();
 		getContext().registerService(ISentinelService.class.getName(), sentinelService,
 				RienaConstants.newDefaultServiceProperties());
 
-		Inject.service(IPermissionCache.class).useRanking().into(sentinelService).andStart(
-				Activator.getDefault().getContext());
-		Inject.service(ISubjectHolder.class).useRanking().into(sentinelService).andStart(
-				Activator.getDefault().getContext());
-		Inject.service(IAuthorizationService.class).useRanking().into(sentinelService).andStart(
-				Activator.getDefault().getContext());
+		Inject.service(IPermissionCache.class).useRanking().into(sentinelService)
+				.andStart(Activator.getDefault().getContext());
+		Inject.service(ISubjectHolder.class).useRanking().into(sentinelService)
+				.andStart(Activator.getDefault().getContext());
+		Inject.service(IAuthorizationService.class).useRanking().into(sentinelService)
+				.andStart(Activator.getDefault().getContext());
 	}
 
 	/*
@@ -90,7 +90,7 @@ public class Activator extends RienaPlugin {
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		Activator.plugin = null;
 		super.stop(context);
 	}

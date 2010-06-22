@@ -64,7 +64,7 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	 */
 	private void initText() {
 		if (text == null && !textAlreadyInitialized) {
-			Control control = getUIControl();
+			final Control control = getUIControl();
 			if (control != null && !control.isDisposed()) {
 				text = getUIControlText();
 				if (text == null) {
@@ -109,7 +109,7 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	 * 
 	 * @see #setIcon(String,IconSize)
 	 */
-	public void setIcon(String icon) {
+	public void setIcon(final String icon) {
 		setIcon(icon, IconSize.NONE);
 	}
 
@@ -121,28 +121,28 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	 * 
 	 * @since 2.0
 	 */
-	public void setIcon(String icon, IconSize size) {
-		boolean oldUseRidgetIcon = useRidgetIcon;
+	public void setIcon(final String icon, final IconSize size) {
+		final boolean oldUseRidgetIcon = useRidgetIcon;
 		useRidgetIcon = true;
-		String oldIcon = this.iconID;
-		IIconManager manager = IconManagerProvider.getInstance().getIconManager();
+		final String oldIcon = this.iconID;
+		final IIconManager manager = IconManagerProvider.getInstance().getIconManager();
 		this.iconID = manager.getIconID(icon, size);
 		if (hasChanged(oldIcon, icon) || !oldUseRidgetIcon) {
 			updateUIIcon();
 		}
 	}
 
-	public void setIconLocation(URL location) {
+	public void setIconLocation(final URL location) {
 		useRidgetIcon = true;
-		URL oldUrl = this.iconLocation;
+		final URL oldUrl = this.iconLocation;
 		this.iconLocation = location;
 		if (hasChanged(oldUrl, location)) {
 			updateUIIcon();
 		}
 	}
 
-	public void setText(String text) {
-		String oldValue = this.text;
+	public void setText(final String text) {
+		final String oldValue = this.text;
 		this.text = text;
 		updateUIText();
 		firePropertyChange(ILabelRidget.PROPERTY_TEXT, oldValue, this.text);
@@ -173,7 +173,7 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 			if (getIcon() != null) {
 				image = getManagedImage(getIcon());
 			} else if (iconLocation != null) {
-				String key = iconLocation.toExternalForm();
+				final String key = iconLocation.toExternalForm();
 				image = getManagedImage(key);
 			}
 			if ((image != null) || useRidgetIcon) {
@@ -187,7 +187,7 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 	 */
 	protected abstract void setUIControlImage(Image image);
 
-	private boolean hasChanged(URL oldValue, URL newValue) {
+	private boolean hasChanged(final URL oldValue, final URL newValue) {
 		if (oldValue == null && newValue == null) {
 			return false;
 		}
@@ -196,8 +196,8 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 		}
 
 		// avoid URL.equals(...) since it opens a network connection :(
-		String str1 = oldValue.toExternalForm();
-		String str2 = newValue.toExternalForm();
+		final String str1 = oldValue.toExternalForm();
+		final String str2 = newValue.toExternalForm();
 		return !str1.equals(str2);
 	}
 

@@ -31,11 +31,11 @@ import org.eclipse.riena.security.simpleservices.authorizationservice.store.File
 public class FilePermissionStoreTest extends TestCase {
 
 	public void testReadPermission() throws SAXException, IOException, ParserConfigurationException {
-		InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml");
-		FilePermissionStore permStore = new FilePermissionStore(inputStream);
-		Permissions perms = permStore.loadPermissions(new SimplePrincipal("christian"));
+		final InputStream inputStream = this.getClass().getResourceAsStream("policy-def-test.xml");
+		final FilePermissionStore permStore = new FilePermissionStore(inputStream);
+		final Permissions perms = permStore.loadPermissions(new SimplePrincipal("christian"));
 		assertTrue(perms != null);
-		Enumeration<Permission> enumPerms = perms.elements();
+		final Enumeration<Permission> enumPerms = perms.elements();
 		Permission p;
 		int count = 0;
 
@@ -43,12 +43,12 @@ public class FilePermissionStoreTest extends TestCase {
 			p = enumPerms.nextElement();
 			count++;
 			if (p instanceof FilePermission) {
-				FilePermission fp = (FilePermission) p;
+				final FilePermission fp = (FilePermission) p;
 				assertEquals("*.tmp", fp.getName());
 				assertTrue(fp.getActions().equals("read"));
 			} else {
 				if (p instanceof TestcasePermission) {
-					TestcasePermission tcp = (TestcasePermission) p;
+					final TestcasePermission tcp = (TestcasePermission) p;
 					assertEquals("testPerm", tcp.getName());
 				} else {
 					assertTrue("unknown permission " + p, false);

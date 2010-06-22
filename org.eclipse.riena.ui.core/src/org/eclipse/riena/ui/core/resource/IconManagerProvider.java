@@ -75,7 +75,7 @@ public final class IconManagerProvider {
 	 *            extension of the icon managers
 	 */
 	@InjectExtension
-	public void update(IIconManagerExtension[] iconManagerExtensions) {
+	public void update(final IIconManagerExtension[] iconManagerExtensions) {
 		if ((iconManagerExtensions != null) && (iconManagerExtensions.length > 0)) {
 			Arrays.sort(iconManagerExtensions, new IconManagerComparator());
 			iconManager = iconManagerExtensions[0].createIconManager();
@@ -98,7 +98,7 @@ public final class IconManagerProvider {
 		 * The property {@code order} of the {@code IIconManagerExtension} are
 		 * compared.
 		 */
-		public int compare(IIconManagerExtension im1, IIconManagerExtension im2) {
+		public int compare(final IIconManagerExtension im1, final IIconManagerExtension im2) {
 			return ((Integer) im2.getOrder()).compareTo(im1.getOrder());
 		}
 

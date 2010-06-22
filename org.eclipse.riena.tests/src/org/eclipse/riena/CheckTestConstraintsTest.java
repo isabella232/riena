@@ -25,11 +25,11 @@ import org.eclipse.riena.internal.tests.Activator;
 public class CheckTestConstraintsTest extends TestCase {
 
 	public void testUnmarkedTests() {
-		List<Class<? extends TestCase>> unmarked = TestCollector.collectUnmarked(Activator.getDefault().getBundle(),
-				null);
+		final List<Class<? extends TestCase>> unmarked = TestCollector.collectUnmarked(Activator.getDefault()
+				.getBundle(), null);
 		if (unmarked.size() > 0) {
 			System.err.println(">> Found unmarked tests:");
-			for (Class<?> testCase : unmarked) {
+			for (final Class<?> testCase : unmarked) {
 				System.err.println("  unmarked: " + testCase.getName());
 			}
 		}
@@ -39,11 +39,11 @@ public class CheckTestConstraintsTest extends TestCase {
 	// FIXME: There are currently two test cases that violate this constraint.
 	// We should fix that and set the expected count to zero!
 	public void testBadlyNamedTests() {
-		List<Class<? extends TestCase>> badlyNamed = TestCollector.collectBadlyNamed(
-				Activator.getDefault().getBundle(), null);
+		final List<Class<? extends TestCase>> badlyNamed = TestCollector.collectBadlyNamed(Activator.getDefault()
+				.getBundle(), null);
 		if (badlyNamed.size() > 0) {
 			System.err.println(">> Found badly named tests:");
-			for (Class<?> testCase : badlyNamed) {
+			for (final Class<?> testCase : badlyNamed) {
 				System.err.println("  badly named: " + testCase.getName());
 			}
 		}

@@ -74,7 +74,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	protected void setUp() throws Exception {
 		super.setUp();
 		bean = new TestBean();
-		Shell shell = getShell();
+		final Shell shell = getShell();
 		shell.layout();
 	}
 
@@ -84,7 +84,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Control createWidget(Composite parent) {
+	protected Control createWidget(final Composite parent) {
 		return new Text(getShell(), SWT.BORDER);
 	}
 
@@ -99,13 +99,13 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(TextRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testInitialValueFromModel() {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		bean.setProperty(TEXT_TWO);
 
@@ -127,8 +127,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromModel() {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
@@ -164,8 +164,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromModelDirectWriting() {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.setDirectWriting(true);
 
@@ -187,9 +187,9 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromControlUserInput() throws Exception {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
-		Display display = control.getDisplay();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
+		final Display display = control.getDisplay();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
@@ -231,13 +231,13 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromControlUserInputDirectWriting() {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 		ridget.setDirectWriting(true);
 
-		Display display = control.getDisplay();
+		final Display display = control.getDisplay();
 		UITestHelper.sendString(display, "t");
 
 		assertEquals("t", control.getText());
@@ -316,8 +316,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromControlMethodCall() throws Exception {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
@@ -358,8 +358,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromControlMethodCallDirectWriting() {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
@@ -403,8 +403,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromRidget() throws Exception {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
@@ -437,8 +437,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromRidgetOnRebind() throws Exception {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
@@ -485,8 +485,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testCaretPositionAfterBind() throws Exception {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
@@ -503,7 +503,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		assertEquals(0, control.getCaretPosition());
 
-		Text text = new Text(getShell(), SWT.MULTI);
+		final Text text = new Text(getShell(), SWT.MULTI);
 		text.setText("foo");
 		text.setSelection(2, 2);
 
@@ -514,8 +514,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationOnUpdateToModel() throws Exception {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
@@ -546,8 +546,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationOnUpdateToModelWithValidChars() throws Exception {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
@@ -573,8 +573,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationOnUpdateToModelWithMaxLength() throws Exception {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
@@ -600,8 +600,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationOnUpdateToModelWithValidDecimal() throws Exception {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
@@ -627,8 +627,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationOnKeyPressedWithBlocking() throws Exception {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
@@ -649,10 +649,10 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationOnKeyPressedWithoutBlocking() throws Exception {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
-		DateBean dateBean = new DateBean();
+		final DateBean dateBean = new DateBean();
 		dateBean.setValue(new Date(0L));
 
 		ridget.addValidationRule(new ValidIntermediateDate("dd.MM.yyyy"), ValidationTime.ON_UI_CONTROL_EDIT);
@@ -677,12 +677,12 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationOnSetTextWithOnEditRule() {
-		ITextRidget ridget = getRidget();
-		StringBean model = new StringBean();
+		final ITextRidget ridget = getRidget();
+		final StringBean model = new StringBean();
 		ridget.bindToModel(model, StringBean.PROP_VALUE);
 
 		// this is a blocking rule
-		IValidator onEditRule = new MaxLength(5);
+		final IValidator onEditRule = new MaxLength(5);
 
 		assertFalse(ridget.isErrorMarked());
 
@@ -704,11 +704,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationOnSetTextWithOnUpdateRule() {
-		ITextRidget ridget = getRidget();
-		StringBean model = new StringBean();
+		final ITextRidget ridget = getRidget();
+		final StringBean model = new StringBean();
 		ridget.bindToModel(model, StringBean.PROP_VALUE);
 
-		IValidator onUpdateRule = new MinLength(10);
+		final IValidator onUpdateRule = new MinLength(10);
 
 		assertFalse(ridget.isErrorMarked());
 
@@ -730,11 +730,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationOnUpdateFromModelWithOnEditRule() {
-		ITextRidget ridget = getRidget();
-		StringBean model = new StringBean();
+		final ITextRidget ridget = getRidget();
+		final StringBean model = new StringBean();
 		ridget.bindToModel(model, StringBean.PROP_VALUE);
 
-		IValidator onEditRule = new MaxLength(5);
+		final IValidator onEditRule = new MaxLength(5);
 
 		assertFalse(ridget.isErrorMarked());
 
@@ -759,11 +759,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationOnUpdateFromModelWithOnUpdateRule() {
-		ITextRidget ridget = getRidget();
-		StringBean model = new StringBean();
+		final ITextRidget ridget = getRidget();
+		final StringBean model = new StringBean();
 		ridget.bindToModel(model, StringBean.PROP_VALUE);
 
-		IValidator onUpdateRule = new MinLength(10);
+		final IValidator onUpdateRule = new MinLength(10);
 
 		assertFalse(ridget.isErrorMarked());
 
@@ -788,8 +788,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromRidgetWithValidationOnEditRule() {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.addValidationRule(new ValidEmailAddress(), ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.bindToModel(bean, TestBean.PROPERTY);
@@ -830,8 +830,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromRidgetWithValidationOnUpdateRule() {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.addValidationRule(new ValidEmailAddress(), ValidationTime.ON_UPDATE_TO_MODEL);
 		ridget.bindToModel(bean, TestBean.PROPERTY);
@@ -871,8 +871,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationMessageWithOnEditRule() throws Exception {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 		ridget.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UI_CONTROL_EDIT);
@@ -885,11 +885,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		UITestHelper.sendString(control.getDisplay(), "a");
 
 		assertEquals(2, ridget.getMarkers().size());
-		Iterator<? extends IMarker> iterator = ridget.getMarkers().iterator();
+		final Iterator<? extends IMarker> iterator = ridget.getMarkers().iterator();
 		while (iterator.hasNext()) {
-			IMarker next = iterator.next();
+			final IMarker next = iterator.next();
 			assertTrue(next instanceof IMessageMarker);
-			IMessageMarker marker = (IMessageMarker) next;
+			final IMessageMarker marker = (IMessageMarker) next;
 			assertTrue(marker.getMessage().equals("TestTextTooShortMessage")
 					|| marker.getMessage().equals("Odd number of characters."));
 		}
@@ -900,8 +900,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testValidationMessageWithOnUpdateRule() throws Exception {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 		ridget.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UPDATE_TO_MODEL);
@@ -927,11 +927,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	 * As per Bug 279665 comment #3
 	 */
 	public void testValidationMessageWithOnUpdateAndOnEditRules() {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
-		IValidator ruleMin3 = new MinLength(3);
-		IValidator ruleMin5 = new MinLength(5);
+		final IValidator ruleMin3 = new MinLength(3);
+		final IValidator ruleMin5 = new MinLength(5);
 		ridget.addValidationRule(ruleMin3, ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.addValidationRule(ruleMin5, ValidationTime.ON_UPDATE_TO_MODEL);
 		ridget.addValidationMessage("need 3", ruleMin3);
@@ -968,11 +968,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testErrorMessageWithOnUpdateAndOnEditRules() {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
 
-		IValidator ruleMin3 = new MinLength(3);
-		IValidator ruleMin5 = new MinLength(5);
+		final IValidator ruleMin3 = new MinLength(3);
+		final IValidator ruleMin5 = new MinLength(5);
 		ridget.addValidationRule(ruleMin3, ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.addValidationRule(ruleMin5, ValidationTime.ON_UPDATE_TO_MODEL);
 
@@ -1007,8 +1007,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testRevalidateOnEditRule() {
-		ITextRidget ridget = getRidget();
-		ValidCharacters numbersOnly = new ValidCharacters(ValidCharacters.VALID_NUMBERS);
+		final ITextRidget ridget = getRidget();
+		final ValidCharacters numbersOnly = new ValidCharacters(ValidCharacters.VALID_NUMBERS);
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 		ridget.setText("abc");
@@ -1019,7 +1019,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		assertFalse(ridget.isErrorMarked());
 
-		boolean isOk1 = ridget.revalidate();
+		final boolean isOk1 = ridget.revalidate();
 
 		assertFalse(isOk1);
 		assertTrue(ridget.isErrorMarked());
@@ -1028,15 +1028,15 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		assertFalse(ridget.isErrorMarked()); // since 1.2: remove updates immediately
 
-		boolean isOk2 = ridget.revalidate();
+		final boolean isOk2 = ridget.revalidate();
 
 		assertTrue(isOk2);
 		assertFalse(ridget.isErrorMarked());
 	}
 
 	public void testRevalidateOnUpdateRule() {
-		ITextRidget ridget = getRidget();
-		ValidCharacters numbersOnly = new ValidCharacters(ValidCharacters.VALID_NUMBERS);
+		final ITextRidget ridget = getRidget();
+		final ValidCharacters numbersOnly = new ValidCharacters(ValidCharacters.VALID_NUMBERS);
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 		ridget.setText("abc");
@@ -1047,7 +1047,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		assertFalse(ridget.isErrorMarked());
 
-		boolean isOk1 = ridget.revalidate();
+		final boolean isOk1 = ridget.revalidate();
 
 		assertFalse(isOk1);
 		assertTrue(ridget.isErrorMarked());
@@ -1056,16 +1056,16 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		assertFalse(ridget.isErrorMarked()); // since 1.2: remove updates immediately
 
-		boolean isOk2 = ridget.revalidate();
+		final boolean isOk2 = ridget.revalidate();
 
 		assertTrue(isOk2);
 		assertFalse(ridget.isErrorMarked());
 	}
 
 	public void testRevalidateDoesUpdate() {
-		ITextRidget ridget = getRidget();
-		Text control = getWidget();
-		EvenNumberOfCharacters evenChars = new EvenNumberOfCharacters();
+		final ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final EvenNumberOfCharacters evenChars = new EvenNumberOfCharacters();
 		ridget.addValidationRule(evenChars, ValidationTime.ON_UI_CONTROL_EDIT);
 
 		bean.setProperty("ab");
@@ -1094,8 +1094,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testReValidationOnSetText() {
-		ITextRidget ridget = getRidget();
-		ValidCharacters numbersOnly = new ValidCharacters(ValidCharacters.VALID_NUMBERS);
+		final ITextRidget ridget = getRidget();
+		final ValidCharacters numbersOnly = new ValidCharacters(ValidCharacters.VALID_NUMBERS);
 
 		ridget.setText("123");
 
@@ -1116,8 +1116,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testReValidationOnUpdateFromModel() {
-		ITextRidget ridget = getRidget();
-		ValidCharacters numbersOnly = new ValidCharacters(ValidCharacters.VALID_NUMBERS);
+		final ITextRidget ridget = getRidget();
+		final ValidCharacters numbersOnly = new ValidCharacters(ValidCharacters.VALID_NUMBERS);
 
 		bean.setProperty("123");
 		ridget.bindToModel(bean, TestBean.PROPERTY);
@@ -1145,12 +1145,12 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests that the mandatory marker is enabled/disabled when calling {@code
-	 * setText(string)}.
+	 * Tests that the mandatory marker is enabled/disabled when calling
+	 * {@code setText(string)}.
 	 */
 	public void testDisableMandatoryMarkersSetText() {
-		ITextRidget ridget = getRidget();
-		MandatoryMarker mandatoryMarker = new MandatoryMarker();
+		final ITextRidget ridget = getRidget();
+		final MandatoryMarker mandatoryMarker = new MandatoryMarker();
 		ridget.addMarker(mandatoryMarker);
 
 		ridget.setText("");
@@ -1171,8 +1171,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	 * the model.
 	 */
 	public void testDisableMandatoryMarkersUpdateFromModel() {
-		ITextRidget ridget = getRidget();
-		MandatoryMarker mandatoryMarker = new MandatoryMarker();
+		final ITextRidget ridget = getRidget();
+		final MandatoryMarker mandatoryMarker = new MandatoryMarker();
 		ridget.addMarker(mandatoryMarker);
 
 		ridget.setText("foo");
@@ -1195,9 +1195,9 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	 * Tests that the mandatory marker is enabled/disabled when typing.
 	 */
 	public void testDisableMandatoryMarkers() {
-		ITextRidget ridget = getRidget();
-		Text control = getWidget();
-		MandatoryMarker mandatoryMarker = new MandatoryMarker();
+		final ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final MandatoryMarker mandatoryMarker = new MandatoryMarker();
 		ridget.addMarker(mandatoryMarker);
 
 		assertFalse(ridget.isDirectWriting());
@@ -1235,9 +1235,9 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	 * "direct writing" mode.
 	 */
 	public void testDisableMandatoryMarkersDirectWriting() {
-		ITextRidget ridget = getRidget();
-		Text control = getWidget();
-		MandatoryMarker mandatoryMarker = new MandatoryMarker();
+		final ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final MandatoryMarker mandatoryMarker = new MandatoryMarker();
 		ridget.addMarker(mandatoryMarker);
 		ridget.setDirectWriting(true);
 
@@ -1269,7 +1269,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	 * Tests that the isDisabledMandatoryMarker true when we have text
 	 */
 	public void testIsDisableMandatoryMarker() {
-		ITextRidget ridget = getRidget();
+		final ITextRidget ridget = getRidget();
 
 		ridget.setText("foo");
 
@@ -1285,8 +1285,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testControlNotEditableWithOutputMarker() {
-		ITextRidget ridget = getRidget();
-		Text control = getWidget();
+		final ITextRidget ridget = getRidget();
+		final Text control = getWidget();
 
 		assertTrue(control.getEditable());
 
@@ -1300,8 +1300,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
-		ITextRidget ridget = getRidget();
-		Text control = getWidget();
+		final ITextRidget ridget = getRidget();
+		final Text control = getWidget();
 
 		ridget.setText("foo");
 
@@ -1331,8 +1331,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 			return;
 		}
 
-		ITextRidget ridget = getRidget();
-		Text control = getWidget();
+		final ITextRidget ridget = getRidget();
+		final Text control = getWidget();
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
 		ridget.setText("foo");
@@ -1366,8 +1366,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 			return;
 		}
 
-		ITextRidget ridget = getRidget();
-		Text control = getWidget();
+		final ITextRidget ridget = getRidget();
+		final Text control = getWidget();
 		bean.setProperty(TEXT_TWO);
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
@@ -1408,8 +1408,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 			return;
 		}
 
-		ITextRidget ridget = getRidget();
-		Text control = getWidget();
+		final ITextRidget ridget = getRidget();
+		final Text control = getWidget();
 
 		ridget.setUIControl(null);
 		ridget.setText("text");
@@ -1424,11 +1424,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testShowOneValidationRuleMessageInTooltip() {
-		ITextRidget ridget = getRidget();
-		TooltipMessageMarkerViewer viewer = new TooltipMessageMarkerViewer();
+		final ITextRidget ridget = getRidget();
+		final TooltipMessageMarkerViewer viewer = new TooltipMessageMarkerViewer();
 		viewer.addRidget(ridget);
 		ridget.setToolTipText("original text");
-		AlwaysWrongValidator rule = new AlwaysWrongValidator("ruleA_");
+		final AlwaysWrongValidator rule = new AlwaysWrongValidator("ruleA_");
 		ridget.addValidationRule(rule, ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.revalidate();
 
@@ -1445,12 +1445,12 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testShowSeveralValidationRuleMessagesInTooltip() {
-		ITextRidget ridget = getRidget();
-		TooltipMessageMarkerViewer viewer = new TooltipMessageMarkerViewer();
+		final ITextRidget ridget = getRidget();
+		final TooltipMessageMarkerViewer viewer = new TooltipMessageMarkerViewer();
 		viewer.addRidget(ridget);
 		ridget.setToolTipText("original text");
-		AlwaysWrongValidator rule1 = new AlwaysWrongValidator("ruleA_");
-		AlwaysWrongValidator rule2 = new AlwaysWrongValidator("ruleB_");
+		final AlwaysWrongValidator rule1 = new AlwaysWrongValidator("ruleA_");
+		final AlwaysWrongValidator rule2 = new AlwaysWrongValidator("ruleB_");
 		ridget.addValidationRule(rule1, ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.addValidationRule(rule2, ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.revalidate();
@@ -1469,11 +1469,11 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testModelUpdatedBeforeListenerNotificationOnSetText() {
-		ITextRidget ridget = getRidget();
+		final ITextRidget ridget = getRidget();
 		ridget.bindToModel(bean, TestBean.PROPERTY);
-		FTPropertyChangeListener listener1 = new FTPropertyChangeListener(bean, "newValue");
+		final FTPropertyChangeListener listener1 = new FTPropertyChangeListener(bean, "newValue");
 		ridget.addPropertyChangeListener(listener1);
-		FTPropertyChangeListener listener2 = new FTPropertyChangeListener(bean, "newValue");
+		final FTPropertyChangeListener listener2 = new FTPropertyChangeListener(bean, "newValue");
 		ridget.addPropertyChangeListener("textAfter", listener2);
 
 		ridget.setText("newValue");
@@ -1487,15 +1487,15 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testModelUpdatedBeforeListenerNotificationOnTyping() {
-		ITextRidget ridget = getRidget();
+		final ITextRidget ridget = getRidget();
 		ridget.bindToModel(bean, TestBean.PROPERTY);
-		FTPropertyChangeListener listener1 = new FTPropertyChangeListener(bean, "abc");
+		final FTPropertyChangeListener listener1 = new FTPropertyChangeListener(bean, "abc");
 		ridget.addPropertyChangeListener(listener1);
-		FTPropertyChangeListener listener2 = new FTPropertyChangeListener(bean, "abc");
+		final FTPropertyChangeListener listener2 = new FTPropertyChangeListener(bean, "abc");
 		ridget.addPropertyChangeListener("textAfter", listener2);
 		ridget.setDirectWriting(false);
 
-		Text control = getWidget();
+		final Text control = getWidget();
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), "abc\r");
 
@@ -1508,7 +1508,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testMandatoryMarker() {
-		ITextRidget ridget = getRidget();
+		final ITextRidget ridget = getRidget();
 		ridget.setMandatory(true);
 
 		ridget.setText("abc");
@@ -1525,9 +1525,9 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testInputToUIControlConverter() {
-		Text control = getWidget();
-		ITextRidget ridget = getRidget();
-		Display display = control.getDisplay();
+		final Text control = getWidget();
+		final ITextRidget ridget = getRidget();
+		final Display display = control.getDisplay();
 		ridget.bindToModel(bean, TestBean.PROPERTY);
 
 		ridget.setInputToUIControlConverter(new StringToUpperCaseConverter());
@@ -1556,27 +1556,27 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	public void testInputToUIControlConverterWrongType() {
-		ITextRidget ridget = getRidget();
+		final ITextRidget ridget = getRidget();
 
 		try {
 			ridget.setInputToUIControlConverter(new Converter(Integer.class, String.class) {
-				public Object convert(Object fromObject) {
+				public Object convert(final Object fromObject) {
 					return "1";
 				}
 			});
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok("expected - must have a String.class from-type");
 		}
 
 		try {
 			ridget.setInputToUIControlConverter(new Converter(String.class, Integer.class) {
-				public Object convert(Object fromObject) {
+				public Object convert(final Object fromObject) {
 					return Integer.valueOf(1);
 				}
 			});
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok("expected - must have a String.class to-type");
 		}
 	}
@@ -1587,7 +1587,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	 */
 	public void testIsSubModuleViewComposite() {
 
-		Text text = new Text(getShell(), SWT.BORDER);
+		final Text text = new Text(getShell(), SWT.BORDER);
 
 		boolean ret = ReflectionUtils.invokeHidden(getRidget(), "isSubModuleViewComposite", text);
 		assertFalse(ret);
@@ -1597,7 +1597,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertFalse(ret);
 		SwtUtilities.disposeWidget(text);
 
-		Composite comp = new Composite(getShell(), SWT.NONE);
+		final Composite comp = new Composite(getShell(), SWT.NONE);
 
 		ret = ReflectionUtils.invokeHidden(getRidget(), "isSubModuleViewComposite", comp);
 		assertFalse(ret);
@@ -1619,7 +1619,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertFalse(ret);
 		SwtUtilities.disposeWidget(text);
 
-		Composite comp = new Composite(getShell(), SWT.NONE);
+		final Composite comp = new Composite(getShell(), SWT.NONE);
 		text = new Text(comp, SWT.BORDER);
 		ret = ReflectionUtils.invokeHidden(getRidget(), "isChildOfSubModuleView", text);
 		assertFalse(ret);
@@ -1646,8 +1646,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		SwtUtilities.disposeWidget(text);
 		getShell().setVisible(true);
 
-		Composite compTop = new Composite(getShell(), SWT.NONE);
-		Composite compChild = new Composite(compTop, SWT.NONE);
+		final Composite compTop = new Composite(getShell(), SWT.NONE);
+		final Composite compChild = new Composite(compTop, SWT.NONE);
 		text = new Text(compChild, SWT.BORDER);
 		ret = ReflectionUtils.invokeHidden(getRidget(), "isControlVisible", text);
 		assertTrue(ret);
@@ -1679,7 +1679,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	// helping methods
 	//////////////////
 
-	private String localize(String number) {
+	private String localize(final String number) {
 		return TestUtils.getLocalizedNumber(number);
 	}
 
@@ -1705,14 +1705,14 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 	private static final class AlwaysWrongValidator implements IValidator {
 
-		private String message;
+		private final String message;
 		private int invokeCount = 0;
 
-		AlwaysWrongValidator(String message) {
+		AlwaysWrongValidator(final String message) {
 			this.message = message;
 		}
 
-		public IStatus validate(Object value) {
+		public IStatus validate(final Object value) {
 			invokeCount++;
 			return ValidationRuleStatus.error(false, message + String.valueOf(invokeCount)); //$NON-NLS-1$
 		}
@@ -1724,12 +1724,12 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		private int count;
 
-		FTPropertyChangeListener(TestBean bean, String value) {
+		FTPropertyChangeListener(final TestBean bean, final String value) {
 			this.bean = bean;
 			this.value = value;
 		}
 
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(final PropertyChangeEvent evt) {
 			if ("textAfter".equals(evt.getPropertyName())) {
 				count++;
 				assertEquals(1, count);

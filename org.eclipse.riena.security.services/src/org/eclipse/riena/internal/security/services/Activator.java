@@ -55,7 +55,7 @@ public class Activator extends RienaActivator {
 	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
 		createAuthenticationServiceAndInjectors();
@@ -67,42 +67,42 @@ public class Activator extends RienaActivator {
 
 	private void createAuthenticationServiceAndInjectors() {
 		// register AuthenticationService
-		IAuthenticationService authenticationService = new AuthenticationService();
-		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
+		final IAuthenticationService authenticationService = new AuthenticationService();
+		final Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString()); //$NON-NLS-1$
 		properties.put("riena.remote.protocol", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("riena.remote.path", IAuthenticationService.WS_ID); //$NON-NLS-1$
 		getContext().registerService(IAuthenticationService.class.getName(), authenticationService, properties);
 
 		// start injectors
-		Inject.service(ISessionService.class).useRanking().into(authenticationService).andStart(
-				Activator.getDefault().getContext());
-		Inject.service(ISubjectHolder.class).useRanking().into(authenticationService).andStart(
-				Activator.getDefault().getContext());
-		Inject.service(ISessionHolder.class).useRanking().into(authenticationService).andStart(
-				Activator.getDefault().getContext());
+		Inject.service(ISessionService.class).useRanking().into(authenticationService)
+				.andStart(Activator.getDefault().getContext());
+		Inject.service(ISubjectHolder.class).useRanking().into(authenticationService)
+				.andStart(Activator.getDefault().getContext());
+		Inject.service(ISessionHolder.class).useRanking().into(authenticationService)
+				.andStart(Activator.getDefault().getContext());
 	}
 
 	private void createAuthorizationServiceAndInjectors() {
 		// register AuthorizationService
-		IAuthorizationService authorizationService = new AuthorizationService();
-		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
+		final IAuthorizationService authorizationService = new AuthorizationService();
+		final Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString()); //$NON-NLS-1$
 		properties.put("riena.remote.protocol", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("riena.remote.path", IAuthorizationService.WS_ID); //$NON-NLS-1$
 		getContext().registerService(IAuthorizationService.class.getName(), authorizationService, properties);
 
-		Inject.service(IPermissionStore.class).useRanking().into(authorizationService).andStart(
-				Activator.getDefault().getContext());
+		Inject.service(IPermissionStore.class).useRanking().into(authorizationService)
+				.andStart(Activator.getDefault().getContext());
 	}
 
 	private void createSessionServiceAndInjectors() {
 		// register SessionService
-		Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
+		final Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString()); //$NON-NLS-1$
 		properties.put("riena.remote.protocol", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("riena.remote.path", ISessionService.WS_ID); //$NON-NLS-1$
-		ISessionService sessionService = new SessionService();
+		final ISessionService sessionService = new SessionService();
 		getContext().registerService(ISessionService.class.getName(), sessionService, properties);
 
 		Inject.service(ISessionStore.class).into(sessionService).andStart(Activator.getDefault().getContext());
@@ -123,7 +123,7 @@ public class Activator extends RienaActivator {
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		Activator.plugin = null;
 		super.stop(context);
 	}

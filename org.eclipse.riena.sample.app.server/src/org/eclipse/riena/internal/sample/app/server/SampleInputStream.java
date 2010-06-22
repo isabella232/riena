@@ -19,7 +19,7 @@ import java.io.InputStream;
 public class SampleInputStream extends InputStream {
 
 	private int offset = 0;
-	private int start = 0;
+	private final int start = 0;
 
 	/**
 	 *

@@ -21,7 +21,7 @@ import java.util.Map;
 public class IconManager implements IIconManager {
 
 	private static final char EXTENSION_SEPARATOR = '.';
-	private Map<String, Icon> icons;
+	private final Map<String, Icon> icons;
 
 	/**
 	 * Constructor.
@@ -33,37 +33,37 @@ public class IconManager implements IIconManager {
 	/**
 	 * {@inheritDoc}
 	 */
-	public String getIconID(String name, IconSize size) {
+	public String getIconID(final String name, final IconSize size) {
 		return getIconID(name, size, IconState.NORMAL);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public String getIconID(String name, IconSize size, IconState state) {
+	public String getIconID(final String name, final IconSize size, final IconState state) {
 
 		if (name == null) {
 			return null;
 		}
 
-		Icon icon = createIcon(name, size, state);
-		String iconID = icon.getID();
+		final Icon icon = createIcon(name, size, state);
+		final String iconID = icon.getID();
 
 		icons.put(iconID, icon);
 
 		return iconID;
 	}
 
-	protected Icon createIcon(String name, IconSize size, IconState state) {
+	protected Icon createIcon(final String name, final IconSize size, final IconState state) {
 		return new Icon(name, size, state);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public String getName(String iconID) {
+	public String getName(final String iconID) {
 
-		Icon icon = icons.get(iconID);
+		final Icon icon = icons.get(iconID);
 
 		if (icon != null) {
 			return icon.getName();
@@ -74,9 +74,9 @@ public class IconManager implements IIconManager {
 	/**
 	 * {@inheritDoc}
 	 */
-	public IconSize getSize(String iconID) {
+	public IconSize getSize(final String iconID) {
 
-		Icon icon = icons.get(iconID);
+		final Icon icon = icons.get(iconID);
 
 		if (icon != null) {
 			return icon.getSize();
@@ -87,9 +87,9 @@ public class IconManager implements IIconManager {
 	/**
 	 * {@inheritDoc}
 	 */
-	public IconState getState(String iconID) {
+	public IconState getState(final String iconID) {
 
-		Icon icon = icons.get(iconID);
+		final Icon icon = icons.get(iconID);
 
 		if (icon != null) {
 			return icon.getState();
@@ -100,7 +100,7 @@ public class IconManager implements IIconManager {
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean hasExtension(String iconID) {
+	public boolean hasExtension(final String iconID) {
 		return iconID.indexOf(EXTENSION_SEPARATOR) > 0;
 	}
 
@@ -110,9 +110,9 @@ public class IconManager implements IIconManager {
 	 */
 	public class Icon {
 
-		private String name;
-		private IconSize size;
-		private IconState state;
+		private final String name;
+		private final IconSize size;
+		private final IconState state;
 
 		/**
 		 * Creates an icon.
@@ -124,7 +124,7 @@ public class IconManager implements IIconManager {
 		 * @param state
 		 *            The icon state.
 		 */
-		public Icon(String name, IconSize size, IconState state) {
+		public Icon(final String name, final IconSize size, final IconState state) {
 			this.name = name;
 			this.size = size;
 			this.state = state;

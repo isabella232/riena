@@ -27,10 +27,10 @@ public class SimpleMonitoringReceiver implements IReceiver {
 	 * @see org.eclipse.riena.monitor.common.ICollectibleReceiver#take(long,
 	 * java.util.List)
 	 */
-	public boolean take(long senderTime, List<Collectible<?>> collectibles) {
+	public boolean take(final long senderTime, final List<Collectible<?>> collectibles) {
 		System.out.println("Received " + collectibles.size() + " collectibles at " + new Date(senderTime) //$NON-NLS-1$ //$NON-NLS-2$
 				+ " sender time."); //$NON-NLS-1$
-		for (Collectible<?> received : collectibles) {
+		for (final Collectible<?> received : collectibles) {
 			System.out.println(" - " + received); //$NON-NLS-1$
 		}
 		return true;

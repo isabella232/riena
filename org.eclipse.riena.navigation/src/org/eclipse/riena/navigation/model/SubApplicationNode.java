@@ -40,7 +40,7 @@ public class SubApplicationNode extends
 	 * @param nodeId
 	 *            Identifies the node in the application model tree.
 	 */
-	public SubApplicationNode(NavigationNodeId nodeId) {
+	public SubApplicationNode(final NavigationNodeId nodeId) {
 		super(nodeId);
 	}
 
@@ -53,7 +53,7 @@ public class SubApplicationNode extends
 	 *            Label of the sub application displayed on the sub applications
 	 *            tab.
 	 */
-	public SubApplicationNode(NavigationNodeId nodeId, String label) {
+	public SubApplicationNode(final NavigationNodeId nodeId, final String label) {
 		super(nodeId, label);
 	}
 
@@ -64,12 +64,12 @@ public class SubApplicationNode extends
 	 *            Label of the sub application displayed on the sub applications
 	 *            tab.
 	 */
-	public SubApplicationNode(String label) {
+	public SubApplicationNode(final String label) {
 		super(null, label);
 	}
 
 	@Override
-	protected void addChildParent(IModuleGroupNode child) {
+	protected void addChildParent(final IModuleGroupNode child) {
 		child.setParent(this);
 	}
 

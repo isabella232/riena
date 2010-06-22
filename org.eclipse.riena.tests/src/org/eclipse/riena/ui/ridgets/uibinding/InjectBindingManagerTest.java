@@ -75,9 +75,9 @@ public class InjectBindingManagerTest extends TestCase {
 	 */
 	public void testInjectRidget() throws Exception {
 
-		Label label1 = new Label(shell, SWT.NONE);
+		final Label label1 = new Label(shell, SWT.NONE);
 
-		IRidget ridget = ReflectionUtils.invokeHidden(manager, "createRidget", label1);
+		final IRidget ridget = ReflectionUtils.invokeHidden(manager, "createRidget", label1);
 
 		ReflectionUtils.invokeHidden(manager, "injectRidget", ridgetContainer, "label1", ridget);
 
@@ -95,12 +95,12 @@ public class InjectBindingManagerTest extends TestCase {
 	 */
 	public void testGetRidget() throws Exception {
 
-		Label label1 = new Label(shell, SWT.NONE);
+		final Label label1 = new Label(shell, SWT.NONE);
 
-		IRidget ridget = ReflectionUtils.invokeHidden(manager, "createRidget", label1);
+		final IRidget ridget = ReflectionUtils.invokeHidden(manager, "createRidget", label1);
 		ReflectionUtils.invokeHidden(manager, "injectRidget", ridgetContainer, "label1", ridget);
 
-		IRidget ridget1 = ReflectionUtils.invokeHidden(manager, "getRidget", "label1", ridgetContainer);
+		final IRidget ridget1 = ReflectionUtils.invokeHidden(manager, "getRidget", "label1", ridgetContainer);
 		assertSame(ridget, ridget1);
 
 	}
@@ -110,8 +110,8 @@ public class InjectBindingManagerTest extends TestCase {
 
 	private static final class BindingPropertyLocator implements IBindingPropertyLocator {
 
-		public String locateBindingProperty(Object uiControl) {
-			Control control = (Control) uiControl;
+		public String locateBindingProperty(final Object uiControl) {
+			final Control control = (Control) uiControl;
 			return (String) control.getData(BINDING_PROPERTY);
 		}
 	}
@@ -121,20 +121,20 @@ public class InjectBindingManagerTest extends TestCase {
 	 */
 	private static class ControlRidgetMapper implements IControlRidgetMapper<Object> {
 
-		public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz) {
+		public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz) {
 			// not supported in this test
 		}
 
-		public void addMapping(Class<? extends Object> controlClazz, Class<? extends IRidget> ridgetClazz,
-				IMappingCondition condition) {
+		public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz,
+				final IMappingCondition condition) {
 			// not supported in this test
 		}
 
-		public Class<? extends IRidget> getRidgetClass(Class<? extends Object> controlClazz) {
+		public Class<? extends IRidget> getRidgetClass(final Class<? extends Object> controlClazz) {
 			return LabelRidget.class;
 		}
 
-		public Class<? extends IRidget> getRidgetClass(Object control) {
+		public Class<? extends IRidget> getRidgetClass(final Object control) {
 			return LabelRidget.class;
 		}
 
@@ -144,18 +144,18 @@ public class InjectBindingManagerTest extends TestCase {
 
 		private ILabelRidget label1;
 		private ILabelRidget label2;
-		private Map<String, IRidget> ridgets;
+		private final Map<String, IRidget> ridgets;
 
 		public RidgetContainer() {
 			ridgets = new HashMap<String, IRidget>();
 		}
 
-		public void addRidget(String id, IRidget ridget) {
+		public void addRidget(final String id, final IRidget ridget) {
 			ridgets.put(id, ridget);
 
 		}
 
-		public IRidget getRidget(String id) {
+		public IRidget getRidget(final String id) {
 			return ridgets.get(id);
 		}
 
@@ -167,7 +167,7 @@ public class InjectBindingManagerTest extends TestCase {
 			return label1;
 		}
 
-		public void setLabel1(ILabelRidget label1) {
+		public void setLabel1(final ILabelRidget label1) {
 			this.label1 = label1;
 		}
 
@@ -175,7 +175,7 @@ public class InjectBindingManagerTest extends TestCase {
 			return label2;
 		}
 
-		public void setLabel2(ILabelRidget label2) {
+		public void setLabel2(final ILabelRidget label2) {
 			this.label2 = label2;
 		}
 
@@ -183,7 +183,7 @@ public class InjectBindingManagerTest extends TestCase {
 		}
 
 		@SuppressWarnings("unchecked")
-		public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+		public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
 			return (R) getRidget(id);
 		}
 

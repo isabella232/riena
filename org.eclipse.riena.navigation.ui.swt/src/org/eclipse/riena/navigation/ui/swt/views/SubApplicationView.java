@@ -74,11 +74,11 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubApplicationView.class);
 
-	private AbstractViewBindingDelegate binding;
+	private final AbstractViewBindingDelegate binding;
 	private SubApplicationController subApplicationController;
 	private SubApplicationListener subApplicationListener;
 	private SubApplicationNode subApplicationNode;
-	private List<Object> uiControls;
+	private final List<Object> uiControls;
 
 	private static IBindingManager menuItemBindingManager;
 
@@ -96,7 +96,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		}
 	}
 
-	public void addUpdateListener(IComponentUpdateListener listener) {
+	public void addUpdateListener(final IComponentUpdateListener listener) {
 		throw new UnsupportedOperationException();
 
 	}
@@ -108,9 +108,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * 
 	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#bind(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void bind(SubApplicationNode node) {
+	public void bind(final SubApplicationNode node) {
 		if (getNavigationNode().getNavigationNodeController() instanceof IController) {
-			IController controller = (IController) node.getNavigationNodeController();
+			final IController controller = (IController) node.getNavigationNodeController();
 			binding.injectRidgets(controller);
 			binding.bind(controller);
 			bindMenuAndToolItems(controller);
@@ -121,7 +121,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		getNavigationNode().addListener(subApplicationListener);
 	}
 
-	public void createInitialLayout(IPageLayout layout) {
+	public void createInitialLayout(final IPageLayout layout) {
 		addUIControls();
 		subApplicationNode = (SubApplicationNode) locateSubApplication(layout.getDescriptor().getId());
 		subApplicationController = createController(subApplicationNode);
@@ -141,7 +141,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			getNavigationNode().removeListener(subApplicationListener);
 
 			if (getNavigationNode().getNavigationNodeController() instanceof IController) {
-				IController controller = (IController) getNavigationNode().getNavigationNodeController();
+				final IController controller = (IController) getNavigationNode().getNavigationNodeController();
 				binding.unbind(controller);
 				if (menuItemBindingManager != null) {
 					menuItemBindingManager.unbind(controller, getUIControls());
@@ -151,7 +151,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	}
 
 	protected AbstractViewBindingDelegate createBinding() {
-		DelegatingRidgetMapper ridgetMapper = new DelegatingRidgetMapper(SwtControlRidgetMapper.getInstance());
+		final DelegatingRidgetMapper ridgetMapper = new DelegatingRidgetMapper(SwtControlRidgetMapper.getInstance());
 		addMappings(ridgetMapper);
 		return new InjectSwtViewBindingDelegate(ridgetMapper);
 	}
@@ -164,11 +164,11 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 *            sub-application node
 	 * @return controller of the sub-application view
 	 */
-	protected SubApplicationController createController(ISubApplicationNode subApplication) {
+	protected SubApplicationController createController(final ISubApplicationNode subApplication) {
 		return new SubApplicationController(subApplication);
 	}
 
-	protected void doBaseLayout(IPageLayout layout) {
+	protected void doBaseLayout(final IPageLayout layout) {
 		layout.setEditorAreaVisible(false);
 		layout.setFixed(true);
 	}
@@ -176,7 +176,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	// helping methods
 	//////////////////
 
-	private void addMappings(DelegatingRidgetMapper ridgetMapper) {
+	private void addMappings(final DelegatingRidgetMapper ridgetMapper) {
 		ridgetMapper.addMapping(UIProcessControl.class, UIProcessRidget.class);
 	}
 
@@ -184,13 +184,13 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		initUIProcessRidget();
 	}
 
-	private void bindMenuAndToolItems(IController controller) {
+	private void bindMenuAndToolItems(final IController controller) {
 		createRidgets(controller);
 		menuItemBindingManager.bind(controller, getUIControls());
 	}
 
-	private IBindingManager createMenuItemBindingManager(IBindingPropertyLocator propertyStrategy,
-			IControlRidgetMapper<Object> mapper) {
+	private IBindingManager createMenuItemBindingManager(final IBindingPropertyLocator propertyStrategy,
+			final IControlRidgetMapper<Object> mapper) {
 		return new DefaultBindingManager(propertyStrategy, mapper);
 	}
 
@@ -200,7 +200,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * @param controller
 	 * @param item
 	 */
-	private void createRidget(IController controller, Item item) {
+	private void createRidget(final IController controller, final Item item) {
 		if (isSeparator(item)) {
 			// no ridget for separator
 			// and
@@ -219,25 +219,25 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			return;
 		}
 
-		IRidget ridget = menuItemBindingManager.createRidget(item);
+		final IRidget ridget = menuItemBindingManager.createRidget(item);
 		ridget.setUIControl(item);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, id);
 		getUIControls().add(item);
 		controller.addRidget(id, ridget);
 
 		if (item instanceof MenuItem) {
-			MenuItem menuItem = (MenuItem) item;
+			final MenuItem menuItem = (MenuItem) item;
 			createRidget(controller, menuItem.getMenu());
 		}
 	}
 
-	private void createRidget(IController controller, Menu menu) {
+	private void createRidget(final IController controller, final Menu menu) {
 		if (menu == null) {
 			return;
 		}
 
-		MenuItem[] items = menu.getItems();
-		for (MenuItem item : items) {
+		final MenuItem[] items = menu.getItems();
+		for (final MenuItem item : items) {
 			createRidget(controller, item);
 		}
 	}
@@ -247,24 +247,24 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * 
 	 * @param controller
 	 */
-	private void createRidgets(IController controller) {
+	private void createRidgets(final IController controller) {
 		// items of Riena "menu bar"
-		List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites(getShell());
-		for (MenuCoolBarComposite menuBarComp : menuCoolBarComposites) {
+		final List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites(getShell());
+		for (final MenuCoolBarComposite menuBarComp : menuCoolBarComposites) {
 
-			List<ToolItem> toolItems = menuBarComp.getTopLevelItems();
-			for (ToolItem toolItem : toolItems) {
+			final List<ToolItem> toolItems = menuBarComp.getTopLevelItems();
+			for (final ToolItem toolItem : toolItems) {
 				createRidget(controller, toolItem);
 				if (toolItem.getData() instanceof MenuManager) {
-					MenuManager manager = (MenuManager) toolItem.getData();
+					final MenuManager manager = (MenuManager) toolItem.getData();
 					createRidget(controller, manager.getMenu());
 				}
 			}
 		}
 
 		// items of cool bar
-		List<ToolItem> toolItems = getAllToolItems();
-		for (ToolItem toolItem : toolItems) {
+		final List<ToolItem> toolItems = getAllToolItems();
+		for (final ToolItem toolItem : toolItems) {
 			createRidget(controller, toolItem);
 		}
 	}
@@ -275,12 +275,12 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * @return list of tool items
 	 */
 	private List<ToolItem> getAllToolItems() {
-		List<ToolItem> items = new ArrayList<ToolItem>();
+		final List<ToolItem> items = new ArrayList<ToolItem>();
 
-		List<CoolBar> coolBars = getCoolBars(getShell());
-		for (CoolBar coolBar : coolBars) {
-			List<ToolBar> toolBars = getToolBars(coolBar);
-			for (ToolBar toolBar : toolBars) {
+		final List<CoolBar> coolBars = getCoolBars(getShell());
+		for (final CoolBar coolBar : coolBars) {
+			final List<ToolBar> toolBars = getToolBars(coolBar);
+			for (final ToolBar toolBar : toolBars) {
 				items.addAll(Arrays.asList(toolBar.getItems()));
 			}
 		}
@@ -295,14 +295,14 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * @param composite
 	 * @return list of cool bars
 	 */
-	private List<CoolBar> getCoolBars(Composite composite) {
-		List<CoolBar> coolBars = new ArrayList<CoolBar>();
+	private List<CoolBar> getCoolBars(final Composite composite) {
+		final List<CoolBar> coolBars = new ArrayList<CoolBar>();
 		if (composite == null) {
 			return coolBars;
 		}
 
-		Control[] children = composite.getChildren();
-		for (Control child : children) {
+		final Control[] children = composite.getChildren();
+		for (final Control child : children) {
 			if (child instanceof CoolBar) {
 				if (getParentOfType(child, MenuCoolBarComposite.class) == null) {
 					coolBars.add((CoolBar) child);
@@ -323,10 +323,10 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * @param item
 	 * @return identifier, or {@code null} if none
 	 */
-	private String getItemId(Item item, String prefix) {
+	private String getItemId(final Item item, final String prefix) {
 		String id = null;
 		if (item.getData() instanceof IContributionItem) {
-			IContributionItem contributionItem = (IContributionItem) item.getData();
+			final IContributionItem contributionItem = (IContributionItem) item.getData();
 			id = contributionItem.getId();
 		}
 		if (StringUtils.isEmpty(id)) {
@@ -349,7 +349,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 *            menu item
 	 * @return identifier, or {@code null} if none
 	 */
-	private String getItemId(MenuItem item) {
+	private String getItemId(final MenuItem item) {
 		return getItemId(item, IActionRidget.BASE_ID_MENUACTION);
 	}
 
@@ -360,7 +360,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 *            tool item
 	 * @return identifier, or {@code null} if none
 	 */
-	private String getItemId(ToolItem item) {
+	private String getItemId(final ToolItem item) {
 		return getItemId(item, IActionRidget.BASE_ID_TOOLBARACTION);
 	}
 
@@ -370,11 +370,11 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * @param composite
 	 * @return composite with menu bar
 	 */
-	private List<MenuCoolBarComposite> getMenuCoolBarComposites(Composite composite) {
-		List<MenuCoolBarComposite> composites = new ArrayList<MenuCoolBarComposite>();
+	private List<MenuCoolBarComposite> getMenuCoolBarComposites(final Composite composite) {
+		final List<MenuCoolBarComposite> composites = new ArrayList<MenuCoolBarComposite>();
 
-		Control[] children = composite.getChildren();
-		for (Control child : children) {
+		final Control[] children = composite.getChildren();
+		for (final Control child : children) {
 			if (child instanceof MenuCoolBarComposite) {
 				composites.add((MenuCoolBarComposite) child);
 				continue;
@@ -387,8 +387,8 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		return composites;
 	}
 
-	private Composite getParentOfType(Control control, Class<? extends Control> clazz) {
-		Composite parent = control.getParent();
+	private Composite getParentOfType(final Control control, final Class<? extends Control> clazz) {
+		final Composite parent = control.getParent();
 		if (parent == null) {
 			return null;
 		}
@@ -404,10 +404,10 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * @return application shell
 	 */
 	private Shell getShell() {
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
-		Shell[] shells = Display.getDefault().getShells();
-		for (Shell shell : shells) {
-			String value = locator.locateBindingProperty(shell);
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final Shell[] shells = Display.getDefault().getShells();
+		for (final Shell shell : shells) {
+			final String value = locator.locateBindingProperty(shell);
 			if ((value != null) && value.equals(ApplicationViewAdvisor.SHELL_RIDGET_PROPERTY)) {
 				return shell;
 			}
@@ -426,14 +426,14 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 *            cool bar
 	 * @return list of tool bars
 	 */
-	private List<ToolBar> getToolBars(CoolBar coolBar) {
-		List<ToolBar> toolBars = new ArrayList<ToolBar>();
+	private List<ToolBar> getToolBars(final CoolBar coolBar) {
+		final List<ToolBar> toolBars = new ArrayList<ToolBar>();
 		if (coolBar == null) {
 			return toolBars;
 		}
 
-		Control[] children = coolBar.getChildren();
-		for (Control child : children) {
+		final Control[] children = coolBar.getChildren();
+		for (final Control child : children) {
 			if (child instanceof ToolBar) {
 				if (getParentOfType(child, MenuCoolBarComposite.class) == null) {
 					toolBars.add((ToolBar) child);
@@ -454,24 +454,24 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * @param controller
 	 *            controller of the sub-application
 	 */
-	private void initializeListener(SubApplicationController controller) {
-		NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
+	private void initializeListener(final SubApplicationController controller) {
+		final NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(new MySubModuleNodeListener());
 
 		navigationTreeObserver.addListenerTo(controller.getNavigationNode());
 	}
 
 	private void initUIProcessRidget() {
-		UIProcessControl uiControl = new UIProcessControl(getShell());
+		final UIProcessControl uiControl = new UIProcessControl(getShell());
 		uiControl.setPropertyName("uiProcessRidget"); //$NON-NLS-1$
 		binding.addUIControl(uiControl);
 	}
 
-	private boolean isSeparator(Item item) {
+	private boolean isSeparator(final Item item) {
 		return (item.getStyle() & SWT.SEPARATOR) == SWT.SEPARATOR;
 	}
 
-	private ISubApplicationNode locateSubApplication(String id) {
+	private ISubApplicationNode locateSubApplication(final String id) {
 		return SwtViewProvider.getInstance().getNavigationNode(id, ISubApplicationNode.class);
 	}
 
@@ -480,17 +480,17 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 
 	private class SubApplicationListener extends SubApplicationNodeListener {
 		@Override
-		public void block(ISubApplicationNode source, boolean block) {
+		public void block(final ISubApplicationNode source, final boolean block) {
 			super.block(source, block);
-			for (IModuleGroupNode group : source.getChildren()) {
-				for (IModuleNode module : group.getChildren()) {
+			for (final IModuleGroupNode group : source.getChildren()) {
+				for (final IModuleNode module : group.getChildren()) {
 					module.setBlocked(block);
 				}
 			}
 		}
 
 		@Override
-		public void disposed(ISubApplicationNode source) {
+		public void disposed(final ISubApplicationNode source) {
 			unbind();
 		}
 	}
@@ -502,34 +502,34 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		private boolean navigationUp = false;
 
 		@Override
-		public void prepared(ISubModuleNode source) {
+		public void prepared(final ISubModuleNode source) {
 			checkBaseStructure();
 
-			SwtViewId id = getViewId(source);
+			final SwtViewId id = getViewId(source);
 			prepareView(id);
 		}
 
 		@Override
-		public void activated(ISubModuleNode source) {
+		public void activated(final ISubModuleNode source) {
 			checkBaseStructure();
 
 			if (null != source && !source.isSelectable()) {
 				return;
 			}
 
-			SwtViewId id = getViewId(source);
+			final SwtViewId id = getViewId(source);
 			prepareView(id);
 			showView(id);
 
 		}
 
 		@Override
-		public void disposed(ISubModuleNode source) {
+		public void disposed(final ISubModuleNode source) {
 			// not selectable SubModules dont't have an associated view and therefore no view has to be hidden
 			if (source.isSelectable()) {
-				SwtViewId id = getViewId(source);
+				final SwtViewId id = getViewId(source);
 				hideView(id);
-				SwtViewProvider viewProvider = SwtViewProvider.getInstance();
+				final SwtViewProvider viewProvider = SwtViewProvider.getInstance();
 				viewProvider.unregisterSwtViewId(source);
 			}
 		}
@@ -550,7 +550,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		}
 
 		private void createNavigation() {
-			String secId = createNextId();
+			final String secId = createNextId();
 			prepareView(NavigationViewPart.ID, secId);
 			showView(NavigationViewPart.ID, secId);
 		}
@@ -571,7 +571,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		 *            sub-module node
 		 * @return view ID
 		 */
-		private SwtViewId getViewId(ISubModuleNode node) {
+		private SwtViewId getViewId(final ISubModuleNode node) {
 			return SwtViewProvider.getInstance().getSwtViewId(node);
 		}
 
@@ -583,10 +583,10 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		 * @param secondaryId
 		 *            the secondary id to use
 		 */
-		private void hideView(String id, String secondary) {
-			IViewReference viewRef = getActivePage().findViewReference(id, secondary);
+		private void hideView(final String id, final String secondary) {
+			final IViewReference viewRef = getActivePage().findViewReference(id, secondary);
 			if (viewRef != null) {
-				IViewPart view = viewRef.getView(false);
+				final IViewPart view = viewRef.getView(false);
 				if (view instanceof INavigationNodeView<?>) {
 					((INavigationNodeView<?>) view).unbind();
 				}
@@ -594,11 +594,11 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			}
 		}
 
-		private void hideView(SwtViewId id) {
+		private void hideView(final SwtViewId id) {
 			hideView(id.getId(), id.getSecondary());
 		}
 
-		private void showView(SwtViewId id) {
+		private void showView(final SwtViewId id) {
 			showView(id.getId(), id.getSecondary());
 		}
 
@@ -610,15 +610,15 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		 * @param secondaryId
 		 *            the secondary id to use
 		 */
-		private void showView(String id, String secondary) {
-			IWorkbenchPage page = getActivePage();
-			IViewReference viewRef = page.findViewReference(id, secondary);
+		private void showView(final String id, final String secondary) {
+			final IWorkbenchPage page = getActivePage();
+			final IViewReference viewRef = page.findViewReference(id, secondary);
 			if (viewRef != null) {
 				((WorkbenchPage) page).getActivePerspective().bringToTop(viewRef);
 			}
 		}
 
-		private IViewReference prepareView(SwtViewId id) {
+		private IViewReference prepareView(final SwtViewId id) {
 			return prepareView(id.getId(), id.getSecondary());
 		}
 
@@ -631,15 +631,15 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		 *            the secondary id to use
 		 * @return the view reference, or <code>null</code> if none is found
 		 */
-		private IViewReference prepareView(String id, String secondary) {
+		private IViewReference prepareView(final String id, final String secondary) {
 
 			try {
-				IWorkbenchPage page = getActivePage();
+				final IWorkbenchPage page = getActivePage();
 				// open view but don't activate it and don't bring it to top
 				page.showView(id, secondary, IWorkbenchPage.VIEW_VISIBLE);
 				return page.findViewReference(id, secondary);
-			} catch (PartInitException exc) {
-				String msg = String.format("Failed to prepare/show view: %s, %s", id, secondary); //$NON-NLS-1$
+			} catch (final PartInitException exc) {
+				final String msg = String.format("Failed to prepare/show view: %s, %s", id, secondary); //$NON-NLS-1$
 				LOGGER.log(0, msg, exc);
 			}
 

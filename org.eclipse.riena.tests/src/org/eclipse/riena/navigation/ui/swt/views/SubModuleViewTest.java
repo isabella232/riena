@@ -48,12 +48,12 @@ public class SubModuleViewTest extends RienaTestCase {
 
 		addPluginXml(SubModuleViewTest.class, "SubModuleViewTest.xml");
 
-		ApplicationNode appNode = new ApplicationNode();
-		SubApplicationNode subAppNode = new SubApplicationNode();
+		final ApplicationNode appNode = new ApplicationNode();
+		final SubApplicationNode subAppNode = new SubApplicationNode();
 		appNode.addChild(subAppNode);
-		ModuleGroupNode mgNode = new ModuleGroupNode(null);
+		final ModuleGroupNode mgNode = new ModuleGroupNode(null);
 		subAppNode.addChild(mgNode);
-		IModuleNode parent = new ModuleNode(null, "TestModuleLabel");
+		final IModuleNode parent = new ModuleNode(null, "TestModuleLabel");
 		mgNode.addChild(parent);
 
 		anotherNode = new SubModuleNode(new NavigationNodeId("testId2", "2"), "TestSubModuleLabel2");
@@ -79,14 +79,14 @@ public class SubModuleViewTest extends RienaTestCase {
 
 	public void testBlocking() {
 		node.setBlocked(true);
-		Composite parentComposite = ReflectionUtils.invokeHidden(subModuleNodeView, "getParentComposite");
-		Composite contentComposite = ReflectionUtils.invokeHidden(subModuleNodeView, "getContentComposite");
+		final Composite parentComposite = ReflectionUtils.invokeHidden(subModuleNodeView, "getParentComposite");
+		final Composite contentComposite = ReflectionUtils.invokeHidden(subModuleNodeView, "getContentComposite");
 		assertFalse(contentComposite.isEnabled());
-		Cursor waitCursor = parentComposite.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
+		final Cursor waitCursor = parentComposite.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
 		assertSame(waitCursor, parentComposite.getCursor());
 		node.setBlocked(false);
 		assertTrue(contentComposite.isEnabled());
-		Cursor arrowCursor = parentComposite.getDisplay().getSystemCursor(SWT.CURSOR_ARROW);
+		final Cursor arrowCursor = parentComposite.getDisplay().getSystemCursor(SWT.CURSOR_ARROW);
 		assertSame(arrowCursor, parentComposite.getCursor());
 	}
 
@@ -117,7 +117,7 @@ public class SubModuleViewTest extends RienaTestCase {
 
 	private final class TestView extends SubModuleView {
 		@Override
-		public void bind(SubModuleNode node) {
+		public void bind(final SubModuleNode node) {
 			nodesBoundToView.add(node);
 		}
 
@@ -127,7 +127,7 @@ public class SubModuleViewTest extends RienaTestCase {
 		}
 
 		@Override
-		protected void basicCreatePartControl(Composite parent) {
+		protected void basicCreatePartControl(final Composite parent) {
 		}
 	}
 

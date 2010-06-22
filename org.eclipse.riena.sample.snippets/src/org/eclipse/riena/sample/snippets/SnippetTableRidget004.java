@@ -30,30 +30,30 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class SnippetTableRidget004 {
 
-	public SnippetTableRidget004(Shell shell) {
-		Table table = new Table(shell, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
+	public SnippetTableRidget004(final Shell shell) {
+		final Table table = new Table(shell, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		// TableColumns will be created as needed when 'bind' is invoked.
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 
-		ITableRidget tableRidget = (ITableRidget) SwtRidgetFactory.createRidget(table);
+		final ITableRidget tableRidget = (ITableRidget) SwtRidgetFactory.createRidget(table);
 
 		// set the widths
-		ColumnLayoutData[] widths = { new ColumnPixelData(100, false), new ColumnWeightData(2, false),
+		final ColumnLayoutData[] widths = { new ColumnPixelData(100, false), new ColumnWeightData(2, false),
 				new ColumnWeightData(2, false), new ColumnWeightData(1, false), new ColumnWeightData(1, false), };
 		tableRidget.setColumnWidths(widths);
 
-		String[] columnPropertyNames = { "english", "german", "french", "spanish", "italian" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		String[] columnHeaders = { "English", "German", "French", "Spain", "Italian" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		IObservableList input = new WritableList(DayPojo.createWeek(), DayPojo.class);
+		final String[] columnPropertyNames = { "english", "german", "french", "spanish", "italian" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		final String[] columnHeaders = { "English", "German", "French", "Spain", "Italian" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		final IObservableList input = new WritableList(DayPojo.createWeek(), DayPojo.class);
 		tableRidget.bindToModel(input, DayPojo.class, columnPropertyNames, columnHeaders);
 		tableRidget.updateFromModel();
 	}
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetTableRidget004.class.getSimpleName());
 			new SnippetTableRidget004(shell);
 			shell.setSize(500, 300);

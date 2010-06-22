@@ -44,14 +44,14 @@ public class MenuItemPropertiesTest extends TestCase {
 	 */
 	public void testMenuItemProperties() {
 
-		MenuItemRidget ridget = new MenuItemRidget();
-		Menu menu = new Menu(shell);
+		final MenuItemRidget ridget = new MenuItemRidget();
+		final Menu menu = new Menu(shell);
 		new MenuItem(menu, SWT.PUSH);
-		MenuItem item = new MenuItem(menu, SWT.PUSH);
+		final MenuItem item = new MenuItem(menu, SWT.PUSH);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, "item1");
 		ridget.setUIControl(item);
 
-		MyMenuItemProperties itemProperties = new MyMenuItemProperties(ridget);
+		final MyMenuItemProperties itemProperties = new MyMenuItemProperties(ridget);
 		assertSame(ridget, itemProperties.getRidget());
 		assertSame(menu, itemProperties.getParent());
 		assertEquals(1, itemProperties.getIndex());
@@ -63,15 +63,15 @@ public class MenuItemPropertiesTest extends TestCase {
 	 */
 	public void testCreateItemParent() {
 
-		MenuItemRidget ridget = new MenuItemRidget();
-		Menu menu = new Menu(shell);
-		MenuItem item = new MenuItem(menu, SWT.PUSH);
+		final MenuItemRidget ridget = new MenuItemRidget();
+		final Menu menu = new Menu(shell);
+		final MenuItem item = new MenuItem(menu, SWT.PUSH);
 		item.setText("MenuItem0815");
 		ridget.setUIControl(item);
 
-		MyMenuItemProperties itemProperties = new MyMenuItemProperties(ridget);
-		Menu menu2 = new Menu(shell);
-		MenuItem item2 = itemProperties.createItem(menu2);
+		final MyMenuItemProperties itemProperties = new MyMenuItemProperties(ridget);
+		final Menu menu2 = new Menu(shell);
+		final MenuItem item2 = itemProperties.createItem(menu2);
 		assertSame(item2, ridget.getUIControl());
 		assertSame(menu2, item2.getParent());
 		assertEquals(item.getText(), item2.getText());
@@ -83,18 +83,18 @@ public class MenuItemPropertiesTest extends TestCase {
 	 */
 	public void testCreateItem() {
 
-		MenuItemRidget ridget = new MenuItemRidget();
-		Menu menu = new Menu(shell);
-		MenuItem item = new MenuItem(menu, SWT.PUSH);
-		String text = "MenuItem0815";
+		final MenuItemRidget ridget = new MenuItemRidget();
+		final Menu menu = new Menu(shell);
+		final MenuItem item = new MenuItem(menu, SWT.PUSH);
+		final String text = "MenuItem0815";
 		item.setText(text);
 		ridget.setUIControl(item);
 
-		MyMenuItemProperties itemProperties = new MyMenuItemProperties(ridget);
+		final MyMenuItemProperties itemProperties = new MyMenuItemProperties(ridget);
 		item.dispose();
 		assertEquals(0, menu.getItemCount());
 
-		MenuItem item2 = itemProperties.createItem();
+		final MenuItem item2 = itemProperties.createItem();
 		assertSame(item2, ridget.getUIControl());
 		assertSame(menu, item2.getParent());
 		assertEquals(1, menu.getItemCount());
@@ -108,7 +108,7 @@ public class MenuItemPropertiesTest extends TestCase {
 	 */
 	private static class MyMenuItemProperties extends MenuItemProperties {
 
-		public MyMenuItemProperties(MenuItemRidget ridget) {
+		public MyMenuItemProperties(final MenuItemRidget ridget) {
 			super(ridget);
 		}
 
@@ -128,7 +128,7 @@ public class MenuItemPropertiesTest extends TestCase {
 		}
 
 		@Override
-		public MenuItem createItem(Menu parent) {
+		public MenuItem createItem(final Menu parent) {
 			return super.createItem(parent);
 		}
 

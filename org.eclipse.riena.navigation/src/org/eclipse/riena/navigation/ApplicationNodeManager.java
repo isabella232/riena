@@ -38,7 +38,7 @@ public final class ApplicationNodeManager {
 	 *         present. Usually only one (the default model) model is used.
 	 */
 	public static IApplicationNode getApplicationNode() {
-		IApplicationNode model = getApplicationNode(DEFAULT_NODE_NAME);
+		final IApplicationNode model = getApplicationNode(DEFAULT_NODE_NAME);
 		if (model == null && nodeMap.size() == 1) {
 			// fallback strategy
 			return nodeMap.values().iterator().next();
@@ -56,7 +56,7 @@ public final class ApplicationNodeManager {
 	 * @return the ApplicationNode with the matching name or null if no matching
 	 *         model is present.
 	 */
-	public static IApplicationNode getApplicationNode(String name) {
+	public static IApplicationNode getApplicationNode(final String name) {
 		String modelName = name;
 		if (modelName == null) {
 			modelName = DEFAULT_NODE_NAME;
@@ -82,7 +82,7 @@ public final class ApplicationNodeManager {
 	 * @param node
 	 *            the model to register
 	 */
-	public static synchronized void registerApplicationNode(IApplicationNode node) {
+	public static synchronized void registerApplicationNode(final IApplicationNode node) {
 		String nodeName = node.getLabel();
 		if (nodeName == null) {
 			nodeName = DEFAULT_NODE_NAME;
@@ -113,11 +113,11 @@ public final class ApplicationNodeManager {
 	 * @since 1.2
 	 */
 	public static ISubApplicationNode locateActiveSubApplicationNode() {
-		IApplicationNode applicationNode = ApplicationNodeManager.getApplicationNode();
+		final IApplicationNode applicationNode = ApplicationNodeManager.getApplicationNode();
 		if (applicationNode == null) {
 			return null;
 		}
-		for (ISubApplicationNode child : applicationNode.getChildren()) {
+		for (final ISubApplicationNode child : applicationNode.getChildren()) {
 			if (child.isActivated()) {
 				return child;
 			}
@@ -131,11 +131,11 @@ public final class ApplicationNodeManager {
 	 * @since 1.2
 	 */
 	public static IModuleGroupNode locateActiveModuleGroupNode() {
-		ISubApplicationNode subApplicationNode = locateActiveSubApplicationNode();
+		final ISubApplicationNode subApplicationNode = locateActiveSubApplicationNode();
 		if (subApplicationNode == null) {
 			return null;
 		}
-		for (IModuleGroupNode child : subApplicationNode.getChildren()) {
+		for (final IModuleGroupNode child : subApplicationNode.getChildren()) {
 			if (child.isActivated()) {
 				return child;
 			}
@@ -149,11 +149,11 @@ public final class ApplicationNodeManager {
 	 * @since 1.2
 	 */
 	public static IModuleNode locateActiveModuleNode() {
-		IModuleGroupNode moduleGroupNode = locateActiveModuleGroupNode();
+		final IModuleGroupNode moduleGroupNode = locateActiveModuleGroupNode();
 		if (moduleGroupNode == null) {
 			return null;
 		}
-		for (IModuleNode child : moduleGroupNode.getChildren()) {
+		for (final IModuleNode child : moduleGroupNode.getChildren()) {
 			if (child.isActivated()) {
 				return child;
 			}
@@ -167,12 +167,12 @@ public final class ApplicationNodeManager {
 	 * @since 1.2
 	 */
 	public static ISubModuleNode locateActiveSubModuleNode() {
-		IModuleNode moduleNode = locateActiveModuleNode();
+		final IModuleNode moduleNode = locateActiveModuleNode();
 		if (moduleNode == null) {
 			return null;
 		}
-		for (ISubModuleNode child : moduleNode.getChildren()) {
-			ISubModuleNode subModuleNode = getActiveSubModule(child);
+		for (final ISubModuleNode child : moduleNode.getChildren()) {
+			final ISubModuleNode subModuleNode = getActiveSubModule(child);
 			if (subModuleNode != null) {
 				return getActiveSubModule(child);
 			}
@@ -180,13 +180,13 @@ public final class ApplicationNodeManager {
 		return null;
 	}
 
-	private static ISubModuleNode getActiveSubModule(ISubModuleNode node) {
+	private static ISubModuleNode getActiveSubModule(final ISubModuleNode node) {
 
 		if (node.isActivated()) {
 			return node;
 		}
-		for (ISubModuleNode child : node.getChildren()) {
-			ISubModuleNode subModuleNode = getActiveSubModule(child);
+		for (final ISubModuleNode child : node.getChildren()) {
+			final ISubModuleNode subModuleNode = getActiveSubModule(child);
 			if (subModuleNode != null) {
 				return getActiveSubModule(child);
 			}

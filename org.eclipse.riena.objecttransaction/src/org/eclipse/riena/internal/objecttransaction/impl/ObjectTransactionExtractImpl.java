@@ -27,7 +27,7 @@ import org.eclipse.riena.objecttransaction.state.State;
  */
 public class ObjectTransactionExtractImpl implements IObjectTransactionExtract {
 
-	private ArrayList<TransactionDelta> deltas = new ArrayList<TransactionDelta>();
+	private final ArrayList<TransactionDelta> deltas = new ArrayList<TransactionDelta>();
 
 	/**
 	 * @param deltas
@@ -47,7 +47,7 @@ public class ObjectTransactionExtractImpl implements IObjectTransactionExtract {
 	 * addTransactedObject
 	 * (org.eclipse.riena.objecttransaction.ITransactedObject)
 	 */
-	public void addCleanTransactedObject(ITransactedObject transObject) {
+	public void addCleanTransactedObject(final ITransactedObject transObject) {
 		Assert.isTrue((!contains(transObject.getObjectId())), "object must not exist in extract"); //$NON-NLS-1$
 		deltas.add(new TransactionDelta(transObject.getObjectId(), State.CLEAN, transObject.getVersion()));
 	}
@@ -57,7 +57,7 @@ public class ObjectTransactionExtractImpl implements IObjectTransactionExtract {
 	 * org.eclipse.riena.objecttransaction.IObjectTransactionExtract#contains
 	 * (org.eclipse.riena.objecttransaction.IObjectId)
 	 */
-	public boolean contains(IObjectId objectid) {
+	public boolean contains(final IObjectId objectid) {
 		for (int i = 0; i < deltas.size(); i++) {
 			if (deltas.get(i).getObjectId().equals(objectid)) {
 				return true;
@@ -71,7 +71,7 @@ public class ObjectTransactionExtractImpl implements IObjectTransactionExtract {
 	 * 
 	 * @param delta
 	 */
-	protected void addDelta(TransactionDelta delta) {
+	protected void addDelta(final TransactionDelta delta) {
 		deltas.add(delta);
 	}
 
@@ -80,7 +80,7 @@ public class ObjectTransactionExtractImpl implements IObjectTransactionExtract {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		sb.append("----------extract--------------------\n"); //$NON-NLS-1$
 		for (int i = 0; i < deltas.size(); i++) {
 			sb.append(deltas.get(i));

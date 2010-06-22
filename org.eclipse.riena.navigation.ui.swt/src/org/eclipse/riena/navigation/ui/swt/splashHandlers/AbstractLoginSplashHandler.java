@@ -85,7 +85,7 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 	 * loading until the close button is clicked.
 	 */
 	private void doEventLoop() {
-		Shell splash = getSplash();
+		final Shell splash = getSplash();
 		while (!splash.isDisposed()) {
 			if (!splash.getDisplay().readAndDispatch()) {
 				splash.getDisplay().sleep();
@@ -109,8 +109,8 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 	}
 
 	protected Composite createUILoginComposite() {
-		Composite composite = new Composite(getSplash(), hasLoginCompositeBorder() ? SWT.BORDER : SWT.NONE);
-		GridLayout layout = new GridLayout(1, false);
+		final Composite composite = new Composite(getSplash(), hasLoginCompositeBorder() ? SWT.BORDER : SWT.NONE);
+		final GridLayout layout = new GridLayout(1, false);
 		composite.setLayout(layout);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		// Force composite to inherit the parents (splash) background
@@ -129,7 +129,7 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 
 	protected void configureUISplash() {
 		// Configure layout
-		GridLayout layout = new GridLayout(1, false);
+		final GridLayout layout = new GridLayout(1, false);
 		getSplash().setLayout(layout);
 		// Force splash to inherit the parents background
 		getSplash().setBackgroundMode(SWT.INHERIT_DEFAULT);
@@ -153,7 +153,7 @@ public abstract class AbstractLoginSplashHandler extends AbstractSplashHandler {
 	}
 
 	@InjectExtension
-	public void update(ILoginSplashViewExtension[] data) {
+	public void update(final ILoginSplashViewExtension[] data) {
 
 		if (data.length > 0) {
 			loginSplashViewExtension = data[0];

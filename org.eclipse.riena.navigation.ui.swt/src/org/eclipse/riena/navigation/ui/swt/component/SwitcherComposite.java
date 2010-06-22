@@ -30,7 +30,7 @@ import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
  */
 public class SwitcherComposite extends Composite {
 
-	private ApplicationNode node;
+	private final ApplicationNode node;
 
 	/**
 	 * Creates a new instance of {@code SwitcherComposite} and initializes it.
@@ -41,7 +41,7 @@ public class SwitcherComposite extends Composite {
 	 * @param node
 	 *            node of the application
 	 */
-	public SwitcherComposite(Composite parent, ApplicationNode node) {
+	public SwitcherComposite(final Composite parent, final ApplicationNode node) {
 		super(parent, SWT.DOUBLE_BUFFERED);
 		this.node = node;
 		init(parent);
@@ -54,20 +54,20 @@ public class SwitcherComposite extends Composite {
 	 *            parent of composite
 	 * @return composite
 	 */
-	private void init(Composite parent) {
+	private void init(final Composite parent) {
 
 		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
-		int padding = getShellPadding();
+		final int padding = getShellPadding();
 
-		FormData formData = new FormData();
+		final FormData formData = new FormData();
 		formData.top = new FormAttachment(0, getSwitchterTopMargin() + padding);
 		formData.left = new FormAttachment(0, 0);
 		formData.right = new FormAttachment(100, -0);
 		formData.height = getSwitchterHeight();
 		setLayoutData(formData);
 		setLayout(new FillLayout());
-		Widget switcher = new SubApplicationSwitcherWidget(this, SWT.NONE, node);
+		final Widget switcher = new SubApplicationSwitcherWidget(this, SWT.NONE, node);
 		WidgetIdentificationSupport.setDefaultIdentification(switcher);
 
 	}
@@ -80,7 +80,7 @@ public class SwitcherComposite extends Composite {
 	 */
 	private int getSwitchterTopMargin() {
 
-		int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN);
+		final int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN);
 		return margin;
 
 	}
@@ -92,7 +92,7 @@ public class SwitcherComposite extends Composite {
 	 */
 	private int getSwitchterHeight() {
 
-		int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
+		final int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
 		return margin;
 
 	}
@@ -104,7 +104,7 @@ public class SwitcherComposite extends Composite {
 	 */
 	private int getShellPadding() {
 
-		ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
+		final ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		return borderRenderer.getCompleteBorderWidth();
 

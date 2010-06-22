@@ -28,6 +28,7 @@ public interface IRidget {
 	/**
 	 * @deprecated never implemented - do not use
 	 */
+	@Deprecated
 	String PROPERTY_BLOCKED = "blocked"; //$NON-NLS-1$
 
 	/**
@@ -251,6 +252,7 @@ public interface IRidget {
 	 * 
 	 * @deprecated - this was never implemented - do not call
 	 */
+	@Deprecated
 	void setBlocked(boolean blocked);
 
 	/**
@@ -260,6 +262,7 @@ public interface IRidget {
 	 * 
 	 * @deprecated - this was never implemented - do not call
 	 */
+	@Deprecated
 	boolean isBlocked();
 
 	/**

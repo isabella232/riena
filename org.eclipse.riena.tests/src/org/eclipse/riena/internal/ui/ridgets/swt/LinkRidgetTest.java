@@ -35,7 +35,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 public class LinkRidgetTest extends AbstractSWTRidgetTest {
 
 	@Override
-	protected Widget createWidget(Composite parent) {
+	protected Widget createWidget(final Composite parent) {
 		return new Link(parent, SWT.NONE);
 	}
 
@@ -55,13 +55,13 @@ public class LinkRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(LinkRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testSetText() {
-		ILinkRidget ridget = getRidget();
-		Link control = getWidget();
+		final ILinkRidget ridget = getRidget();
+		final Link control = getWidget();
 
 		ridget.setText("text");
 
@@ -101,8 +101,8 @@ public class LinkRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetTextAndLink() {
-		ILinkRidget ridget = getRidget();
-		Link control = getWidget();
+		final ILinkRidget ridget = getRidget();
+		final Link control = getWidget();
 
 		ridget.setText("text", "link");
 
@@ -141,7 +141,7 @@ public class LinkRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetTextFiresEvents() {
-		ILinkRidget ridget = getRidget();
+		final ILinkRidget ridget = getRidget();
 
 		ridget.setText("textA");
 
@@ -155,9 +155,9 @@ public class LinkRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToModelOneArg() {
-		ILinkRidget ridget = getRidget();
+		final ILinkRidget ridget = getRidget();
 		ridget.setText("<a>alpha</a>");
-		StringBean bean = new StringBean("<a>beta</a>");
+		final StringBean bean = new StringBean("<a>beta</a>");
 
 		ridget.bindToModel(BeansObservables.observeValue(bean, StringBean.PROP_VALUE));
 
@@ -178,9 +178,9 @@ public class LinkRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToModelTwoArg() {
-		ILinkRidget ridget = getRidget();
+		final ILinkRidget ridget = getRidget();
 		ridget.setText("<a>alpha</a>");
-		StringBean bean = new StringBean("<a>beta</a>");
+		final StringBean bean = new StringBean("<a>beta</a>");
 
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
@@ -201,11 +201,11 @@ public class LinkRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetModelToUIControlConverter() {
-		ILinkRidget ridget = getRidget();
-		Link control = getWidget();
-		StringBean bean = new StringBean("desrever");
+		final ILinkRidget ridget = getRidget();
+		final Link control = getWidget();
+		final StringBean bean = new StringBean("desrever");
 
-		Reverser converter = new Reverser();
+		final Reverser converter = new Reverser();
 		ridget.setModelToUIControlConverter(converter);
 		ridget.bindToModel(BeansObservables.observeValue(bean, StringBean.PROP_VALUE));
 		ridget.updateFromModel();
@@ -227,17 +227,17 @@ public class LinkRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			getRidget().addSelectionListener(null);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 	}
 
 	public void testAddListener() {
-		ILinkRidget ridget = getRidget();
-		Link control = getWidget();
+		final ILinkRidget ridget = getRidget();
+		final Link control = getWidget();
 
-		FTSelectionListener listener1 = new FTSelectionListener();
-		FTSelectionListener listener2 = new FTSelectionListener();
+		final FTSelectionListener listener1 = new FTSelectionListener();
+		final FTSelectionListener listener2 = new FTSelectionListener();
 
 		ridget.addSelectionListener(listener1);
 		ridget.addSelectionListener(listener2);
@@ -269,10 +269,10 @@ public class LinkRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSelectionContainsLink() {
-		ILinkRidget ridget = getRidget();
-		Link control = getWidget();
+		final ILinkRidget ridget = getRidget();
+		final Link control = getWidget();
 		ridget.setText("<a href=\"link1\">text1</a> or <a>text2</a>");
-		FTSelectionListener listener = new FTSelectionListener();
+		final FTSelectionListener listener = new FTSelectionListener();
 		ridget.addSelectionListener(listener);
 
 		getShell().layout();
@@ -303,14 +303,14 @@ public class LinkRidgetTest extends AbstractSWTRidgetTest {
 	 * Converts from String to String. Will reverse the source value.
 	 */
 	private static final class Reverser implements IConverter {
-		public Object convert(Object fromObject) {
-			String s = (String) fromObject;
+		public Object convert(final Object fromObject) {
+			final String s = (String) fromObject;
 			String result = null;
 			if (s != null) {
-				char[] chars = s.toCharArray();
+				final char[] chars = s.toCharArray();
 				for (int i = 0, j = chars.length / 2; i < j; i++) {
-					int flip = chars.length - i - 1;
-					char ch = chars[i];
+					final int flip = chars.length - i - 1;
+					final char ch = chars[i];
 					chars[i] = chars[flip];
 					chars[flip] = ch;
 				}
@@ -334,23 +334,23 @@ public class LinkRidgetTest extends AbstractSWTRidgetTest {
 	private static final class FTSelectionListener implements ISelectionListener {
 
 		private int count;
-		private List<String> values = new ArrayList<String>();
+		private final List<String> values = new ArrayList<String>();
 
 		public int getCount() {
 			return count;
 		}
 
-		public void verifyData(String[] expected) {
-			String[] actual = values.toArray(new String[0]);
+		public void verifyData(final String[] expected) {
+			final String[] actual = values.toArray(new String[0]);
 			assertEquals(expected.length, actual.length);
 			for (int i = 0; i < expected.length; i++) {
 				assertEquals(expected[i], actual[i]);
 			}
 		}
 
-		public void ridgetSelected(SelectionEvent event) {
+		public void ridgetSelected(final SelectionEvent event) {
 			count++;
-			String linkValue = (String) event.getNewSelection().get(0);
+			final String linkValue = (String) event.getNewSelection().get(0);
 			// System.out.println("clicked: " + linkValue);
 			values.add(linkValue);
 		}

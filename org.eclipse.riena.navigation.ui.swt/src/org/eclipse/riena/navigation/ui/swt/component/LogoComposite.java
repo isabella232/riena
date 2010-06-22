@@ -47,7 +47,7 @@ public class LogoComposite extends Composite {
 	 * @param style
 	 *            the style of widget to construct
 	 */
-	public LogoComposite(Composite parent, int style) {
+	public LogoComposite(final Composite parent, final int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		init(parent);
 	}
@@ -58,26 +58,26 @@ public class LogoComposite extends Composite {
 	 * @param parent
 	 *            parent composite
 	 */
-	private void init(Composite parent) {
+	private void init(final Composite parent) {
 
 		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
-		FormData logoData = new FormData();
-		int topInset = 0;
-		int leftRightInset = 0;
+		final FormData logoData = new FormData();
+		final int topInset = 0;
+		final int leftRightInset = 0;
 		logoData.top = new FormAttachment(0, topInset);
-		int height = getSwitchterTopMargin() + getSwitchterHeight() - 1;
+		final int height = getSwitchterTopMargin() + getSwitchterHeight() - 1;
 		logoData.bottom = new FormAttachment(0, height + 2);
-		Image logoImage = getLogoImage();
+		final Image logoImage = getLogoImage();
 		if (logoImage == null) {
 			return;
 		}
-		Rectangle imageBounds = logoImage.getBounds();
+		final Rectangle imageBounds = logoImage.getBounds();
 		if (imageBounds == null) {
 			return;
 		}
 		logoData.width = imageBounds.width + ShellLogoRenderer.getHorizontalLogoMargin() * 2;
-		Integer hPos = getHorizontalLogoPosition();
+		final Integer hPos = getHorizontalLogoPosition();
 		switch (hPos) {
 		case SWT.CENTER:
 			logoData.left = new FormAttachment(50, -logoData.width / 2);
@@ -104,7 +104,7 @@ public class LogoComposite extends Composite {
 	private Image getLogoImage() {
 		Image logoImage = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_LOGO);
 		if (logoImage == null) {
-			String message = "The image of the logo wasn't found! A dummy image is used."; //$NON-NLS-1$
+			final String message = "The image of the logo wasn't found! A dummy image is used."; //$NON-NLS-1$
 			LOGGER.log(LogService.LOG_WARNING, message);
 			logoImage = ImageStore.getInstance().getMissingImage();
 		}
@@ -134,7 +134,7 @@ public class LogoComposite extends Composite {
 	 */
 	private int getSwitchterTopMargin() {
 
-		int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN);
+		final int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN);
 		return margin;
 
 	}
@@ -146,7 +146,7 @@ public class LogoComposite extends Composite {
 	 */
 	private int getSwitchterHeight() {
 
-		int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
+		final int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
 		return margin;
 
 	}
@@ -159,7 +159,7 @@ public class LogoComposite extends Composite {
 		/**
 		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
 		 */
-		public void paintControl(PaintEvent e) {
+		public void paintControl(final PaintEvent e) {
 			onPaint(e);
 		}
 
@@ -169,11 +169,11 @@ public class LogoComposite extends Composite {
 		 * @param e
 		 *            an event containing information about the paint
 		 */
-		private void onPaint(PaintEvent e) {
+		private void onPaint(final PaintEvent e) {
 
-			Composite logoComposite = (Composite) e.getSource();
-			Rectangle compositeBounds = logoComposite.getBounds();
-			ShellLogoRenderer renderer = (ShellLogoRenderer) LnfManager.getLnf().getRenderer(
+			final Composite logoComposite = (Composite) e.getSource();
+			final Rectangle compositeBounds = logoComposite.getBounds();
+			final ShellLogoRenderer renderer = (ShellLogoRenderer) LnfManager.getLnf().getRenderer(
 					LnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER);
 			renderer.setBounds(compositeBounds);
 			renderer.paint(e.gc, null);

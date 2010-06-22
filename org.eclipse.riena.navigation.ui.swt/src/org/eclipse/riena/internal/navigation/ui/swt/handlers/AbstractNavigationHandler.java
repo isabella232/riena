@@ -39,12 +39,12 @@ abstract class AbstractNavigationHandler extends AbstractHandler {
 	 * @return an array of {@link IModuleNode}s; never null; may be empty.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected final IModuleNode[] collectModules(IApplicationNode application) {
-		List<IModuleNode> modules = new ArrayList<IModuleNode>();
-		INavigationNode<?> subApplication = findActive((List) application.getChildren());
+	protected final IModuleNode[] collectModules(final IApplicationNode application) {
+		final List<IModuleNode> modules = new ArrayList<IModuleNode>();
+		final INavigationNode<?> subApplication = findActive((List) application.getChildren());
 		if (subApplication instanceof ISubApplicationNode) {
-			List<IModuleGroupNode> groups = ((ISubApplicationNode) subApplication).getChildren();
-			for (IModuleGroupNode moduleGroup : groups) {
+			final List<IModuleGroupNode> groups = ((ISubApplicationNode) subApplication).getChildren();
+			for (final IModuleGroupNode moduleGroup : groups) {
 				modules.addAll(moduleGroup.getChildren());
 			}
 		}
@@ -59,11 +59,11 @@ abstract class AbstractNavigationHandler extends AbstractHandler {
 	 * 
 	 * @see INavigationNode#isActivated()
 	 */
-	protected final INavigationNode<?> findActive(List<INavigationNode<?>> nodes) {
+	protected final INavigationNode<?> findActive(final List<INavigationNode<?>> nodes) {
 		INavigationNode<?> result = null;
-		Iterator<INavigationNode<?>> iter = nodes.iterator();
+		final Iterator<INavigationNode<?>> iter = nodes.iterator();
 		while (result == null && iter.hasNext()) {
-			INavigationNode<?> candidate = iter.next();
+			final INavigationNode<?> candidate = iter.next();
 			if (candidate.isActivated()) {
 				result = candidate;
 			}
@@ -79,11 +79,11 @@ abstract class AbstractNavigationHandler extends AbstractHandler {
 	 * if none found.
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public final IModuleGroupNode findModuleGroup(IApplicationNode application) {
+	public final IModuleGroupNode findModuleGroup(final IApplicationNode application) {
 		IModuleGroupNode result = null;
-		INavigationNode<?> subApplication = findActive((List) application.getChildren());
+		final INavigationNode<?> subApplication = findActive((List) application.getChildren());
 		if (subApplication != null) {
-			INavigationNode<?> moduleGroup = findActive((List) subApplication.getChildren());
+			final INavigationNode<?> moduleGroup = findActive((List) subApplication.getChildren());
 			if (moduleGroup instanceof IModuleGroupNode) {
 				result = (IModuleGroupNode) moduleGroup;
 			}
@@ -103,10 +103,10 @@ abstract class AbstractNavigationHandler extends AbstractHandler {
 	 * The notion of 'selected' depends on the implementation of the
 	 * {@link #isSelected(INavigationNode)} method.
 	 */
-	public final INavigationNode<?> findNextNode(INavigationNode<?>[] nodes) {
+	public final INavigationNode<?> findNextNode(final INavigationNode<?>[] nodes) {
 		INavigationNode<?> result = null;
 		int selectedCount = 0;
-		for (INavigationNode<?> node : nodes) {
+		for (final INavigationNode<?> node : nodes) {
 			if (isSelected(node)) {
 				selectedCount++;
 			} else {
@@ -132,11 +132,11 @@ abstract class AbstractNavigationHandler extends AbstractHandler {
 	 * The notion of 'selected' depends on the implementation of the
 	 * {@link #isSelected(INavigationNode)} method.
 	 */
-	public final INavigationNode<?> findPreviousNode(INavigationNode<?>[] nodes, boolean wrap) {
+	public final INavigationNode<?> findPreviousNode(final INavigationNode<?>[] nodes, final boolean wrap) {
 		INavigationNode<?> result = null;
 		int selectedCount = 0;
 		for (int i = nodes.length - 1; i >= 0; i--) {
-			INavigationNode<?> node = nodes[i];
+			final INavigationNode<?> node = nodes[i];
 			if (isSelected(node)) {
 				selectedCount++;
 			} else {
@@ -145,7 +145,7 @@ abstract class AbstractNavigationHandler extends AbstractHandler {
 				}
 			}
 		}
-		int lastApp = nodes.length - 1;
+		final int lastApp = nodes.length - 1;
 		if (wrap && selectedCount == 1 && result == null && !isSelected(nodes[lastApp])) {
 			result = nodes[lastApp];
 		}
@@ -165,7 +165,7 @@ abstract class AbstractNavigationHandler extends AbstractHandler {
 	 * <p>
 	 * Subclasses may override.
 	 */
-	protected boolean isSelected(INavigationNode<?> node) {
+	protected boolean isSelected(final INavigationNode<?> node) {
 		return node.isSelected() && node.getParent().isSelected();
 	}
 

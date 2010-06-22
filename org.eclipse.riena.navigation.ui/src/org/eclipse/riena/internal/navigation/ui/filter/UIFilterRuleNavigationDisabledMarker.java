@@ -21,7 +21,7 @@ public class UIFilterRuleNavigationDisabledMarker extends AbstractUIFilterRuleNa
 		super(null, new DisabledMarker());
 	}
 
-	public UIFilterRuleNavigationDisabledMarker(String nodeIdPattern) {
+	public UIFilterRuleNavigationDisabledMarker(final String nodeIdPattern) {
 		super(nodeIdPattern, new DisabledMarker());
 	}
 

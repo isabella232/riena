@@ -34,7 +34,7 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 	 * @param parent
 	 * @param style
 	 */
-	public ModuleTitleBar(Composite parent, int style) {
+	public ModuleTitleBar(final Composite parent, final int style) {
 
 		super(parent, style);
 
@@ -51,7 +51,7 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 
 		mouseListener = new TitlebarMouseListener();
 		addMouseListener(mouseListener);
-		SWTFacade swtFacade = SWTFacade.getDefault();
+		final SWTFacade swtFacade = SWTFacade.getDefault();
 		swtFacade.addMouseMoveListener(this, mouseListener);
 		swtFacade.addMouseTrackListener(this, mouseListener);
 	}
@@ -65,7 +65,7 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 	protected void removeListeners() {
 		if (mouseListener != null) {
 			removeMouseListener(mouseListener);
-			SWTFacade swtFacade = SWTFacade.getDefault();
+			final SWTFacade swtFacade = SWTFacade.getDefault();
 			swtFacade.removeMouseMoveListener(this, mouseListener);
 			swtFacade.removeMouseTrackListener(this, mouseListener);
 			mouseListener = null;
@@ -80,8 +80,8 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 	 * @param event
 	 *            origin mouse event
 	 */
-	private void fireActivated(MouseEvent event) {
-		for (IEmbeddedTitleBarListener listener : titleBarListeners.getListeners()) {
+	private void fireActivated(final MouseEvent event) {
+		for (final IEmbeddedTitleBarListener listener : titleBarListeners.getListeners()) {
 			listener.windowActivated(event);
 		}
 	}
@@ -92,8 +92,8 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 	 * @param event
 	 *            origin mouse event
 	 */
-	private void fireClosed(MouseEvent event) {
-		for (IEmbeddedTitleBarListener listener : titleBarListeners.getListeners()) {
+	private void fireClosed(final MouseEvent event) {
+		for (final IEmbeddedTitleBarListener listener : titleBarListeners.getListeners()) {
 			listener.windowClosed(event);
 		}
 	}
@@ -114,12 +114,12 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 		/**
 		 * @see org.eclipse.swt.events.MouseListener#mouseUp(org.eclipse.swt.events.MouseEvent)
 		 */
-		public void mouseUp(MouseEvent e) {
+		public void mouseUp(final MouseEvent e) {
 			if (!isEnabled()) {
 				return;
 			}
 			if (!shouldIgnore(e)) {
-				Point point = new Point(e.x, e.y);
+				final Point point = new Point(e.x, e.y);
 				if (isOverClose(point)) {
 					fireClosed(e);
 				} else {
@@ -133,7 +133,7 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 		/**
 		 * @see org.eclipse.swt.events.MouseListener#mouseDown(org.eclipse.swt.events.MouseEvent)
 		 */
-		public void mouseDown(MouseEvent e) {
+		public void mouseDown(final MouseEvent e) {
 			if (!isEnabled()) {
 				return;
 			}
@@ -146,14 +146,14 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 		/**
 		 * @see org.eclipse.swt.events.MouseListener#mouseDoubleClick(org.eclipse.swt.events.MouseEvent)
 		 */
-		public void mouseDoubleClick(MouseEvent e) {
+		public void mouseDoubleClick(final MouseEvent e) {
 			// nothing to do
 		}
 
 		/**
 		 * @see org.eclipse.swt.events.MouseTrackListener#mouseEnter(org.eclipse.swt.events.MouseEvent)
 		 */
-		public void mouseEnter(MouseEvent e) {
+		public void mouseEnter(final MouseEvent e) {
 			if (!isEnabled()) {
 				return;
 			}
@@ -164,7 +164,7 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 		/**
 		 * @see org.eclipse.swt.events.MouseTrackListener#mouseExit(org.eclipse.swt.events.MouseEvent)
 		 */
-		public void mouseExit(MouseEvent e) {
+		public void mouseExit(final MouseEvent e) {
 			if (!isEnabled()) {
 				return;
 			}
@@ -175,13 +175,13 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 		/**
 		 * @see org.eclipse.swt.events.MouseTrackListener#mouseHover(org.eclipse.swt.events.MouseEvent)
 		 */
-		public void mouseHover(MouseEvent e) {
+		public void mouseHover(final MouseEvent e) {
 		}
 
 		/**
 		 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove(org.eclipse.swt.events.MouseEvent)
 		 */
-		public void mouseMove(MouseEvent e) {
+		public void mouseMove(final MouseEvent e) {
 			updateCloseButtonState(e);
 		}
 
@@ -190,9 +190,9 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 		 * 
 		 * @param e
 		 */
-		private void updateCloseButtonState(MouseEvent e) {
+		private void updateCloseButtonState(final MouseEvent e) {
 
-			Point point = new Point(e.x, e.y);
+			final Point point = new Point(e.x, e.y);
 			if (isOverClose(point)) {
 				setCloseButtonHover(isHover());
 				setCloseButtonPressed(isPressed());
@@ -207,7 +207,7 @@ public class ModuleTitleBar extends EmbeddedTitleBar {
 		 * Ignore mouse events if the component is null, not enabled, or the
 		 * event is not associated with the left mouse button.
 		 */
-		protected boolean shouldIgnore(MouseEvent e) {
+		protected boolean shouldIgnore(final MouseEvent e) {
 			return e.button != 1;
 		}
 

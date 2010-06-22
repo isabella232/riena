@@ -48,18 +48,18 @@ public class CustomerDetailsSubModuleView extends SubModuleView {
 	 * basicCreatePartControl(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	protected void basicCreatePartControl(Composite parent) {
+	protected void basicCreatePartControl(final Composite parent) {
 		this.contentArea = parent;
 		contentArea.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		contentArea.setLayout(new FormLayout());
 
-		Label personLabel = createSectionLabel(contentArea, "Person"); //$NON-NLS-1$
+		final Label personLabel = createSectionLabel(contentArea, "Person"); //$NON-NLS-1$
 		FormData fd = new FormData();
 		fd.top = new FormAttachment(0, TOP);
 		fd.left = new FormAttachment(0, LEFT);
 		personLabel.setLayoutData(fd);
 
-		Label kundennummerLabel = new Label(contentArea, SWT.LEFT);
+		final Label kundennummerLabel = new Label(contentArea, SWT.LEFT);
 		kundennummerLabel.setText("Customer No."); //$NON-NLS-1$
 		kundennummerLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		fd = new FormData();
@@ -67,7 +67,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView {
 		fd.left = new FormAttachment(personLabel, SECTION_LABEL_WIDTH, SWT.LEFT);
 		kundennummerLabel.setLayoutData(fd);
 
-		Text numberText = new Text(contentArea, SWT.SINGLE);
+		final Text numberText = new Text(contentArea, SWT.SINGLE);
 		addUIControl(numberText, CustomerDetailsSubModuleController.RIDGET_ID_CUSTOMER_NUMBER);
 		fd = new FormData();
 		fd.top = new FormAttachment(kundennummerLabel, 0, SWT.TOP);
@@ -75,7 +75,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView {
 		fd.width = FIELD_WIDTH;
 		numberText.setLayoutData(fd);
 
-		Label lastNameLabel = new Label(contentArea, SWT.LEFT);
+		final Label lastNameLabel = new Label(contentArea, SWT.LEFT);
 		lastNameLabel.setText("Last Name"); //$NON-NLS-1$
 		lastNameLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		fd = new FormData();
@@ -83,7 +83,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView {
 		fd.left = new FormAttachment(kundennummerLabel, 0, SWT.LEFT);
 		lastNameLabel.setLayoutData(fd);
 
-		Text lastNameText = new Text(contentArea, SWT.BORDER | SWT.SINGLE);
+		final Text lastNameText = new Text(contentArea, SWT.BORDER | SWT.SINGLE);
 		addUIControl(lastNameText, CustomerDetailsSubModuleController.RIDGET_ID_LAST_NAME);
 		fd = new FormData();
 		fd.top = new FormAttachment(lastNameLabel, 0, SWT.TOP);
@@ -91,7 +91,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView {
 		fd.width = FIELD_WIDTH;
 		lastNameText.setLayoutData(fd);
 
-		Label vornameLabel = new Label(contentArea, SWT.LEFT);
+		final Label vornameLabel = new Label(contentArea, SWT.LEFT);
 		vornameLabel.setText("First Name"); //$NON-NLS-1$
 		vornameLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		fd = new FormData();
@@ -99,7 +99,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView {
 		fd.left = new FormAttachment(lastNameLabel, COL_GAP + FIELD_WIDTH + LABEL_WIDTH, SWT.LEFT);
 		vornameLabel.setLayoutData(fd);
 
-		Text firstnameText = new Text(contentArea, SWT.BORDER | SWT.SINGLE);
+		final Text firstnameText = new Text(contentArea, SWT.BORDER | SWT.SINGLE);
 		addUIControl(firstnameText, CustomerDetailsSubModuleController.RIDGET_ID_FIRST_NAME);
 		fd = new FormData();
 		fd.top = new FormAttachment(vornameLabel, 0, SWT.TOP);
@@ -107,7 +107,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView {
 		fd.width = FIELD_WIDTH;
 		firstnameText.setLayoutData(fd);
 
-		Label birthdayLabel = new Label(contentArea, SWT.LEFT);
+		final Label birthdayLabel = new Label(contentArea, SWT.LEFT);
 		birthdayLabel.setText("Birthday"); //$NON-NLS-1$
 		birthdayLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		fd = new FormData();
@@ -115,13 +115,13 @@ public class CustomerDetailsSubModuleView extends SubModuleView {
 		fd.left = new FormAttachment(lastNameLabel, 0, SWT.LEFT);
 		birthdayLabel.setLayoutData(fd);
 
-		DateTime birthdayText = new DateTime(contentArea, SWT.BORDER | SWT.SINGLE);
+		final DateTime birthdayText = new DateTime(contentArea, SWT.BORDER | SWT.SINGLE);
 		fd = new FormData();
 		fd.top = new FormAttachment(birthdayLabel, 0, SWT.TOP);
 		fd.left = new FormAttachment(lastNameText, 0, SWT.LEFT);
 		birthdayText.setLayoutData(fd);
 
-		Label birthplaceLabel = new Label(contentArea, SWT.LEFT);
+		final Label birthplaceLabel = new Label(contentArea, SWT.LEFT);
 		birthplaceLabel.setText("Birthplace"); //$NON-NLS-1$
 		birthplaceLabel.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		fd = new FormData();
@@ -129,7 +129,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView {
 		fd.left = new FormAttachment(birthdayLabel, COL_GAP + FIELD_WIDTH + LABEL_WIDTH, SWT.LEFT);
 		birthplaceLabel.setLayoutData(fd);
 
-		Text birthplaceText = new Text(contentArea, SWT.BORDER | SWT.SINGLE);
+		final Text birthplaceText = new Text(contentArea, SWT.BORDER | SWT.SINGLE);
 		addUIControl(birthplaceText, CustomerDetailsSubModuleController.RIDGET_ID_BIRTHPLACE);
 		fd = new FormData();
 		fd.top = new FormAttachment(birthplaceLabel, 0, SWT.TOP);
@@ -137,7 +137,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView {
 		fd.width = FIELD_WIDTH;
 		birthplaceText.setLayoutData(fd);
 
-		Button openOffers = new Button(contentArea, 0);
+		final Button openOffers = new Button(contentArea, 0);
 		addUIControl(openOffers, CustomerDetailsSubModuleController.RIDGET_ID_OPEN_OFFERS);
 		fd = new FormData();
 		fd.top = new FormAttachment(birthplaceText, LINE_GAP);
@@ -145,7 +145,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView {
 		fd.width = FIELD_WIDTH;
 		openOffers.setLayoutData(fd);
 
-		Button saveButton = new Button(contentArea, 0);
+		final Button saveButton = new Button(contentArea, 0);
 		addUIControl(saveButton, CustomerDetailsSubModuleController.RIDGET_ID_SAVE);
 		fd = new FormData();
 		fd.top = new FormAttachment(birthplaceText, LINE_GAP);
@@ -154,9 +154,9 @@ public class CustomerDetailsSubModuleView extends SubModuleView {
 		saveButton.setLayoutData(fd);
 	}
 
-	private Label createSectionLabel(Composite parent, String text) {
+	private Label createSectionLabel(final Composite parent, final String text) {
 
-		Label label = new Label(parent, SWT.LEFT);
+		final Label label = new Label(parent, SWT.LEFT);
 		label.setText(text);
 		label.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_DARK_GRAY));
 		label.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
@@ -170,7 +170,7 @@ public class CustomerDetailsSubModuleView extends SubModuleView {
 	}
 
 	@Override
-	protected CustomerDetailsSubModuleController createController(ISubModuleNode subModuleNode) {
+	protected CustomerDetailsSubModuleController createController(final ISubModuleNode subModuleNode) {
 		return new CustomerDetailsSubModuleController(subModuleNode);
 	}
 }

@@ -26,9 +26,10 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 public class ServiceTest extends RienaTestCase {
 
 	public void testServiceGetWithRanking() {
-		ServiceRegistration reg1 = getContext().registerService(ITestService.class.getName(), new TestService1(),
+		final ServiceRegistration reg1 = getContext().registerService(ITestService.class.getName(), new TestService1(),
 				RienaConstants.newDefaultServiceProperties());
-		ServiceRegistration reg2 = getContext().registerService(ITestService.class.getName(), new TestService2(), null);
+		final ServiceRegistration reg2 = getContext().registerService(ITestService.class.getName(), new TestService2(),
+				null);
 
 		ITestService service = Service.get(ITestService.class);
 		assertEquals("Hallo Welt", service.hello("Welt"));
@@ -43,15 +44,15 @@ public class ServiceTest extends RienaTestCase {
 	}
 
 	public void testServiceGetWithFilter() {
-		Dictionary<String, String> dict1 = new Hashtable<String, String>();
+		final Dictionary<String, String> dict1 = new Hashtable<String, String>();
 		dict1.put("kind", "1");
-		ServiceRegistration reg1 = getContext()
-				.registerService(ITestService.class.getName(), new TestService1(), dict1);
+		final ServiceRegistration reg1 = getContext().registerService(ITestService.class.getName(), new TestService1(),
+				dict1);
 
-		Dictionary<String, String> dict2 = new Hashtable<String, String>();
+		final Dictionary<String, String> dict2 = new Hashtable<String, String>();
 		dict2.put("kind", "2");
-		ServiceRegistration reg2 = getContext()
-				.registerService(ITestService.class.getName(), new TestService2(), dict2);
+		final ServiceRegistration reg2 = getContext().registerService(ITestService.class.getName(), new TestService2(),
+				dict2);
 
 		ITestService service = Service.get(ITestService.class, "(kind=1)");
 		assertEquals("Hello Welt", service.hello("Welt"));

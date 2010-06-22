@@ -35,7 +35,7 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 public final class SwtRidgetFactory {
 
 	static {
-		Display display = Display.getCurrent();
+		final Display display = Display.getCurrent();
 		Assert.isNotNull(display);
 		new DefaultRealm(display);
 	}
@@ -47,14 +47,14 @@ public final class SwtRidgetFactory {
 
 	private static final List<Object> CONTROL_LIST = new ArrayList<Object>(1);
 
-	public static IRidget createRidget(Object control) {
+	public static IRidget createRidget(final Object control) {
 		Assert.isNotNull(control);
 		CONTAINER.clear();
 		CONTROL_LIST.clear();
 		CONTROL_LIST.add(control);
 		DUMMY_BINDING_MAN.injectRidgets(CONTAINER, CONTROL_LIST);
 		DUMMY_BINDING_MAN.bind(CONTAINER, CONTROL_LIST);
-		IRidget result = CONTAINER.getRidget(null);
+		final IRidget result = CONTAINER.getRidget(null);
 		return result;
 	}
 
@@ -74,8 +74,8 @@ public final class SwtRidgetFactory {
 		 * return 'dummy', since in that case we use the DummyContainer which
 		 * does not need an id (see DummyContainer#getRidget(...)).
 		 */
-		public String locateBindingProperty(Object uiControl) {
-			String bindingProp = DELEGATE.locateBindingProperty(uiControl);
+		public String locateBindingProperty(final Object uiControl) {
+			final String bindingProp = DELEGATE.locateBindingProperty(uiControl);
 			return bindingProp != null ? bindingProp : "dummy"; //$NON-NLS-1$
 		}
 	}
@@ -84,7 +84,7 @@ public final class SwtRidgetFactory {
 
 		private IRidget ridget;
 
-		public void addRidget(String id, IRidget ridget) {
+		public void addRidget(final String id, final IRidget ridget) {
 			this.ridget = ridget;
 		}
 
@@ -92,7 +92,7 @@ public final class SwtRidgetFactory {
 			// nothing
 		}
 
-		public IRidget getRidget(String id) {
+		public IRidget getRidget(final String id) {
 			return ridget;
 		}
 
@@ -105,7 +105,7 @@ public final class SwtRidgetFactory {
 		}
 
 		@SuppressWarnings("unchecked")
-		public <R extends IRidget> R getRidget(Class<R> ridgetClazz, String id) {
+		public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
 			return (R) getRidget(id);
 		}
 	}

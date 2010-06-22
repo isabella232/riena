@@ -40,15 +40,15 @@ public abstract class AbstractSelectableIndexedRidget extends AbstractSelectable
 		return getRowObservables().size();
 	}
 
-	public final void setSelection(int index) {
+	public final void setSelection(final int index) {
 		setSelection(new int[] { index });
 	}
 
-	public final void setSelection(int[] indices) {
+	public final void setSelection(final int[] indices) {
 		assertIsBoundToModel();
-		List<Object> newSelection = new ArrayList<Object>();
-		for (int index : indices) {
-			Object option = getOption(index);
+		final List<Object> newSelection = new ArrayList<Object>();
+		for (final int index : indices) {
+			final Object option = getOption(index);
 			if (option != null) {
 				newSelection.add(option);
 			}

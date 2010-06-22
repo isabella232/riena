@@ -28,9 +28,9 @@ import org.eclipse.riena.internal.core.wire.ServiceInjectorBuilder;
 public class ServiceInjectorBuilderTest extends RienaTestCase {
 
 	public void testBuildForBind1() throws NoSuchMethodException {
-		Method bindMethod = ServiceInjectorBuilderTest.class.getMethod("bind1", new Class[] { Schtonk.class });
-		ServiceInjectorBuilder builder = new ServiceInjectorBuilder(this, bindMethod);
-		ServiceInjector injector = builder.build().andStart(getContext());
+		final Method bindMethod = ServiceInjectorBuilderTest.class.getMethod("bind1", new Class[] { Schtonk.class });
+		final ServiceInjectorBuilder builder = new ServiceInjectorBuilder(this, bindMethod);
+		final ServiceInjector injector = builder.build().andStart(getContext());
 		assertNotNull(injector);
 		assertTrue(injector instanceof FilterInjector);
 		assertFalse(useRanking(injector));
@@ -43,16 +43,16 @@ public class ServiceInjectorBuilderTest extends RienaTestCase {
 	}
 
 	@InjectService(service = Schtonk.class)
-	public void bind1(Schtonk schtonk) {
+	public void bind1(final Schtonk schtonk) {
 	}
 
-	public void unbind1(Schtonk schtonk) {
+	public void unbind1(final Schtonk schtonk) {
 	}
 
 	public void testBuildForBind2() throws NoSuchMethodException {
-		Method bindMethod = ServiceInjectorBuilderTest.class.getMethod("bind2", new Class[] { Schtonk.class });
-		ServiceInjectorBuilder builder = new ServiceInjectorBuilder(this, bindMethod);
-		ServiceInjector injector = builder.build().andStart(getContext());
+		final Method bindMethod = ServiceInjectorBuilderTest.class.getMethod("bind2", new Class[] { Schtonk.class });
+		final ServiceInjectorBuilder builder = new ServiceInjectorBuilder(this, bindMethod);
+		final ServiceInjector injector = builder.build().andStart(getContext());
 		assertNotNull(injector);
 		assertTrue(injector instanceof RankingInjector);
 		assertTrue(useRanking(injector));
@@ -65,16 +65,16 @@ public class ServiceInjectorBuilderTest extends RienaTestCase {
 	}
 
 	@InjectService(serviceName = "org.eclipse.riena.core.wire.Schtonk", useRanking = true, unbind = "entbinde")
-	public void bind2(Schtonk schtonk) {
+	public void bind2(final Schtonk schtonk) {
 	}
 
-	public void entbinde(Schtonk schtonk) {
+	public void entbinde(final Schtonk schtonk) {
 	}
 
 	public void testBuildForBind3() throws NoSuchMethodException {
-		Method bindMethod = ServiceInjectorBuilderTest.class.getMethod("bind3", new Class[] { Schtonk.class });
-		ServiceInjectorBuilder builder = new ServiceInjectorBuilder(this, bindMethod);
-		ServiceInjector injector = builder.build().andStart(getContext());
+		final Method bindMethod = ServiceInjectorBuilderTest.class.getMethod("bind3", new Class[] { Schtonk.class });
+		final ServiceInjectorBuilder builder = new ServiceInjectorBuilder(this, bindMethod);
+		final ServiceInjector injector = builder.build().andStart(getContext());
 		assertNotNull(injector);
 		assertTrue(injector instanceof FilterInjector);
 		assertFalse(useRanking(injector));
@@ -87,16 +87,16 @@ public class ServiceInjectorBuilderTest extends RienaTestCase {
 	}
 
 	@InjectService(serviceName = "org.eclipse.riena.core.wire.Schtonk", useFilter = "(mellita = gut)", unbind = "entbinde3")
-	public void bind3(Schtonk schtonk) {
+	public void bind3(final Schtonk schtonk) {
 	}
 
-	public void entbinde3(Schtonk schtonk) {
+	public void entbinde3(final Schtonk schtonk) {
 	}
 
 	public void testBuildForBind4() throws NoSuchMethodException {
-		Method bindMethod = ServiceInjectorBuilderTest.class.getMethod("bind4", new Class[] { Schtonk.class });
-		ServiceInjectorBuilder builder = new ServiceInjectorBuilder(this, bindMethod);
-		ServiceInjector injector = builder.build().andStart(getContext());
+		final Method bindMethod = ServiceInjectorBuilderTest.class.getMethod("bind4", new Class[] { Schtonk.class });
+		final ServiceInjectorBuilder builder = new ServiceInjectorBuilder(this, bindMethod);
+		final ServiceInjector injector = builder.build().andStart(getContext());
 		assertNotNull(injector);
 		assertTrue(injector instanceof FilterInjector);
 		assertFalse(useRanking(injector));
@@ -109,16 +109,16 @@ public class ServiceInjectorBuilderTest extends RienaTestCase {
 	}
 
 	@InjectService
-	public void bind4(Schtonk schtonk) {
+	public void bind4(final Schtonk schtonk) {
 	}
 
-	public void unbind4(Schtonk schtonk) {
+	public void unbind4(final Schtonk schtonk) {
 	}
 
 	public void testBuildForBind5OnceOnlyViaStatic() throws NoSuchMethodException {
-		Method bindMethod = ServiceInjectorBuilderTest.class.getMethod("bind5", new Class[] { Schtonk.class });
-		ServiceInjectorBuilder builder = new ServiceInjectorBuilder(this, bindMethod);
-		ServiceInjector injector = builder.build().andStart(getContext());
+		final Method bindMethod = ServiceInjectorBuilderTest.class.getMethod("bind5", new Class[] { Schtonk.class });
+		final ServiceInjectorBuilder builder = new ServiceInjectorBuilder(this, bindMethod);
+		final ServiceInjector injector = builder.build().andStart(getContext());
 		assertNotNull(injector);
 		assertTrue(injector instanceof FilterInjector);
 		assertFalse(useRanking(injector));
@@ -131,16 +131,16 @@ public class ServiceInjectorBuilderTest extends RienaTestCase {
 	}
 
 	@InjectService
-	public static void bind5(Schtonk schtonk) {
+	public static void bind5(final Schtonk schtonk) {
 	}
 
-	public static void unbind5(Schtonk schtonk) {
+	public static void unbind5(final Schtonk schtonk) {
 	}
 
 	public void testBuildForBind6OnceOnlyViaAnnotation() throws NoSuchMethodException {
-		Method bindMethod = ServiceInjectorBuilderTest.class.getMethod("bind6", new Class[] { Schtonk.class });
-		ServiceInjectorBuilder builder = new ServiceInjectorBuilder(this, bindMethod);
-		ServiceInjector injector = builder.build().andStart(getContext());
+		final Method bindMethod = ServiceInjectorBuilderTest.class.getMethod("bind6", new Class[] { Schtonk.class });
+		final ServiceInjectorBuilder builder = new ServiceInjectorBuilder(this, bindMethod);
+		final ServiceInjector injector = builder.build().andStart(getContext());
 		assertNotNull(injector);
 		assertTrue(injector instanceof FilterInjector);
 		assertFalse(useRanking(injector));
@@ -153,46 +153,46 @@ public class ServiceInjectorBuilderTest extends RienaTestCase {
 	}
 
 	@InjectService(onceOnly = true)
-	public void bind6(Schtonk schtonk) {
+	public void bind6(final Schtonk schtonk) {
 	}
 
-	public void unbind6(Schtonk schtonk) {
+	public void unbind6(final Schtonk schtonk) {
 	}
 
-	private boolean useRanking(ServiceInjector injector) {
-		Object serviceDescriptor = ReflectionUtils.getHidden(injector, "serviceDesc");
+	private boolean useRanking(final ServiceInjector injector) {
+		final Object serviceDescriptor = ReflectionUtils.getHidden(injector, "serviceDesc");
 		return ReflectionUtils.getHidden(serviceDescriptor, "ranking");
 	}
 
-	private String getFilter(ServiceInjector injector) {
-		Object serviceDescriptor = ReflectionUtils.getHidden(injector, "serviceDesc");
+	private String getFilter(final ServiceInjector injector) {
+		final Object serviceDescriptor = ReflectionUtils.getHidden(injector, "serviceDesc");
 		return ReflectionUtils.getHidden(serviceDescriptor, "filter");
 	}
 
-	private Object getServiceClassName(ServiceInjector injector) {
-		Object serviceDescriptor = ReflectionUtils.getHidden(injector, "serviceDesc");
+	private Object getServiceClassName(final ServiceInjector injector) {
+		final Object serviceDescriptor = ReflectionUtils.getHidden(injector, "serviceDesc");
 		return ReflectionUtils.getHidden(serviceDescriptor, "className");
 	}
 
-	private Object getServiceClass(ServiceInjector injector) {
-		Object serviceDescriptor = ReflectionUtils.getHidden(injector, "serviceDesc");
+	private Object getServiceClass(final ServiceInjector injector) {
+		final Object serviceDescriptor = ReflectionUtils.getHidden(injector, "serviceDesc");
 		return ReflectionUtils.getHidden(serviceDescriptor, "clazz");
 	}
 
-	private Object getBean(ServiceInjector injector) {
-		WeakRef<?> ref = ReflectionUtils.getHidden(injector, "targetRef");
+	private Object getBean(final ServiceInjector injector) {
+		final WeakRef<?> ref = ReflectionUtils.getHidden(injector, "targetRef");
 		return ref.get();
 	}
 
-	private Method getBindMethod(ServiceInjector injector) {
+	private Method getBindMethod(final ServiceInjector injector) {
 		return ReflectionUtils.getHidden(injector, "bindMethod");
 	}
 
-	private Method getUnbindMethod(ServiceInjector injector) {
+	private Method getUnbindMethod(final ServiceInjector injector) {
 		return ReflectionUtils.getHidden(injector, "unbindMethod");
 	}
 
-	private boolean getOnceOnly(ServiceInjector injector) {
+	private boolean getOnceOnly(final ServiceInjector injector) {
 		return ReflectionUtils.getHidden(injector, "onceOnly");
 	}
 }

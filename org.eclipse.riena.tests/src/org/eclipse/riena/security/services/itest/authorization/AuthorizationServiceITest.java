@@ -58,15 +58,15 @@ public class AuthorizationServiceITest extends RienaTestCase {
 		stopBundles("org\\.eclipse\\.riena.example.client", null);
 		stopBundles("org\\.eclipse\\.riena.security.client.startup", null);
 
-		authenticationServiceRegistration = Register.remoteProxy(IAuthenticationService.class).usingUrl(
-				"http://localhost:8080/hessian/AuthenticationService").withProtocol("hessian").andStart(
-				Activator.getDefault().getContext());
-		authorizationServiceRegistration = Register.remoteProxy(IAuthorizationService.class).usingUrl(
-				"http://localhost:8080/hessian/AuthorizationService").withProtocol("hessian").andStart(
-				Activator.getDefault().getContext());
-		customerServiceRegistration = Register.remoteProxy(ICustomerSearch.class).usingUrl(
-				"http://localhost:8080/hessian/CustomerSearchWS").withProtocol("hessian").andStart(
-				Activator.getDefault().getContext());
+		authenticationServiceRegistration = Register.remoteProxy(IAuthenticationService.class)
+				.usingUrl("http://localhost:8080/hessian/AuthenticationService").withProtocol("hessian")
+				.andStart(Activator.getDefault().getContext());
+		authorizationServiceRegistration = Register.remoteProxy(IAuthorizationService.class)
+				.usingUrl("http://localhost:8080/hessian/AuthorizationService").withProtocol("hessian")
+				.andStart(Activator.getDefault().getContext());
+		customerServiceRegistration = Register.remoteProxy(ICustomerSearch.class)
+				.usingUrl("http://localhost:8080/hessian/CustomerSearchWS").withProtocol("hessian")
+				.andStart(Activator.getDefault().getContext());
 	}
 
 	@Override
@@ -81,22 +81,22 @@ public class AuthorizationServiceITest extends RienaTestCase {
 		printTestName();
 		TestLocalCallbackHandler.setSuppliedCredentials("testuser", "testpass");
 
-		URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
-		ILoginContext secureContext = LoginContextFactory.createContext("RemoteTest", configUrl);
+		final URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
+		final ILoginContext secureContext = LoginContextFactory.createContext("RemoteTest", configUrl);
 
 		secureContext.login();
 
-		IAuthenticationService as = Service.get(IAuthenticationService.class);
+		final IAuthenticationService as = Service.get(IAuthenticationService.class);
 		System.out.println("subject:" + secureContext.getSubject());
 		System.out.println("login in sucessful");
 
 		// call the customerService
-		ICustomerSearch cs = Service.get(ICustomerSearch.class);
-		Customer cust = new Customer();
+		final ICustomerSearch cs = Service.get(ICustomerSearch.class);
+		final Customer cust = new Customer();
 		cust.setLastName("Solo");
 		cust.setFirstName("Han");
 		cust.setCustomerNumber(1);
-		Customer[] foundCustomers = cs.findCustomerWithPermission(cust);
+		final Customer[] foundCustomers = cs.findCustomerWithPermission(cust);
 		assertTrue(foundCustomers != null);
 		assertTrue(foundCustomers.length > 0);
 		assertTrue(foundCustomers[0].getLastName().equals("Solo"));
@@ -109,13 +109,13 @@ public class AuthorizationServiceITest extends RienaTestCase {
 		printTestName();
 		TestLocalCallbackHandler.setSuppliedCredentials("testuser1", "testpass2");
 
-		URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
-		ILoginContext secureContext = LoginContextFactory.createContext("RemoteTest", configUrl);
+		final URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
+		final ILoginContext secureContext = LoginContextFactory.createContext("RemoteTest", configUrl);
 
 		secureContext.login();
 
-		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
-		IAuthenticationService as = (IAuthenticationService) getContext().getService(ref);
+		final ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
+		final IAuthenticationService as = (IAuthenticationService) getContext().getService(ref);
 		System.out.println("subject:" + secureContext.getSubject());
 		System.out.println("login in sucessful");
 		//		ISessionHolderService shs = (ISessionHolderService) getContext().getService(
@@ -123,9 +123,9 @@ public class AuthorizationServiceITest extends RienaTestCase {
 
 		try {
 			// call the customerService
-			ICustomerSearch cs = (ICustomerSearch) getContext().getService(
+			final ICustomerSearch cs = (ICustomerSearch) getContext().getService(
 					getContext().getServiceReference(ICustomerSearch.class.getName()));
-			Customer cust = new Customer();
+			final Customer cust = new Customer();
 			cust.setLastName("Solo");
 			cust.setFirstName("Han");
 			cust.setCustomerNumber(1);
@@ -134,7 +134,7 @@ public class AuthorizationServiceITest extends RienaTestCase {
 			// assertTrue(foundCustomers != null);
 			// assertTrue(foundCustomers.length > 0);
 			// assertTrue(foundCustomers[0].getLastName().equals("Solo"));
-		} catch (AccessControlException ex) {
+		} catch (final AccessControlException ex) {
 			ok("expected exception");
 		}
 
@@ -146,33 +146,33 @@ public class AuthorizationServiceITest extends RienaTestCase {
 		printTestName();
 		TestLocalCallbackHandler.setSuppliedCredentials("stefan", "passpass");
 
-		URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
-		ILoginContext secureContext = LoginContextFactory.createContext("RemoteTest", configUrl);
+		final URL configUrl = Activator.getDefault().getContext().getBundle().getEntry(JAAS_CONFIG_FILE);
+		final ILoginContext secureContext = LoginContextFactory.createContext("RemoteTest", configUrl);
 
 		secureContext.login();
 
-		ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
-		IAuthenticationService authenticationService = (IAuthenticationService) getContext().getService(ref);
+		final ServiceReference ref = getContext().getServiceReference(IAuthenticationService.class.getName());
+		final IAuthenticationService authenticationService = (IAuthenticationService) getContext().getService(ref);
 		System.out.println("subject:" + secureContext.getSubject());
 		System.out.println("login in sucessful");
 		try {
-			ServiceReference authorizationServiceRef = getContext().getServiceReference(
+			final ServiceReference authorizationServiceRef = getContext().getServiceReference(
 					IAuthorizationService.class.getName());
-			IAuthorizationService authorizationService = (IAuthorizationService) getContext().getService(
+			final IAuthorizationService authorizationService = (IAuthorizationService) getContext().getService(
 					authorizationServiceRef);
 
 			// get the permissions
 
-			Set<Principal> principals = secureContext.getSubject().getPrincipals();
+			final Set<Principal> principals = secureContext.getSubject().getPrincipals();
 			assertEquals(1, principals.size());
-			Permissions[] permissionss = authorizationService.getPermissions(principals
+			final Permissions[] permissionss = authorizationService.getPermissions(principals
 					.toArray(new Principal[principals.size()]));
 			assertNotNull(permissionss);
 			assertEquals(1, permissionss.length);
-			Permissions permissions = permissionss[0];
+			final Permissions permissions = permissionss[0];
 			assertNotNull(permissions);
 			int count = 0;
-			for (Permission permission : Iter.able(permissions.elements())) {
+			for (final Permission permission : Iter.able(permissions.elements())) {
 				System.out.println("Permission: " + permission);
 				if (permission.getClass() == FilePermission.class) {
 					assertEquals("*.tmp", permission.getName());

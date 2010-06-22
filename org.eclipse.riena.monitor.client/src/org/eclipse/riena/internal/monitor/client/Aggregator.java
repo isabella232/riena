@@ -87,7 +87,7 @@ public class Aggregator implements IAggregator {
 		}
 		store.open(nameCategories);
 		sender.start(store, nameCategories.values());
-		for (ICollector collector : Iter.able(collectors)) {
+		for (final ICollector collector : Iter.able(collectors)) {
 			collector.start(this, collectorCategories.get(collector), clientInfoProvider);
 		}
 		workerStop = false;
@@ -118,14 +118,14 @@ public class Aggregator implements IAggregator {
 		stopCollectors();
 		nameCategories.clear();
 		collectorCategories.clear();
-		List<ICollector> list = new ArrayList<ICollector>(collectorExtensions.length);
+		final List<ICollector> list = new ArrayList<ICollector>(collectorExtensions.length);
 		collectorWirings = new ArrayList<WirePuller>(collectorExtensions.length);
-		for (ICollectorExtension extension : collectorExtensions) {
+		for (final ICollectorExtension extension : collectorExtensions) {
 			Assert.isLegal(!nameCategories.containsKey(extension.getCategory()), "Category " + extension.getCategory() //$NON-NLS-1$
 					+ " is defined twice. Categories must be unique."); //$NON-NLS-1$
-			Category category = new Category(extension.getCategory(), extension.getMaxItems());
+			final Category category = new Category(extension.getCategory(), extension.getMaxItems());
 			nameCategories.put(extension.getCategory(), category);
-			ICollector collector = extension.createCollector();
+			final ICollector collector = extension.createCollector();
 			collectorCategories.put(collector, category);
 			collectorWirings.add(Wire.instance(collector).andStart(Activator.getDefault().getContext()));
 			list.add(collector);
@@ -140,10 +140,10 @@ public class Aggregator implements IAggregator {
 
 	private void stopCollectors() {
 
-		for (ICollector collector : Iter.able(collectors)) {
+		for (final ICollector collector : Iter.able(collectors)) {
 			collector.stop();
 		}
-		for (WirePuller wirings : Iter.able(collectorWirings)) {
+		for (final WirePuller wirings : Iter.able(collectorWirings)) {
 			wirings.stop();
 		}
 	}
@@ -199,7 +199,7 @@ public class Aggregator implements IAggregator {
 		if (!started) {
 			return;
 		}
-		boolean elementAdded = workQueue.offer(new CollectTask(store, collectible));
+		final boolean elementAdded = workQueue.offer(new CollectTask(store, collectible));
 		Assert.isTrue(elementAdded);
 	}
 
@@ -214,7 +214,7 @@ public class Aggregator implements IAggregator {
 		if (store == null || sender == null) {
 			return;
 		}
-		boolean elementAdded = workQueue.offer(new TriggerTransferTask(store, sender, category));
+		final boolean elementAdded = workQueue.offer(new TriggerTransferTask(store, sender, category));
 		Assert.isTrue(elementAdded);
 	}
 
@@ -228,16 +228,16 @@ public class Aggregator implements IAggregator {
 		public void run() {
 			try {
 				workSignal.await();
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				Thread.currentThread().interrupt();
 				return;
 			}
 
 			while (!workerStop) {
 				try {
-					Runnable runnable = workQueue.take();
+					final Runnable runnable = workQueue.take();
 					runnable.run();
-				} catch (InterruptedException e) {
+				} catch (final InterruptedException e) {
 					Thread.currentThread().interrupt();
 					break;
 				}

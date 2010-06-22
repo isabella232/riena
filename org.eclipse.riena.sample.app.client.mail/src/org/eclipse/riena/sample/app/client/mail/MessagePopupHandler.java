@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Display;
 
 public class MessagePopupHandler extends AbstractHandler implements IHandler {
 
-	public Object execute(ExecutionEvent event) {
+	public Object execute(final ExecutionEvent event) {
 		MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Open", "Open Message Dialog!"); //$NON-NLS-1$ //$NON-NLS-2$
 		return null;
 	}

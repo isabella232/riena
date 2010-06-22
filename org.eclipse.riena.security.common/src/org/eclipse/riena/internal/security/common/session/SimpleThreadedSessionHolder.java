@@ -22,7 +22,7 @@ public class SimpleThreadedSessionHolder implements ISessionHolder {
 		}
 	};
 
-	public void setSession(Session session) {
+	public void setSession(final Session session) {
 		sessionHolders.get().setSession(session);
 	}
 
@@ -30,7 +30,7 @@ public class SimpleThreadedSessionHolder implements ISessionHolder {
 		return sessionHolders.get().getSession();
 	}
 
-	public void setJSessionCookieValue(String value) {
+	public void setJSessionCookieValue(final String value) {
 		sessionHolders.get().setJSessionCookieValue(value);
 	}
 

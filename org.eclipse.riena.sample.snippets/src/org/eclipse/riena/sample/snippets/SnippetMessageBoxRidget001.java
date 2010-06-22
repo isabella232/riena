@@ -28,27 +28,27 @@ import org.eclipse.riena.ui.swt.MessageBox;
  */
 public final class SnippetMessageBoxRidget001 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = new Shell();
+			final Shell shell = new Shell();
 			GridLayoutFactory.fillDefaults().applyTo(shell);
 
-			MessageBox messageBox = new MessageBox(shell);
+			final MessageBox messageBox = new MessageBox(shell);
 			final IMessageBoxRidget messageBoxRidget = (IMessageBoxRidget) SwtRidgetFactory.createRidget(messageBox);
 			// Configure MessageBoxRidget:
 			messageBoxRidget.setType(IMessageBoxRidget.Type.QUESTION);
 			messageBoxRidget.setTitle("Bridgekeeper"); //$NON-NLS-1$
 			messageBoxRidget.setText("What is your favourite colour?"); //$NON-NLS-1$
 			// Set options
-			IMessageBoxRidget.MessageBoxOption[] customOptions = new IMessageBoxRidget.MessageBoxOption[] {
+			final IMessageBoxRidget.MessageBoxOption[] customOptions = new IMessageBoxRidget.MessageBoxOption[] {
 					new IMessageBoxRidget.MessageBoxOption("Blue"), new IMessageBoxRidget.MessageBoxOption("Yellow") }; //$NON-NLS-1$//$NON-NLS-2$
 			messageBoxRidget.setOptions(customOptions);
 
-			Button button = new Button(shell, SWT.BORDER);
+			final Button button = new Button(shell, SWT.BORDER);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(button);
 
-			IActionRidget actionRidget = (IActionRidget) SwtRidgetFactory.createRidget(button);
+			final IActionRidget actionRidget = (IActionRidget) SwtRidgetFactory.createRidget(button);
 			actionRidget.setText("Show message box"); //$NON-NLS-1$
 			actionRidget.addListener(new IActionListener() {
 				public void callback() {

@@ -25,7 +25,7 @@ import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterRuleMarker implements
 		IUIFilterRuleMarkerRidget {
 
-	private Map<IBasicMarkableRidget, IMarker> markerMap;
+	private final Map<IBasicMarkableRidget, IMarker> markerMap;
 	protected RidgetMatcher matcher;
 
 	/**
@@ -35,7 +35,7 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 	 *            pattern ({@link StringMatcher}) for ridget IDs
 	 * @param marker
 	 */
-	public AbstractUIFilterRuleRidgetMarker(String idPattern, IMarker marker) {
+	public AbstractUIFilterRuleRidgetMarker(final String idPattern, final IMarker marker) {
 		super(marker);
 		matcher = createMatcher(idPattern);
 		markerMap = new HashMap<IBasicMarkableRidget, IMarker>();
@@ -47,7 +47,7 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 	 * @see org.eclipse.riena.ui.internal.IUIFilterRule.IUIFilterAttribute#matches(java.lang.Object)
 	 */
 
-	public boolean matches(Object... args) {
+	public boolean matches(final Object... args) {
 		if ((args == null) || (args.length <= 0)) {
 			return false;
 		}
@@ -60,10 +60,10 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 	 * 
 	 * @see org.eclipse.riena.ui.internal.IUIFilterRule.IUIFilterAttribute#apply(java.lang.Object)
 	 */
-	public void apply(Object object) {
+	public void apply(final Object object) {
 		if (object instanceof IBasicMarkableRidget) {
-			IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) object;
-			IMarker marker = getMarker();
+			final IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) object;
+			final IMarker marker = getMarker();
 			markableRidget.addMarker(marker);
 			markerMap.put(markableRidget, marker);
 		}
@@ -75,20 +75,20 @@ public abstract class AbstractUIFilterRuleRidgetMarker extends AbstractUIFilterR
 	 * 
 	 * @see org.eclipse.riena.ui.internal.IUIFilterRule.IUIFilterAttribute#remove(java.lang.Object)
 	 */
-	public void remove(Object object) {
+	public void remove(final Object object) {
 		if (object instanceof IBasicMarkableRidget) {
-			IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) object;
-			IMarker marker = markerMap.get(markableRidget);
+			final IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) object;
+			final IMarker marker = markerMap.get(markableRidget);
 			markableRidget.removeMarker(marker);
 			markerMap.remove(markableRidget);
 		}
 	}
 
-	public void setId(String idPattern) {
+	public void setId(final String idPattern) {
 		matcher.setId(idPattern);
 	}
 
-	protected RidgetMatcher createMatcher(String idPattern) {
+	protected RidgetMatcher createMatcher(final String idPattern) {
 		return new RidgetMatcher(idPattern);
 	}
 

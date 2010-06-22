@@ -32,7 +32,7 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	 *            ID of the view (see <code>org.eclipse.ui.views</code>
 	 *            extension point)
 	 */
-	public WorkareaDefinition(Object viewId) {
+	public WorkareaDefinition(final Object viewId) {
 		this(null, viewId);
 	}
 
@@ -46,7 +46,7 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	 *            ID of the view (see <code>org.eclipse.ui.views</code>
 	 *            extension point)
 	 */
-	public WorkareaDefinition(Class<? extends IController> controllerClass, Object viewId) {
+	public WorkareaDefinition(final Class<? extends IController> controllerClass, final Object viewId) {
 		this.controllerClass = controllerClass;
 		this.viewId = viewId;
 	}
@@ -101,7 +101,7 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	 * 
 	 * @since 2.0
 	 */
-	public void setViewShared(boolean shared) {
+	public void setViewShared(final boolean shared) {
 		this.viewShared = shared;
 	}
 
@@ -110,7 +110,7 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	 * 
 	 * @since 2.0
 	 */
-	public void setRequiredPreparation(boolean required) {
+	public void setRequiredPreparation(final boolean required) {
 		this.requiredPreparation = required;
 	}
 

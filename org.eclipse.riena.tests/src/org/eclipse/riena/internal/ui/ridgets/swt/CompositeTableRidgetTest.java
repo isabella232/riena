@@ -58,8 +58,8 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
-	protected Widget createWidget(Composite parent) {
-		CompositeTable control = new CompositeTable(parent, SWT.NONE);
+	protected Widget createWidget(final Composite parent) {
+		final CompositeTable control = new CompositeTable(parent, SWT.NONE);
 		// If you make RowData to small, you'll get errors in the tests,
 		// since the CompositeTable only creates as rows as fit on the screen.
 		// The assumption is that this is large enough for at least 7 rows.
@@ -87,7 +87,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
 	protected void bindRidgetToModel() {
-		IObservableList rowObservables = BeansObservables.observeList(manager, "persons");
+		final IObservableList rowObservables = BeansObservables.observeList(manager, "persons");
 		getRidget().bindToModel(rowObservables, Person.class, RowRidget.class);
 	}
 
@@ -95,20 +95,20 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	///////////////
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(CompositeTableRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testBindToModelWithListHolder() {
-		Shell shell = new Shell(SWT.SYSTEM_MODAL | SWT.ON_TOP);
+		final Shell shell = new Shell(SWT.SYSTEM_MODAL | SWT.ON_TOP);
 		try {
 			shell.setLayout(new RowLayout(SWT.VERTICAL));
-			CompositeTable widget = (CompositeTable) createWidget(shell);
+			final CompositeTable widget = (CompositeTable) createWidget(shell);
 
-			ICompositeTableRidget ridget = (ICompositeTableRidget) createRidget();
+			final ICompositeTableRidget ridget = (ICompositeTableRidget) createRidget();
 			ridget.setUIControl(widget);
 
-			MyModel model = new MyModel();
+			final MyModel model = new MyModel();
 			ridget.bindToModel(model, "persons", Person.class, RowRidget.class);
 			ridget.updateFromModel();
 
@@ -126,8 +126,8 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
 	public void testUpdateSingleSelectionFromRidgetOnRebind() {
-		ISelectableIndexedRidget ridget = getRidget();
-		CompositeTable control = getWidget();
+		final ISelectableIndexedRidget ridget = getRidget();
+		final CompositeTable control = getWidget();
 
 		setUIControlRowSelectionInterval(2, 2);
 
@@ -151,7 +151,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testUpdateFromModelPreservesSelection() {
-		ISelectableRidget ridget = getRidget();
+		final ISelectableRidget ridget = getRidget();
 
 		ridget.setSelection(person2);
 
@@ -164,7 +164,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testUpdateFromModelRemovesSelection() {
-		ISelectableRidget ridget = getRidget();
+		final ISelectableRidget ridget = getRidget();
 
 		ridget.setSelection(person2);
 
@@ -177,7 +177,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testContainsOption() {
-		ICompositeTableRidget ridget = getRidget();
+		final ICompositeTableRidget ridget = getRidget();
 
 		assertTrue(ridget.containsOption(person1));
 		assertTrue(ridget.containsOption(person2));
@@ -201,15 +201,15 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetComparator() throws Exception {
-		ICompositeTableRidget ridget = getRidget();
-		CompositeTable control = getWidget();
-		Comparator<Object> comparatorFirst = new FirstNameComparator();
-		Comparator<Object> comparatorLast = new LastNameComparator();
+		final ICompositeTableRidget ridget = getRidget();
+		final CompositeTable control = getWidget();
+		final Comparator<Object> comparatorFirst = new FirstNameComparator();
+		final Comparator<Object> comparatorLast = new LastNameComparator();
 
 		try {
 			ridget.setComparator(-1, comparatorFirst);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
@@ -222,7 +222,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 		//		}
 
 		ridget.setSortedAscending(true);
-		int lastItemIndex = control.getNumRowsInCollection() - 1;
+		final int lastItemIndex = control.getNumRowsInCollection() - 1;
 
 		assertEquals("John", getFirstNameFromRow(control, 0));
 		assertEquals("Frank", getFirstNameFromRow(control, lastItemIndex));
@@ -256,7 +256,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testGetSortedColumn() {
-		ICompositeTableRidget ridget = getRidget();
+		final ICompositeTableRidget ridget = getRidget();
 
 		// not supported
 		//		try {
@@ -296,12 +296,12 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testIsColumnSortable() {
-		ICompositeTableRidget ridget = getRidget();
+		final ICompositeTableRidget ridget = getRidget();
 
 		try {
 			assertFalse(ridget.isColumnSortable(-1));
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
@@ -337,11 +337,11 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetSortedAscending() {
-		CompositeTable control = getWidget();
-		ICompositeTableRidget ridget = getRidget();
+		final CompositeTable control = getWidget();
+		final ICompositeTableRidget ridget = getRidget();
 
 		// ridget.bindToModel(manager, "persons", Person.class, new String[] { "lastname", "firstname" }, null);
-		int lastItemIndex = control.getNumRowsInCollection() - 1;
+		final int lastItemIndex = control.getNumRowsInCollection() - 1;
 
 		assertEquals(-1, ridget.getSortedColumn());
 		assertFalse(ridget.isSortedAscending());
@@ -372,7 +372,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetSortedAscendingFiresEvents() {
-		ICompositeTableRidget ridget = getRidget();
+		final ICompositeTableRidget ridget = getRidget();
 
 		ridget.setSortedAscending(true);
 
@@ -401,12 +401,12 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetSortedColumnFiresEvents() {
-		ICompositeTableRidget ridget = getRidget();
+		final ICompositeTableRidget ridget = getRidget();
 
 		assertEquals(-1, ridget.getSortedColumn());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer
-				.valueOf(-1), Integer.valueOf(0)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN,
+				Integer.valueOf(-1), Integer.valueOf(0)));
 
 		ridget.setSortedColumn(0);
 
@@ -416,8 +416,8 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 		ridget.setSortedColumn(0);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer
-				.valueOf(0), Integer.valueOf(1)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN,
+				Integer.valueOf(0), Integer.valueOf(1)));
 
 		ridget.setSortedColumn(1);
 
@@ -425,7 +425,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetColumnSortabilityFiresEvents() {
-		ICompositeTableRidget ridget = getRidget();
+		final ICompositeTableRidget ridget = getRidget();
 
 		expectNoPropertyChangeEvent();
 
@@ -457,7 +457,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testColumnHeaderChangesSortability() {
-		ICompositeTableRidget ridget = getRidget();
+		final ICompositeTableRidget ridget = getRidget();
 
 		ridget.setColumnSortable(0, true);
 		ridget.setComparator(0, new FirstNameComparator());
@@ -469,7 +469,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 		assertEquals(-1, ridget.getSortedColumn());
 		assertFalse(ridget.isSortedAscending());
 
-		Event e = new Event();
+		final Event e = new Event();
 		e.type = SWT.Selection;
 		e.widget = getColumn((CompositeTableRidget) ridget, 0);
 		e.widget.notifyListeners(SWT.Selection, e);
@@ -494,9 +494,9 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testBindsNeedsUpdateFromModel() {
-		ICompositeTableRidget ridget = new CompositeTableRidget();
+		final ICompositeTableRidget ridget = new CompositeTableRidget();
 
-		IObservableList rowObservables = BeansObservables.observeList(manager, "persons");
+		final IObservableList rowObservables = BeansObservables.observeList(manager, "persons");
 		ridget.bindToModel(rowObservables, Person.class, RowRidget.class);
 
 		assertEquals(0, ridget.getOptionCount());
@@ -507,27 +507,27 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testAddSelectionListener() {
-		ICompositeTableRidget ridget = getRidget();
+		final ICompositeTableRidget ridget = getRidget();
 
 		try {
 			ridget.addSelectionListener(null);
 			fail();
-		} catch (UnsupportedOperationException npe) {
+		} catch (final UnsupportedOperationException npe) {
 			ok();
 		}
 
-		TestSelectionListener selectionListener = new TestSelectionListener();
+		final TestSelectionListener selectionListener = new TestSelectionListener();
 
 		try {
 			ridget.addSelectionListener(selectionListener);
 			fail();
-		} catch (UnsupportedOperationException npe) {
+		} catch (final UnsupportedOperationException npe) {
 			ok();
 		}
 	}
 
 	public void testGetOptionWithSorting() {
-		ICompositeTableRidget ridget = getRidget();
+		final ICompositeTableRidget ridget = getRidget();
 
 		assertEquals(0, ridget.indexOfOption(person1));
 		assertEquals(person1, ridget.getOption(0));
@@ -547,7 +547,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetSelectionWithSorting() {
-		ICompositeTableRidget ridget = getRidget();
+		final ICompositeTableRidget ridget = getRidget();
 
 		assertEquals(-1, ridget.getSelectionIndex());
 		assertTrue(ridget.getSelection().isEmpty());
@@ -574,37 +574,37 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	// helping methods
 	//////////////////
 
-	private String getFirstNameFromRow(CompositeTable control, int rowIndex) {
+	private String getFirstNameFromRow(final CompositeTable control, final int rowIndex) {
 		UITestHelper.readAndDispatch(control);
 		control.setSelection(0, rowIndex - control.getTopRow());
 		UITestHelper.readAndDispatch(control);
-		Control[] rowControls = control.getRowControls();
+		final Control[] rowControls = control.getRowControls();
 		if (rowIndex == 0) {
 			return ((Row) rowControls[0]).txtFirst.getText();
 		} else if (rowIndex == 7) {
-			int index = rowControls.length - 1;
+			final int index = rowControls.length - 1;
 			return ((Row) rowControls[index]).txtFirst.getText();
 		}
 		throw new IllegalArgumentException("index= " + rowIndex);
 	}
 
-	private String getLastNameFromRow(CompositeTable control, int rowIndex) {
+	private String getLastNameFromRow(final CompositeTable control, final int rowIndex) {
 		UITestHelper.readAndDispatch(control);
 		control.setSelection(0, rowIndex - control.getTopRow());
 		UITestHelper.readAndDispatch(control);
-		Control[] rowControls = control.getRowControls();
+		final Control[] rowControls = control.getRowControls();
 		if (rowIndex == 0) {
 			return ((Row) rowControls[0]).txtLast.getText();
 		} else if (rowIndex == 7) {
-			int index = rowControls.length - 1;
+			final int index = rowControls.length - 1;
 			return ((Row) rowControls[index]).txtLast.getText();
 		}
 		throw new IllegalArgumentException("index= " + rowIndex);
 	}
 
-	private TableColumn getColumn(CompositeTableRidget ridget, int columnIndex) {
+	private TableColumn getColumn(final CompositeTableRidget ridget, final int columnIndex) {
 		TableColumn result = null;
-		Object table = ReflectionUtils.invokeHidden(ridget, "getHeader", (Object[]) null);
+		final Object table = ReflectionUtils.invokeHidden(ridget, "getHeader", (Object[]) null);
 		if (table instanceof AbstractNativeHeader) {
 			result = ((AbstractNativeHeader) table).getColumns()[columnIndex];
 		}
@@ -620,18 +620,18 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	@Override
-	protected Object getRowValue(int i) {
-		List<?> rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
+	protected Object getRowValue(final int i) {
+		final List<?> rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
 		return rowObservables.get(i);
 	}
 
 	@Override
 	protected int[] getSelectedRows() {
-		List<?> rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
-		Object[] elements = getRidget().getMultiSelectionObservable().toArray();
-		int[] result = new int[elements.length];
+		final List<?> rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
+		final Object[] elements = getRidget().getMultiSelectionObservable().toArray();
+		final int[] result = new int[elements.length];
 		for (int i = 0; i < elements.length; i++) {
-			Object element = elements[i];
+			final Object element = elements[i];
 			result[i] = rowObservables.indexOf(element);
 		}
 		return result;
@@ -639,14 +639,14 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
 	protected int getUIControlSelectedRow() {
-		CompositeTable control = getWidget();
-		Point selection = control.getSelection();
+		final CompositeTable control = getWidget();
+		final Point selection = control.getSelection();
 		return selection == null || selection.y == -1 ? -1 : selection.y + control.getTopRow();
 	}
 
 	@Override
 	protected int getUIControlSelectedRowCount() {
-		CompositeTable control = getWidget();
+		final CompositeTable control = getWidget();
 		Point selection = null;
 		// workaround: check if we have selection, because 
 		// CompositeTable cannot unselect
@@ -658,20 +658,20 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
 	protected int[] getUIControlSelectedRows() {
-		int index = getUIControlSelectedRow();
+		final int index = getUIControlSelectedRow();
 		return index == -1 ? new int[0] : new int[] { index };
 	}
 
 	@Override
-	protected void setUIControlRowSelection(int[] indices) {
+	protected void setUIControlRowSelection(final int[] indices) {
 		throw new UnsupportedOperationException("not supported");
 	}
 
 	@Override
-	protected void setUIControlRowSelectionInterval(int start, int end) {
+	protected void setUIControlRowSelectionInterval(final int start, final int end) {
 		assertTrue("multiple selection is not supported", start == end);
-		CompositeTable control = getWidget();
-		int row = start - control.getTopRow();
+		final CompositeTable control = getWidget();
+		final int row = start - control.getTopRow();
 		control.setSelection(0, row);
 		UITestHelper.readAndDispatch(control);
 	}
@@ -688,7 +688,7 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	 * A header control for the CompositeTable.
 	 */
 	public static class Header extends AbstractNativeHeader {
-		public Header(Composite parent, int style) {
+		public Header(final Composite parent, final int style) {
 			super(parent, style);
 			setWeights(new int[] { 100, 100 });
 			setColumnText(new String[] { "First Name", "LastName" });
@@ -701,17 +701,17 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	 * @see RowRidget
 	 */
 	public static class Row extends Composite implements IComplexComponent {
-		private Text txtFirst;
-		private Text txtLast;
+		private final Text txtFirst;
+		private final Text txtLast;
 
-		public Row(Composite parent, int style) {
+		public Row(final Composite parent, final int style) {
 			super(parent, style);
 			setLayout(new ResizableGridRowLayout());
 			txtFirst = UIControlsFactory.createText(this);
 			txtFirst.setText("first");
 			txtLast = UIControlsFactory.createText(this);
 			txtLast.setText("last");
-			SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+			final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 			locator.setBindingProperty(txtFirst, "first");
 			locator.setBindingProperty(txtLast, "last");
 		}
@@ -734,17 +734,17 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	public static class RowRidget extends AbstractCompositeRidget implements IRowRidget {
 		private Person rowData;
 
-		public void setData(Object rowData) {
+		public void setData(final Object rowData) {
 			this.rowData = (Person) rowData;
 		}
 
 		@Override
 		public void configureRidgets() {
-			ITextRidget txtFirst = (ITextRidget) getRidget("first"); //$NON-NLS-1$
+			final ITextRidget txtFirst = (ITextRidget) getRidget("first"); //$NON-NLS-1$
 			txtFirst.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 
-			ITextRidget txtLast = (ITextRidget) getRidget("last"); //$NON-NLS-1$
+			final ITextRidget txtLast = (ITextRidget) getRidget("last"); //$NON-NLS-1$
 			txtLast.bindToModel(rowData, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
 		}
@@ -757,9 +757,9 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	private static final class FirstNameComparator implements Comparator<Object>, Serializable {
 		private static final long serialVersionUID = 1L;
 
-		public int compare(Object o1, Object o2) {
-			Person p1 = (Person) o1;
-			Person p2 = (Person) o2;
+		public int compare(final Object o1, final Object o2) {
+			final Person p1 = (Person) o1;
+			final Person p2 = (Person) o2;
 			return p1.getFirstname().compareTo(p2.getFirstname());
 		}
 	}
@@ -770,15 +770,15 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 	private static final class LastNameComparator implements Comparator<Object>, Serializable {
 		private static final long serialVersionUID = 1L;
 
-		public int compare(Object o1, Object o2) {
-			Person p1 = (Person) o1;
-			Person p2 = (Person) o2;
+		public int compare(final Object o1, final Object o2) {
+			final Person p1 = (Person) o1;
+			final Person p2 = (Person) o2;
 			return p1.getLastname().compareTo(p2.getLastname());
 		}
 	}
 
 	private static class MyModel {
-		private List<Person> persons = PersonFactory.createPersonList();
+		private final List<Person> persons = PersonFactory.createPersonList();
 
 		public List<Person> getPersons() {
 			return persons;

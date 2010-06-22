@@ -71,12 +71,12 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		optionsObservable = new WritableList();
 		selectionObservable = new WritableValue();
 		selectionObservable.addChangeListener(new IChangeListener() {
-			public void handleChange(ChangeEvent event) {
+			public void handleChange(final ChangeEvent event) {
 				disableMandatoryMarkers(hasInput());
 			}
 		});
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				updateSelection(getUIControl());
 			}
 		});
@@ -90,10 +90,10 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, ChoiceComposite.class);
 		if (uiControl != null) {
-			ChoiceComposite composite = (ChoiceComposite) uiControl;
+			final ChoiceComposite composite = (ChoiceComposite) uiControl;
 			Assert.isTrue(!composite.isMultipleSelection(), "expected single selection ChoiceComposite"); //$NON-NLS-1$
 		}
 	}
@@ -112,14 +112,14 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		return (ChoiceComposite) super.getUIControl();
 	}
 
-	public void bindToModel(IObservableList optionValues, IObservableValue selectionValue) {
+	public void bindToModel(final IObservableList optionValues, final IObservableValue selectionValue) {
 		Assert.isNotNull(optionValues, "optionValues"); //$NON-NLS-1$
 		Assert.isNotNull(selectionValue, "selectionValue"); //$NON-NLS-1$
 		bindToModel(optionValues, null, selectionValue);
 	}
 
-	public void bindToModel(Object listHolder, String listPropertyName, Object selectionHolder,
-			String selectionPropertyName) {
+	public void bindToModel(final Object listHolder, final String listPropertyName, final Object selectionHolder,
+			final String selectionPropertyName) {
 		Assert.isNotNull(listHolder, "listHolder"); //$NON-NLS-1$
 		Assert.isNotNull(listPropertyName, "listPropertyName"); //$NON-NLS-1$
 		Assert.isNotNull(selectionHolder, "selectionHolder"); //$NON-NLS-1$
@@ -139,12 +139,12 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		bindToModel(optionValues, null, selectionValue);
 	}
 
-	public void bindToModel(List<? extends Object> optionValues, List<String> optionLabels, Object selectionHolder,
-			String selectionPropertyName) {
+	public void bindToModel(final List<? extends Object> optionValues, final List<String> optionLabels,
+			final Object selectionHolder, final String selectionPropertyName) {
 		Assert.isNotNull(optionValues, "optionValues"); //$NON-NLS-1$
 		Assert.isNotNull(selectionHolder, "selectionHolder"); //$NON-NLS-1$
 		Assert.isNotNull(selectionPropertyName, "selectionPropertyName"); //$NON-NLS-1$
-		IObservableList list = new WritableList(optionValues, null);
+		final IObservableList list = new WritableList(optionValues, null);
 		IObservableValue selectionValue;
 		if (AbstractSWTRidget.isBean(selectionHolder.getClass())) {
 			selectionValue = BeansObservables.observeValue(selectionHolder, selectionPropertyName);
@@ -159,13 +159,13 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		assertIsBoundToModel();
 		super.updateFromModel();
 		optionsBinding.updateModelToTarget();
-		Object oldSelection = selectionObservable.getValue();
+		final Object oldSelection = selectionObservable.getValue();
 		selectionBinding.updateModelToTarget();
-		ChoiceComposite control = getUIControl();
-		int oldCount = getChildrenCount(control);
+		final ChoiceComposite control = getUIControl();
+		final int oldCount = getChildrenCount(control);
 		disposeChildren(control);
 		createChildren(control);
-		int newCount = getChildrenCount(control);
+		final int newCount = getChildrenCount(control);
 		if (oldCount != newCount) {
 			// if the number of children has changed
 			// update the layout of the parent composite
@@ -199,12 +199,12 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		return selectionObservable.getValue();
 	}
 
-	public void setSelection(Object candidate) {
+	public void setSelection(final Object candidate) {
 		assertIsBoundToModel();
 		if (candidate != null && !optionsObservable.contains(candidate)) {
 			throw new BindingException("candidate not in option list: " + candidate); //$NON-NLS-1$
 		}
-		Object oldSelection = selectionObservable.getValue();
+		final Object oldSelection = selectionObservable.getValue();
 		selectionObservable.setValue(candidate);
 		updateSelection(getUIControl());
 		firePropertyChange(PROPERTY_SELECTION, oldSelection, candidate);
@@ -224,12 +224,12 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 	 * 
 	 * @since 1.2
 	 */
-	public void addSelectionListener(ISelectionListener selectionListener) {
+	public void addSelectionListener(final ISelectionListener selectionListener) {
 		Assert.isNotNull(selectionListener, "selectionListener is null"); //$NON-NLS-1$
 		if (selectionListeners == null) {
 			selectionListeners = new ListenerList<ISelectionListener>(ISelectionListener.class);
 			addPropertyChangeListener(IChoiceRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
-				public void propertyChange(PropertyChangeEvent evt) {
+				public void propertyChange(final PropertyChangeEvent evt) {
 					notifySelectionListeners(Arrays.asList(evt.getOldValue()), Arrays.asList(evt.getNewValue()));
 				}
 			});
@@ -242,7 +242,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 	 * 
 	 * @since 1.2
 	 */
-	public void removeSelectionListener(ISelectionListener selectionListener) {
+	public void removeSelectionListener(final ISelectionListener selectionListener) {
 		if (selectionListeners != null) {
 			selectionListeners.remove(selectionListener);
 		}
@@ -257,9 +257,10 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		}
 	}
 
-	private void bindToModel(IObservableList optionValues, List<String> optionLabels, IObservableValue selectionValue) {
+	private void bindToModel(final IObservableList optionValues, final List<String> optionLabels,
+			final IObservableValue selectionValue) {
 		if (optionLabels != null) {
-			String msg = "Mismatch between number of optionValues and optionLabels"; //$NON-NLS-1$
+			final String msg = "Mismatch between number of optionValues and optionLabels"; //$NON-NLS-1$
 			Assert.isLegal(optionValues.size() == optionLabels.size(), msg);
 		}
 
@@ -279,7 +280,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		}
 
 		// set up new binding
-		DataBindingContext dbc = new DataBindingContext();
+		final DataBindingContext dbc = new DataBindingContext();
 		optionsBinding = dbc.bindList(optionsObservable, optionValues, new UpdateListStrategy(
 				UpdateListStrategy.POLICY_UPDATE), new UpdateListStrategy(UpdateListStrategy.POLICY_ON_REQUEST));
 		selectionBinding = dbc.bindValue(selectionObservable, selectionValue, new UpdateValueStrategy(
@@ -293,23 +294,23 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		bindUIControl();
 	}
 
-	private void createChildren(Composite control) {
+	private void createChildren(final Composite control) {
 		if (control != null && !control.isDisposed()) {
-			Object[] values = optionsObservable.toArray();
+			final Object[] values = optionsObservable.toArray();
 			for (int i = 0; i < values.length; i++) {
-				Object value = values[i];
-				String caption = optionLabels != null ? optionLabels[i] : String.valueOf(value);
+				final Object value = values[i];
+				final String caption = optionLabels != null ? optionLabels[i] : String.valueOf(value);
 
-				Button button = new Button(control, SWT.RADIO);
+				final Button button = new Button(control, SWT.RADIO);
 				button.setText(caption);
 				button.setForeground(control.getForeground());
 				button.setBackground(control.getBackground());
 				button.setData(value);
 				button.addSelectionListener(new SelectionAdapter() {
 					@Override
-					public void widgetSelected(SelectionEvent e) {
-						Button button = (Button) e.widget;
-						Object data = button.getData();
+					public void widgetSelected(final SelectionEvent e) {
+						final Button button = (Button) e.widget;
+						final Object data = button.getData();
 						if (button.getSelection()) {
 							if (isOutputOnly()) {
 								// silently revert UI change
@@ -328,16 +329,16 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		}
 	}
 
-	private void disposeChildren(Composite control) {
+	private void disposeChildren(final Composite control) {
 		if (control != null && !control.isDisposed()) {
-			for (Control child : control.getChildren()) {
+			for (final Control child : control.getChildren()) {
 				child.dispose();
 			}
 		}
 	}
 
-	private void fireFocusIn(Control control) {
-		Event event = new Event();
+	private void fireFocusIn(final Control control) {
+		final Event event = new Event();
 		event.type = SWT.FocusIn;
 		event.widget = control;
 		control.notifyListeners(SWT.FocusIn, event);
@@ -353,23 +354,23 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 	 * may deselect all buttons, as mandated by
 	 * {@link MarkerSupport#isHideDisabledRidgetContent()}.
 	 */
-	private void updateSelection(Composite control) {
-		boolean canSelect = isEnabled() || !MarkerSupport.isHideDisabledRidgetContent();
+	private void updateSelection(final Composite control) {
+		final boolean canSelect = isEnabled() || !MarkerSupport.isHideDisabledRidgetContent();
 		if (control != null && !control.isDisposed()) {
-			Object value = selectionObservable.getValue();
-			for (Control child : control.getChildren()) {
-				Button button = (Button) child;
-				boolean isSelected = canSelect && (value != null) && (value.equals(child.getData()));
+			final Object value = selectionObservable.getValue();
+			for (final Control child : control.getChildren()) {
+				final Button button = (Button) child;
+				final boolean isSelected = canSelect && (value != null) && (value.equals(child.getData()));
 				button.setSelection(isSelected);
 			}
 		}
 	}
 
-	private void notifySelectionListeners(List<?> oldSelectionList, List<?> newSelectionList) {
+	private void notifySelectionListeners(final List<?> oldSelectionList, final List<?> newSelectionList) {
 		if (selectionListeners != null) {
-			org.eclipse.riena.ui.ridgets.listener.SelectionEvent event = new org.eclipse.riena.ui.ridgets.listener.SelectionEvent(
+			final org.eclipse.riena.ui.ridgets.listener.SelectionEvent event = new org.eclipse.riena.ui.ridgets.listener.SelectionEvent(
 					this, oldSelectionList, newSelectionList);
-			for (ISelectionListener listener : selectionListeners.getListeners()) {
+			for (final ISelectionListener listener : selectionListeners.getListeners()) {
 				listener.ridgetSelected(event);
 			}
 		}

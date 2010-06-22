@@ -26,7 +26,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 public class ScaleRidgetTest extends AbstractTraverseRidgetTest {
 
 	@Override
-	protected Widget createWidget(Composite parent) {
+	protected Widget createWidget(final Composite parent) {
 		return new Scale(parent, SWT.NONE);
 	}
 
@@ -46,32 +46,32 @@ public class ScaleRidgetTest extends AbstractTraverseRidgetTest {
 	}
 
 	@Override
-	protected int getIncrement(Control control) {
+	protected int getIncrement(final Control control) {
 		return ((Scale) control).getIncrement();
 	}
 
 	@Override
-	protected int getMaximum(Control control) {
+	protected int getMaximum(final Control control) {
 		return ((Scale) control).getMaximum();
 	}
 
 	@Override
-	protected int getMinimum(Control control) {
+	protected int getMinimum(final Control control) {
 		return ((Scale) control).getMinimum();
 	}
 
 	@Override
-	protected int getPageIncrement(Control control) {
+	protected int getPageIncrement(final Control control) {
 		return ((Scale) control).getPageIncrement();
 	}
 
 	@Override
-	protected int getValue(Control control) {
+	protected int getValue(final Control control) {
 		return ((Scale) control).getSelection();
 	}
 
 	@Override
-	protected void setValue(Control control, int value) {
+	protected void setValue(final Control control, final int value) {
 		((Scale) control).setSelection(value);
 	}
 
@@ -79,7 +79,7 @@ public class ScaleRidgetTest extends AbstractTraverseRidgetTest {
 	// /////////////
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(ScaleRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
@@ -88,7 +88,7 @@ public class ScaleRidgetTest extends AbstractTraverseRidgetTest {
 	 */
 	public void testInitFromUIControl() {
 
-		Scale scale = getWidget();
+		final Scale scale = getWidget();
 		scale.setMaximum(22);
 		scale.setMinimum(1);
 		scale.setIncrement(2);

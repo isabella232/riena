@@ -38,21 +38,21 @@ public class SessionService implements ISessionService {
 		super();
 	}
 
-	public void bind(ISessionStore store) {
+	public void bind(final ISessionStore store) {
 		this.store = store;
 	}
 
-	public void unbind(ISessionStore store) {
+	public void unbind(final ISessionStore store) {
 		if (this.store == store) {
 			this.store = null;
 		}
 	}
 
-	public void bind(ISessionProvider provider) {
+	public void bind(final ISessionProvider provider) {
 		this.sessionProvider = provider;
 	}
 
-	public void unbind(ISessionProvider provider) {
+	public void unbind(final ISessionProvider provider) {
 		if (this.sessionProvider == provider) {
 			this.sessionProvider = null;
 		}
@@ -63,7 +63,7 @@ public class SessionService implements ISessionService {
 	 * 
 	 * @param store
 	 */
-	public SessionService(ISessionStore store, ISessionProvider sessionProvider) {
+	public SessionService(final ISessionStore store, final ISessionProvider sessionProvider) {
 		super();
 		this.store = store;
 		this.sessionProvider = sessionProvider;
@@ -76,16 +76,16 @@ public class SessionService implements ISessionService {
 	 * org.eclipse.riena.security.server.session.ISessionService#generateSession
 	 * (java.security.Principal[])
 	 */
-	public Session generateSession(Principal[] principals) {
+	public Session generateSession(final Principal[] principals) {
 		// Assert.isNotNull( principal.getName(),"userid must not be null" );
 		Assert.isNotNull(store, "store instance is null"); //$NON-NLS-1$
 
-		Session session = sessionProvider.createSession(principals);
+		final Session session = sessionProvider.createSession(principals);
 
 		if (session == null) {
 			throw new SessionFailure("internal error, generating a session failed"); //$NON-NLS-1$
 		}
-		SessionEntry entry = new SessionEntry(session, principals);
+		final SessionEntry entry = new SessionEntry(session, principals);
 		store.write(entry);
 		return session;
 	}
@@ -99,9 +99,9 @@ public class SessionService implements ISessionService {
 	 * 
 	 * @pre session!=null
 	 */
-	public Principal[] findPrincipals(Session session) {
+	public Principal[] findPrincipals(final Session session) {
 		// Assert.isNotNull( session,"session is not null");
-		SessionEntry entry = store.read(session);
+		final SessionEntry entry = store.read(session);
 		if (entry == null) {
 			return null;
 		}
@@ -115,8 +115,8 @@ public class SessionService implements ISessionService {
 	 * org.eclipse.riena.security.server.session.ISessionService#isValidSession
 	 * (org.eclipse.riena.security.common.session.Session)
 	 */
-	public boolean isValidSession(Session session) {
-		SessionEntry entry = store.read(session);
+	public boolean isValidSession(final Session session) {
+		final SessionEntry entry = store.read(session);
 		return entry != null && entry.getValid();
 	}
 
@@ -127,8 +127,8 @@ public class SessionService implements ISessionService {
 	 * org.eclipse.riena.security.server.session.ISessionService#hasSession(
 	 * org.eclipse.riena.security.common.session.Session)
 	 */
-	public boolean hasSession(Session session) {
-		SessionEntry entry = store.read(session);
+	public boolean hasSession(final Session session) {
+		final SessionEntry entry = store.read(session);
 		return entry != null;
 	}
 
@@ -139,7 +139,7 @@ public class SessionService implements ISessionService {
 	 * org.eclipse.riena.security.server.session.ISessionService#invalidateSession
 	 * (org.eclipse.riena.security.common.session.Session)
 	 */
-	public void invalidateSession(Session session) {
+	public void invalidateSession(final Session session) {
 		store.delete(session);
 	}
 

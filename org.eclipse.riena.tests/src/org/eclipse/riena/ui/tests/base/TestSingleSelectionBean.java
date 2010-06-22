@@ -23,21 +23,21 @@ public class TestSingleSelectionBean {
 		return selection;
 	}
 
-	public void setSelection(Object selection) {
+	public void setSelection(final Object selection) {
 		this.selection = selection;
 	}
 
 	/**
 	 * unused
 	 */
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
+	public void addPropertyChangeListener(final PropertyChangeListener listener) {
 		// unused
 	}
 
 	/**
 	 * unused
 	 */
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
+	public void removePropertyChangeListener(final PropertyChangeListener listener) {
 		// unused
 	}
 

@@ -24,7 +24,7 @@ public class NavigationController extends AbstractRidgetController {
 
 	@Override
 	public void configureRidgets() {
-		ITreeRidget tree = (ITreeRidget) getRidget("tree"); //$NON-NLS-1$
+		final ITreeRidget tree = (ITreeRidget) getRidget("tree"); //$NON-NLS-1$
 		tree.bindToModel(createDummyModel(), ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
 				ITreeNode.PROPERTY_VALUE);
 		tree.updateFromModel();
@@ -42,12 +42,12 @@ public class NavigationController extends AbstractRidgetController {
 	 * @return an ITreeNode[] instance; never null
 	 */
 	private ITreeNode[] createDummyModel() {
-		TreeNode root1 = new TreeNode("me@this.com"); //$NON-NLS-1$
+		final TreeNode root1 = new TreeNode("me@this.com"); //$NON-NLS-1$
 		new TreeNode(root1, "Inbox"); //$NON-NLS-1$
 		new TreeNode(root1, "Drafts"); //$NON-NLS-1$
 		new TreeNode(root1, "Sent"); //$NON-NLS-1$
 
-		TreeNode root2 = new TreeNode("other@aol.com"); //$NON-NLS-1$
+		final TreeNode root2 = new TreeNode("other@aol.com"); //$NON-NLS-1$
 		new TreeNode(root2, "Inbox"); //$NON-NLS-1$
 
 		return new ITreeNode[] { root1, root2 };

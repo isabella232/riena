@@ -26,21 +26,21 @@ public class InputStreamSerializerFactoryTest extends AbstractSerializerFactoryT
 	private final static byte[] BYTES = "That will be pushed through hessian!".getBytes();
 
 	public void testInputStreamFail() throws IOException {
-		Attachment attachment = new Attachment(new ByteArrayInputStream(BYTES));
+		final Attachment attachment = new Attachment(new ByteArrayInputStream(BYTES));
 		try {
 			inAndOut(attachment, HessianSerializerVersion.Two, null);
 			fail("Must fail!");
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			Nop.reason("Expected");
 		}
 	}
 
 	public void testInputStream() throws IOException {
-		ByteArrayInputStream bais = new ByteArrayInputStream(BYTES);
-		Attachment attachment = new Attachment(bais);
-		Attachment attechmentOut = (Attachment) inAndOut(attachment, HessianSerializerVersion.Two, null,
+		final ByteArrayInputStream bais = new ByteArrayInputStream(BYTES);
+		final Attachment attachment = new Attachment(bais);
+		final Attachment attechmentOut = (Attachment) inAndOut(attachment, HessianSerializerVersion.Two, null,
 				new InputStreamSerializerFactory());
-		byte[] outBytes = new byte[BYTES.length];
+		final byte[] outBytes = new byte[BYTES.length];
 		attechmentOut.readAsStream().read(outBytes);
 		assertTrue(Arrays.equals(BYTES, outBytes));
 	}

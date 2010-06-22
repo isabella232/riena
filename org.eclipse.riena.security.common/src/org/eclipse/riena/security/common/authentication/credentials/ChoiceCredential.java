@@ -15,15 +15,16 @@ package org.eclipse.riena.security.common.authentication.credentials;
  */
 public class ChoiceCredential extends AbstractCredential {
 
-	private String[] choices;
-	private int defaultChoice;
-	private boolean multipleSelectionsAllowed;
+	private final String[] choices;
+	private final int defaultChoice;
+	private final boolean multipleSelectionsAllowed;
 	private int[] selections;
 
 	/**
 	 * @param prompt
 	 */
-	public ChoiceCredential(String prompt, String[] choices, int defaultChoice, boolean multipleSelectionsAllowed) {
+	public ChoiceCredential(final String prompt, final String[] choices, final int defaultChoice,
+			final boolean multipleSelectionsAllowed) {
 		super(prompt);
 		this.choices = choices.clone();
 		this.defaultChoice = defaultChoice;
@@ -46,7 +47,7 @@ public class ChoiceCredential extends AbstractCredential {
 		return selections.clone();
 	}
 
-	public void setSelections(int[] selections) {
+	public void setSelections(final int[] selections) {
 		this.selections = selections.clone();
 	}
 

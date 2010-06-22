@@ -29,12 +29,12 @@ import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 public class ChoiceSubModuleControllerTest extends AbstractSubModuleControllerTest<ChoiceSubModuleController> {
 
 	@Override
-	protected ChoiceSubModuleController createController(ISubModuleNode node) {
+	protected ChoiceSubModuleController createController(final ISubModuleNode node) {
 		return new ChoiceSubModuleController(node);
 	}
 
 	public void testPriceAstonMartin() {
-		ISingleChoiceRidget compositeCarModel = getController().getRidget(ISingleChoiceRidget.class,
+		final ISingleChoiceRidget compositeCarModel = getController().getRidget(ISingleChoiceRidget.class,
 				"compositeCarModel"); //$NON-NLS-1$
 		compositeCarModel.setSelection(CarModels.ASTON_MARTIN);
 
@@ -44,9 +44,9 @@ public class ChoiceSubModuleControllerTest extends AbstractSubModuleControllerTe
 
 	public void testPriceAstonMartinWithOptions() {
 
-		ISingleChoiceRidget compositeCarModel = getController().getRidget(ISingleChoiceRidget.class,
+		final ISingleChoiceRidget compositeCarModel = getController().getRidget(ISingleChoiceRidget.class,
 				"compositeCarModel"); //$NON-NLS-1$
-		IMultipleChoiceRidget compositeCarExtras = getController().getRidget(IMultipleChoiceRidget.class,
+		final IMultipleChoiceRidget compositeCarExtras = getController().getRidget(IMultipleChoiceRidget.class,
 				"compositeCarExtras"); //$NON-NLS-1$
 
 		compositeCarModel.setSelection(CarModels.ASTON_MARTIN);
@@ -62,12 +62,12 @@ public class ChoiceSubModuleControllerTest extends AbstractSubModuleControllerTe
 
 	public void testQuickConfig() {
 
-		IActionRidget buttonPreset = getController().getRidget(IActionRidget.class, "buttonPreset"); //$NON-NLS-1$
+		final IActionRidget buttonPreset = getController().getRidget(IActionRidget.class, "buttonPreset"); //$NON-NLS-1$
 		buttonPreset.fireAction();
 
-		ISingleChoiceRidget compositeCarModel = getController().getRidget(ISingleChoiceRidget.class,
+		final ISingleChoiceRidget compositeCarModel = getController().getRidget(ISingleChoiceRidget.class,
 				"compositeCarModel"); //$NON-NLS-1$
-		IMultipleChoiceRidget compositeCarExtras = getController().getRidget(IMultipleChoiceRidget.class,
+		final IMultipleChoiceRidget compositeCarExtras = getController().getRidget(IMultipleChoiceRidget.class,
 				"compositeCarExtras"); //$NON-NLS-1$
 
 		assertEquals(compositeCarModel.getSelection(), ChoiceSubModuleController.CarModels.BMW);
@@ -78,12 +78,12 @@ public class ChoiceSubModuleControllerTest extends AbstractSubModuleControllerTe
 
 	public void testReset() {
 
-		IActionRidget buttonReset = getController().getRidget(IActionRidget.class, "buttonReset"); //$NON-NLS-1$
+		final IActionRidget buttonReset = getController().getRidget(IActionRidget.class, "buttonReset"); //$NON-NLS-1$
 		buttonReset.fireAction();
 
-		ISingleChoiceRidget compositeCarModel = getController().getRidget(ISingleChoiceRidget.class,
+		final ISingleChoiceRidget compositeCarModel = getController().getRidget(ISingleChoiceRidget.class,
 				"compositeCarModel"); //$NON-NLS-1$
-		IMultipleChoiceRidget compositeCarExtras = getController().getRidget(IMultipleChoiceRidget.class,
+		final IMultipleChoiceRidget compositeCarExtras = getController().getRidget(IMultipleChoiceRidget.class,
 				"compositeCarExtras"); //$NON-NLS-1$
 
 		assertNull(compositeCarModel.getSelection());

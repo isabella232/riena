@@ -20,46 +20,46 @@ import java.util.Map;
  */
 public class Target {
 
-	private Map<String, List<Class<?>>> deps = new HashMap<String, List<Class<?>>>();
+	private final Map<String, List<Class<?>>> deps = new HashMap<String, List<Class<?>>>();
 	private IRanking ranking;
 
-	public void bind(DepOne dep) {
+	public void bind(final DepOne dep) {
 		called("bind", DepOne.class, dep);
 		add("bind", DepOne.class);
 	}
 
-	public void unbind(DepOne dep) {
+	public void unbind(final DepOne dep) {
 		called("unbind", DepOne.class, dep);
 		remove("bind", DepOne.class);
 	}
 
-	public void bind(DepTwo dep) {
+	public void bind(final DepTwo dep) {
 		called("bind", DepTwo.class, dep);
 		add("bind", DepTwo.class);
 	}
 
-	public void unbind(DepTwo dep) {
+	public void unbind(final DepTwo dep) {
 		called("unbind", DepTwo.class, dep);
 		remove("bind", DepTwo.class);
 	}
 
-	public void binde(DepOne dep) {
+	public void binde(final DepOne dep) {
 		called("binde", DepOne.class, dep);
 		add("binde", DepOne.class);
 	}
 
-	public void entbinde(DepOne dep) {
+	public void entbinde(final DepOne dep) {
 		called("entbinde", DepOne.class, dep);
 		remove("binde", DepOne.class);
 	}
 
-	public void bind(IRanking dep) {
+	public void bind(final IRanking dep) {
 		called("bind", IRanking.class, dep);
 		add("bind", IRanking.class);
 		this.ranking = dep;
 	}
 
-	public void unbind(IRanking dep) {
+	public void unbind(final IRanking dep) {
 		called("unbind", IRanking.class, dep);
 		remove("bind", IRanking.class);
 	}
@@ -68,12 +68,12 @@ public class Target {
 	 * @param string
 	 * @param object
 	 */
-	private void called(String methodName, Class<?> type, Object object) {
+	private void called(final String methodName, final Class<?> type, final Object object) {
 		System.out.println(methodName + "(" + type.getSimpleName() + ") -> " + object.getClass().getSimpleName());
 	}
 
-	public int count(String method, Class<?> clazz) {
-		List<Class<?>> deps4method = deps.get(key(method, clazz));
+	public int count(final String method, final Class<?> clazz) {
+		final List<Class<?>> deps4method = deps.get(key(method, clazz));
 		if (deps4method != null) {
 			return deps4method.size();
 		}
@@ -84,7 +84,7 @@ public class Target {
 		return ranking.getRanking();
 	}
 
-	private void add(String method, Class<?> depClass) {
+	private void add(final String method, final Class<?> depClass) {
 		List<Class<?>> deps4method = deps.get(key(method, depClass));
 		if (deps4method == null) {
 			deps4method = new ArrayList<Class<?>>();
@@ -93,14 +93,14 @@ public class Target {
 		deps4method.add(depClass);
 	}
 
-	private void remove(String method, Class<?> depClass) {
-		List<Class<?>> deps4method = deps.get(key(method, depClass));
+	private void remove(final String method, final Class<?> depClass) {
+		final List<Class<?>> deps4method = deps.get(key(method, depClass));
 		if (deps4method != null) {
 			deps4method.remove(depClass);
 		}
 	}
 
-	private String key(String methodKey, Class<?> type) {
+	private String key(final String methodKey, final Class<?> type) {
 		return methodKey + "(" + type.getName() + ")";
 	}
 }

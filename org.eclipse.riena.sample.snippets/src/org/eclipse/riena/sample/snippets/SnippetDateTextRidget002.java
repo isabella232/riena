@@ -34,35 +34,35 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public final class SnippetDateTextRidget002 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = new Shell();
+			final Shell shell = new Shell();
 			shell.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
 			UIControlsFactory.createLabel(shell, "Date (dd.MM.yyyy):"); //$NON-NLS-1$
-			Text txtInput = UIControlsFactory.createTextDate(shell);
+			final Text txtInput = UIControlsFactory.createTextDate(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtInput);
 
 			UIControlsFactory.createLabel(shell, "Output (Date):"); //$NON-NLS-1$
-			Text txtOutput = UIControlsFactory.createText(shell);
+			final Text txtOutput = UIControlsFactory.createText(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(txtOutput);
 
-			IDateTextRidget rInput = (IDateTextRidget) SwtRidgetFactory.createRidget(txtInput);
+			final IDateTextRidget rInput = (IDateTextRidget) SwtRidgetFactory.createRidget(txtInput);
 			rInput.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 			rInput.setDirectWriting(true);
 
 			final ITextRidget rOutput = (ITextRidget) SwtRidgetFactory.createRidget(txtOutput);
 			rOutput.setOutputOnly(true);
 
-			DateBean bean = new DateBean(new Date());
+			final DateBean bean = new DateBean(new Date());
 			rInput.bindToModel(bean, DateBean.DATE_PROPERTY);
 			rInput.updateFromModel();
 			rOutput.bindToModel(bean, DateBean.DATE_PROPERTY);
 			rOutput.updateFromModel();
 			rInput.addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, new PropertyChangeListener() {
-				public void propertyChange(PropertyChangeEvent evt) {
+				public void propertyChange(final PropertyChangeEvent evt) {
 					rOutput.updateFromModel();
 				}
 			});

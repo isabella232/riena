@@ -20,7 +20,7 @@ public class ModuleGroupController extends NavigationNodeController<IModuleGroup
 	/**
 	 * @param navigationNode
 	 */
-	public ModuleGroupController(IModuleGroupNode navigationNode) {
+	public ModuleGroupController(final IModuleGroupNode navigationNode) {
 		super(navigationNode);
 	}
 

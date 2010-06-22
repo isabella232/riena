@@ -63,7 +63,7 @@ public final class UISynchronizer {
 	}
 
 	@InjectExtension()
-	public void update(IUISynchronizerExtension[] synchronizerExtension) {
+	public void update(final IUISynchronizerExtension[] synchronizerExtension) {
 		this.synchronizerExtension = synchronizerExtension;
 	}
 

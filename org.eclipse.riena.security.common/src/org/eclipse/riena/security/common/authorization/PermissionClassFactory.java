@@ -19,7 +19,7 @@ public final class PermissionClassFactory {
 		// utility
 	}
 
-	public static Class<?> retrieveClass(String permissionClass) throws ClassNotFoundException {
+	public static Class<?> retrieveClass(final String permissionClass) throws ClassNotFoundException {
 		return Class.forName(permissionClass);
 	}
 }

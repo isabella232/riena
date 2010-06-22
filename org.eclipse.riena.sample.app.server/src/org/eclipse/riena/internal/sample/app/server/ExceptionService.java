@@ -13,10 +13,12 @@ package org.eclipse.riena.internal.sample.app.server;
 import java.lang.reflect.Constructor;
 import java.util.Calendar;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.sample.app.common.exception.IExceptionService;
-import org.osgi.service.log.LogService;
 
 /**
  * This class implements the IExceptionService Interface and throws dedicated
@@ -40,11 +42,11 @@ public class ExceptionService implements IExceptionService {
 	 * org.eclipse.riena.sample.app.common.exception.IExceptionService#getDate()
 	 */
 	public String getDate() {
-		Calendar cld = Calendar.getInstance();
+		final Calendar cld = Calendar.getInstance();
 
-		int day = cld.get(Calendar.DAY_OF_MONTH);
-		int month = cld.get(Calendar.MONTH);
-		int year = cld.get(Calendar.YEAR);
+		final int day = cld.get(Calendar.DAY_OF_MONTH);
+		final int month = cld.get(Calendar.MONTH);
+		final int year = cld.get(Calendar.YEAR);
 
 		return day + "." + month + "." + year; //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -95,7 +97,7 @@ public class ExceptionService implements IExceptionService {
 	 * @seeorg.eclipse.riena.sample.app.common.exception.IExceptionService#
 	 * throwException(java.lang.String)
 	 */
-	public String throwException(String name) throws Throwable {
+	public String throwException(final String name) throws Throwable {
 		Throwable exception = null;
 
 		LOGGER.log(LogService.LOG_INFO, "The client requested an Exception '" + name + "'"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -112,14 +114,14 @@ public class ExceptionService implements IExceptionService {
 		// let's try to assemble the requested Exception
 		try {
 			// load the class
-			Class<?> exceptionClass = Class.forName(name);
+			final Class<?> exceptionClass = Class.forName(name);
 			Class<?>[] params = { Class.forName("java.lang.String") }; //$NON-NLS-1$
 
 			LOGGER.log(LogService.LOG_INFO, "throwException: Created a class: " + exceptionClass); //$NON-NLS-1$
 
 			// create a new instance of the Exception
-			String cause = "ExceptionService: Here is your requested " + exceptionClass.getName() + "..."; //$NON-NLS-1$ //$NON-NLS-2$
-			Object[] args = { cause };
+			final String cause = "ExceptionService: Here is your requested " + exceptionClass.getName() + "..."; //$NON-NLS-1$ //$NON-NLS-2$
+			final Object[] args = { cause };
 
 			// Some classes do not have an constructor with the parameter
 			// string.
@@ -127,7 +129,7 @@ public class ExceptionService implements IExceptionService {
 			try {
 				c = exceptionClass.getConstructor(params);
 				exception = (Throwable) c.newInstance(args);
-			} catch (NoSuchMethodException ex) {
+			} catch (final NoSuchMethodException ex) {
 				params = new Class[0];
 				c = exceptionClass.getConstructor(params);
 				exception = (Throwable) c.newInstance(new Object[0]);
@@ -137,7 +139,7 @@ public class ExceptionService implements IExceptionService {
 			LOGGER.log(LogService.LOG_INFO, "throwException: Created the requested exception " + exception //$NON-NLS-1$
 					+ " of type throwable"); //$NON-NLS-1$
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 			// the requested class is not available
 			throw new Exception("ExceptionService: requested Exception '" + name + "' could not be found...."); //$NON-NLS-1$ //$NON-NLS-2$
@@ -160,8 +162,8 @@ public class ExceptionService implements IExceptionService {
 	public String throwNestedException() throws Throwable {
 		try {
 			newNullPointerException();
-		} catch (Exception e) {
-			Exception x = new Exception(e);
+		} catch (final Exception e) {
+			final Exception x = new Exception(e);
 			x.printStackTrace();
 			throw new Exception(e);
 		}
@@ -174,10 +176,10 @@ public class ExceptionService implements IExceptionService {
 	 * @seeorg.eclipse.riena.sample.app.common.exception.IExceptionService#
 	 * throwRuntimeException(java.lang.String)
 	 */
-	public String throwRuntimeException(String name) {
+	public String throwRuntimeException(final String name) {
 		try {
 			this.throwException(name);
-		} catch (Throwable e) {
+		} catch (final Throwable e) {
 			if (e instanceof RuntimeException) {
 				throw (RuntimeException) e;
 			} else {

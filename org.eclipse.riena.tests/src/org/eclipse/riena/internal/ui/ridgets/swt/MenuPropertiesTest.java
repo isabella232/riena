@@ -46,29 +46,29 @@ public class MenuPropertiesTest extends TestCase {
 	 */
 	public void testMenuProperties() {
 
-		Menu menu = new Menu(shell);
-		MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
-		Menu menu2 = new Menu(shell, SWT.DROP_DOWN);
+		final Menu menu = new Menu(shell);
+		final MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
+		final Menu menu2 = new Menu(shell, SWT.DROP_DOWN);
 		menuItem.setMenu(menu2);
-		MenuRidget ridget = new MenuRidget();
+		final MenuRidget ridget = new MenuRidget();
 		ridget.setUIControl(menuItem);
 
 		MenuProperties prop = new MenuProperties(ridget);
-		Decorations menuParent = ReflectionUtils.getHidden(prop, "menuParent");
+		final Decorations menuParent = ReflectionUtils.getHidden(prop, "menuParent");
 		assertSame(shell, menuParent);
-		int menuStyle = ReflectionUtils.getHidden(prop, "menuStyle");
+		final int menuStyle = ReflectionUtils.getHidden(prop, "menuStyle");
 		assertEquals(menu2.getStyle(), menuStyle);
 		MenuItemProperties[] children = ReflectionUtils.getHidden(prop, "children");
 		assertEquals(0, children.length);
 
-		MenuItem menuItem2 = new MenuItem(menu2, SWT.NONE);
-		MenuItemRidget childRidget = new MenuItemRidget();
+		final MenuItem menuItem2 = new MenuItem(menu2, SWT.NONE);
+		final MenuItemRidget childRidget = new MenuItemRidget();
 		childRidget.setUIControl(menuItem2);
 		ridget.addChild(childRidget);
 		prop = new MenuProperties(ridget);
 		children = ReflectionUtils.getHidden(prop, "children");
 		assertEquals(1, children.length);
-		IRidget retRidget = ReflectionUtils.invokeHidden(children[0], "getRidget");
+		final IRidget retRidget = ReflectionUtils.invokeHidden(children[0], "getRidget");
 		assertSame(childRidget, retRidget);
 
 	}
@@ -78,26 +78,26 @@ public class MenuPropertiesTest extends TestCase {
 	 */
 	public void testCreateItem() {
 
-		Menu menu = new Menu(shell);
-		MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
-		Menu menu2 = new Menu(shell, SWT.DROP_DOWN);
+		final Menu menu = new Menu(shell);
+		final MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
+		final Menu menu2 = new Menu(shell, SWT.DROP_DOWN);
 		menuItem.setMenu(menu2);
-		MenuRidget ridget = new MenuRidget();
+		final MenuRidget ridget = new MenuRidget();
 		ridget.setUIControl(menuItem);
-		MenuItem menuItem2 = new MenuItem(menu2, SWT.NONE);
+		final MenuItem menuItem2 = new MenuItem(menu2, SWT.NONE);
 		menuItem2.setText("Simple menu item");
-		MenuItemRidget childRidget = new MenuItemRidget();
+		final MenuItemRidget childRidget = new MenuItemRidget();
 		childRidget.setUIControl(menuItem2);
 		ridget.addChild(childRidget);
-		MyMenuProperties prop = new MyMenuProperties(ridget);
+		final MyMenuProperties prop = new MyMenuProperties(ridget);
 
-		MenuItem retMenuItem = prop.createItem();
+		final MenuItem retMenuItem = prop.createItem();
 		assertNotNull(retMenuItem);
 		assertNotSame(menuItem, retMenuItem);
 		assertNotNull(retMenuItem.getMenu());
 		assertNotSame(menu2, retMenuItem.getMenu());
 		assertEquals(1, retMenuItem.getMenu().getItemCount());
-		MenuItem retChildMenuItem = retMenuItem.getMenu().getItems()[0];
+		final MenuItem retChildMenuItem = retMenuItem.getMenu().getItems()[0];
 		assertEquals(menuItem2.getText(), retChildMenuItem.getText());
 
 	}
@@ -108,7 +108,7 @@ public class MenuPropertiesTest extends TestCase {
 	 */
 	private static class MyMenuProperties extends MenuProperties {
 
-		public MyMenuProperties(MenuRidget ridget) {
+		public MyMenuProperties(final MenuRidget ridget) {
 			super(ridget);
 		}
 

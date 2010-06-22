@@ -25,7 +25,7 @@ public class TestScope implements IScope {
 	 * org.eclipse.core.runtime.preferences.IScope#create(org.eclipse.core.runtime
 	 * .preferences.IEclipsePreferences, java.lang.String)
 	 */
-	public IEclipsePreferences create(IEclipsePreferences parent, String name) {
+	public IEclipsePreferences create(final IEclipsePreferences parent, final String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}

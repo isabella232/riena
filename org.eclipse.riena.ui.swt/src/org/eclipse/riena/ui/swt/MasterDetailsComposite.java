@@ -40,7 +40,7 @@ public class MasterDetailsComposite extends AbstractMasterDetailsComposite {
 	 * @see AbstractMasterDetailsComposite#AbstractMasterDetailsComposite(Composite,
 	 *      int, int)
 	 */
-	public MasterDetailsComposite(Composite parent, int style) {
+	public MasterDetailsComposite(final Composite parent, final int style) {
 		this(parent, style, SWT.BOTTOM);
 	}
 
@@ -51,7 +51,7 @@ public class MasterDetailsComposite extends AbstractMasterDetailsComposite {
 	 * @see AbstractMasterDetailsComposite#AbstractMasterDetailsComposite(Composite,
 	 *      int, int)
 	 */
-	public MasterDetailsComposite(Composite parent, int style, int orientation) {
+	public MasterDetailsComposite(final Composite parent, final int style, final int orientation) {
 		super(parent, style, orientation);
 	}
 
@@ -80,8 +80,8 @@ public class MasterDetailsComposite extends AbstractMasterDetailsComposite {
 	 * share the full width of the table.
 	 */
 	@Override
-	protected Table createTable(Composite tableComposite, TableColumnLayout layout) {
-		Table table = new Table(tableComposite, getTableStyle());
+	protected Table createTable(final Composite tableComposite, final TableColumnLayout layout) {
+		final Table table = new Table(tableComposite, getTableStyle());
 		// Check that table does not allow multiple selection
 		Assert.isLegal((table.getStyle() & SWT.MULTI) == 0);
 		// Do not create columns here or change the TableColumnLayout.

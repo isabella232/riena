@@ -23,7 +23,7 @@ import org.eclipse.riena.ui.ridgets.ILabelRidget;
 public class LabelRidgetTest extends AbstractLabelRidgetTest {
 
 	@Override
-	protected Label createWidget(Composite parent) {
+	protected Label createWidget(final Composite parent) {
 		return new Label(parent, SWT.NONE);
 	}
 
@@ -38,22 +38,22 @@ public class LabelRidgetTest extends AbstractLabelRidgetTest {
 	}
 
 	@Override
-	protected Image getImage(Object widget) {
+	protected Image getImage(final Object widget) {
 		return ((Label) widget).getImage();
 	}
 
 	@Override
-	protected String getText(Object widget) {
+	protected String getText(final Object widget) {
 		return ((Label) widget).getText();
 	}
 
 	@Override
-	protected void setImage(Object widget, Image image) {
+	protected void setImage(final Object widget, final Image image) {
 		((Label) widget).setImage(image);
 	}
 
 	@Override
-	protected void setText(Object widget, String text) {
+	protected void setText(final Object widget, final String text) {
 		((Label) widget).setText(text);
 	}
 

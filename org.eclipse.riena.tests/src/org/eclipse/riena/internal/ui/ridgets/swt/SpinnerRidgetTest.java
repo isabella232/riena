@@ -29,7 +29,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 public class SpinnerRidgetTest extends AbstractTraverseRidgetTest {
 
 	@Override
-	protected Widget createWidget(Composite parent) {
+	protected Widget createWidget(final Composite parent) {
 		return new Spinner(parent, SWT.NONE);
 	}
 
@@ -49,40 +49,40 @@ public class SpinnerRidgetTest extends AbstractTraverseRidgetTest {
 	}
 
 	@Override
-	protected int getIncrement(Control control) {
+	protected int getIncrement(final Control control) {
 		return ((Spinner) control).getIncrement();
 	}
 
 	@Override
-	protected int getMaximum(Control control) {
+	protected int getMaximum(final Control control) {
 		return ((Spinner) control).getMaximum();
 	}
 
 	@Override
-	protected int getMinimum(Control control) {
+	protected int getMinimum(final Control control) {
 		return ((Spinner) control).getMinimum();
 	}
 
 	@Override
-	protected int getPageIncrement(Control control) {
+	protected int getPageIncrement(final Control control) {
 		return ((Spinner) control).getPageIncrement();
 	}
 
 	@Override
-	protected int getValue(Control control) {
+	protected int getValue(final Control control) {
 		return ((Spinner) control).getSelection();
 	}
 
 	@Override
-	protected void setValue(Control control, int value) {
+	protected void setValue(final Control control, final int value) {
 		((Spinner) control).setSelection(value);
 	}
 
-	protected int getTextLimit(Control control) {
+	protected int getTextLimit(final Control control) {
 		return ((Spinner) control).getTextLimit();
 	}
 
-	protected int getDigits(Control control) {
+	protected int getDigits(final Control control) {
 		return ((Spinner) control).getDigits();
 	}
 
@@ -90,13 +90,13 @@ public class SpinnerRidgetTest extends AbstractTraverseRidgetTest {
 	// ////////////////
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(SpinnerRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testSetDigits() {
-		ISpinnerRidget ridget = getRidget();
-		Spinner control = getWidget();
+		final ISpinnerRidget ridget = getRidget();
+		final Spinner control = getWidget();
 
 		/*
 		 * Test 1 - initial values
@@ -121,7 +121,7 @@ public class SpinnerRidgetTest extends AbstractTraverseRidgetTest {
 			ridget.setTextLimit(4);
 			ridget.setDigits(5);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(2, ridget.getDigits());
@@ -156,7 +156,7 @@ public class SpinnerRidgetTest extends AbstractTraverseRidgetTest {
 	}
 
 	public void testSetDigitsFiresEvents() {
-		ISpinnerRidget ridget = getRidget();
+		final ISpinnerRidget ridget = getRidget();
 		ridget.setTextLimit(5);
 		ridget.setDigits(1);
 
@@ -178,7 +178,7 @@ public class SpinnerRidgetTest extends AbstractTraverseRidgetTest {
 			resetEasyMock();
 			expectNoPropertyChangeEvent();
 			ridget.setDigits(ridget.getTextLimit() + 1);
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			verifyPropertyChangeEvents();
 		}
 
@@ -202,8 +202,8 @@ public class SpinnerRidgetTest extends AbstractTraverseRidgetTest {
 	}
 
 	public void testSetTextLimit() {
-		ISpinnerRidget ridget = getRidget();
-		Spinner control = getWidget();
+		final ISpinnerRidget ridget = getRidget();
+		final Spinner control = getWidget();
 		//		assertEquals(SpinnerRidget.LIMIT, ridget.getTextLimit());
 
 		/*
@@ -237,7 +237,7 @@ public class SpinnerRidgetTest extends AbstractTraverseRidgetTest {
 		try {
 			ridget.setTextLimit(-1);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(9, ridget.getTextLimit());
@@ -249,7 +249,7 @@ public class SpinnerRidgetTest extends AbstractTraverseRidgetTest {
 		try {
 			ridget.setTextLimit(0);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(9, ridget.getTextLimit());
@@ -279,15 +279,15 @@ public class SpinnerRidgetTest extends AbstractTraverseRidgetTest {
 	}
 
 	@Override
-	protected void assertPropertiesEqual(ITraverseRidget ridget, Control control) {
+	protected void assertPropertiesEqual(final ITraverseRidget ridget, final Control control) {
 		super.assertPropertiesEqual(ridget, control);
-		SpinnerRidget spinnerRidget = (SpinnerRidget) ridget;
+		final SpinnerRidget spinnerRidget = (SpinnerRidget) ridget;
 		assertEquals(getTextLimit(control), spinnerRidget.getTextLimit());
 		assertEquals(getDigits(control), spinnerRidget.getDigits());
 	}
 
 	public void testSetTextLimitFiresEvents() {
-		ISpinnerRidget ridget = getRidget();
+		final ISpinnerRidget ridget = getRidget();
 		ridget.setTextLimit(2);
 
 		/*
@@ -319,7 +319,7 @@ public class SpinnerRidgetTest extends AbstractTraverseRidgetTest {
 			resetEasyMock();
 			expectNoPropertyChangeEvent();
 			ridget.setTextLimit(0);
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			verifyPropertyChangeEvents();
 		}
 		/*
@@ -330,7 +330,7 @@ public class SpinnerRidgetTest extends AbstractTraverseRidgetTest {
 			expectNoPropertyChangeEvent();
 			ridget.setTextLimit(-1);
 			verifyPropertyChangeEvents();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			verifyPropertyChangeEvents();
 		}
 
@@ -346,8 +346,8 @@ public class SpinnerRidgetTest extends AbstractTraverseRidgetTest {
 	}
 
 	public void testApplyDigitAndTextLimitOnBind() {
-		ISpinnerRidget ridget = getRidget();
-		Spinner control = (Spinner) createWidget(getShell());
+		final ISpinnerRidget ridget = getRidget();
+		final Spinner control = (Spinner) createWidget(getShell());
 		assertNotSame(control, ridget.getUIControl());
 		ridget.setTextLimit(4);
 		ridget.setDigits(2);

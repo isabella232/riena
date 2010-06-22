@@ -10,10 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.snippets;
 
-import org.eclipse.riena.beans.common.WordNode;
-import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
-import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
-import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
@@ -23,28 +19,33 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 
+import org.eclipse.riena.beans.common.WordNode;
+import org.eclipse.riena.ui.ridgets.IGroupedTreeTableRidget;
+import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
+import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
+
 /**
  * Demonstrates a tree table ridget with column formatters.
  */
 public class SnippetTreeTableRidget003 {
 
 	public SnippetTreeTableRidget003(final Shell shell) {
-		Tree tree = new Tree(shell, SWT.FULL_SELECTION | SWT.MULTI);
+		final Tree tree = new Tree(shell, SWT.FULL_SELECTION | SWT.MULTI);
 		for (int i = 0; i < 2; i++) {
-			TreeColumn tc = new TreeColumn(tree, SWT.DEFAULT);
+			final TreeColumn tc = new TreeColumn(tree, SWT.DEFAULT);
 			tc.setWidth(200);
 		}
 
-		IGroupedTreeTableRidget treeTableRidget = (IGroupedTreeTableRidget) SwtRidgetFactory.createRidget(tree);
-		WordNode[] roots = createTreeInput();
-		String[] columnValues = new String[] { "word", "upperCase" }; //$NON-NLS-1$//$NON-NLS-2$
-		String[] columnHeaders = new String[] { "Word", "Uppercase" }; //$NON-NLS-1$//$NON-NLS-2$
+		final IGroupedTreeTableRidget treeTableRidget = (IGroupedTreeTableRidget) SwtRidgetFactory.createRidget(tree);
+		final WordNode[] roots = createTreeInput();
+		final String[] columnValues = new String[] { "word", "upperCase" }; //$NON-NLS-1$//$NON-NLS-2$
+		final String[] columnHeaders = new String[] { "Word", "Uppercase" }; //$NON-NLS-1$//$NON-NLS-2$
 		treeTableRidget.setGroupingEnabled(true);
 		treeTableRidget.setRootsVisible(false);
 		treeTableRidget.setColumnFormatter(0, new ColumnFormatter() {
 			@Override
-			public Color getForeground(Object element) {
-				String word = ((WordNode) element).getWord();
+			public Color getForeground(final Object element) {
+				final String word = ((WordNode) element).getWord();
 				if ('B' == word.charAt(0)) {
 					return shell.getDisplay().getSystemColor(SWT.COLOR_RED);
 				}
@@ -53,7 +54,7 @@ public class SnippetTreeTableRidget003 {
 		});
 		treeTableRidget.setColumnFormatter(1, new ColumnFormatter() {
 			@Override
-			public Image getImage(Object element) {
+			public Image getImage(final Object element) {
 				if (((WordNode) element).isUpperCase()) {
 					return shell.getDisplay().getSystemImage(SWT.ICON_WARNING);
 				}
@@ -68,8 +69,8 @@ public class SnippetTreeTableRidget003 {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
 			final Shell shell = new Shell();
 			shell.setLayout(new FillLayout());
@@ -87,17 +88,17 @@ public class SnippetTreeTableRidget003 {
 	}
 
 	private WordNode[] createTreeInput() {
-		WordNode root = new WordNode("Words"); //$NON-NLS-1$
+		final WordNode root = new WordNode("Words"); //$NON-NLS-1$
 
-		WordNode bTowns = new WordNode(root, "B"); //$NON-NLS-1$
+		final WordNode bTowns = new WordNode(root, "B"); //$NON-NLS-1$
 		new WordNode(bTowns, "Boring"); //$NON-NLS-1$
 		new WordNode(bTowns, "Buchanan"); //$NON-NLS-1$
 
-		WordNode cTowns = new WordNode(root, "C"); //$NON-NLS-1$
+		final WordNode cTowns = new WordNode(root, "C"); //$NON-NLS-1$
 		new WordNode(cTowns, "Cedar Mill").setUpperCase(true); //$NON-NLS-1$
 		new WordNode(cTowns, "Crater Lake"); //$NON-NLS-1$
 
-		WordNode dTowns = new WordNode(root, "D"); //$NON-NLS-1$
+		final WordNode dTowns = new WordNode(root, "D"); //$NON-NLS-1$
 		new WordNode(dTowns, "Dunes City"); //$NON-NLS-1$
 		new WordNode(dTowns, "Damascus"); //$NON-NLS-1$
 

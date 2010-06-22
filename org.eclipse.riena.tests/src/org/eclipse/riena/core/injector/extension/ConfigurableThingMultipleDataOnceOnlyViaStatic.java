@@ -19,7 +19,7 @@ public class ConfigurableThingMultipleDataOnceOnlyViaStatic {
 	private static boolean trace;
 	private static int updateCounter;
 
-	public static void update(IData[] data) {
+	public static void update(final IData[] data) {
 		trace("update", data);
 		// TODO warning suppression: Ignore FindBugs warning about internal
 		// representation being exposed: seems ok for testing
@@ -41,20 +41,20 @@ public class ConfigurableThingMultipleDataOnceOnlyViaStatic {
 		return updateCounter;
 	}
 
-	public static void setTrace(boolean trace) {
+	public static void setTrace(final boolean trace) {
 		ConfigurableThingMultipleDataOnceOnlyViaStatic.trace = trace;
 	}
 
 	// helping methods
 	//////////////////
 
-	private static void trace(String methodName, IData[] data) {
+	private static void trace(final String methodName, final IData[] data) {
 		if (trace) {
 			if (data == null) {
 				System.out.println(String.format("%s: null", methodName));
 			} else {
 				System.out.println(String.format("%s: %s - length= %d", methodName, data, data.length));
-				for (IData entry : data) {
+				for (final IData entry : data) {
 					System.out.println("\t" + entry.getText());
 				}
 			}

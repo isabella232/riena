@@ -26,14 +26,14 @@ public class MaxLengthNonBlockingTest extends MaxLengthTest {
 	}
 
 	@Override
-	protected MaxLength createRule(int length) {
+	protected MaxLength createRule(final int length) {
 		return new MaxLengthNonBlocking(length);
 	}
 
 	@Override
 	public void testIsBlocking() {
-		MaxLength rule = createRule(3);
-		IStatus status = rule.validate("abcd");
+		final MaxLength rule = createRule(3);
+		final IStatus status = rule.validate("abcd");
 
 		assertFalse(status.isOK());
 		assertEquals(ValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE, status.getCode());

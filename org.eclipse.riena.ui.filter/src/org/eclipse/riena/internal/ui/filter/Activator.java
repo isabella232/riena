@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.filter;
 
+import org.osgi.framework.BundleContext;
+
 import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.ui.filter.IUIFilterProvider;
 import org.eclipse.riena.ui.filter.impl.UIFilterProvider;
-import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -42,14 +43,14 @@ public class Activator extends RienaPlugin {
 	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
 
 		filterProvider = new UIFilterProvider();
 		Wire.instance(filterProvider).andStart(context);
-		context.registerService(IUIFilterProvider.class.getName(), filterProvider, RienaConstants
-				.newDefaultServiceProperties());
+		context.registerService(IUIFilterProvider.class.getName(), filterProvider,
+				RienaConstants.newDefaultServiceProperties());
 
 	}
 
@@ -60,7 +61,7 @@ public class Activator extends RienaPlugin {
 	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		Activator.plugin = null;
 		filterProvider = null;
 

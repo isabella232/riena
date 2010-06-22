@@ -41,14 +41,14 @@ public class Activator extends AbstractRienaUIPlugin {
 	private static SharedColors sharedColors;
 
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 		initializeDefaultClassRidgetMappings();
 	}
 
 	@Override
-	public synchronized void stop(BundleContext context) throws Exception {
+	public synchronized void stop(final BundleContext context) throws Exception {
 		if (sharedColors != null) {
 			sharedColors.dispose();
 			sharedColors = null;
@@ -108,7 +108,7 @@ public class Activator extends AbstractRienaUIPlugin {
 	 *            a non-null String; see {@link SharedColors} for valid keys
 	 * @return a non-null Color instance
 	 */
-	public static synchronized Color getSharedColor(Display display, String colorKey) {
+	public static synchronized Color getSharedColor(final Display display, final String colorKey) {
 		Assert.isNotNull(display);
 		if (sharedColors == null) {
 			sharedColors = new SharedColors(display);

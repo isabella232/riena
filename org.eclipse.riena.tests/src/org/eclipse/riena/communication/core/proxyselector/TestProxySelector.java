@@ -23,21 +23,21 @@ import java.util.List;
  */
 public class TestProxySelector extends ProxySelector {
 
-	private Proxy proxy;
+	private final Proxy proxy;
 	private URI uri;
 
-	public TestProxySelector(Proxy proxy) {
+	public TestProxySelector(final Proxy proxy) {
 		this.proxy = proxy;
 	}
 
 	@Override
-	public void connectFailed(URI uri, SocketAddress sa, IOException ioe) {
+	public void connectFailed(final URI uri, final SocketAddress sa, final IOException ioe) {
 		this.uri = uri;
 	}
 
 	@Override
-	public List<Proxy> select(URI uri) {
-		List<Proxy> result = new ArrayList<Proxy>();
+	public List<Proxy> select(final URI uri) {
+		final List<Proxy> result = new ArrayList<Proxy>();
 		result.add(proxy);
 		result.add(Proxy.NO_PROXY);
 		return result;

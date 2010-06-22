@@ -36,69 +36,69 @@ import org.eclipse.riena.security.common.authentication.credentials.TextInputCre
 public class Callback2CredentialConverterTest extends TestCase {
 
 	public void testSimpleName1() {
-		Callback[] callbacks = new Callback[] { new NameCallback("userid", "cca") };
+		final Callback[] callbacks = new Callback[] { new NameCallback("userid", "cca") };
 
-		AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
+		final AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
 		assertTrue(credentials.length == 1);
 		assertTrue(credentials[0] instanceof NameCredential);
-		NameCredential nCred = (NameCredential) credentials[0];
+		final NameCredential nCred = (NameCredential) credentials[0];
 		assertTrue(nCred.getPrompt().equals("userid"));
 		assertTrue(nCred.getDefaultName().equals("cca"));
 		assertTrue(nCred.getName() == null);
 
-		Callback[] callbacksReturned = Callback2CredentialConverter.credentials2Callbacks(credentials);
+		final Callback[] callbacksReturned = Callback2CredentialConverter.credentials2Callbacks(credentials);
 		assertTrue(callbacksReturned.length == 1);
 		assertTrue(callbacksReturned[0] instanceof NameCallback);
-		NameCallback ncb = (NameCallback) callbacksReturned[0];
+		final NameCallback ncb = (NameCallback) callbacksReturned[0];
 		assertTrue(ncb.getPrompt().equals("userid"));
 		assertTrue(ncb.getDefaultName().equals("cca"));
 		assertTrue(ncb.getName() == null);
 	}
 
 	public void testSimpleName2() {
-		NameCallback temp = new NameCallback("userid", "cca");
+		final NameCallback temp = new NameCallback("userid", "cca");
 		temp.setName("christian");
-		Callback[] callbacks = new Callback[] { temp };
+		final Callback[] callbacks = new Callback[] { temp };
 
-		AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
+		final AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
 		assertTrue(credentials.length == 1);
 		assertTrue(credentials[0] instanceof NameCredential);
-		NameCredential nCred = (NameCredential) credentials[0];
+		final NameCredential nCred = (NameCredential) credentials[0];
 		assertTrue(nCred.getPrompt().equals("userid"));
 		assertTrue(nCred.getDefaultName().equals("cca"));
 		assertTrue(nCred.getName().equals("christian"));
 
-		Callback[] callbacksReturned = Callback2CredentialConverter.credentials2Callbacks(credentials);
+		final Callback[] callbacksReturned = Callback2CredentialConverter.credentials2Callbacks(credentials);
 		assertTrue(callbacksReturned.length == 1);
 		assertTrue(callbacksReturned[0] instanceof NameCallback);
-		NameCallback ncb = (NameCallback) callbacksReturned[0];
+		final NameCallback ncb = (NameCallback) callbacksReturned[0];
 		assertTrue(ncb.getPrompt().equals("userid"));
 		assertTrue(ncb.getDefaultName().equals("cca"));
 		assertTrue(ncb.getName().equals("christian"));
 	}
 
 	public void testMultipleCredentials() {
-		Callback[] callbacks = new Callback[] { new PasswordCallback("password", false),
+		final Callback[] callbacks = new Callback[] { new PasswordCallback("password", false),
 				new TextInputCallback("textinp", "default-text") };
 
-		AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
+		final AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
 		assertTrue(credentials.length == 2);
 		assertTrue(credentials[0] instanceof PasswordCredential);
 		assertTrue(credentials[1] instanceof TextInputCredential);
-		PasswordCredential pc = (PasswordCredential) credentials[0];
-		TextInputCredential tic = (TextInputCredential) credentials[1];
+		final PasswordCredential pc = (PasswordCredential) credentials[0];
+		final TextInputCredential tic = (TextInputCredential) credentials[1];
 		assertTrue(pc.getPrompt().equals("password"));
 		assertFalse(pc.isEchoOn());
 		assertTrue(tic.getPrompt().equals("textinp"));
 		assertTrue(tic.getDefaultText().equals("default-text"));
 		assertTrue(tic.getText() == null);
 
-		Callback[] callbacksReturned = Callback2CredentialConverter.credentials2Callbacks(credentials);
+		final Callback[] callbacksReturned = Callback2CredentialConverter.credentials2Callbacks(credentials);
 		assertTrue(callbacksReturned.length == 2);
 		assertTrue(callbacksReturned[0] instanceof PasswordCallback);
 		assertTrue(callbacksReturned[1] instanceof TextInputCallback);
-		PasswordCallback pcb = (PasswordCallback) callbacksReturned[0];
-		TextInputCallback ticb = (TextInputCallback) callbacksReturned[1];
+		final PasswordCallback pcb = (PasswordCallback) callbacksReturned[0];
+		final TextInputCallback ticb = (TextInputCallback) callbacksReturned[1];
 		assertTrue(pcb.getPrompt().equals("password"));
 		assertFalse(pcb.isEchoOn());
 		assertTrue(ticb.getPrompt().equals("textinp"));
@@ -107,14 +107,15 @@ public class Callback2CredentialConverterTest extends TestCase {
 	}
 
 	public void testChoiceCredential1() {
-		ChoiceCallback choiceCallback = new ChoiceCallback("choicePrompt", new String[] { "a", "b", "c" }, 0, true);
+		final ChoiceCallback choiceCallback = new ChoiceCallback("choicePrompt", new String[] { "a", "b", "c" }, 0,
+				true);
 		choiceCallback.setSelectedIndex(1);
-		Callback[] callbacks = new Callback[] { choiceCallback };
-		AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
+		final Callback[] callbacks = new Callback[] { choiceCallback };
+		final AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
 		assertTrue(credentials.length == 1);
 		assertTrue(credentials[0].getPrompt().equals("choicePrompt"));
 		assertTrue(credentials[0] instanceof ChoiceCredential);
-		ChoiceCredential cc = (ChoiceCredential) credentials[0];
+		final ChoiceCredential cc = (ChoiceCredential) credentials[0];
 		assertTrue(cc.isMultipleSelectionsAllowed());
 		assertTrue(Arrays.equals(cc.getChoices(), new String[] { "a", "b", "c" }));
 		assertTrue(cc.getDefaultChoice() == 0);
@@ -122,14 +123,15 @@ public class Callback2CredentialConverterTest extends TestCase {
 	}
 
 	public void testChoiceCredential2() {
-		ChoiceCallback choiceCallback = new ChoiceCallback("choicePrompt", new String[] { "a", "b", "c" }, 0, false);
+		final ChoiceCallback choiceCallback = new ChoiceCallback("choicePrompt", new String[] { "a", "b", "c" }, 0,
+				false);
 		choiceCallback.setSelectedIndex(1);
-		Callback[] callbacks = new Callback[] { choiceCallback };
-		AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
+		final Callback[] callbacks = new Callback[] { choiceCallback };
+		final AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
 		assertTrue(credentials.length == 1);
 		assertTrue(credentials[0].getPrompt().equals("choicePrompt"));
 		assertTrue(credentials[0] instanceof ChoiceCredential);
-		ChoiceCredential cc = (ChoiceCredential) credentials[0];
+		final ChoiceCredential cc = (ChoiceCredential) credentials[0];
 		assertFalse(cc.isMultipleSelectionsAllowed());
 		assertTrue(Arrays.equals(cc.getChoices(), new String[] { "a", "b", "c" }));
 		assertTrue(cc.getDefaultChoice() == 0);
@@ -137,14 +139,15 @@ public class Callback2CredentialConverterTest extends TestCase {
 	}
 
 	public void testChoiceCredential3() {
-		ChoiceCallback choiceCallback = new ChoiceCallback("choicePrompt", new String[] { "a", "b", "c" }, 0, true);
+		final ChoiceCallback choiceCallback = new ChoiceCallback("choicePrompt", new String[] { "a", "b", "c" }, 0,
+				true);
 		choiceCallback.setSelectedIndexes(new int[] { 0, 2 });
-		Callback[] callbacks = new Callback[] { choiceCallback };
-		AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
+		final Callback[] callbacks = new Callback[] { choiceCallback };
+		final AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
 		assertTrue(credentials.length == 1);
 		assertTrue(credentials[0].getPrompt().equals("choicePrompt"));
 		assertTrue(credentials[0] instanceof ChoiceCredential);
-		ChoiceCredential cc = (ChoiceCredential) credentials[0];
+		final ChoiceCredential cc = (ChoiceCredential) credentials[0];
 		assertTrue(cc.isMultipleSelectionsAllowed());
 		assertTrue(Arrays.equals(cc.getChoices(), new String[] { "a", "b", "c" }));
 		assertTrue(cc.getDefaultChoice() == 0);
@@ -152,15 +155,16 @@ public class Callback2CredentialConverterTest extends TestCase {
 	}
 
 	public void testChoiceCredential4() {
-		ChoiceCallback choiceCallback = new ChoiceCallback("choicePrompt", new String[] { "a", "b", "c" }, 0, true);
+		final ChoiceCallback choiceCallback = new ChoiceCallback("choicePrompt", new String[] { "a", "b", "c" }, 0,
+				true);
 		choiceCallback.setSelectedIndex(1);
 		choiceCallback.setSelectedIndex(2); // overwrites first selectIndex=1
-		Callback[] callbacks = new Callback[] { choiceCallback };
-		AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
+		final Callback[] callbacks = new Callback[] { choiceCallback };
+		final AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
 		assertTrue(credentials.length == 1);
 		assertTrue(credentials[0].getPrompt().equals("choicePrompt"));
 		assertTrue(credentials[0] instanceof ChoiceCredential);
-		ChoiceCredential cc = (ChoiceCredential) credentials[0];
+		final ChoiceCredential cc = (ChoiceCredential) credentials[0];
 		assertTrue(cc.isMultipleSelectionsAllowed());
 		assertTrue(Arrays.equals(cc.getChoices(), new String[] { "a", "b", "c" }));
 		assertTrue(cc.getDefaultChoice() == 0);
@@ -168,14 +172,15 @@ public class Callback2CredentialConverterTest extends TestCase {
 	}
 
 	public void testChoiceCredential5() {
-		ChoiceCallback choiceCallback = new ChoiceCallback("choicePrompt", new String[] { "a", "b", "c" }, 0, true);
+		final ChoiceCallback choiceCallback = new ChoiceCallback("choicePrompt", new String[] { "a", "b", "c" }, 0,
+				true);
 		choiceCallback.setSelectedIndex(1);
-		Callback[] callbacks = new Callback[] { choiceCallback };
-		AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
-		Callback[] callbackReturned = Callback2CredentialConverter.credentials2Callbacks(credentials);
+		final Callback[] callbacks = new Callback[] { choiceCallback };
+		final AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
+		final Callback[] callbackReturned = Callback2CredentialConverter.credentials2Callbacks(credentials);
 		assertTrue(callbackReturned.length == 1);
 		assertTrue(callbackReturned[0] instanceof ChoiceCallback);
-		ChoiceCallback cc = (ChoiceCallback) callbackReturned[0];
+		final ChoiceCallback cc = (ChoiceCallback) callbackReturned[0];
 		assertTrue(cc.getPrompt().equals("choicePrompt"));
 		assertTrue(cc.allowMultipleSelections());
 		assertTrue(Arrays.equals(cc.getChoices(), new String[] { "a", "b", "c" }));
@@ -184,14 +189,15 @@ public class Callback2CredentialConverterTest extends TestCase {
 	}
 
 	public void testChoiceCredential6() {
-		ChoiceCallback choiceCallback = new ChoiceCallback("choicePrompt", new String[] { "a", "b", "c" }, 0, false);
+		final ChoiceCallback choiceCallback = new ChoiceCallback("choicePrompt", new String[] { "a", "b", "c" }, 0,
+				false);
 		choiceCallback.setSelectedIndex(1);
-		Callback[] callbacks = new Callback[] { choiceCallback };
-		AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
-		Callback[] callbackReturned = Callback2CredentialConverter.credentials2Callbacks(credentials);
+		final Callback[] callbacks = new Callback[] { choiceCallback };
+		final AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
+		final Callback[] callbackReturned = Callback2CredentialConverter.credentials2Callbacks(credentials);
 		assertTrue(callbackReturned.length == 1);
 		assertTrue(callbackReturned[0] instanceof ChoiceCallback);
-		ChoiceCallback cc = (ChoiceCallback) callbackReturned[0];
+		final ChoiceCallback cc = (ChoiceCallback) callbackReturned[0];
 		assertTrue(cc.getPrompt().equals("choicePrompt"));
 		assertFalse(cc.allowMultipleSelections());
 		assertTrue(Arrays.equals(cc.getChoices(), new String[] { "a", "b", "c" }));
@@ -200,14 +206,15 @@ public class Callback2CredentialConverterTest extends TestCase {
 	}
 
 	public void testChoiceCredential7() {
-		ChoiceCallback choiceCallback = new ChoiceCallback("choicePrompt", new String[] { "a", "b", "c" }, 0, true);
+		final ChoiceCallback choiceCallback = new ChoiceCallback("choicePrompt", new String[] { "a", "b", "c" }, 0,
+				true);
 		choiceCallback.setSelectedIndexes(new int[] { 0, 2 });
-		Callback[] callbacks = new Callback[] { choiceCallback };
-		AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
-		Callback[] callbackReturned = Callback2CredentialConverter.credentials2Callbacks(credentials);
+		final Callback[] callbacks = new Callback[] { choiceCallback };
+		final AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
+		final Callback[] callbackReturned = Callback2CredentialConverter.credentials2Callbacks(credentials);
 		assertTrue(callbackReturned.length == 1);
 		assertTrue(callbackReturned[0] instanceof ChoiceCallback);
-		ChoiceCallback cc = (ChoiceCallback) callbackReturned[0];
+		final ChoiceCallback cc = (ChoiceCallback) callbackReturned[0];
 		assertTrue(cc.getPrompt().equals("choicePrompt"));
 		assertTrue(cc.allowMultipleSelections());
 		assertTrue(Arrays.equals(cc.getChoices(), new String[] { "a", "b", "c" }));
@@ -216,26 +223,26 @@ public class Callback2CredentialConverterTest extends TestCase {
 	}
 
 	public void testCustomCredentials() {
-		Callback[] callbacks = new Callback[] { new MyCallback("valueOne", "valueTwo") };
+		final Callback[] callbacks = new Callback[] { new MyCallback("valueOne", "valueTwo") };
 
-		AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
+		final AbstractCredential[] credentials = Callback2CredentialConverter.callbacks2Credentials(callbacks);
 
 		assertTrue(credentials.length == 1);
 		assertTrue(credentials[0] instanceof CustomCredential);
 
-		Callback[] callbacksReturned = Callback2CredentialConverter.credentials2Callbacks(credentials);
+		final Callback[] callbacksReturned = Callback2CredentialConverter.credentials2Callbacks(credentials);
 		assertTrue(callbacksReturned.length == 1);
 		assertTrue(callbacksReturned[0] instanceof MyCallback);
-		MyCallback mycb = (MyCallback) callbacksReturned[0];
+		final MyCallback mycb = (MyCallback) callbacksReturned[0];
 		assertTrue(mycb.getValue1().equals("valueOne"));
 		assertTrue(mycb.getValue2().equals("valueTwo"));
 	}
 
 	public static class MyCallback implements Callback {
-		private String value1;
-		private String value2;
+		private final String value1;
+		private final String value2;
 
-		public MyCallback(String value1, String value2) {
+		public MyCallback(final String value1, final String value2) {
 			this.value1 = value1;
 			this.value2 = value2;
 		}

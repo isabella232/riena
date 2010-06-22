@@ -40,7 +40,7 @@ public class ServiceInjectorOnceOnlyTest extends RienaTestCase {
 
 	public void testInjectOnceOnlyViaStaticOneTarget() {
 		printTestName();
-		TargetOnceOnlyViaStatic target = new TargetOnceOnlyViaStatic();
+		final TargetOnceOnlyViaStatic target = new TargetOnceOnlyViaStatic();
 
 		ServiceInjector injector = null;
 		try {
@@ -55,8 +55,8 @@ public class ServiceInjectorOnceOnlyTest extends RienaTestCase {
 
 	public void testInjectOnceOnlyViaStaticTwoTargetsFirstGoesFirst() {
 		printTestName();
-		TargetOnceOnlyViaStatic target1 = new TargetOnceOnlyViaStatic();
-		TargetOnceOnlyViaStatic target2 = new TargetOnceOnlyViaStatic();
+		final TargetOnceOnlyViaStatic target1 = new TargetOnceOnlyViaStatic();
+		final TargetOnceOnlyViaStatic target2 = new TargetOnceOnlyViaStatic();
 
 		ServiceInjector injector1 = null;
 		ServiceInjector injector2 = null;
@@ -80,8 +80,8 @@ public class ServiceInjectorOnceOnlyTest extends RienaTestCase {
 
 	public void testInjectOnceOnlyViaStaticTwoTargetsFirstGoesLast() {
 		printTestName();
-		TargetOnceOnlyViaStatic target1 = new TargetOnceOnlyViaStatic();
-		TargetOnceOnlyViaStatic target2 = new TargetOnceOnlyViaStatic();
+		final TargetOnceOnlyViaStatic target1 = new TargetOnceOnlyViaStatic();
+		final TargetOnceOnlyViaStatic target2 = new TargetOnceOnlyViaStatic();
 
 		ServiceInjector injector1 = null;
 		ServiceInjector injector2 = null;
@@ -105,8 +105,8 @@ public class ServiceInjectorOnceOnlyTest extends RienaTestCase {
 
 	public void testInjectOnceOnlyViaStaticTwoTargetsFirstGoesFirstServiceGoesAndComes() {
 		printTestName();
-		TargetOnceOnlyViaStatic target1 = new TargetOnceOnlyViaStatic();
-		TargetOnceOnlyViaStatic target2 = new TargetOnceOnlyViaStatic();
+		final TargetOnceOnlyViaStatic target1 = new TargetOnceOnlyViaStatic();
+		final TargetOnceOnlyViaStatic target2 = new TargetOnceOnlyViaStatic();
 
 		ServiceInjector injector1 = null;
 		ServiceInjector injector2 = null;
@@ -138,8 +138,8 @@ public class ServiceInjectorOnceOnlyTest extends RienaTestCase {
 
 	public void testInjectOnceOnlyViaStaticTwoTargetsFirstGoesLastGoesAndComes() {
 		printTestName();
-		TargetOnceOnlyViaStatic target1 = new TargetOnceOnlyViaStatic();
-		TargetOnceOnlyViaStatic target2 = new TargetOnceOnlyViaStatic();
+		final TargetOnceOnlyViaStatic target1 = new TargetOnceOnlyViaStatic();
+		final TargetOnceOnlyViaStatic target2 = new TargetOnceOnlyViaStatic();
 
 		ServiceInjector injector1 = null;
 		ServiceInjector injector2 = null;

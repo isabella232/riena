@@ -32,12 +32,12 @@ public class ModuleControllerTest extends TestCase {
 
 	public void testAfterBind() throws Exception {
 
-		ModuleNode node = new ModuleNode();
+		final ModuleNode node = new ModuleNode();
 		node.setClosable(true);
 		node.setLabel("Hello");
-		ModuleController controller = new ModuleController(node);
-		ShellRidget shellRidget = new ShellRidget();
-		Shell shell = new Shell();
+		final ModuleController controller = new ModuleController(node);
+		final ShellRidget shellRidget = new ShellRidget();
+		final Shell shell = new Shell();
 		shellRidget.setUIControl(shell);
 		controller.setWindowRidget(shellRidget);
 		controller.afterBind();
@@ -55,20 +55,20 @@ public class ModuleControllerTest extends TestCase {
 	public void testSetLabel() throws Exception {
 
 		// test setLabel() with one submodule
-		ModuleNode node = new ModuleNode();
-		SubModuleNode subNode1 = new SubModuleNode();
+		final ModuleNode node = new ModuleNode();
+		final SubModuleNode subNode1 = new SubModuleNode();
 		node.addChild(subNode1);
 
-		ModuleController controller = new ModuleController(node);
-		SubModuleController subModuleController1 = new SubModuleController(subNode1);
+		final ModuleController controller = new ModuleController(node);
+		final SubModuleController subModuleController1 = new SubModuleController(subNode1);
 
-		ShellRidget shellRidget = new ShellRidget();
-		Shell shell = new Shell();
+		final ShellRidget shellRidget = new ShellRidget();
+		final Shell shell = new Shell();
 		shellRidget.setUIControl(shell);
 		controller.setWindowRidget(shellRidget);
 
-		ShellRidget subModuleShellRidget1 = new ShellRidget();
-		Shell subModuleShell1 = new Shell();
+		final ShellRidget subModuleShellRidget1 = new ShellRidget();
+		final Shell subModuleShell1 = new Shell();
 		subModuleShellRidget1.setUIControl(subModuleShell1);
 		subModuleController1.setWindowRidget(subModuleShellRidget1);
 
@@ -81,28 +81,28 @@ public class ModuleControllerTest extends TestCase {
 		subModuleShell1.dispose();
 
 		// test setLabel() with two submodules
-		ModuleNode modNode = new ModuleNode();
-		SubModuleNode subModNode1 = new SubModuleNode(new NavigationNodeId("sm1"));
-		SubModuleNode subModNode2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		final ModuleNode modNode = new ModuleNode();
+		final SubModuleNode subModNode1 = new SubModuleNode(new NavigationNodeId("sm1"));
+		final SubModuleNode subModNode2 = new SubModuleNode(new NavigationNodeId("sm2"));
 		modNode.addChild(subModNode1);
 		modNode.addChild(subModNode2);
 
-		ModuleController modController = new ModuleController(modNode);
-		SubModuleController subModController1 = new SubModuleController(subModNode1);
-		SubModuleController subModController2 = new SubModuleController(subModNode2);
+		final ModuleController modController = new ModuleController(modNode);
+		final SubModuleController subModController1 = new SubModuleController(subModNode1);
+		final SubModuleController subModController2 = new SubModuleController(subModNode2);
 
-		ShellRidget shellRidgetMod = new ShellRidget();
-		Shell shellMod = new Shell();
+		final ShellRidget shellRidgetMod = new ShellRidget();
+		final Shell shellMod = new Shell();
 		shellRidgetMod.setUIControl(shellMod);
 		modController.setWindowRidget(shellRidgetMod);
 
-		ShellRidget subModShellRidget1 = new ShellRidget();
-		Shell subModShell1 = new Shell();
+		final ShellRidget subModShellRidget1 = new ShellRidget();
+		final Shell subModShell1 = new Shell();
 		subModShellRidget1.setUIControl(subModShell1);
 		subModController1.setWindowRidget(subModShellRidget1);
 
-		ShellRidget subModShellRidget2 = new ShellRidget();
-		Shell subModShell2 = new Shell();
+		final ShellRidget subModShellRidget2 = new ShellRidget();
+		final Shell subModShell2 = new Shell();
 		subModShellRidget2.setUIControl(subModShell2);
 		subModController2.setWindowRidget(subModShellRidget2);
 
@@ -125,16 +125,16 @@ public class ModuleControllerTest extends TestCase {
 	 */
 	public void testGetVisibleChildren() {
 
-		ModuleNode node = new ModuleNode();
+		final ModuleNode node = new ModuleNode();
 		node.setNavigationProcessor(new NavigationProcessor());
-		SubModuleNode sub1 = new SubModuleNode(new NavigationNodeId("sm1"));
+		final SubModuleNode sub1 = new SubModuleNode(new NavigationNodeId("sm1"));
 		node.addChild(sub1);
-		SubModuleNode sub2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		final SubModuleNode sub2 = new SubModuleNode(new NavigationNodeId("sm2"));
 		node.addChild(sub2);
-		SubModuleNode sub3 = new SubModuleNode();
+		final SubModuleNode sub3 = new SubModuleNode();
 		node.addChild(sub3);
 
-		ModuleController controller = new ModuleController(node);
+		final ModuleController controller = new ModuleController(node);
 		List<INavigationNode<?>> nodes = controller.getVisibleChildren(node);
 		assertEquals(3, nodes.size());
 		assertSame(sub1, nodes.get(0));
@@ -155,16 +155,16 @@ public class ModuleControllerTest extends TestCase {
 	 */
 	public void testHasSingleLeafChild() {
 
-		ModuleNode node = new ModuleNode();
+		final ModuleNode node = new ModuleNode();
 		node.setNavigationProcessor(new NavigationProcessor());
-		SubModuleNode sub1 = new SubModuleNode(new NavigationNodeId("sm1"));
+		final SubModuleNode sub1 = new SubModuleNode(new NavigationNodeId("sm1"));
 		node.addChild(sub1);
-		SubModuleNode sub2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		final SubModuleNode sub2 = new SubModuleNode(new NavigationNodeId("sm2"));
 		node.addChild(sub2);
-		SubModuleNode sub3 = new SubModuleNode();
+		final SubModuleNode sub3 = new SubModuleNode();
 		sub2.addChild(sub3);
 
-		ModuleController controller = new ModuleController(node);
+		final ModuleController controller = new ModuleController(node);
 		assertFalse(controller.hasSingleLeafChild());
 
 		sub1.setVisible(false);

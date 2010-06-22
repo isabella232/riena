@@ -41,7 +41,7 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * <b>Note:</b> it is recommended to provide a tailored implementation for
 	 * this method. This will fine tune the "dirty" state of the details area.
 	 */
-	public boolean isChanged(Object source, Object target) {
+	public boolean isChanged(final Object source, final Object target) {
 		return true;
 	}
 
@@ -50,7 +50,7 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
 	 */
-	public String isRemovable(Object item) {
+	public String isRemovable(final Object item) {
 		return null;
 	}
 
@@ -59,7 +59,7 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
 	 */
-	public String isValid(IRidgetContainer container) {
+	public String isValid(final IRidgetContainer container) {
 		return null;
 	}
 
@@ -68,7 +68,7 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
 	 */
-	public void itemCreated(Object newItem) {
+	public void itemCreated(final Object newItem) {
 		// empty
 	}
 
@@ -77,7 +77,7 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
 	 */
-	public void itemApplied(Object changedItem) {
+	public void itemApplied(final Object changedItem) {
 		// empty
 	}
 
@@ -86,7 +86,7 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
 	 */
-	public void itemRemoved(Object oldItem) {
+	public void itemRemoved(final Object oldItem) {
 		// empty
 	}
 
@@ -95,7 +95,7 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
 	 */
-	public void prepareItemSelected(Object newSelection) {
+	public void prepareItemSelected(final Object newSelection) {
 		// empty
 	}
 
@@ -104,7 +104,7 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
 	 */
-	public void itemSelected(Object newSelection) {
+	public void itemSelected(final Object newSelection) {
 		// empty
 	}
 
@@ -114,8 +114,8 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * Default implementation for this method. Subclasses may override &ndash;
 	 * though it should not be necessary in most cases.
 	 */
-	public void updateDetails(IRidgetContainer container) {
-		for (IRidget ridget : container.getRidgets()) {
+	public void updateDetails(final IRidgetContainer container) {
+		for (final IRidget ridget : container.getRidgets()) {
 			ridget.updateFromModel();
 		}
 	}

@@ -119,20 +119,20 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		cleaner = new Cleaner();
 		storeFolder = new File(RienaLocations.getDataArea(Activator.getDefault().getBundle()), storeFolderName);
 		if (!storeFolder.isDirectory()) {
-			boolean directoryCreated = storeFolder.mkdirs();
+			final boolean directoryCreated = storeFolder.mkdirs();
 			Assert.isTrue(directoryCreated);
 		}
 		try {
 			encrypt = getCipher(Cipher.ENCRYPT_MODE);
 			decrypt = getCipher(Cipher.DECRYPT_MODE);
-		} catch (GeneralSecurityException e) {
+		} catch (final GeneralSecurityException e) {
 			throw new IllegalArgumentException("Could not generate keys for encryption.", e); //$NON-NLS-1$
 		}
 		LOGGER.log(LogService.LOG_DEBUG, "SimpleStore at " + storeFolder); //$NON-NLS-1$
 		if (RienaStatus.isDevelopment()) {
 			// This only for debugging/development so that old files do not bother us
 			LOGGER.log(LogService.LOG_DEBUG, "SimpleStore in development mode, trying to clean-up store."); //$NON-NLS-1$
-			for (File file : storeFolder.listFiles()) {
+			for (final File file : storeFolder.listFiles()) {
 				if (!file.delete()) {
 					LOGGER.log(LogService.LOG_DEBUG, " - failed deleting file: " + file); //$NON-NLS-1$
 					file.deleteOnExit();
@@ -141,19 +141,19 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		}
 	}
 
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 		Map<String, String> properties = null;
 		try {
 			properties = PropertiesUtils.asMap(data, Literal.map(CLEANUP_DELAY, CLEANUP_DELAY_DEFAULT));
 			cleanupDelay = Millis.valueOf(properties.get(CLEANUP_DELAY));
 			Assert.isLegal(cleanupDelay > 0, "cleanupDelay must be greater than 0."); //$NON-NLS-1$
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
 		}
 	}
 
-	private CoreException configurationException(String message, Exception e) {
+	private CoreException configurationException(final String message, final Exception e) {
 		return new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, e));
 	}
 
@@ -162,7 +162,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * 
 	 * @see org.eclipse.riena.monitor.client.IStore#open()
 	 */
-	public void open(Map<String, Category> categories) {
+	public void open(final Map<String, Category> categories) {
 		Assert.isNotNull(categories, "categories must not be null"); //$NON-NLS-1$
 		this.categories = categories;
 		cleaner.schedule(Millis.seconds(15));
@@ -194,7 +194,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * .eclipse.riena.monitor.core.Collectible)
 	 */
 	public synchronized boolean collect(final Collectible<?> collectible) {
-		File file = getFile(collectible, COLLECT_FILE_EXTENSION);
+		final File file = getFile(collectible, COLLECT_FILE_EXTENSION);
 		putCollectible(collectible, file);
 
 		return true;
@@ -207,15 +207,15 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * (java.lang.String)
 	 */
 	public void prepareTransferables(final String category) {
-		File[] trans = storeFolder.listFiles(new FilenameFilter() {
+		final File[] trans = storeFolder.listFiles(new FilenameFilter() {
 
-			public boolean accept(File dir, String name) {
+			public boolean accept(final File dir, final String name) {
 				return name.startsWith(category) && name.endsWith(COLLECT_FILE_EXTENSION);
 			}
 		});
-		for (File file : trans) {
-			String name = file.getName().replace(COLLECT_FILE_EXTENSION, TRANSFER_FILE_EXTENSION);
-			boolean fileRenamed = file.renameTo(new File(file.getParent(), name));
+		for (final File file : trans) {
+			final String name = file.getName().replace(COLLECT_FILE_EXTENSION, TRANSFER_FILE_EXTENSION);
+			final boolean fileRenamed = file.renameTo(new File(file.getParent(), name));
 			Assert.isTrue(fileRenamed);
 		}
 	}
@@ -227,15 +227,15 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * .lang.String)
 	 */
 	public synchronized List<Collectible<?>> retrieveTransferables(final String category) {
-		File[] transferables = storeFolder.listFiles(new FilenameFilter() {
+		final File[] transferables = storeFolder.listFiles(new FilenameFilter() {
 
-			public boolean accept(File dir, String name) {
+			public boolean accept(final File dir, final String name) {
 				return name.startsWith(category) && name.endsWith(TRANSFER_FILE_EXTENSION);
 			}
 		});
-		List<Collectible<?>> collectibles = new ArrayList<Collectible<?>>();
-		for (File transferable : transferables) {
-			Collectible<?> collectible = getCollectible(transferable);
+		final List<Collectible<?>> collectibles = new ArrayList<Collectible<?>>();
+		for (final File transferable : transferables) {
+			final Collectible<?> collectible = getCollectible(transferable);
 			if (collectible != null) {
 				collectibles.add(collectible);
 			}
@@ -253,7 +253,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * @param is
 	 * @return
 	 */
-	protected InputStream getDecryptor(InputStream is) {
+	protected InputStream getDecryptor(final InputStream is) {
 		return new CipherInputStream(is, decrypt);
 	}
 
@@ -268,7 +268,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * @param os
 	 * @return
 	 */
-	protected OutputStream getEncryptor(OutputStream os) {
+	protected OutputStream getEncryptor(final OutputStream os) {
 		return new CipherOutputStream(os, encrypt);
 	}
 
@@ -282,7 +282,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * @return
 	 * @throws IOException
 	 */
-	protected OutputStream getCompressor(OutputStream os) throws IOException {
+	protected OutputStream getCompressor(final OutputStream os) throws IOException {
 		return new GZIPOutputStream(os);
 	}
 
@@ -298,7 +298,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * @return
 	 * @throws IOException
 	 */
-	protected InputStream getDecompressor(InputStream is) throws IOException {
+	protected InputStream getDecompressor(final InputStream is) throws IOException {
 		return new GZIPInputStream(is);
 	}
 
@@ -308,8 +308,8 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * @see org.eclipse.riena.monitor.client.IStore#commitTransferred(
 	 * java.util.List)
 	 */
-	public synchronized void commitTransferred(List<Collectible<?>> collectibles) {
-		for (Collectible<?> collectible : collectibles) {
+	public synchronized void commitTransferred(final List<Collectible<?>> collectibles) {
+		for (final Collectible<?> collectible : collectibles) {
 			delete(getFile(collectible, TRANSFER_FILE_EXTENSION));
 		}
 	}
@@ -320,13 +320,13 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * 
 	 * @param file
 	 */
-	private void delete(File file) {
+	private void delete(final File file) {
 		if (!file.delete()) {
 			if (file.getName().endsWith(DEL_FILE_EXTENSION)) {
 				file.deleteOnExit();
 				return;
 			}
-			File toDelete = new File(file, DEL_FILE_EXTENSION);
+			final File toDelete = new File(file, DEL_FILE_EXTENSION);
 			if (file.renameTo(toDelete)) {
 				toDelete.deleteOnExit();
 			}
@@ -339,15 +339,15 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * @param file
 	 * @return
 	 */
-	private Collectible<?> getCollectible(File file) {
+	private Collectible<?> getCollectible(final File file) {
 		ObjectInputStream objectis = null;
 		try {
-			InputStream fis = new FileInputStream(file);
-			InputStream decris = getDecryptor(fis);
-			InputStream gzipis = getDecompressor(decris);
+			final InputStream fis = new FileInputStream(file);
+			final InputStream decris = getDecryptor(fis);
+			final InputStream gzipis = getDecompressor(decris);
 			objectis = new ObjectInputStream(gzipis);
 			return (Collectible<?>) objectis.readObject();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.log(LogService.LOG_DEBUG, "Error retrieving collectible: " + e.getMessage(), e); //$NON-NLS-1$
 			if (file.exists() && !file.delete()) {
 				file.deleteOnExit();
@@ -364,15 +364,15 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * @param collectible
 	 * @param file
 	 */
-	private void putCollectible(Collectible<?> collectible, File file) {
+	private void putCollectible(final Collectible<?> collectible, final File file) {
 		ObjectOutputStream objectos = null;
 		try {
-			OutputStream fos = new FileOutputStream(file);
-			OutputStream encos = getEncryptor(fos);
-			OutputStream gzipos = getCompressor(encos);
+			final OutputStream fos = new FileOutputStream(file);
+			final OutputStream encos = getEncryptor(fos);
+			final OutputStream gzipos = getCompressor(encos);
 			objectos = new ObjectOutputStream(gzipos);
 			objectos.writeObject(collectible);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(LogService.LOG_DEBUG, "Error storing collectible: " + e.getMessage(), e); //$NON-NLS-1$
 			if (file.exists() && !file.delete()) {
 				file.deleteOnExit();
@@ -382,7 +382,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		}
 	}
 
-	private File getFile(Collectible<?> collectible, String extension) {
+	private File getFile(final Collectible<?> collectible, final String extension) {
 		return new File(storeFolder, collectible.getCategory() + CATEGORY_DELIMITER + collectible.getUUID().toString()
 				+ extension);
 	}
@@ -397,14 +397,14 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		public Cleaner() {
 			super("SimpleStoreCleaner"); //$NON-NLS-1$
 			setUser(true);
-			Bundle bundle = FrameworkUtil.getBundle(Cleaner.class);
+			final Bundle bundle = FrameworkUtil.getBundle(Cleaner.class);
 			if (bundle != null) {
 				bundle.getBundleContext().addBundleListener(new StoppingListener(bundle));
 			}
 		}
 
 		@Override
-		protected IStatus run(IProgressMonitor monitor) {
+		protected IStatus run(final IProgressMonitor monitor) {
 			if (canceled) {
 				return Status.OK_STATUS;
 			}
@@ -427,18 +427,19 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		}
 
 		private void clean() {
-			File[] scrutinizedFiles = storeFolder.listFiles(new FilenameFilter() {
-				public boolean accept(File dir, String name) {
+			final File[] scrutinizedFiles = storeFolder.listFiles(new FilenameFilter() {
+				public boolean accept(final File dir, final String name) {
 					return name.endsWith(COLLECT_FILE_EXTENSION) || name.endsWith(DEL_FILE_EXTENSION);
 				}
 			});
-			Map<String, List<File>> categorizedScrutinized = new HashMap<String, List<File>>(scrutinizedFiles.length);
-			for (File scrutinizedFile : scrutinizedFiles) {
-				int categoryDelimiterIndex = scrutinizedFile.getName().indexOf(CATEGORY_DELIMITER);
+			final Map<String, List<File>> categorizedScrutinized = new HashMap<String, List<File>>(
+					scrutinizedFiles.length);
+			for (final File scrutinizedFile : scrutinizedFiles) {
+				final int categoryDelimiterIndex = scrutinizedFile.getName().indexOf(CATEGORY_DELIMITER);
 				if (categoryDelimiterIndex == -1) {
 					continue;
 				}
-				String category = scrutinizedFile.getName().substring(0, categoryDelimiterIndex);
+				final String category = scrutinizedFile.getName().substring(0, categoryDelimiterIndex);
 				List<File> files = categorizedScrutinized.get(category);
 				if (files == null) {
 					files = new ArrayList<File>();
@@ -446,7 +447,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 				}
 				files.add(scrutinizedFile);
 			}
-			for (Map.Entry<String, List<File>> entry : categorizedScrutinized.entrySet()) {
+			for (final Map.Entry<String, List<File>> entry : categorizedScrutinized.entrySet()) {
 				clean(entry.getValue(), categories.get(entry.getKey()).getMaxItems());
 			}
 		}
@@ -460,9 +461,9 @@ public class SimpleStore implements IStore, IExecutableExtension {
 			}
 			// sort by time, so that we remove older ones
 			Collections.sort(files, new Comparator<File>() {
-				public int compare(File file1, File file2) {
-					Long time1 = file1.lastModified();
-					Long time2 = file2.lastModified();
+				public int compare(final File file1, final File file2) {
+					final Long time1 = file1.lastModified();
+					final Long time2 = file2.lastModified();
 					return time1.compareTo(time2);
 				}
 			});
@@ -474,11 +475,11 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		private class StoppingListener implements SynchronousBundleListener {
 			private final Bundle bundle;
 
-			public StoppingListener(Bundle bundle) {
+			public StoppingListener(final Bundle bundle) {
 				this.bundle = bundle;
 			}
 
-			public void bundleChanged(BundleEvent event) {
+			public void bundleChanged(final BundleEvent event) {
 				if (event.getBundle() == bundle && event.getType() == BundleEvent.STOPPING) {
 					bundle.getBundleContext().removeBundleListener(this);
 					cancel();
@@ -496,9 +497,9 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * @return the cypher or null, if not possible
 	 * @throws GeneralSecurityException
 	 */
-	private static Cipher getCipher(int mode) throws GeneralSecurityException {
+	private static Cipher getCipher(final int mode) throws GeneralSecurityException {
 		// Create the cipher 
-		Cipher desCipher = Cipher.getInstance("DES"); //$NON-NLS-1$
+		final Cipher desCipher = Cipher.getInstance("DES"); //$NON-NLS-1$
 
 		// Initialize the cipher
 		desCipher.init(mode, getKey());
@@ -509,15 +510,15 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	private static final byte[] KEY = new byte[8];
 
 	static {
-		long first = "This is not very clever :-)".hashCode(); //$NON-NLS-1$
-		long second = "And this neither!".hashCode(); //$NON-NLS-1$
+		final long first = "This is not very clever :-)".hashCode(); //$NON-NLS-1$
+		final long second = "And this neither!".hashCode(); //$NON-NLS-1$
 		new Random(first * second).nextBytes(KEY);
 	}
 
 	private static Key getKey() throws GeneralSecurityException {
-		DESKeySpec pass = new DESKeySpec(KEY);
-		SecretKeyFactory skf = SecretKeyFactory.getInstance("DES"); //$NON-NLS-1$
-		SecretKey s = skf.generateSecret(pass);
+		final DESKeySpec pass = new DESKeySpec(KEY);
+		final SecretKeyFactory skf = SecretKeyFactory.getInstance("DES"); //$NON-NLS-1$
+		final SecretKey s = skf.generateSecret(pass);
 		return s;
 	}
 

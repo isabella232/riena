@@ -36,20 +36,20 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public final class SnippetBrowserRidget002 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetBrowserRidget002.class.getSimpleName());
-			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).equalWidth(false).spacing(20, 10).applyTo(
-					shell);
+			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).equalWidth(false).spacing(20, 10)
+					.applyTo(shell);
 
-			Text text = UIControlsFactory.createText(shell, SWT.SINGLE | SWT.BORDER);
+			final Text text = UIControlsFactory.createText(shell, SWT.SINGLE | SWT.BORDER);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(text);
-			Button check = UIControlsFactory.createButtonCheck(shell);
+			final Button check = UIControlsFactory.createButtonCheck(shell);
 			check.setText("&output only"); //$NON-NLS-1$
 
-			Browser browser = new Browser(shell, SWT.BORDER);
+			final Browser browser = new Browser(shell, SWT.BORDER);
 			GridDataFactory.fillDefaults().span(2, 1).grab(true, true).applyTo(browser);
 
 			// ridgets
@@ -63,14 +63,14 @@ public final class SnippetBrowserRidget002 {
 			textRidget.setText("http://www.eclipse.org/"); //$NON-NLS-1$
 
 			browserRidget.addPropertyChangeListener(IBrowserRidget.PROPERTY_URL, new PropertyChangeListener() {
-				public void propertyChange(PropertyChangeEvent evt) {
+				public void propertyChange(final PropertyChangeEvent evt) {
 					textRidget.setText((String) evt.getNewValue());
 				}
 			});
 
 			toggleRidget.addListener(new IActionListener() {
 				public void callback() {
-					boolean checked = toggleRidget.isSelected();
+					final boolean checked = toggleRidget.isSelected();
 					browserRidget.setOutputOnly(checked);
 					textRidget.setOutputOnly(checked);
 				}

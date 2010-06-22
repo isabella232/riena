@@ -22,7 +22,7 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 @NonUITestCase
 public class LRUHashMapTest extends RienaTestCase {
 
-	private Map<String, Integer> lru = LRUHashMap.createLRUHashMap(3);
+	private final Map<String, Integer> lru = LRUHashMap.createLRUHashMap(3);
 
 	public void testInstantiate() {
 		assertEquals(0, lru.size());
@@ -50,14 +50,14 @@ public class LRUHashMapTest extends RienaTestCase {
 		assertContains(2, 4, 5);
 	}
 
-	private void put(int... kvs) {
-		for (int i : kvs) {
+	private void put(final int... kvs) {
+		for (final int i : kvs) {
 			lru.put(Integer.toString(i), i);
 		}
 	}
 
-	private void assertContains(int... kvs) {
-		for (int i : kvs) {
+	private void assertContains(final int... kvs) {
+		for (final int i : kvs) {
 			assertEquals((Integer) i, lru.get(Integer.toString(i)));
 		}
 	}

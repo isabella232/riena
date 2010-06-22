@@ -28,7 +28,7 @@ class LnfRendererExtension implements ILnfRendererExtension {
 	 * @param lnfId
 	 * @param renderer
 	 */
-	public LnfRendererExtension(ILnfRenderer renderer, String lnfKey) {
+	public LnfRendererExtension(final ILnfRenderer renderer, final String lnfKey) {
 		super();
 		this.lnfId = ""; //$NON-NLS-1$
 		this.renderer = renderer;

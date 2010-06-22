@@ -47,22 +47,22 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * @param node
 	 *            navigation node
 	 */
-	private void applyFilters(INavigationNode<?> node) {
+	private void applyFilters(final INavigationNode<?> node) {
 
 		if (node == null) {
 			return;
 		}
 
-		Collection<IUIFilter> filters = new ArrayList<IUIFilter>();
+		final Collection<IUIFilter> filters = new ArrayList<IUIFilter>();
 		collectFilters(node, filters);
 
-		for (IUIFilter filter : filters) {
+		for (final IUIFilter filter : filters) {
 			applyFilter(node, filter, APPLY_CLOSURE);
 		}
 
-		ISubApplicationNode subAppNode = node.getParentOfType(ISubApplicationNode.class);
+		final ISubApplicationNode subAppNode = node.getParentOfType(ISubApplicationNode.class);
 		if ((subAppNode != null) && (subAppNode != node)) {
-			for (IUIFilter filter : filters) {
+			for (final IUIFilter filter : filters) {
 				applyFilter(subAppNode, filter, APPLY_CLOSURE);
 			}
 		}
@@ -78,22 +78,22 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * @param node
 	 *            navigation node
 	 */
-	private void removeAllMenuItemRules(INavigationNode<?> node) {
+	private void removeAllMenuItemRules(final INavigationNode<?> node) {
 
 		if (node == null) {
 			return;
 		}
 
-		for (IUIFilter filter : node.getFilters()) {
-			for (IUIFilterRule rule : filter.getFilterRules()) {
+		for (final IUIFilter filter : node.getFilters()) {
+			for (final IUIFilterRule rule : filter.getFilterRules()) {
 				if (rule instanceof AbstractUIFilterRuleMenuItemMarker) {
 					applyFilterRule(node, rule, REMOVE_CLOSURE);
 				}
 			}
 		}
 
-		List<?> children = node.getChildren();
-		for (Object child : children) {
+		final List<?> children = node.getChildren();
+		for (final Object child : children) {
 			if (child instanceof INavigationNode<?>) {
 				removeAllMenuItemRules((INavigationNode<?>) child);
 			}
@@ -110,7 +110,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * @param filters
 	 *            collection of UI filters.
 	 */
-	private void collectFilters(INavigationNode<?> node, Collection<IUIFilter> filters) {
+	private void collectFilters(final INavigationNode<?> node, final Collection<IUIFilter> filters) {
 
 		if (node == null) {
 			return;
@@ -134,15 +134,15 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * @param closure
 	 *            closure to execute
 	 */
-	private void applyFilter(INavigationNode<?> node, IUIFilter filter, IUIFilterRuleClosure closure) {
+	private void applyFilter(final INavigationNode<?> node, final IUIFilter filter, final IUIFilterRuleClosure closure) {
 
-		Collection<? extends IUIFilterRule> rules = filter.getFilterRules();
-		for (IUIFilterRule rule : rules) {
+		final Collection<? extends IUIFilterRule> rules = filter.getFilterRules();
+		for (final IUIFilterRule rule : rules) {
 			applyFilterRule(node, rule, closure);
 		}
 
-		List<?> children = node.getChildren();
-		for (Object child : children) {
+		final List<?> children = node.getChildren();
+		for (final Object child : children) {
 			if (child instanceof INavigationNode<?>) {
 				applyFilter((INavigationNode<?>) child, filter, closure);
 			}
@@ -161,16 +161,17 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * @param closure
 	 *            closure to execute
 	 */
-	private void applyFilterRule(INavigationNode<?> node, IUIFilterRule filterRule, IUIFilterRuleClosure closure) {
+	private void applyFilterRule(final INavigationNode<?> node, final IUIFilterRule filterRule,
+			final IUIFilterRuleClosure closure) {
 
 		if (filterRule.matches(node)) {
 			closure.execute(node, filterRule, node);
 		}
 
-		INavigationNodeController controller = node.getNavigationNodeController();
+		final INavigationNodeController controller = node.getNavigationNodeController();
 		if (controller instanceof IRidgetContainer) {
-			IRidgetContainer container = (IRidgetContainer) controller;
-			for (IRidget ridget : container.getRidgets()) {
+			final IRidgetContainer container = (IRidgetContainer) controller;
+			for (final IRidget ridget : container.getRidgets()) {
 				if (filterRule.matches(ridget, node)) {
 					closure.execute(node, filterRule, ridget);
 				}
@@ -180,26 +181,26 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	}
 
 	@Override
-	public void afterActivated(INavigationNode source) {
+	public void afterActivated(final INavigationNode source) {
 		super.afterActivated(source);
 		applyFilters(source);
 	}
 
 	@Override
-	public void beforeDeactivated(INavigationNode source) {
+	public void beforeDeactivated(final INavigationNode source) {
 		super.beforeDeactivated(source);
-		IApplicationNode appNode = (IApplicationNode) source.getParentOfType(IApplicationNode.class);
+		final IApplicationNode appNode = (IApplicationNode) source.getParentOfType(IApplicationNode.class);
 		removeAllMenuItemRules(appNode);
 	}
 
 	@Override
-	public void filterAdded(INavigationNode source, IUIFilter filter) {
+	public void filterAdded(final INavigationNode source, final IUIFilter filter) {
 		super.filterAdded(source, filter);
 		applyFilter(source, filter, APPLY_CLOSURE);
 	}
 
 	@Override
-	public void filterRemoved(INavigationNode source, IUIFilter filter) {
+	public void filterRemoved(final INavigationNode source, final IUIFilter filter) {
 		super.filterRemoved(source, filter);
 		applyFilter(source, filter, REMOVE_CLOSURE);
 	}
@@ -209,7 +210,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 */
 	private static class ApplyClosure implements IUIFilterRuleClosure {
 
-		public void execute(INavigationNode<?> node, IUIFilterRule attr, Object obj) {
+		public void execute(final INavigationNode<?> node, final IUIFilterRule attr, final Object obj) {
 			if (obj instanceof IRidget) {
 				if (isMenuItemOfDeactivatedNode(node, (IRidget) obj)) {
 					return;
@@ -225,7 +226,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 */
 	private static class RemoveClosure implements IUIFilterRuleClosure {
 
-		public void execute(INavigationNode<?> node, IUIFilterRule attr, Object obj) {
+		public void execute(final INavigationNode<?> node, final IUIFilterRule attr, final Object obj) {
 			if (obj instanceof IRidget) {
 				if (isMenuItemOfDeactivatedNode(node, (IRidget) obj)) {
 					return;
@@ -248,7 +249,7 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 	 * @return {@code true} if ridget is a menu item and the node is
 	 *         deactivated; otherwise {@code false}
 	 */
-	private static boolean isMenuItemOfDeactivatedNode(INavigationNode<?> node, IRidget ridget) {
+	private static boolean isMenuItemOfDeactivatedNode(final INavigationNode<?> node, final IRidget ridget) {
 
 		if (!(node instanceof IApplicationNode)) {
 			if ((ridget instanceof IToolItemRidget) || (ridget instanceof IMenuItemRidget)) {

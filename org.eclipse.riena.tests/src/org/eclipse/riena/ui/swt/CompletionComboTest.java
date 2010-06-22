@@ -46,7 +46,7 @@ public class CompletionComboTest extends TestCase {
 	//////////////////
 
 	public void testSetBackground() {
-		Color red = combo.getDisplay().getSystemColor(SWT.COLOR_RED);
+		final Color red = combo.getDisplay().getSystemColor(SWT.COLOR_RED);
 		combo.setBackground(red);
 
 		assertEquals(red, combo.getBackground());
@@ -55,8 +55,8 @@ public class CompletionComboTest extends TestCase {
 	}
 
 	public void testSetTextBackground() {
-		Color red = combo.getDisplay().getSystemColor(SWT.COLOR_RED);
-		Color green = combo.getDisplay().getSystemColor(SWT.COLOR_GREEN);
+		final Color red = combo.getDisplay().getSystemColor(SWT.COLOR_RED);
+		final Color green = combo.getDisplay().getSystemColor(SWT.COLOR_GREEN);
 		combo.setBackground(red);
 		combo.setTextBackground(green);
 
@@ -66,9 +66,9 @@ public class CompletionComboTest extends TestCase {
 	}
 
 	public void testSetListBackground() {
-		Color red = combo.getDisplay().getSystemColor(SWT.COLOR_RED);
-		Color green = combo.getDisplay().getSystemColor(SWT.COLOR_GREEN);
-		Color blue = combo.getDisplay().getSystemColor(SWT.COLOR_GREEN);
+		final Color red = combo.getDisplay().getSystemColor(SWT.COLOR_RED);
+		final Color green = combo.getDisplay().getSystemColor(SWT.COLOR_GREEN);
+		final Color blue = combo.getDisplay().getSystemColor(SWT.COLOR_GREEN);
 		combo.setBackground(red);
 		combo.setTextBackground(green);
 		combo.setListBackground(blue);

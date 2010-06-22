@@ -81,7 +81,7 @@ public class LnFUpdater {
 	/**
 	 * @since 1.2
 	 */
-	public static void addControlsAfterBind(Class<? extends Control> controlClass) {
+	public static void addControlsAfterBind(final Class<? extends Control> controlClass) {
 		CONTROLS_AFTER_BIND.add(controlClass);
 	}
 
@@ -93,7 +93,7 @@ public class LnFUpdater {
 	 * @param updateLayout
 	 *            on {@code true} update the layout; otherwise not
 	 */
-	public void updateUIControls(Composite parent, boolean updateLayout) {
+	public void updateUIControls(final Composite parent, final boolean updateLayout) {
 
 		if (checkPropertyUpdateView()) {
 			setDirtyLayout(false);
@@ -113,7 +113,7 @@ public class LnFUpdater {
 	 * @param parent
 	 *            composite which children are updated.
 	 */
-	private void updateLayout(Composite parent) {
+	private void updateLayout(final Composite parent) {
 		if (isDirtyLayout()) {
 			parent.layout(true, true);
 			setDirtyLayout(false);
@@ -126,10 +126,10 @@ public class LnFUpdater {
 	 * @param parent
 	 *            composite which children are updated.
 	 */
-	private void updateUIControlsRecursive(Composite parent) {
+	private void updateUIControlsRecursive(final Composite parent) {
 
-		Control[] controls = parent.getChildren();
-		for (Control uiControl : controls) {
+		final Control[] controls = parent.getChildren();
+		for (final Control uiControl : controls) {
 
 			updateUIControl(uiControl);
 
@@ -148,7 +148,7 @@ public class LnFUpdater {
 	 * @param parent
 	 *            composite which children are updated.
 	 */
-	public void updateUIControlsAfterBind(Composite parent) {
+	public void updateUIControlsAfterBind(final Composite parent) {
 
 		if (checkPropertyUpdateView()) {
 			setDirtyLayout(false);
@@ -179,26 +179,26 @@ public class LnFUpdater {
 	 * @param control
 	 *            UI control
 	 */
-	public void updateUIControl(Control control) {
+	public void updateUIControl(final Control control) {
 
 		if (!checkPropertyUpdateView()) {
 			return;
 		}
 
-		int classModifiers = control.getClass().getModifiers();
+		final int classModifiers = control.getClass().getModifiers();
 		if (!Modifier.isPublic(classModifiers)) {
 			return;
 		}
 		if (!checkLnfKeys(control)) {
 			return;
 		}
-		List<PropertyDescriptor> properties = getProperties(control);
-		for (PropertyDescriptor property : properties) {
-			Object newValue = getLnfValue(control, property);
+		final List<PropertyDescriptor> properties = getProperties(control);
+		for (final PropertyDescriptor property : properties) {
+			final Object newValue = getLnfValue(control, property);
 			if (newValue == null) {
 				continue;
 			}
-			Object currentValue = getPropertyValue(control, property);
+			final Object currentValue = getPropertyValue(control, property);
 			if (valuesEquals(currentValue, newValue)) {
 				continue;
 			}
@@ -206,14 +206,14 @@ public class LnFUpdater {
 				continue;
 			}
 			try {
-				Method setter = property.getWriteMethod();
+				final Method setter = property.getWriteMethod();
 				setter.invoke(control, newValue);
 				setDirtyLayout(true);
-			} catch (IllegalArgumentException e) {
+			} catch (final IllegalArgumentException e) {
 				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(control, property), e);
-			} catch (IllegalAccessException e) {
+			} catch (final IllegalAccessException e) {
 				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(control, property), e);
-			} catch (InvocationTargetException e) {
+			} catch (final InvocationTargetException e) {
 				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(control, property), e);
 			}
 		}
@@ -230,15 +230,15 @@ public class LnFUpdater {
 	 *            UI control
 	 * @param property
 	 *            property to check
-	 * @return {@code true} if property should be ignored; otherwise {@code
-	 *         false}
+	 * @return {@code true} if property should be ignored; otherwise
+	 *         {@code false}
 	 */
 	private boolean ignoreProperty(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
 
 		final IgnoreLnFUpdater ignoreLnFUpdater = controlClass.getAnnotation(IgnoreLnFUpdater.class);
 		if (ignoreLnFUpdater != null) {
-			String[] ignoreProps = ignoreLnFUpdater.value();
-			for (String ignoreProp : ignoreProps) {
+			final String[] ignoreProps = ignoreLnFUpdater.value();
+			for (final String ignoreProp : ignoreProps) {
 				if (ignoreProp != null) {
 					if (ignoreProp.equals(property.getName())) {
 						return true;
@@ -263,14 +263,14 @@ public class LnFUpdater {
 	 *            UI control
 	 * @return {@code true} if latest one key exists; otherwise {@code false}
 	 */
-	private boolean checkLnfKeys(Control control) {
-		Class<? extends Control> controlClass = control.getClass();
+	private boolean checkLnfKeys(final Control control) {
+		final Class<? extends Control> controlClass = control.getClass();
 		if (checkLnfClassKeys(controlClass)) {
 			return true;
 		}
 
-		RienaDefaultLnf lnf = LnfManager.getLnf();
-		String style = (String) control.getData(UIControlsFactory.KEY_LNF_STYLE);
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
+		final String style = (String) control.getData(UIControlsFactory.KEY_LNF_STYLE);
 		return lnf.containsLnfResourcePrefix(style);
 
 	}
@@ -284,11 +284,11 @@ public class LnFUpdater {
 	 * @return {@code true} if latest one key exists; otherwise {@code false}
 	 */
 	@SuppressWarnings("unchecked")
-	private boolean checkLnfClassKeys(Class<? extends Control> controlClass) {
+	private boolean checkLnfClassKeys(final Class<? extends Control> controlClass) {
 
-		String className = getSimpleClassName(controlClass);
+		final String className = getSimpleClassName(controlClass);
 		if (className.length() != 0) {
-			RienaDefaultLnf lnf = LnfManager.getLnf();
+			final RienaDefaultLnf lnf = LnfManager.getLnf();
 			if (lnf.containsLnfResourcePrefix(className)) {
 				return true;
 			}
@@ -344,11 +344,12 @@ public class LnFUpdater {
 	 * @return {@code true} if the current value of the property isn't equals
 	 *         the default value; otherwise {@code false}.
 	 */
-	private boolean hasNoDefaultValue(Control control, PropertyDescriptor property, Object currentValue) {
+	private boolean hasNoDefaultValue(final Control control, final PropertyDescriptor property,
+			final Object currentValue) {
 
-		Method getter = property.getReadMethod();
+		final Method getter = property.getReadMethod();
 		if (getter != null) {
-			Object defaultValue = getDefaultPropertyValue(control, property);
+			final Object defaultValue = getDefaultPropertyValue(control, property);
 			return !valuesEquals(defaultValue, currentValue);
 		}
 
@@ -366,16 +367,16 @@ public class LnFUpdater {
 	 *            second property value
 	 * @return {@code true} if the values are equals; otherwise {@code false}
 	 */
-	private boolean valuesEquals(Object value1, Object value2) {
+	private boolean valuesEquals(final Object value1, final Object value2) {
 
 		if (value1 != null) {
-			FontData[] fontData1 = getFontData(value1);
-			FontData[] fontData2 = getFontData(value2);
+			final FontData[] fontData1 = getFontData(value1);
+			final FontData[] fontData2 = getFontData(value2);
 			if (fontData1 != null && fontData2 != null) {
 				return Arrays.equals(fontData1, fontData2);
 			}
-			RGB rgb1 = getRgb(value1);
-			RGB rgb2 = getRgb(value2);
+			final RGB rgb1 = getRgb(value1);
+			final RGB rgb2 = getRgb(value2);
 			if ((rgb1 != null) && (rgb2 != null)) {
 				return rgb1.equals(rgb2);
 			}
@@ -393,7 +394,7 @@ public class LnFUpdater {
 	 *            property value
 	 * @return {@link FontData}s or {@code null} if the value has no
 	 */
-	private FontData[] getFontData(Object value) {
+	private FontData[] getFontData(final Object value) {
 
 		if (value instanceof FontData[]) {
 			return (FontData[]) value;
@@ -413,7 +414,7 @@ public class LnFUpdater {
 	 *            property value
 	 * @return {@link RGB}s or {@code null} if the value has no
 	 */
-	private RGB getRgb(Object value) {
+	private RGB getRgb(final Object value) {
 
 		if (value instanceof RGB) {
 			return (RGB) value;
@@ -435,16 +436,16 @@ public class LnFUpdater {
 	 *            property
 	 * @return default value
 	 */
-	private Object getDefaultPropertyValue(Control control, PropertyDescriptor property) {
+	private Object getDefaultPropertyValue(final Control control, final PropertyDescriptor property) {
 
-		Class<? extends Control> controlClass = control.getClass();
+		final Class<? extends Control> controlClass = control.getClass();
 		Map<String, Object> defaultValues = DEFAULT_PROPERTY_VALUES.get(controlClass);
 		if (defaultValues == null) {
-			Control defaultControl = createDefaultControl(controlClass, control.getStyle());
+			final Control defaultControl = createDefaultControl(controlClass, control.getStyle());
 			if (defaultControl != null) {
-				List<PropertyDescriptor> properties = getProperties(control);
+				final List<PropertyDescriptor> properties = getProperties(control);
 				defaultValues = new Hashtable<String, Object>(properties.size());
-				for (PropertyDescriptor defaultProperty : properties) {
+				for (final PropertyDescriptor defaultProperty : properties) {
 					Object value = getPropertyValue(defaultControl, defaultProperty);
 					value = getResourceData(value);
 					if (value != null) {
@@ -487,7 +488,7 @@ public class LnFUpdater {
 			return object;
 		}
 
-		Resource resource = (Resource) object;
+		final Resource resource = (Resource) object;
 		if (resource.isDisposed()) {
 			return resource;
 		}
@@ -510,20 +511,20 @@ public class LnFUpdater {
 	 * @return value of the property or {@code null} if the property cannot
 	 *         read.
 	 */
-	private Object getPropertyValue(Control control, PropertyDescriptor property) {
+	private Object getPropertyValue(final Control control, final PropertyDescriptor property) {
 
-		Method getter = property.getReadMethod();
+		final Method getter = property.getReadMethod();
 		if (getter == null) {
 			return null;
 		}
 		try {
 			return getter.invoke(control);
-		} catch (Exception failure) {
+		} catch (final Exception failure) {
 			// TODO This is a workaround of a nebula "bug"
 			if (control.getClass().getName().equals("org.eclipse.swt.nebula.widgets.compositetable.CompositeTable")) { //$NON-NLS-1$
 				return null;
 			}
-			String message = "Cannot get the value of the property \"" + property.getName() + "\" of the class \"" //$NON-NLS-1$ //$NON-NLS-2$
+			final String message = "Cannot get the value of the property \"" + property.getName() + "\" of the class \"" //$NON-NLS-1$ //$NON-NLS-2$
 					+ control.getClass().getName() + "\"."; //$NON-NLS-1$
 			LOGGER.log(LogService.LOG_ERROR, message, failure);
 			return null;
@@ -540,10 +541,10 @@ public class LnFUpdater {
 	 *            property
 	 * @return error message
 	 */
-	private String getErrorMessage(Control control, PropertyDescriptor property) {
+	private String getErrorMessage(final Control control, final PropertyDescriptor property) {
 
-		Class<? extends Control> controlClass = control.getClass();
-		StringBuilder sb = new StringBuilder("Cannot update property "); //$NON-NLS-1$
+		final Class<? extends Control> controlClass = control.getClass();
+		final StringBuilder sb = new StringBuilder("Cannot update property "); //$NON-NLS-1$
 		sb.append("\"" + property.getName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 		sb.append(" of the class "); //$NON-NLS-1$
 		sb.append("\"" + controlClass.getName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
@@ -561,15 +562,16 @@ public class LnFUpdater {
 	 *            the control
 	 * @return properties
 	 */
-	private List<PropertyDescriptor> getProperties(Control control) {
+	private List<PropertyDescriptor> getProperties(final Control control) {
 		final Class<? extends Control> controlClass = control.getClass();
 		List<PropertyDescriptor> propertyDescriptors = CONTROL_PROPERTIES.get(controlClass);
 		if (propertyDescriptors == null) {
 			try {
-				PropertyDescriptor[] descriptors = Introspector.getBeanInfo(controlClass).getPropertyDescriptors();
+				final PropertyDescriptor[] descriptors = Introspector.getBeanInfo(controlClass)
+						.getPropertyDescriptors();
 				propertyDescriptors = new ArrayList<PropertyDescriptor>(descriptors.length);
-				for (PropertyDescriptor descriptor : descriptors) {
-					Method setter = descriptor.getWriteMethod();
+				for (final PropertyDescriptor descriptor : descriptors) {
+					final Method setter = descriptor.getWriteMethod();
 					if (setter == null) {
 						continue;
 					}
@@ -577,7 +579,7 @@ public class LnFUpdater {
 					if (!Modifier.isPublic(modifiers)) {
 						continue;
 					}
-					Method getter = descriptor.getReadMethod();
+					final Method getter = descriptor.getReadMethod();
 					if (getter == null) {
 						continue;
 					}
@@ -591,7 +593,7 @@ public class LnFUpdater {
 
 					propertyDescriptors.add(descriptor);
 				}
-			} catch (IntrospectionException e) {
+			} catch (final IntrospectionException e) {
 				propertyDescriptors = EMPTY_DESCRIPTORS;
 			}
 			CONTROL_PROPERTIES.put(controlClass, propertyDescriptors);
@@ -610,11 +612,11 @@ public class LnFUpdater {
 	 *            description of one property
 	 * @return value of LnF
 	 */
-	private Object getLnfValue(Control control, PropertyDescriptor property) {
+	private Object getLnfValue(final Control control, final PropertyDescriptor property) {
 
 		Object lnfValue = getLnfStyleValue(control, property);
 		if (lnfValue == null) {
-			Class<? extends Control> controlClass = control.getClass();
+			final Class<? extends Control> controlClass = control.getClass();
 			lnfValue = getLnfValue(controlClass, property);
 		}
 		return lnfValue;
@@ -696,7 +698,7 @@ public class LnFUpdater {
 	private String generateLnfKey(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
 
 		final String controlName = getSimpleClassName(controlClass);
-		StringBuilder lnfKey = new StringBuilder(controlName);
+		final StringBuilder lnfKey = new StringBuilder(controlName);
 		lnfKey.append('.');
 		lnfKey.append(property.getName());
 
@@ -722,7 +724,7 @@ public class LnFUpdater {
 		}
 
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
-		StringBuilder lnfKey = new StringBuilder(style);
+		final StringBuilder lnfKey = new StringBuilder(style);
 		lnfKey.append('.');
 		lnfKey.append(property.getName());
 		return lnf.getResource(lnfKey.toString());
@@ -739,9 +741,9 @@ public class LnFUpdater {
 	 * @return instance of UI control or {@code null} if no instance can be
 	 *         created
 	 */
-	private Control createDefaultControl(final Class<? extends Control> controlClass, int style) {
+	private Control createDefaultControl(final Class<? extends Control> controlClass, final int style) {
 
-		Composite parent = SHELL_COMPOSITE;
+		final Composite parent = SHELL_COMPOSITE;
 
 		// this is the most likely case
 		Control defaultControl = getControl(controlClass, parent, style);
@@ -759,8 +761,8 @@ public class LnFUpdater {
 		try {
 			final Constructor<?>[] constructors = controlClass.getConstructors();
 			for (final Constructor<?> constructor : constructors) {
-				Class<?>[] paramTypes = constructor.getParameterTypes();
-				Object[] params = new Object[paramTypes.length];
+				final Class<?>[] paramTypes = constructor.getParameterTypes();
+				final Object[] params = new Object[paramTypes.length];
 				boolean parentAssigned = false;
 				boolean styleAssigned = false;
 				for (int i = 0; i < paramTypes.length; i++) {
@@ -773,21 +775,21 @@ public class LnFUpdater {
 					} else {
 						try {
 							params[i] = paramTypes[i].newInstance();
-						} catch (Exception e) {
+						} catch (final Exception e) {
 							params[i] = null;
 						}
 					}
 				}
 				try {
 					defaultControl = (Control) constructor.newInstance(params);
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					defaultControl = null;
 				}
 				if (defaultControl != null) {
 					break;
 				}
 			}
-		} catch (SecurityException e) {
+		} catch (final SecurityException e) {
 			LOGGER.log(LogService.LOG_WARNING, "Exception while creating default control the hard way for " //$NON-NLS-1$
 					+ controlClass, e);
 		}
@@ -796,33 +798,34 @@ public class LnFUpdater {
 
 	}
 
-	private Control getControl(final Class<? extends Control> controlClass, Composite parent, int style) {
+	private Control getControl(final Class<? extends Control> controlClass, final Composite parent, final int style) {
 		try {
-			Constructor<? extends Control> constructor = controlClass.getConstructor(Composite.class, Integer.TYPE);
+			final Constructor<? extends Control> constructor = controlClass.getConstructor(Composite.class,
+					Integer.TYPE);
 			return constructor.newInstance(parent, style);
-		} catch (NoSuchMethodException e) {
+		} catch (final NoSuchMethodException e) {
 			return null;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.log(LogService.LOG_WARNING, "Exception while creating default control with composite and style for " //$NON-NLS-1$
 					+ controlClass, e);
 			return null;
 		}
 	}
 
-	private Control getControl(final Class<? extends Control> controlClass, Composite parent) {
+	private Control getControl(final Class<? extends Control> controlClass, final Composite parent) {
 		try {
-			Constructor<? extends Control> constructor = controlClass.getConstructor(Composite.class);
+			final Constructor<? extends Control> constructor = controlClass.getConstructor(Composite.class);
 			return constructor.newInstance(parent);
-		} catch (NoSuchMethodException e) {
+		} catch (final NoSuchMethodException e) {
 			return null;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			LOGGER.log(LogService.LOG_WARNING, "Exception while creating default control with composite for " //$NON-NLS-1$
 					+ controlClass, e);
 			return null;
 		}
 	}
 
-	private void setDirtyLayout(boolean dirtyLayout) {
+	private void setDirtyLayout(final boolean dirtyLayout) {
 		this.dirtyLayout = dirtyLayout;
 	}
 

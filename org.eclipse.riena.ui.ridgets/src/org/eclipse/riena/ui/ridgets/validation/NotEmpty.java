@@ -21,7 +21,7 @@ import org.eclipse.riena.ui.ridgets.nls.Messages;
  */
 public class NotEmpty implements IValidator {
 
-	public IStatus validate(Object value) {
+	public IStatus validate(final Object value) {
 		if (value instanceof String && !Utils.isEmpty((String) value)) {
 			return ValidationRuleStatus.ok();
 		}

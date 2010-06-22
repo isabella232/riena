@@ -21,12 +21,12 @@ import org.eclipse.riena.objecttransaction.state.State;
  */
 public class MultipleChange extends AbstractBaseChange {
 
-	private List<MultipleChangeEntry> changeEntries;
+	private final List<MultipleChangeEntry> changeEntries;
 
 	/**
 	 * @param relationName
 	 */
-	public MultipleChange(String relationName) {
+	public MultipleChange(final String relationName) {
 		super(relationName);
 		changeEntries = new ArrayList<MultipleChangeEntry>();
 	}
@@ -36,7 +36,7 @@ public class MultipleChange extends AbstractBaseChange {
 	 * 
 	 * @param childObject
 	 */
-	public void addEntry(Object childObject) {
+	public void addEntry(final Object childObject) {
 		changeEntries.add(new MultipleChangeEntry(childObject, State.ADDED));
 	}
 
@@ -45,10 +45,10 @@ public class MultipleChange extends AbstractBaseChange {
 	 * 
 	 * @param childObject
 	 */
-	public void removeEntry(Object childObject) {
+	public void removeEntry(final Object childObject) {
 		if (changeEntries.size() > 0) {
 			for (int i = changeEntries.size() - 1; i >= 0; i--) {
-				MultipleChangeEntry entry = changeEntries.get(i);
+				final MultipleChangeEntry entry = changeEntries.get(i);
 				if (entry.getChildObject().equals(childObject) && entry.getState().equals(State.ADDED)) {
 					changeEntries.remove(i);
 					return;
@@ -75,8 +75,8 @@ public class MultipleChange extends AbstractBaseChange {
 		if (changeEntries.size() == 0) {
 			return "SetChange: <no changes>"; //$NON-NLS-1$
 		}
-		Object[] array = changeEntries.toArray();
-		StringBuilder sb = new StringBuilder("SetChange: refName:" + this.getRelationName()); //$NON-NLS-1$
+		final Object[] array = changeEntries.toArray();
+		final StringBuilder sb = new StringBuilder("SetChange: refName:" + this.getRelationName()); //$NON-NLS-1$
 		if (array.length > 1) {
 			sb.append("\n"); //$NON-NLS-1$
 		}

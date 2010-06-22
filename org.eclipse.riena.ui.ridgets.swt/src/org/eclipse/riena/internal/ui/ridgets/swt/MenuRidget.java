@@ -26,8 +26,8 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
  */
 public class MenuRidget extends MenuItemRidget implements IMenuRidget {
 
-	private List<MenuItemRidget> children;
-	private DisposeListener disposeListener;
+	private final List<MenuItemRidget> children;
+	private final DisposeListener disposeListener;
 
 	public MenuRidget() {
 		super();
@@ -36,7 +36,7 @@ public class MenuRidget extends MenuItemRidget implements IMenuRidget {
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		assertType(uiControl, MenuItem.class);
 		if (uiControl != null && !isMenu((MenuItem) uiControl)) {
 			throw new BindingException("Menu item is not a cascade menu item!"); //$NON-NLS-1$
@@ -54,7 +54,7 @@ public class MenuRidget extends MenuItemRidget implements IMenuRidget {
 	 * @param child
 	 *            ridget to added
 	 */
-	public void addChild(MenuItemRidget child) {
+	public void addChild(final MenuItemRidget child) {
 		children.add(child);
 		child.getUIControl().addDisposeListener(disposeListener);
 	}
@@ -74,9 +74,9 @@ public class MenuRidget extends MenuItemRidget implements IMenuRidget {
 	 * @param id
 	 * @return child ridget or {@code null} if none was found
 	 */
-	private MenuItemRidget getChild(String id) {
-		List<MenuItemRidget> menuItems = getChildren();
-		for (MenuItemRidget menuItem : menuItems) {
+	private MenuItemRidget getChild(final String id) {
+		final List<MenuItemRidget> menuItems = getChildren();
+		for (final MenuItemRidget menuItem : menuItems) {
 			if ((menuItem.getID() != null) && menuItem.getID().equals(id)) {
 				return menuItem;
 			}
@@ -90,9 +90,9 @@ public class MenuRidget extends MenuItemRidget implements IMenuRidget {
 	 * @param item
 	 *            item of ridget
 	 */
-	private void removeChild(MenuItem item) {
-		String id = SWTBindingPropertyLocator.getInstance().locateBindingProperty(item);
-		MenuItemRidget child = getChild(id);
+	private void removeChild(final MenuItem item) {
+		final String id = SWTBindingPropertyLocator.getInstance().locateBindingProperty(item);
+		final MenuItemRidget child = getChild(id);
 		if (child != null) {
 			getChildren().remove(child);
 		}
@@ -100,9 +100,9 @@ public class MenuRidget extends MenuItemRidget implements IMenuRidget {
 
 	private class ChildDisposeListener implements DisposeListener {
 
-		public void widgetDisposed(DisposeEvent e) {
+		public void widgetDisposed(final DisposeEvent e) {
 			if (e.getSource() instanceof MenuItem) {
-				MenuItem item = (MenuItem) e.getSource();
+				final MenuItem item = (MenuItem) e.getSource();
 				removeChild(item);
 			}
 		}

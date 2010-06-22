@@ -37,14 +37,14 @@ public class BasicAuthenticationCallHook implements ICallHook {
 	/**
 	 * @since 2.0
 	 */
-	public void bind(ISubjectHolder subjectHolderService) {
+	public void bind(final ISubjectHolder subjectHolderService) {
 		this.subjectHolder = subjectHolderService;
 	}
 
 	/**
 	 * @since 2.0
 	 */
-	public void unbind(ISubjectHolder subjectHolderService) {
+	public void unbind(final ISubjectHolder subjectHolderService) {
 		this.subjectHolder = null;
 	}
 
@@ -55,7 +55,7 @@ public class BasicAuthenticationCallHook implements ICallHook {
 	 * org.eclipse.riena.communication.core.hooks.ICallHook#afterCall(org.eclipse
 	 * .riena.communication.core.hooks.CallContext)
 	 */
-	public void afterCall(CallContext context) {
+	public void afterCall(final CallContext context) {
 		// no action necessary
 	}
 
@@ -66,16 +66,16 @@ public class BasicAuthenticationCallHook implements ICallHook {
 	 * org.eclipse.riena.communication.core.hooks.ICallHook#beforeCall(org.eclipse
 	 * .riena.communication.core.hooks.CallContext)
 	 */
-	public void beforeCall(CallContext context) {
+	public void beforeCall(final CallContext context) {
 		if (subjectHolder == null) {
 			return;
 		}
-		Subject subject = subjectHolder.getSubject();
+		final Subject subject = subjectHolder.getSubject();
 		if (subject == null) {
 			return;
 		}
 		Object psw = null;
-		Iterator<Object> iterator = subject.getPrivateCredentials().iterator();
+		final Iterator<Object> iterator = subject.getPrivateCredentials().iterator();
 		if (iterator.hasNext()) {
 			psw = iterator.next();
 		}
@@ -85,9 +85,9 @@ public class BasicAuthenticationCallHook implements ICallHook {
 		} else {
 			password = ""; //$NON-NLS-1$
 		}
-		for (Principal principal : subject.getPrincipals()) {
-			String useridPlusPassword = principal.getName() + ":" + password; //$NON-NLS-1$
-			String authorizationInBase64 = new BASE64Encoder().encode(useridPlusPassword.getBytes());
+		for (final Principal principal : subject.getPrincipals()) {
+			final String useridPlusPassword = principal.getName() + ":" + password; //$NON-NLS-1$
+			final String authorizationInBase64 = new BASE64Encoder().encode(useridPlusPassword.getBytes());
 			context.getMessageContext().addRequestHeader("Authorization", "Basic " + authorizationInBase64); //$NON-NLS-1$//$NON-NLS-2$
 		}
 	}

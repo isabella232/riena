@@ -37,7 +37,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	private final static String LABEL2 = "testlabel2";
 
 	@Override
-	protected Button createWidget(Composite parent) {
+	protected Button createWidget(final Composite parent) {
 		return new Button(parent, SWT.PUSH);
 	}
 
@@ -63,12 +63,12 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(ActionRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testSetUIControl() {
-		IActionRidget ridget = getRidget();
+		final IActionRidget ridget = getRidget();
 
 		ridget.setUIControl(null);
 		assertNull(ridget.getUIControl());
@@ -78,12 +78,12 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetUIControlInvalid() {
-		IActionRidget ridget = getRidget();
+		final IActionRidget ridget = getRidget();
 
 		try {
 			ridget.setUIControl(getShell());
 			fail();
-		} catch (BindingException bex) {
+		} catch (final BindingException bex) {
 			ok();
 		}
 	}
@@ -92,17 +92,17 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			getRidget().addListener(null);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 	}
 
 	public void testAddListener() {
-		Button control = getWidget();
-		IActionRidget ridget = getRidget();
+		final Button control = getWidget();
+		final IActionRidget ridget = getRidget();
 
-		FTActionListener listener1 = new FTActionListener();
-		FTActionListener listener2 = new FTActionListener();
+		final FTActionListener listener1 = new FTActionListener();
+		final FTActionListener listener2 = new FTActionListener();
 
 		ridget.addListener(listener1);
 		ridget.addListener(listener2);
@@ -135,8 +135,8 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public final void testSetText() throws Exception {
-		IActionRidget ridget = getRidget();
-		Button control = getWidget();
+		final IActionRidget ridget = getRidget();
+		final Button control = getWidget();
 
 		ridget.setText("");
 
@@ -146,7 +146,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setText(null);
 			fail();
-		} catch (IllegalArgumentException iae) {
+		} catch (final IllegalArgumentException iae) {
 			ok();
 		}
 
@@ -172,8 +172,8 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public final void testSetIcon() {
 
-		IActionRidget ridget = getRidget();
-		Button control = (Button) ridget.getUIControl();
+		final IActionRidget ridget = getRidget();
+		final Button control = (Button) ridget.getUIControl();
 
 		ridget.setIcon(ICON_ECLIPSE);
 
@@ -186,7 +186,7 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 		assertNull(control.getImage());
 
 		Button button = createWidget(getShell());
-		Image buttonImage = button.getDisplay().getSystemImage(SWT.ICON_INFORMATION);
+		final Image buttonImage = button.getDisplay().getSystemImage(SWT.ICON_INFORMATION);
 		button.setImage(buttonImage);
 		IActionRidget buttonRidget = createRidget();
 		// binding doesn't remove image of button, because the icon of the ridget is null and the method #setIcon wasn't called yet.
@@ -217,8 +217,8 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	 * Tests the method {@code initText}
 	 */
 	public void testInitText() {
-		IActionRidget ridget = getRidget();
-		Button control = (Button) ridget.getUIControl();
+		final IActionRidget ridget = getRidget();
+		final Button control = (Button) ridget.getUIControl();
 
 		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false);
 		ReflectionUtils.setHidden(ridget, "text", null);
@@ -247,9 +247,9 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testFireAction() {
-		IActionRidget ridget = getRidget();
-		FTActionListener listener1 = new FTActionListener();
-		FTActionListener listener2 = new FTActionListener();
+		final IActionRidget ridget = getRidget();
+		final FTActionListener listener1 = new FTActionListener();
+		final FTActionListener listener2 = new FTActionListener();
 
 		ridget.addListener(listener1);
 

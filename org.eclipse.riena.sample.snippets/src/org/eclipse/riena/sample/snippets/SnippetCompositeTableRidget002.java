@@ -63,7 +63,7 @@ public final class SnippetCompositeTableRidget002 {
 		 * @param style
 		 *            the style bits
 		 */
-		public Header(Composite parent, int style) {
+		public Header(final Composite parent, final int style) {
 			super(parent, style);
 			setWeights(new int[] { 100, 100 });
 			setColumnText(new String[] { "First Name", "Last Name" }); //$NON-NLS-1$ //$NON-NLS-2$
@@ -84,12 +84,12 @@ public final class SnippetCompositeTableRidget002 {
 		 * @param style
 		 *            the style bits
 		 */
-		public Row(Composite parent, int style) {
+		public Row(final Composite parent, final int style) {
 			super(parent, style);
 			this.setLayout(new ResizableGridRowLayout());
-			Text txtFirst = new Text(this, SWT.BORDER);
+			final Text txtFirst = new Text(this, SWT.BORDER);
 			addUIControl(txtFirst, "first"); //$NON-NLS-1$
-			Text txtLast = new Text(this, SWT.BORDER);
+			final Text txtLast = new Text(this, SWT.BORDER);
 			addUIControl(txtLast, "last"); //$NON-NLS-1$
 		}
 
@@ -97,7 +97,7 @@ public final class SnippetCompositeTableRidget002 {
 			return Collections.unmodifiableList(controls);
 		}
 
-		private void addUIControl(Object uiControl, String bindingId) {
+		private void addUIControl(final Object uiControl, final String bindingId) {
 			controls.add(uiControl);
 			// Set's binding property into the widget.
 			// Need this for the widget <-> ridget binding
@@ -114,36 +114,36 @@ public final class SnippetCompositeTableRidget002 {
 	public static final class RowRidget extends AbstractCompositeRidget implements IRowRidget {
 		private Person rowData;
 
-		public void setData(Object rowData) {
+		public void setData(final Object rowData) {
 			this.rowData = (Person) rowData;
 		}
 
 		@Override
 		public void configureRidgets() {
-			ITextRidget txtFirst = (ITextRidget) getRidget("first"); //$NON-NLS-1$
+			final ITextRidget txtFirst = (ITextRidget) getRidget("first"); //$NON-NLS-1$
 			txtFirst.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 
-			ITextRidget txtLast = (ITextRidget) getRidget("last"); //$NON-NLS-1$
+			final ITextRidget txtLast = (ITextRidget) getRidget("last"); //$NON-NLS-1$
 			txtLast.bindToModel(rowData, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
 		}
 	}
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
-		Shell shell = new Shell(display);
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
+		final Shell shell = new Shell(display);
 		shell.setLayout(new FillLayout());
 
-		CompositeTable table = new CompositeTable(shell, SWT.NONE);
+		final CompositeTable table = new CompositeTable(shell, SWT.NONE);
 		// Step 1: your header must extends AbstractNativeHeader, to have provide
 		// clickable column headers, so that the user can change the sorting
 		new Header(table, SWT.NONE);
 		new Row(table, SWT.NONE);
 		table.setRunTime(true);
 
-		ICompositeTableRidget ridget = (ICompositeTableRidget) SwtRidgetFactory.createRidget(table);
-		WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
+		final ICompositeTableRidget ridget = (ICompositeTableRidget) SwtRidgetFactory.createRidget(table);
+		final WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
 		ridget.bindToModel(input, Person.class, RowRidget.class);
 		ridget.updateFromModel();
 
@@ -173,9 +173,9 @@ public final class SnippetCompositeTableRidget002 {
 	 * Compare two persons by first name.
 	 */
 	private static final class FirstNameComparator implements Comparator<Object> {
-		public int compare(Object o1, Object o2) {
-			Person p1 = (Person) o1;
-			Person p2 = (Person) o2;
+		public int compare(final Object o1, final Object o2) {
+			final Person p1 = (Person) o1;
+			final Person p2 = (Person) o2;
 			return p1.getFirstname().compareTo(p2.getFirstname());
 		}
 	}
@@ -184,9 +184,9 @@ public final class SnippetCompositeTableRidget002 {
 	 * Compare two persons by last name.
 	 */
 	private static final class LastNameComparator implements Comparator<Object> {
-		public int compare(Object o1, Object o2) {
-			Person p1 = (Person) o1;
-			Person p2 = (Person) o2;
+		public int compare(final Object o1, final Object o2) {
+			final Person p1 = (Person) o1;
+			final Person p2 = (Person) o2;
 			return p1.getLastname().compareTo(p2.getLastname());
 		}
 	}

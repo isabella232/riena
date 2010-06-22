@@ -28,7 +28,7 @@ public class UIViewFailure extends Failure {
 	 * @param msg
 	 *            the message
 	 */
-	public UIViewFailure(String msg) {
+	public UIViewFailure(final String msg) {
 		super(msg);
 	}
 
@@ -38,7 +38,7 @@ public class UIViewFailure extends Failure {
 	 * @param cause
 	 *            the cause
 	 */
-	public UIViewFailure(String msg, Throwable cause) {
+	public UIViewFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 

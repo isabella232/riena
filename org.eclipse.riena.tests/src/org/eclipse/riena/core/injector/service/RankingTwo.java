@@ -15,9 +15,9 @@ package org.eclipse.riena.core.injector.service;
  */
 public class RankingTwo implements IRanking {
 
-	private int ranking;
+	private final int ranking;
 
-	public RankingTwo(int ranking) {
+	public RankingTwo(final int ranking) {
 		this.ranking = ranking;
 	}
 

@@ -30,19 +30,19 @@ public class EmbeddedTitlebarRendererTest extends TestCase {
 	 * Tests of the method <code>computeSize(GC, int, int) </code>
 	 */
 	public void testComputeSize() {
-		EmbeddedTitlebarRenderer renderer = new EmbeddedTitlebarRenderer();
-		Shell shell = new Shell();
-		GC gc = new GC(shell);
+		final EmbeddedTitlebarRenderer renderer = new EmbeddedTitlebarRenderer();
+		final Shell shell = new Shell();
+		final GC gc = new GC(shell);
 
 		try {
-			int wHint = 12;
-			int hHint = 24;
-			Point size = renderer.computeSize(gc, wHint, hHint);
+			final int wHint = 12;
+			final int hHint = 24;
+			final Point size = renderer.computeSize(gc, wHint, hHint);
 
 			assertEquals(wHint, size.x);
 
 			gc.setFont(LnfManager.getLnf().getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT));
-			int expectedHeight = gc.getFontMetrics().getHeight() + 8;
+			final int expectedHeight = gc.getFontMetrics().getHeight() + 8;
 
 			assertEquals(expectedHeight, size.y);
 		} finally {

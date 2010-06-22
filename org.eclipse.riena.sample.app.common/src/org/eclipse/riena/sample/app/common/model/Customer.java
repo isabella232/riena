@@ -39,7 +39,7 @@ public class Customer {
 	 */
 	private long id = -1;
 
-	public void setId(long id) {
+	public void setId(final long id) {
 		this.id = id;
 	}
 
@@ -81,15 +81,15 @@ public class Customer {
 		lastName = ""; //$NON-NLS-1$
 	}
 
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
+	public void addPropertyChangeListener(final PropertyChangeListener listener) {
 		propertyChangeSupport.addPropertyChangeListener(listener);
 	}
 
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
+	public void removePropertyChangeListener(final PropertyChangeListener listener) {
 		propertyChangeSupport.removePropertyChangeListener(listener);
 	}
 
-	protected void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
+	protected void firePropertyChanged(final String propertyName, final Object oldValue, final Object newValue) {
 		propertyChangeSupport.firePropertyChange(propertyName, oldValue, newValue);
 	}
 
@@ -110,8 +110,8 @@ public class Customer {
 	 * @param address
 	 *            of the customer
 	 */
-	public void setAddress(Address address) {
-		Address old = this.getAddress();
+	public void setAddress(final Address address) {
+		final Address old = this.getAddress();
 		this.address = address;
 		firePropertyChanged(PROPERTY_ADDRESS, old, address);
 
@@ -134,8 +134,8 @@ public class Customer {
 	 * @param birth
 	 *            the birth to set
 	 */
-	public void setBirth(Birth birth) {
-		Birth old = getBirth();
+	public void setBirth(final Birth birth) {
+		final Birth old = getBirth();
 		this.birth = birth;
 		firePropertyChanged(PROPERTY_BIRTH, old, birth);
 
@@ -158,8 +158,8 @@ public class Customer {
 	 * @param firstName
 	 *            the first name to set
 	 */
-	public void setFirstName(String firstName) {
-		String old = this.getFirstName();
+	public void setFirstName(final String firstName) {
+		final String old = this.getFirstName();
 		this.firstName = firstName;
 		firePropertyChanged(PROPERTY_FIRST_NAME, old, firstName);
 
@@ -182,8 +182,8 @@ public class Customer {
 	 * @param form
 	 *            the form to set.
 	 */
-	public void setForm(String form) {
-		String old = getForm();
+	public void setForm(final String form) {
+		final String old = getForm();
 		this.form = form;
 		firePropertyChanged(PROPERTY_FORM, old, form);
 
@@ -206,8 +206,8 @@ public class Customer {
 	 * @param lastName
 	 *            the last name to set
 	 */
-	public void setLastName(String lastName) {
-		String old = getLastName();
+	public void setLastName(final String lastName) {
+		final String old = getLastName();
 		this.lastName = lastName;
 		firePropertyChanged(PROPERTY_LAST_NAME, old, lastName);
 
@@ -230,8 +230,8 @@ public class Customer {
 	 * @param title
 	 *            the title to set
 	 */
-	public void setTitle(String title) {
-		String old = getTitle();
+	public void setTitle(final String title) {
+		final String old = getTitle();
 		this.title = title;
 		firePropertyChanged(PROPERTY_TITLE, old, title);
 
@@ -254,8 +254,8 @@ public class Customer {
 	 * @param fax
 	 *            the fax number to set
 	 */
-	public void setFax(String fax) {
-		String old = getFax();
+	public void setFax(final String fax) {
+		final String old = getFax();
 		this.fax = fax;
 		firePropertyChanged(PROPERTY_FAX, old, fax);
 
@@ -278,8 +278,8 @@ public class Customer {
 	 * @param phoneBusiness
 	 *            the phone number to set
 	 */
-	public void setPhoneBusiness(String phoneBusiness) {
-		String old = getPhoneBusiness();
+	public void setPhoneBusiness(final String phoneBusiness) {
+		final String old = getPhoneBusiness();
 		this.phoneBusiness = phoneBusiness;
 		firePropertyChanged(PROPERTY_PHONE_BUSINESS, old, phoneBusiness);
 
@@ -302,8 +302,8 @@ public class Customer {
 	 * @param phoneMobile
 	 *            the phone number to set
 	 */
-	public void setPhoneMobile(String phoneMobile) {
-		String old = getPhoneMobile();
+	public void setPhoneMobile(final String phoneMobile) {
+		final String old = getPhoneMobile();
 		this.phoneMobile = phoneMobile;
 		firePropertyChanged(PROPERTY_PHONE_MOBILE, old, phoneMobile);
 
@@ -326,8 +326,8 @@ public class Customer {
 	 * @param phonePrivate
 	 *            the phone number to set
 	 */
-	public void setPhonePrivate(String phonePrivate) {
-		String old = getPhonePrivate();
+	public void setPhonePrivate(final String phonePrivate) {
+		final String old = getPhonePrivate();
 		this.phonePrivate = phonePrivate;
 		firePropertyChanged(PROPERTY_PHONE_PRIVATE, old, phonePrivate);
 
@@ -350,8 +350,8 @@ public class Customer {
 	 * @param email
 	 *            the eMail address to set
 	 */
-	public void setEmail(String email) {
-		String old = getEmail();
+	public void setEmail(final String email) {
+		final String old = getEmail();
 		this.email = email;
 		firePropertyChanged(PROPERTY_EMAIL, old, email);
 
@@ -370,9 +370,9 @@ public class Customer {
 	 * @param customerNumber
 	 *            The customerNumber to set.
 	 */
-	public void setCustomerNumber(Integer customerNumber) {
+	public void setCustomerNumber(final Integer customerNumber) {
 
-		Integer old = getCustomerNumber();
+		final Integer old = getCustomerNumber();
 		this.customerNumber = customerNumber;
 		firePropertyChanged(PROPERTY_CUSTOMER_NUMBER, old, customerNumber);
 	}
@@ -387,10 +387,10 @@ public class Customer {
 	 *         otherwise.
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 
 		if (obj instanceof Customer) {
-			Customer customer = (Customer) obj;
+			final Customer customer = (Customer) obj;
 			if (customerNumber != null && customerNumber.equals(customer.getCustomerNumber())) {
 				return true;
 			}
@@ -429,8 +429,8 @@ public class Customer {
 	 * @param bankData
 	 *            the list of bank data to set
 	 */
-	public void setBankData(List<BankData> bankData) {
-		List<BankData> old = getBankData();
+	public void setBankData(final List<BankData> bankData) {
+		final List<BankData> old = getBankData();
 		this.bankData = bankData;
 		firePropertyChanged(PROPERTY_BANK_DATA, old, bankData);
 
@@ -443,7 +443,7 @@ public class Customer {
 
 	public String getFullCustomerName() {
 
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 
 		if (getLastName() != null) {
 			builder.append(getLastName());

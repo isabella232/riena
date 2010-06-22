@@ -21,7 +21,7 @@ public class OutputMarker extends AbstractMarker {
 		super();
 	}
 
-	public OutputMarker(boolean unique) {
+	public OutputMarker(final boolean unique) {
 		super(unique);
 	}
 

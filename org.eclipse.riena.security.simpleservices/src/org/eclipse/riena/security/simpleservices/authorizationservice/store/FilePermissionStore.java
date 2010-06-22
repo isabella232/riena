@@ -24,66 +24,70 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.riena.security.authorizationservice.IPermissionStore;
-import org.eclipse.riena.security.common.authorization.PermissionClassFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import org.eclipse.riena.security.authorizationservice.IPermissionStore;
+import org.eclipse.riena.security.common.authorization.PermissionClassFactory;
+
 /**
  * 
  */
 public class FilePermissionStore implements IPermissionStore {
 
-	private Document permissionTree;
+	private final Document permissionTree;
 
-	public FilePermissionStore(File permissionFile) throws SAXException, IOException, ParserConfigurationException {
+	public FilePermissionStore(final File permissionFile) throws SAXException, IOException,
+			ParserConfigurationException {
 		this(new FileInputStream(permissionFile));
 	}
 
-	public FilePermissionStore(InputStream inputStream) throws ParserConfigurationException, SAXException, IOException {
+	public FilePermissionStore(final InputStream inputStream) throws ParserConfigurationException, SAXException,
+			IOException {
 		super();
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db = dbf.newDocumentBuilder();
+		final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		final DocumentBuilder db = dbf.newDocumentBuilder();
 		permissionTree = db.parse(new InputSource(inputStream));
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.riena.security.simpleservices.authorizationservice.IPermissionStore#loadPermissions(javax.security.auth.Subject)
+	 * @see org.eclipse.riena.security.simpleservices.authorizationservice.
+	 * IPermissionStore#loadPermissions(javax.security.auth.Subject)
 	 */
-	public Permissions loadPermissions(Principal principal) {
-		Permissions allPerms = new Permissions();
-		NodeList nl = permissionTree.getDocumentElement().getElementsByTagName("principal"); //$NON-NLS-1$
+	public Permissions loadPermissions(final Principal principal) {
+		final Permissions allPerms = new Permissions();
+		final NodeList nl = permissionTree.getDocumentElement().getElementsByTagName("principal"); //$NON-NLS-1$
 		for (int i = 0; i < nl.getLength(); i++) {
-			Element el = (Element) nl.item(i);
-			String principalClazz = el.getAttribute("class"); //$NON-NLS-1$
-			String principalName = el.getAttribute("name"); //$NON-NLS-1$
+			final Element el = (Element) nl.item(i);
+			final String principalClazz = el.getAttribute("class"); //$NON-NLS-1$
+			final String principalName = el.getAttribute("name"); //$NON-NLS-1$
 			if (!principalClazz.equals(principal.getClass().getName()) || !principalName.equals(principal.getName())) {
 				continue;
 			}
 			if (principal.getClass().getName().equals(el.getAttribute("class"))) { //$NON-NLS-1$
-				NodeList nlPerms = el.getElementsByTagName("permission"); //$NON-NLS-1$
+				final NodeList nlPerms = el.getElementsByTagName("permission"); //$NON-NLS-1$
 				for (int x = 0; x < nlPerms.getLength(); x++) {
-					Element ePerm = (Element) nlPerms.item(x);
-					String clazz = ePerm.getAttribute("class"); //$NON-NLS-1$
-					String name = ePerm.getAttribute("name"); //$NON-NLS-1$
-					String action = ePerm.getAttribute("action"); //$NON-NLS-1$
+					final Element ePerm = (Element) nlPerms.item(x);
+					final String clazz = ePerm.getAttribute("class"); //$NON-NLS-1$
+					final String name = ePerm.getAttribute("name"); //$NON-NLS-1$
+					final String action = ePerm.getAttribute("action"); //$NON-NLS-1$
 					try {
 						// its not good to use Class.forName
 						// so we use a specific factory
-						Class<?> permClass = PermissionClassFactory.retrieveClass(clazz);
+						final Class<?> permClass = PermissionClassFactory.retrieveClass(clazz);
 						Constructor<?> constr;
 						Permission perm;
 						if (action != null && action.length() > 0) {
 							try {
-								int actInt = Integer.parseInt(action);
+								final int actInt = Integer.parseInt(action);
 								constr = permClass.getConstructor(String.class, int.class);
 								perm = (Permission) constr.newInstance(name, actInt);
-							} catch (NumberFormatException e) {
+							} catch (final NumberFormatException e) {
 								constr = permClass.getConstructor(String.class, String.class);
 								perm = (Permission) constr.newInstance(name, action);
 							}
@@ -94,21 +98,21 @@ public class FilePermissionStore implements IPermissionStore {
 						if (perm != null) {
 							allPerms.add(perm);
 						}
-					} catch (ClassNotFoundException e) {
+					} catch (final ClassNotFoundException e) {
 						e.printStackTrace();
-					} catch (SecurityException e) {
+					} catch (final SecurityException e) {
 						e.printStackTrace();
-					} catch (NoSuchMethodException e) {
+					} catch (final NoSuchMethodException e) {
 						e.printStackTrace();
-					} catch (NumberFormatException e) {
+					} catch (final NumberFormatException e) {
 						e.printStackTrace();
-					} catch (IllegalArgumentException e) {
+					} catch (final IllegalArgumentException e) {
 						e.printStackTrace();
-					} catch (InstantiationException e) {
+					} catch (final InstantiationException e) {
 						e.printStackTrace();
-					} catch (IllegalAccessException e) {
+					} catch (final IllegalAccessException e) {
 						e.printStackTrace();
-					} catch (InvocationTargetException e) {
+					} catch (final InvocationTargetException e) {
 						e.printStackTrace();
 					}
 				}

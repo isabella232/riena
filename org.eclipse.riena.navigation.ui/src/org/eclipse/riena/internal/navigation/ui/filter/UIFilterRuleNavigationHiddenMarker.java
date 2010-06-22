@@ -21,7 +21,7 @@ public class UIFilterRuleNavigationHiddenMarker extends AbstractUIFilterRuleNavi
 		super(null, new HiddenMarker());
 	}
 
-	public UIFilterRuleNavigationHiddenMarker(String nodeIdPattern) {
+	public UIFilterRuleNavigationHiddenMarker(final String nodeIdPattern) {
 		super(nodeIdPattern, new HiddenMarker());
 	}
 

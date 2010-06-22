@@ -33,7 +33,7 @@ public class TimerUtil {
 		super();
 	}
 
-	public synchronized static void schedule(TimerTask task, int delay, int period) {
+	public synchronized static void schedule(final TimerTask task, final int delay, final int period) {
 		if (tasks.contains(task)) {
 			return;
 		}
@@ -43,7 +43,7 @@ public class TimerUtil {
 		tasks.add(task);
 	}
 
-	public synchronized static void stop(TimerTask task) {
+	public synchronized static void stop(final TimerTask task) {
 		// stop a specific task
 		task.cancel();
 		tasks.remove(task);

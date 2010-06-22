@@ -35,7 +35,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		try {
 			Inject.extension(null);
 			fail("Exception expected");
-		} catch (RuntimeException expected) {
+		} catch (final RuntimeException expected) {
 			ok("Exception expected");
 		}
 	}
@@ -45,19 +45,19 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		try {
 			Inject.extension("id").useType(null);
 			fail("Exception expected");
-		} catch (RuntimeException expected) {
+		} catch (final RuntimeException expected) {
 			ok("Exception expected");
 		}
 		try {
 			Inject.extension("id").useType(IData.class).useType(IData.class);
 			fail("Exception expected");
-		} catch (RuntimeException expected) {
+		} catch (final RuntimeException expected) {
 			ok("Exception expected");
 		}
 		try {
 			Inject.extension("id").useType(String.class);
 			fail("Exception expected");
-		} catch (RuntimeException expected) {
+		} catch (final RuntimeException expected) {
 			ok("Exception expected");
 		}
 	}
@@ -67,19 +67,19 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		try {
 			Inject.extension("id").expectingMinMax(2, 1);
 			fail("Exception expected");
-		} catch (RuntimeException expected) {
+		} catch (final RuntimeException expected) {
 			ok("Exception expected");
 		}
 		try {
 			Inject.extension("id").expectingMinMax(-1, 0);
 			fail("Exception expected");
-		} catch (RuntimeException expected) {
+		} catch (final RuntimeException expected) {
 			ok("Exception expected");
 		}
 		try {
 			Inject.extension("id").expectingMinMax(0, 0);
 			fail("Exception expected");
-		} catch (RuntimeException expected) {
+		} catch (final RuntimeException expected) {
 			ok("Exception expected");
 		}
 	}
@@ -89,7 +89,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		try {
 			Inject.extension("id").into(null);
 			fail("Exception expected");
-		} catch (RuntimeException expected) {
+		} catch (final RuntimeException expected) {
 			ok("Exception expected");
 		}
 	}
@@ -101,8 +101,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext3.xml");
 		try {
-			ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
+			final ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
 					.andStart(getContext());
 			try {
 				assertEquals(3, target.getData().length);
@@ -124,8 +124,9 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext3.xml");
 		try {
-			ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target).andStart(getContext());
+			final ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target)
+					.andStart(getContext());
 			try {
 				assertEquals(3, target.getData().length);
 			} finally {
@@ -144,8 +145,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
 		try {
-			ConfigurableThingSingleData target = new ConfigurableThingSingleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class)
+			final ConfigurableThingSingleData target = new ConfigurableThingSingleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class)
 					.expectingExactly(1).into(target).update("configure").andStart(getContext());
 			try {
 				assertNotNull(target.getData());
@@ -168,13 +169,13 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
 		try {
-			ConfigurableThingSingleData target = new ConfigurableThingSingleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class)
+			final ConfigurableThingSingleData target = new ConfigurableThingSingleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class)
 					.expectingExactly(1).into(target).update("configure").andStart(getContext());
 			try {
 				assertNotNull(target.getData());
-				String created1 = (String) target.getData().createObjectType();
-				String created2 = (String) target.getData().createObjectType();
+				final String created1 = (String) target.getData().createObjectType();
+				final String created2 = (String) target.getData().createObjectType();
 				assertNotSame(created1, created2);
 			} finally {
 				injector.stop();
@@ -190,8 +191,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml");
 		try {
-			ConfigurableThingSingleData target = new ConfigurableThingSingleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+			final ConfigurableThingSingleData target = new ConfigurableThingSingleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
 					.update("configure").andStart(getContext());
 			try {
 				assertNotNull(target.getData());
@@ -213,8 +214,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext4.xml");
 		try {
-			ConfigurableThingSingleData target = new ConfigurableThingSingleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+			final ConfigurableThingSingleData target = new ConfigurableThingSingleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
 					.update("configure").andStart(getContext());
 			try {
 				assertNotNull(target.getData());
@@ -251,7 +252,7 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml", sleepInMs);
 		ExtensionRegistryAnalyzer.dumpRegistry("core.test.extpoint");
 		try {
-			ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+			final ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
 			target.setTrace(true);
 			//			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
 			//					.andStart(getContext());
@@ -261,8 +262,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 				//				Set<String> before = ExtensionRegistryAnalyzer.getRegistryPaths(null);
 				addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml", sleepInMs);
 				ExtensionRegistryAnalyzer.dumpRegistry("core.test.extpoint");
-				injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target).andStart(
-						getContext());
+				injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
+						.andStart(getContext());
 				//				Set<String> after = ExtensionRegistryAnalyzer.getRegistryPaths(null);
 				//				System.out.println("SymmetricDiff: " + ExtensionRegistryAnalyzer.symmetricDiff(before, after));
 				// SymmetricDiff: [core.test.extpoint: uid=core.test.extpoint.id1 bundle=org.eclipse.riena.tests <test required=true objectType=java.lang.String text=test1/>]
@@ -310,8 +311,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext5.xml");
 		try {
-			ConfigurableThingSingleData target = new ConfigurableThingSingleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+			final ConfigurableThingSingleData target = new ConfigurableThingSingleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
 					.update("configure").andStart(getContext());
 			try {
 				assertNotNull(target.getData());
@@ -332,8 +333,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext6.xml");
 		try {
-			ConfigurableThingSingleData target = new ConfigurableThingSingleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+			final ConfigurableThingSingleData target = new ConfigurableThingSingleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
 					.update("configure").andStart(getContext());
 			try {
 				assertNotNull(target.getData());
@@ -342,11 +343,11 @@ public class ExtensionInjectorTest extends RienaTestCase {
 				assertEquals("test6", target.getData().getText());
 				assertEquals(String.class, target.getData().createObjectType().getClass());
 
-				IData2 data2 = target.getData().getNews();
+				final IData2 data2 = target.getData().getNews();
 				assertNotNull(data2);
 				assertEquals("rmation", data2.getInfo());
 
-				IData3[] data3 = target.getData().getMoreData();
+				final IData3[] data3 = target.getData().getMoreData();
 				assertNotNull(data3);
 				assertEquals(2, data3.length);
 				assertEquals("more-one", data3[0].getId());
@@ -367,8 +368,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext8.xml");
 		try {
-			ConfigurableThingSingleData8 target = new ConfigurableThingSingleData8();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+			final ConfigurableThingSingleData8 target = new ConfigurableThingSingleData8();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
 					.update("configure").andStart(getContext());
 			try {
 				assertNotNull(target.getData());
@@ -392,8 +393,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext6.xml");
 		try {
-			ConfigurableThingSingleData target = new ConfigurableThingSingleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+			final ConfigurableThingSingleData target = new ConfigurableThingSingleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
 					.update("configure").andStart(getContext());
 			try {
 				assertNotNull(target.getData());
@@ -402,12 +403,12 @@ public class ExtensionInjectorTest extends RienaTestCase {
 				assertEquals("test6", target.getData().getText());
 				assertEquals(String.class, target.getData().createObjectType().getClass());
 
-				IData2 data21 = target.getData().getNews();
-				IData2 data22 = target.getData().getNews();
+				final IData2 data21 = target.getData().getNews();
+				final IData2 data22 = target.getData().getNews();
 				assertSame(data21, data22);
 
-				IData3[] data31 = target.getData().getMoreData();
-				IData3[] data32 = target.getData().getMoreData();
+				final IData3[] data31 = target.getData().getMoreData();
+				final IData3[] data32 = target.getData().getMoreData();
 				assertSame(data31, data32);
 			} finally {
 				injector.stop();
@@ -425,9 +426,9 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext3.xml");
 		try {
-			ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(ISubData.class).into(target)
-					.andStart(getContext());
+			final ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(ISubData.class)
+					.into(target).andStart(getContext());
 			try {
 				assertEquals(3, target.getData().length);
 				assertTrue(ISubData.class.isInstance(target.getData()[0]));
@@ -449,8 +450,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1-sub.xml");
 		try {
-			ConfigurableThingSingleData target = new ConfigurableThingSingleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(ISubData.class)
+			final ConfigurableThingSingleData target = new ConfigurableThingSingleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(ISubData.class)
 					.expectingExactly(1).into(target).update("configure").andStart(getContext());
 			try {
 				assertNotNull(target.getData());
@@ -478,14 +479,14 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext259478.xml");
 		try {
-			ConfigurableThingSingleData target = new ConfigurableThingSingleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class)
+			final ConfigurableThingSingleData target = new ConfigurableThingSingleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class)
 					.expectingExactly(1).into(target).update("configure").andStart(getContext());
 			try {
 				assertNotNull(target.getData());
-				Object obj = target.getData().createObjectType();
+				final Object obj = target.getData().createObjectType();
 				assertTrue(obj instanceof Thing259478);
-				Map<String, String> properties = ((Thing259478) obj).properties;
+				final Map<String, String> properties = ((Thing259478) obj).properties;
 				assertEquals("1", properties.get("eins"));
 				assertEquals("2", properties.get("zwei"));
 			} finally {
@@ -503,8 +504,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml");
 		try {
-			ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
+			final ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
 					.andStart(getContext());
 			try {
 				assertEquals(2, target.getData().length);
@@ -530,8 +531,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
 		try {
-			ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
+			final ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
 					.andStart(getContext());
 			try {
 				assertEquals(1, target.getData().length);
@@ -550,12 +551,12 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext1.xml");
 		try {
-			ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
+			final ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
 					.andStart(getContext());
 			try {
 				assertEquals(1, target.getData().length);
-				IConfigurationElement conf = target.getData()[0].getConfigurationElement();
+				final IConfigurationElement conf = target.getData()[0].getConfigurationElement();
 				assertEquals("test1", conf.getAttribute("text"));
 			} finally {
 				injector.stop();
@@ -571,8 +572,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext7.xml");
 		try {
-			ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
+			final ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
 					.andStart(getContext());
 			try {
 				assertEquals(1, target.getData().length);
@@ -591,13 +592,13 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext7.xml");
 		try {
-			ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
+			final ConfigurableThingMultipleData target = new ConfigurableThingMultipleData();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").useType(IData.class).into(target)
 					.andStart(getContext());
 			try {
 				assertEquals(1, target.getData().length);
 				assertFalse(LazyThing.instantiated);
-				ILazyThing lazyThing = target.getData()[0].createLazyThing();
+				final ILazyThing lazyThing = target.getData()[0].createLazyThing();
 				assertFalse(LazyThing.instantiated);
 				lazyThing.doSomething();
 				assertTrue(LazyThing.instantiated);
@@ -617,12 +618,12 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext2.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext3.xml");
 		try {
-			ConfigurableThingMultipleDataSpecific target = new ConfigurableThingMultipleDataSpecific();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target).specific().andStart(
-					getContext());
+			final ConfigurableThingMultipleDataSpecific target = new ConfigurableThingMultipleDataSpecific();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target).specific()
+					.andStart(getContext());
 			try {
 				assertEquals(3, target.getExtData().length);
-				for (IExtData data : target.getExtData()) {
+				for (final IExtData data : target.getExtData()) {
 					if (data.getTest()[0].getText().equals("test1")) {
 						assertEquals("java.lang.String", data.getTest()[0].createObjectType().getClass().getName());
 					} else if (data.getTest()[0].getText().equals("test2")) {
@@ -649,14 +650,14 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext-a.xml");
 		try {
-			ConfigurableThingMultipleDataSpecific target = new ConfigurableThingMultipleDataSpecific();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target).specific().andStart(
-					getContext());
+			final ConfigurableThingMultipleDataSpecific target = new ConfigurableThingMultipleDataSpecific();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").into(target).specific()
+					.andStart(getContext());
 			try {
 				assertEquals(1, target.getExtData().length);
-				for (IExtData extData : target.getExtData()) {
+				for (final IExtData extData : target.getExtData()) {
 					assertEquals(2, extData.getTest().length);
-					for (IData data : extData.getTest()) {
+					for (final IData data : extData.getTest()) {
 						if (data.getText().equals("test-a1")) {
 							assertEquals("java.lang.String", data.createObjectType().getClass().getName());
 						} else if (data.getText().equals("test-a2")) {
@@ -683,8 +684,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext-modify.xml");
 		try {
-			ConfigurableThingModify target = new ConfigurableThingModify();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+			final ConfigurableThingModify target = new ConfigurableThingModify();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
 					.andStart(getContext());
 			try {
 				assertNotNull(target.getData());
@@ -709,8 +710,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext-modify.xml");
 		try {
-			ConfigurableThingModify target = new ConfigurableThingModify();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+			final ConfigurableThingModify target = new ConfigurableThingModify();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
 					.doNotReplaceSymbols().andStart(getContext());
 			try {
 				assertNotNull(target.getData());
@@ -735,8 +736,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext-modify.xml");
 		try {
-			ConfigurableThingModifyInterfaceOff target = new ConfigurableThingModifyInterfaceOff();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+			final ConfigurableThingModifyInterfaceOff target = new ConfigurableThingModifyInterfaceOff();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
 					.andStart(getContext());
 			try {
 				assertNotNull(target.getData());
@@ -761,8 +762,8 @@ public class ExtensionInjectorTest extends RienaTestCase {
 		addPluginXml(ExtensionInjectorTest.class, "plugin.xml");
 		addPluginXml(ExtensionInjectorTest.class, "plugin_ext-modify.xml");
 		try {
-			ConfigurableThingModifyMethodOff target = new ConfigurableThingModifyMethodOff();
-			ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
+			final ConfigurableThingModifyMethodOff target = new ConfigurableThingModifyMethodOff();
+			final ExtensionInjector injector = Inject.extension("core.test.extpoint").expectingExactly(1).into(target)
 					.andStart(getContext());
 			try {
 				assertNotNull(target.getData());

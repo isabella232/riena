@@ -28,10 +28,10 @@ import org.eclipse.riena.internal.core.wire.ExtensionInjectorBuilder;
 public class ExtensionInjectorBuilderTest extends RienaTestCase {
 
 	public void testBuildForUpdate1() throws NoSuchMethodException {
-		Method bindMethod = ExtensionInjectorBuilderTest.class
-				.getDeclaredMethod("update1", new Class[] { IData.class });
-		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
-		ExtensionInjector injector = builder.build();
+		final Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("update1",
+				new Class[] { IData.class });
+		final ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
+		final ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
 		assertEquals("testA", rawId(injector));
 		assertEquals(IData.class, useType(injector));
@@ -46,14 +46,14 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 	}
 
 	@InjectExtension(id = "testA")
-	public void update1(IData data) {
+	public void update1(final IData data) {
 	}
 
 	public void testBuildForUpdate1Array() throws NoSuchMethodException {
-		Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("update1Array",
+		final Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("update1Array",
 				new Class[] { IData[].class });
-		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
-		ExtensionInjector injector = builder.build();
+		final ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
+		final ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
 		assertEquals("testA[]", rawId(injector));
 		assertEquals(IData.class, useType(injector));
@@ -68,14 +68,14 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 	}
 
 	@InjectExtension(id = "testA[]")
-	public void update1Array(IData[] data) {
+	public void update1Array(final IData[] data) {
 	}
 
 	public void testBuildForUpdate2() throws NoSuchMethodException {
-		Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("update2",
+		final Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("update2",
 				new Class[] { IData[].class });
-		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
-		ExtensionInjector injector = builder.build();
+		final ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
+		final ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
 		assertEquals("testB", rawId(injector));
 		assertEquals(IData.class, useType(injector));
@@ -90,14 +90,14 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 	}
 
 	@InjectExtension(id = "testB", doNotReplaceSymbols = true, heterogeneous = true, specific = true, min = 2, max = 5)
-	public void update2(IData[] data) {
+	public void update2(final IData[] data) {
 	}
 
 	public void testBuildForUpdate3() throws NoSuchMethodException {
-		Method bindMethod = ExtensionInjectorBuilderTest.class
-				.getDeclaredMethod("update3", new Class[] { IData.class });
-		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
-		ExtensionInjector injector = builder.build();
+		final Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("update3",
+				new Class[] { IData.class });
+		final ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
+		final ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
 		assertEquals("testC", rawId(injector));
 		assertEquals(IData.class, useType(injector));
@@ -112,19 +112,19 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 	}
 
 	@InjectExtension(id = "testC", heterogeneous = true, specific = true, min = 0, max = 1)
-	public void update3(IData data) {
+	public void update3(final IData data) {
 	}
 
 	public void testBuildForUpdateWithAnExtensionInterfaceWithID() throws NoSuchMethodException {
-		Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("updateWithID",
+		final Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("updateWithID",
 				new Class[] { IDataWithID.class });
-		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
-		ExtensionInjector injector = builder.build();
+		final ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
+		final ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
-		String expectedId = getContext().getBundle().getSymbolicName() + ".testWithID";
+		final String expectedId = getContext().getBundle().getSymbolicName() + ".testWithID";
 		try {
 			injector.andStart(getContext());
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			assertTrue(e.getMessage().contains(expectedId));
 		}
 		assertEquals(expectedId, firstNormalizedId(injector));
@@ -140,19 +140,19 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 	}
 
 	@InjectExtension(heterogeneous = true, specific = true, min = 0, max = 1)
-	public void updateWithID(IDataWithID data) {
+	public void updateWithID(final IDataWithID data) {
 	}
 
 	public void testBuildForUpdateWithAnExtensionInterfaceWithIDinAnnotation() throws NoSuchMethodException {
-		Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("updateWithIDinAnnotation",
+		final Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("updateWithIDinAnnotation",
 				new Class[] { IDataWithIDinAnnotation.class });
-		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
-		ExtensionInjector injector = builder.build();
+		final ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
+		final ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
-		String expectedId = getContext().getBundle().getSymbolicName() + ".testWithIDinAnnotation";
+		final String expectedId = getContext().getBundle().getSymbolicName() + ".testWithIDinAnnotation";
 		try {
 			injector.andStart(getContext());
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			assertTrue(e.getMessage().contains(expectedId));
 		}
 		assertEquals(expectedId, firstNormalizedId(injector));
@@ -168,20 +168,20 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 	}
 
 	@InjectExtension(heterogeneous = true, specific = true, min = 0, max = 1)
-	public void updateWithIDinAnnotation(IDataWithIDinAnnotation data) {
+	public void updateWithIDinAnnotation(final IDataWithIDinAnnotation data) {
 	}
 
 	public void testBuildForUpdate4WithAnExtensionInterfaceWithIDinAnnotationAndWithOnceOnlyViaStatic()
 			throws NoSuchMethodException {
-		Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("update4WithIDinAnnotation",
+		final Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("update4WithIDinAnnotation",
 				new Class[] { IDataWithIDinAnnotation.class });
-		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
-		ExtensionInjector injector = builder.build();
+		final ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
+		final ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
-		String expectedId = getContext().getBundle().getSymbolicName() + ".testWithIDinAnnotation";
+		final String expectedId = getContext().getBundle().getSymbolicName() + ".testWithIDinAnnotation";
 		try {
 			injector.andStart(getContext());
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			assertTrue(e.getMessage().contains(expectedId));
 		}
 		assertEquals(expectedId, firstNormalizedId(injector));
@@ -197,20 +197,20 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 	}
 
 	@InjectExtension(heterogeneous = true, specific = true, min = 0, max = 1)
-	public static void update4WithIDinAnnotation(IDataWithIDinAnnotation data) {
+	public static void update4WithIDinAnnotation(final IDataWithIDinAnnotation data) {
 	}
 
 	public void testBuildForUpdate5WithAnExtensionInterfaceWithIDinAnnotationAndWithOnceOnlyViaAnnotation()
 			throws NoSuchMethodException {
-		Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("update5WithIDinAnnotation",
+		final Method bindMethod = ExtensionInjectorBuilderTest.class.getDeclaredMethod("update5WithIDinAnnotation",
 				new Class[] { IDataWithIDinAnnotation.class });
-		ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
-		ExtensionInjector injector = builder.build();
+		final ExtensionInjectorBuilder builder = new ExtensionInjectorBuilder(this, bindMethod);
+		final ExtensionInjector injector = builder.build();
 		assertNotNull(injector);
-		String expectedId = getContext().getBundle().getSymbolicName() + ".testWithIDinAnnotation";
+		final String expectedId = getContext().getBundle().getSymbolicName() + ".testWithIDinAnnotation";
 		try {
 			injector.andStart(getContext());
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			assertTrue(e.getMessage().contains(expectedId));
 		}
 		assertEquals(expectedId, firstNormalizedId(injector));
@@ -226,60 +226,60 @@ public class ExtensionInjectorBuilderTest extends RienaTestCase {
 	}
 
 	@InjectExtension(heterogeneous = true, specific = true, min = 0, max = 1, onceOnly = true)
-	public void update5WithIDinAnnotation(IDataWithIDinAnnotation data) {
+	public void update5WithIDinAnnotation(final IDataWithIDinAnnotation data) {
 	}
 
-	private String rawId(ExtensionInjector injector) {
-		Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
-		Object extensionPointId = ReflectionUtils.getHidden(extensionDescriptor, "extensionPointId");
+	private String rawId(final ExtensionInjector injector) {
+		final Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
+		final Object extensionPointId = ReflectionUtils.getHidden(extensionDescriptor, "extensionPointId");
 		return ReflectionUtils.getHidden(extensionPointId, "rawId");
 	}
 
-	private String firstNormalizedId(ExtensionInjector injector) {
-		Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
-		Object extensionPointId = ReflectionUtils.getHidden(extensionDescriptor, "extensionPointId");
-		List<String> ids = ReflectionUtils.getHidden(extensionPointId, "normalizedIds");
+	private String firstNormalizedId(final ExtensionInjector injector) {
+		final Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
+		final Object extensionPointId = ReflectionUtils.getHidden(extensionDescriptor, "extensionPointId");
+		final List<String> ids = ReflectionUtils.getHidden(extensionPointId, "normalizedIds");
 		return ids.get(0);
 	}
 
-	private Object useType(ExtensionInjector injector) {
-		Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
+	private Object useType(final ExtensionInjector injector) {
+		final Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
 		return ReflectionUtils.getHidden(extensionDescriptor, "interfaceType");
 	}
 
-	private int getMin(ExtensionInjector injector) {
-		Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
+	private int getMin(final ExtensionInjector injector) {
+		final Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
 		return ReflectionUtils.getHidden(extensionDescriptor, "minOccurrences");
 	}
 
-	private int getMax(ExtensionInjector injector) {
-		Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
+	private int getMax(final ExtensionInjector injector) {
+		final Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
 		return ReflectionUtils.getHidden(extensionDescriptor, "maxOccurrences");
 	}
 
-	private boolean getHomogenious(ExtensionInjector injector) {
-		Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
+	private boolean getHomogenious(final ExtensionInjector injector) {
+		final Object extensionDescriptor = ReflectionUtils.getHidden(injector, "extensionDesc");
 		return ReflectionUtils.getHidden(extensionDescriptor, "homogeneous");
 	}
 
-	private Object getTarget(ExtensionInjector injector) {
-		WeakRef<?> ref = ReflectionUtils.getHidden(injector, "targetRef");
+	private Object getTarget(final ExtensionInjector injector) {
+		final WeakRef<?> ref = ReflectionUtils.getHidden(injector, "targetRef");
 		return ref.get();
 	}
 
-	private String getUpdateMethodName(ExtensionInjector injector) {
+	private String getUpdateMethodName(final ExtensionInjector injector) {
 		return ReflectionUtils.getHidden(injector, "updateMethodName");
 	}
 
-	private boolean getDoNotReplaceSymbols(ExtensionInjector injector) {
+	private boolean getDoNotReplaceSymbols(final ExtensionInjector injector) {
 		return !(Boolean) ReflectionUtils.getHidden(injector, "symbolReplace");
 	}
 
-	private boolean getSpecific(ExtensionInjector injector) {
+	private boolean getSpecific(final ExtensionInjector injector) {
 		return !(Boolean) ReflectionUtils.getHidden(injector, "nonSpecific");
 	}
 
-	private boolean getOnceOnly(ExtensionInjector injector) {
+	private boolean getOnceOnly(final ExtensionInjector injector) {
 		return ReflectionUtils.getHidden(injector, "onceOnly");
 	}
 

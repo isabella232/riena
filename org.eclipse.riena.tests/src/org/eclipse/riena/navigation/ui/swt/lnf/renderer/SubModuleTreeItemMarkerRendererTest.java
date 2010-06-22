@@ -53,7 +53,7 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		shell = new Shell();
-		Tree tree = new Tree(shell, SWT.NONE);
+		final Tree tree = new Tree(shell, SWT.NONE);
 		item = new TreeItem(tree, SWT.NONE);
 		gc = new GC(tree);
 		originalLnf = LnfManager.getLnf();
@@ -75,27 +75,27 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 	 */
 	public void testPaint() {
 
-		MockRenderer renderer = new MockRenderer();
+		final MockRenderer renderer = new MockRenderer();
 		renderer.setBounds(0, 0, 100, 100);
 
 		try {
 			renderer.paint(gc, null);
 			fail("AssertionFailedException expected");
-		} catch (AssertionFailedException e) {
+		} catch (final AssertionFailedException e) {
 			ok("AssertionFailedException expected");
 		}
 
 		try {
 			renderer.paint(gc, shell);
 			fail("AssertionFailedException expected");
-		} catch (AssertionFailedException e) {
+		} catch (final AssertionFailedException e) {
 			ok("AssertionFailedException expected");
 		}
 
 		try {
 			renderer.paint(null, item);
 			fail("AssertionFailedException expected");
-		} catch (AssertionFailedException e) {
+		} catch (final AssertionFailedException e) {
 			ok("AssertionFailedException expected");
 		}
 
@@ -103,7 +103,7 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 		renderer.paint(gc, item);
 		assertFalse(renderer.isPaintMarkersCalled());
 
-		SubModuleNode node = new SubModuleNode();
+		final SubModuleNode node = new SubModuleNode();
 		node.setNavigationProcessor(new NavigationProcessor());
 		renderer.setMarkers(node.getMarkers());
 		renderer.resetPaintMarkersCalled();
@@ -136,12 +136,12 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 
 		item.setImage(createItemImage());
 
-		SubModuleTreeItemMarkerRenderer renderer = new SubModuleTreeItemMarkerRenderer();
+		final SubModuleTreeItemMarkerRenderer renderer = new SubModuleTreeItemMarkerRenderer();
 		renderer.setBounds(0, 0, 100, 25);
 
 		// create image without markers
-		Collection<IIconizableMarker> markers = new ArrayList<IIconizableMarker>();
-		byte[] noMarkersBytes = paintMarker(renderer, markers, item);
+		final Collection<IIconizableMarker> markers = new ArrayList<IIconizableMarker>();
+		final byte[] noMarkersBytes = paintMarker(renderer, markers, item);
 
 		// no marker -> no marker image is drawn
 		byte[] paintBytes = paintMarker(renderer, markers, item);
@@ -175,16 +175,16 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 
 		item.setImage(createItemImage());
 
-		SubModuleTreeItemMarkerRenderer renderer = new SubModuleTreeItemMarkerRenderer();
+		final SubModuleTreeItemMarkerRenderer renderer = new SubModuleTreeItemMarkerRenderer();
 		renderer.setBounds(0, 0, 100, 25);
 
 		// create image without markers
-		Collection<IIconizableMarker> markers = new ArrayList<IIconizableMarker>();
-		byte[] noMarkersBytes = paintMarker(renderer, markers, item);
+		final Collection<IIconizableMarker> markers = new ArrayList<IIconizableMarker>();
+		final byte[] noMarkersBytes = paintMarker(renderer, markers, item);
 
 		// one ErrorMarker -> ErrorMarker image is drawn
 		markers.add(new ErrorMarker());
-		byte[] errorMarkersBytes = paintMarker(renderer, markers, item);
+		final byte[] errorMarkersBytes = paintMarker(renderer, markers, item);
 		assertFalse(Arrays.equals(noMarkersBytes, errorMarkersBytes));
 
 		// one ErrorMarker and one MandatoryMarker -> only ErrorMarker image is drawn
@@ -210,12 +210,12 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 	/**
 	 * Paints a Collection of markers and returns the bytes written.
 	 */
-	private byte[] paintMarker(SubModuleTreeItemMarkerRenderer renderer, Collection<IIconizableMarker> markers,
-			TreeItem item) {
-		Image paintImage = new Image(shell.getDisplay(), new Rectangle(0, 0, 10, 10));
-		GC paintGC = new GC(paintImage);
+	private byte[] paintMarker(final SubModuleTreeItemMarkerRenderer renderer,
+			final Collection<IIconizableMarker> markers, final TreeItem item) {
+		final Image paintImage = new Image(shell.getDisplay(), new Rectangle(0, 0, 10, 10));
+		final GC paintGC = new GC(paintImage);
 		ReflectionUtils.invokeHidden(renderer, "paintMarkers", paintGC, markers, item);
-		byte[] paintBytes = paintImage.getImageData().data;
+		final byte[] paintBytes = paintImage.getImageData().data;
 		paintGC.dispose();
 		SwtUtilities.disposeResource(paintImage);
 
@@ -227,11 +227,11 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 	 */
 	public void testCalcMarkerCoordinates() {
 
-		SubModuleTreeItemMarkerRenderer renderer = new SubModuleTreeItemMarkerRenderer();
+		final SubModuleTreeItemMarkerRenderer renderer = new SubModuleTreeItemMarkerRenderer();
 		renderer.setBounds(2, 3, 100, 25);
 
-		Image itemImage = createItemImage();
-		Image markerImage = createMarkerImage();
+		final Image itemImage = createItemImage();
+		final Image markerImage = createMarkerImage();
 
 		Point pos = ReflectionUtils.invokeHidden(renderer, "calcMarkerCoordinates", itemImage, markerImage,
 				IIconizableMarker.MarkerPosition.TOP_LEFT);
@@ -264,8 +264,8 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 	 * @return image
 	 */
 	private Image createItemImage() {
-		Image image = new Image(shell.getDisplay(), new Rectangle(0, 0, 10, 10));
-		GC imageGC = new GC(image);
+		final Image image = new Image(shell.getDisplay(), new Rectangle(0, 0, 10, 10));
+		final GC imageGC = new GC(image);
 		imageGC.setForeground(LnfManager.getLnf().getColor("green"));
 		imageGC.setBackground(LnfManager.getLnf().getColor("green"));
 		imageGC.fillRectangle(0, 0, 5, 5);
@@ -279,8 +279,8 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 	 * @return image
 	 */
 	private Image createMarkerImage() {
-		Image image = new Image(shell.getDisplay(), new Rectangle(0, 0, 5, 5));
-		GC imageGC = new GC(image);
+		final Image image = new Image(shell.getDisplay(), new Rectangle(0, 0, 5, 5));
+		final GC imageGC = new GC(image);
 		imageGC.setForeground(LnfManager.getLnf().getColor("red"));
 		imageGC.setBackground(LnfManager.getLnf().getColor("red"));
 		imageGC.fillRectangle(0, 0, 3, 3);
@@ -294,8 +294,8 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 	 * @return image
 	 */
 	private Image createMandatoraMarkerImage() {
-		Image image = new Image(shell.getDisplay(), new Rectangle(0, 0, 5, 5));
-		GC imageGC = new GC(image);
+		final Image image = new Image(shell.getDisplay(), new Rectangle(0, 0, 5, 5));
+		final GC imageGC = new GC(image);
 		imageGC.setForeground(LnfManager.getLnf().getColor("green"));
 		imageGC.setBackground(LnfManager.getLnf().getColor("green"));
 		imageGC.fillRectangle(0, 0, 2, 2);
@@ -308,8 +308,8 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 	 */
 	private class MyLnf extends RienaDefaultLnf {
 
-		private Image errorImage;
-		private Image mandatoryImage;
+		private final Image errorImage;
+		private final Image mandatoryImage;
 
 		public MyLnf() {
 			super();
@@ -318,7 +318,7 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 		}
 
 		@Override
-		public Image getImage(String key) {
+		public Image getImage(final String key) {
 			if (key.equals("ErrorMarker")) {
 				return errorImage;
 			} else {
@@ -349,7 +349,7 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 		 *      java.util.Collection, org.eclipse.swt.widgets.TreeItem)
 		 */
 		@Override
-		protected void paintMarkers(GC gc, Collection<IIconizableMarker> markers, TreeItem item) {
+		protected void paintMarkers(final GC gc, final Collection<IIconizableMarker> markers, final TreeItem item) {
 			super.paintMarkers(gc, markers, item);
 			this.paintMarkersCalled = true;
 		}

@@ -41,23 +41,23 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 	private ITextRidget firstNameRidget;
 	private ITextRidget lastNameRidget;
 
-	private ResultContainer searchResult;
+	private final ResultContainer searchResult;
 	private WritableValue tableSelection;
 
-	private Customer sample;
+	private final Customer sample;
 
-	public CustomerSearchSubModuleController(ISubModuleNode navigationNode) {
+	public CustomerSearchSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 		searchResult = new ResultContainer();
 		sample = new Customer();
 	}
 
 	@InjectService()
-	public void bind(ICustomerSearch service) {
+	public void bind(final ICustomerSearch service) {
 		this.service = service;
 	}
 
-	public void unbind(ICustomerSearch service) {
+	public void unbind(final ICustomerSearch service) {
 		if (this.service == service) {
 			this.service = null;
 		}
@@ -71,7 +71,7 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 	}
 
 	protected void searchCustomers() {
-		Customer[] result = service.findCustomer(sample);
+		final Customer[] result = service.findCustomer(sample);
 		this.searchResult.setList(Arrays.asList(result));
 		tableRidget.updateFromModel();
 	}
@@ -92,8 +92,8 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 	@Override
 	public void afterBind() {
 		super.afterBind();
-		String[] columnProperties = new String[] { Customer.PROPERTY_CUSTOMER_NUMBER, Customer.PROPERTY_LAST_NAME,
-				Customer.PROPERTY_FIRST_NAME, Customer.PROPERTY_PHONE_BUSINESS };
+		final String[] columnProperties = new String[] { Customer.PROPERTY_CUSTOMER_NUMBER,
+				Customer.PROPERTY_LAST_NAME, Customer.PROPERTY_FIRST_NAME, Customer.PROPERTY_PHONE_BUSINESS };
 		tableRidget.bindToModel(searchResult, "list", Customer.class, columnProperties, new String[] { "Number", //$NON-NLS-1$ //$NON-NLS-2$
 				"Lastname", "Firstname", "phone" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		tableRidget.updateFromModel();
@@ -109,16 +109,16 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 
 	private class OpenCallback implements IActionListener {
 		public void callback() {
-			Object selectedValue = tableSelection.getValue();
+			final Object selectedValue = tableSelection.getValue();
 			if (selectedValue == null) {
 				return;
 			}
 			if (!(selectedValue instanceof Customer)) {
 				throw new RuntimeException("invalid datatype for selected value"); //$NON-NLS-1$
 			}
-			Customer selected = (Customer) selectedValue;
-			ISubModuleNode node = getNavigationNode();
-			SubModuleNode cNode = new SubModuleNode(null, selected.getFirstName());
+			final Customer selected = (Customer) selectedValue;
+			final ISubModuleNode node = getNavigationNode();
+			final SubModuleNode cNode = new SubModuleNode(null, selected.getFirstName());
 			cNode.setContext(Customer.class.getName(), selected);
 			WorkareaManager.getInstance().registerDefinition(cNode, CustomerDetailsSubModuleView.ID);
 			node.addChild(cNode);
@@ -145,7 +145,7 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 			return list;
 		}
 
-		public void setList(List<Customer> list) {
+		public void setList(final List<Customer> list) {
 			this.list = list;
 		}
 

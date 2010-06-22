@@ -35,7 +35,7 @@ public class ServiceInjectorWeakRefTest extends RienaTestCase {
 		try {
 			testWeakRef(false);
 			fail();
-		} catch (AssertionFailedError e) {
+		} catch (final AssertionFailedError e) {
 			ok();
 		}
 	}
@@ -44,12 +44,12 @@ public class ServiceInjectorWeakRefTest extends RienaTestCase {
 		testWeakRef(true);
 	}
 
-	private void testWeakRef(boolean withNulling) throws IOException {
+	private void testWeakRef(final boolean withNulling) throws IOException {
 		printTestName();
 		Target target = new Target();
 
-		DepOne depOne = new DepOne();
-		ServiceRegistration reg = getContext().registerService(DepOne.class.getName(), depOne, null);
+		final DepOne depOne = new DepOne();
+		final ServiceRegistration reg = getContext().registerService(DepOne.class.getName(), depOne, null);
 		ServiceInjector shot = null;
 		try {
 			shot = Inject.service(DepOne.class.getName()).into(target).andStart(getContext());
@@ -60,9 +60,9 @@ public class ServiceInjectorWeakRefTest extends RienaTestCase {
 			}
 			runOutOfMemory();
 
-			WeakRef<Object> targetRef = ReflectionUtils.getHidden(shot, "targetRef");
+			final WeakRef<Object> targetRef = ReflectionUtils.getHidden(shot, "targetRef");
 			assertNull(targetRef.get());
-			Object state = ReflectionUtils.getHidden(shot, "state");
+			final Object state = ReflectionUtils.getHidden(shot, "state");
 			assertEquals("STOPPED", state.toString());
 		} finally {
 			shot.stop();
@@ -72,11 +72,11 @@ public class ServiceInjectorWeakRefTest extends RienaTestCase {
 
 	private void runOutOfMemory() throws IOException {
 		try {
-			OutputStream os = new ByteArrayOutputStream();
+			final OutputStream os = new ByteArrayOutputStream();
 			while (true) {
 				os.write(new byte[1024 * 1024]);
 			}
-		} catch (OutOfMemoryError e) {
+		} catch (final OutOfMemoryError e) {
 			System.gc();
 		}
 

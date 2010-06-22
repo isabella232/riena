@@ -46,13 +46,13 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, Browser.class);
 	}
 
 	@Override
 	protected void bindUIControl() {
-		Browser control = getUIControl();
+		final Browser control = getUIControl();
 		if (control != null) {
 			updateUIControl();
 			control.addLocationListener(locationListener);
@@ -61,7 +61,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 
 	@Override
 	protected void unbindUIControl() {
-		Browser control = getUIControl();
+		final Browser control = getUIControl();
 		if (control != null) {
 			control.removeLocationListener(locationListener);
 		}
@@ -100,19 +100,19 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		return true;
 	}
 
-	public void setText(String text) {
+	public void setText(final String text) {
 		if (!StringUtils.equals(this.text, text)) {
 			this.text = text;
-			String oldUrl = this.url;
+			final String oldUrl = this.url;
 			this.url = null;
 			updateUIControl();
 			firePropertyChange(IBrowserRidget.PROPERTY_URL, oldUrl, this.url);
 		}
 	}
 
-	public void setUrl(String url) {
+	public void setUrl(final String url) {
 		if (!StringUtils.equals(this.url, url)) {
-			String oldUrl = this.getUrl();
+			final String oldUrl = this.getUrl();
 			this.text = null;
 			this.url = url;
 			updateUIControl();
@@ -123,12 +123,12 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	// helping methods
 	//////////////////
 
-	private String convertNullToEmpty(String string) {
+	private String convertNullToEmpty(final String string) {
 		return string != null ? string : ""; //$NON-NLS-1$
 	}
 
 	private void updateUIControl() {
-		Browser control = getUIControl();
+		final Browser control = getUIControl();
 		if (control != null) {
 			if (text != null) {
 				if (!text.equals(control.getText())) {
@@ -136,7 +136,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 					control.setText(text);
 				}
 			} else {
-				String url = convertNullToEmpty(this.url);
+				final String url = convertNullToEmpty(this.url);
 				if (!url.equals(control.getUrl())) {
 					locationListener.unblock();
 					control.setUrl(url);
@@ -176,20 +176,20 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 			block = false;
 		}
 
-		public void changing(LocationEvent event) {
+		public void changing(final LocationEvent event) {
 			if (isOutputOnly() && block) {
 				event.doit = false;
 			}
 			block = true;
 		}
 
-		public void changed(LocationEvent event) {
+		public void changed(final LocationEvent event) {
 			if (event.top && !isNullOrAboutBlank(event.location)) {
 				setUrl(event.location);
 			}
 		}
 
-		private boolean isNullOrAboutBlank(String url) {
+		private boolean isNullOrAboutBlank(final String url) {
 			return url == null || "about:blank".equals(url); //$NON-NLS-1$
 		}
 	}

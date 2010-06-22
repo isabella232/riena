@@ -33,23 +33,23 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 	 */
 	private final static int TITLE_MARGIN = 5;
 
-	private String[] btnImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_ICON,
+	private final String[] btnImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_MAX_ICON, LnfKeyConstants.TITLELESS_SHELL_MIN_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_RESTORE_ICON };
-	private String[] btnHoverSelectedImageKeys = new String[] {
+	private final String[] btnHoverSelectedImageKeys = new String[] {
 			LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_SELECTED_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_SELECTED_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_SELECTED_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_SELECTED_ICON };
-	private String[] btnHoverImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_ICON,
+	private final String[] btnHoverImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_HOVER_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_MAX_HOVER_ICON, LnfKeyConstants.TITLELESS_SHELL_MIN_HOVER_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_RESTORE_HOVER_ICON };
-	private String[] btnInactiveImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_INACTIVE_ICON,
+	private final String[] btnInactiveImageKeys = new String[] { LnfKeyConstants.TITLELESS_SHELL_CLOSE_INACTIVE_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_MAX_INACTIVE_ICON, LnfKeyConstants.TITLELESS_SHELL_MIN_INACTIVE_ICON,
 			LnfKeyConstants.TITLELESS_SHELL_RESTORE_INACTIVE_ICON };
 
 	@Override
-	protected void paintButton(GC gc, int btnIndex) {
+	protected void paintButton(final GC gc, final int btnIndex) {
 
 		if (!LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
 			return;
@@ -60,13 +60,13 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 	}
 
 	@Override
-	protected Rectangle paintTitle(GC gc) {
+	protected Rectangle paintTitle(final GC gc) {
 
 		if (!LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
 			return new Rectangle(0, 0, 0, 0);
 		}
 
-		String title = getShell().getText();
+		final String title = getShell().getText();
 		if (StringUtils.isEmpty(title)) {
 			return new Rectangle(0, 0, 0, 0);
 		}
@@ -80,10 +80,10 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 		}
 		gc.setForeground(fgColor);
 
-		Font font = LnfManager.getLnf().getFont(LnfKeyConstants.TITLELESS_SHELL_FONT);
+		final Font font = LnfManager.getLnf().getFont(LnfKeyConstants.TITLELESS_SHELL_FONT);
 		gc.setFont(font);
 
-		int textHeight = gc.getFontMetrics().getHeight();
+		final int textHeight = gc.getFontMetrics().getHeight();
 		int y = getBounds().height / 2 - textHeight / 2;
 		y -= 2;
 
@@ -93,7 +93,7 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 				x = Math.min(x, getButtonsBounds()[i].x);
 			}
 		}
-		int textWidth = SwtUtilities.calcTextWidth(gc, title);
+		final int textWidth = SwtUtilities.calcTextWidth(gc, title);
 		switch (getHorizontalLogoPosition()) {
 		case SWT.LEFT:
 			x = TITLE_MARGIN;
@@ -113,7 +113,7 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 	}
 
 	@Override
-	protected Rectangle paintImage(GC gc) {
+	protected Rectangle paintImage(final GC gc) {
 		return new Rectangle(0, 0, 0, 0);
 	}
 
@@ -157,7 +157,7 @@ public class ShellRenderer extends AbstractTitleBarRenderer {
 	}
 
 	@Override
-	protected void paintBackground(GC gc) {
+	protected void paintBackground(final GC gc) {
 		//		gc.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND));
 		//		Image logo = getBackgroundImage();
 		//		if (logo != null) {

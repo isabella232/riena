@@ -38,22 +38,22 @@ public class ExceptionHandlerManagerTest extends RienaTestCase {
 	}
 
 	public void testAddHandler() {
-		TestExceptionHandler testEH = new TestExceptionHandler("test.exception.handler1", null, null);
+		final TestExceptionHandler testEH = new TestExceptionHandler("test.exception.handler1", null, null);
 		manager.update(new IExceptionHandlerExtension[] { getTestDefinition(testEH) });
 
-		Exception exception = new Exception("test");
+		final Exception exception = new Exception("test");
 		manager.handleException(exception);
 
 		Assert.assertEquals("expected exception", testEH.getThrowable(), exception);
 	}
 
 	public void testAddHandlerChain() {
-		TestExceptionHandler testEH1 = new TestExceptionHandler("test.exception.handler1", null, null);
-		TestExceptionHandler testEH2 = new TestExceptionHandler("test.exception.handler2", "test.exception.handler1",
-				IExceptionHandler.Action.OK);
+		final TestExceptionHandler testEH1 = new TestExceptionHandler("test.exception.handler1", null, null);
+		final TestExceptionHandler testEH2 = new TestExceptionHandler("test.exception.handler2",
+				"test.exception.handler1", IExceptionHandler.Action.OK);
 		manager.update(new IExceptionHandlerExtension[] { getTestDefinition(testEH1), getTestDefinition(testEH2) });
 
-		Exception exception = new Exception("test");
+		final Exception exception = new Exception("test");
 		manager.handleException(exception);
 
 		Assert.assertEquals("expected exception", testEH2.getThrowable(), exception);

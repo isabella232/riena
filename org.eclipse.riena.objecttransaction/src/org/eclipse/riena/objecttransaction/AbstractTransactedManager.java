@@ -39,8 +39,8 @@ import org.eclipse.riena.objecttransaction.context.ObjectTransactionContext;
  */
 public abstract class AbstractTransactedManager {
 
-	private IContextHolder contextHolder;
-	private IObjectTransactionContext objectTransactionContext;
+	private final IContextHolder contextHolder;
+	private final IObjectTransactionContext objectTransactionContext;
 
 	/**
 	 * Creates a new ObjectTransactionContextManager Initializes the context
@@ -63,7 +63,7 @@ public abstract class AbstractTransactedManager {
 	 * @param pObjectTransaction
 	 *            the ObjectTransaction to set.
 	 */
-	protected final void setCurrentObjectTransaction(IObjectTransaction pObjectTransaction) {
+	protected final void setCurrentObjectTransaction(final IObjectTransaction pObjectTransaction) {
 		objectTransactionContext.setObjectTransaction(pObjectTransaction);
 	}
 
@@ -84,8 +84,8 @@ public abstract class AbstractTransactedManager {
 	protected final IObjectTransaction createObjectTransaction() {
 		// TODO: the object Transaction shold not aktivate itself, talk about
 		// with cc, this moment the current context is reactivated!
-		IObjectTransaction oldTransaction = ObjectTransactionManager.getInstance().getCurrent();
-		IObjectTransaction result = ObjectTransactionFactory.getInstance().createObjectTransaction();
+		final IObjectTransaction oldTransaction = ObjectTransactionManager.getInstance().getCurrent();
+		final IObjectTransaction result = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		ObjectTransactionManager.getInstance().setCurrent(oldTransaction);
 		return result;
 	}
@@ -97,7 +97,7 @@ public abstract class AbstractTransactedManager {
 	 * @return the newly create sub object transaction
 	 */
 	protected final IObjectTransaction createSubObjectTransaction() {
-		IObjectTransaction cobj = getCurrentObjectTransaction();
+		final IObjectTransaction cobj = getCurrentObjectTransaction();
 		IObjectTransaction result = null;
 		if (cobj != null) {
 			result = this.createSubObjectTransaction(cobj);
@@ -111,11 +111,11 @@ public abstract class AbstractTransactedManager {
 	 * 
 	 * @return an IObjectTransaction newly created
 	 */
-	protected final IObjectTransaction createSubObjectTransaction(IObjectTransaction pParentTransaction) {
+	protected final IObjectTransaction createSubObjectTransaction(final IObjectTransaction pParentTransaction) {
 		// TODO: the object Transaction shold not aktivate itself, talk about
 		// with cc, this moment the current context is reactivated!
-		IObjectTransaction oldTransaction = ObjectTransactionManager.getInstance().getCurrent();
-		IObjectTransaction result = pParentTransaction.createSubObjectTransaction();
+		final IObjectTransaction oldTransaction = ObjectTransactionManager.getInstance().getCurrent();
+		final IObjectTransaction result = pParentTransaction.createSubObjectTransaction();
 		ObjectTransactionManager.getInstance().setCurrent(oldTransaction);
 		return result;
 	}
@@ -127,7 +127,7 @@ public abstract class AbstractTransactedManager {
 	 *            the Type extected to return
 	 * @return a Context Proxy on any concrete Manager
 	 */
-	public final <T> T cover(T pObject) {
+	public final <T> T cover(final T pObject) {
 		return ContextProxy.cover(pObject, contextHolder);
 	}
 
@@ -140,9 +140,9 @@ public abstract class AbstractTransactedManager {
 	 *            the covered object
 	 * @return
 	 */
-	@SuppressWarnings( { "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	// During uncovering the object will be automatically castet
-	public final <T> T uncover(T pCovered) {
+	public final <T> T uncover(final T pCovered) {
 		T result = null;
 		if (pCovered != null && Proxy.isProxyClass(pCovered.getClass())
 				&& (Proxy.getInvocationHandler(pCovered) instanceof ContextProxy)) {
@@ -157,7 +157,7 @@ public abstract class AbstractTransactedManager {
 	 * Commits the curren transaction if any
 	 */
 	public void commit() {
-		IObjectTransaction cot = this.getCurrentObjectTransaction();
+		final IObjectTransaction cot = this.getCurrentObjectTransaction();
 		if (cot != null) {
 			cot.commit();
 		}
@@ -167,7 +167,7 @@ public abstract class AbstractTransactedManager {
 	 * Roll back the current transaction if any
 	 */
 	public void rollback() {
-		IObjectTransaction cot = this.getCurrentObjectTransaction();
+		final IObjectTransaction cot = this.getCurrentObjectTransaction();
 		if (cot != null) {
 			cot.rollback();
 		}

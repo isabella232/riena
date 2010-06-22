@@ -26,7 +26,7 @@ public class SecurityFailure extends Failure {
 	 * @param msg
 	 *            message text or message code
 	 */
-	public SecurityFailure(String msg) {
+	public SecurityFailure(final String msg) {
 		super(msg);
 	}
 
@@ -38,7 +38,7 @@ public class SecurityFailure extends Failure {
 	 * @param cause
 	 *            exception which has caused this Failure
 	 */
-	public SecurityFailure(String msg, Throwable cause) {
+	public SecurityFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 

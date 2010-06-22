@@ -19,27 +19,28 @@ import org.eclipse.swt.graphics.GC;
 public class GCFacadeRCP extends GCFacade {
 
 	@Override
-	public void drawRoundRectangle(GC gc, int x, int y, int width, int height, int arcWidth, int arcHeight) {
+	public void drawRoundRectangle(final GC gc, final int x, final int y, final int width, final int height,
+			final int arcWidth, final int arcHeight) {
 		gc.drawRoundRectangle(x, y, width, height, arcWidth, arcHeight);
 	}
 
 	@Override
-	public void drawLine(GC gc, int x1, int y1, int x2, int y2) {
+	public void drawLine(final GC gc, final int x1, final int y1, final int x2, final int y2) {
 		gc.drawLine(x1, y1, x2, y2);
 	}
 
 	@Override
-	public int getAdvanceWidth(GC gc, char ch) {
+	public int getAdvanceWidth(final GC gc, final char ch) {
 		return gc.getAdvanceWidth(ch);
 	}
 
 	@Override
-	public void setAdvanced(GC gc, boolean isEnabled) {
+	public void setAdvanced(final GC gc, final boolean isEnabled) {
 		gc.setAdvanced(isEnabled);
 	}
 
 	@Override
-	public void setAntialias(GC gc, int option) {
+	public void setAntialias(final GC gc, final int option) {
 		gc.setAntialias(option);
 	}
 

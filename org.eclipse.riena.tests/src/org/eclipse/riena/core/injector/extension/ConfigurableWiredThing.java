@@ -17,7 +17,7 @@ public class ConfigurableWiredThing {
 
 	private IWireData data;
 
-	public void update(IWireData data) {
+	public void update(final IWireData data) {
 		this.data = data;
 	}
 

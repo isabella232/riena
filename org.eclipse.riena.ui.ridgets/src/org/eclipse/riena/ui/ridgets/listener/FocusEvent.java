@@ -17,8 +17,8 @@ import org.eclipse.riena.ui.ridgets.IRidget;
  */
 public class FocusEvent {
 
-	private IRidget oldFocusOwner;
-	private IRidget newFocusOwner;
+	private final IRidget oldFocusOwner;
+	private final IRidget newFocusOwner;
 
 	/**
 	 * Creates a FocusEvent.
@@ -28,7 +28,7 @@ public class FocusEvent {
 	 * @param newFocusOwner
 	 *            the new owner of the focus.
 	 */
-	public FocusEvent(IRidget oldFocusOwner, IRidget newFocusOwner) {
+	public FocusEvent(final IRidget oldFocusOwner, final IRidget newFocusOwner) {
 		this.oldFocusOwner = oldFocusOwner;
 		this.newFocusOwner = newFocusOwner;
 	}
@@ -51,16 +51,16 @@ public class FocusEvent {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object other) {
+	public boolean equals(final Object other) {
 		if (!(other instanceof FocusEvent)) {
 			return false;
 		}
-		FocusEvent otherFocusEvent = (FocusEvent) other;
+		final FocusEvent otherFocusEvent = (FocusEvent) other;
 		return equals(getOldFocusOwner(), otherFocusEvent.getOldFocusOwner())
 				&& equals(getNewFocusOwner(), otherFocusEvent.getNewFocusOwner());
 	}
 
-	private boolean equals(Object object1, Object object2) {
+	private boolean equals(final Object object1, final Object object2) {
 		if (object1 == null) {
 			return object2 == null;
 		}
@@ -87,7 +87,7 @@ public class FocusEvent {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder buffer = new StringBuilder("FocusEvent[oldFocusOwner="); //$NON-NLS-1$
+		final StringBuilder buffer = new StringBuilder("FocusEvent[oldFocusOwner="); //$NON-NLS-1$
 		buffer.append(getOldFocusOwner());
 		buffer.append(", newFocusOwner="); //$NON-NLS-1$
 		buffer.append(getNewFocusOwner());

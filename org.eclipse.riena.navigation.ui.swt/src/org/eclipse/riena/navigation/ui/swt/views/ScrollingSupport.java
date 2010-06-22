@@ -50,9 +50,9 @@ public class ScrollingSupport {
 
 	private static final int SCROLLING_STEP = 20;
 
-	private IModuleNavigationComponentProvider navigationComponentProvider;
+	private final IModuleNavigationComponentProvider navigationComponentProvider;
 	// the SWT composite
-	private ScrollControlComposite scrollControlComposite;
+	private final ScrollControlComposite scrollControlComposite;
 	// offset of the scrolled composite relative to the main navigation composite
 	private int scrolledCompositeOffset = 0;
 
@@ -64,7 +64,8 @@ public class ScrollingSupport {
 	 *            SWT style flags
 	 * @param navigationComponentProvider
 	 */
-	public ScrollingSupport(Composite parent, int flags, IModuleNavigationComponentProvider navigationComponentProvider) {
+	public ScrollingSupport(final Composite parent, final int flags,
+			final IModuleNavigationComponentProvider navigationComponentProvider) {
 		this.navigationComponentProvider = navigationComponentProvider;
 		scrollControlComposite = new ScrollControlComposite(parent, flags);
 		setBodyCompositeOffset(0);
@@ -90,12 +91,12 @@ public class ScrollingSupport {
 	// helping methods
 	//////////////////
 
-	private void initMouseWheelObserver(Composite navigationComponent) {
+	private void initMouseWheelObserver(final Composite navigationComponent) {
 		final Display display = navigationComponent.getDisplay();
 		final MouseWheelAdapter wheelAdapter = new MouseWheelAdapter();
 		display.addFilter(SWT.MouseWheel, wheelAdapter);
 		navigationComponent.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
+			public void widgetDisposed(final DisposeEvent e) {
 				display.removeFilter(SWT.MouseWheel, wheelAdapter);
 			}
 		});
@@ -104,17 +105,17 @@ public class ScrollingSupport {
 	/**
 	 * scrolls up
 	 */
-	private void scrollUp(int pixels) {
-		int offset = Math.min(scrolledCompositeOffset + pixels, 0);
+	private void scrollUp(final int pixels) {
+		final int offset = Math.min(scrolledCompositeOffset + pixels, 0);
 		setBodyCompositeOffset(offset);
 	}
 
 	/**
 	 * scroll down
 	 */
-	private void scrollDown(int pixels) {
-		int offset = Math.max(getNavigationComponentHeight() - getScrolledComponentHeight(), scrolledCompositeOffset
-				- pixels);
+	private void scrollDown(final int pixels) {
+		final int offset = Math.max(getNavigationComponentHeight() - getScrolledComponentHeight(),
+				scrolledCompositeOffset - pixels);
 		setBodyCompositeOffset(offset);
 	}
 
@@ -123,38 +124,39 @@ public class ScrollingSupport {
 			resetScrolling();
 			return;
 		}
-		INavigationNode<?> activeNode = getActiveNode();
+		final INavigationNode<?> activeNode = getActiveNode();
 		if (!scrollTo(activeNode)) {
 			ensureFilledToBottom();
 		}
 	}
 
-	private boolean scrollTo(INavigationNode<?> activeNode) {
+	private boolean scrollTo(final INavigationNode<?> activeNode) {
 		boolean result = false;
 		if (activeNode instanceof IModuleGroupNode) {
-			ModuleGroupView view = navigationComponentProvider.getModuleGroupViewForNode((IModuleGroupNode) activeNode);
+			final ModuleGroupView view = navigationComponentProvider
+					.getModuleGroupViewForNode((IModuleGroupNode) activeNode);
 			result = scrollTo(view, view);
 		} else if (activeNode instanceof IModuleNode) {
 			result = scrollTo((IModuleNode) activeNode);
 		} else if (activeNode instanceof ISubModuleNode) {
-			IModuleNode module = (IModuleNode) activeNode.getParent();
+			final IModuleNode module = (IModuleNode) activeNode.getParent();
 			result = scrollTo(module);
 		}
 		return result;
 	}
 
-	private boolean scrollTo(IModuleNode module) {
+	private boolean scrollTo(final IModuleNode module) {
 		boolean result = false;
 		if (module != null) {
-			ModuleView moduleView = navigationComponentProvider.getModuleViewForNode(module);
+			final ModuleView moduleView = navigationComponentProvider.getModuleViewForNode(module);
 			if (moduleView == null) {
 				return result;
 			}
-			boolean isClosed = moduleView.getOpenHeight() == 0;
+			final boolean isClosed = moduleView.getOpenHeight() == 0;
 			if (isClosed) {
 				result = scrollTo(moduleView.getTitle(), moduleView.getBody());
 			} else {
-				int moduleHeight = moduleView.getParent().getSize().y;
+				final int moduleHeight = moduleView.getParent().getSize().y;
 				if (moduleHeight < getNavigationComponentHeight()) {
 					// only show title if the whole module fits into the available height
 					// prevents flicker
@@ -166,39 +168,39 @@ public class ScrollingSupport {
 		return result;
 	}
 
-	private boolean scrollTo(Composite topComp, Composite bottomComp) {
-		int compBottomEdge = bottomComp.toDisplay(0, bottomComp.getSize().y).y;
+	private boolean scrollTo(final Composite topComp, final Composite bottomComp) {
+		final int compBottomEdge = bottomComp.toDisplay(0, bottomComp.getSize().y).y;
 		boolean result = scrollToBottom(compBottomEdge);
-		int compTopEdge = topComp.toDisplay(0, 0).y;
+		final int compTopEdge = topComp.toDisplay(0, 0).y;
 		result = result || scrollToTop(compTopEdge);
 		return result;
 	}
 
-	private boolean scrollTo(Tree tree) {
+	private boolean scrollTo(final Tree tree) {
 		boolean result = false;
 		if (tree.getSelectionCount() > 0) {
-			TreeItem item = tree.getSelection()[0];
-			Rectangle itemBounds = item.getBounds();
-			int treeBottomEdge = tree.toDisplay(itemBounds.x, itemBounds.y + tree.getItemHeight()).y;
+			final TreeItem item = tree.getSelection()[0];
+			final Rectangle itemBounds = item.getBounds();
+			final int treeBottomEdge = tree.toDisplay(itemBounds.x, itemBounds.y + tree.getItemHeight()).y;
 			result = scrollToBottom(treeBottomEdge);
-			int treeTopEdge = tree.toDisplay(itemBounds.x, itemBounds.y).y;
+			final int treeTopEdge = tree.toDisplay(itemBounds.x, itemBounds.y).y;
 			result = result || scrollToTop(treeTopEdge);
 		}
 		return result;
 	}
 
-	private boolean scrollToBottom(int bottomEdgeToDisplay) {
-		int bottomEdge = getNavigationComponent().toDisplay(0, getNavigationComponentHeight()).y;
-		boolean scroll = bottomEdgeToDisplay > bottomEdge;
+	private boolean scrollToBottom(final int bottomEdgeToDisplay) {
+		final int bottomEdge = getNavigationComponent().toDisplay(0, getNavigationComponentHeight()).y;
+		final boolean scroll = bottomEdgeToDisplay > bottomEdge;
 		if (scroll) {
 			scrollDown(bottomEdgeToDisplay - bottomEdge);
 		}
 		return scroll;
 	}
 
-	private boolean scrollToTop(int topEdgeToDisplay) {
-		int topEdge = getNavigationComponent().toDisplay(0, 0).y;
-		boolean scroll = topEdgeToDisplay < topEdge;
+	private boolean scrollToTop(final int topEdgeToDisplay) {
+		final int topEdge = getNavigationComponent().toDisplay(0, 0).y;
+		final boolean scroll = topEdgeToDisplay < topEdge;
 		if (scroll) {
 			scrollUp(topEdge - topEdgeToDisplay);
 		}
@@ -206,11 +208,11 @@ public class ScrollingSupport {
 	}
 
 	private INavigationNode<?> getActiveNode() {
-		IModuleGroupNode group = navigationComponentProvider.getActiveModuleGroupNode();
+		final IModuleGroupNode group = navigationComponentProvider.getActiveModuleGroupNode();
 		IModuleNode module = null;
 		ISubModuleNode submodule = null;
 		if (group != null) {
-			for (IModuleNode candidate : group.getChildren()) {
+			for (final IModuleNode candidate : group.getChildren()) {
 				if (candidate.isActivated()) {
 					module = candidate;
 					break;
@@ -223,11 +225,11 @@ public class ScrollingSupport {
 		return submodule != null ? submodule : module != null ? module : group;
 	}
 
-	private ISubModuleNode getActiveSubModuleNode(List<ISubModuleNode> nodes) {
+	private ISubModuleNode getActiveSubModuleNode(final List<ISubModuleNode> nodes) {
 		ISubModuleNode result = null;
-		for (ISubModuleNode candidate : nodes) {
+		for (final ISubModuleNode candidate : nodes) {
 			if (candidate.isActivated()) {
-				ISubModuleNode activeChild = getActiveSubModuleNode(candidate.getChildren());
+				final ISubModuleNode activeChild = getActiveSubModuleNode(candidate.getChildren());
 				result = activeChild != null ? activeChild : candidate;
 				break;
 			}
@@ -241,13 +243,13 @@ public class ScrollingSupport {
 	 * @return true if we need scrolling
 	 */
 	private boolean mayScroll() {
-		int navigationComponentHeight = getNavigationComponentHeight();
+		final int navigationComponentHeight = getNavigationComponentHeight();
 		return getScrolledComponentHeight() > navigationComponentHeight && navigationComponentHeight > 0;
 	}
 
 	private void ensureFilledToBottom() {
 		// use height
-		int bodyBottomY = scrolledCompositeOffset + getScrolledComponentHeight();
+		final int bodyBottomY = scrolledCompositeOffset + getScrolledComponentHeight();
 		if (bodyBottomY < getNavigationComponentHeight()) {
 			setBodyCompositeOffset(scrolledCompositeOffset + (getNavigationComponentHeight() - bodyBottomY));
 		}
@@ -281,7 +283,7 @@ public class ScrollingSupport {
 	 * @param yScrolledOffset
 	 *            the new vertical offset of the scrolled composite
 	 */
-	private void setBodyCompositeOffset(int yScrolledOffset) {
+	private void setBodyCompositeOffset(final int yScrolledOffset) {
 		if (yScrolledOffset != scrolledCompositeOffset) {
 			scrolledCompositeOffset = yScrolledOffset;
 			updateUI();
@@ -289,7 +291,7 @@ public class ScrollingSupport {
 	}
 
 	private void updateUI() {
-		FormData formData = new FormData();
+		final FormData formData = new FormData();
 		formData.top = new FormAttachment(0, scrolledCompositeOffset);
 		getScrolledComponent().setLayoutData(formData);
 		getScrolledComponent().getParent().layout();
@@ -300,21 +302,21 @@ public class ScrollingSupport {
 		// for saving last event time
 		private int lastEventTime = 0;
 
-		public void handleEvent(Event event) {
+		public void handleEvent(final Event event) {
 			// only go further if the event has a new time stamp
 			if (mayScroll() && acceptEvent(event)) {
 				lastEventTime = event.time;
-				Rectangle navigationComponentBounds = getNavigationComponent().getBounds();
+				final Rectangle navigationComponentBounds = getNavigationComponent().getBounds();
 
 				// convert navigation bounds relative to display
-				Point navigationPtAtDisplay = getNavigationComponent().toDisplay(0, 0);
+				final Point navigationPtAtDisplay = getNavigationComponent().toDisplay(0, 0);
 				navigationComponentBounds.x = navigationPtAtDisplay.x;
 				navigationComponentBounds.y = navigationPtAtDisplay.y;
 
 				if (event.widget instanceof Control) {
-					Control widget = (Control) event.widget;
+					final Control widget = (Control) event.widget;
 					// convert widget event point relative to display
-					Point evtPt = widget.toDisplay(event.getBounds().x, event.getBounds().y);
+					final Point evtPt = widget.toDisplay(event.getBounds().x, event.getBounds().y);
 					// now check if inside navigation
 					if (navigationComponentBounds.contains(evtPt.x, evtPt.y)) {
 						if (event.count > 0) {
@@ -328,22 +330,22 @@ public class ScrollingSupport {
 			}
 		}
 
-		private boolean acceptEvent(Event event) {
+		private boolean acceptEvent(final Event event) {
 			// check that this is the latest event
-			boolean isCurrent = event.time > lastEventTime;
+			final boolean isCurrent = event.time > lastEventTime;
 			// 282089: check this window is has the focus, to avoid scrolling when
 			// the mouse pointer happens to be over another overlapping window
-			Control control = (Control) event.widget;
-			boolean isActive = control.getShell() == getActiveShell();
+			final Control control = (Control) event.widget;
+			final boolean isActive = control.getShell() == getActiveShell();
 			// 282091: check that this navigation component is visible. Since
 			// we are using a display filter the navigation componentes of _each_
 			// subapplicatio are notified when scrolling!
-			boolean isVisible = getNavigationComponent().isVisible();
+			final boolean isVisible = getNavigationComponent().isVisible();
 			return isCurrent && isActive && isVisible;
 		}
 
 		private Shell getActiveShell() {
-			IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+			final IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 			return activeWindow != null ? activeWindow.getShell() : null;
 		}
 	}
@@ -357,7 +359,7 @@ public class ScrollingSupport {
 		private Button upButton;
 		private Button downButton;
 
-		public ScrollControlComposite(Composite parent, int style) {
+		public ScrollControlComposite(final Composite parent, final int style) {
 			super(parent, style);
 			getNavigationComponent().addControlListener(new NavigationResizeListener());
 			setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.NAVIGATION_BACKGROUND));
@@ -370,7 +372,7 @@ public class ScrollingSupport {
 		private void initControlButtons() {
 			setLayout(new FormLayout());
 
-			ScrollDelegation delegationAdaper = new ScrollDelegation();
+			final ScrollDelegation delegationAdaper = new ScrollDelegation();
 
 			upButton = new Button(this, SWT.NONE);
 			upButton.setBackground(this.getBackground());
@@ -386,7 +388,7 @@ public class ScrollingSupport {
 		}
 
 		private void layoutDownButton() {
-			FormData fd = new FormData();
+			final FormData fd = new FormData();
 			fd.left = new FormAttachment(upButton, 1);
 			fd.right = new FormAttachment(100, -2);
 			fd.height = 12;
@@ -394,7 +396,7 @@ public class ScrollingSupport {
 		}
 
 		private void layoutUpButton() {
-			FormData fd = new FormData();
+			final FormData fd = new FormData();
 			fd.left = new FormAttachment(0, 2);
 			fd.right = new FormAttachment(50, 0);
 			fd.height = 12;
@@ -403,7 +405,7 @@ public class ScrollingSupport {
 
 		private final class NavigationResizeListener extends ControlAdapter {
 			@Override
-			public void controlResized(ControlEvent e) {
+			public void controlResized(final ControlEvent e) {
 				setVisible(mayScroll());
 			}
 		}
@@ -413,7 +415,7 @@ public class ScrollingSupport {
 		 */
 		private final class ScrollDelegation extends SelectionAdapter {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(final SelectionEvent e) {
 				if (e.getSource() == upButton) {
 					scrollUp(SCROLLING_STEP);
 				} else {

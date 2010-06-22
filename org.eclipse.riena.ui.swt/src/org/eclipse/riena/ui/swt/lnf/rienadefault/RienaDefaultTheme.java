@@ -77,7 +77,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void customizeLnf(ILnfCustomizer lnf) {
+	public void customizeLnf(final ILnfCustomizer lnf) {
 		customizeColors(lnf);
 		customizeSWTControls(lnf);
 		customizeFonts(lnf);
@@ -85,7 +85,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		customizeSettings(lnf);
 	}
 
-	private void customizeColors(ILnfCustomizer lnf) {
+	private void customizeColors(final ILnfCustomizer lnf) {
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_FOREGROUND, new ColorLnfResource(255, 255, 255));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_PASSIVE_FOREGROUND, new ColorLnfResource(128, 128, 128));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND, getPrimaryBackground());
@@ -200,7 +200,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource(LnfKeyConstants.INFO_FLYOUT_BORDER_COLOR, new ColorLnfResource(150, 165, 170));
 	}
 
-	private void customizeSWTControls(ILnfCustomizer lnf) {
+	private void customizeSWTControls(final ILnfCustomizer lnf) {
 		// Standard SWT controls
 		lnf.putLnfResource("Button.background", getPrimaryBackground()); //$NON-NLS-1$
 		lnf.putLnfResource("Button.foreground", getPrimaryForeground()); // Windows: no effect //$NON-NLS-1$
@@ -254,7 +254,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 	}
 
-	private void customizeFonts(ILnfCustomizer lnf) {
+	private void customizeFonts(final ILnfCustomizer lnf) {
 
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_FONT, getPrimaryFont());
 
@@ -302,7 +302,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 	}
 
-	private void customizeImages(ILnfCustomizer lnf) {
+	private void customizeImages(final ILnfCustomizer lnf) {
 
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(IMAGE_BACKGROUND));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(IMAGE_LOGO));
@@ -393,7 +393,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 	}
 
-	private void customizeSettings(ILnfCustomizer lnf) {
+	private void customizeSettings(final ILnfCustomizer lnf) {
 
 		lnf.putLnfSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER, hideOsBorder());
 
@@ -485,7 +485,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 */
 	protected FontData getSystemFont() {
 		if (Display.getCurrent() != null) {
-			FontData[] data = Display.getCurrent().getSystemFont().getFontData();
+			final FontData[] data = Display.getCurrent().getSystemFont().getFontData();
 			if (data.length > 0) {
 				return data[0];
 			}
@@ -524,8 +524,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 	 */
 	protected FontLnfResource getPrimaryFont() {
 		if (primaryFont == null) {
-			String name = getSystemFont().getName();
-			int height = getSystemFont().getHeight() + 1;
+			final String name = getSystemFont().getName();
+			final int height = getSystemFont().getHeight() + 1;
 			primaryFont = new FontLnfResource(name, height, SWT.NORMAL);
 		}
 		return primaryFont;

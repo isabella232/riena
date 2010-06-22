@@ -39,80 +39,80 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 public class OrdererTest extends RienaTestCase {
 
 	public void testNoDependencies() {
-		Orderer<String> o = new Orderer<String>();
+		final Orderer<String> o = new Orderer<String>();
 
 		o.add("FRED", "fred", null, null);
 		o.add("BARNEY", "barney", null, null);
 		o.add("WILMA", "wilma", null, null);
 		o.add("BETTY", "betty", null, null);
 
-		List<String> l = o.getOrderedObjects();
+		final List<String> l = o.getOrderedObjects();
 
 		assertEquals(Literal.list("FRED").list("BARNEY").list("WILMA").list("BETTY"), l);
 	}
 
 	public void testPrereq() {
-		Orderer<String> o = new Orderer<String>();
+		final Orderer<String> o = new Orderer<String>();
 
 		o.add("FRED", "fred", "wilma", null);
 		o.add("BARNEY", "barney", "betty", null);
 		o.add("BETTY", "betty", null, null);
 		o.add("WILMA", "wilma", null, null);
 
-		List<String> l = o.getOrderedObjects();
+		final List<String> l = o.getOrderedObjects();
 
 		assertEquals(Literal.list("WILMA").list("FRED").list("BETTY").list("BARNEY"), l);
 	}
 
 	public void testPostreq() {
-		Orderer<String> o = new Orderer<String>();
+		final Orderer<String> o = new Orderer<String>();
 
 		o.add("FRED", "fred", null, "barney,wilma");
 		o.add("BARNEY", "barney", null, "betty");
 		o.add("BETTY", "betty", null, null);
 		o.add("WILMA", "wilma", null, null);
 
-		List<String> l = o.getOrderedObjects();
+		final List<String> l = o.getOrderedObjects();
 
 		assertEquals(Literal.list("FRED").list("BARNEY").list("BETTY").list("WILMA"), l);
 	}
 
 	public void testPrePostreq() {
-		Orderer<String> o = new Orderer<String>();
+		final Orderer<String> o = new Orderer<String>();
 
 		o.add("FRED", "fred", null, "barney,wilma");
 		o.add("BARNEY", "barney", "wilma", "betty");
 		o.add("BETTY", "betty", null, null);
 		o.add("WILMA", "wilma", null, null);
 
-		List<String> l = o.getOrderedObjects();
+		final List<String> l = o.getOrderedObjects();
 
 		assertEquals(Literal.list("FRED").list("WILMA").list("BARNEY").list("BETTY"), l);
 	}
 
 	public void testUnknownPrereq() {
-		Orderer<String> o = new Orderer<String>();
+		final Orderer<String> o = new Orderer<String>();
 
 		o.add("FRED", "fred", "charlie", "barney,wilma");
 		o.add("BARNEY", "barney", "wilma", "betty");
 		o.add("BETTY", "betty", null, null);
 		o.add("WILMA", "wilma", null, null);
 
-		List<String> l = o.getOrderedObjects();
+		final List<String> l = o.getOrderedObjects();
 
 		assertEquals(Literal.list("FRED").list("WILMA").list("BARNEY").list("BETTY"), l);
 		// TODO check logging: expect logging for charlie -> fred
 	}
 
 	public void testUnknownPostreq() {
-		Orderer<String> o = new Orderer<String>();
+		final Orderer<String> o = new Orderer<String>();
 
 		o.add("FRED", "fred", null, "barney,wilma");
 		o.add("BARNEY", "barney", "wilma", "betty");
 		o.add("BETTY", "betty", null, "dino");
 		o.add("WILMA", "wilma", null, null);
 
-		List<String> l = o.getOrderedObjects();
+		final List<String> l = o.getOrderedObjects();
 
 		assertEquals(Literal.list("FRED").list("WILMA").list("BARNEY").list("BETTY"), l);
 
@@ -121,16 +121,16 @@ public class OrdererTest extends RienaTestCase {
 
 	public void testCyclePre() {
 		try {
-			Orderer<String> o = new Orderer<String>();
+			final Orderer<String> o = new Orderer<String>();
 
 			o.add("FRED", "fred", "wilma", null);
 			o.add("BARNEY", "barney", "betty", null);
 			o.add("BETTY", "betty", "fred", null);
 			o.add("WILMA", "wilma", "barney", null);
 
-			List<String> l = o.getOrderedObjects();
+			final List<String> l = o.getOrderedObjects();
 			fail();
-		} catch (OrdererFailure e) {
+		} catch (final OrdererFailure e) {
 			assertTrue(e.getMessage().contains("between 'wilma'"));
 		}
 		//		assertListsEqual(new Object[] { "WILMA", "FRED", "BETTY", "BARNEY" }, l);
@@ -138,23 +138,23 @@ public class OrdererTest extends RienaTestCase {
 
 	public void testCyclePost() {
 		try {
-			Orderer<String> o = new Orderer<String>();
+			final Orderer<String> o = new Orderer<String>();
 
 			o.add("WILMA", "wilma", null, "betty");
 			o.add("FRED", "fred", null, "barney");
 			o.add("BARNEY", "barney", null, "wilma");
 			o.add("BETTY", "betty", null, "fred");
 
-			List<String> l = o.getOrderedObjects();
+			final List<String> l = o.getOrderedObjects();
 			fail();
-		} catch (OrdererFailure e) {
+		} catch (final OrdererFailure e) {
 			assertTrue(e.getMessage().contains("between 'fred' and 'betty'"));
 		}
 		//		assertListsEqual(new Object[] { "FRED", "BARNEY", "WILMA", "BETTY" }, l);
 	}
 
 	public void testDupe() {
-		Orderer<String> o = new Orderer<String>();
+		final Orderer<String> o = new Orderer<String>();
 
 		o.add("FRED", "flintstone", null, null);
 		o.add("BARNEY", "rubble", null, null);
@@ -163,7 +163,7 @@ public class OrdererTest extends RienaTestCase {
 		try {
 			o.add("WILMA", "flintstone", null, null);
 			fail();
-		} catch (OrdererFailure e) {
+		} catch (final OrdererFailure e) {
 			assertTrue(e.getMessage().contains("'flintstone'"));
 		}
 
@@ -173,20 +173,20 @@ public class OrdererTest extends RienaTestCase {
 	}
 
 	public void testPreStar() {
-		Orderer<String> o = new Orderer<String>();
+		final Orderer<String> o = new Orderer<String>();
 
 		o.add("FRED", "fred", "*", null);
 		o.add("BARNEY", "barney", "betty", null);
 		o.add("WILMA", "wilma", "betty", null);
 		o.add("BETTY", "betty", null, null);
 
-		List<String> l = o.getOrderedObjects();
+		final List<String> l = o.getOrderedObjects();
 
 		assertEquals(Literal.list("BETTY").list("BARNEY").list("WILMA").list("FRED"), l);
 	}
 
 	public void testPreStartDupe() {
-		Orderer<String> o = new Orderer<String>();
+		final Orderer<String> o = new Orderer<String>();
 
 		o.add("FRED", "fred", "*", null);
 		o.add("BARNEY", "barney", "*", null);
@@ -194,10 +194,10 @@ public class OrdererTest extends RienaTestCase {
 		o.add("BETTY", "betty", null, null);
 
 		try {
-			List<String> l = o.getOrderedObjects();
+			final List<String> l = o.getOrderedObjects();
 			assertEquals(Literal.list("BARNEY").list("BETTY").list("WILMA").list("FRED"), l);
 			fail();
-		} catch (OrdererFailure e) {
+		} catch (final OrdererFailure e) {
 			assertTrue(e.getMessage().contains(
 					"More than one trailer. Conflicting 'fred' (ordered unknown) and 'barney' (last)"));
 		}
@@ -205,20 +205,20 @@ public class OrdererTest extends RienaTestCase {
 	}
 
 	public void testPostStar() {
-		Orderer<String> o = new Orderer<String>();
+		final Orderer<String> o = new Orderer<String>();
 
 		o.add("FRED", "fred", null, "wilma");
 		o.add("BARNEY", "barney", null, "*");
 		o.add("WILMA", "wilma", null, "betty");
 		o.add("BETTY", "betty", null, null);
 
-		List<String> l = o.getOrderedObjects();
+		final List<String> l = o.getOrderedObjects();
 
 		assertEquals(Literal.list("BARNEY").list("FRED").list("WILMA").list("BETTY"), l);
 	}
 
 	public void testPostStarDupe() {
-		Orderer<String> o = new Orderer<String>();
+		final Orderer<String> o = new Orderer<String>();
 
 		o.add("FRED", "fred", null, "wilma");
 		o.add("BARNEY", "barney", null, "*");
@@ -226,10 +226,10 @@ public class OrdererTest extends RienaTestCase {
 		o.add("BETTY", "betty", null, null);
 
 		try {
-			List<String> l = o.getOrderedObjects();
+			final List<String> l = o.getOrderedObjects();
 			assertEquals(Literal.list("BARNEY").list("FRED").list("WILMA").list("BETTY"), l);
 			fail();
-		} catch (OrdererFailure e) {
+		} catch (final OrdererFailure e) {
 			assertTrue(e.getMessage().contains(
 					"More than one leader. Conflicting 'barney' (ordered unknown) and 'wilma' (first)"));
 		}
@@ -237,9 +237,9 @@ public class OrdererTest extends RienaTestCase {
 	}
 
 	public void testNoObjects() {
-		Orderer<String> o = new Orderer<String>();
+		final Orderer<String> o = new Orderer<String>();
 
-		List<String> l = o.getOrderedObjects();
+		final List<String> l = o.getOrderedObjects();
 
 		assertEquals(0, l.size());
 	}

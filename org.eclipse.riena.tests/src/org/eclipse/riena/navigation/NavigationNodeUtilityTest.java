@@ -28,18 +28,18 @@ public class NavigationNodeUtilityTest extends TestCase {
 	 */
 	public void testGetLongNodeId() {
 
-		ISubModuleNode sm = new SubModuleNode(new NavigationNodeId("sm"));
+		final ISubModuleNode sm = new SubModuleNode(new NavigationNodeId("sm"));
 		assertEquals("/sm", NavigationNodeUtility.getNodeLongId(sm));
 
-		ISubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		final ISubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("sm2"));
 		sm.setParent(sm2);
 		assertEquals("/sm2/sm", NavigationNodeUtility.getNodeLongId(sm));
 
-		IModuleNode m = new ModuleNode();
+		final IModuleNode m = new ModuleNode();
 		sm2.setParent(m);
 		assertEquals("//sm2/sm", NavigationNodeUtility.getNodeLongId(sm));
 
-		IModuleGroupNode mg = new ModuleGroupNode(new NavigationNodeId("group"));
+		final IModuleGroupNode mg = new ModuleGroupNode(new NavigationNodeId("group"));
 		m.setParent(mg);
 		assertEquals("/group//sm2/sm", NavigationNodeUtility.getNodeLongId(sm));
 
@@ -53,22 +53,22 @@ public class NavigationNodeUtilityTest extends TestCase {
 	 */
 	public void testFindNode() throws Exception {
 
-		ISubModuleNode sm = new SubModuleNode(new NavigationNodeId("sm"));
+		final ISubModuleNode sm = new SubModuleNode(new NavigationNodeId("sm"));
 		assertNull(NavigationNodeUtility.findNode("sm2", sm));
 
-		ISubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		final ISubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("sm2"));
 		sm.addChild(sm2);
 		assertSame(sm2, NavigationNodeUtility.findNode("sm2", sm));
 
-		ISubModuleNode sm22 = new SubModuleNode(new NavigationNodeId("sm22"));
+		final ISubModuleNode sm22 = new SubModuleNode(new NavigationNodeId("sm22"));
 		sm.addChild(sm22);
 		assertSame(sm, NavigationNodeUtility.findNode("sm*", sm));
 		assertSame(sm2, NavigationNodeUtility.findNode("sm2", sm));
 		assertSame(sm22, NavigationNodeUtility.findNode("sm22", sm22));
 
-		ISubModuleNode sm222 = new SubModuleNode(new NavigationNodeId("sm222"));
+		final ISubModuleNode sm222 = new SubModuleNode(new NavigationNodeId("sm222"));
 		sm2.addChild(sm222);
-		ISubModuleNode sm21 = new SubModuleNode(new NavigationNodeId("sm21"));
+		final ISubModuleNode sm21 = new SubModuleNode(new NavigationNodeId("sm21"));
 		sm2.addChild(sm21);
 		assertSame(sm21, NavigationNodeUtility.findNode("sm21", sm));
 	}
@@ -81,15 +81,15 @@ public class NavigationNodeUtilityTest extends TestCase {
 	 */
 	public void testFindNodeLongId() throws Exception {
 
-		ISubModuleNode sm = new SubModuleNode(new NavigationNodeId("sm"));
+		final ISubModuleNode sm = new SubModuleNode(new NavigationNodeId("sm"));
 		assertNull(NavigationNodeUtility.findNodeLongId("sm2", sm));
 
-		ISubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		final ISubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("sm2"));
 		sm.addChild(sm2);
 		assertNull(NavigationNodeUtility.findNodeLongId("sm2", sm));
 		assertSame(sm2, NavigationNodeUtility.findNodeLongId("/sm/sm2", sm));
 
-		ISubModuleNode sm22 = new SubModuleNode(new NavigationNodeId("sm22"));
+		final ISubModuleNode sm22 = new SubModuleNode(new NavigationNodeId("sm22"));
 		sm.addChild(sm22);
 		assertSame(sm2, NavigationNodeUtility.findNodeLongId("/sm/sm2", sm));
 		assertSame(sm22, NavigationNodeUtility.findNodeLongId("/sm/sm22", sm22));

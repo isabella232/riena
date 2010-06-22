@@ -34,7 +34,7 @@ public class BasicContextHolder implements IContextHolder {
 	 * @param context
 	 *            the context to work on
 	 */
-	public BasicContextHolder(IContext context) {
+	public BasicContextHolder(final IContext context) {
 		super();
 		this.context = context;
 	}
@@ -50,7 +50,7 @@ public class BasicContextHolder implements IContextHolder {
 	 * @param pContext
 	 *            the context to work on
 	 */
-	public void setContext(IContext pContext) {
+	public void setContext(final IContext pContext) {
 		context = ContextHelper.setContext(context, pContext);
 	}
 

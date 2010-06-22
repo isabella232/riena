@@ -33,13 +33,13 @@ public class FontDescriptorTest extends TestCase {
 	 *             handled by JUnit
 	 */
 	public void testGetFontWithProps() throws Exception {
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 
 		/*
 		 * FontDescriptor without key
 		 */
 		FontDescriptor descriptor = new FontDescriptor(lnf);
-		Font font = descriptor.getFont();
+		final Font font = descriptor.getFont();
 		assertNull(font);
 
 		/*
@@ -51,29 +51,29 @@ public class FontDescriptorTest extends TestCase {
 		/*
 		 * Test shared fonts
 		 */
-		Font font1 = descriptor.getFont();
-		Font font2 = descriptor.getFont();
+		final Font font1 = descriptor.getFont();
+		final Font font2 = descriptor.getFont();
 		assertSame(font1, font2);
 
 		/*
 		 * Test new instance on changed property
 		 */
 		descriptor.setStyle(SWT.BOLD);
-		Font font3 = descriptor.getFont();
+		final Font font3 = descriptor.getFont();
 		assertNotSame(font1, font3);
 
 		/*
 		 * Test default height
 		 */
 		descriptor.setHeight(-1);
-		assertEquals(lnf.getIntegerSetting(LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT).intValue(), descriptor
-				.getHeight());
+		assertEquals(lnf.getIntegerSetting(LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT).intValue(),
+				descriptor.getHeight());
 
 		/*
 		 * FontDescriptor without height == -1
 		 */
 		descriptor = new FontDescriptor(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, -1, -1, lnf);
-		assertEquals(lnf.getIntegerSetting(LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT).intValue(), descriptor
-				.getHeight());
+		assertEquals(lnf.getIntegerSetting(LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT).intValue(),
+				descriptor.getHeight());
 	}
 }

@@ -27,17 +27,17 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
  */
 public class CComboRidget extends AbstractComboRidget {
 
-	private ModifyListener modifyListener = new ModifyListener() {
-		public void modifyText(ModifyEvent e) {
+	private final ModifyListener modifyListener = new ModifyListener() {
+		public void modifyText(final ModifyEvent e) {
 			setText(getUIControlText());
 		}
 	};
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, CCombo.class);
 		if (uiControl != null) {
-			int style = ((CCombo) uiControl).getStyle();
+			final int style = ((CCombo) uiControl).getStyle();
 			if ((style & SWT.READ_ONLY) == 0) {
 				throw new BindingException("Combo must be READ_ONLY"); //$NON-NLS-1$
 			}
@@ -68,7 +68,7 @@ public class CComboRidget extends AbstractComboRidget {
 		// as well
 		getUIControl().getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				CCombo combo = getUIControl();
+				final CCombo combo = getUIControl();
 				if (combo != null && !combo.isDisposed()) {
 					combo.clearSelection(); // this does not change the text
 				}
@@ -87,17 +87,17 @@ public class CComboRidget extends AbstractComboRidget {
 	}
 
 	@Override
-	protected int indexOfInUIControl(String item) {
+	protected int indexOfInUIControl(final String item) {
 		return getUIControl().indexOf(item);
 	}
 
 	@Override
-	protected void selectInUIControl(int index) {
+	protected void selectInUIControl(final int index) {
 		getUIControl().select(index);
 	}
 
 	@Override
-	protected void setItemsToControl(String[] arrItems) {
+	protected void setItemsToControl(final String[] arrItems) {
 		getUIControl().setItems(arrItems);
 	}
 
@@ -117,7 +117,7 @@ public class CComboRidget extends AbstractComboRidget {
 	}
 
 	@Override
-	protected void setTextToControl(String text) {
+	protected void setTextToControl(final String text) {
 		getUIControl().setText(text);
 	}
 

@@ -37,14 +37,14 @@ public class Addresse extends AbstractTransactedObject implements ITransactedObj
 	/**
 	 * @param dummy
 	 */
-	public Addresse(boolean dummy) {
+	public Addresse(final boolean dummy) {
 		super(new GenericOID("addresse", "primkey", Integer.valueOf(nextRandomInt())), "1");
 	}
 
 	/**
 	 * @param primKey
 	 */
-	public Addresse(Integer primKey) {
+	public Addresse(final Integer primKey) {
 		super(new GenericOID("addresse", "primkey", primKey), "1");
 	}
 
@@ -59,7 +59,7 @@ public class Addresse extends AbstractTransactedObject implements ITransactedObj
 	 * @param ort
 	 *            The ort to set.
 	 */
-	public void setOrt(String ort) {
+	public void setOrt(final String ort) {
 		// changeEvent
 		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			this.ort = ort;
@@ -78,7 +78,7 @@ public class Addresse extends AbstractTransactedObject implements ITransactedObj
 	 * @param plz
 	 *            The plz to set.
 	 */
-	public void setPlz(String plz) {
+	public void setPlz(final String plz) {
 		// changeEvent
 		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			this.plz = plz;
@@ -97,7 +97,7 @@ public class Addresse extends AbstractTransactedObject implements ITransactedObj
 	 * @param strasse
 	 *            The strasse to set.
 	 */
-	public void setStrasse(String strasse) {
+	public void setStrasse(final String strasse) {
 		// changeEvent
 		if (ObjectTransactionManager.getInstance().getCurrent().isCleanModus()) {
 			this.strasse = strasse;

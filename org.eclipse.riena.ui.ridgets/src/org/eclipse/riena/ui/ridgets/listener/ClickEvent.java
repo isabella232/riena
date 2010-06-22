@@ -32,7 +32,7 @@ public final class ClickEvent {
 	 * @param rowData
 	 *            the row clicked, or null if no row / column was determined
 	 */
-	public ClickEvent(int columnIndex, int button, Object rowData) {
+	public ClickEvent(final int columnIndex, final int button, final Object rowData) {
 		this.columnIndex = columnIndex;
 		this.button = button;
 		this.rowData = rowData;

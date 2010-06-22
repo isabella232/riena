@@ -46,12 +46,12 @@ public class SwitchSubApplication extends AbstractNavigationHandler implements I
 
 	private boolean toNext;
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		// assumes there is only one application node
-		IApplicationNode applicationNode = ApplicationNodeManager.getApplicationNode();
-		List<ISubApplicationNode> children = applicationNode.getChildren();
-		INavigationNode<?>[] nodes = children.toArray(new ISubApplicationNode[children.size()]);
-		INavigationNode<?> nextNode = toNext ? findNextNode(nodes) : findPreviousNode(nodes, true);
+		final IApplicationNode applicationNode = ApplicationNodeManager.getApplicationNode();
+		final List<ISubApplicationNode> children = applicationNode.getChildren();
+		final INavigationNode<?>[] nodes = children.toArray(new ISubApplicationNode[children.size()]);
+		final INavigationNode<?> nextNode = toNext ? findNextNode(nodes) : findPreviousNode(nodes, true);
 		if (nextNode != null) {
 			nextNode.activate();
 		}
@@ -62,7 +62,7 @@ public class SwitchSubApplication extends AbstractNavigationHandler implements I
 	 * This method is called by the framework. Not intented to be called by
 	 * clients.
 	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 		toNext = "next".equalsIgnoreCase(String.valueOf(data)); //$NON-NLS-1$
 	}
@@ -71,7 +71,7 @@ public class SwitchSubApplication extends AbstractNavigationHandler implements I
 	 * Returns true if this node is selected.
 	 */
 	@Override
-	protected boolean isSelected(INavigationNode<?> node) {
+	protected boolean isSelected(final INavigationNode<?> node) {
 		return node.isSelected();
 	}
 

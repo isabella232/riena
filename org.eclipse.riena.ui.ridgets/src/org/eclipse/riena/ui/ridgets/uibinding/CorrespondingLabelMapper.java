@@ -38,7 +38,7 @@ public class CorrespondingLabelMapper {
 
 	// private Logger logger = Log4r.getLogger(Activator.getDefault(), CorrespondingLabelMapper.class);
 
-	public CorrespondingLabelMapper(IRidgetContainer ridgetContainer) {
+	public CorrespondingLabelMapper(final IRidgetContainer ridgetContainer) {
 		super();
 		this.ridgetContainer = ridgetContainer;
 	}
@@ -49,7 +49,7 @@ public class CorrespondingLabelMapper {
 	 * @param labelProperties
 	 */
 	@InjectExtension(min = 0, max = 1)
-	public static void setCorrespondingLabelConfig(ICorrespondingLabelExtension labelProperties) {
+	public static void setCorrespondingLabelConfig(final ICorrespondingLabelExtension labelProperties) {
 		// Note: this static method uses the extension injector's "onceOnly" feature!
 		if (null != labelProperties) {
 			if (null != labelProperties.getLabelPrefix()) {
@@ -62,12 +62,12 @@ public class CorrespondingLabelMapper {
 	}
 
 	@InjectExtension(min = 0, max = 1)
-	public static void setLabelFinderStrategy(ILabelFinderStrategyExtension strategyProperties) {
+	public static void setLabelFinderStrategy(final ILabelFinderStrategyExtension strategyProperties) {
 		// Note: this static method uses the extension injector's "onceOnly" feature!
 		// logger.log(LogService.LOG_INFO, "Using extension point labelFinderStrategy: " + strategyProperties); //$NON-NLS-1$
 
 		if (null != strategyProperties) {
-			ILabelFinderStrategy customLabelFinderStrategy = strategyProperties.createFinderStrategy();
+			final ILabelFinderStrategy customLabelFinderStrategy = strategyProperties.createFinderStrategy();
 			if (null != customLabelFinderStrategy) {
 				labelFinderStrategy = customLabelFinderStrategy;
 				return;
@@ -94,7 +94,7 @@ public class CorrespondingLabelMapper {
 		}
 
 		ridget.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				if (ITextRidget.PROPERTY_ENABLED.equals(evt.getPropertyName())) {
 					labelRidget.setEnabled(ridget.isEnabled());
 				}

@@ -28,8 +28,8 @@ import org.eclipse.core.databinding.conversion.IConverter;
  * {@link #createFromToConverter()} will return an K-to-L converter and
  * {@link #createToFromConverter()} will return a L-to-K converter.
  * <p>
- * Here is an example that used the {@link ConverterFactory} to convert {@code
- * enum}-values to human-readable Strings:
+ * Here is an example that used the {@link ConverterFactory} to convert
+ * {@code enum}-values to human-readable Strings:
  * 
  * <pre>
  * private enum Answer {
@@ -63,15 +63,15 @@ public final class ConverterFactory<K, L> {
 	 * @param toType
 	 *            the destination-type
 	 */
-	public ConverterFactory(Class<K> fromType, Class<L> toType) {
+	public ConverterFactory(final Class<K> fromType, final Class<L> toType) {
 		this.fromType = fromType;
 		this.toType = toType;
 		modelToUI = new HashMap<K, L>();
 	}
 
 	/**
-	 * Create a conversion rule, mapping the {@code fromValue} to the {@code
-	 * toValue} and back.
+	 * Create a conversion rule, mapping the {@code fromValue} to the
+	 * {@code toValue} and back.
 	 * 
 	 * @param fromValue
 	 *            the origin value
@@ -79,14 +79,14 @@ public final class ConverterFactory<K, L> {
 	 *            the destination value
 	 * @return this instance (fluent API)
 	 */
-	public ConverterFactory<K, L> add(K fromValue, L toValue) {
+	public ConverterFactory<K, L> add(final K fromValue, final L toValue) {
 		modelToUI.put(fromValue, toValue);
 		return this;
 	}
 
 	/**
-	 * Returns an {@link IConverter} that maps values of the origin-type {@code
-	 * K} to the destination-type {@code L}.
+	 * Returns an {@link IConverter} that maps values of the origin-type
+	 * {@code K} to the destination-type {@code L}.
 	 * <p>
 	 * Value pairs must be introduced via the {@link #add(Object, Object)}
 	 * method. Unknown origin-values are mapped to {@code null}.
@@ -95,7 +95,7 @@ public final class ConverterFactory<K, L> {
 	 */
 	public IConverter createFromToConverter() {
 		return new Converter(fromType, toType) {
-			public Object convert(Object fromObject) {
+			public Object convert(final Object fromObject) {
 				return modelToUI.get(fromObject);
 			}
 		};
@@ -112,11 +112,11 @@ public final class ConverterFactory<K, L> {
 	 */
 	public IConverter createToFromConverter() {
 		return new Converter(toType, fromType) {
-			public Object convert(Object fromObject) {
+			public Object convert(final Object fromObject) {
 				K result = null;
-				Iterator<Entry<K, L>> iter = modelToUI.entrySet().iterator();
+				final Iterator<Entry<K, L>> iter = modelToUI.entrySet().iterator();
 				while (result == null && iter.hasNext()) {
-					Entry<K, L> entry = iter.next();
+					final Entry<K, L> entry = iter.next();
 					if (entry.getValue().equals(fromObject)) {
 						result = entry.getKey();
 					}

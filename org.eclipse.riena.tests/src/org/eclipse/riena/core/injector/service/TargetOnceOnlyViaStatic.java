@@ -19,12 +19,12 @@ public class TargetOnceOnlyViaStatic {
 	private static int bindCounter;
 	private static int unbindCounter;
 
-	public static void bind(DepOne dep) {
+	public static void bind(final DepOne dep) {
 		TargetOnceOnlyViaStatic.dep = dep;
 		bindCounter++;
 	}
 
-	public static void unbind(DepOne dep) {
+	public static void unbind(final DepOne dep) {
 		if (TargetOnceOnlyViaStatic.dep == dep) {
 			TargetOnceOnlyViaStatic.dep = null;
 		}

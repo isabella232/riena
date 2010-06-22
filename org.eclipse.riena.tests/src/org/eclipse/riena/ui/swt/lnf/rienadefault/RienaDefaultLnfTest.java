@@ -90,9 +90,9 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 	 */
 	public void testUninitialize() throws Exception {
 
-		Color color = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND);
+		final Color color = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND);
 		assertNotNull(color);
-		Font font = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT);
+		final Font font = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT);
 		assertNotNull(font);
 
 		lnf.uninitialize();
@@ -144,18 +144,18 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 	public void testGetFontWithProps() throws Exception {
 
 		lnf.initialize();
-		Font font = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, 10, SWT.BOLD | SWT.ITALIC);
+		final Font font = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, 10, SWT.BOLD | SWT.ITALIC);
 		FontData data = font.getFontData()[0];
 		assertEquals(SWT.BOLD | SWT.ITALIC, data.getStyle());
 
-		Font font1 = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, 12, SWT.BOLD);
+		final Font font1 = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, 12, SWT.BOLD);
 		data = font1.getFontData()[0];
 		assertEquals(SWT.BOLD, data.getStyle());
 
-		Font font2 = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, 12, SWT.BOLD);
+		final Font font2 = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, 12, SWT.BOLD);
 		assertSame(font1, font2);
 
-		Font fontNull = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND, 12, SWT.BOLD);
+		final Font fontNull = lnf.getFont(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND, 12, SWT.BOLD);
 		assertNull(fontNull);
 	}
 
@@ -182,14 +182,14 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 	 */
 	public void testSetTheme() throws Exception {
 
-		Color color1 = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND);
+		final Color color1 = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND);
 		assertNotNull(color1);
 
 		lnf.setTheme(new DummyTheme());
 		lnf.initialize();
 		assertFalse(color1.isDisposed());
 
-		Color color2 = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND);
+		final Color color2 = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND);
 		assertNull(color2);
 
 	}
@@ -292,7 +292,7 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 	 */
 	private static class DummyTheme implements ILnfTheme {
 
-		public void customizeLnf(ILnfCustomizer customizer) {
+		public void customizeLnf(final ILnfCustomizer customizer) {
 			customizer.putLnfSetting(INTEGER_KEY, INTEGER_VALUE);
 			customizer.putLnfSetting(BOOLEAN_KEY, BOOLEAN_VALUE);
 			customizer.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "0815");
@@ -307,7 +307,7 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 	private static class DummyTheme2 extends DummyTheme {
 
 		@Override
-		public void customizeLnf(ILnfCustomizer customizer) {
+		public void customizeLnf(final ILnfCustomizer customizer) {
 			super.customizeLnf(customizer);
 			customizer.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "borderMarkerSupport");
 		}

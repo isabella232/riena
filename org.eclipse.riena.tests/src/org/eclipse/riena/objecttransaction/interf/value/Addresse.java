@@ -38,7 +38,7 @@ public class Addresse extends AbstractTransactedObject implements IAddresse {
 	/**
 	 * @param dummy
 	 */
-	public Addresse(boolean dummy) {
+	public Addresse(final boolean dummy) {
 		super(new GenericOID("addresse", "primkey", Integer.valueOf(nextRandomInt())), "1");
 		if (getCurrentObjectTransaction().isCleanModus()) {
 			getCurrentObjectTransaction().register(this);
@@ -50,7 +50,7 @@ public class Addresse extends AbstractTransactedObject implements IAddresse {
 	/**
 	 * @param primKey
 	 */
-	public Addresse(Integer primKey) {
+	public Addresse(final Integer primKey) {
 		super(new GenericOID("addresse", "primkey", primKey), "1");
 		if (getCurrentObjectTransaction().isCleanModus()) {
 			getCurrentObjectTransaction().register(this);
@@ -70,7 +70,7 @@ public class Addresse extends AbstractTransactedObject implements IAddresse {
 	 * @param ort
 	 *            The ort to set.
 	 */
-	public void setOrt(String ort) {
+	public void setOrt(final String ort) {
 		// changeEvent
 		if (getCurrentObjectTransaction().isCleanModus()) {
 			this.ort = ort;
@@ -89,7 +89,7 @@ public class Addresse extends AbstractTransactedObject implements IAddresse {
 	 * @param plz
 	 *            The plz to set.
 	 */
-	public void setPlz(String plz) {
+	public void setPlz(final String plz) {
 		// changeEvent
 		if (getCurrentObjectTransaction().isCleanModus()) {
 			this.plz = plz;
@@ -108,7 +108,7 @@ public class Addresse extends AbstractTransactedObject implements IAddresse {
 	 * @param strasse
 	 *            The strasse to set.
 	 */
-	public void setStrasse(String strasse) {
+	public void setStrasse(final String strasse) {
 		// changeEvent
 		if (getCurrentObjectTransaction().isCleanModus()) {
 			this.strasse = strasse;

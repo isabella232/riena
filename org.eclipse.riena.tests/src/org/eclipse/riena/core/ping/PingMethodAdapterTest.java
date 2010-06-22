@@ -61,13 +61,13 @@ public class PingMethodAdapterTest extends RienaTestCase {
 		try {
 			new PingMethodAdapter(pingableMock, null);
 			fail("Expected precondition violation");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			ok();
 		}
 		try {
 			new PingMethodAdapter(null, pingableMock.getPingDiesUndDasMethod());
 			fail("Expected precondition violation");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			ok();
 		}
 		new PingMethodAdapter(pingableMock, pingableMock.getPingDiesUndDasMethod());
@@ -77,7 +77,7 @@ public class PingMethodAdapterTest extends RienaTestCase {
 	 * Tests method {@link PingMethodAdapter#ping(PingVisitor) ping()}.
 	 */
 	public void testPing() throws Exception {
-		PingMethodAdapter adapter = new PingMethodAdapter(pingableMock, pingableMock.getPingDiesUndDasMethod());
+		final PingMethodAdapter adapter = new PingMethodAdapter(pingableMock, pingableMock.getPingDiesUndDasMethod());
 		adapter.ping(new PingVisitor());
 		pingableMock.verify();
 	}
@@ -87,9 +87,9 @@ public class PingMethodAdapterTest extends RienaTestCase {
 	 * getPingFingerprint()}.
 	 */
 	public void testGetPingFingerprint() throws Exception {
-		PingMethodAdapter adapter = new PingMethodAdapter(pingableMock, pingableMock.getPingDiesUndDasMethod());
-		assertEquals(new PingFingerprint(pingableMock, pingableMock.getPingDiesUndDasMethod().getName()), adapter
-				.getPingFingerprint());
+		final PingMethodAdapter adapter = new PingMethodAdapter(pingableMock, pingableMock.getPingDiesUndDasMethod());
+		assertEquals(new PingFingerprint(pingableMock, pingableMock.getPingDiesUndDasMethod().getName()),
+				adapter.getPingFingerprint());
 	}
 
 	/**
@@ -97,24 +97,24 @@ public class PingMethodAdapterTest extends RienaTestCase {
 	 * {@link PingMethodAdapter#hashCode() hashCode()}.
 	 */
 	public void testEqualsAndHash() throws Exception {
-		PingMethodAdapter adapter = new PingMethodAdapter(pingableMock, pingableMock.getPingDiesUndDasMethod());
+		final PingMethodAdapter adapter = new PingMethodAdapter(pingableMock, pingableMock.getPingDiesUndDasMethod());
 		checkEqualsAndHashCode(true, adapter, adapter);
-		checkEqualsAndHashCode(true, adapter, new PingMethodAdapter(pingableMock, pingableMock
-				.getPingDiesUndDasMethod()));
-		checkEqualsAndHashCode(true, adapter, new PingMethodAdapter(pingableMock, pingableMock
-				.getPingDiesUndDasMethod()));
+		checkEqualsAndHashCode(true, adapter,
+				new PingMethodAdapter(pingableMock, pingableMock.getPingDiesUndDasMethod()));
+		checkEqualsAndHashCode(true, adapter,
+				new PingMethodAdapter(pingableMock, pingableMock.getPingDiesUndDasMethod()));
 
 		checkEqualsAndHashCode(false, adapter, new PingMethodAdapter(pingableMock, pingableMock.getNonePingMethod()));
-		PingableMock otherPingableMock = new PingableMock();
-		checkEqualsAndHashCode(false, adapter, new PingMethodAdapter(otherPingableMock, otherPingableMock
-				.getPingDiesUndDasMethod()));
-		checkEqualsAndHashCode(false, adapter, new PingMethodAdapter(otherPingableMock, pingableMock
-				.getPingDiesUndDasMethod()));
+		final PingableMock otherPingableMock = new PingableMock();
+		checkEqualsAndHashCode(false, adapter,
+				new PingMethodAdapter(otherPingableMock, otherPingableMock.getPingDiesUndDasMethod()));
+		checkEqualsAndHashCode(false, adapter,
+				new PingMethodAdapter(otherPingableMock, pingableMock.getPingDiesUndDasMethod()));
 		checkEqualsAndHashCode(false, adapter, 3);
 		checkEqualsAndHashCode(false, adapter, null);
 	}
 
-	private void checkEqualsAndHashCode(boolean equalityExpected, Object first, Object second) {
+	private void checkEqualsAndHashCode(final boolean equalityExpected, final Object first, final Object second) {
 
 		if (first == null) {
 			assertEquals(equalityExpected, first == second);
@@ -130,7 +130,7 @@ public class PingMethodAdapterTest extends RienaTestCase {
 	 * Tests method {@link PingMethodAdapter#toString() toString()}.
 	 */
 	public void testToString() throws Exception {
-		PingMethodAdapter adapter = new PingMethodAdapter(pingableMock, pingableMock.getPingDiesUndDasMethod());
+		final PingMethodAdapter adapter = new PingMethodAdapter(pingableMock, pingableMock.getPingDiesUndDasMethod());
 		assertEquals("PingMethodAdapter[pingable=" + pingableMock + ", method="
 				+ pingableMock.getPingDiesUndDasMethod().getName() + "]", adapter.toString());
 	}

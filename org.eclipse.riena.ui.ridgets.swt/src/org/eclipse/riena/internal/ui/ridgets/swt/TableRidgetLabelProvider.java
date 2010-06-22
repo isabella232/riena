@@ -50,11 +50,12 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	 *             if attributeMap and labelProviders have not the same number
 	 *             of entries
 	 */
-	public TableRidgetLabelProvider(IObservableMap[] attributeMap, IColumnFormatter[] formatters) {
+	public TableRidgetLabelProvider(final IObservableMap[] attributeMap, final IColumnFormatter[] formatters) {
 		this(attributeMap, formatters, attributeMap.length);
 	}
 
-	protected TableRidgetLabelProvider(IObservableMap[] attributeMap, IColumnFormatter[] formatters, int numColumns) {
+	protected TableRidgetLabelProvider(final IObservableMap[] attributeMap, final IColumnFormatter[] formatters,
+			final int numColumns) {
 		super(attributeMap);
 		Assert.isLegal(numColumns == formatters.length, String.format("expected %d formatters, got %d", numColumns, //$NON-NLS-1$
 				formatters.length));
@@ -66,22 +67,22 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	}
 
 	@Override
-	public Image getImage(Object element) {
+	public Image getImage(final Object element) {
 		return getColumnImage(element, 0);
 	}
 
 	@Override
-	public Image getColumnImage(Object element, int columnIndex) {
+	public Image getColumnImage(final Object element, final int columnIndex) {
 		Image result = null;
 		if (columnIndex < attributeMap.length) {
-			IColumnFormatter formatter = this.formatters[columnIndex];
+			final IColumnFormatter formatter = this.formatters[columnIndex];
 			if (formatter != null) {
 				result = (Image) formatter.getImage(element);
 			}
 			if (result == null) {
-				Object value = attributeMap[columnIndex].get(element);
+				final Object value = attributeMap[columnIndex].get(element);
 				if (value instanceof Boolean) {
-					String key = ((Boolean) value).booleanValue() ? SharedImages.IMG_CHECKED
+					final String key = ((Boolean) value).booleanValue() ? SharedImages.IMG_CHECKED
 							: SharedImages.IMG_UNCHECKED;
 					result = Activator.getSharedImage(key);
 				}
@@ -91,10 +92,10 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	}
 
 	@Override
-	public String getColumnText(Object element, int columnIndex) {
+	public String getColumnText(final Object element, final int columnIndex) {
 		String result = null;
 		if (columnIndex < formatters.length) {
-			IColumnFormatter formatter = this.formatters[columnIndex];
+			final IColumnFormatter formatter = this.formatters[columnIndex];
 			if (formatter != null) {
 				result = formatter.getText(element);
 			}
@@ -105,9 +106,9 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		return result;
 	}
 
-	public Color getForeground(Object element, int columnIndex) {
+	public Color getForeground(final Object element, final int columnIndex) {
 		if (columnIndex < formatters.length) {
-			IColumnFormatter formatter = this.formatters[columnIndex];
+			final IColumnFormatter formatter = this.formatters[columnIndex];
 			if (formatter != null) {
 				return (Color) formatter.getForeground(element);
 			}
@@ -115,9 +116,9 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		return null;
 	}
 
-	public Color getBackground(Object element, int columnIndex) {
+	public Color getBackground(final Object element, final int columnIndex) {
 		if (columnIndex < formatters.length) {
-			IColumnFormatter formatter = this.formatters[columnIndex];
+			final IColumnFormatter formatter = this.formatters[columnIndex];
 			if (formatter != null) {
 				return (Color) formatter.getBackground(element);
 			}
@@ -125,9 +126,9 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		return null;
 	}
 
-	public Font getFont(Object element, int columnIndex) {
+	public Font getFont(final Object element, final int columnIndex) {
 		if (columnIndex < formatters.length) {
-			IColumnFormatter formatter = this.formatters[columnIndex];
+			final IColumnFormatter formatter = this.formatters[columnIndex];
 			if (formatter != null) {
 				return (Font) formatter.getFont(element);
 			}
@@ -143,7 +144,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	 *            column index
 	 * @return value or {@code null} if column index is not correct
 	 */
-	public Object getColumnValue(Object element, int columnIndex) {
+	public Object getColumnValue(final Object element, final int columnIndex) {
 		if (columnIndex < attributeMap.length) {
 			return attributeMap[columnIndex].get(element);
 		}
@@ -153,7 +154,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	// protected methods
 	////////////////////
 
-	protected IColumnFormatter getFormatter(int columnIndex) {
+	protected IColumnFormatter getFormatter(final int columnIndex) {
 		return columnIndex < formatters.length ? formatters[columnIndex] : null;
 	}
 
@@ -164,7 +165,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		return this.formatters.length;
 	}
 
-	void setFormatters(IColumnFormatter[] formatters) {
+	void setFormatters(final IColumnFormatter[] formatters) {
 		Assert.isLegal(numColumns == formatters.length, String.format("expected %d formatters, got %d", numColumns, //$NON-NLS-1$
 				formatters.length));
 		this.formatters = new IColumnFormatter[formatters.length];

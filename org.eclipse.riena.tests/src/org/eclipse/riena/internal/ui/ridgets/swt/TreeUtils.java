@@ -27,9 +27,9 @@ public final class TreeUtils {
 	 * Returns the number of items in the tree starting from the root
 	 * (included).
 	 */
-	public static int getItemCount(Tree control) {
+	public static int getItemCount(final Tree control) {
 		int count = 0;
-		for (TreeItem root : control.getItems()) {
+		for (final TreeItem root : control.getItems()) {
 			count += getItemCount(root);
 		}
 		return count;
@@ -38,12 +38,12 @@ public final class TreeUtils {
 	/**
 	 * Returns the number of items in subtree starting from item (included).
 	 */
-	public static int getItemCount(TreeItem item) {
+	public static int getItemCount(final TreeItem item) {
 		int count = 0;
 		if (item != null) {
 			count++;
 			if (item.getExpanded()) {
-				for (TreeItem child : item.getItems()) {
+				for (final TreeItem child : item.getItems()) {
 					count += getItemCount(child);
 				}
 			}
@@ -59,12 +59,12 @@ public final class TreeUtils {
 	 * @param item
 	 *            a non-null TreeItem
 	 */
-	public synchronized static void print(TreeItem item) {
+	public synchronized static void print(final TreeItem item) {
 		printSpaces(level);
 		System.out.println(item);
 		level++;
 		try {
-			for (TreeItem child : item.getItems()) {
+			for (final TreeItem child : item.getItems()) {
 				print(child);
 			}
 		} finally {
@@ -78,8 +78,8 @@ public final class TreeUtils {
 	 * @param tree
 	 *            a non-null Tree instance
 	 */
-	public synchronized static void print(Tree tree) {
-		for (TreeItem child : tree.getItems()) {
+	public synchronized static void print(final Tree tree) {
+		for (final TreeItem child : tree.getItems()) {
 			print(child);
 		}
 		System.out.println("###");
@@ -88,7 +88,7 @@ public final class TreeUtils {
 	// helping methods
 	// ////////////////
 
-	private static void printSpaces(int numSpaces) {
+	private static void printSpaces(final int numSpaces) {
 		Assert.isLegal(numSpaces >= 0);
 		for (int i = 0; i < numSpaces; i++) {
 			System.out.print(" ");

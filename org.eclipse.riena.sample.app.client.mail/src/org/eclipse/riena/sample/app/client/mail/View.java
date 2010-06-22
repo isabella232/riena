@@ -29,14 +29,14 @@ public class View extends ViewPart {
 	public static final String ID = "rcp.mail.view"; //$NON-NLS-1$
 
 	@Override
-	public void createPartControl(Composite parent) {
-		Composite top = new Composite(parent, SWT.NONE);
+	public void createPartControl(final Composite parent) {
+		final Composite top = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		top.setLayout(layout);
 		// top banner
-		Composite banner = new Composite(top, SWT.NONE);
+		final Composite banner = new Composite(top, SWT.NONE);
 		banner.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL, GridData.VERTICAL_ALIGN_BEGINNING, true,
 				false));
 		layout = new GridLayout();
@@ -46,7 +46,7 @@ public class View extends ViewPart {
 		banner.setLayout(layout);
 
 		// setup bold font
-		Font boldFont = JFaceResources.getFontRegistry().getBold(JFaceResources.DEFAULT_FONT);
+		final Font boldFont = JFaceResources.getFontRegistry().getBold(JFaceResources.DEFAULT_FONT);
 
 		Label l = new Label(banner, SWT.WRAP);
 		l.setText("Subject:"); //$NON-NLS-1$
@@ -62,7 +62,7 @@ public class View extends ViewPart {
 		link.setText("<a>nicole@mail.org</a>"); //$NON-NLS-1$
 		link.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
+			public void widgetSelected(final SelectionEvent e) {
 				MessageDialog.openInformation(getSite().getShell(),
 						"Not Implemented", "Imagine the address book or a new message being created now."); //$NON-NLS-1$ //$NON-NLS-2$
 			}
@@ -74,16 +74,15 @@ public class View extends ViewPart {
 		l = new Label(banner, SWT.WRAP);
 		l.setText("10:34 am"); //$NON-NLS-1$
 		// message contents
-		Text text = new Text(top, SWT.MULTI | SWT.WRAP);
-		text
-				.setText("This RCP Application was generated from the PDE Plug-in Project wizard. This sample shows how to:\n" + //$NON-NLS-1$
-						"- add a top-level menu and toolbar with actions\n" + //$NON-NLS-1$
-						"- add keybindings to actions\n" + //$NON-NLS-1$
-						"- create views that can't be closed and\n" + //$NON-NLS-1$
-						"  multiple instances of the same view\n" + //$NON-NLS-1$
-						"- perspectives with placeholders for new views\n" + //$NON-NLS-1$
-						"- use the default about dialog\n" + //$NON-NLS-1$
-						"- create a product definition\n"); //$NON-NLS-1$
+		final Text text = new Text(top, SWT.MULTI | SWT.WRAP);
+		text.setText("This RCP Application was generated from the PDE Plug-in Project wizard. This sample shows how to:\n" + //$NON-NLS-1$
+				"- add a top-level menu and toolbar with actions\n" + //$NON-NLS-1$
+				"- add keybindings to actions\n" + //$NON-NLS-1$
+				"- create views that can't be closed and\n" + //$NON-NLS-1$
+				"  multiple instances of the same view\n" + //$NON-NLS-1$
+				"- perspectives with placeholders for new views\n" + //$NON-NLS-1$
+				"- use the default about dialog\n" + //$NON-NLS-1$
+				"- create a product definition\n"); //$NON-NLS-1$
 		text.setLayoutData(new GridData(GridData.FILL_BOTH));
 	}
 

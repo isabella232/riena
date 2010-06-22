@@ -27,7 +27,7 @@ public class TestGregorianCalendar implements ITestGregorianCalendar {
 	 * org.eclipse.riena.sample.app.common.calendar.ITestGregorianCalendar#setTimes
 	 * (java.util.GregorianCalendar, java.util.GregorianCalendar)
 	 */
-	public long diffTimes1(GregorianCalendar from, GregorianCalendar till) {
+	public long diffTimes1(final GregorianCalendar from, final GregorianCalendar till) {
 		System.out.println(from);
 		System.out.println(till);
 		return till.getTimeInMillis() - from.getTimeInMillis();
@@ -40,7 +40,7 @@ public class TestGregorianCalendar implements ITestGregorianCalendar {
 	 * org.eclipse.riena.sample.app.common.calendar.ITestGregorianCalendar#diffTimes
 	 * (java.util.Date, java.util.Date)
 	 */
-	public long diffTimes2(Date from, Date till) {
+	public long diffTimes2(final Date from, final Date till) {
 		System.out.println(from);
 		System.out.println(till);
 		return till.getTime() - from.getTime();

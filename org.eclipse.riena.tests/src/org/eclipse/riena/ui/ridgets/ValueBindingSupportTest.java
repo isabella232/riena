@@ -98,9 +98,9 @@ public class ValueBindingSupportTest extends RienaTestCase {
 		valueBindingSupport.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UPDATE_TO_MODEL);
 		valueBindingSupport.addValidationMessage("TestMessage1");
 		valueBindingSupport.addValidationMessage("TestMessage2");
-		ErrorMessageMarker messageMarker1 = new ErrorMessageMarker("TestMessage3");
+		final ErrorMessageMarker messageMarker1 = new ErrorMessageMarker("TestMessage3");
 		valueBindingSupport.addValidationMessage(messageMarker1);
-		MessageMarker messageMarker2 = new MessageMarker("TestMessage4");
+		final MessageMarker messageMarker2 = new MessageMarker("TestMessage4");
 		valueBindingSupport.addValidationMessage(messageMarker2);
 
 		assertEquals(0, markable.getMarkers().size());
@@ -140,14 +140,14 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	}
 
 	public void testAddValidationMessageForUnknownRule() {
-		AlwaysWrongValidator rule = new AlwaysWrongValidator();
+		final AlwaysWrongValidator rule = new AlwaysWrongValidator();
 		valueBindingSupport.addValidationMessage("foo", rule);
 
 		assertEquals(0, markable.getMarkers().size());
 	}
 
 	public void testRemoveValidationMessageWhenRemovingRule() {
-		IValidator rule = new AlwaysWrongValidator();
+		final IValidator rule = new AlwaysWrongValidator();
 		valueBindingSupport.addValidationMessage("foo", rule);
 		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
 
@@ -164,16 +164,16 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	 * Tests that adding the same validation several times has no effect
 	 */
 	public void testAddSameValidationMessage() {
-		EvenNumberOfCharacters rule = new EvenNumberOfCharacters();
+		final EvenNumberOfCharacters rule = new EvenNumberOfCharacters();
 		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
 		valueBindingSupport.addValidationMessage("TestMessage1");
 		valueBindingSupport.addValidationMessage("TestMessage1");
 		valueBindingSupport.addValidationMessage("TestMessage2", rule);
 		valueBindingSupport.addValidationMessage("TestMessage2", rule);
-		MessageMarker messageMarker = new MessageMarker("TestMessage3");
+		final MessageMarker messageMarker = new MessageMarker("TestMessage3");
 		valueBindingSupport.addValidationMessage(messageMarker);
 		valueBindingSupport.addValidationMessage(messageMarker);
-		MessageMarker messageMarker2 = new MessageMarker("TestMessage4");
+		final MessageMarker messageMarker2 = new MessageMarker("TestMessage4");
 		valueBindingSupport.addValidationMessage(messageMarker2, rule);
 		valueBindingSupport.addValidationMessage(messageMarker2, rule);
 
@@ -200,7 +200,7 @@ public class ValueBindingSupportTest extends RienaTestCase {
 		assertEquals(2, markable.getMarkers().size());
 		assertMessageMarkers("TestMessage1");
 
-		MessageMarker messageMarker = new MessageMarker("TestMessage2");
+		final MessageMarker messageMarker = new MessageMarker("TestMessage2");
 		valueBindingSupport.addValidationMessage(messageMarker);
 
 		assertEquals(3, markable.getMarkers().size());
@@ -218,8 +218,8 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	}
 
 	public void testSpecialValidationMessages() throws Exception {
-		EvenNumberOfCharacters evenNumberOfCharacters = new EvenNumberOfCharacters();
-		NotEndingWithDisaster notEndingWithDisaster = new NotEndingWithDisaster();
+		final EvenNumberOfCharacters evenNumberOfCharacters = new EvenNumberOfCharacters();
+		final NotEndingWithDisaster notEndingWithDisaster = new NotEndingWithDisaster();
 		valueBindingSupport.addValidationRule(evenNumberOfCharacters, ValidationTime.ON_UPDATE_TO_MODEL);
 		valueBindingSupport.addValidationRule(notEndingWithDisaster, ValidationTime.ON_UPDATE_TO_MODEL);
 		valueBindingSupport.addValidationMessage("TestNotEvenMessage1", evenNumberOfCharacters);
@@ -251,13 +251,13 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	public void testValidationRuleAddAndRemove() {
 		final IValidator rule = new EvenNumberOfCharacters();
 
-		boolean isOnEdit1 = valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UI_CONTROL_EDIT);
+		final boolean isOnEdit1 = valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UI_CONTROL_EDIT);
 
 		assertTrue(isOnEdit1);
 		assertTrue(valueBindingSupport.getOnEditValidators().contains(rule));
 		assertFalse(valueBindingSupport.getAfterGetValidators().contains(rule));
 
-		boolean isOnEdit2 = valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
+		final boolean isOnEdit2 = valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
 
 		assertFalse(isOnEdit2);
 		assertTrue(valueBindingSupport.getOnEditValidators().contains(rule));
@@ -273,18 +273,18 @@ public class ValueBindingSupportTest extends RienaTestCase {
 		try {
 			valueBindingSupport.addValidationRule(null, ValidationTime.ON_UPDATE_TO_MODEL);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
-		boolean result = valueBindingSupport.removeValidationRule(null);
+		final boolean result = valueBindingSupport.removeValidationRule(null);
 		assertFalse(result);
 	}
 
 	public void testAddAndRemoveValidationMessageWithRule() {
 		assertEquals(0, markable.getMarkersOfType(ValidationMessageMarker.class).size());
 
-		MinLength rule = new MinLength(3);
+		final MinLength rule = new MinLength(3);
 		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
 		valueBindingSupport.addValidationMessage("too short", rule);
 		target.setValue("a");
@@ -300,7 +300,7 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	public void testAddAndRemoveValidationMessageWithoutRule() {
 		assertEquals(0, markable.getMarkersOfType(ValidationMessageMarker.class).size());
 
-		MinLength rule = new MinLength(3);
+		final MinLength rule = new MinLength(3);
 		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
 		valueBindingSupport.addValidationMessage("too short");
 		target.setValue("a");
@@ -317,9 +317,9 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	 * As per Bug 289458
 	 */
 	public void testShowErrorAfterValidationOnUpdateWithBlock() {
-		ValidRange rule = new ValidRange(18, 80);
+		final ValidRange rule = new ValidRange(18, 80);
 		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
-		IStatus errorStatus = rule.validate("81");
+		final IStatus errorStatus = rule.validate("81");
 		assertEquals(ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH, errorStatus.getCode());
 
 		assertEquals(0, markable.getMarkersOfType(ErrorMarker.class).size());
@@ -328,7 +328,7 @@ public class ValueBindingSupportTest extends RienaTestCase {
 
 		assertEquals(1, markable.getMarkersOfType(ErrorMarker.class).size());
 
-		IStatus okStatus = rule.validate("80");
+		final IStatus okStatus = rule.validate("80");
 		valueBindingSupport.updateValidationStatus(rule, okStatus);
 
 		assertEquals(0, markable.getMarkersOfType(ErrorMarker.class).size());
@@ -338,9 +338,9 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	 * As per Bug 313969
 	 */
 	public void testUsesBeanObservablesWhenBindingABean() {
-		Person person = new Person("Max", "Muster"); //$NON-NLS-1$ //$NON-NLS-2$
-		Address pdx = createAddress("pdx", "Portland", "97209", "USA"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		Address fra = createAddress("fra", "Frankfurt", "60329", "DE"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		final Person person = new Person("Max", "Muster"); //$NON-NLS-1$ //$NON-NLS-2$
+		final Address pdx = createAddress("pdx", "Portland", "97209", "USA"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		final Address fra = createAddress("fra", "Frankfurt", "60329", "DE"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		person.setAddress(pdx);
 
 		valueBindingSupport.bindToModel(person, "address.streetAndNumber"); //$NON-NLS-1$
@@ -362,7 +362,7 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	}
 
 	public void testUpdateFromModelOnRequest2() {
-		Person person = new Person("muster", "max"); //$NON-NLS-1$ //$NON-NLS-2$
+		final Person person = new Person("muster", "max"); //$NON-NLS-1$ //$NON-NLS-2$
 		valueBindingSupport.bindToModel(person, "firstname");
 		valueBindingSupport.updateFromModel();
 
@@ -388,18 +388,18 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	// helping methods
 	// ////////////////
 
-	private void assertMessageMarkers(String... messages) {
-		Collection<String> missingMessages = new ArrayList<String>(Arrays.asList(messages));
+	private void assertMessageMarkers(final String... messages) {
+		final Collection<String> missingMessages = new ArrayList<String>(Arrays.asList(messages));
 
-		for (IMessageMarker messageMarker : markable.getMarkersOfType(IMessageMarker.class)) {
+		for (final IMessageMarker messageMarker : markable.getMarkersOfType(IMessageMarker.class)) {
 			missingMessages.remove(messageMarker.getMessage());
 		}
 
 		assertTrue("missing MessageMarker for " + missingMessages, missingMessages.isEmpty());
 	}
 
-	public static Address createAddress(String str, String city, String zip, String cc) {
-		Address result = new Address();
+	public static Address createAddress(final String str, final String city, final String zip, final String cc) {
+		final Address result = new Address();
 		result.setStreetAndNumber(str);
 		result.setTown(city);
 		result.setPostalCode(Integer.valueOf(zip));
@@ -446,7 +446,7 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	}
 
 	private static final class AlwaysWrongValidator implements IValidator {
-		public IStatus validate(Object value) {
+		public IStatus validate(final Object value) {
 			return ValidationRuleStatus.error(false, "wrong"); //$NON-NLS-1$
 		}
 	}

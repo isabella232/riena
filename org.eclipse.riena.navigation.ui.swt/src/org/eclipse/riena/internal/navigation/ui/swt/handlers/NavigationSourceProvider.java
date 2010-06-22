@@ -43,7 +43,7 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 	private static NavigationSourceProvider sourceProvider;
 
 	@Override
-	public void initialize(IServiceLocator locator) {
+	public void initialize(final IServiceLocator locator) {
 		super.initialize(locator);
 		sourceProvider = this;
 	}
@@ -73,7 +73,7 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 		return PROVIDED_SOURCE_NAMES;
 	}
 
-	void fireSourceChange(INavigationNode<?> node) {
+	void fireSourceChange(final INavigationNode<?> node) {
 		fireSourceChanged(ACTIVE_NODE_ID, getPovidesSourceName(node), getTypeNodeId(node));
 	}
 
@@ -85,7 +85,7 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 	 *            navigation node
 	 * @return type ID of the given node
 	 */
-	private String getTypeNodeId(INavigationNode<?> node) {
+	private String getTypeNodeId(final INavigationNode<?> node) {
 		if (node != null && node.getNodeId() != null) {
 			return node.getNodeId().getTypeId();
 		} else {
@@ -100,7 +100,7 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 	 *            navigation node
 	 * @return name of variable
 	 */
-	public String getPovidesSourceName(INavigationNode<?> node) {
+	public String getPovidesSourceName(final INavigationNode<?> node) {
 
 		if (node == null) {
 			return null;
@@ -129,7 +129,7 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 	 * @param node
 	 *            node that was activated right now
 	 */
-	public static void activeNodeChanged(INavigationNode<?> node) {
+	public static void activeNodeChanged(final INavigationNode<?> node) {
 		if (sourceProvider != null) {
 			sourceProvider.fireSourceChange(node);
 			if (node.getParent() != null && !(node.getParent() instanceof IApplicationNode)) {

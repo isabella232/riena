@@ -60,7 +60,7 @@ public class StatuslineTimeTest extends TestCase {
 	 */
 	public void testCreateContents() {
 
-		Control[] controls = statusTime.getChildren();
+		final Control[] controls = statusTime.getChildren();
 		assertEquals(1, controls.length);
 		assertTrue(controls[0] instanceof CLabel);
 
@@ -73,24 +73,24 @@ public class StatuslineTimeTest extends TestCase {
 	 */
 	public void testUpdateTime() throws ParseException {
 
-		Date dateBeforeUpdate = new Date();
-		Calendar cal1 = GregorianCalendar.getInstance();
+		final Date dateBeforeUpdate = new Date();
+		final Calendar cal1 = GregorianCalendar.getInstance();
 		cal1.setTime(dateBeforeUpdate);
 		cal1.set(0, 0, 0);
 		cal1.set(Calendar.SECOND, 0);
 
 		ReflectionUtils.invokeHidden(statusTime, "updateTime");
-		Control[] controls = statusTime.getChildren();
-		CLabel label = (CLabel) controls[0];
-		String timeString = label.getText();
+		final Control[] controls = statusTime.getChildren();
+		final CLabel label = (CLabel) controls[0];
+		final String timeString = label.getText();
 
-		SimpleDateFormat format = ReflectionUtils.invokeHidden(statusTime, "getFormat");
-		Date labelDate = format.parse(timeString);
-		Calendar cal2 = GregorianCalendar.getInstance();
+		final SimpleDateFormat format = ReflectionUtils.invokeHidden(statusTime, "getFormat");
+		final Date labelDate = format.parse(timeString);
+		final Calendar cal2 = GregorianCalendar.getInstance();
 		cal2.setTime(labelDate);
 		cal2.set(0, 0, 0);
 
-		long diff = cal1.getTimeInMillis() - cal2.getTimeInMillis();
+		final long diff = cal1.getTimeInMillis() - cal2.getTimeInMillis();
 		assertTrue(diff >= 0);
 		assertTrue(diff < 1000);
 

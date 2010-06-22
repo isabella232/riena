@@ -25,12 +25,12 @@ public class MenuItemRidgetMatcher extends RidgetMatcher {
 	 * @param idPattern
 	 *            ID
 	 */
-	public MenuItemRidgetMatcher(String idPattern) {
+	public MenuItemRidgetMatcher(final String idPattern) {
 		super(idPattern);
 	}
 
 	@Override
-	public boolean matches(Object... args) {
+	public boolean matches(final Object... args) {
 
 		if ((args == null) || (args.length <= 0)) {
 			return false;
@@ -39,8 +39,8 @@ public class MenuItemRidgetMatcher extends RidgetMatcher {
 			return false;
 		}
 
-		IActionRidget ridget = (IActionRidget) args[0];
-		String ridgetId = ridget.getID();
+		final IActionRidget ridget = (IActionRidget) args[0];
+		final String ridgetId = ridget.getID();
 		StringMatcher matcher = new StringMatcher(getMenuItemId());
 		if (matcher.match(ridgetId)) {
 			return true;

@@ -28,10 +28,11 @@ public final class UIFilterProviderAccessor {
 
 	/**
 	 * @return
-	 * @deprecated This should be replaced with {@code
+	 * @deprecated This should be replaced with
+	 *             {@code
 	 *             Service.get(Activator.getDefault().getContext(),
-	 *             IUIFilterProvider.class);} or with {@code
-	 *             With.service(..).doo(...);}
+	 *             IUIFilterProvider.class);} or with
+	 *             {@code With.service(..).doo(...);}
 	 */
 	@Deprecated
 	static public IUIFilterProvider getFilterProvider() {

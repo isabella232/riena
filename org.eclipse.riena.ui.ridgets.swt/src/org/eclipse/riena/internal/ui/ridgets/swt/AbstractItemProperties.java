@@ -11,24 +11,25 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Listener;
+
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * This class stores the properties of an item.
  */
 public abstract class AbstractItemProperties {
 
-	private AbstractItemRidget ridget;
-	private int style;
-	private Object data;
-	private String id;
-	private String text;
-	private Image image;
-	private Listener[] selectionListeners;
+	private final AbstractItemRidget ridget;
+	private final int style;
+	private final Object data;
+	private final String id;
+	private final String text;
+	private final Image image;
+	private final Listener[] selectionListeners;
 
 	/**
 	 * Creates a new instance of {@code ItemProperties}.<br>
@@ -37,8 +38,8 @@ public abstract class AbstractItemProperties {
 	 * @param ridget
 	 *            ridget with item
 	 */
-	public AbstractItemProperties(AbstractItemRidget ridget) {
-		Item item = ridget.getUIControl();
+	public AbstractItemProperties(final AbstractItemRidget ridget) {
+		final Item item = ridget.getUIControl();
 		style = item.getStyle();
 		data = item.getData();
 		id = ridget.getID();
@@ -53,16 +54,16 @@ public abstract class AbstractItemProperties {
 	 * 
 	 * @param item
 	 */
-	protected void setAllProperties(Item item, boolean addListeners) {
+	protected void setAllProperties(final Item item, final boolean addListeners) {
 		item.setData(data);
-		SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		locator.setBindingProperty(item, id);
 		item.setText(text);
 		if (image == null || !image.isDisposed()) {
 			item.setImage(image);
 		}
 		if (addListeners) {
-			for (Listener listener : selectionListeners) {
+			for (final Listener listener : selectionListeners) {
 				item.addListener(SWT.Selection, listener);
 			}
 		}

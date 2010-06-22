@@ -15,7 +15,9 @@ package org.eclipse.riena.communication.core.factory;
  */
 public class RSFTest implements IRSFTest {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.riena.communication.core.factory.IRSFTest#hello()
 	 */
 	public void hello() {

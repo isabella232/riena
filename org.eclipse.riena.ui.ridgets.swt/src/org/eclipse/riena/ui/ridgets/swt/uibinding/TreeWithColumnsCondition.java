@@ -10,8 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt.uibinding;
 
-import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
 import org.eclipse.swt.widgets.Tree;
+
+import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
 
 /**
  * This mapping condition returns true if the given widget is a {@link Tree}
@@ -19,7 +20,7 @@ import org.eclipse.swt.widgets.Tree;
  */
 public final class TreeWithColumnsCondition implements IMappingCondition {
 
-	public boolean isMatch(Object widget) {
+	public boolean isMatch(final Object widget) {
 		boolean result = false;
 		if (widget instanceof Tree) {
 			result = ((Tree) widget).getColumnCount() > 0;

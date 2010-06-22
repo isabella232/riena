@@ -11,11 +11,6 @@
 package org.eclipse.riena.navigation.ui.swt.component;
 
 import org.eclipse.jface.window.DefaultToolTip;
-import org.eclipse.riena.ui.swt.ModuleTitleBar;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
-import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -24,6 +19,12 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+
+import org.eclipse.riena.ui.swt.ModuleTitleBar;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
+import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
  * ToolTip for the modules (views).<br>
@@ -39,7 +40,7 @@ public class ModuleToolTip extends DefaultToolTip {
 	 * @param titleBar
 	 *            title bar of a module
 	 */
-	public ModuleToolTip(ModuleTitleBar titleBar) {
+	public ModuleToolTip(final ModuleTitleBar titleBar) {
 		super(titleBar);
 		setTitleBar(titleBar);
 		setShift(new Point(0, 0));
@@ -51,9 +52,9 @@ public class ModuleToolTip extends DefaultToolTip {
 	 */
 	private void initLookAndFeel() {
 
-		RienaDefaultLnf lnf = LnfManager.getLnf();
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
 
-		Integer delay = lnf.getIntegerSetting(LnfKeyConstants.MODULE_ITEM_TOOLTIP_POPUP_DELAY);
+		final Integer delay = lnf.getIntegerSetting(LnfKeyConstants.MODULE_ITEM_TOOLTIP_POPUP_DELAY);
 		if (delay != null) {
 			setPopupDelay(delay);
 		}
@@ -65,7 +66,7 @@ public class ModuleToolTip extends DefaultToolTip {
 		if (color != null) {
 			setBackgroundColor(color);
 		}
-		Font font = lnf.getFont(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FONT);
+		final Font font = lnf.getFont(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FONT);
 		if (color != null) {
 			setFont(font);
 		}
@@ -77,13 +78,13 @@ public class ModuleToolTip extends DefaultToolTip {
 	 *      org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	protected Composite createToolTipContentArea(Event event, Composite parent) {
+	protected Composite createToolTipContentArea(final Event event, final Composite parent) {
 
-		CLabel label = new CLabel(parent, getStyle(event));
+		final CLabel label = new CLabel(parent, getStyle(event));
 
-		Color fgColor = getForegroundColor(event);
-		Color bgColor = getBackgroundColor(event);
-		Font font = getFont(event);
+		final Color fgColor = getForegroundColor(event);
+		final Color bgColor = getBackgroundColor(event);
+		final Font font = getFont(event);
 
 		if (fgColor != null) {
 			label.setForeground(fgColor);
@@ -107,7 +108,7 @@ public class ModuleToolTip extends DefaultToolTip {
 	 * @see org.eclipse.jface.window.ToolTip#shouldCreateToolTip(org.eclipse.swt.widgets.Event)
 	 */
 	@Override
-	protected boolean shouldCreateToolTip(Event event) {
+	protected boolean shouldCreateToolTip(final Event event) {
 
 		boolean should = super.shouldCreateToolTip(event);
 
@@ -125,11 +126,11 @@ public class ModuleToolTip extends DefaultToolTip {
 	 *      org.eclipse.swt.widgets.Event)
 	 */
 	@Override
-	public Point getLocation(Point tipSize, Event event) {
+	public Point getLocation(final Point tipSize, final Event event) {
 
-		GC gc = new GC(getTitleBar());
-		Rectangle bounds = getLnfTitlebarRenderer().computeTextBounds(gc);
-		Point location = getTitleBar().toDisplay(bounds.x, 0);
+		final GC gc = new GC(getTitleBar());
+		final Rectangle bounds = getLnfTitlebarRenderer().computeTextBounds(gc);
+		final Point location = getTitleBar().toDisplay(bounds.x, 0);
 		gc.dispose();
 
 		return location;
@@ -156,7 +157,7 @@ public class ModuleToolTip extends DefaultToolTip {
 	 * @param titleBar
 	 *            the titleBar to set
 	 */
-	private void setTitleBar(ModuleTitleBar titleBar) {
+	private void setTitleBar(final ModuleTitleBar titleBar) {
 		this.titleBar = titleBar;
 	}
 

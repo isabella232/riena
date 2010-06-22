@@ -84,7 +84,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 
 	private Control table;
 	private Composite details;
-	private Composite master;
+	private final Composite master;
 
 	/**
 	 * Create an instance of MasterDetailsComposite with the details area at the
@@ -99,7 +99,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 *            SWT.TOP or SWT.BOTTOM, to create the details area at the top
 	 *            or bottom part of the composite
 	 */
-	public AbstractMasterDetailsComposite(Composite parent, int style, int orientation) {
+	public AbstractMasterDetailsComposite(final Composite parent, final int style, final int orientation) {
 		super(parent, style);
 		checkOrientation(orientation);
 
@@ -130,7 +130,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 *            unique within this composite
 	 * @see #getUIControls()
 	 */
-	public final void addUIControl(Object uiControl, String bindingId) {
+	public final void addUIControl(final Object uiControl, final String bindingId) {
 		Assert.isNotNull(uiControl);
 		Assert.isNotNull(bindingId);
 		controls.add(uiControl);
@@ -149,9 +149,9 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @since 1.2
 	 */
 	public boolean confirmDiscardChanges() {
-		String title = Messages.MasterDetailsComposite_dialogMessage_confirmDiscard;
-		String message = Messages.MasterDetailsComposite_dialogTitle_confirmDiscard;
-		boolean result = MessageDialog.openQuestion(getShell(), title, message);
+		final String title = Messages.MasterDetailsComposite_dialogMessage_confirmDiscard;
+		final String message = Messages.MasterDetailsComposite_dialogTitle_confirmDiscard;
+		final boolean result = MessageDialog.openQuestion(getShell(), title, message);
 		return result;
 	}
 
@@ -165,7 +165,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @return true to remove the selected entry, false otherwise.
 	 * @since 2.0
 	 */
-	public boolean confirmRemove(Object item) {
+	public boolean confirmRemove(final Object item) {
 		return true;
 	}
 
@@ -176,7 +176,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 *         unsupported.
 	 */
 	public final Control getButtonApply() {
-		Control result = getUIControl(BIND_ID_APPLY);
+		final Control result = getUIControl(BIND_ID_APPLY);
 		checkButton(result, false);
 		return result;
 	}
@@ -188,7 +188,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 *         unsupported.
 	 */
 	public final Control getButtonNew() {
-		Control result = getUIControl(BIND_ID_NEW);
+		final Control result = getUIControl(BIND_ID_NEW);
 		checkButton(result, true);
 		return result;
 	}
@@ -200,7 +200,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 *         unsupported.
 	 */
 	public final Control getButtonRemove() {
-		Control result = getUIControl(BIND_ID_REMOVE);
+		final Control result = getUIControl(BIND_ID_REMOVE);
 		checkButton(result, true);
 		return result;
 	}
@@ -223,8 +223,8 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @since 2.0
 	 */
 	public Point getMargins() {
-		GridLayout layout = (GridLayout) getLayout();
-		Point result = new Point(layout.marginHeight, layout.marginWidth);
+		final GridLayout layout = (GridLayout) getLayout();
+		final Point result = new Point(layout.marginHeight, layout.marginWidth);
 		return result;
 	}
 
@@ -237,9 +237,9 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @since 2.0
 	 */
 	public Point getSpacing() {
-		GridLayout layout = (GridLayout) getLayout();
-		GridLayout mLayout = (GridLayout) master.getLayout();
-		Point result = new Point(mLayout.horizontalSpacing, layout.verticalSpacing);
+		final GridLayout layout = (GridLayout) getLayout();
+		final GridLayout mLayout = (GridLayout) master.getLayout();
+		final Point result = new Point(mLayout.horizontalSpacing, layout.verticalSpacing);
 		return result;
 	}
 
@@ -253,14 +253,14 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	public final List<Object> getUIControls() {
-		SWTControlFinder finder = new SWTControlFinder(details) {
+		final SWTControlFinder finder = new SWTControlFinder(details) {
 			@Override
-			public boolean skip(Control control) {
+			public boolean skip(final Control control) {
 				return controls.contains(control);
 			}
 
 			@Override
-			public void handleBoundControl(Control control, String bindingProperty) {
+			public void handleBoundControl(final Control control, final String bindingProperty) {
 				controls.add(control);
 			}
 		};
@@ -272,7 +272,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @since 1.2
 	 */
 	@Override
-	public void setBackground(Color color) {
+	public void setBackground(final Color color) {
 		master.setBackground(color);
 		details.setBackground(color);
 		super.setBackground(color);
@@ -289,8 +289,8 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 *            right edges of the widget. The default value is 0.
 	 * @since 2.0
 	 */
-	public void setMargins(int marginHeight, int marginWidth) {
-		GridLayout layout = (GridLayout) getLayout();
+	public void setMargins(final int marginHeight, final int marginWidth) {
+		final GridLayout layout = (GridLayout) getLayout();
 		layout.marginHeight = marginHeight;
 		layout.marginWidth = marginWidth;
 		layout(false);
@@ -308,10 +308,10 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 *            the top edge of the cell underneath. The default value is 5.
 	 * @since 2.0
 	 */
-	public void setSpacing(int hSpacing, int vSpacing) {
-		GridLayout layout = (GridLayout) getLayout();
+	public void setSpacing(final int hSpacing, final int vSpacing) {
+		final GridLayout layout = (GridLayout) getLayout();
 		layout.verticalSpacing = vSpacing;
-		GridLayout mLayout = (GridLayout) master.getLayout();
+		final GridLayout mLayout = (GridLayout) master.getLayout();
 		mLayout.horizontalSpacing = hSpacing;
 		layout(false);
 	}
@@ -327,9 +327,9 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * 
 	 * @since 1.2
 	 */
-	public void warnApplyFailed(String reason) {
+	public void warnApplyFailed(final String reason) {
 		Assert.isNotNull(reason);
-		String title = Messages.MasterDetailsComposite_dialogTitle_applyFailed;
+		final String title = Messages.MasterDetailsComposite_dialogTitle_applyFailed;
 		MessageDialog.openWarning(getShell(), title, reason);
 	}
 
@@ -343,9 +343,9 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 *            A string describing why removal is not possible; never null
 	 * @since 2.0
 	 */
-	public void warnRemoveFailed(String reason) {
+	public void warnRemoveFailed(final String reason) {
 		Assert.isNotNull(reason);
-		String title = Messages.MasterDetailsComposite_dialogTitle_removeFailed;
+		final String title = Messages.MasterDetailsComposite_dialogTitle_removeFailed;
 		MessageDialog.openWarning(getShell(), title, reason);
 	}
 
@@ -362,7 +362,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 *         adding a button with the binding id {@link #BIND_ID_APPLY} to
 	 *         this control elsewhere.
 	 */
-	protected Control createButtonApply(Composite compButton) {
+	protected Control createButtonApply(final Composite compButton) {
 		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonApply);
 	}
 
@@ -377,7 +377,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 *         composite elsewhere &ndash; otherwise 'New' will not be
 	 *         available.
 	 */
-	protected Control createButtonNew(Composite compButton) {
+	protected Control createButtonNew(final Composite compButton) {
 		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonNew);
 	}
 
@@ -392,7 +392,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 *         this composite elsewhere &ndash; otherwise 'Remove' will not be
 	 *         available.
 	 */
-	protected Control createButtonRemove(Composite compButton) {
+	protected Control createButtonRemove(final Composite compButton) {
 		return UIControlsFactory.createButton(compButton, Messages.MasterDetailsComposite_buttonRemove);
 	}
 
@@ -409,27 +409,27 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @param parent
 	 * @return a Composite or null
 	 */
-	protected Composite createButtons(Composite parent) {
-		Composite result = UIControlsFactory.createComposite(parent);
+	protected Composite createButtons(final Composite parent) {
+		final Composite result = UIControlsFactory.createComposite(parent);
 		// result.setBackground(getDisplay().getSystemColor(SWT.COLOR_GREEN));
-		RowLayout buttonLayout = new RowLayout(SWT.VERTICAL);
+		final RowLayout buttonLayout = new RowLayout(SWT.VERTICAL);
 		buttonLayout.marginTop = 0;
 		buttonLayout.marginLeft = 3;
 		buttonLayout.marginRight = 2;
 		buttonLayout.fill = true;
 		result.setLayout(buttonLayout);
 
-		Control btnNew = createButtonNew(result);
+		final Control btnNew = createButtonNew(result);
 		if (btnNew != null) {
 			addUIControl(btnNew, BIND_ID_NEW);
 		}
 
-		Control btnRemove = createButtonRemove(result);
+		final Control btnRemove = createButtonRemove(result);
 		if (btnRemove != null) {
 			addUIControl(btnRemove, BIND_ID_REMOVE);
 		}
 
-		Control btnApply = createButtonApply(result);
+		final Control btnApply = createButtonApply(result);
 		if (btnApply != null) {
 			addUIControl(btnApply, BIND_ID_APPLY);
 		}
@@ -443,7 +443,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 * @param details
 	 *            the Composite for the details area; never null.
 	 */
-	protected void createDetails(Composite details) {
+	protected void createDetails(final Composite details) {
 		// Sublasses should override.
 	}
 
@@ -498,17 +498,17 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	// helping methods
 	//////////////////
 
-	private void checkButton(Control control, boolean allowNull) {
+	private void checkButton(final Control control, final boolean allowNull) {
 		if (allowNull && control == null) {
 			return;
 		}
-		boolean ok = control instanceof Button || control instanceof ImageButton;
+		final boolean ok = control instanceof Button || control instanceof ImageButton;
 		Assert.isLegal(ok, "Control must be a Button or ImageButton: " + String.valueOf(control)); //$NON-NLS-1$
 	}
 
-	private void checkOrientation(int orientation) {
-		int[] allowedValues = { SWT.TOP, SWT.BOTTOM };
-		for (int value : allowedValues) {
+	private void checkOrientation(final int orientation) {
+		final int[] allowedValues = { SWT.TOP, SWT.BOTTOM };
+		for (final int value : allowedValues) {
 			if (orientation == value) {
 				return;
 			}
@@ -516,16 +516,16 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 		throw new IllegalArgumentException("unsupported orientation: " + orientation); //$NON-NLS-1$
 	}
 
-	private Composite createComposite(int style) {
-		Composite result = UIControlsFactory.createComposite(this, style);
+	private Composite createComposite(final int style) {
+		final Composite result = UIControlsFactory.createComposite(this, style);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(result);
 		return result;
 	}
 
-	private void createMaster(Composite parent) {
+	private void createMaster(final Composite parent) {
 		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).spacing(0, 0).applyTo(parent);
-		Composite compTable = createTableComposite(parent);
-		Composite compButton = createButtons(parent);
+		final Composite compTable = createTableComposite(parent);
+		final Composite compButton = createButtons(parent);
 		if (compButton != null) {
 			if (compButton.getLayoutData() == null) {
 				GridDataFactory.fillDefaults().applyTo(compButton);
@@ -538,28 +538,28 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 		}
 	}
 
-	private Composite createTableComposite(Composite parent) {
-		Composite result = UIControlsFactory.createComposite(parent);
-		TableColumnLayout layout = new TableColumnLayout();
+	private Composite createTableComposite(final Composite parent) {
+		final Composite result = UIControlsFactory.createComposite(parent);
+		final TableColumnLayout layout = new TableColumnLayout();
 		table = createTable(result, layout);
 		if (table instanceof Table && result.getLayout() == null) {
 			// this is specific to the MasterDetailsComposite, but is done here
 			// for backwards compatibility
 			result.setLayout(layout);
-			int wHint = 200;
-			int hHint = (((Table) table).getItemHeight() * 8) + ((Table) table).getHeaderHeight();
+			final int wHint = 200;
+			final int hHint = (((Table) table).getItemHeight() * 8) + ((Table) table).getHeaderHeight();
 			GridDataFactory.fillDefaults().grab(true, false).hint(wHint, hHint).applyTo(result);
 		}
 		addUIControl(table, BIND_ID_TABLE);
 		return result;
 	}
 
-	private Control getUIControl(String id) {
+	private Control getUIControl(final String id) {
 		Control result = null;
-		SWTBindingPropertyLocator bpLocator = SWTBindingPropertyLocator.getInstance();
-		Iterator<Object> iter = controls.iterator();
+		final SWTBindingPropertyLocator bpLocator = SWTBindingPropertyLocator.getInstance();
+		final Iterator<Object> iter = controls.iterator();
 		while (result == null && iter.hasNext()) {
-			Control control = (Control) iter.next();
+			final Control control = (Control) iter.next();
 			if (id.equals(bpLocator.locateBindingProperty(control))) {
 				result = control;
 			}
@@ -574,14 +574,14 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	private static final class LinePaintListener implements PaintListener {
 		private Color fgColor;
 
-		public void paintControl(PaintEvent e) {
-			GC gc = e.gc;
-			Color oldFg = gc.getForeground();
+		public void paintControl(final PaintEvent e) {
+			final GC gc = e.gc;
+			final Color oldFg = gc.getForeground();
 			if (fgColor == null) {
 				fgColor = LnfManager.getLnf().getColor(LnfKeyConstants.MASTER_DETAILS_WIDGET_SEPARATOR_FOREGROUND);
 			}
 			gc.setForeground(fgColor);
-			Rectangle bounds = ((Control) e.widget).getBounds();
+			final Rectangle bounds = ((Control) e.widget).getBounds();
 			GCFacade.getDefault().drawLine(gc, 0, 0, 0, bounds.height);
 			gc.setForeground(oldFg);
 		}

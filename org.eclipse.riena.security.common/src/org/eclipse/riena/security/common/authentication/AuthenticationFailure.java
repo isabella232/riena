@@ -27,7 +27,7 @@ public class AuthenticationFailure extends SecurityFailure {
 	 * @param message
 	 *            The reason for this exception
 	 */
-	public AuthenticationFailure(String message) {
+	public AuthenticationFailure(final String message) {
 		super(message);
 	}
 
@@ -39,7 +39,7 @@ public class AuthenticationFailure extends SecurityFailure {
 	 * @param e
 	 *            The failure/exception which caused this failure
 	 */
-	public AuthenticationFailure(String message, Throwable e) {
+	public AuthenticationFailure(final String message, final Throwable e) {
 		super(message, e);
 	}
 

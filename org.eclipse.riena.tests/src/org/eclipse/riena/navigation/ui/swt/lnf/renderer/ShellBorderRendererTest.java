@@ -30,12 +30,12 @@ public class ShellBorderRendererTest extends TestCase {
 	 * Test of the method <code>getCompelteBorderWidth</code>.
 	 */
 	public void testGetCompelteBorderWidth() {
-		RienaDefaultLnf originalLnf = LnfManager.getLnf();
+		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
 		try {
-			MyLnf lnf = new MyLnf();
+			final MyLnf lnf = new MyLnf();
 			LnfManager.setLnf(lnf);
 			lnf.initialize();
-			ShellBorderRenderer renderer = new ShellBorderRenderer();
+			final ShellBorderRenderer renderer = new ShellBorderRenderer();
 
 			lnf.setPadding(20);
 			int expected = 20 + renderer.getBorderWidth();
@@ -61,11 +61,11 @@ public class ShellBorderRendererTest extends TestCase {
 	private static class MyLnf extends RienaDefaultLnf {
 
 		public void removePadding() {
-			Map<String, Object> settingTable = ReflectionUtils.getHidden(LnfManager.getLnf(), "settingTable");
+			final Map<String, Object> settingTable = ReflectionUtils.getHidden(LnfManager.getLnf(), "settingTable");
 			settingTable.remove(LnfKeyConstants.TITLELESS_SHELL_PADDING);
 		}
 
-		public void setPadding(Object padding) {
+		public void setPadding(final Object padding) {
 			putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_PADDING, padding);
 		}
 

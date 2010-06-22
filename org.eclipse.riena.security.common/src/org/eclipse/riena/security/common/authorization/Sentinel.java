@@ -41,11 +41,11 @@ public final class Sentinel {
 		return sentinelService;
 	}
 
-	public void bind(ISentinelService sentinelServiceParm) {
+	public void bind(final ISentinelService sentinelServiceParm) {
 		sentinelService = sentinelServiceParm;
 	}
 
-	public void unbind(ISentinelService sentinelServiceParm) {
+	public void unbind(final ISentinelService sentinelServiceParm) {
 		sentinelService = null;
 	}
 
@@ -58,7 +58,7 @@ public final class Sentinel {
 	 *            permission to be checked
 	 * @return
 	 */
-	public static boolean checkAccess(Permission permission) {
+	public static boolean checkAccess(final Permission permission) {
 		if (getInstance().getSentinelService() == null) {
 			return false;
 		}

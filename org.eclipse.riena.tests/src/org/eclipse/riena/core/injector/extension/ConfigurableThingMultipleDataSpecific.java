@@ -17,7 +17,7 @@ public class ConfigurableThingMultipleDataSpecific {
 
 	private IExtData[] data;
 
-	public void update(IExtData[] data) {
+	public void update(final IExtData[] data) {
 		// TODO warning suppression: Ignore FindBugs warning about internal
 		// representation being exposed: seems ok for testing
 		this.data = data;

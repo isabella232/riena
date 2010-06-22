@@ -54,7 +54,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	}
 
 	@Override
-	protected Control createWidget(Composite parent) {
+	protected Control createWidget(final Composite parent) {
 		return new ChoiceComposite(parent, SWT.NONE, false);
 	}
 
@@ -80,7 +80,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Test that the control is mapped to the expected ridget.
 	 */
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(SingleChoiceRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
@@ -88,7 +88,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Test method getObservableList().
 	 */
 	public void testGetObservableList() {
-		ISingleChoiceRidget ridget = getRidget();
+		final ISingleChoiceRidget ridget = getRidget();
 
 		assertNotNull(ridget.getObservableList());
 	}
@@ -97,12 +97,12 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Test method updateFromModel().
 	 */
 	public void testUpdateFromModel() {
-		ISingleChoiceRidget ridget = getRidget();
-		ChoiceComposite control = getWidget();
+		final ISingleChoiceRidget ridget = getRidget();
+		final ChoiceComposite control = getWidget();
 
 		ridget.updateFromModel();
 
-		int oldSize = optionProvider.getOptions().size();
+		final int oldSize = optionProvider.getOptions().size();
 		assertEquals(oldSize, ridget.getObservableList().size());
 		assertTrue(ridget.getObservableList().containsAll(optionProvider.getOptions()));
 		assertEquals(optionProvider.getSelectedOption(), ridget.getSelection());
@@ -121,8 +121,8 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Test method getUIControl().
 	 */
 	public void testGetUIControl() {
-		ISingleChoiceRidget ridget = getRidget();
-		Control control = getWidget();
+		final ISingleChoiceRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		assertEquals(control, ridget.getUIControl());
 	}
@@ -131,7 +131,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Test method setSelection().
 	 */
 	public void testSetSelection() {
-		ISingleChoiceRidget ridget = getRidget();
+		final ISingleChoiceRidget ridget = getRidget();
 
 		ridget.updateFromModel();
 
@@ -154,20 +154,20 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Test that ridget.setSelection() affects the model and the widget.
 	 */
 	public void testUpdateSelectionFromRidget() {
-		ISingleChoiceRidget ridget = getRidget();
-		ChoiceComposite control = getWidget();
+		final ISingleChoiceRidget ridget = getRidget();
+		final ChoiceComposite control = getWidget();
 
 		assertNotNull(ridget.getSelection());
 
-		Button selected1 = getSelectedControl(control);
+		final Button selected1 = getSelectedControl(control);
 
 		assertEquals(optionProvider.getSelectedOption(), selected1.getText());
 		assertSame(optionProvider.getSelectedOption(), selected1.getData());
 
-		Object option2 = optionProvider.getOptions().get(1);
+		final Object option2 = optionProvider.getOptions().get(1);
 		ridget.setSelection(option2);
 
-		Button selected2 = getSelectedControl(control);
+		final Button selected2 = getSelectedControl(control);
 
 		assertNotSame(selected1, selected2);
 		assertEquals(optionProvider.getSelectedOption(), selected2.getText());
@@ -178,9 +178,9 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * As per Bug 304733
 	 */
 	public void testClearSelectionWhenSelectionIsRemovedFromModel() {
-		ISingleChoiceRidget ridget = getRidget();
+		final ISingleChoiceRidget ridget = getRidget();
 
-		String optionA = optionProvider.getOptions().get(0);
+		final String optionA = optionProvider.getOptions().get(0);
 		ridget.setSelection(optionA);
 
 		assertSame(optionA, ridget.getSelection());
@@ -197,16 +197,16 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Test that control.setSelection() affects the ridget and the widget.
 	 */
 	public void testUpdateSelectionFromControl() {
-		ISingleChoiceRidget ridget = getRidget();
-		ChoiceComposite control = getWidget();
-		Button button0 = (Button) control.getChildren()[0];
-		Button button1 = (Button) control.getChildren()[1];
+		final ISingleChoiceRidget ridget = getRidget();
+		final ChoiceComposite control = getWidget();
+		final Button button0 = (Button) control.getChildren()[0];
+		final Button button1 = (Button) control.getChildren()[1];
 
 		assertTrue(button0.getSelection());
 		assertFalse(button1.getSelection());
 
 		button1.setSelection(true);
-		Event event = new Event();
+		final Event event = new Event();
 		event.type = SWT.Selection;
 		event.widget = button1;
 		button1.notifyListeners(SWT.Selection, event);
@@ -220,15 +220,15 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Tests that colors from the ChoiceComposite are applied to children.
 	 */
 	public void testColorsAreAppliedToChildren() {
-		Shell shell = getShell();
-		ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
-		Color colorRed = shell.getDisplay().getSystemColor(SWT.COLOR_RED);
-		Color colorGreen = shell.getDisplay().getSystemColor(SWT.COLOR_GREEN);
+		final Shell shell = getShell();
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		final Color colorRed = shell.getDisplay().getSystemColor(SWT.COLOR_RED);
+		final Color colorGreen = shell.getDisplay().getSystemColor(SWT.COLOR_GREEN);
 		control.setForeground(colorGreen);
 		control.setBackground(colorRed);
 		getRidget().setUIControl(control);
 
-		Button selected = getSelectedControl(control);
+		final Button selected = getSelectedControl(control);
 
 		assertEquals(colorGreen, selected.getForeground());
 		assertEquals(colorRed, selected.getBackground());
@@ -238,8 +238,8 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Tests that enablement from the ChoiceComposite is applied to children.
 	 */
 	public void testEnablementIsAppliedToChildren() {
-		Shell shell = getShell();
-		ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		final Shell shell = getShell();
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
 
 		assertTrue(control.isEnabled());
 
@@ -248,7 +248,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertFalse(control.isEnabled());
 		assertTrue(control.getChildren().length > 0);
-		for (Control child : control.getChildren()) {
+		for (final Control child : control.getChildren()) {
 			assertFalse(((Button) child).isEnabled());
 		}
 	}
@@ -258,9 +258,9 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * removePropertyChangeListener().
 	 */
 	public void testAddRemovePropertyChangeListener() {
-		ISingleChoiceRidget ridget = getRidget();
+		final ISingleChoiceRidget ridget = getRidget();
 
-		TestPropertyChangeListener listener = new TestPropertyChangeListener();
+		final TestPropertyChangeListener listener = new TestPropertyChangeListener();
 		ridget.updateFromModel();
 		ridget.addPropertyChangeListener(listener);
 
@@ -283,20 +283,20 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Test method bindToModel() using labels.
 	 */
 	public void testBindToModelUsingLabels() {
-		ISingleChoiceRidget ridget = getRidget();
-		Composite control = getWidget();
+		final ISingleChoiceRidget ridget = getRidget();
+		final Composite control = getWidget();
 		optionProvider = new OptionProvider();
 
 		ridget.bindToModel(optionProvider.getOptions(), optionProvider.getOptionLabels(), optionProvider,
 				"selectedOption");
 		ridget.updateFromModel();
 
-		Object[] labels = optionProvider.getOptionLabels().toArray();
-		Control[] children = control.getChildren();
+		final Object[] labels = optionProvider.getOptionLabels().toArray();
+		final Control[] children = control.getChildren();
 		assertEquals(labels.length, children.length);
 		for (int i = 0; i < labels.length; i++) {
-			String label = (String) labels[i];
-			String caption = ((Button) children[i]).getText();
+			final String label = (String) labels[i];
+			final String caption = ((Button) children[i]).getText();
 			assertEquals(label, caption);
 		}
 	}
@@ -305,7 +305,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Tests that the mandatory marker gets disabled when we have a selection.
 	 */
 	public void testDisableMandatoryMarkers() {
-		ISingleChoiceRidget ridget = getRidget();
+		final ISingleChoiceRidget ridget = getRidget();
 
 		final MandatoryMarker mandatoryMarker = new MandatoryMarker();
 		optionProvider.setSelectedOption(null);
@@ -328,7 +328,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 */
 	@Override
 	public void testIsDisableMandatoryMarker() {
-		ISingleChoiceRidget ridget = getRidget();
+		final ISingleChoiceRidget ridget = getRidget();
 
 		optionProvider.setSelectedOption(null);
 		ridget.updateFromModel();
@@ -348,18 +348,18 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Test validation of the bindToModel(...) method.
 	 */
 	public void testBindToModelWithObservables() {
-		ISingleChoiceRidget ridget = getRidget();
+		final ISingleChoiceRidget ridget = getRidget();
 
 		try {
 			ridget.bindToModel(null, PojoObservables.observeValue(optionProvider, "selectedOption"));
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 		try {
 			ridget.bindToModel(PojoObservables.observeList(Realm.getDefault(), optionProvider, "options"), null);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 	}
@@ -368,30 +368,30 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Test validation of the bindToModel(...) method.
 	 */
 	public void testBindToModelWithBeans() {
-		ISingleChoiceRidget ridget = getRidget();
+		final ISingleChoiceRidget ridget = getRidget();
 
 		try {
 			ridget.bindToModel(null, "options", optionProvider, "selectedOption");
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 		try {
 			ridget.bindToModel(optionProvider, null, optionProvider, "selectedOption");
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 		try {
 			ridget.bindToModel(optionProvider, "options", null, "selectedOption");
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 		try {
 			ridget.bindToModel(optionProvider, "options", optionProvider, null);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 	}
@@ -400,43 +400,43 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * Test validation of the bindToModel(...) method.
 	 */
 	public void testBindToModelWithOptionLabelList() {
-		ISingleChoiceRidget ridget = getRidget();
+		final ISingleChoiceRidget ridget = getRidget();
 
 		try {
 			ridget.bindToModel(null, optionProvider.getOptionLabels(), optionProvider, "selectedOption");
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 		try {
 			ridget.bindToModel(optionProvider.getOptions(), (List<String>) null, optionProvider, "selectedOption");
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			fail();
 		}
 		try {
 			ridget.bindToModel(optionProvider.getOptions(), new ArrayList<String>(), optionProvider, "selectedOption");
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 		try {
 			ridget.bindToModel(optionProvider.getOptions(), optionProvider.getOptionLabels(), null, "selectedOption");
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 		try {
 			ridget.bindToModel(optionProvider.getOptions(), optionProvider.getOptionLabels(), optionProvider, null);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 	}
 
 	public void testOutputCannotBeChangedFromUI() {
-		ISingleChoiceRidget ridget = getRidget();
-		Button button1 = (Button) getWidget().getChildren()[0];
-		Button button2 = (Button) getWidget().getChildren()[1];
+		final ISingleChoiceRidget ridget = getRidget();
+		final Button button1 = (Button) getWidget().getChildren()[0];
+		final Button button2 = (Button) getWidget().getChildren()[1];
 
 		assertTrue(button1.getSelection());
 		assertFalse(button2.getSelection());
@@ -465,8 +465,8 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * control, when the ridget is disabled.
 	 */
 	public void testDisabledRidgetDoesNotCheckControlOnRidgetSelection() {
-		ISingleChoiceRidget ridget = getRidget();
-		ChoiceComposite control = getWidget();
+		final ISingleChoiceRidget ridget = getRidget();
+		final ChoiceComposite control = getWidget();
 
 		ridget.setSelection("Option A");
 
@@ -478,14 +478,14 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertEquals("Option A", optionProvider.getSelectedOption());
 		assertEquals("Option A", ridget.getSelection());
-		String expectedA = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option A";
+		final String expectedA = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option A";
 		assertEquals(expectedA, getSelectedControlValue(control));
 
 		ridget.setSelection("Option B");
 
 		assertEquals("Option B", optionProvider.getSelectedOption());
 		assertEquals("Option B", ridget.getSelection());
-		String expectedB = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option B";
+		final String expectedB = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option B";
 		assertEquals(expectedB, getSelectedControlValue(control));
 
 		ridget.setEnabled(true);
@@ -500,8 +500,8 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * the control, when the ridget is disabled.
 	 */
 	public void testDisabledRidgetDoesNotCheckControlOnModelSelection() {
-		ISingleChoiceRidget ridget = getRidget();
-		ChoiceComposite control = getWidget();
+		final ISingleChoiceRidget ridget = getRidget();
+		final ChoiceComposite control = getWidget();
 
 		ridget.setEnabled(false);
 		optionProvider.setSelectedOption("Option A");
@@ -509,7 +509,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertEquals("Option A", optionProvider.getSelectedOption());
 		assertEquals("Option A", ridget.getSelection());
-		String expectedA = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option A";
+		final String expectedA = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option A";
 		assertEquals(expectedA, getSelectedControlValue(control));
 
 		optionProvider.setSelectedOption("Option B");
@@ -517,7 +517,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 		assertEquals("Option B", optionProvider.getSelectedOption());
 		assertEquals("Option B", ridget.getSelection());
-		String expectedB = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option B";
+		final String expectedB = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option B";
 		assertEquals(expectedB, getSelectedControlValue(control));
 
 		ridget.setEnabled(true);
@@ -532,12 +532,12 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * though the control is modified.
 	 */
 	public void testDisabledDoesNotFireSelected() {
-		ISingleChoiceRidget ridget = getRidget();
+		final ISingleChoiceRidget ridget = getRidget();
 		ridget.setEnabled(true);
 		ridget.setSelection("Option A");
 
 		ridget.addPropertyChangeListener(ISingleChoiceRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				fail("Unexpected property change event: " + evt);
 			}
 		});
@@ -552,8 +552,8 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * the ridget.
 	 */
 	public void testDisableAndClearOnBind() {
-		ISingleChoiceRidget ridget = getRidget();
-		ChoiceComposite control = getWidget();
+		final ISingleChoiceRidget ridget = getRidget();
+		final ChoiceComposite control = getWidget();
 
 		ridget.setUIControl(null);
 		ridget.setEnabled(false);
@@ -561,7 +561,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		ridget.setUIControl(control);
 
 		assertFalse(control.isEnabled());
-		String expectedB = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option B";
+		final String expectedB = MarkerSupport.isHideDisabledRidgetContent() ? null : "Option B";
 		assertEquals(expectedB, getSelectedControlValue(control));
 
 		ridget.setEnabled(true);
@@ -575,12 +575,12 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	 * references.
 	 */
 	public void testBug255465() {
-		ISingleChoiceRidget ridget = getRidget();
-		ChoiceComposite control = getWidget();
+		final ISingleChoiceRidget ridget = getRidget();
+		final ChoiceComposite control = getWidget();
 
-		List<String> values = Arrays.asList("male", "female");
-		List<String> labels = Arrays.asList("Man", "Woman");
-		Person personEntity = new Person("Max", "Mustermann");
+		final List<String> values = Arrays.asList("male", "female");
+		final List<String> labels = Arrays.asList("Man", "Woman");
+		final Person personEntity = new Person("Max", "Mustermann");
 		personEntity.setGender("male");
 		ridget.bindToModel(values, labels, personEntity, "gender");
 		ridget.updateFromModel();
@@ -590,18 +590,18 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 	public void testAddSelectionListener() {
 
-		ISingleChoiceRidget ridget = getRidget();
+		final ISingleChoiceRidget ridget = getRidget();
 
 		try {
 			ridget.addSelectionListener(null);
 			fail();
-		} catch (RuntimeException npe) {
+		} catch (final RuntimeException npe) {
 			ok();
 		}
 
 		assertEquals(optionProvider.getSelectedOption(), ridget.getSelection());
 
-		TestSelectionListener selectionListener = new TestSelectionListener();
+		final TestSelectionListener selectionListener = new TestSelectionListener();
 		ridget.addSelectionListener(selectionListener);
 
 		ridget.setSelection(optionProvider.getOptions().get(1));
@@ -621,9 +621,9 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	// helping methods
 	// ////////////////
 
-	private Button getSelectedControl(ChoiceComposite control) {
+	private Button getSelectedControl(final ChoiceComposite control) {
 		Button selected = null;
-		for (Control child : control.getChildren()) {
+		for (final Control child : control.getChildren()) {
 			if (((Button) child).getSelection()) {
 				assertNull(selected);
 				selected = (Button) child;
@@ -632,8 +632,8 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		return selected;
 	}
 
-	private String getSelectedControlValue(ChoiceComposite control) {
-		Button button = getSelectedControl(control);
+	private String getSelectedControlValue(final ChoiceComposite control) {
+		final Button button = getSelectedControl(control);
 		return button != null ? String.valueOf(button.getData()) : null;
 	}
 
@@ -642,10 +642,10 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 	private static final class OptionProvider {
 
-		private List<String> options = new ArrayList<String>(Arrays.asList("Option A", "Option B", "Option C",
+		private final List<String> options = new ArrayList<String>(Arrays.asList("Option A", "Option B", "Option C",
 				"Option D", "Option E", "Option F"));
-		private List<String> optionLabels = new ArrayList<String>(Arrays.asList("Option label A", "Option label B",
-				"Option label C", "Option label D", "Option label E", "Option label F"));
+		private final List<String> optionLabels = new ArrayList<String>(Arrays.asList("Option label A",
+				"Option label B", "Option label C", "Option label D", "Option label E", "Option label F"));
 		private String selectedOption = options.get(0);
 
 		public List<String> getOptions() {
@@ -656,7 +656,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 			return selectedOption;
 		}
 
-		public void setSelectedOption(String selectedOption) {
+		public void setSelectedOption(final String selectedOption) {
 			this.selectedOption = selectedOption;
 		}
 
@@ -664,7 +664,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 			return optionLabels;
 		}
 
-		public void remove(int index) {
+		public void remove(final int index) {
 			options.remove(index);
 			optionLabels.remove(index);
 		}
@@ -673,7 +673,7 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	private static final class TestPropertyChangeListener implements PropertyChangeListener {
 		private int eventCounter = 0;
 
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(final PropertyChangeEvent evt) {
 			eventCounter++;
 		}
 	};

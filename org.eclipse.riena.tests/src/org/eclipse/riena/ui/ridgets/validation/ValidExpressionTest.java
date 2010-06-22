@@ -26,23 +26,23 @@ public class ValidExpressionTest extends RienaTestCase {
 			final ValidExpression rule = new ValidExpression(ValidExpression.GERMAN_ZIP);
 			rule.validate(new Object());
 			fail("expected a thrown " + ValidationFailure.class.getName());
-		} catch (ValidationFailure e) {
+		} catch (final ValidationFailure e) {
 			ok("passed test");
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			fail("expected a thrown " + ValidationFailure.class.getName());
 		}
 
 		try {
 			new ValidExpression(null);
 			fail("Null expression: expected some kind of " + RuntimeException.class.getName());
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			ok("passed test");
 		}
 
 		try {
 			new ValidExpression("");
 			fail("Empty expression: expected some kind of " + RuntimeException.class.getName());
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			ok("passed test");
 		}
 	}
@@ -129,7 +129,7 @@ public class ValidExpressionTest extends RienaTestCase {
 	public void testDoesNotBlockInputWhenFailing() {
 
 		final ValidExpression rule = new ValidExpression(ValidExpression.GERMAN_ZIP);
-		IStatus result = rule.validate("XX123");
+		final IStatus result = rule.validate("XX123");
 
 		assertFalse(result.isOK());
 		assertEquals(ValidationRuleStatus.ERROR_ALLOW_WITH_MESSAGE, result.getCode());

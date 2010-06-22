@@ -28,7 +28,8 @@ public final class ControllerUtils {
 	 * 
 	 * @deprecated never implemented - do not call
 	 */
-	public static void blockRidgets(Collection<? extends IRidget> ridgets, boolean blocked) {
+	@Deprecated
+	public static void blockRidgets(final Collection<? extends IRidget> ridgets, final boolean blocked) {
 	}
 
 }

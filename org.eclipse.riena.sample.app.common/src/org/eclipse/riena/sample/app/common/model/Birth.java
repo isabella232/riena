@@ -37,7 +37,7 @@ public class Birth {
 	 * @param place
 	 *            birthplace to set
 	 */
-	public Birth(Date day, String place) {
+	public Birth(final Date day, final String place) {
 
 		this();
 
@@ -63,7 +63,7 @@ public class Birth {
 	 * @param day
 	 *            the birth day to set.
 	 */
-	public void setBirthDay(Date day) {
+	public void setBirthDay(final Date day) {
 
 		this.birthDay = day;
 
@@ -86,7 +86,7 @@ public class Birth {
 	 * @param birthPlace
 	 *            the birthplace to set.
 	 */
-	public void setBirthPlace(String birthPlace) {
+	public void setBirthPlace(final String birthPlace) {
 
 		this.birthPlace = birthPlace;
 

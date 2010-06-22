@@ -22,7 +22,7 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 public class ArraysUtilTest extends RienaTestCase {
 
 	public void testCopy() {
-		String[] source = new String[] { "1", "2", "3", "4" };
+		final String[] source = new String[] { "1", "2", "3", "4" };
 		assertTrue(Arrays.equals(new String[] {}, ArraysUtil.copyRange(source, 0, 0)));
 		assertTrue(Arrays.equals(new String[] { "1" }, ArraysUtil.copyRange(source, 0, 1)));
 		assertTrue(Arrays.equals(new String[] { "1", "2" }, ArraysUtil.copyRange(source, 0, 2)));
@@ -35,17 +35,17 @@ public class ArraysUtilTest extends RienaTestCase {
 		try {
 			ArraysUtil.copyRange(null, 0, 2);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 	}
 
 	public void testCopyFailNegativeSize() {
 		try {
-			String[] source = new String[] { "1", "2", "3", "4" };
+			final String[] source = new String[] { "1", "2", "3", "4" };
 			ArraysUtil.copyRange(source, 0, 5);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 	}
@@ -54,7 +54,7 @@ public class ArraysUtilTest extends RienaTestCase {
 		try {
 			ArraysUtil.copyRange(null, 2, 0);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 	}

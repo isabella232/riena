@@ -18,7 +18,7 @@ public class ConfigurableThingMultipleData {
 	private IData[] data;
 	private boolean trace;
 
-	public void update(IData[] data) {
+	public void update(final IData[] data) {
 		trace("update", data);
 		// TODO warning suppression: Ignore FindBugs warning about internal
 		// representation being exposed: seems ok for testing
@@ -31,20 +31,20 @@ public class ConfigurableThingMultipleData {
 		return data;
 	}
 
-	public void setTrace(boolean trace) {
+	public void setTrace(final boolean trace) {
 		this.trace = trace;
 	}
 
 	// helping methods
 	//////////////////
 
-	private void trace(String methodName, IData[] data) {
+	private void trace(final String methodName, final IData[] data) {
 		if (trace) {
 			if (data == null) {
 				System.out.println(String.format("%s: null", methodName));
 			} else {
 				System.out.println(String.format("%s: %s - length= %d", methodName, data, data.length));
-				for (IData entry : data) {
+				for (final IData entry : data) {
 					System.out.println("\t" + entry.getText());
 				}
 			}

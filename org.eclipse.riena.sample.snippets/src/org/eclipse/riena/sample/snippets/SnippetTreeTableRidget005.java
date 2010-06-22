@@ -29,7 +29,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 public class SnippetTreeTableRidget005 {
 
 	public SnippetTreeTableRidget005(final Shell shell) {
-		Tree tree = new Tree(shell, SWT.FULL_SELECTION | SWT.MULTI);
+		final Tree tree = new Tree(shell, SWT.FULL_SELECTION | SWT.MULTI);
 		// need ONE column to show that this tree is a table-tree. The correct
 		// number of columns will be created as needed, when bind is invoked.
 		new TreeColumn(tree, SWT.NONE);
@@ -37,11 +37,11 @@ public class SnippetTreeTableRidget005 {
 		final IGroupedTreeTableRidget treeTableRidget = (IGroupedTreeTableRidget) SwtRidgetFactory.createRidget(tree);
 
 		// set the widths
-		ColumnLayoutData[] widths = new ColumnLayoutData[] { new ColumnWeightData(2), new ColumnWeightData(1) };
+		final ColumnLayoutData[] widths = new ColumnLayoutData[] { new ColumnWeightData(2), new ColumnWeightData(1) };
 		treeTableRidget.setColumnWidths(widths);
 
-		String[] columnValues = new String[] { "word", "upperCase" }; //$NON-NLS-1$//$NON-NLS-2$
-		String[] columnHeaders = new String[] { "Word", "Uppercase" }; //$NON-NLS-1$//$NON-NLS-2$
+		final String[] columnValues = new String[] { "word", "upperCase" }; //$NON-NLS-1$//$NON-NLS-2$
+		final String[] columnHeaders = new String[] { "Word", "Uppercase" }; //$NON-NLS-1$//$NON-NLS-2$
 		treeTableRidget.bindToModel(createTreeInput(), WordNode.class, "children", "parent", //$NON-NLS-1$//$NON-NLS-2$
 				columnValues, columnHeaders);
 		treeTableRidget.expandAll();
@@ -50,10 +50,10 @@ public class SnippetTreeTableRidget005 {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetTreeTableRidget005.class.getSimpleName());
 			new SnippetTreeTableRidget005(shell);
 			shell.setSize(400, 400);
@@ -69,9 +69,9 @@ public class SnippetTreeTableRidget005 {
 	}
 
 	private WordNode[] createTreeInput() {
-		WordNode root = new WordNode("Words"); //$NON-NLS-1$
+		final WordNode root = new WordNode("Words"); //$NON-NLS-1$
 
-		WordNode bTowns = new WordNode(root, "B"); //$NON-NLS-1$
+		final WordNode bTowns = new WordNode(root, "B"); //$NON-NLS-1$
 		new WordNode(bTowns, "Boring"); //$NON-NLS-1$
 		new WordNode(bTowns, "Buchanan"); //$NON-NLS-1$
 		new WordNode(bTowns, "Beaverton").setUpperCase(true); //$NON-NLS-1$
@@ -81,14 +81,14 @@ public class SnippetTreeTableRidget005 {
 		new WordNode(bTowns, "Bay City"); //$NON-NLS-1$
 		new WordNode(bTowns, "Bridgeport"); //$NON-NLS-1$
 
-		WordNode cTowns = new WordNode(root, "C"); //$NON-NLS-1$
+		final WordNode cTowns = new WordNode(root, "C"); //$NON-NLS-1$
 		new WordNode(cTowns, "Cedar Mill"); //$NON-NLS-1$
 		new WordNode(cTowns, "Crater Lake"); //$NON-NLS-1$
 		new WordNode(cTowns, "Coos Bay"); //$NON-NLS-1$
 		new WordNode(cTowns, "Corvallis"); //$NON-NLS-1$
 		new WordNode(cTowns, "Cannon Beach"); //$NON-NLS-1$
 
-		WordNode dTowns = new WordNode(root, "D"); //$NON-NLS-1$
+		final WordNode dTowns = new WordNode(root, "D"); //$NON-NLS-1$
 		new WordNode(dTowns, "Dunes City"); //$NON-NLS-1$
 		new WordNode(dTowns, "Damascus"); //$NON-NLS-1$
 		new WordNode(dTowns, "Diamond Lake"); //$NON-NLS-1$

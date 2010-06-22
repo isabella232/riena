@@ -17,12 +17,12 @@ import org.eclipse.equinox.log.Logger;
  */
 public class TestExceptionHandler implements IExceptionHandler {
 
-	private String name;
-	private String before;
+	private final String name;
+	private final String before;
 	private IExceptionHandler.Action action = IExceptionHandler.Action.NOT_HANDLED;
 	private Throwable throwable;
 
-	public TestExceptionHandler(String name, String before, IExceptionHandler.Action action) {
+	public TestExceptionHandler(final String name, final String before, final IExceptionHandler.Action action) {
 		this.name = name;
 		this.before = before;
 		if (action != null) {
@@ -59,7 +59,7 @@ public class TestExceptionHandler implements IExceptionHandler {
 	 * org.eclipse.riena.core.exception.IExceptionHandler#handleCaught(java.
 	 * lang.Throwable, java.lang.Object, org.eclipse.equinox.log.Logger)
 	 */
-	public IExceptionHandler.Action handleException(Throwable t, String msg, Logger logger) {
+	public IExceptionHandler.Action handleException(final Throwable t, final String msg, final Logger logger) {
 		throwable = t;
 		return action;
 	}
@@ -71,7 +71,7 @@ public class TestExceptionHandler implements IExceptionHandler {
 	 * org.eclipse.riena.core.exception.IExceptionHandler#handleUncaught(java
 	 * .lang.Throwable, java.lang.Object, org.eclipse.equinox.log.Logger)
 	 */
-	public IExceptionHandler.Action handleUncaught(Throwable t, String msg, Logger logger) {
+	public IExceptionHandler.Action handleUncaught(final Throwable t, final String msg, final Logger logger) {
 		throwable = t;
 		return action;
 	}

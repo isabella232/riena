@@ -25,16 +25,16 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 public class SharedResourcesTest extends RienaTestCase {
 
 	public void testSharedColors() {
-		Display display = Display.getDefault();
+		final Display display = Display.getDefault();
 
-		Color colorFlash1 = Activator.getSharedColor(display, SharedColors.COLOR_FLASH_ERROR);
-		Color colorFlash2 = Activator.getSharedColor(display, SharedColors.COLOR_FLASH_ERROR);
+		final Color colorFlash1 = Activator.getSharedColor(display, SharedColors.COLOR_FLASH_ERROR);
+		final Color colorFlash2 = Activator.getSharedColor(display, SharedColors.COLOR_FLASH_ERROR);
 
 		assertNotNull(colorFlash1);
 		assertNotNull(colorFlash2);
 		assertSame(colorFlash1, colorFlash2);
 
-		Color colorOutput = Activator.getSharedColor(display, SharedColors.COLOR_OUTPUT);
+		final Color colorOutput = Activator.getSharedColor(display, SharedColors.COLOR_OUTPUT);
 
 		assertNotNull(colorOutput);
 		assertNotSame(colorFlash2, colorOutput);
@@ -42,21 +42,21 @@ public class SharedResourcesTest extends RienaTestCase {
 		try {
 			Activator.getSharedColor(null, SharedColors.COLOR_FLASH_ERROR);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			Activator.getSharedColor(display, "does_not_exist");
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			Activator.getSharedColor(display, null);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 	}

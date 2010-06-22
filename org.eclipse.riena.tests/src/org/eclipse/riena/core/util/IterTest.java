@@ -34,9 +34,9 @@ public class IterTest extends RienaTestCase {
 	 * Nomen est omen!
 	 */
 	public void testIteratorTyped() {
-		Scanner scanner = new Scanner("this is a test");
+		final Scanner scanner = new Scanner("this is a test");
 		String result = "";
-		for (String s : Iter.able(scanner)) {
+		for (final String s : Iter.able(scanner)) {
 			result = result + s;
 		}
 		assertEquals("thisisatest", result);
@@ -46,9 +46,9 @@ public class IterTest extends RienaTestCase {
 	 * Nomen est omen!
 	 */
 	public void testIteratorUntyped() {
-		UntypedIteratorReturner utr = new UntypedIteratorReturner(new String[] { "1", "2" });
+		final UntypedIteratorReturner utr = new UntypedIteratorReturner(new String[] { "1", "2" });
 		String result = "";
-		for (String s : Iter.able(utr.getIterator(), String.class)) {
+		for (final String s : Iter.able(utr.getIterator(), String.class)) {
 			result = result + s;
 		}
 		assertEquals("12", result);
@@ -59,7 +59,7 @@ public class IterTest extends RienaTestCase {
 	 */
 	public void testNullIterator() {
 		String result = "";
-		for (String s : Iter.able((Iterator<String>) null)) {
+		for (final String s : Iter.able((Iterator<String>) null)) {
 			result = result + s;
 		}
 		assertEquals("", result);
@@ -69,11 +69,11 @@ public class IterTest extends RienaTestCase {
 	 * Nomen est omen!
 	 */
 	public void testEnumerationTyped() {
-		Vector<String> v = new Vector<String>();
+		final Vector<String> v = new Vector<String>();
 		v.add("1");
 		v.add("2");
 		String result = "";
-		for (String o : Iter.able(v.elements())) {
+		for (final String o : Iter.able(v.elements())) {
 			result = result + o;
 		}
 		assertEquals("12", result);
@@ -83,9 +83,9 @@ public class IterTest extends RienaTestCase {
 	 * Nomen est omen!
 	 */
 	public void testArray() {
-		String[] strings = new String[] { "a", "b", "c" };
+		final String[] strings = new String[] { "a", "b", "c" };
 		String result = "";
-		for (String o : Iter.able(strings)) {
+		for (final String o : Iter.able(strings)) {
 			result = result + o;
 		}
 		assertEquals("abc", result);
@@ -95,9 +95,9 @@ public class IterTest extends RienaTestCase {
 	 * Nomen est omen!
 	 */
 	public void testEmptyArray() {
-		String[] strings = new String[0];
+		final String[] strings = new String[0];
 		String result = "";
-		for (String o : Iter.able(strings)) {
+		for (final String o : Iter.able(strings)) {
 			result = result + o;
 		}
 		assertEquals("", result);
@@ -107,9 +107,9 @@ public class IterTest extends RienaTestCase {
 	 * Nomen est omen!
 	 */
 	public void testNullArray() {
-		String[] strings = null;
+		final String[] strings = null;
 		String result = "";
-		for (String o : Iter.able(strings)) {
+		for (final String o : Iter.able(strings)) {
 			result = result + o;
 		}
 		assertEquals("", result);
@@ -119,9 +119,9 @@ public class IterTest extends RienaTestCase {
 	 * Nomen est omen!
 	 */
 	public void testEnumerationUntyped() {
-		StringTokenizer st = new StringTokenizer("this is a test");
+		final StringTokenizer st = new StringTokenizer("this is a test");
 		String result = "";
-		for (String str : Iter.able(st, String.class)) {
+		for (final String str : Iter.able(st, String.class)) {
 			result = result + str;
 		}
 		assertEquals("thisisatest", result);
@@ -132,7 +132,7 @@ public class IterTest extends RienaTestCase {
 	 */
 	public void testNullEnumeration() {
 		String result = "";
-		for (Object o : Iter.able((Enumeration<Object>) null)) {
+		for (final Object o : Iter.able((Enumeration<Object>) null)) {
 			result = result + o;
 		}
 		assertEquals("", result);
@@ -142,11 +142,11 @@ public class IterTest extends RienaTestCase {
 	 * Nomen est omen!
 	 */
 	public void testCollection() {
-		List<String> strings = new ArrayList<String>();
+		final List<String> strings = new ArrayList<String>();
 		strings.add("1");
 		strings.add("2");
 		String result = "";
-		for (Object o : Iter.able(strings)) {
+		for (final Object o : Iter.able(strings)) {
 			result = result + o;
 		}
 		assertEquals("12", result);
@@ -156,9 +156,9 @@ public class IterTest extends RienaTestCase {
 	 * Nomen est omen!
 	 */
 	public void testNullCollection() {
-		List<String> strings = null;
+		final List<String> strings = null;
 		String result = "";
-		for (Object o : Iter.able(strings)) {
+		for (final Object o : Iter.able(strings)) {
 			result = result + o;
 		}
 		assertEquals("", result);
@@ -168,9 +168,9 @@ public class IterTest extends RienaTestCase {
 	 * Nomen est omen!
 	 */
 	public void testAndNowSomethingCompletlyDifferent() throws IOException {
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		Enumeration<URL> enumeration = classLoader.getResources("META-INF/hivemodule.xml");
-		for (URL jarUrl : Iter.able(enumeration)) {
+		final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		final Enumeration<URL> enumeration = classLoader.getResources("META-INF/hivemodule.xml");
+		for (final URL jarUrl : Iter.able(enumeration)) {
 			println(jarUrl.toString());
 		}
 	}
@@ -179,12 +179,12 @@ public class IterTest extends RienaTestCase {
 	 * Nomen est omen!
 	 */
 	public void testReverseIterating() {
-		List<Integer> ints = new ArrayList<Integer>();
+		final List<Integer> ints = new ArrayList<Integer>();
 		ints.add(1);
 		ints.add(2);
 		ints.add(3);
 		int expected = 3;
-		for (Integer i : Iter.ableReverse(ints)) {
+		for (final Integer i : Iter.ableReverse(ints)) {
 			assertEquals(expected--, (int) i);
 		}
 	}
@@ -193,19 +193,19 @@ public class IterTest extends RienaTestCase {
 	 * Nomen est omen!
 	 */
 	public void testReverseIteratingWithNull() {
-		List<Integer> ints = null;
-		for (Integer i : Iter.ableReverse(ints)) {
+		final List<Integer> ints = null;
+		for (final Integer i : Iter.ableReverse(ints)) {
 			fail("Unfortunately " + i + " could be reached which should not happen!.");
 		}
 	}
 
 	private static class UntypedIteratorReturner {
-		private String[] strings;
+		private final String[] strings;
 
 		/**
 		 * @param strings
 		 */
-		public UntypedIteratorReturner(String[] strings) {
+		public UntypedIteratorReturner(final String[] strings) {
 			this.strings = strings;
 		}
 

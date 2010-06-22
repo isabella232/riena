@@ -49,7 +49,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	private StatuslineUIProcess uiControl;
 
 	// the manager organizing all data
-	private ProcessDetailManager processManager = new ProcessDetailManager();
+	private final ProcessDetailManager processManager = new ProcessDetailManager();
 
 	// the task triggering updates for pending processes
 	private TimerTask timedTrigger;
@@ -99,7 +99,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		private Comparator<ProcessDetail> processDetailComparator;
 
 		@InjectExtension(min = 0, max = 1)
-		public void update(IProcessDetailComparatorExtension extension) {
+		public void update(final IProcessDetailComparatorExtension extension) {
 			if (extension != null) {
 				processDetailComparator = extension.createComparator();
 			}
@@ -109,12 +109,12 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 			return processDetailComparator != null ? processDetailComparator : defaultProcessDetailComparator;
 		}
 
-		void register(ProcessDetail detail) {
+		void register(final ProcessDetail detail) {
 			processDetails.add(detail);
 			sort();
 		}
 
-		void unregister(ProcessDetail detail) {
+		void unregister(final ProcessDetail detail) {
 			processDetails.remove(detail);
 			sort();
 		}
@@ -131,9 +131,9 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 			return Collections.unmodifiableList(processDetails);
 		}
 
-		List<ProgressInfoDataObject> getPidos(IProcessDetailFilter pidoFilter) {
-			List<ProgressInfoDataObject> pidos = new ArrayList<ProgressInfoDataObject>();
-			for (ProcessDetail procDetail : processDetails) {
+		List<ProgressInfoDataObject> getPidos(final IProcessDetailFilter pidoFilter) {
+			final List<ProgressInfoDataObject> pidos = new ArrayList<ProgressInfoDataObject>();
+			for (final ProcessDetail procDetail : processDetails) {
 				if (pidoFilter.accept(procDetail)) {
 					pidos.add(procDetail.toPido());
 				}
@@ -161,7 +161,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		 * @param visualizer
 		 * @return true if it should be visualized in the {@link Statusline}
 		 */
-		boolean isRelevantForStatusline(IProgressVisualizer visualizer) {
+		boolean isRelevantForStatusline(final IProgressVisualizer visualizer) {
 			return visualizer != null && visualizer.equals(getStatuslineRelevant().getVisualizer());
 		}
 
@@ -172,8 +172,8 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		 *         {@link ProcessDetail}s
 		 */
 		List<IProgressVisualizer> getAlVisualizers() {
-			List<IProgressVisualizer> visualizers = new ArrayList<IProgressVisualizer>(processDetails.size());
-			for (ProcessDetail pDetail : processDetails) {
+			final List<IProgressVisualizer> visualizers = new ArrayList<IProgressVisualizer>(processDetails.size());
+			for (final ProcessDetail pDetail : processDetails) {
 				visualizers.add(pDetail.getVisualizer());
 			}
 			return visualizers;
@@ -184,11 +184,11 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		 * @return the {@link ProcessDetail} for the given
 		 *         {@link IProgressVisualizer}
 		 */
-		ProcessDetail detailForVisualizer(IProgressVisualizer visualizer) {
+		ProcessDetail detailForVisualizer(final IProgressVisualizer visualizer) {
 			if (visualizer == null) {
 				return null;
 			}
-			for (ProcessDetail pDetail : processDetails) {
+			for (final ProcessDetail pDetail : processDetails) {
 				if (visualizer.equals(pDetail.getVisualizer())) {
 					return pDetail;
 				}
@@ -203,8 +203,8 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		 *         {@link ProcessDetail} instances.
 		 */
 		List<ProcessDetail> getPending() {
-			List<ProcessDetail> pending = new ArrayList<ProcessDetail>();
-			for (ProcessDetail pDetail : processDetails) {
+			final List<ProcessDetail> pending = new ArrayList<ProcessDetail>();
+			for (final ProcessDetail pDetail : processDetails) {
 				if (pDetail.isPending()) {
 					pending.add(pDetail);
 				}
@@ -214,7 +214,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 		void updatePending() {
 			// be carful: we are not on the ui thread! sync!
-			for (ProcessDetail pendingDetail : getPending()) {
+			for (final ProcessDetail pendingDetail : getPending()) {
 				// force a step
 				pendingDetail.triggerPending();
 			}
@@ -228,9 +228,9 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		 * @param progress
 		 *            the number of work units done by the {@link UIProcess}
 		 */
-		public void saveProgress(IProgressVisualizer visualizer, int progress) {
+		public void saveProgress(final IProgressVisualizer visualizer, final int progress) {
 			// anybody there?
-			ProcessDetail pDetail = detailForVisualizer(visualizer);
+			final ProcessDetail pDetail = detailForVisualizer(visualizer);
 			Assert.isNotNull(pDetail, "no ProcessDetail for visualizer " + String.valueOf(visualizer)); //$NON-NLS-1$
 			// pending?
 			if (pDetail.isPending()) {
@@ -258,7 +258,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		return uiControl;
 	}
 
-	public void setUIControl(Object uiControl) {
+	public void setUIControl(final Object uiControl) {
 		// type check
 		checkUIControl(uiControl);
 		// unbind predecessor
@@ -269,7 +269,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		bindUIControl();
 	}
 
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, StatuslineUIProcess.class);
 	}
 
@@ -305,20 +305,20 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		// not focusable
 	}
 
-	public void setFocusable(boolean focusable) {
+	public void setFocusable(final boolean focusable) {
 		// not focusable
 	}
 
-	public void setToolTipText(String toolTipText) {
+	public void setToolTipText(final String toolTipText) {
 		// TODO render a tooltip
 
 	}
 
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		// always visible
 	}
 
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(final boolean enabled) {
 		// always enabled
 	}
 
@@ -330,7 +330,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	 * {@link UIProcess} specific code
 	 */
 
-	public synchronized void updateProgress(IProgressVisualizer visualizer, int progress) {
+	public synchronized void updateProgress(final IProgressVisualizer visualizer, final int progress) {
 		// save progress
 		getProcessManager().saveProgress(visualizer, progress);
 		checkTrigger();
@@ -380,7 +380,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	 * update the base progress in the {@link Statusline}
 	 */
 	private void triggerUIBaseUpdate() {
-		ProcessDetail pDetailBase = getProcessManager().getStatuslineRelevant();
+		final ProcessDetail pDetailBase = getProcessManager().getStatuslineRelevant();
 		if (pDetailBase == null) {
 			return;
 		}
@@ -393,9 +393,9 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	 */
 	private void triggerUIListUpdate() {
 		// determine all infos
-		List<ProgressInfoDataObject> pidos = getProcessManager().getPidos(new IProcessDetailFilter() {
+		final List<ProgressInfoDataObject> pidos = getProcessManager().getPidos(new IProcessDetailFilter() {
 
-			public boolean accept(ProcessDetail procDetail) {
+			public boolean accept(final ProcessDetail procDetail) {
 				// we do not want the list containing the base info
 				return /*
 						 * !getProcessManager().isRelevantForStatusline(procDetail
@@ -409,7 +409,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		getUIControl().triggerListUpdate(pidos, true);
 	}
 
-	public synchronized void finalUpdateUI(IProgressVisualizer visualizer) {
+	public synchronized void finalUpdateUI(final IProgressVisualizer visualizer) {
 		final ProcessDetail detailForVisualizer = getProcessManager().detailForVisualizer(visualizer);
 		if (detailForVisualizer == null) {
 			return;
@@ -422,7 +422,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 	}
 
-	private boolean checkStillNeeded(IProgressVisualizer visualizer) {
+	private boolean checkStillNeeded(final IProgressVisualizer visualizer) {
 
 		// if context is disposed, unregister contextUpdateListener
 		final Object context = visualizer.getProcessInfo().getContext();
@@ -447,8 +447,9 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		return true;
 	}
 
-	private void unregisterContextUpdateListener(IProgressVisualizer visualizer, boolean removeFromContextLocator) {
-		IContextUpdateListener contextListener = visualizer2ContextListener.get(visualizer);
+	private void unregisterContextUpdateListener(final IProgressVisualizer visualizer,
+			final boolean removeFromContextLocator) {
+		final IContextUpdateListener contextListener = visualizer2ContextListener.get(visualizer);
 		if (removeFromContextLocator) {
 			contextLocator.removeContextUpdateListener(contextListener, visualizer.getProcessInfo().getContext());
 		}
@@ -456,15 +457,15 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		visualizer2ContextListener.remove(visualizer);
 	}
 
-	public void setContextLocator(IVisualContextManager contextLocator) {
+	public void setContextLocator(final IVisualContextManager contextLocator) {
 		this.contextLocator = contextLocator;
 	}
 
-	public void addProgressVisualizer(IProgressVisualizer visualizer) {
+	public void addProgressVisualizer(final IProgressVisualizer visualizer) {
 
 	}
 
-	public synchronized void initialUpdateUI(IProgressVisualizer visualizer, int totalWork) {
+	public synchronized void initialUpdateUI(final IProgressVisualizer visualizer, final int totalWork) {
 		createAndRegisterProcessDetail(visualizer);
 		// register timed updater if first time called
 		if (getProcessManager().getPending().size() == 1) {
@@ -481,7 +482,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 	}
 
-	private void createAndRegisterProcessDetail(IProgressVisualizer visualizer) {
+	private void createAndRegisterProcessDetail(final IProgressVisualizer visualizer) {
 		if (getProcessManager().detailForVisualizer(visualizer) != null) {
 			return;
 		}
@@ -490,27 +491,27 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	}
 
 	private void observeContext(final IProgressVisualizer visualizer) {
-		IContextUpdateListener listener = new IContextUpdateListener() {
+		final IContextUpdateListener listener = new IContextUpdateListener() {
 
-			public void beforeContextUpdate(Object context) {
+			public void beforeContextUpdate(final Object context) {
 			}
 
-			public boolean contextUpdated(Object context) {
-				boolean needed = checkStillNeeded(visualizer);
+			public boolean contextUpdated(final Object context) {
+				final boolean needed = checkStillNeeded(visualizer);
 				updateUserInterface();
 				return !needed;
 			}
 
 		};
-		Object context = visualizer.getProcessInfo().getContext();
+		final Object context = visualizer.getProcessInfo().getContext();
 		contextLocator.addContextUpdateListener(listener, context);
 		saveMapping(visualizer, listener);
 
 	}
 
-	private Map<IProgressVisualizer, IContextUpdateListener> visualizer2ContextListener = new HashMap<IProgressVisualizer, IContextUpdateListener>();
+	private final Map<IProgressVisualizer, IContextUpdateListener> visualizer2ContextListener = new HashMap<IProgressVisualizer, IContextUpdateListener>();
 
-	private void saveMapping(IProgressVisualizer visualizer, IContextUpdateListener listener) {
+	private void saveMapping(final IProgressVisualizer visualizer, final IContextUpdateListener listener) {
 		visualizer2ContextListener.put(visualizer, listener);
 	}
 
@@ -528,7 +529,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		return System.currentTimeMillis();
 	}
 
-	public void removeProgressVisualizer(IProgressVisualizer visualizer) {
+	public void removeProgressVisualizer(final IProgressVisualizer visualizer) {
 
 	}
 

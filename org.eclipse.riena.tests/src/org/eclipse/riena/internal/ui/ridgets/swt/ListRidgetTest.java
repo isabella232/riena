@@ -44,7 +44,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 public class ListRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
-	protected List createWidget(Composite parent) {
+	protected List createWidget(final Composite parent) {
 		return new List(parent, SWT.MULTI);
 	}
 
@@ -72,22 +72,22 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	// /////////////
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(ListRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testUpdateFromModel() {
-		List control = getWidget();
-		ITableRidget ridget = getRidget();
+		final List control = getWidget();
+		final ITableRidget ridget = getRidget();
 
-		int oldCount = manager.getPersons().size();
+		final int oldCount = manager.getPersons().size();
 
 		assertEquals(oldCount, ridget.getObservableList().size());
 		assertEquals(oldCount, control.getItemCount());
 
 		manager.getPersons().remove(person1);
 
-		int newCount = oldCount - 1;
+		final int newCount = oldCount - 1;
 
 		assertEquals(newCount, manager.getPersons().size());
 		assertEquals(oldCount, ridget.getObservableList().size());
@@ -101,7 +101,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testUpdateFromModelPreservesSelection() {
-		ITableRidget ridget = getRidget();
+		final ITableRidget ridget = getRidget();
 
 		ridget.setSelection(person2);
 
@@ -114,7 +114,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testContainsOption() {
-		ITableRidget ridget = getRidget();
+		final ITableRidget ridget = getRidget();
 
 		assertTrue(ridget.containsOption(person1));
 		assertTrue(ridget.containsOption(person2));
@@ -123,8 +123,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		assertFalse(ridget.containsOption(null));
 		assertFalse(ridget.containsOption(new Person("", "")));
 
-		java.util.List<Person> persons = Arrays.asList(new Person[] { person3 });
-		PersonManager manager = new PersonManager(persons);
+		final java.util.List<Person> persons = Arrays.asList(new Person[] { person3 });
+		final PersonManager manager = new PersonManager(persons);
 		ridget.bindToModel(manager, "persons", Person.class, new String[] { "firstname" }, new String[] { "" });
 		ridget.updateFromModel();
 
@@ -133,8 +133,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetSelectionType() {
-		ITableRidget ridget = getRidget();
-		List control = getWidget();
+		final ITableRidget ridget = getRidget();
+		final List control = getWidget();
 
 		assertEquals(SelectionType.SINGLE, ridget.getSelectionType());
 		assertTrue((control.getStyle() & SWT.MULTI) != 0);
@@ -154,27 +154,27 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testAddClickListener() {
-		IListRidget ridget = getRidget();
+		final IListRidget ridget = getRidget();
 		ridget.updateFromModel();
-		List control = getWidget();
+		final List control = getWidget();
 
 		try {
 			ridget.addClickListener(null);
 			fail();
-		} catch (RuntimeException npe) {
+		} catch (final RuntimeException npe) {
 			ok();
 		}
 
-		FTClickListener listener1 = new FTClickListener();
+		final FTClickListener listener1 = new FTClickListener();
 		ridget.addClickListener(listener1);
 
-		FTClickListener listener2 = new FTClickListener();
+		final FTClickListener listener2 = new FTClickListener();
 		ridget.addClickListener(listener2);
 		ridget.addClickListener(listener2);
 
 		final int clickedRow = 2; // 3rd row
 		control.setSelection(clickedRow);
-		Event mdEvent = new Event();
+		final Event mdEvent = new Event();
 		mdEvent.widget = control;
 		mdEvent.type = SWT.MouseDown;
 		mdEvent.button = 2;
@@ -205,24 +205,24 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testAddDoubleClickListener() {
-		IListRidget ridget = getRidget();
-		List control = getWidget();
+		final IListRidget ridget = getRidget();
+		final List control = getWidget();
 
 		try {
 			ridget.addDoubleClickListener(null);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
-		FTActionListener listener1 = new FTActionListener();
+		final FTActionListener listener1 = new FTActionListener();
 		ridget.addDoubleClickListener(listener1);
 
-		FTActionListener listener2 = new FTActionListener();
+		final FTActionListener listener2 = new FTActionListener();
 		ridget.addDoubleClickListener(listener2);
 		ridget.addDoubleClickListener(listener2);
 
-		Event doubleClick = new Event();
+		final Event doubleClick = new Event();
 		doubleClick.widget = control;
 		doubleClick.type = SWT.MouseDoubleClick;
 		control.notifyListeners(SWT.MouseDoubleClick, doubleClick);
@@ -238,27 +238,27 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetComparator() {
-		IListRidget ridget = getRidget();
-		List control = getWidget();
+		final IListRidget ridget = getRidget();
+		final List control = getWidget();
 
 		// sorts from a to z
-		Comparator<Object> comparator = new TypedComparator<String>();
+		final Comparator<Object> comparator = new TypedComparator<String>();
 
 		try {
 			ridget.setComparator(-1, comparator);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			ridget.setComparator(1, comparator);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
-		int lastItemIndex = control.getItemCount() - 1;
+		final int lastItemIndex = control.getItemCount() - 1;
 
 		assertEquals("John", control.getItem(0));
 		assertEquals("Frank", control.getItem(lastItemIndex));
@@ -276,19 +276,19 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testGetSortedColumn() {
-		IListRidget ridget = getRidget();
+		final IListRidget ridget = getRidget();
 
 		try {
 			ridget.setSortedColumn(1);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			ridget.setSortedColumn(-2);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
@@ -317,19 +317,19 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testIsColumnSortable() {
-		IListRidget ridget = getRidget();
+		final IListRidget ridget = getRidget();
 
 		try {
 			assertFalse(ridget.isColumnSortable(-1));
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			assertFalse(ridget.isColumnSortable(1));
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
@@ -345,7 +345,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetColumnSortable() {
-		IListRidget ridget = getRidget();
+		final IListRidget ridget = getRidget();
 
 		try {
 			// TODO warning suppression: Ignore FindBugs warning about the
@@ -353,18 +353,18 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			// what the test is all about.
 			ridget.setColumnSortable(0, true);
 			fail();
-		} catch (UnsupportedOperationException uoe) {
+		} catch (final UnsupportedOperationException uoe) {
 			ok();
 		}
 	}
 
 	public void testSetSortedAscending() {
-		IListRidget ridget = getRidget();
-		List control = getWidget();
+		final IListRidget ridget = getRidget();
+		final List control = getWidget();
 
 		ridget.bindToModel(manager, "persons", Person.class, new String[] { "lastname" }, new String[] { "" });
 		ridget.updateFromModel();
-		int lastItemIndex = control.getItemCount() - 1;
+		final int lastItemIndex = control.getItemCount() - 1;
 
 		assertEquals(-1, ridget.getSortedColumn());
 		assertTrue(ridget.isSortedAscending());
@@ -394,7 +394,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetSortedAscendingFiresEvents() {
-		IListRidget ridget = getRidget();
+		final IListRidget ridget = getRidget();
 
 		assertTrue(ridget.isSortedAscending());
 
@@ -423,12 +423,12 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetSortedColumnFiresEvents() {
-		IListRidget ridget = getRidget();
+		final IListRidget ridget = getRidget();
 
 		assertEquals(-1, ridget.getSortedColumn());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer
-				.valueOf(-1), Integer.valueOf(0)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN,
+				Integer.valueOf(-1), Integer.valueOf(0)));
 
 		ridget.setSortedColumn(0);
 
@@ -438,8 +438,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		ridget.setSortedColumn(0);
 
 		verifyPropertyChangeEvents();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN, Integer
-				.valueOf(0), Integer.valueOf(-1)));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ISortableByColumn.PROPERTY_SORTED_COLUMN,
+				Integer.valueOf(0), Integer.valueOf(-1)));
 
 		ridget.setSortedColumn(-1);
 
@@ -447,7 +447,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testHasMoveableColumns() {
-		IListRidget ridget = getRidget();
+		final IListRidget ridget = getRidget();
 
 		assertFalse(ridget.hasMoveableColumns());
 
@@ -457,7 +457,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		try {
 			ridget.setMoveableColumns(true);
 			fail();
-		} catch (UnsupportedOperationException ex) {
+		} catch (final UnsupportedOperationException ex) {
 			ok();
 		}
 	}
@@ -468,8 +468,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * "output only".
 	 */
 	public void testOutputSingleSelectionCannotBeChangedFromUI() {
-		IListRidget ridget = getRidget();
-		List control = getWidget();
+		final IListRidget ridget = getRidget();
+		final List control = getWidget();
 
 		ridget.setSelectionType(SelectionType.SINGLE);
 
@@ -499,8 +499,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * "output only".
 	 */
 	public void testOutputMultipleSelectionCannotBeChangedFromUI() {
-		IListRidget ridget = getRidget();
-		List control = getWidget();
+		final IListRidget ridget = getRidget();
+		final List control = getWidget();
 
 		ridget.setSelectionType(SelectionType.MULTI);
 
@@ -528,7 +528,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * Tests that toggling output state on/off does not change the selection.
 	 */
 	public void testTogglingOutputDoesNotChangeSelection() {
-		IListRidget ridget = getRidget();
+		final IListRidget ridget = getRidget();
 
 		ridget.setSelection(0);
 
@@ -557,8 +557,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			return;
 		}
 
-		IListRidget ridget = getRidget();
-		List control = getWidget();
+		final IListRidget ridget = getRidget();
+		final List control = getWidget();
 		// the single selection is bound to another object in the parent class
 		getRidget().bindSingleSelectionToModel(manager, "selectedPerson");
 
@@ -597,8 +597,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			return;
 		}
 
-		IListRidget ridget = getRidget();
-		List control = getWidget();
+		final IListRidget ridget = getRidget();
+		final List control = getWidget();
 		// the single selection is bound to another object in the parent class
 		getRidget().bindSingleSelectionToModel(manager, "selectedPerson");
 
@@ -634,8 +634,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * (because the list is modified internally).
 	 */
 	public void testDisabledDoesNotFireSelection() {
-		IListRidget ridget = getRidget();
-		FTPropertyChangeListener listener = new FTPropertyChangeListener();
+		final IListRidget ridget = getRidget();
+		final FTPropertyChangeListener listener = new FTPropertyChangeListener();
 		ridget.addPropertyChangeListener(ISelectableRidget.PROPERTY_SELECTION, listener);
 
 		ridget.setSelection(person1);
@@ -658,8 +658,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * bound to the ridget.
 	 */
 	public void testDisableWithoutBoundModel() {
-		ListRidget ridget = (ListRidget) createRidget();
-		List control = getWidget();
+		final ListRidget ridget = (ListRidget) createRidget();
+		final List control = getWidget();
 		ridget.setUIControl(control);
 
 		assertNull(ridget.getObservableList());
@@ -685,8 +685,8 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			return;
 		}
 
-		IListRidget ridget = getRidget();
-		List control = getWidget();
+		final IListRidget ridget = getRidget();
+		final List control = getWidget();
 		// the single selection is bound to another object in the parent class
 		getRidget().bindSingleSelectionToModel(manager, "selectedPerson");
 
@@ -711,17 +711,17 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testAddSelectionListener() {
-		IListRidget ridget = getRidget();
-		List control = getWidget();
+		final IListRidget ridget = getRidget();
+		final List control = getWidget();
 
 		try {
 			ridget.addSelectionListener(null);
 			fail();
-		} catch (RuntimeException npe) {
+		} catch (final RuntimeException npe) {
 			ok();
 		}
 
-		TestSelectionListener selectionListener = new TestSelectionListener();
+		final TestSelectionListener selectionListener = new TestSelectionListener();
 		ridget.addSelectionListener(selectionListener);
 
 		ridget.setSelection(person1);
@@ -742,7 +742,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		assertEquals(1, ridget.getSelection().size());
 		assertEquals(1, control.getSelectionCount());
 		assertEquals(2, selectionListener.getCount());
-		SelectionEvent selectionEvent = selectionListener.getSelectionEvent();
+		final SelectionEvent selectionEvent = selectionListener.getSelectionEvent();
 		assertEquals(ridget, selectionEvent.getSource());
 		assertTrue(selectionEvent.getOldSelection().isEmpty());
 		assertEquals(ridget.getSelection(), selectionEvent.getNewSelection());
@@ -753,7 +753,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 		assertEquals(1, ridget.getSelection().size());
 		assertEquals(1, control.getSelectionCount());
 		assertEquals(3, selectionListener.getCount());
-		SelectionEvent selectionEvent2 = selectionListener.getSelectionEvent();
+		final SelectionEvent selectionEvent2 = selectionListener.getSelectionEvent();
 		assertEquals(ridget, selectionEvent.getSource());
 		assertEquals(selectionEvent.getNewSelection(), selectionEvent2.getOldSelection());
 		assertEquals(ridget.getSelection(), selectionEvent2.getNewSelection());
@@ -763,10 +763,10 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSimplifiedBinding() {
-		List control = new List(getShell(), SWT.NONE);
-		IListRidget ridget = createRidget();
+		final List control = new List(getShell(), SWT.NONE);
+		final IListRidget ridget = createRidget();
 		ridget.setUIControl(control);
-		SimplifiedModel model = new SimplifiedModel();
+		final SimplifiedModel model = new SimplifiedModel();
 		ridget.bindToModel(model, "values");
 
 		assertEquals(null, ridget.getObservableList());
@@ -781,14 +781,14 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testRebindToSimpleModel() {
-		IListRidget ridget = getRidget();
-		List control = getWidget();
+		final IListRidget ridget = getRidget();
+		final List control = getWidget();
 
 		// already bound to Persons
 		assertTrue(ridget.getObservableList().get(0) instanceof Person);
 
 		// rebind to different model
-		SimplifiedModel model = new SimplifiedModel();
+		final SimplifiedModel model = new SimplifiedModel();
 		ridget.bindToModel(model, "values");
 		ridget.updateFromModel();
 
@@ -802,14 +802,14 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * As per bug 301182
 	 */
 	public void testRefreshNull() {
-		IListRidget ridget = createRidget();
-		List control = createWidget(getShell());
+		final IListRidget ridget = createRidget();
+		final List control = createWidget(getShell());
 		ridget.setUIControl(control);
 
-		StringPojo word1 = new StringPojo("eclipse");
-		StringPojo word2 = new StringPojo("riena");
-		WritableList values = new WritableList(Arrays.asList(word1, word2), StringPojo.class);
-		String[] columns = { "value" };
+		final StringPojo word1 = new StringPojo("eclipse");
+		final StringPojo word2 = new StringPojo("riena");
+		final WritableList values = new WritableList(Arrays.asList(word1, word2), StringPojo.class);
+		final String[] columns = { "value" };
 		ridget.bindToModel(values, StringPojo.class, columns, null);
 		ridget.updateFromModel();
 
@@ -832,14 +832,14 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	 * As per bug 301182
 	 */
 	public void testRefresh() {
-		IListRidget ridget = createRidget();
-		List control = createWidget(getShell());
+		final IListRidget ridget = createRidget();
+		final List control = createWidget(getShell());
 		ridget.setUIControl(control);
 
-		StringPojo word1 = new StringPojo("eclipse");
-		StringPojo word2 = new StringPojo("riena");
-		WritableList values = new WritableList(Arrays.asList(word1, word2), StringPojo.class);
-		String[] columns = { "value" };
+		final StringPojo word1 = new StringPojo("eclipse");
+		final StringPojo word2 = new StringPojo("riena");
+		final WritableList values = new WritableList(Arrays.asList(word1, word2), StringPojo.class);
+		final String[] columns = { "value" };
 		ridget.bindToModel(values, StringPojo.class, columns, null);
 		ridget.updateFromModel();
 
@@ -859,7 +859,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testGetOptionWithSorting() {
-		IListRidget ridget = getRidget();
+		final IListRidget ridget = getRidget();
 		ridget.bindToModel(manager, "persons", Person.class, "lastname");
 		ridget.updateFromModel();
 
@@ -881,7 +881,7 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	public void testSetSelectionWithSorting() {
-		IListRidget ridget = getRidget();
+		final IListRidget ridget = getRidget();
 		ridget.bindToModel(manager, "persons", Person.class, "lastname");
 		ridget.updateFromModel();
 
@@ -927,20 +927,20 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	@Override
-	protected Object getRowValue(int i) {
+	protected Object getRowValue(final int i) {
 		// return getRidget().getRowObservables().get(i);
-		IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
+		final IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
 		return rowObservables.get(i);
 	}
 
 	@Override
 	protected int[] getSelectedRows() {
 		// IObservableList rowObservables = getRidget().getRowObservables();
-		IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
-		Object[] elements = getRidget().getMultiSelectionObservable().toArray();
-		int[] result = new int[elements.length];
+		final IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
+		final Object[] elements = getRidget().getMultiSelectionObservable().toArray();
+		final int[] result = new int[elements.length];
 		for (int i = 0; i < elements.length; i++) {
-			Object element = elements[i];
+			final Object element = elements[i];
 			result[i] = rowObservables.indexOf(element);
 		}
 		return result;
@@ -952,13 +952,13 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	@Override
-	protected void setUIControlRowSelection(int[] indices) {
+	protected void setUIControlRowSelection(final int[] indices) {
 		getWidget().setSelection(indices);
 		fireSelectionEvent();
 	}
 
 	@Override
-	protected void setUIControlRowSelectionInterval(int start, int end) {
+	protected void setUIControlRowSelectionInterval(final int start, final int end) {
 		getWidget().setSelection(start, end);
 		fireSelectionEvent();
 	}
@@ -982,14 +982,14 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 			return count;
 		}
 
-		public void propertyChange(PropertyChangeEvent evt) {
+		public void propertyChange(final PropertyChangeEvent evt) {
 			count++;
 			// System.out.println(count + "\t" + evt.getOldValue() + " -> " + evt.getNewValue());
 		}
 	}
 
 	private static final class SimplifiedModel {
-		private java.util.List<String> values;
+		private final java.util.List<String> values;
 		private final static String NAME_ONE = "Janet";
 		private final static String NAME_TWO = "Jermaine";
 		private final static String NAME_THREE = "John";
@@ -1004,9 +1004,9 @@ public class ListRidgetTest extends AbstractTableRidgetTest {
 	}
 
 	private static final class StringComparator implements Comparator<Object> {
-		public int compare(Object o1, Object o2) {
-			String s1 = (String) o1;
-			String s2 = (String) o2;
+		public int compare(final Object o1, final Object o2) {
+			final String s1 = (String) o1;
+			final String s2 = (String) o2;
 			return s1.compareTo(s2);
 		}
 	}

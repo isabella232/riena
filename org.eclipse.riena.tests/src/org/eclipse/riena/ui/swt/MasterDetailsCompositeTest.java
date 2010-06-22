@@ -54,29 +54,29 @@ public class MasterDetailsCompositeTest extends TestCase {
 	}
 
 	public void testGetUIControlsWithBindingProperty() {
-		Composite parent = masterDetails.getDetails();
-		Text txtFirstName = UIControlsFactory.createText(parent, SWT.BORDER, "txtFirstName");
-		Text txtLastName = UIControlsFactory.createText(parent, SWT.BORDER, "txtLastName");
-		Text txtWithoutID = UIControlsFactory.createText(parent, SWT.BORDER);
+		final Composite parent = masterDetails.getDetails();
+		final Text txtFirstName = UIControlsFactory.createText(parent, SWT.BORDER, "txtFirstName");
+		final Text txtLastName = UIControlsFactory.createText(parent, SWT.BORDER, "txtLastName");
+		final Text txtWithoutID = UIControlsFactory.createText(parent, SWT.BORDER);
 
-		List<Object> controls = masterDetails.getUIControls();
+		final List<Object> controls = masterDetails.getUIControls();
 
 		assertEquals(6, controls.size());
 		assertTrue(controls.contains(txtFirstName));
 		assertTrue(controls.contains(txtLastName));
 		assertFalse(controls.contains(txtWithoutID));
 
-		List<Object> controls2 = masterDetails.getUIControls();
+		final List<Object> controls2 = masterDetails.getUIControls();
 		assertEquals(6, controls2.size());
 	}
 
 	public void testGetUIControlsWithBindingPropertyFromComposite() {
-		Composite parent = new Composite(masterDetails.getDetails(), SWT.NONE);
-		Text txtFirstName = UIControlsFactory.createText(parent, SWT.BORDER, "txtFirstName");
-		Text txtLastName = UIControlsFactory.createText(parent, SWT.BORDER, "txtLastName");
-		Text txtWithoutID = UIControlsFactory.createText(parent, SWT.BORDER);
+		final Composite parent = new Composite(masterDetails.getDetails(), SWT.NONE);
+		final Text txtFirstName = UIControlsFactory.createText(parent, SWT.BORDER, "txtFirstName");
+		final Text txtLastName = UIControlsFactory.createText(parent, SWT.BORDER, "txtLastName");
+		final Text txtWithoutID = UIControlsFactory.createText(parent, SWT.BORDER);
 
-		List<Object> controls = masterDetails.getUIControls();
+		final List<Object> controls = masterDetails.getUIControls();
 
 		assertTrue(controls.contains(txtFirstName));
 		assertTrue(controls.contains(txtLastName));
@@ -87,10 +87,10 @@ public class MasterDetailsCompositeTest extends TestCase {
 	 * As per bug 297524.
 	 */
 	public void testGetUIControlsThatAreComposites() {
-		Composite parent = masterDetails.getDetails();
-		Combo combo = UIControlsFactory.createCombo(parent, "combo");
-		CCombo ccombo = UIControlsFactory.createCCombo(parent, "ccombo");
-		DateTime datetime = UIControlsFactory.createDate(parent, SWT.NONE, "datetime");
+		final Composite parent = masterDetails.getDetails();
+		final Combo combo = UIControlsFactory.createCombo(parent, "combo");
+		final CCombo ccombo = UIControlsFactory.createCCombo(parent, "ccombo");
+		final DateTime datetime = UIControlsFactory.createDate(parent, SWT.NONE, "datetime");
 
 		List<Object> controls = masterDetails.getUIControls();
 
@@ -98,8 +98,8 @@ public class MasterDetailsCompositeTest extends TestCase {
 		assertTrue(controls.contains(ccombo));
 		assertTrue(controls.contains(datetime));
 
-		Composite composite = new Composite(parent, SWT.NONE);
-		Combo combo2 = UIControlsFactory.createCombo(composite, "combo2");
+		final Composite composite = new Composite(parent, SWT.NONE);
+		final Combo combo2 = UIControlsFactory.createCombo(composite, "combo2");
 
 		controls = masterDetails.getUIControls();
 
@@ -108,14 +108,14 @@ public class MasterDetailsCompositeTest extends TestCase {
 	}
 
 	public void testSkipIComplexComponent() {
-		MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE) {
+		final MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE) {
 			@Override
-			protected void createDetails(Composite details) {
-				IComplexComponent complex = new TestComplexComponent(details, SWT.NONE);
+			protected void createDetails(final Composite details) {
+				final IComplexComponent complex = new TestComplexComponent(details, SWT.NONE);
 				addUIControl(complex, "complex");
 			}
 		};
-		List<Object> controls = widget.getUIControls();
+		final List<Object> controls = widget.getUIControls();
 
 		System.out.println(Arrays.toString(controls.toArray()));
 
@@ -130,7 +130,7 @@ public class MasterDetailsCompositeTest extends TestCase {
 	}
 
 	public void testSetMargins() {
-		MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE);
+		final MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE);
 
 		GridLayout layout = (GridLayout) widget.getLayout();
 
@@ -145,7 +145,7 @@ public class MasterDetailsCompositeTest extends TestCase {
 	}
 
 	public void testGetMargins() {
-		MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE);
+		final MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE);
 
 		assertEquals(0, widget.getMargins().x);
 		assertEquals(0, widget.getMargins().y);
@@ -157,7 +157,7 @@ public class MasterDetailsCompositeTest extends TestCase {
 	}
 
 	public void testGetSetSpacing() {
-		MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE);
+		final MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE);
 
 		assertEquals(0, widget.getSpacing().x);
 		assertEquals(5, widget.getSpacing().y);
@@ -169,10 +169,10 @@ public class MasterDetailsCompositeTest extends TestCase {
 	}
 
 	public void testCheckButton() {
-		MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE);
+		final MasterDetailsComposite widget = new MasterDetailsComposite(shell, SWT.NONE);
 
-		Button button = new Button(shell, SWT.PUSH);
-		ImageButton imageButton = new ImageButton(shell, SWT.NONE);
+		final Button button = new Button(shell, SWT.PUSH);
+		final ImageButton imageButton = new ImageButton(shell, SWT.NONE);
 
 		ReflectionUtils.invokeHidden(widget, "checkButton", button, true);
 		ReflectionUtils.invokeHidden(widget, "checkButton", button, false);
@@ -182,7 +182,7 @@ public class MasterDetailsCompositeTest extends TestCase {
 		try {
 			ReflectionUtils.invokeHidden(widget, "checkButton", new Object(), true);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			// ok
 		}
 	}
@@ -193,7 +193,7 @@ public class MasterDetailsCompositeTest extends TestCase {
 	private static class TestComplexComponent extends Composite implements IComplexComponent {
 		private final Label label;
 
-		public TestComplexComponent(Composite parent, int style) {
+		public TestComplexComponent(final Composite parent, final int style) {
 			super(parent, style);
 			label = UIControlsFactory.createLabel(this, "txt", "label");
 		}

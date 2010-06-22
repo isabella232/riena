@@ -76,9 +76,9 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		Display display = Display.getDefault();
+		final Display display = Display.getDefault();
 
-		Realm realm = SWTObservables.getRealm(display);
+		final Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 
@@ -151,9 +151,9 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 	 *            one or more property change events
 	 * @see #verifyPropertyChangeEvents()
 	 */
-	protected final void expectPropertyChangeEvents(PropertyChangeEvent... propertyChangeEvents) {
+	protected final void expectPropertyChangeEvents(final PropertyChangeEvent... propertyChangeEvents) {
 		EasyMock.reset(propertyChangeListenerMock);
-		for (PropertyChangeEvent propertyChangeEvent : propertyChangeEvents) {
+		for (final PropertyChangeEvent propertyChangeEvent : propertyChangeEvents) {
 			propertyChangeListenerMock.propertyChange(createArgumentMatcher(propertyChangeEvent));
 		}
 		EasyMock.replay(propertyChangeListenerMock);
@@ -170,7 +170,8 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 	 *            the new value of the property change event
 	 * @see #verifyPropertyChangeEvents()
 	 */
-	protected final void expectPropertyChangeEvent(String propertyName, Object oldValue, Object newValue) {
+	protected final void expectPropertyChangeEvent(final String propertyName, final Object oldValue,
+			final Object newValue) {
 		expectPropertyChangeEvents(new PropertyChangeEvent(getRidget(), propertyName, oldValue, newValue));
 	}
 
@@ -280,10 +281,10 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 		if (!(getRidget() instanceof IBasicMarkableRidget)) {
 			return;
 		}
-		IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
-		IMarker marker = new MandatoryMarker();
-		HashSet<IMarker> before = new HashSet<IMarker>(markableRidget.getMarkers());
-		HashSet<IMarker> after = new HashSet<IMarker>(before);
+		final IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
+		final IMarker marker = new MandatoryMarker();
+		final HashSet<IMarker> before = new HashSet<IMarker>(markableRidget.getMarkers());
+		final HashSet<IMarker> after = new HashSet<IMarker>(before);
 		after.add(marker);
 
 		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());
@@ -310,7 +311,7 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 		if (!(getRidget() instanceof IBasicMarkableRidget)) {
 			return;
 		}
-		IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
+		final IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
 
@@ -337,8 +338,8 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 		if (!(getRidget() instanceof IBasicMarkableRidget)) {
 			return;
 		}
-		IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
-		IMarker marker = new DisabledMarker();
+		final IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
+		final IMarker marker = new DisabledMarker();
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IRidget.PROPERTY_ENABLED, propertyChangeListenerMock);
 
@@ -368,7 +369,7 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 		if (!(getRidget() instanceof IBasicMarkableRidget)) {
 			return;
 		}
-		IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
+		final IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
 		markableRidget.setUIControl(null);
 
 		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());
@@ -386,7 +387,7 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 		if (!(getRidget() instanceof IMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
+		final IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, propertyChangeListenerMock);
 
@@ -413,8 +414,8 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 		if (!(getRidget() instanceof IMarkableRidget)) {
 			return;
 		}
-		IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
-		IMarker marker = new OutputMarker();
+		final IMarkableRidget markableRidget = (IMarkableRidget) getRidget();
+		final IMarker marker = new OutputMarker();
 		markableRidget.removePropertyChangeListener(propertyChangeListenerMock);
 		markableRidget.addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, propertyChangeListenerMock);
 
@@ -442,12 +443,12 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 	 * <a href="http://bugs.eclipse.org/270444">Bug #270444 - Case 1</a>.
 	 */
 	public void testApplyEnabledToUIControl() {
-		Object aWidget = createWidget(getShell());
+		final Object aWidget = createWidget(getShell());
 		if (!(aWidget instanceof Control)) {
 			return;
 		}
-		IRidget aRidget = createRidget();
-		Control control = (Control) aWidget;
+		final IRidget aRidget = createRidget();
+		final Control control = (Control) aWidget;
 
 		control.setEnabled(false);
 		aRidget.setEnabled(true);
@@ -463,15 +464,15 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 	// helping methods
 	// ////////////////
 
-	private PropertyChangeEvent createArgumentMatcher(PropertyChangeEvent propertyChangeEvent) {
+	private PropertyChangeEvent createArgumentMatcher(final PropertyChangeEvent propertyChangeEvent) {
 		return PropertyChangeEventEquals.eqPropertyChangeEvent(propertyChangeEvent);
 	}
 
-	protected void assertMarkerIgnored(IMarker marker) {
-		AbstractSWTWidgetRidget ridgetImpl = (AbstractSWTWidgetRidget) getRidget();
-		Control control = (Control) getWidget();
-		Color originalForegroundColor = control.getForeground();
-		Color originalBackgroundColor = control.getBackground();
+	protected void assertMarkerIgnored(final IMarker marker) {
+		final AbstractSWTWidgetRidget ridgetImpl = (AbstractSWTWidgetRidget) getRidget();
+		final Control control = (Control) getWidget();
+		final Color originalForegroundColor = control.getForeground();
+		final Color originalBackgroundColor = control.getBackground();
 
 		ridgetImpl.addMarker(marker);
 

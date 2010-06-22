@@ -38,8 +38,8 @@ public class AbstractUIFilterRuleRidgetMarkerTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 
-		Display display = Display.getDefault();
-		Realm realm = SWTObservables.getRealm(display);
+		final Display display = Display.getDefault();
+		final Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
 
@@ -56,14 +56,14 @@ public class AbstractUIFilterRuleRidgetMarkerTest extends TestCase {
 	 */
 	public void testApply() {
 
-		ITextRidget ridget = new TextRidget();
+		final ITextRidget ridget = new TextRidget();
 		assertTrue(ridget.getMarkers().isEmpty());
 
 		rule.apply(ridget);
 		assertFalse(ridget.getMarkers().isEmpty());
 		assertTrue(ridget.getMarkers().contains(new MandatoryMarker(false)));
 
-		Map<IBasicMarkableRidget, IMarker> markerMap = ReflectionUtils.getHidden(rule, "markerMap");
+		final Map<IBasicMarkableRidget, IMarker> markerMap = ReflectionUtils.getHidden(rule, "markerMap");
 		assertEquals(new MandatoryMarker(false), markerMap.get(ridget));
 
 	}
@@ -73,9 +73,9 @@ public class AbstractUIFilterRuleRidgetMarkerTest extends TestCase {
 	 */
 	public void testRemove() {
 
-		Map<IBasicMarkableRidget, IMarker> markerMap = ReflectionUtils.getHidden(rule, "markerMap");
+		final Map<IBasicMarkableRidget, IMarker> markerMap = ReflectionUtils.getHidden(rule, "markerMap");
 
-		ITextRidget ridget = new TextRidget();
+		final ITextRidget ridget = new TextRidget();
 		assertTrue(ridget.getMarkers().isEmpty());
 		assertTrue(markerMap.isEmpty());
 

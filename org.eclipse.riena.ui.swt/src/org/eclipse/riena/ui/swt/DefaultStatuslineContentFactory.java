@@ -32,10 +32,10 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 	 * {@link StatuslineUIProcess} are allready added by using addUIControl
 	 * inside the {@link Statusline}. These just need to be layouted.
 	 */
-	public void createContent(Statusline statusline) {
+	public void createContent(final Statusline statusline) {
 		statusline.setLayout(new FormLayout());
 
-		StatuslineTime time = new StatuslineTime(statusline, SWT.NONE);
+		final StatuslineTime time = new StatuslineTime(statusline, SWT.NONE);
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(0, 0);
 		formData.bottom = new FormAttachment(100, 0);
@@ -53,7 +53,7 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 			lastControl = spacerControl;
 		}
 
-		StatuslineDate date = new StatuslineDate(statusline, SWT.NONE);
+		final StatuslineDate date = new StatuslineDate(statusline, SWT.NONE);
 		formData = new FormData();
 		formData.top = new FormAttachment(0, 0);
 		formData.bottom = new FormAttachment(100, 0);
@@ -71,7 +71,7 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 			lastControl = spacerControl;
 		}
 
-		StatuslineNumber number = createStatuslineNumber(statusline);
+		final StatuslineNumber number = createStatuslineNumber(statusline);
 		statusline.addUIControl(number, Statusline.SL_NUMBER_RIDGET_ID);
 		FormData formData1;
 		formData1 = new FormData();
@@ -92,7 +92,7 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 			lastControl = spacerControl;
 		}
 
-		StatuslineUIProcess uiProcess = new StatuslineUIProcess(statusline, SWT.NONE);
+		final StatuslineUIProcess uiProcess = new StatuslineUIProcess(statusline, SWT.NONE);
 		statusline.addUIControl(uiProcess, Statusline.SL_UIPROCES_RIDGET_ID);
 
 		formData = new FormData();
@@ -112,7 +112,7 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 			lastControl = spacerControl;
 		}
 
-		StatuslineMessage message = statusline.getMessageComposite();
+		final StatuslineMessage message = statusline.getMessageComposite();
 		formData = new FormData();
 		formData.top = new FormAttachment(0, 0);
 		formData.bottom = new FormAttachment(100, 0);
@@ -123,7 +123,7 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 
 	}
 
-	protected StatuslineNumber createStatuslineNumber(Statusline statusline) {
+	protected StatuslineNumber createStatuslineNumber(final Statusline statusline) {
 		return new StatuslineNumber(statusline, SWT.NONE);
 	}
 
@@ -142,14 +142,14 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 	/**
 	 * Creates a spacer.
 	 */
-	protected Control createSpacer(Statusline statusline) {
+	protected Control createSpacer(final Statusline statusline) {
 
 		Control result = null;
-		Class<? extends Control> spacer = statusline.getSpacer();
+		final Class<? extends Control> spacer = statusline.getSpacer();
 		if (spacer != null) {
 			try {
 				result = ReflectionUtils.newInstance(spacer, statusline, SWT.NONE);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				result = null;
 			}
 		}

@@ -37,27 +37,27 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class SnippetTableRidget008 {
 
-	public SnippetTableRidget008(Shell shell) {
-		Composite compTable = UIControlsFactory.createComposite(shell);
+	public SnippetTableRidget008(final Shell shell) {
+		final Composite compTable = UIControlsFactory.createComposite(shell);
 		GridDataFactory.fillDefaults().grab(true, true).applyTo(compTable);
 		final Table table = UIControlsFactory.createTable(compTable, SWT.SINGLE | SWT.FULL_SELECTION);
 
-		Label lblMessage = UIControlsFactory.createLabel(shell,
+		final Label lblMessage = UIControlsFactory.createLabel(shell,
 				"Click on a checkbox to toggle that row's the state", SWT.CENTER); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().applyTo(lblMessage);
 
 		final ITableRidget tableRidget = (ITableRidget) SwtRidgetFactory.createRidget(table);
-		String[] columnPropertyNames = { "pseudonym", "name", "active" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
-		String[] columnHeaders = { "Pseudonym", "Name", "Active" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
-		IObservableList input = new WritableList(SuperHeroFactory.createInput(), SuperHero.class);
+		final String[] columnPropertyNames = { "pseudonym", "name", "active" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+		final String[] columnHeaders = { "Pseudonym", "Name", "Active" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+		final IObservableList input = new WritableList(SuperHeroFactory.createInput(), SuperHero.class);
 		tableRidget.bindToModel(input, SuperHero.class, columnPropertyNames, columnHeaders);
 		tableRidget.setMoveableColumns(true);
 
-		ColumnFormatter bgFormatter = new ColumnFormatter() {
+		final ColumnFormatter bgFormatter = new ColumnFormatter() {
 			@Override
-			public Color getForeground(Object element) {
-				SuperHero hero = (SuperHero) element;
-				int colorId = hero.getActive() ? SWT.COLOR_BLACK : SWT.COLOR_GRAY;
+			public Color getForeground(final Object element) {
+				final SuperHero hero = (SuperHero) element;
+				final int colorId = hero.getActive() ? SWT.COLOR_BLACK : SWT.COLOR_GRAY;
 				return table.getDisplay().getSystemColor(colorId);
 			}
 		};
@@ -66,15 +66,15 @@ public class SnippetTableRidget008 {
 
 		tableRidget.setColumnFormatter(2, new ColumnFormatter() {
 			@Override
-			public String getText(Object element) {
+			public String getText(final Object element) {
 				return ""; //$NON-NLS-1$
 			}
 		});
 
 		tableRidget.addClickListener(new IClickListener() {
-			public void callback(ClickEvent event) {
+			public void callback(final ClickEvent event) {
 				if (event.getColumnIndex() == 2 && event.getButton() == 1) {
-					SuperHero selection = (SuperHero) event.getRow();
+					final SuperHero selection = (SuperHero) event.getRow();
 					selection.setActive(!selection.getActive());
 					tableRidget.refresh(selection);
 				}
@@ -84,10 +84,10 @@ public class SnippetTableRidget008 {
 		tableRidget.updateFromModel();
 	}
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetTableRidget008.class.getSimpleName());
 			GridLayoutFactory.fillDefaults().applyTo(shell);
 

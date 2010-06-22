@@ -42,9 +42,9 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 	}
 
 	@Override
-	protected void checkNumber(String number) {
+	protected void checkNumber(final String number) {
 		if (!"".equals(number)) { //$NON-NLS-1$
-			BigDecimal value = checkIsNumber(number);
+			final BigDecimal value = checkIsNumber(number);
 			checkSigned(value);
 			checkMaxLength(number);
 			checkPrecision(number);
@@ -58,7 +58,7 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 	 * is in output only mode. Otherwise same behavior as super.
 	 */
 	@Override
-	protected final String getTextBasedOnMarkerState(String value) {
+	protected final String getTextBasedOnMarkerState(final String value) {
 		if (isOutputOnly() && !isNotEmpty(value)) {
 			return ""; //$NON-NLS-1$
 		}
@@ -66,19 +66,19 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 	}
 
 	@Override
-	protected boolean isNegative(String text) {
-		BigDecimal value = new BigDecimal(localStringToBigDecimal(text));
+	protected boolean isNegative(final String text) {
+		final BigDecimal value = new BigDecimal(localStringToBigDecimal(text));
 		return value.compareTo(BigDecimal.ZERO) < 0;
 	}
 
 	@Override
-	protected boolean isNotEmpty(String text) {
-		String stripped = removeLeadingCruft(removeTrailingPadding(text));
+	protected boolean isNotEmpty(final String text) {
+		final String stripped = removeLeadingCruft(removeTrailingPadding(text));
 		return stripped.length() > 0;
 	}
 
 	@Override
-	public void bindToModel(IObservableValue observableValue) {
+	public void bindToModel(final IObservableValue observableValue) {
 		super.bindToModel(observableValue);
 		// the converter depends on the type of the bound model + precision;
 		// so we update it after the binding has been set-up
@@ -86,7 +86,7 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 	}
 
 	@Override
-	public void bindToModel(Object valueHolder, String valuePropertyName) {
+	public void bindToModel(final Object valueHolder, final String valuePropertyName) {
 		if (AbstractSWTRidget.isBean(valueHolder.getClass())) {
 			bindToModel(BeansObservables.observeValue(valueHolder, valuePropertyName));
 		} else {
@@ -100,9 +100,9 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 	}
 
 	@Override
-	public final synchronized void setPrecision(int numberOfFractionDigits) {
+	public final synchronized void setPrecision(final int numberOfFractionDigits) {
 		Assert.isLegal(numberOfFractionDigits > -1, "numberOfFractionDigits must > -1: " + numberOfFractionDigits); //$NON-NLS-1$
-		int oldValue = getPrecision();
+		final int oldValue = getPrecision();
 		if (oldValue != numberOfFractionDigits) {
 			updateConverter(numberOfFractionDigits);
 			super.setPrecision(numberOfFractionDigits);
@@ -113,20 +113,20 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 	// helping methods
 	//////////////////
 
-	private BigDecimal checkIsNumber(String number) {
+	private BigDecimal checkIsNumber(final String number) {
 		try {
 			return new BigDecimal(localStringToBigDecimal(number));
-		} catch (NumberFormatException nfe) {
+		} catch (final NumberFormatException nfe) {
 			throw new NumberFormatException("Not a valid decimal: " + number); //$NON-NLS-1$
 		}
 	}
 
-	private void checkMaxLength(String number) {
-		int maxLength = getMaxLength();
+	private void checkMaxLength(final String number) {
+		final int maxLength = getMaxLength();
 		int length;
-		int decSepIndex = number.indexOf(DECIMAL_SEPARATOR);
+		final int decSepIndex = number.indexOf(DECIMAL_SEPARATOR);
 		if (decSepIndex != -1) {
-			String decimalPart = number.substring(0, decSepIndex);
+			final String decimalPart = number.substring(0, decSepIndex);
 			length = decimalPart.length() - StringUtils.count(decimalPart, GROUPING_SEPARATOR);
 		} else {
 			length = number.length() - StringUtils.count(number, GROUPING_SEPARATOR);
@@ -135,38 +135,38 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 			length -= 1;
 		}
 		if (maxLength < length) {
-			String msg = String.format("Length (%d) exceeded: %s", maxLength, number); //$NON-NLS-1$
+			final String msg = String.format("Length (%d) exceeded: %s", maxLength, number); //$NON-NLS-1$
 			throw new NumberFormatException(msg);
 		}
 	}
 
-	private void checkPrecision(String number) {
-		int decSepIndex = number.indexOf(DECIMAL_SEPARATOR);
+	private void checkPrecision(final String number) {
+		final int decSepIndex = number.indexOf(DECIMAL_SEPARATOR);
 		if (decSepIndex != -1) {
-			int precision = getPrecision();
-			int fractionalDigits = number.substring(decSepIndex).length() - 1;
+			final int precision = getPrecision();
+			final int fractionalDigits = number.substring(decSepIndex).length() - 1;
 			if (precision < fractionalDigits) {
-				String msg = String.format("Precision (%d) exceeded: %s", precision, number); //$NON-NLS-1$
+				final String msg = String.format("Precision (%d) exceeded: %s", precision, number); //$NON-NLS-1$
 				throw new NumberFormatException(msg);
 			}
 		}
 	}
 
-	private void checkSigned(BigDecimal value) {
+	private void checkSigned(final BigDecimal value) {
 		if (!isSigned() && value.compareTo(BigDecimal.ZERO) == -1) {
 			throw new NumberFormatException("Negative numbers not allowed: " + value); //$NON-NLS-1$
 		}
 	}
 
-	private String localStringToBigDecimal(String number) {
+	private String localStringToBigDecimal(final String number) {
 		return ungroup(number).replace(DECIMAL_SEPARATOR, '.');
 	}
 
-	private void updateConverter(int precision) {
-		ValueBindingSupport vbs = getValueBindingSupport();
+	private void updateConverter(final int precision) {
+		final ValueBindingSupport vbs = getValueBindingSupport();
 		if (vbs.getModelObservable() != null) {
-			Class<?> type = (Class<?>) vbs.getModelObservable().getValueType();
-			IConverter converter = getConverter(type, precision);
+			final Class<?> type = (Class<?>) vbs.getModelObservable().getValueType();
+			final IConverter converter = getConverter(type, precision);
 			vbs.setModelToUIControlConverter(converter);
 			vbs.rebindToModel();
 		}

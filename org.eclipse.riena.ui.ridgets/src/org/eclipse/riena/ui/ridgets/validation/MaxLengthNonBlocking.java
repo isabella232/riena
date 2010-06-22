@@ -24,7 +24,7 @@ public class MaxLengthNonBlocking extends MaxLength {
 		super(0, false);
 	}
 
-	public MaxLengthNonBlocking(int maxLength) {
+	public MaxLengthNonBlocking(final int maxLength) {
 		super(maxLength, false);
 	}
 

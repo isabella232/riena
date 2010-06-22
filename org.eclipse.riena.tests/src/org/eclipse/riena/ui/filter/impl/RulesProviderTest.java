@@ -48,7 +48,7 @@ public class RulesProviderTest extends TestCase {
 	 */
 	public void testGetRuleMarkerRidget() {
 
-		IRuleMapperExtension[] mappers = new IRuleMapperExtension[] { new Mapper() };
+		final IRuleMapperExtension[] mappers = new IRuleMapperExtension[] { new Mapper() };
 		provider.update(mappers);
 
 		IUIFilterRuleMarkerRidget rule = provider.getRuleMarkerRidget("disabled");
@@ -69,7 +69,7 @@ public class RulesProviderTest extends TestCase {
 	 */
 	public void testGetRuleMarkerNavigation() {
 
-		IRuleMapperExtension[] mappers = new IRuleMapperExtension[] { new Mapper() };
+		final IRuleMapperExtension[] mappers = new IRuleMapperExtension[] { new Mapper() };
 		provider.update(mappers);
 
 		IUIFilterRuleMarkerNavigation rule = provider.getRuleMarkerNavigation("disabled");
@@ -90,7 +90,7 @@ public class RulesProviderTest extends TestCase {
 	 */
 	public void testGetRuleMarkerMenuItem() {
 
-		IRuleMapperExtension[] mappers = new IRuleMapperExtension[] { new Mapper() };
+		final IRuleMapperExtension[] mappers = new IRuleMapperExtension[] { new Mapper() };
 		provider.update(mappers);
 
 		IUIFilterRuleMarkerRidget rule = provider.getRuleMarkerMenuItem("disabled");
@@ -211,34 +211,34 @@ public class RulesProviderTest extends TestCase {
 
 	private abstract class AbstractRuleMarkerNavigation implements IUIFilterRuleMarkerNavigation {
 
-		public void setNode(String nodeId) {
+		public void setNode(final String nodeId) {
 		}
 
-		public void apply(Object object) {
+		public void apply(final Object object) {
 		}
 
-		public boolean matches(Object... object) {
+		public boolean matches(final Object... object) {
 			return false;
 		}
 
-		public void remove(Object object) {
+		public void remove(final Object object) {
 		}
 
 	}
 
 	private abstract class AbstractRuleMarkerRidget implements IUIFilterRuleMarkerRidget {
 
-		public void setId(String id) {
+		public void setId(final String id) {
 		}
 
-		public void apply(Object object) {
+		public void apply(final Object object) {
 		}
 
-		public boolean matches(Object... object) {
+		public boolean matches(final Object... object) {
 			return false;
 		}
 
-		public void remove(Object object) {
+		public void remove(final Object object) {
 		}
 
 	}

@@ -23,7 +23,7 @@ public final class ActionFactoryFacadeRCP extends ActionFactoryFacade {
 	 * Always returns null.
 	 */
 	@Override
-	public IWorkbenchAction createAboutAction(IWorkbenchWindow window) {
+	public IWorkbenchAction createAboutAction(final IWorkbenchWindow window) {
 		return ActionFactory.ABOUT.create(window);
 	}
 

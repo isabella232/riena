@@ -30,20 +30,20 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public final class SnippetLinkRidget002 {
 
-	public static void main(String[] args) {
-		Display display = Display.getDefault();
+	public static void main(final String[] args) {
+		final Display display = Display.getDefault();
 		try {
-			Shell shell = UIControlsFactory.createShell(display);
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetLinkRidget002.class.getSimpleName());
-			GridLayoutFactory.fillDefaults().numColumns(1).margins(10, 10).equalWidth(false).spacing(20, 10).applyTo(
-					shell);
+			GridLayoutFactory.fillDefaults().numColumns(1).margins(10, 10).equalWidth(false).spacing(20, 10)
+					.applyTo(shell);
 
 			/**
 			 * Create the controls
 			 */
 
 			// Link
-			Link link1 = UIControlsFactory.createLink(shell);
+			final Link link1 = UIControlsFactory.createLink(shell);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(link1);
 
 			// Browser
@@ -64,8 +64,8 @@ public final class SnippetLinkRidget002 {
 			linkRidget1.updateFromModel();
 
 			linkRidget1.addSelectionListener(new ISelectionListener() {
-				public void ridgetSelected(SelectionEvent event) {
-					String url = (String) event.getNewSelection().get(0);
+				public void ridgetSelected(final SelectionEvent event) {
+					final String url = (String) event.getNewSelection().get(0);
 					System.out.println("Visiting: " + url); //$NON-NLS-1$
 					browser.setUrl(url);
 
@@ -98,11 +98,11 @@ public final class SnippetLinkRidget002 {
 			count++;
 		}
 
-		public void setLink(String link) {
+		public void setLink(final String link) {
 			this.link = link;
 		}
 
-		public void setText(String text) {
+		public void setText(final String text) {
 			this.text = text;
 		}
 

@@ -29,7 +29,7 @@ public class AbstractMessageMarkerViewerTest extends TestCase {
 	 * Tests the method {@code constructMessage}.
 	 */
 	public void testConstructMessage() {
-		List<IMessageMarker> messageMarkers = new ArrayList<IMessageMarker>();
+		final List<IMessageMarker> messageMarkers = new ArrayList<IMessageMarker>();
 
 		String message = AbstractMessageMarkerViewer.constructMessage(messageMarkers, "*");
 		assertEquals("", message);

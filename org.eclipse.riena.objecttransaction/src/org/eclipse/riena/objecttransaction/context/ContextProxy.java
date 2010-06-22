@@ -31,13 +31,13 @@ import org.eclipse.core.runtime.Assert;
 
 public final class ContextProxy implements InvocationHandler {
 
-	private IContextHolder contextHolder;
-	private Object service;
+	private final IContextHolder contextHolder;
+	private final Object service;
 
 	/**
 	 * Create a Context Proxy
 	 */
-	private ContextProxy(Object pService, IContextHolder pContextProvider) {
+	private ContextProxy(final Object pService, final IContextHolder pContextProvider) {
 		service = pService;
 		contextHolder = pContextProvider;
 	}
@@ -46,14 +46,14 @@ public final class ContextProxy implements InvocationHandler {
 	 * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
 	 *      java.lang.reflect.Method, java.lang.Object[])
 	 */
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 		try {
 			ContextHelper.activateContext(contextHolder.getContext());
 			// TODO not sure why accessible has to be true, fix some day
 			method.setAccessible(true);
 
 			return method.invoke(service, args);
-		} catch (InvocationTargetException e) {
+		} catch (final InvocationTargetException e) {
 			throw e.getTargetException();
 		} finally {
 			ContextHelper.passivateContext(contextHolder.getContext());
@@ -76,7 +76,7 @@ public final class ContextProxy implements InvocationHandler {
 	 * @return the Proxy
 	 */
 	@SuppressWarnings({ "unchecked" })
-	public static <T> T cover(T pObject, IContextHolder pContextProvider) {
+	public static <T> T cover(final T pObject, final IContextHolder pContextProvider) {
 		Assert.isNotNull(pObject, "The object to proxy must not be null"); //$NON-NLS-1$
 		Assert.isNotNull(pContextProvider, "The context carrier must not be null"); //$NON-NLS-1$
 		return (T) Proxy.newProxyInstance(pObject.getClass().getClassLoader(), getInterfaces(pObject.getClass()),
@@ -97,7 +97,7 @@ public final class ContextProxy implements InvocationHandler {
 	 * @return the Proxy
 	 */
 	@SuppressWarnings({ "unchecked" })
-	public static <T extends IContextHolder> T cover(T pContextProvider) {
+	public static <T extends IContextHolder> T cover(final T pContextProvider) {
 		Assert.isNotNull(pContextProvider, "The context carrier must not be null"); //$NON-NLS-1$
 		return (T) Proxy.newProxyInstance(pContextProvider.getClass().getClassLoader(),
 				getInterfaces(pContextProvider.getClass()), new ContextProxy(pContextProvider, pContextProvider));
@@ -110,13 +110,13 @@ public final class ContextProxy implements InvocationHandler {
 	 *            the class to find interfaces from
 	 * @return an Array of interfaces
 	 */
-	private static Class<?>[] getInterfaces(Class<?> pClass) {
+	private static Class<?>[] getInterfaces(final Class<?> pClass) {
 		Class<?>[] result = pClass.getInterfaces();
-		Class<?> superclazz = pClass.getSuperclass();
+		final Class<?> superclazz = pClass.getSuperclass();
 		if (superclazz != null) {
-			Class<?>[] superinterfaces = getInterfaces(superclazz);
+			final Class<?>[] superinterfaces = getInterfaces(superclazz);
 			if (superinterfaces.length > 0) {
-				Class<?>[] superresult = new Class[result.length + superinterfaces.length];
+				final Class<?>[] superresult = new Class[result.length + superinterfaces.length];
 				System.arraycopy(result, 0, superresult, 0, result.length);
 				System.arraycopy(superinterfaces, 0, superresult, result.length, superinterfaces.length);
 				result = superresult;

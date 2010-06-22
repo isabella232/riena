@@ -33,9 +33,9 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 	 * @param data
 	 *            extension of assemblies
 	 */
-	public void update(INavigationAssemblyExtension[] data) {
+	public void update(final INavigationAssemblyExtension[] data) {
 		// workareas.clear();
-		for (INavigationAssemblyExtension nodeDefinition : data) {
+		for (final INavigationAssemblyExtension nodeDefinition : data) {
 			register(nodeDefinition);
 		}
 	}
@@ -49,7 +49,7 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 	 */
 	private void register(final INavigationAssemblyExtension assembly) {
 
-		INavigationAssembly2Extension assembly2 = AssembliesConverter.convert(assembly);
+		final INavigationAssembly2Extension assembly2 = AssembliesConverter.convert(assembly);
 		register(assembly2);
 
 	}
@@ -60,9 +60,9 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 	 * @param data
 	 *            extension of assemblies
 	 */
-	public void update(INavigationAssembly2Extension[] data) {
+	public void update(final INavigationAssembly2Extension[] data) {
 		//workareas.clear();
-		for (INavigationAssembly2Extension nodeDefinition : data) {
+		for (final INavigationAssembly2Extension nodeDefinition : data) {
 			register(nodeDefinition);
 		}
 	}
@@ -74,37 +74,37 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 	 * @param assembly
 	 *            assembly to register
 	 */
-	private void register(INavigationAssembly2Extension assembly) {
+	private void register(final INavigationAssembly2Extension assembly) {
 
 		if (assembly != null) {
 			// register subapplication if it exists
-			ISubApplicationNode2Extension[] subApplications = assembly.getSubApplications();
+			final ISubApplicationNode2Extension[] subApplications = assembly.getSubApplications();
 			if ((subApplications != null) && (subApplications.length > 0)) {
-				for (ISubApplicationNode2Extension subApplication : subApplications) {
+				for (final ISubApplicationNode2Extension subApplication : subApplications) {
 					register(subApplication);
 				}
 				return;
 			}
 			// register module group if it exists
-			IModuleGroupNode2Extension[] groups = assembly.getModuleGroups();
+			final IModuleGroupNode2Extension[] groups = assembly.getModuleGroups();
 			if ((groups != null) && (groups.length > 0)) {
-				for (IModuleGroupNode2Extension group : groups) {
+				for (final IModuleGroupNode2Extension group : groups) {
 					register(group);
 				}
 				return;
 			}
 			// otherwise try module
-			IModuleNode2Extension[] modules = assembly.getModules();
+			final IModuleNode2Extension[] modules = assembly.getModules();
 			if ((modules != null) && (modules.length > 0)) {
-				for (IModuleNode2Extension module : modules) {
+				for (final IModuleNode2Extension module : modules) {
 					register(module);
 				}
 				return;
 			}
 			// last resort is submodule
-			ISubModuleNode2Extension[] subModules = assembly.getSubModules();
+			final ISubModuleNode2Extension[] subModules = assembly.getSubModules();
 			if ((subModules != null) && (subModules.length > 0)) {
-				for (ISubModuleNode2Extension subModule : subModules) {
+				for (final ISubModuleNode2Extension subModule : subModules) {
 					register(subModule);
 				}
 				return;
@@ -122,15 +122,15 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 	 * @param subAppicationExt
 	 *            extension of a sub application
 	 */
-	protected void register(ISubApplicationNode2Extension subAppicationExt) {
+	protected void register(final ISubApplicationNode2Extension subAppicationExt) {
 
 		// create and register sub-application perspective definition
-		IWorkareaDefinition def = new WorkareaDefinition(subAppicationExt.getPerspectiveId());
+		final IWorkareaDefinition def = new WorkareaDefinition(subAppicationExt.getPerspectiveId());
 		register(subAppicationExt.getNodeId(), def);
 
 		// a sub-application must only contain module groups
 		if (subAppicationExt.getModuleGroupNodes() != null) {
-			for (IModuleGroupNode2Extension groupDefinition : subAppicationExt.getModuleGroupNodes()) {
+			for (final IModuleGroupNode2Extension groupDefinition : subAppicationExt.getModuleGroupNodes()) {
 				register(groupDefinition);
 			}
 		}
@@ -144,11 +144,11 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 	 * @param groupExt
 	 *            extension of a module group
 	 */
-	protected void register(IModuleGroupNode2Extension groupExt) {
+	protected void register(final IModuleGroupNode2Extension groupExt) {
 
 		// a module group must only contain modules
 		if (groupExt.getModuleNodes() != null) {
-			for (IModuleNode2Extension moduleDefinition : groupExt.getModuleNodes()) {
+			for (final IModuleNode2Extension moduleDefinition : groupExt.getModuleNodes()) {
 				register(moduleDefinition);
 			}
 		}
@@ -162,11 +162,11 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 	 * @param moduleExt
 	 *            extension of a module
 	 */
-	protected void register(IModuleNode2Extension moduleExt) {
+	protected void register(final IModuleNode2Extension moduleExt) {
 
 		// a module must only contain submodules
 		if (moduleExt.getSubModuleNodes() != null) {
-			for (ISubModuleNode2Extension submoduleDefinition : moduleExt.getSubModuleNodes()) {
+			for (final ISubModuleNode2Extension submoduleDefinition : moduleExt.getSubModuleNodes()) {
 				register(submoduleDefinition);
 			}
 		}
@@ -180,17 +180,17 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 	 * @param subModuleExt
 	 *            extension of a sub-module
 	 */
-	protected void register(ISubModuleNode2Extension subModuleExt) {
+	protected void register(final ISubModuleNode2Extension subModuleExt) {
 
 		// create and register view definition
-		WorkareaDefinition def = new WorkareaDefinition(subModuleExt.getController(), subModuleExt.getViewId());
+		final WorkareaDefinition def = new WorkareaDefinition(subModuleExt.getController(), subModuleExt.getViewId());
 		def.setViewShared(subModuleExt.isSharedView());
 		def.setRequiredPreparation(subModuleExt.isRequiresPreparation());
 		register(subModuleExt.getNodeId(), def);
 
 		// a submodule may contain nested submodules
 		if (subModuleExt.getSubModuleNodes() != null) {
-			for (ISubModuleNode2Extension nestedSubmoduleDefinition : subModuleExt.getSubModuleNodes()) {
+			for (final ISubModuleNode2Extension nestedSubmoduleDefinition : subModuleExt.getSubModuleNodes()) {
 				register(nestedSubmoduleDefinition);
 			}
 		}

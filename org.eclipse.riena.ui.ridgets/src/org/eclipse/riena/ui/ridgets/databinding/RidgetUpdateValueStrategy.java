@@ -24,11 +24,11 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 		super();
 	}
 
-	public RidgetUpdateValueStrategy(int updatePolicy) {
+	public RidgetUpdateValueStrategy(final int updatePolicy) {
 		super(updatePolicy);
 	}
 
-	public RidgetUpdateValueStrategy(boolean provideDefaults, int updatePolicy) {
+	public RidgetUpdateValueStrategy(final boolean provideDefaults, final int updatePolicy) {
 		super(provideDefaults, updatePolicy);
 	}
 
@@ -37,7 +37,7 @@ public class RidgetUpdateValueStrategy extends UpdateValueStrategy {
 	 *      java.lang.Object)
 	 */
 	@Override
-	protected IConverter createConverter(Object fromType, Object toType) {
+	protected IConverter createConverter(final Object fromType, final Object toType) {
 
 		if (fromType == String.class) {
 			if (toType == Double.TYPE) {

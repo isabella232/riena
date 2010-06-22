@@ -24,11 +24,12 @@ import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
  */
 public abstract class AbstractViewBindingDelegate {
 
-	private List<Object> uiControls;
+	private final List<Object> uiControls;
 
-	private IBindingManager bindingManager;
+	private final IBindingManager bindingManager;
 
-	public AbstractViewBindingDelegate(IBindingPropertyLocator propertyStrategy, IControlRidgetMapper<Object> mapper) {
+	public AbstractViewBindingDelegate(final IBindingPropertyLocator propertyStrategy,
+			final IControlRidgetMapper<Object> mapper) {
 		bindingManager = createBindingManager(propertyStrategy, mapper);
 		uiControls = new ArrayList<Object>();
 	}
@@ -38,8 +39,8 @@ public abstract class AbstractViewBindingDelegate {
 	 * 
 	 * @return binding manager
 	 */
-	protected IBindingManager createBindingManager(IBindingPropertyLocator propertyStrategy,
-			IControlRidgetMapper<Object> mapper) {
+	protected IBindingManager createBindingManager(final IBindingPropertyLocator propertyStrategy,
+			final IControlRidgetMapper<Object> mapper) {
 		return new DefaultBindingManager(propertyStrategy, mapper);
 	}
 
@@ -50,7 +51,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * @param uiControl
 	 *            control to bind
 	 */
-	public void addUIControl(Object uiControl) {
+	public void addUIControl(final Object uiControl) {
 		if (!uiControls.contains(uiControl)) {
 			uiControls.add(uiControl);
 		}
@@ -64,7 +65,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * @param bindingId
 	 *            ID for binding
 	 */
-	public void addUIControl(Object uiControl, String bindingId) {
+	public void addUIControl(final Object uiControl, final String bindingId) {
 		addUIControl(uiControl);
 	}
 
@@ -74,7 +75,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * @param controller
 	 *            The controller which gets the ridgets injected.
 	 */
-	public void injectAndBind(IController controller) {
+	public void injectAndBind(final IController controller) {
 		injectRidgets(controller);
 		bind(controller);
 	}
@@ -85,7 +86,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * @param controller
 	 *            The controller which gets the ridgets injected.
 	 */
-	public void injectRidgets(IController controller) {
+	public void injectRidgets(final IController controller) {
 		bindingManager.injectRidgets(controller, uiControls);
 	}
 
@@ -95,7 +96,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * @param controller
 	 *            The controller which holds the ridgets.
 	 */
-	public void bind(IController controller) {
+	public void bind(final IController controller) {
 		bindingManager.bind(controller, uiControls);
 	}
 
@@ -105,7 +106,7 @@ public abstract class AbstractViewBindingDelegate {
 	 * @param controller
 	 *            The controller which holds the ridgets.
 	 */
-	public void unbind(IController controller) {
+	public void unbind(final IController controller) {
 		bindingManager.unbind(controller, uiControls);
 	}
 

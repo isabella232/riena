@@ -16,17 +16,18 @@ package org.eclipse.riena.ui.swt.uiprocess;
 public class ProgressInfoDataObject implements Comparable<ProgressInfoDataObject> {
 	private static final String EMPTY = "";//$NON-NLS-1$
 	private String processName = EMPTY;
-	private int value;
-	private int maxValue;
-	private int key;
-	private ProcessState processState;
+	private final int value;
+	private final int maxValue;
+	private final int key;
+	private final ProcessState processState;
 
 	/**
 	 * @param maxValue
 	 * @param processName
 	 * @param value
 	 */
-	public ProgressInfoDataObject(int key, int maxValue, int value, String processName, ProcessState pState) {
+	public ProgressInfoDataObject(final int key, final int maxValue, final int value, final String processName,
+			final ProcessState pState) {
 		this.maxValue = maxValue;
 		this.processName = processName;
 		this.value = value;
@@ -67,14 +68,14 @@ public class ProgressInfoDataObject implements Comparable<ProgressInfoDataObject
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		ProgressInfoDataObject other = (ProgressInfoDataObject) obj;
+		final ProgressInfoDataObject other = (ProgressInfoDataObject) obj;
 		return key == other.key;
 	}
 
@@ -83,7 +84,7 @@ public class ProgressInfoDataObject implements Comparable<ProgressInfoDataObject
 		return key;
 	}
 
-	public int compareTo(ProgressInfoDataObject other) {
+	public int compareTo(final ProgressInfoDataObject other) {
 		if (equals(other) && getProcessState().equals(other.getProcessState()) && getValue() == other.getValue()) {
 			return 0;
 		}

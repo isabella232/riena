@@ -27,11 +27,11 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractToggleButtonRidget;
 public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, Button.class);
 		if (uiControl != null) {
-			Button uiButton = (Button) uiControl;
-			int style = uiButton.getStyle();
+			final Button uiButton = (Button) uiControl;
+			final int style = uiButton.getStyle();
 			if ((style & SWT.CHECK) != SWT.CHECK && (style & SWT.TOGGLE) != SWT.TOGGLE
 					&& (style & SWT.RADIO) != SWT.RADIO) {
 				throw new BindingException("Button must be a check box, a radio button or a toggle button"); //$NON-NLS-1$
@@ -50,7 +50,7 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 	}
 
 	@Override
-	protected void setUIControlSelection(boolean selected) {
+	protected void setUIControlSelection(final boolean selected) {
 		getUIControl().setSelection(selected);
 	}
 
@@ -60,12 +60,12 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 	}
 
 	@Override
-	protected void setUIControlText(String text) {
+	protected void setUIControlText(final String text) {
 		getUIControl().setText(text);
 	}
 
 	@Override
-	protected void setUIControlImage(Image image) {
+	protected void setUIControlImage(final Image image) {
 		getUIControl().setImage(image);
 	}
 

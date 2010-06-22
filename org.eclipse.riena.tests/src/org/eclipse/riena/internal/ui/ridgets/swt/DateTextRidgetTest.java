@@ -43,7 +43,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 
 	@Override
 	protected IRidget createRidget() {
-		DateTextRidget result = new DateTextRidget();
+		final DateTextRidget result = new DateTextRidget();
 		result.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		return result;
 	}
@@ -54,8 +54,8 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Control createWidget(Composite parent) {
-		Control result = new Text(getShell(), SWT.RIGHT | SWT.BORDER | SWT.SINGLE);
+	protected Control createWidget(final Composite parent) {
+		final Control result = new Text(getShell(), SWT.RIGHT | SWT.BORDER | SWT.SINGLE);
 		result.setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DATE);
 		result.setLayoutData(new RowData(100, SWT.DEFAULT));
 		return result;
@@ -70,7 +70,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	///////////////
 
 	public void testEmptyText() {
-		IDateTextRidget ridget = getRidget();
+		final IDateTextRidget ridget = getRidget();
 
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMM);
 		ridget.updateFromModel();
@@ -90,12 +90,12 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(DateTextRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testDelete() {
-		IDateTextRidget ridget = getRidget();
+		final IDateTextRidget ridget = getRidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 
 		assertText("^01.10.2008", UITestHelper.KC_DEL, " ^1.10.2008");
@@ -131,7 +131,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testReplace() {
-		IDateTextRidget ridget = getRidget();
+		final IDateTextRidget ridget = getRidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 
 		assertText("01.10^.^2008", "1", "01.10^.2008");
@@ -147,7 +147,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testInsert() {
-		IDateTextRidget ridget = getRidget();
+		final IDateTextRidget ridget = getRidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 
 		assertText("  ^.  .    ", "01102008", "01.10.2008^");
@@ -162,7 +162,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetText() {
-		IDateTextRidget ridget = getRidget();
+		final IDateTextRidget ridget = getRidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 
 		ridget.setText("01.10.2008");
@@ -186,28 +186,28 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setText("abc");
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			ridget.setText("12102008");
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			ridget.setText("12/10/2008");
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			ridget.setText("12.ab");
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 	}
@@ -217,7 +217,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	 * pattern with just the separators)
 	 */
 	public void testSetTextNull() {
-		IDateTextRidget ridget = getRidget();
+		final IDateTextRidget ridget = getRidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 
 		ridget.setText("01.10.2008");
@@ -230,10 +230,10 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetFormatAfterSetText() {
-		IDateTextRidget ridget = getRidget();
+		final IDateTextRidget ridget = getRidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
-		Text control = getWidget();
-		StringBean bean = new StringBean();
+		final Text control = getWidget();
+		final StringBean bean = new StringBean();
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
 		ridget.setText("01.10.2008");
@@ -251,10 +251,10 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromModel() {
-		IDateTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDateTextRidget ridget = getRidget();
+		final Text control = getWidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
-		StringBean bean = new StringBean("12.10.2008");
+		final StringBean bean = new StringBean("12.10.2008");
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
 		// value fully matches pattern
@@ -282,9 +282,9 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToDate() {
-		IDateTextRidget ridget = getRidget();
-		Text control = getWidget();
-		DateBean bean = new DateBean(new Date(0L));
+		final IDateTextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final DateBean bean = new DateBean(new Date(0L));
 
 		ridget.bindToModel(bean, DateBean.DATE_PROPERTY);
 		ridget.updateFromModel();
@@ -302,9 +302,9 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	 * will be cleared.
 	 */
 	public void testSetFormatWithDateBean() {
-		IDateTextRidget ridget = getRidget();
-		Text control = getWidget();
-		DateBean bean = new DateBean(new Date(0L));
+		final IDateTextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final DateBean bean = new DateBean(new Date(0L));
 
 		ridget.bindToModel(bean, DateBean.DATE_PROPERTY);
 		ridget.updateFromModel();
@@ -333,9 +333,9 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	 * old format) and may cause an error marker to appear.
 	 */
 	public void testSetFormatWithStringBean() {
-		IDateTextRidget ridget = getRidget();
-		Text control = getWidget();
-		StringBean bean = new StringBean("01.01.1970");
+		final IDateTextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final StringBean bean = new StringBean("01.01.1970");
 
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
@@ -370,8 +370,8 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	 * will be cleared.
 	 */
 	public void testSetFormatWithNoBean() {
-		IDateTextRidget ridget = getRidget();
-		Text control = getWidget();
+		final IDateTextRidget ridget = getRidget();
+		final Text control = getWidget();
 
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		ridget.setText("01.01.1970");
@@ -386,7 +386,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testAutoFillYYYY() {
-		IDateTextRidget ridget = getRidget();
+		final IDateTextRidget ridget = getRidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 
 		assertText("  .  .    ^", "00\t", "  .  .2000");
@@ -397,7 +397,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testAutoFillYYYYWithError() {
-		IDateTextRidget ridget = getRidget();
+		final IDateTextRidget ridget = getRidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 
 		ridget.setText("31.10.2008");
@@ -412,7 +412,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testDoNotFillYY() {
-		IDateTextRidget ridget = getRidget();
+		final IDateTextRidget ridget = getRidget();
 
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYY);
 		assertText("  .  .  ^", "00\t", "  .  .00");
@@ -422,7 +422,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testMandatoryMarker() {
-		IDateTextRidget ridget = getRidget();
+		final IDateTextRidget ridget = getRidget();
 		ridget.setMandatory(true);
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 
@@ -440,31 +440,31 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testDateConverterStrategyGetter() {
-		DateTextRidget ridget = (DateTextRidget) getRidget();
+		final DateTextRidget ridget = (DateTextRidget) getRidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
-		IDateConverterStrategy strategy = ridget.new RidgetAwareDateConverterStrategy();
+		final IDateConverterStrategy strategy = ridget.new RidgetAwareDateConverterStrategy();
 
 		assertNull(strategy.getDateFromTextField(null));
 		assertNull(strategy.getDateFromTextField(""));
 		assertNull(strategy.getDateFromTextField("abcd"));
 		assertNull(strategy.getDateFromTextField("12.12"));
 
-		Calendar calendar = Calendar.getInstance();
+		final Calendar calendar = Calendar.getInstance();
 		calendar.set(2009, 11, 24, 0, 0, 0);
-		Date expected = calendar.getTime();
+		final Date expected = calendar.getTime();
 
-		Date result = strategy.getDateFromTextField("24.12.2009");
+		final Date result = strategy.getDateFromTextField("24.12.2009");
 		assertEquals(expected.toString(), result.toString());
 	}
 
 	public void testDateConverterStrategySetter() {
-		DateTextRidget ridget = (DateTextRidget) getRidget();
+		final DateTextRidget ridget = (DateTextRidget) getRidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYYHHMM);
-		IDateConverterStrategy strategy = ridget.new RidgetAwareDateConverterStrategy();
+		final IDateConverterStrategy strategy = ridget.new RidgetAwareDateConverterStrategy();
 
-		Calendar calendar = Calendar.getInstance();
+		final Calendar calendar = Calendar.getInstance();
 		calendar.set(2009, 11, 24, 0, 0, 0);
-		Date date = calendar.getTime();
+		final Date date = calendar.getTime();
 
 		strategy.setDateToTextField(date);
 
@@ -475,14 +475,14 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 305056.
 	 */
 	public void testMandatoryWithDatePickerWidget() {
-		IDateTextRidget ridget = getRidget();
+		final IDateTextRidget ridget = getRidget();
 		ridget.setMandatory(true);
-		DatePickerComposite control = new DatePickerComposite(getShell(), SWT.BORDER);
+		final DatePickerComposite control = new DatePickerComposite(getShell(), SWT.BORDER);
 		ridget.setUIControl(control);
 
-		Display display = control.getDisplay();
-		Color colorWhite = display.getSystemColor(SWT.COLOR_WHITE);
-		Color colorMandatory = Activator.getSharedColor(display, SharedColors.COLOR_MANDATORY);
+		final Display display = control.getDisplay();
+		final Color colorWhite = display.getSystemColor(SWT.COLOR_WHITE);
+		final Color colorMandatory = Activator.getSharedColor(display, SharedColors.COLOR_MANDATORY);
 		assertFalse(colorWhite.equals(colorMandatory)); // sanity check
 
 		ridget.setText("01.10.2008");
@@ -511,9 +511,9 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	 * As per Bug 313254
 	 */
 	public void testHideEmptyValueWhenOutputOnly() {
-		IDateTextRidget ridget = getRidget();
+		final IDateTextRidget ridget = getRidget();
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
-		Text control = getWidget();
+		final Text control = getWidget();
 
 		assertEquals(false, ridget.isOutputOnly());
 		assertEquals("  .  .    ", ridget.getText());
@@ -535,18 +535,18 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	// helping methods
 	//////////////////
 
-	private void assertText(String before, String keySeq, String after) {
+	private void assertText(final String before, final String keySeq, final String after) {
 		TestUtils.assertText(getWidget(), before, keySeq, after);
 	}
 
-	private void assertText(String before, int keyCode, String after) {
+	private void assertText(final String before, final int keyCode, final String after) {
 		TestUtils.assertText(getWidget(), before, keyCode, after);
 	}
 
-	private void assertMandatoryMarker(IMarkableRidget ridget, int count, boolean isDisabled) {
-		Collection<MandatoryMarker> markers = ridget.getMarkersOfType(MandatoryMarker.class);
+	private void assertMandatoryMarker(final IMarkableRidget ridget, final int count, final boolean isDisabled) {
+		final Collection<MandatoryMarker> markers = ridget.getMarkersOfType(MandatoryMarker.class);
 		assertEquals(count, markers.size());
-		for (MandatoryMarker marker : markers) {
+		for (final MandatoryMarker marker : markers) {
 			assertEquals(isDisabled, marker.isDisabled());
 		}
 	}

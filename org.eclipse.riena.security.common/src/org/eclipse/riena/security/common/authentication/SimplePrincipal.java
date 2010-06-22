@@ -23,7 +23,7 @@ public class SimplePrincipal implements Principal, Serializable {
 
 	private static final long serialVersionUID = 6896855188435044771L;
 
-	private String name;
+	private final String name;
 
 	/**
 	 * Create a <code>SimplePrincipal</code> with a given <code>name</code>.
@@ -32,7 +32,7 @@ public class SimplePrincipal implements Principal, Serializable {
 	 *            the name of the principal
 	 * @pre name != null && name.length() > 0
 	 */
-	public SimplePrincipal(String name) {
+	public SimplePrincipal(final String name) {
 		super();
 		Assert.isTrue(name != null && name.length() > 0, "the Name must not be null or empty"); //$NON-NLS-1$
 		this.name = name;
@@ -46,7 +46,7 @@ public class SimplePrincipal implements Principal, Serializable {
 	 *            name of the proxy
 	 * @param representedName
 	 */
-	public SimplePrincipal(String proxyName, String representedName) {
+	public SimplePrincipal(final String proxyName, final String representedName) {
 		this(proxyName + "," + representedName); //$NON-NLS-1$
 	}
 
@@ -61,14 +61,14 @@ public class SimplePrincipal implements Principal, Serializable {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object object) {
+	public boolean equals(final Object object) {
 		if (this == object) {
 			return true;
 		}
 		if (!(object instanceof SimplePrincipal)) {
 			return false;
 		}
-		SimplePrincipal that = (SimplePrincipal) object;
+		final SimplePrincipal that = (SimplePrincipal) object;
 
 		if (this.name == null) {
 			return that.name == null;

@@ -36,7 +36,7 @@ public class FontDescriptor implements ILnfFontDescriptor {
 	 *            the {@link RienaDefaultLnf} which is used to access the
 	 *            fontStore.
 	 */
-	public FontDescriptor(RienaDefaultLnf lnf) {
+	public FontDescriptor(final RienaDefaultLnf lnf) {
 		this.lnf = lnf;
 
 		// force the height to initialize its default
@@ -56,7 +56,7 @@ public class FontDescriptor implements ILnfFontDescriptor {
 	 *            the {@link RienaDefaultLnf} which is used to access the
 	 *            fontStore.
 	 */
-	public FontDescriptor(String key, int height, int style, RienaDefaultLnf lnf) {
+	public FontDescriptor(final String key, final int height, final int style, final RienaDefaultLnf lnf) {
 		this(lnf);
 		setKey(key);
 		setHeight(height);
@@ -70,7 +70,7 @@ public class FontDescriptor implements ILnfFontDescriptor {
 		return key;
 	}
 
-	public void setKey(String key) {
+	public void setKey(final String key) {
 		this.key = key;
 	}
 
@@ -105,12 +105,12 @@ public class FontDescriptor implements ILnfFontDescriptor {
 		return style;
 	}
 
-	public void setStyle(int style) {
+	public void setStyle(final int style) {
 		this.style = style;
 	}
 
 	public Font getFont() {
-		Font font = lnf.getFont(this.toString());
+		final Font font = lnf.getFont(this.toString());
 		if (font != null) {
 			return font;
 		} else {
@@ -131,14 +131,14 @@ public class FontDescriptor implements ILnfFontDescriptor {
 			return null;
 		}
 
-		Font font = lnf.getFont(key);
+		final Font font = lnf.getFont(key);
 		if (font == null || font.getFontData().length == 0) {
 			return null;
 		}
 
-		String fontName = font.getFontData()[0].getName();
-		FontData fontData = new FontData(fontName, height, style);
-		FontLnfResource fontResource = new FontLnfResource(fontData);
+		final String fontName = font.getFontData()[0].getName();
+		final FontData fontData = new FontData(fontName, height, style);
+		final FontLnfResource fontResource = new FontLnfResource(fontData);
 		lnf.putLnfResource(this.toString(), fontResource);
 		return getFont();
 	}

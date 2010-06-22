@@ -28,10 +28,10 @@ public interface IInfoFlyoutRidget extends IRidget {
 	 * The info displayed in the {@link InfoFlyout}.
 	 */
 	public class InfoFlyoutData {
-		private String message;
-		private String icon;
+		private final String message;
+		private final String icon;
 
-		public InfoFlyoutData(String icon, String message) {
+		public InfoFlyoutData(final String icon, final String message) {
 			this.icon = icon;
 			this.message = message;
 		}

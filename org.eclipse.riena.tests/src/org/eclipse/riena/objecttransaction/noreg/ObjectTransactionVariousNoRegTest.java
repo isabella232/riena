@@ -26,10 +26,10 @@ public class ObjectTransactionVariousNoRegTest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testPreRegisteredWithNoObjectId() throws Exception {
-		IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
+		final IObjectTransaction objectTransaction = ObjectTransactionFactory.getInstance().createObjectTransaction();
 		objectTransaction.setCleanModus(true);
 
-		Kunde kunde = new Kunde("4711");
+		final Kunde kunde = new Kunde("4711");
 		kunde.setVorname("john");
 		kunde.setNachname("Miller");
 		assertTrue("nachname ist nicht Miller", kunde.getNachname().equals("Miller"));

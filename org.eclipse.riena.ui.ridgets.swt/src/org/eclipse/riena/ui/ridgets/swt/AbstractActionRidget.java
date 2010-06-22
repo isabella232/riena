@@ -55,7 +55,7 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 	 */
 	protected void initText() {
 		if (text == null && !textAlreadyInitialized) {
-			Control control = getUIControl();
+			final Control control = getUIControl();
 			if (control != null && !control.isDisposed()) {
 				text = getUIControlText();
 				if (text == null) {
@@ -66,18 +66,19 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 		}
 	}
 
-	public final void addListener(IActionListener listener) {
+	public final void addListener(final IActionListener listener) {
 		actionObserver.addListener(listener);
 	}
 
 	/**
 	 * @deprecated use {@link #addListener(IActionListener)}
 	 */
-	public final void addListener(Object target, String action) {
+	@Deprecated
+	public final void addListener(final Object target, final String action) {
 		addListener(EventHandler.create(IActionListener.class, target, action));
 	}
 
-	public final void removeListener(IActionListener listener) {
+	public final void removeListener(final IActionListener listener) {
 		actionObserver.removeListener(listener);
 	}
 
@@ -111,7 +112,7 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 	 * 
 	 * @see #setIcon(String,IconSize)
 	 */
-	public void setIcon(String icon) {
+	public void setIcon(final String icon) {
 		setIcon(icon, IconSize.NONE);
 	}
 
@@ -123,19 +124,19 @@ public abstract class AbstractActionRidget extends AbstractSWTRidget implements 
 	 * 
 	 * @since 2.0
 	 */
-	public void setIcon(String icon, IconSize size) {
-		boolean oldUseRidgetIcon = useRidgetIcon;
+	public void setIcon(final String icon, final IconSize size) {
+		final boolean oldUseRidgetIcon = useRidgetIcon;
 		useRidgetIcon = true;
-		String oldIcon = this.iconID;
-		IIconManager manager = IconManagerProvider.getInstance().getIconManager();
+		final String oldIcon = this.iconID;
+		final IIconManager manager = IconManagerProvider.getInstance().getIconManager();
 		this.iconID = manager.getIconID(icon, size);
 		if (hasChanged(oldIcon, icon) || !oldUseRidgetIcon) {
 			updateUIIcon();
 		}
 	}
 
-	public final void setText(String newText) {
-		String oldText = this.text;
+	public final void setText(final String newText) {
+		final String oldText = this.text;
 		this.text = newText;
 		updateUIText();
 		firePropertyChange(IActionRidget.PROPERTY_TEXT, oldText, this.text);

@@ -11,9 +11,10 @@
 package org.eclipse.riena.ui.ridgets.swt.uibinding;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * This condition matches against Text widgets that have a special type
@@ -37,15 +38,15 @@ public final class TypedTextWidgetCondition implements IMappingCondition {
 	 * @param type
 	 *            the type indentifier (non-null);
 	 */
-	TypedTextWidgetCondition(String type) {
+	TypedTextWidgetCondition(final String type) {
 		Assert.isNotNull(type);
 		this.type = type;
 	}
 
-	public boolean isMatch(Object widget) {
+	public boolean isMatch(final Object widget) {
 		boolean result = false;
 		if (widget instanceof Text) {
-			Text text = (Text) widget;
+			final Text text = (Text) widget;
 			result = type.equals(text.getData(UIControlsFactory.KEY_TYPE));
 		}
 		return result;

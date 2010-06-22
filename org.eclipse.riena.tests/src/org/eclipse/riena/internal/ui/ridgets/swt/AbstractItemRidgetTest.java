@@ -53,7 +53,7 @@ public class AbstractItemRidgetTest extends TestCase {
 
 		assertNull(getContributionItem(itemRidget));
 
-		ToolItem item = new ToolItem(toolbar, SWT.NONE);
+		final ToolItem item = new ToolItem(toolbar, SWT.NONE);
 		itemRidget.setUIControl(item);
 		assertNull(getContributionItem(itemRidget));
 
@@ -67,7 +67,7 @@ public class AbstractItemRidgetTest extends TestCase {
 	 */
 	public void testIsEnabled() {
 
-		ToolItem item = new ToolItem(toolbar, SWT.NONE);
+		final ToolItem item = new ToolItem(toolbar, SWT.NONE);
 		itemRidget.setUIControl(item);
 
 		assertTrue(itemRidget.isEnabled());
@@ -78,8 +78,8 @@ public class AbstractItemRidgetTest extends TestCase {
 	}
 
 	public void testFireAction() {
-		FTActionListener listener1 = new FTActionListener();
-		FTActionListener listener2 = new FTActionListener();
+		final FTActionListener listener1 = new FTActionListener();
+		final FTActionListener listener2 = new FTActionListener();
 
 		itemRidget.addListener(listener1);
 
@@ -96,7 +96,7 @@ public class AbstractItemRidgetTest extends TestCase {
 	// helping methods
 	//////////////////
 
-	private CommandContributionItem getContributionItem(AbstractItemRidget ridget) {
+	private CommandContributionItem getContributionItem(final AbstractItemRidget ridget) {
 		return ReflectionUtils.invokeHidden(ridget, "getContributionItem", (Object[]) null);
 		// return ridget.getContributionItem();
 	}

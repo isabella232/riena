@@ -37,18 +37,18 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 	/**
 	 * the separator key used in the format for this date validation rule
 	 */
-	private char separatorKey = '.'; // default is the dot-separator
+	private final char separatorKey = '.'; // default is the dot-separator
 
 	// placeholderValid to use in completion, if no input occurs between two
 	// separators
-	private String placeholderValid = "1"; //$NON-NLS-1$
+	private final String placeholderValid = "1"; //$NON-NLS-1$
 	// placeholderInvalid to use in completion to mark invalid input. May be
 	// used, if input occurs for
 	// some part of the format pattern, which should be marked as invalid.
 	// Example: yyyy is the part of the format pattern to be validated and the
 	// input is 0xx and should be
 	// marked invalid, so 0xx is replaced by ?.
-	private String placeholderInvalid = "?"; //$NON-NLS-1$
+	private final String placeholderInvalid = "?"; //$NON-NLS-1$
 
 	private String pattern;
 
@@ -88,7 +88,7 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 			}
 
 			if (string.length() > 0 && !isDateValid(string, pattern)) {
-				String message = NLS.bind(Messages.AbstractValidDate_error_invalidDate, pattern);
+				final String message = NLS.bind(Messages.AbstractValidDate_error_invalidDate, pattern);
 				return ValidationRuleStatus.error(false, message);
 			}
 		}
@@ -117,7 +117,7 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 		// return GenericValidator.isDate(value, datePattern, true);
 	}
 
-	private boolean isDate(String value, String pattern, boolean strict) {
+	private boolean isDate(final String value, final String pattern, final boolean strict) {
 		if (value == null || pattern == null || pattern.length() <= 0) {
 
 			return false;
@@ -125,10 +125,10 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 		if (strict && value.length() != pattern.length()) {
 			return false;
 		}
-		SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+		final SimpleDateFormat formatter = new SimpleDateFormat(pattern);
 		formatter.setLenient(false);
 
-		ParsePosition pos = new ParsePosition(0);
+		final ParsePosition pos = new ParsePosition(0);
 		formatter.parse(value, pos);
 		if (pos.getErrorIndex() != -1) {
 			return false;
@@ -141,14 +141,15 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 		return true;
 	}
 
-	private String complete(String value, String datePattern) {
+	private String complete(final String value, final String datePattern) {
 
 		final StringBuilder completedValue = new StringBuilder();
 		String valueToCheck = value;
 		String datePatternToCheck = datePattern;
 		int nextSeparatorIndex = nextSeparatorIndex(datePatternToCheck);
 		while (nextSeparatorIndex != -1) {
-			int nextSeparatorIndexOfValueToCheck = valueToCheck.indexOf(datePatternToCheck.charAt(nextSeparatorIndex));
+			final int nextSeparatorIndexOfValueToCheck = valueToCheck.indexOf(datePatternToCheck
+					.charAt(nextSeparatorIndex));
 			if (nextSeparatorIndexOfValueToCheck == -1) {
 				break;
 			}
@@ -188,7 +189,7 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 	private boolean isNoPossibleCompletionToAllowedYear(final String value, final String datePattern) {
 		boolean result = false;
 		if (datePattern.startsWith(IDateTextRidget.FORMAT_YYYY)) {
-			String trimedValue = value.trim();
+			final String trimedValue = value.trim();
 			result = trimedValue.length() < 2 || (trimedValue.length() > 2 && trimedValue.startsWith("0")); //$NON-NLS-1$
 			// System.out.println(String.format("%s '%s' %b", datePattern, trimedValue, result));
 		}
@@ -204,11 +205,11 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 		return -1;
 	}
 
-	protected void setPattern(String pattern) {
+	protected void setPattern(final String pattern) {
 		this.pattern = pattern;
 	}
 
-	protected void setCheckValidIntermediate(boolean checkValidIntermediate) {
+	protected void setCheckValidIntermediate(final boolean checkValidIntermediate) {
 		this.checkValidIntermediate = checkValidIntermediate;
 	}
 
@@ -222,11 +223,11 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
 	 *      java.lang.String, java.lang.Object)
 	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 
 		if (data instanceof String) {
-			String[] args = PropertiesUtils.asArray(data);
+			final String[] args = PropertiesUtils.asArray(data);
 			setPattern(args[0]);
 		}
 

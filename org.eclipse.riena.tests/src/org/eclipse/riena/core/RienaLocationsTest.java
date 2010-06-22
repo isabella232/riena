@@ -26,14 +26,14 @@ import org.eclipse.riena.internal.tests.Activator;
 public class RienaLocationsTest extends TestCase {
 
 	public void testGetDataArea() {
-		File dataArea = RienaLocations.getDataArea();
+		final File dataArea = RienaLocations.getDataArea();
 		assertTrue(dataArea.isDirectory());
-		File expected = new File(Platform.getInstanceLocation().getURL().getFile(), RienaLocations.RIENA_NAME);
+		final File expected = new File(Platform.getInstanceLocation().getURL().getFile(), RienaLocations.RIENA_NAME);
 		assertEquals(expected, dataArea);
 	}
 
 	public void testGetDataAreaForBundle() {
-		File dataArea = RienaLocations.getDataArea(Activator.getDefault().getBundle());
+		final File dataArea = RienaLocations.getDataArea(Activator.getDefault().getBundle());
 		assertTrue(dataArea.isDirectory());
 		assertEquals(new File(new File(Platform.getInstanceLocation().getURL().getFile(), RienaLocations.RIENA_NAME),
 				Activator.getDefault().getBundle().getSymbolicName()), dataArea);

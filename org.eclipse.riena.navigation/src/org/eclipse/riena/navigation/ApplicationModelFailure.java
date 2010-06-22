@@ -32,7 +32,7 @@ public class ApplicationModelFailure extends Failure {
 	 * @param cause
 	 *            the cause if any
 	 */
-	public ApplicationModelFailure(String msg, Throwable cause) {
+	public ApplicationModelFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 
@@ -42,7 +42,7 @@ public class ApplicationModelFailure extends Failure {
 	 * @param msg
 	 *            The failure message text.
 	 */
-	public ApplicationModelFailure(String msg) {
+	public ApplicationModelFailure(final String msg) {
 		super(msg);
 	}
 

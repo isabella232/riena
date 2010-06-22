@@ -57,7 +57,7 @@ public class ModuleNode2Extension extends Node2Extension implements IModuleNode2
 	 *            {@code true} if this module is closable, {@code false}
 	 *            otherwise. Default is {@code true}.
 	 */
-	public void setClosable(boolean closable) {
+	public void setClosable(final boolean closable) {
 		this.closable = closable;
 	}
 

@@ -62,7 +62,7 @@ public class SecurityServiceHook implements IServiceHook {
 
 	// private HashMap<String, Boolean> freeHivemindWebservices = new
 	// HashMap<String, Boolean>();
-	private boolean requiresSSOIDbyDefault = false;
+	private final boolean requiresSSOIDbyDefault = false;
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SecurityServiceHook.class);
 
@@ -75,7 +75,7 @@ public class SecurityServiceHook implements IServiceHook {
 		// List<UnsecureWebservice> tempList =
 		// RegistryAccessor.fetchRegistry().getConfiguration(
 		// UNSECURE_WEBSERVICES_ID);
-		String appName = "???appname??????";// RuntimeInfo.getApplicationName(); //$NON-NLS-1$
+		final String appName = "???appname??????";// RuntimeInfo.getApplicationName(); //$NON-NLS-1$
 		//		if (appName == null) {
 		//			appName = "<unknown>"; //$NON-NLS-1$
 		//		}
@@ -118,41 +118,41 @@ public class SecurityServiceHook implements IServiceHook {
 		}
 	}
 
-	public void bind(IGenericObjectCache<String, Principal[]> principalCache) {
+	public void bind(final IGenericObjectCache<String, Principal[]> principalCache) {
 		this.principalCache = principalCache;
 	}
 
-	public void unbind(IGenericObjectCache<String, Principal[]> principalCache) {
+	public void unbind(final IGenericObjectCache<String, Principal[]> principalCache) {
 		if (this.principalCache == principalCache) {
 			this.principalCache = null;
 		}
 	}
 
-	public void bind(ISessionService sessionService) {
+	public void bind(final ISessionService sessionService) {
 		this.sessionService = sessionService;
 	}
 
-	public void unbind(ISessionService sessionService) {
+	public void unbind(final ISessionService sessionService) {
 		if (this.sessionService == sessionService) {
 			this.sessionService = null;
 		}
 	}
 
-	public void bind(ISubjectHolder subjectHolder) {
+	public void bind(final ISubjectHolder subjectHolder) {
 		this.subjectHolder = subjectHolder;
 	}
 
-	public void unbind(ISubjectHolder subjectHolder) {
+	public void unbind(final ISubjectHolder subjectHolder) {
 		if (this.subjectHolder == subjectHolder) {
 			this.subjectHolder = null;
 		}
 	}
 
-	public void bind(ISessionHolder sessionHolder) {
+	public void bind(final ISessionHolder sessionHolder) {
 		this.sessionHolder = sessionHolder;
 	}
 
-	public void unbind(ISessionHolder sessionHolder) {
+	public void unbind(final ISessionHolder sessionHolder) {
 		if (this.sessionHolder == sessionHolder) {
 			this.sessionHolder = null;
 		}
@@ -165,8 +165,8 @@ public class SecurityServiceHook implements IServiceHook {
 	 * org.eclipse.riena.communication.core.hooks.IServiceHook#beforeService
 	 * (org.eclipse.riena.communication.core.hooks.ServiceContext)
 	 */
-	public void beforeService(ServiceContext callback) {
-		boolean requiresSSOID = requiresSSOIDbyDefault;
+	public void beforeService(final ServiceContext callback) {
+		final boolean requiresSSOID = requiresSSOIDbyDefault;
 		// if (freeHivemindWebservices.get(callback.getComponentId()) != null) {
 		// requiresSSOID = false;
 		// } else {
@@ -176,12 +176,12 @@ public class SecurityServiceHook implements IServiceHook {
 		// }
 
 		// first extract the cookies
-		Cookie[] cookies = callback.getCookies();
+		final Cookie[] cookies = callback.getCookies();
 		String ssoid = null;
 		if (cookies != null) {
-			for (int i = 0; i < cookies.length; i++) {
-				if (cookies[i].getName().equals(SSOID)) {
-					ssoid = cookies[i].getValue();
+			for (final Cookie cookie : cookies) {
+				if (cookie.getName().equals(SSOID)) {
+					ssoid = cookie.getValue();
 				}
 			}
 		}
@@ -221,8 +221,8 @@ public class SecurityServiceHook implements IServiceHook {
 				LOGGER.log(LogService.LOG_DEBUG, "found principal in cache = " + Arrays.toString(principals)); //$NON-NLS-1$
 			}
 			if (principals != null) {
-				Subject subject = new Subject();
-				for (Principal p : principals) {
+				final Subject subject = new Subject();
+				for (final Principal p : principals) {
 					subject.getPrincipals().add(p);
 				}
 				subjectHolder.setSubject(subject);
@@ -232,7 +232,7 @@ public class SecurityServiceHook implements IServiceHook {
 
 		// set ssoid and plid in the sessionholder and the ssoid as attribute
 		if (ssoid != null) {
-			Session beforeSession = new Session(ssoid);
+			final Session beforeSession = new Session(ssoid);
 			sessionHolder.setSession(beforeSession);
 			callback.setProperty("de.compeople.ssoid", beforeSession); //$NON-NLS-1$
 		}
@@ -246,9 +246,9 @@ public class SecurityServiceHook implements IServiceHook {
 	 * org.eclipse.riena.communication.core.hooks.IServiceHook#afterService(
 	 * org.eclipse.riena.communication.core.hooks.ServiceContext)
 	 */
-	public void afterService(ServiceContext context) {
-		Session afterSession = sessionHolder.getSession();
-		Session beforeSession = (Session) context.getProperty("de.compeople.ssoid"); //$NON-NLS-1$
+	public void afterService(final ServiceContext context) {
+		final Session afterSession = sessionHolder.getSession();
+		final Session beforeSession = (Session) context.getProperty("de.compeople.ssoid"); //$NON-NLS-1$
 		String ssoid = null;
 		if (afterSession != null) {
 			ssoid = afterSession.getSessionId();
@@ -263,12 +263,12 @@ public class SecurityServiceHook implements IServiceHook {
 				|| (beforeSession != null && afterSession != null && !(beforeSession.getSessionId().equals(ssoid)))) {
 			if (ssoid == null || ssoid.equals("0")) { //$NON-NLS-1$
 				// delete cookie
-				Cookie cookie = new Cookie(SSOID, ""); //$NON-NLS-1$
+				final Cookie cookie = new Cookie(SSOID, ""); //$NON-NLS-1$
 				cookie.setPath("/"); //$NON-NLS-1$
 				context.addCookie(cookie);
 				LOGGER.log(LogService.LOG_DEBUG, "setting cookie to '0'"); //$NON-NLS-1$
 			} else {
-				Cookie cookie = new Cookie(SSOID, ssoid);
+				final Cookie cookie = new Cookie(SSOID, ssoid);
 				cookie.setPath("/"); //$NON-NLS-1$
 				context.addCookie(cookie);
 				if (beforeSession != null && !(beforeSession.getSessionId().equals("0"))) { //$NON-NLS-1$

@@ -29,7 +29,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 
 	@Override
-	protected Widget createWidget(Composite parent) {
+	protected Widget createWidget(final Composite parent) {
 		return new Slider(parent, SWT.NONE);
 	}
 
@@ -49,36 +49,36 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	}
 
 	@Override
-	protected int getIncrement(Control control) {
+	protected int getIncrement(final Control control) {
 		return ((Slider) control).getIncrement();
 	}
 
 	@Override
-	protected int getMaximum(Control control) {
+	protected int getMaximum(final Control control) {
 		return ((Slider) control).getMaximum();
 	}
 
 	@Override
-	protected int getMinimum(Control control) {
+	protected int getMinimum(final Control control) {
 		return ((Slider) control).getMinimum();
 	}
 
 	@Override
-	protected int getPageIncrement(Control control) {
+	protected int getPageIncrement(final Control control) {
 		return ((Slider) control).getPageIncrement();
 	}
 
 	@Override
-	protected int getValue(Control control) {
+	protected int getValue(final Control control) {
 		return ((Slider) control).getSelection();
 	}
 
-	protected int getThumb(Control control) {
+	protected int getThumb(final Control control) {
 		return ((Slider) control).getThumb();
 	}
 
 	@Override
-	protected void setValue(Control control, int value) {
+	protected void setValue(final Control control, final int value) {
 		((Slider) control).setSelection(value);
 	}
 
@@ -86,14 +86,14 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	// ////////////
 
 	@Override
-	protected void assertPropertiesEqual(ITraverseRidget ridget, Control control) {
+	protected void assertPropertiesEqual(final ITraverseRidget ridget, final Control control) {
 		super.assertPropertiesEqual(ridget, control);
 
 		assertEquals(getThumb(control), ((ISliderRidget) ridget).getThumb());
 	}
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(SliderRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
@@ -103,8 +103,8 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 */
 	@Override
 	public void testSetValueRidgetBased() {
-		Control control = getWidget();
-		ISliderRidget ridget = getRidget();
+		final Control control = getWidget();
+		final ISliderRidget ridget = getRidget();
 
 		/*
 		 * Test 1 - value > max - thumb: Result value = max - thumb = 29
@@ -154,12 +154,12 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 */
 	@Override
 	public void testSetValueFiresEventsRidgetBased() {
-		ISliderRidget ridget = getRidget();
+		final ISliderRidget ridget = getRidget();
 		ridget.setMaximum(30);
 		ridget.setValue(0);
 
 		// Test 1 - value > max
-		int maxValue = ridget.getMaximum() - ridget.getThumb();
+		final int maxValue = ridget.getMaximum() - ridget.getThumb();
 		expectPropertyChangeEvent(ITraverseRidget.PROPERTY_VALUE, 0, maxValue);
 		ridget.setValue(30);
 		verifyPropertyChangeEvents();
@@ -189,8 +189,8 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		// do not call super. This ridget additionally uses the thumb to
 		// calculate the maximum
 
-		Control control = getWidget();
-		ISliderRidget ridget = getRidget();
+		final Control control = getWidget();
+		final ISliderRidget ridget = getRidget();
 		/*
 		 * Test 1 - max = value with thumb = 1
 		 */
@@ -253,7 +253,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		try {
 			ridget.setMaximum(max);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(100, ridget.getMaximum());
@@ -280,7 +280,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		try {
 			ridget.setMaximum(max);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(100, ridget.getMaximum());
@@ -295,7 +295,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		try {
 			ridget.setMaximum(-1);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(100, ridget.getMaximum());
@@ -344,7 +344,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		try {
 			ridget.setMaximum(max);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(100, ridget.getMaximum());
@@ -371,7 +371,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		try {
 			ridget.setMaximum(max);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(100, ridget.getMaximum());
@@ -426,16 +426,16 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 */
 	@Override
 	public void testSetMaximumFiresEventsRidgetBased() {
-		ISliderRidget ridget = getRidget();
+		final ISliderRidget ridget = getRidget();
 
 		/*
 		 * Test 1 - increment and page increment > max - thumb - min by
 		 * decreasing max
 		 */
 		resetEasyMock();
-		int max = 20;
-		int min = 10;
-		int thumb = 1;
+		final int max = 20;
+		final int min = 10;
+		final int thumb = 1;
 		ridget.setMaximum(max);
 		ridget.setThumb(thumb);
 		ridget.setMinimum(min);
@@ -446,10 +446,10 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		assertEquals(min, ridget.getMinimum());
 		assertEquals(thumb, ridget.getThumb());
 		// proceed test
-		int deltaMaxMin = max - thumb - min;
+		final int deltaMaxMin = max - thumb - min;
 		ridget.setIncrement(deltaMaxMin);
 		ridget.setPageIncrement(deltaMaxMin);
-		int oldPageIncrement = ridget.getPageIncrement();
+		final int oldPageIncrement = ridget.getPageIncrement();
 		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_INCREMENT, deltaMaxMin,
 				deltaMaxMin - 1), new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_PAGE_INCREMENT,
 				oldPageIncrement, deltaMaxMin - 1), new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_MAXIMUM,
@@ -464,8 +464,8 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 * internalMaximum = maximum - thumb.
 	 */
 	public void testSetMinimumRidgetBased() {
-		ISliderRidget ridget = getRidget();
-		Control control = getWidget();
+		final ISliderRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		/*
 		 * Test 1 - increment > max - thumb - min after increasing min
@@ -512,16 +512,16 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 */
 	@Override
 	public void testSetMinimumFiresEventsRidgetBased() {
-		ISliderRidget ridget = getRidget();
+		final ISliderRidget ridget = getRidget();
 
 		/*
 		 * Test 1 - increment and page increment > max - thumb - min by
 		 * decreasing max
 		 */
 		resetEasyMock();
-		int max = 20;
-		int min = 10;
-		int thumb = 1;
+		final int max = 20;
+		final int min = 10;
+		final int thumb = 1;
 		ridget.setMaximum(max);
 		ridget.setThumb(thumb);
 		ridget.setMinimum(min);
@@ -530,11 +530,11 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		assertEquals(min, ridget.getMinimum());
 		assertEquals(thumb, ridget.getThumb());
 		// proceed test
-		int deltaMaxMin = max - thumb - min;
+		final int deltaMaxMin = max - thumb - min;
 		ridget.setIncrement(deltaMaxMin);
 		ridget.setPageIncrement(deltaMaxMin);
-		int oldPageIncrement = ridget.getPageIncrement();
-		int oldValue = ridget.getValue();
+		final int oldPageIncrement = ridget.getPageIncrement();
+		final int oldValue = ridget.getValue();
 		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_VALUE, oldValue, min + 1),
 				new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_INCREMENT, deltaMaxMin, deltaMaxMin - 1),
 				new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_PAGE_INCREMENT, oldPageIncrement,
@@ -550,13 +550,13 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 */
 	@Override
 	public void testSetIncrementRidgetBased() {
-		ISliderRidget ridget = getRidget();
-		Control control = getWidget();
+		final ISliderRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		/*
 		 * Test 1 - increment > max - thumb - min. Result: increment = max - min
 		 */
-		int deltaMaxMin = 100 - 1 - 7;
+		final int deltaMaxMin = 100 - 1 - 7;
 		ridget.setMaximum(100);
 		ridget.setMinimum(7);
 		ridget.setThumb(1);
@@ -588,16 +588,16 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 */
 	@Override
 	public void testSetIncrementFiresEventsRidgetBased() {
-		ISliderRidget ridget = getRidget();
+		final ISliderRidget ridget = getRidget();
 		ridget.setIncrement(1);
 
 		/*
 		 * Test 1 - increment > max - thumb - min
 		 */
 		resetEasyMock();
-		int max = 20;
-		int min = 10;
-		int thumb = 1;
+		final int max = 20;
+		final int min = 10;
+		final int thumb = 1;
 		ridget.setMaximum(max);
 		ridget.setThumb(thumb);
 		ridget.setMinimum(min);
@@ -606,7 +606,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		assertEquals(min, ridget.getMinimum());
 		assertEquals(thumb, ridget.getThumb());
 		// proceed test
-		int deltaMaxMin = max - thumb - min;
+		final int deltaMaxMin = max - thumb - min;
 		expectPropertyChangeEvent(ITraverseRidget.PROPERTY_INCREMENT, 1, deltaMaxMin);
 		ridget.setIncrement(max);
 		verifyPropertyChangeEvents();
@@ -619,14 +619,14 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 */
 	@Override
 	public void testSetPageIncrementRidgetBased() {
-		ISliderRidget ridget = getRidget();
-		Control control = getWidget();
+		final ISliderRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		/*
 		 * Test 1 - pageIncrement > max - thumb - min. Result: pageIncrement =
 		 * max - min
 		 */
-		int deltaMaxMin = 100 - 1 - 7;
+		final int deltaMaxMin = 100 - 1 - 7;
 		ridget.setMaximum(100);
 		ridget.setMinimum(7);
 		ridget.setThumb(1);
@@ -660,7 +660,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	 */
 	@Override
 	public void testSetPageIncrementFiresEventsRidgetBased() {
-		ISliderRidget ridget = getRidget();
+		final ISliderRidget ridget = getRidget();
 		ridget.setPageIncrement(1);
 
 		/*
@@ -673,7 +673,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		assertEquals(20, ridget.getMaximum());
 		assertEquals(10, ridget.getMinimum());
 
-		int deltaMaxMin = 20 - 1 - 10;
+		final int deltaMaxMin = 20 - 1 - 10;
 		expectPropertyChangeEvent(ITraverseRidget.PROPERTY_PAGE_INCREMENT, 1, deltaMaxMin);
 		ridget.setPageIncrement(20);
 		verifyPropertyChangeEvents();
@@ -683,8 +683,8 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	public void testSetMinimum() {
 		super.testSetMinimum();
 
-		ISliderRidget ridget = getRidget();
-		Control control = getWidget();
+		final ISliderRidget ridget = getRidget();
+		final Control control = getWidget();
 
 		/*
 		 * Test 1 - min < max - thumb by increasing min. Result: increase value
@@ -725,7 +725,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		try {
 			ridget.setMinimum(min);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(10, ridget.getMinimum());
@@ -752,7 +752,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		try {
 			ridget.setMinimum(min);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertEquals(10, ridget.getMinimum());
@@ -763,8 +763,8 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	}
 
 	public void testSetThumb() {
-		ISliderRidget ridget = getRidget();
-		Slider control = getWidget();
+		final ISliderRidget ridget = getRidget();
+		final Slider control = getWidget();
 		/*
 		 * Test 1 - valid thumb
 		 */
@@ -781,7 +781,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		try {
 			ridget.setThumb(0);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertPropertiesEqual(ridget, control);
@@ -792,7 +792,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		try {
 			ridget.setThumb(500);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertPropertiesEqual(ridget, control);
@@ -803,7 +803,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		try {
 			ridget.setThumb(90);
 			fail();
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			ok();
 		}
 		assertPropertiesEqual(ridget, control);
@@ -819,7 +819,7 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	}
 
 	public void testSetThumbFiresEvents() {
-		ISliderRidget ridget = getRidget();
+		final ISliderRidget ridget = getRidget();
 		ridget.setMinimum(0);
 		ridget.setMaximum(100);
 		ridget.setThumb(25);
@@ -834,8 +834,8 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 	}
 
 	public void testApplyThumbOnBind() {
-		ISliderRidget ridget = getRidget();
-		Slider control = (Slider) createWidget(getShell());
+		final ISliderRidget ridget = getRidget();
+		final Slider control = (Slider) createWidget(getShell());
 		ridget.setMinimum(0);
 		ridget.setMaximum(100);
 		ridget.setThumb(25);

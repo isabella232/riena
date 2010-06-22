@@ -55,21 +55,21 @@ public class LogoCompositeTest extends TestCase {
 	 * Tests the <i>private</i> method {@code getLogoImage()}.
 	 */
 	public void testGetLogoImage() {
-		RienaDefaultLnf originaLnf = LnfManager.getLnf();
+		final RienaDefaultLnf originaLnf = LnfManager.getLnf();
 
 		try {
-			MyLnf lnf = new MyLnf();
+			final MyLnf lnf = new MyLnf();
 			LnfManager.setLnf(lnf);
 			lnf.initialize();
 
-			Image eclipseImage = ImageStore.getInstance().getImage(ICON_ECLIPSE);
+			final Image eclipseImage = ImageStore.getInstance().getImage(ICON_ECLIPSE);
 			lnf.setLogo(ICON_ECLIPSE);
 			Image logoImage = ReflectionUtils.invokeHidden(logoComposite, "getLogoImage");
 			assertNotNull(logoImage);
 			assertEquals(eclipseImage.getBounds().width, logoImage.getBounds().width);
 			assertEquals(eclipseImage.getBounds().height, logoImage.getBounds().height);
 
-			Image missingImage = ImageStore.getInstance().getMissingImage();
+			final Image missingImage = ImageStore.getInstance().getMissingImage();
 			lnf.setLogo(ICON_ECLIPSE + "4711");
 			logoImage = ReflectionUtils.invokeHidden(logoComposite, "getLogoImage");
 			assertNotNull(logoImage);
@@ -85,7 +85,7 @@ public class LogoCompositeTest extends TestCase {
 	 */
 	private static class MyLnf extends RienaDefaultLnf {
 
-		public void setLogo(String logo) {
+		public void setLogo(final String logo) {
 			putLnfResource(LnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(logo));
 		}
 

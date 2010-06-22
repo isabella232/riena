@@ -12,9 +12,10 @@ package org.eclipse.riena.ui.swt.lnf;
 
 import java.util.Collection;
 
-import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
+
+import org.eclipse.riena.core.marker.IMarker;
 
 /**
  * Renderer of a widget or a part of a widget.

@@ -21,7 +21,7 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
  */
 public final class CompositeWithBindingIdCondition implements IMappingCondition {
 
-	public boolean isMatch(Object widget) {
+	public boolean isMatch(final Object widget) {
 		boolean result = false;
 		if (widget instanceof Composite) {
 			result = SWTBindingPropertyLocator.getInstance().hasBindingProperty(widget);

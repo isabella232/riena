@@ -29,7 +29,7 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 	 *            menu item
 	 * @return {@code true} if item is cascade menu; otherwise {@code false}
 	 */
-	protected boolean isMenu(MenuItem menuItem) {
+	protected boolean isMenu(final MenuItem menuItem) {
 		if (menuItem == null) {
 			return false;
 		}
@@ -39,7 +39,7 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 	@Override
 	protected void bindUIControl() {
 		super.bindUIControl();
-		MenuItem menuItem = getUIControl();
+		final MenuItem menuItem = getUIControl();
 		if ((menuItem != null) && (!menuItem.isDisposed())) {
 			menuItem.addSelectionListener(getActionObserver());
 		}
@@ -48,7 +48,7 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 	@Override
 	protected void unbindUIControl() {
 		savedVisibleState = isVisible();
-		MenuItem menuItem = getUIControl();
+		final MenuItem menuItem = getUIControl();
 
 		if ((menuItem != null) && !menuItem.isDisposed() && !isMenu(menuItem)) {
 			menuItem.removeSelectionListener(getActionObserver());
@@ -57,7 +57,7 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		assertType(uiControl, MenuItem.class);
 		if (isMenu((MenuItem) uiControl)) {
 			throw new BindingException("Menu item is a cascade menu item!"); //$NON-NLS-1$

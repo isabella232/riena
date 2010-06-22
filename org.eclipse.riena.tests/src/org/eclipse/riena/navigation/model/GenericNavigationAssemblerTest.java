@@ -45,11 +45,11 @@ public class GenericNavigationAssemblerTest extends TestCase {
 	 */
 	public void testCreateNavigationNodeIdFromTemplate() {
 
-		MyGenericNavigationAssembler assembler = new MyGenericNavigationAssembler();
-		NavigationNodeId template = new NavigationNodeId("type1", "inst1");
-		ModuleNode2Extension extension = new ModuleNode2Extension();
+		final MyGenericNavigationAssembler assembler = new MyGenericNavigationAssembler();
+		final NavigationNodeId template = new NavigationNodeId("type1", "inst1");
+		final ModuleNode2Extension extension = new ModuleNode2Extension();
 		extension.setNodeId("type2");
-		NavigationNodeId createdId = assembler.createNavigationNodeIdFromTemplate(template, extension, null);
+		final NavigationNodeId createdId = assembler.createNavigationNodeIdFromTemplate(template, extension, null);
 		assertEquals("type2", createdId.getTypeId());
 		assertEquals("inst1", createdId.getInstanceId());
 
@@ -60,16 +60,16 @@ public class GenericNavigationAssemblerTest extends TestCase {
 	 */
 	public void testBuildISubModuleNode2Extension() {
 
-		MyGenericNavigationAssembler assembler = new MyGenericNavigationAssembler();
-		NavigationNodeId targetId = new NavigationNodeId("type1", "inst1");
+		final MyGenericNavigationAssembler assembler = new MyGenericNavigationAssembler();
+		final NavigationNodeId targetId = new NavigationNodeId("type1", "inst1");
 
-		SubModuleNode2Extension extension1 = new SubModuleNode2Extension();
+		final SubModuleNode2Extension extension1 = new SubModuleNode2Extension();
 		extension1.setNodeId("type2");
 		extension1.setName("sub1");
 		extension1.setSelectable(false);
 		extension1.setIcon("icon1");
 
-		SubModuleNode2Extension extension2 = new SubModuleNode2Extension();
+		final SubModuleNode2Extension extension2 = new SubModuleNode2Extension();
 		extension2.setNodeId("type22");
 		extension2.setName("sub2");
 		extension2.setSelectable(true);
@@ -77,8 +77,8 @@ public class GenericNavigationAssemblerTest extends TestCase {
 
 		extension1.setChildNodes(new ISubModuleNode2Extension[] { extension2 });
 
-		Map<String, Object> context = new HashMap<String, Object>();
-		ISubModuleNode sm1 = assembler.build(extension1, targetId, null, context);
+		final Map<String, Object> context = new HashMap<String, Object>();
+		final ISubModuleNode sm1 = assembler.build(extension1, targetId, null, context);
 
 		assertEquals("sub1", sm1.getLabel());
 		assertFalse(sm1.isSelectable());
@@ -86,7 +86,7 @@ public class GenericNavigationAssemblerTest extends TestCase {
 		assertEquals("type2", sm1.getNodeId().getTypeId());
 		assertEquals("inst1", sm1.getNodeId().getInstanceId());
 		assertEquals(1, sm1.getChildren().size());
-		ISubModuleNode sm2 = sm1.getChild(0);
+		final ISubModuleNode sm2 = sm1.getChild(0);
 		assertEquals("sub2", sm2.getLabel());
 		assertTrue(sm2.isSelectable());
 		assertEquals("icon2", sm2.getIcon());
@@ -100,26 +100,26 @@ public class GenericNavigationAssemblerTest extends TestCase {
 	 */
 	public void testBuildIModuleNode2Extension() {
 
-		MyGenericNavigationAssembler assembler = new MyGenericNavigationAssembler();
-		NavigationNodeId targetId = new NavigationNodeId("type1", "inst1");
+		final MyGenericNavigationAssembler assembler = new MyGenericNavigationAssembler();
+		final NavigationNodeId targetId = new NavigationNodeId("type1", "inst1");
 
-		ModuleNode2Extension extension1 = new ModuleNode2Extension();
+		final ModuleNode2Extension extension1 = new ModuleNode2Extension();
 		extension1.setNodeId("type2");
 		extension1.setName("m1");
 		extension1.setIcon("icon1");
 
-		SubModuleNode2Extension subExtension1 = new SubModuleNode2Extension();
+		final SubModuleNode2Extension subExtension1 = new SubModuleNode2Extension();
 		subExtension1.setNodeId("type12");
 		subExtension1.setName("sub1");
 
-		SubModuleNode2Extension subExtension2 = new SubModuleNode2Extension();
+		final SubModuleNode2Extension subExtension2 = new SubModuleNode2Extension();
 		subExtension2.setNodeId("type22");
 		subExtension2.setName("sub2");
 
 		extension1.setChildNodes(new ISubModuleNode2Extension[] { subExtension1, subExtension2 });
 
-		Map<String, Object> context = new HashMap<String, Object>();
-		IModuleNode m1 = assembler.build(extension1, targetId, null, context);
+		final Map<String, Object> context = new HashMap<String, Object>();
+		final IModuleNode m1 = assembler.build(extension1, targetId, null, context);
 
 		assertEquals("m1", m1.getLabel());
 		assertEquals("icon1", m1.getIcon());
@@ -127,12 +127,12 @@ public class GenericNavigationAssemblerTest extends TestCase {
 		assertEquals("inst1", m1.getNodeId().getInstanceId());
 		assertEquals(2, m1.getChildren().size());
 
-		ISubModuleNode sm1 = m1.getChild(0);
+		final ISubModuleNode sm1 = m1.getChild(0);
 		assertEquals("sub1", sm1.getLabel());
 		assertEquals("type12", sm1.getNodeId().getTypeId());
 		assertEquals("inst1", sm1.getNodeId().getInstanceId());
 
-		ISubModuleNode sm2 = m1.getChild(1);
+		final ISubModuleNode sm2 = m1.getChild(1);
 		assertEquals("sub2", sm2.getLabel());
 		assertEquals("type22", sm2.getNodeId().getTypeId());
 		assertEquals("inst1", sm2.getNodeId().getInstanceId());
@@ -144,23 +144,23 @@ public class GenericNavigationAssemblerTest extends TestCase {
 	 */
 	public void testBuildIModuleGroupNode2Extension() {
 
-		MyGenericNavigationAssembler assembler = new MyGenericNavigationAssembler();
-		NavigationNodeId targetId = new NavigationNodeId("type1", "inst1");
+		final MyGenericNavigationAssembler assembler = new MyGenericNavigationAssembler();
+		final NavigationNodeId targetId = new NavigationNodeId("type1", "inst1");
 
-		ModuleGroupNode2Extension extension1 = new ModuleGroupNode2Extension();
+		final ModuleGroupNode2Extension extension1 = new ModuleGroupNode2Extension();
 		extension1.setNodeId("type2");
 		extension1.setName("mg1");
 		extension1.setIcon("icon1");
 
-		ModuleNode2Extension mExtension1 = new ModuleNode2Extension();
+		final ModuleNode2Extension mExtension1 = new ModuleNode2Extension();
 		mExtension1.setNodeId("type22");
 		mExtension1.setName("m2");
 		mExtension1.setIcon("icon2");
 
 		extension1.setChildNodes(new IModuleNode2Extension[] { mExtension1 });
 
-		Map<String, Object> context = new HashMap<String, Object>();
-		IModuleGroupNode mg1 = assembler.build(extension1, targetId, null, context);
+		final Map<String, Object> context = new HashMap<String, Object>();
+		final IModuleGroupNode mg1 = assembler.build(extension1, targetId, null, context);
 
 		assertEquals("mg1", mg1.getLabel());
 		assertEquals("icon1", mg1.getIcon());
@@ -168,7 +168,7 @@ public class GenericNavigationAssemblerTest extends TestCase {
 		assertEquals("inst1", mg1.getNodeId().getInstanceId());
 		assertEquals(1, mg1.getChildren().size());
 
-		IModuleNode m1 = mg1.getChild(0);
+		final IModuleNode m1 = mg1.getChild(0);
 		assertEquals("m2", m1.getLabel());
 		assertEquals("icon2", m1.getIcon());
 		assertEquals("type22", m1.getNodeId().getTypeId());
@@ -181,31 +181,31 @@ public class GenericNavigationAssemblerTest extends TestCase {
 	 */
 	public void testBuildISubApplicationNode2Extension() {
 
-		MyGenericNavigationAssembler assembler = new MyGenericNavigationAssembler();
-		NavigationNodeId targetId = new NavigationNodeId("type1", "inst1");
+		final MyGenericNavigationAssembler assembler = new MyGenericNavigationAssembler();
+		final NavigationNodeId targetId = new NavigationNodeId("type1", "inst1");
 
-		SubApplicationNode2Extension extension1 = new SubApplicationNode2Extension();
+		final SubApplicationNode2Extension extension1 = new SubApplicationNode2Extension();
 		extension1.setNodeId("type2");
 		extension1.setName("sa1");
 		extension1.setIcon("icon1");
 		extension1.setPerspectiveId("p1");
 
-		ModuleGroupNode2Extension mgExtension1 = new ModuleGroupNode2Extension();
+		final ModuleGroupNode2Extension mgExtension1 = new ModuleGroupNode2Extension();
 		mgExtension1.setNodeId("type22");
 		mgExtension1.setName("mg2");
 		mgExtension1.setIcon("icon2");
 
 		extension1.setChildNodes(new IModuleGroupNode2Extension[] { mgExtension1 });
 
-		Map<String, Object> context = new HashMap<String, Object>();
-		ISubApplicationNode sa1 = assembler.build(extension1, targetId, null, context);
+		final Map<String, Object> context = new HashMap<String, Object>();
+		final ISubApplicationNode sa1 = assembler.build(extension1, targetId, null, context);
 		assertEquals("sa1", sa1.getLabel());
 		assertEquals("icon1", sa1.getIcon());
 		assertEquals("type2", sa1.getNodeId().getTypeId());
 		assertEquals("inst1", sa1.getNodeId().getInstanceId());
 		assertEquals(1, sa1.getChildren().size());
 
-		IModuleGroupNode mg1 = sa1.getChild(0);
+		final IModuleGroupNode mg1 = sa1.getChild(0);
 		assertEquals("mg2", mg1.getLabel());
 		assertEquals("icon2", mg1.getIcon());
 		assertEquals("type22", mg1.getNodeId().getTypeId());
@@ -218,27 +218,27 @@ public class GenericNavigationAssemblerTest extends TestCase {
 	 */
 	public void testResolveTargetIds() {
 
-		MyGenericNavigationAssembler assembler = new MyGenericNavigationAssembler();
+		final MyGenericNavigationAssembler assembler = new MyGenericNavigationAssembler();
 
-		SubApplicationNode2Extension extension1 = new SubApplicationNode2Extension();
+		final SubApplicationNode2Extension extension1 = new SubApplicationNode2Extension();
 		extension1.setNodeId("sa1");
 
-		ModuleGroupNode2Extension extension2 = new ModuleGroupNode2Extension();
+		final ModuleGroupNode2Extension extension2 = new ModuleGroupNode2Extension();
 		extension2.setNodeId("mg1");
 		extension1.setChildNodes(new IModuleGroupNode2Extension[] { extension2 });
 
-		ModuleNode2Extension extension3 = new ModuleNode2Extension();
+		final ModuleNode2Extension extension3 = new ModuleNode2Extension();
 		extension3.setNodeId("m1");
 		extension2.setChildNodes(new IModuleNode2Extension[] { extension3 });
 
-		SubModuleNode2Extension extension4 = new SubModuleNode2Extension();
+		final SubModuleNode2Extension extension4 = new SubModuleNode2Extension();
 		extension4.setNodeId("sub1");
 		extension3.setChildNodes(new ISubModuleNode2Extension[] { extension4 });
 
-		SubModuleNode2Extension extension5 = new SubModuleNode2Extension();
+		final SubModuleNode2Extension extension5 = new SubModuleNode2Extension();
 		extension5.setNodeId("sub11");
 
-		SubModuleNode2Extension extension6 = new SubModuleNode2Extension();
+		final SubModuleNode2Extension extension6 = new SubModuleNode2Extension();
 		extension6.setNodeId("sub12");
 		extension4.setChildNodes(new ISubModuleNode2Extension[] { extension5, extension6 });
 
@@ -271,37 +271,40 @@ public class GenericNavigationAssemblerTest extends TestCase {
 			}
 		}
 
-		public boolean acceptedTargetIdsContains(String typeId) {
+		public boolean acceptedTargetIdsContains(final String typeId) {
 			return acceptedTargetIds.contains(typeId);
 		}
 
 		@Override
-		public NavigationNodeId createNavigationNodeIdFromTemplate(NavigationNodeId template,
-				INode2Extension nodeExtension, NavigationArgument navigationArgument) {
+		public NavigationNodeId createNavigationNodeIdFromTemplate(final NavigationNodeId template,
+				final INode2Extension nodeExtension, final NavigationArgument navigationArgument) {
 			return super.createNavigationNodeIdFromTemplate(template, nodeExtension, navigationArgument);
 		}
 
 		@Override
-		public IModuleNode build(IModuleNode2Extension moduleDefinition, NavigationNodeId targetId,
-				NavigationArgument navigationArgument, Map<String, Object> context) {
+		public IModuleNode build(final IModuleNode2Extension moduleDefinition, final NavigationNodeId targetId,
+				final NavigationArgument navigationArgument, final Map<String, Object> context) {
 			return super.build(moduleDefinition, targetId, navigationArgument, context);
 		}
 
 		@Override
-		public IModuleGroupNode build(IModuleGroupNode2Extension groupDefinition, NavigationNodeId targetId,
-				NavigationArgument navigationArgument, Map<String, Object> context) {
+		public IModuleGroupNode build(final IModuleGroupNode2Extension groupDefinition,
+				final NavigationNodeId targetId, final NavigationArgument navigationArgument,
+				final Map<String, Object> context) {
 			return super.build(groupDefinition, targetId, navigationArgument, context);
 		}
 
 		@Override
-		public ISubApplicationNode build(ISubApplicationNode2Extension subApplicationDefinition,
-				NavigationNodeId targetId, NavigationArgument navigationArgument, Map<String, Object> context) {
+		public ISubApplicationNode build(final ISubApplicationNode2Extension subApplicationDefinition,
+				final NavigationNodeId targetId, final NavigationArgument navigationArgument,
+				final Map<String, Object> context) {
 			return super.build(subApplicationDefinition, targetId, navigationArgument, context);
 		}
 
 		@Override
-		public ISubModuleNode build(ISubModuleNode2Extension subModuleDefinition, NavigationNodeId targetId,
-				NavigationArgument navigationArgument, Map<String, Object> context) {
+		public ISubModuleNode build(final ISubModuleNode2Extension subModuleDefinition,
+				final NavigationNodeId targetId, final NavigationArgument navigationArgument,
+				final Map<String, Object> context) {
 			return super.build(subModuleDefinition, targetId, navigationArgument, context);
 		}
 

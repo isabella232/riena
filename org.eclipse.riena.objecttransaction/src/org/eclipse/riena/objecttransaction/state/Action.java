@@ -36,9 +36,9 @@ public final class Action {
 	/** <code>DELETE</code> */
 	public transient final static Action DELETE = new Action(DELETE_CODE);
 
-	private int actionCode;
+	private final int actionCode;
 
-	private Action(int actionCode) {
+	private Action(final int actionCode) {
 		this.actionCode = actionCode;
 	}
 
@@ -65,7 +65,7 @@ public final class Action {
 	 * @param action
 	 * @return
 	 */
-	public static String toString(Action action) {
+	public static String toString(final Action action) {
 		if (action == null) {
 			return "action is NULL ??"; //$NON-NLS-1$
 		} else {
@@ -77,7 +77,7 @@ public final class Action {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object object) {
+	public boolean equals(final Object object) {
 		if (object instanceof Action) {
 			return ((Action) object).actionCode == actionCode;
 		}

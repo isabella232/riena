@@ -30,10 +30,10 @@ public final class ToStringConverterFactory {
 		super();
 	}
 
-	public static IConverter createNumberConverter(Class<?> type, int precision) {
+	public static IConverter createNumberConverter(final Class<?> type, final int precision) {
 		IConverter result = null;
 
-		NumberFormat nf = NumberFormat.getNumberInstance();
+		final NumberFormat nf = NumberFormat.getNumberInstance();
 		nf.setMaximumFractionDigits(precision);
 		if (BigDecimal.class.isAssignableFrom(type)) {
 			result = NumberToStringConverter.fromBigDecimal(nf);

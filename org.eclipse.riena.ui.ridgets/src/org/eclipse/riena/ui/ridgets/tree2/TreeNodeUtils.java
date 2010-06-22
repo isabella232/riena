@@ -26,12 +26,12 @@ public final class TreeNodeUtils {
 		// prevent instantiation
 	}
 
-	public static boolean isLeaf(ITreeNode node) {
-		Collection<ITreeNode> children = node.getChildren();
+	public static boolean isLeaf(final ITreeNode node) {
+		final Collection<ITreeNode> children = node.getChildren();
 		return children.size() == 0;
 	}
 
-	public static int getLevel(ITreeNode node) {
+	public static int getLevel(final ITreeNode node) {
 		int result = 0;
 		ITreeNode parent = node.getParent();
 		while (parent != null) {
@@ -41,26 +41,26 @@ public final class TreeNodeUtils {
 		return result;
 	}
 
-	public static int getChildCount(ITreeNode node) {
+	public static int getChildCount(final ITreeNode node) {
 		return node.getChildren().size();
 	}
 
-	public static int getIndex(ITreeNode parent, ITreeNode child) {
-		List<ITreeNode> children = parent.getChildren();
+	public static int getIndex(final ITreeNode parent, final ITreeNode child) {
+		final List<ITreeNode> children = parent.getChildren();
 		return children.indexOf(child);
 	}
 
-	public static ITreeNode getChild(ITreeNode parent, int index) {
+	public static ITreeNode getChild(final ITreeNode parent, final int index) {
 		Assert.isLegal(index >= 0);
 		ITreeNode result = null;
-		List<ITreeNode> children = parent.getChildren();
+		final List<ITreeNode> children = parent.getChildren();
 		if (index < children.size()) {
 			result = children.get(index);
 		}
 		return result;
 	}
 
-	public static ITreeNode getRoot(ITreeNode node) {
+	public static ITreeNode getRoot(final ITreeNode node) {
 		ITreeNode result = node;
 		while (result.getParent() != null) {
 			result = result.getParent();

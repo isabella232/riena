@@ -46,8 +46,8 @@ public final class OptionalUIControlsFactory extends UIControlsFactory {
 	 * 
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
 	 */
-	public static CompositeTable createCompositeTable(Composite parent, int style) {
-		CompositeTable result = new CompositeTable(parent, style);
+	public static CompositeTable createCompositeTable(final Composite parent, final int style) {
+		final CompositeTable result = new CompositeTable(parent, style);
 		result.setBackground(SHARED_BG_COLOR);
 		return result;
 	}

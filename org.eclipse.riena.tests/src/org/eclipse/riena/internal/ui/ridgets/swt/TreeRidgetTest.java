@@ -57,7 +57,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	@Override
-	protected Control createWidget(Composite parent) {
+	protected Control createWidget(final Composite parent) {
 		return new Tree(parent, SWT.MULTI);
 	}
 
@@ -80,12 +80,12 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	// ////////////////
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(TreeRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
 	public void testGetUIControl() throws Exception {
-		Tree control = getWidget();
+		final Tree control = getWidget();
 		assertEquals(control, getRidget().getUIControl());
 	}
 
@@ -97,14 +97,14 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBindToModelNull() {
-		ITreeRidget ridget = getRidget();
-		ITreeNode[] roots = { rootNode };
+		final ITreeRidget ridget = getRidget();
+		final ITreeNode[] roots = { rootNode };
 
 		try {
 			ridget.bindToModel(null, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
 					ITreeNode.PROPERTY_VALUE);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
@@ -112,64 +112,64 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 			ridget.bindToModel(roots, null, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
 					ITreeNode.PROPERTY_VALUE);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			ridget.bindToModel(roots, ITreeNode.class, null, ITreeNode.PROPERTY_PARENT, ITreeNode.PROPERTY_VALUE);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			ridget.bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, null, ITreeNode.PROPERTY_VALUE);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 
 		try {
 			ridget.bindToModel(roots, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT, null);
 			fail();
-		} catch (RuntimeException rex) {
+		} catch (final RuntimeException rex) {
 			ok();
 		}
 	}
 
 	public void testUpdateTreeFromModel() {
-		ITreeRidget ridget = getRidget();
-		Tree control = getWidget();
+		final ITreeRidget ridget = getRidget();
+		final Tree control = getWidget();
 
 		ridget.expandAll();
 
 		assertEquals(1, control.getItemCount());
-		TreeItem treeRoot = control.getItems()[0];
+		final TreeItem treeRoot = control.getItems()[0];
 		assertEquals(ROOT_NODE_USER_OBJECT, treeRoot.getText());
 		assertEquals(2, treeRoot.getItemCount());
 
-		TreeItem treeRootChild1 = treeRoot.getItem(0);
+		final TreeItem treeRootChild1 = treeRoot.getItem(0);
 		assertEquals(ROOT_CHILD1_NODE_USER_OBJECT, treeRootChild1.getText());
-		TreeItem treeRootChild2 = treeRoot.getItem(1);
+		final TreeItem treeRootChild2 = treeRoot.getItem(1);
 		assertEquals(ROOT_CHILD2_NODE_USER_OBJECT, treeRootChild2.getText());
 		assertEquals(2, treeRootChild1.getItemCount());
 		assertEquals(0, treeRootChild2.getItemCount());
 
-		TreeItem treeRootChild1Child1 = treeRootChild1.getItem(0);
+		final TreeItem treeRootChild1Child1 = treeRootChild1.getItem(0);
 		assertEquals(ROOT_CHILD1_CHILD1_NODE_USER_OBJECT, treeRootChild1Child1.getText());
-		TreeItem treeRootChild1Child2 = treeRootChild1.getItem(1);
+		final TreeItem treeRootChild1Child2 = treeRootChild1.getItem(1);
 		assertEquals(ROOT_CHILD1_CHILD2_NODE_USER_OBJECT, treeRootChild1Child2.getText());
 		assertEquals(0, treeRootChild1Child1.getItemCount());
 		assertEquals(1, treeRootChild1Child2.getItemCount());
 
-		TreeItem treeRootChild1Child2Child = treeRootChild1Child2.getItem(0);
+		final TreeItem treeRootChild1Child2Child = treeRootChild1Child2.getItem(0);
 		assertEquals(ROOT_CHILD1_CHILD2_CHILD_NODE_USER_OBJECT, treeRootChild1Child2Child.getText());
 		assertEquals(0, treeRootChild1Child2Child.getItemCount());
 	}
 
 	public void testUpdateOnModelChanges() {
-		Tree control = getWidget();
+		final Tree control = getWidget();
 
 		assertEquals(3, TreeUtils.getItemCount(control));
 
@@ -184,8 +184,8 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testExpandAndCollapseTree() {
-		ITreeRidget ridget = getRidget();
-		Tree control = getWidget();
+		final ITreeRidget ridget = getRidget();
+		final Tree control = getWidget();
 
 		assertEquals(3, TreeUtils.getItemCount(control));
 
@@ -229,8 +229,8 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	 * unbound, but are applied to the control after rebinding.
 	 */
 	public void testExpandAndCollapseTreeWhenUnbound() {
-		ITreeRidget ridget = getRidget();
-		Tree control = getWidget();
+		final ITreeRidget ridget = getRidget();
+		final Tree control = getWidget();
 
 		assertEquals(3, TreeUtils.getItemCount(control));
 
@@ -248,8 +248,8 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testExpandAndCollapseSingleNodes() {
-		ITreeRidget ridget = getRidget();
-		Tree control = getWidget();
+		final ITreeRidget ridget = getRidget();
+		final Tree control = getWidget();
 
 		ridget.expandAll();
 
@@ -277,8 +277,8 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	 * but are applied to the control after rebinding.
 	 */
 	public void testExpandAndCollapseSingleNodesWhenUnbound() {
-		ITreeRidget ridget = getRidget();
-		Tree control = getWidget();
+		final ITreeRidget ridget = getRidget();
+		final Tree control = getWidget();
 
 		assertEquals(3, TreeUtils.getItemCount(control));
 
@@ -296,8 +296,8 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testFullExpansionStatusIsPreserved() {
-		ITreeRidget ridget = getRidget();
-		Tree control = getWidget();
+		final ITreeRidget ridget = getRidget();
+		final Tree control = getWidget();
 
 		ridget.expandAll();
 
@@ -319,8 +319,8 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testPartialExpansionStatusIsPreserved() {
-		ITreeRidget ridget = getRidget();
-		Tree control = getWidget();
+		final ITreeRidget ridget = getRidget();
+		final Tree control = getWidget();
 
 		assertEquals(3, TreeUtils.getItemCount(control));
 
@@ -344,24 +344,24 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testAddDoubleClickListener() {
-		ITreeRidget ridget = getRidget();
-		Tree control = getWidget();
+		final ITreeRidget ridget = getRidget();
+		final Tree control = getWidget();
 
 		try {
 			ridget.addDoubleClickListener(null);
 			fail();
-		} catch (RuntimeException npe) {
+		} catch (final RuntimeException npe) {
 			ok();
 		}
 
-		FTActionListener listener1 = new FTActionListener();
+		final FTActionListener listener1 = new FTActionListener();
 		ridget.addDoubleClickListener(listener1);
 
-		FTActionListener listener2 = new FTActionListener();
+		final FTActionListener listener2 = new FTActionListener();
 		ridget.addDoubleClickListener(listener2);
 		ridget.addDoubleClickListener(listener2);
 
-		Event doubleClick = new Event();
+		final Event doubleClick = new Event();
 		doubleClick.widget = control;
 		doubleClick.type = SWT.MouseDoubleClick;
 		control.notifyListeners(SWT.MouseDoubleClick, doubleClick);
@@ -377,17 +377,17 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testAddSelectionListener() {
-		ITreeRidget ridget = getRidget();
-		Tree control = getWidget();
+		final ITreeRidget ridget = getRidget();
+		final Tree control = getWidget();
 
 		try {
 			ridget.addSelectionListener(null);
 			fail();
-		} catch (RuntimeException npe) {
+		} catch (final RuntimeException npe) {
 			ok();
 		}
 
-		TestSelectionListener selectionListener = new TestSelectionListener();
+		final TestSelectionListener selectionListener = new TestSelectionListener();
 
 		ridget.addSelectionListener(selectionListener);
 		assertEquals(0, ridget.getSelection().size());
@@ -399,7 +399,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(1, ridget.getSelection().size());
 		assertEquals(1, control.getSelectionCount());
 		assertEquals(1, selectionListener.getCount());
-		SelectionEvent selectionEvent = selectionListener.getSelectionEvent();
+		final SelectionEvent selectionEvent = selectionListener.getSelectionEvent();
 		assertEquals(ridget, selectionEvent.getSource());
 		assertTrue(selectionEvent.getOldSelection().isEmpty());
 		assertEquals(ridget.getSelection(), selectionEvent.getNewSelection());
@@ -410,7 +410,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(1, ridget.getSelection().size());
 		assertEquals(1, control.getSelectionCount());
 		assertEquals(2, selectionListener.getCount());
-		SelectionEvent selectionEvent2 = selectionListener.getSelectionEvent();
+		final SelectionEvent selectionEvent2 = selectionListener.getSelectionEvent();
 		assertEquals(ridget, selectionEvent.getSource());
 		assertEquals(selectionEvent.getNewSelection(), selectionEvent2.getOldSelection());
 		assertEquals(ridget.getSelection(), selectionEvent2.getNewSelection());
@@ -420,12 +420,12 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBug266042() {
-		ITreeRidget ridget = getRidget();
-		Tree control = getWidget();
-		TreeNode root1 = new TreeNode("r1");
+		final ITreeRidget ridget = getRidget();
+		final Tree control = getWidget();
+		final TreeNode root1 = new TreeNode("r1");
 		new TreeNode(root1, "r1.a");
 		new TreeNode(root1, "r1.b");
-		TreeNode root2 = new TreeNode("r2");
+		final TreeNode root2 = new TreeNode("r2");
 		new TreeNode(root2, "r2.a");
 		new TreeNode(root2, "r2.b");
 
@@ -438,9 +438,9 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testBug290365() {
-		ITreeRidget ridget = getRidget();
+		final ITreeRidget ridget = getRidget();
 
-		TreeNodeWithIcon root1 = new TreeNodeWithIcon(null, "r1");
+		final TreeNodeWithIcon root1 = new TreeNodeWithIcon(null, "r1");
 		new TreeNodeWithIcon(root1, "r1.a");
 		new TreeNodeWithIcon(root1, "r1.b");
 		ridget.bindToModel(new Object[] { root1 }, TreeNodeWithIcon.class, ITreeNode.PROPERTY_CHILDREN,
@@ -455,7 +455,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	 * As per bug 277283.
 	 */
 	public void testSetRootsVisibleFiresEvents() {
-		ITreeRidget ridget = getRidget();
+		final ITreeRidget ridget = getRidget();
 
 		assertTrue(ridget.getRootsVisible());
 
@@ -480,15 +480,15 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	 * As per bug 300014
 	 */
 	public void testRefreshNull() {
-		ITreeRidget ridget = getRidget();
-		Tree control = getWidget();
+		final ITreeRidget ridget = getRidget();
+		final Tree control = getWidget();
 
-		TreeNode root = new TreeNode(null) {
+		final TreeNode root = new TreeNode(null) {
 			private Object myvalue;
 
 			// hack to create an implementation that does not fire an event
 			@Override
-			public void setValue(Object value) {
+			public void setValue(final Object value) {
 				myvalue = value;
 			}
 
@@ -502,7 +502,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 				TreeNode.PROPERTY_VALUE);
 		ridget.updateFromModel();
 
-		TreeItem treeRoot = control.getItems()[0];
+		final TreeItem treeRoot = control.getItems()[0];
 		assertEquals("hello world", treeRoot.getText());
 
 		root.setValue("changed");
@@ -518,15 +518,15 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	 * As per bug 300014
 	 */
 	public void testRefresh() {
-		ITreeRidget ridget = getRidget();
-		Tree control = getWidget();
+		final ITreeRidget ridget = getRidget();
+		final Tree control = getWidget();
 
-		TreeNode root = new TreeNode(null) {
+		final TreeNode root = new TreeNode(null) {
 			private Object myvalue;
 
 			// hack to create an implementation that does not fire an event
 			@Override
-			public void setValue(Object value) {
+			public void setValue(final Object value) {
 				myvalue = value;
 			}
 
@@ -540,7 +540,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 				TreeNode.PROPERTY_VALUE);
 		ridget.updateFromModel();
 
-		TreeItem treeRoot = control.getItems()[0];
+		final TreeItem treeRoot = control.getItems()[0];
 		assertEquals("hello world", treeRoot.getText());
 
 		root.setValue("changed");
@@ -566,10 +566,10 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/** Removes the give node from its parent (if it has one). */
-	private void removeFromParent(ITreeNode node) {
-		ITreeNode parent = node.getParent();
+	private void removeFromParent(final ITreeNode node) {
+		final ITreeNode parent = node.getParent();
 		if (parent != null) {
-			List<ITreeNode> children = parent.getChildren();
+			final List<ITreeNode> children = parent.getChildren();
 			children.remove(node);
 			parent.setChildren(children);
 		}
@@ -583,9 +583,9 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	 * This method will fully expand the tree to ensure all tree items are
 	 * created.
 	 */
-	private TreeItem getUIControlItem(int index) {
+	private TreeItem getUIControlItem(final int index) {
 		getRidget().expandAll();
-		Tree control = getWidget();
+		final Tree control = getWidget();
 		switch (index) {
 		case 0:
 			return control.getItem(0);
@@ -608,7 +608,7 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	private static final class TreeNodeWithIcon extends TreeNode {
 
-		public TreeNodeWithIcon(ITreeNode pParent, Object pValue) {
+		public TreeNodeWithIcon(final ITreeNode pParent, final Object pValue) {
 			super(pParent, pValue);
 		}
 

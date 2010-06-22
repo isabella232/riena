@@ -67,7 +67,7 @@ public class ModuleViewTest extends RienaTestCase {
 		final NavigationProcessor navigationProcessor = new NavigationProcessor();
 		node = new ModuleNode();
 		view = new MyModuleView(shell);
-		ModuleGroupNode moduleGroupNode = new ModuleGroupNode();
+		final ModuleGroupNode moduleGroupNode = new ModuleGroupNode();
 		moduleGroupNode.addChild(node);
 		view.setModuleGroupNode(moduleGroupNode);
 		node.setNavigationProcessor(navigationProcessor);
@@ -116,10 +116,10 @@ public class ModuleViewTest extends RienaTestCase {
 	}
 
 	public void testBlocking() {
-		EmbeddedTitleBar title = ReflectionUtils.invokeHidden(view, "getTitle");
-		Composite body = ReflectionUtils.invokeHidden(view, "getBody");
-		Tree tree = ReflectionUtils.invokeHidden(view, "getTree");
-		Cursor waitCursor = title.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
+		final EmbeddedTitleBar title = ReflectionUtils.invokeHidden(view, "getTitle");
+		final Composite body = ReflectionUtils.invokeHidden(view, "getBody");
+		final Tree tree = ReflectionUtils.invokeHidden(view, "getTree");
+		final Cursor waitCursor = title.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
 
 		node.setBlocked(true);
 
@@ -142,14 +142,14 @@ public class ModuleViewTest extends RienaTestCase {
 	 */
 	public void testGetAllMarkers() {
 
-		IMarker em1 = new ErrorMarker();
+		final IMarker em1 = new ErrorMarker();
 		subNode.addMarker(em1);
-		IMarker mm2 = new MandatoryMarker();
+		final IMarker mm2 = new MandatoryMarker();
 		subSubNode.addMarker(mm2);
-		IMarker am3 = new AttentionMarker();
+		final IMarker am3 = new AttentionMarker();
 		subSubSubNode.addMarker(am3);
 		// This marker will be never returned, because it does not implement IIconizableMarker
-		IMarker mym4 = new MyMarker();
+		final IMarker mym4 = new MyMarker();
 		subSubSubNode.addMarker(mym4);
 
 		Collection<? extends IMarker> markers = ReflectionUtils.invokeHidden(view, "getAllMarkers", subNode, false);
@@ -205,26 +205,26 @@ public class ModuleViewTest extends RienaTestCase {
 	 */
 	public void testPaintTreeItem() {
 
-		SubModuleTreeItemMarkerRenderer renderer = new SubModuleTreeItemMarkerRenderer();
-		Map<String, ILnfRenderer> rendererTable = ReflectionUtils.getHidden(currentLnf, "rendererTable");
+		final SubModuleTreeItemMarkerRenderer renderer = new SubModuleTreeItemMarkerRenderer();
+		final Map<String, ILnfRenderer> rendererTable = ReflectionUtils.getHidden(currentLnf, "rendererTable");
 		rendererTable.put(LnfKeyConstants.SUB_MODULE_TREE_ITEM_MARKER_RENDERER, renderer);
 
-		IMarker em1 = new ErrorMarker();
+		final IMarker em1 = new ErrorMarker();
 		subNode.addMarker(em1);
-		IMarker mm2 = new MandatoryMarker();
+		final IMarker mm2 = new MandatoryMarker();
 		subSubNode.addMarker(mm2);
-		IMarker am3 = new AttentionMarker();
+		final IMarker am3 = new AttentionMarker();
 		subSubSubNode.addMarker(am3);
 
-		Tree tree = view.getTree();
-		TreeItem item = new TreeItem(tree, SWT.NONE);
+		final Tree tree = view.getTree();
+		final TreeItem item = new TreeItem(tree, SWT.NONE);
 		item.setData(subNode);
-		TreeItem item2 = new TreeItem(item, SWT.NONE);
+		final TreeItem item2 = new TreeItem(item, SWT.NONE);
 		item2.setData(subSubNode);
-		TreeItem item3 = new TreeItem(item2, SWT.NONE);
+		final TreeItem item3 = new TreeItem(item2, SWT.NONE);
 		item3.setData(subSubSubNode);
 
-		Event event = new Event();
+		final Event event = new Event();
 		event.item = item;
 		event.x = 11;
 		event.y = 22;
@@ -261,7 +261,7 @@ public class ModuleViewTest extends RienaTestCase {
 	 */
 	private class MyModuleView extends ModuleView {
 
-		public MyModuleView(Composite parent) {
+		public MyModuleView(final Composite parent) {
 			super(parent);
 		}
 

@@ -54,12 +54,13 @@ public class SwtApplication extends AbstractApplication {
 	private LoginNonActivityTimer loginNonActivityTimer;
 
 	@Override
-	public Object createView(IApplicationContext context, IApplicationNode pNode) {
-		Display display = PlatformUI.createDisplay();
+	public Object createView(final IApplicationContext context, final IApplicationNode pNode) {
+		final Display display = PlatformUI.createDisplay();
 		try {
-			ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pNode), new AdvisorHelper());
+			final ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pNode),
+					new AdvisorHelper());
 			initializeLoginNonActivityTimer(display, pNode, context);
-			int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
+			final int returnCode = PlatformUI.createAndRunWorkbench(display, advisor);
 			if (returnCode == PlatformUI.RETURN_RESTART) {
 				return IApplication.EXIT_RESTART;
 			}
@@ -77,7 +78,7 @@ public class SwtApplication extends AbstractApplication {
 	 * @return an AdvisorBarAdvisor; never null
 	 * @since 1.2
 	 */
-	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
+	public ActionBarAdvisor createActionBarAdvisor(final IActionBarConfigurer configurer) {
 		return new ActionBarAdvisor(configurer);
 	}
 
@@ -135,17 +136,17 @@ public class SwtApplication extends AbstractApplication {
 	 * keep public, called via reflection
 	 */
 	@InjectExtension
-	public void update(ILoginSplashViewExtension[] data) {
+	public void update(final ILoginSplashViewExtension[] data) {
 		if (data.length > 0) {
 			loginSplashViewExtension = data[0];
 		}
 	}
 
-	protected ApplicationController createApplicationController(IApplicationNode pModel) {
+	protected ApplicationController createApplicationController(final IApplicationNode pModel) {
 		return new ApplicationController(pModel);
 	}
 
-	protected void prePerformLogin(IApplicationContext context) {
+	protected void prePerformLogin(final IApplicationContext context) {
 		if (RcpUtilities.getWorkbenchShell() != null) {
 			// To minimize the workbench and show the login dialog later, the workbench has be made first invisible and then minimized.
 			RcpUtilities.getWorkbenchShell().setVisible(false);
@@ -155,7 +156,7 @@ public class SwtApplication extends AbstractApplication {
 		}
 	}
 
-	protected void postPerformLogin(IApplicationContext context, Object result) {
+	protected void postPerformLogin(final IApplicationContext context, final Object result) {
 		if (!EXIT_OK.equals(result)) {
 			PlatformUI.getWorkbench().close();
 		} else {
@@ -165,8 +166,8 @@ public class SwtApplication extends AbstractApplication {
 	}
 
 	@Override
-	protected Object doPerformLogin(IApplicationContext context) {
-		Realm realm = SWTObservables.getRealm(getDisplay());
+	protected Object doPerformLogin(final IApplicationContext context) {
+		final Realm realm = SWTObservables.getRealm(getDisplay());
 		// TODO Is really necessary that the loginDialogViewExtension is used here. Shouldn´t it be done it the super class??
 		final ILoginDialogView loginDialogView = loginDialogViewExtension.createViewClass();
 		do {
@@ -181,11 +182,11 @@ public class SwtApplication extends AbstractApplication {
 	}
 
 	@Override
-	protected Object doPerformSplashLogin(IApplicationContext context) {
+	protected Object doPerformSplashLogin(final IApplicationContext context) {
 
-		Shell shell = new Shell(getDisplay(), SWT.NO_TRIM | SWT.APPLICATION_MODAL);
+		final Shell shell = new Shell(getDisplay(), SWT.NO_TRIM | SWT.APPLICATION_MODAL);
 		initilizeShellBackgroundImage(shell, getBackgroundImagePath(context));
-		AbstractLoginSplashHandler loginSplashHandler = getLoginSplashHandler();
+		final AbstractLoginSplashHandler loginSplashHandler = getLoginSplashHandler();
 		loginSplashHandler.init(shell);
 		shell.open();
 		while (!shell.isDisposed()) {
@@ -198,12 +199,12 @@ public class SwtApplication extends AbstractApplication {
 	}
 
 	@Override
-	protected boolean isSplashLogin(IApplicationContext context) {
+	protected boolean isSplashLogin(final IApplicationContext context) {
 		return loginSplashViewExtension != null && getLoginSplashHandler() != null;
 	}
 
 	@Override
-	protected boolean isDialogLogin(IApplicationContext context) {
+	protected boolean isDialogLogin(final IApplicationContext context) {
 		return super.isDialogLogin(context) && loginSplashViewExtension == null;
 	}
 
@@ -217,7 +218,7 @@ public class SwtApplication extends AbstractApplication {
 	// helping methods
 	//////////////////
 
-	private String getBackgroundImagePath(IApplicationContext context) {
+	private String getBackgroundImagePath(final IApplicationContext context) {
 		return "splash.bmp"; //$NON-NLS-1$
 	}
 
@@ -238,7 +239,7 @@ public class SwtApplication extends AbstractApplication {
 		// a later re-login after inactivity timeout. Unfortunately it is not
 		// accessible and an enhancement request to change that was rejected:
 		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=260736.
-		AbstractSplashHandler loginSplashHandler = ReflectionUtils.invokeHidden(Workbench.class, "getSplash"); //$NON-NLS-1$
+		final AbstractSplashHandler loginSplashHandler = ReflectionUtils.invokeHidden(Workbench.class, "getSplash"); //$NON-NLS-1$
 		if (loginSplashHandler instanceof AbstractLoginSplashHandler) {
 			return (AbstractLoginSplashHandler) loginSplashHandler;
 		} else {
@@ -246,11 +247,11 @@ public class SwtApplication extends AbstractApplication {
 		}
 	}
 
-	private void initializeLoginNonActivityTimer(final Display display, IApplicationNode pNode,
+	private void initializeLoginNonActivityTimer(final Display display, final IApplicationNode pNode,
 			final IApplicationContext context) {
 		pNode.addListener(new ApplicationNodeListener() {
 			@Override
-			public void afterActivated(IApplicationNode source) {
+			public void afterActivated(final IApplicationNode source) {
 				if (isSplashLogin(context) && loginSplashViewExtension.getNonActivityDuration() > 0) {
 					loginNonActivityTimer = new LoginNonActivityTimer(display, context, loginSplashViewExtension
 							.getNonActivityDuration());
@@ -269,8 +270,8 @@ public class SwtApplication extends AbstractApplication {
 		Wire.instance(this).andStart(Activator.getDefault().getContext());
 	}
 
-	private void initilizeShellBackgroundImage(Shell shell, String imageName) {
-		Image bi = ImageStore.getInstance().getImage(imageName);
+	private void initilizeShellBackgroundImage(final Shell shell, final String imageName) {
+		final Image bi = ImageStore.getInstance().getImage(imageName);
 		shell.setSize(bi.getBounds().width, bi.getBounds().height);
 		shell.setBackgroundImage(bi);
 	}
@@ -279,7 +280,7 @@ public class SwtApplication extends AbstractApplication {
 	//////////////////
 
 	private final class AdvisorHelper implements IAdvisorHelper {
-		public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
+		public ActionBarAdvisor createActionBarAdvisor(final IActionBarConfigurer configurer) {
 			return SwtApplication.this.createActionBarAdvisor(configurer);
 		}
 
@@ -297,19 +298,20 @@ public class SwtApplication extends AbstractApplication {
 			activityTime = -1;
 		}
 
-		public void handleEvent(Event event) {
+		public void handleEvent(final Event event) {
 			activity = true;
 			activityTime = System.currentTimeMillis();
 		}
 	}
 
 	private final class LoginNonActivityTimer implements Runnable {
-		private Display display;
-		private IApplicationContext context;
+		private final Display display;
+		private final IApplicationContext context;
 		private EventListener eventListener;
-		private int nonActivityDuration;
+		private final int nonActivityDuration;
 
-		private LoginNonActivityTimer(Display display, IApplicationContext context, int nonActivityDuration) {
+		private LoginNonActivityTimer(final Display display, final IApplicationContext context,
+				final int nonActivityDuration) {
 			super();
 
 			this.display = display;
@@ -327,7 +329,7 @@ public class SwtApplication extends AbstractApplication {
 
 				prePerformLogin(context);
 				postPerformLogin(context, performLogin(context));
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				throw new ExceptionFailure(e.getLocalizedMessage(), e);
 			}
 		}

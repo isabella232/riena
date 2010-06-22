@@ -22,15 +22,15 @@ import org.eclipse.riena.core.util.Nop;
  */
 public class TestServer extends NanoHTTPD {
 
-	private File root;
-	private int port;
+	private final File root;
+	private final int port;
 
 	/**
 	 * @param port
 	 * @param root
 	 * @throws IOException
 	 */
-	public TestServer(int port, File root) throws IOException {
+	public TestServer(final int port, final File root) throws IOException {
 		super(port);
 		this.root = root;
 		this.port = port;
@@ -44,7 +44,8 @@ public class TestServer extends NanoHTTPD {
 	 * java.util.Properties, java.io.File, boolean)
 	 */
 	@Override
-	public Response serveFile(String uri, Properties header, File homeDir, boolean allowDirectoryListing) {
+	public Response serveFile(final String uri, final Properties header, final File homeDir,
+			final boolean allowDirectoryListing) {
 		return super.serveFile(uri, header, root, allowDirectoryListing);
 	}
 
@@ -54,7 +55,7 @@ public class TestServer extends NanoHTTPD {
 		super.stop();
 		try {
 			new URL("http://localhost:" + port).openStream();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			Nop.reason("no action necessary");
 		}
 	}

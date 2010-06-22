@@ -29,7 +29,7 @@ public class RidgetMatcher {
 	 * @param idPattern
 	 *            ID
 	 */
-	public RidgetMatcher(String idPattern) {
+	public RidgetMatcher(final String idPattern) {
 		setId(idPattern);
 	}
 
@@ -42,7 +42,7 @@ public class RidgetMatcher {
 	 * 
 	 * @return {@code true} if IDs match; otherwise {@code false}
 	 */
-	public boolean matches(Object... args) {
+	public boolean matches(final Object... args) {
 
 		if ((args == null) || (args.length <= 0)) {
 			return false;
@@ -51,15 +51,15 @@ public class RidgetMatcher {
 			return false;
 		}
 
-		IRidget ridget = (IRidget) args[0];
-		String ridgetId = ridget.getID();
+		final IRidget ridget = (IRidget) args[0];
+		final String ridgetId = ridget.getID();
 		if (args.length == 1) {
 			return StringUtils.equals(ridgetId, getId());
 		} else {
 			if (args[1] instanceof INavigationNode<?>) {
-				String nodeId = NavigationNodeUtility.getNodeLongId((INavigationNode<?>) args[1]);
-				String longRidgetId = nodeId + "/" + ridgetId; //$NON-NLS-1$
-				StringMatcher matcher = new StringMatcher(getId());
+				final String nodeId = NavigationNodeUtility.getNodeLongId((INavigationNode<?>) args[1]);
+				final String longRidgetId = nodeId + "/" + ridgetId; //$NON-NLS-1$
+				final StringMatcher matcher = new StringMatcher(getId());
 				return matcher.match(longRidgetId);
 			}
 		}
@@ -71,7 +71,7 @@ public class RidgetMatcher {
 	/**
 	 * @param id
 	 */
-	public void setId(String id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 

@@ -25,7 +25,7 @@ public class StringToGregorianCalendarConverterTest extends TestCase {
 
 	public void testConvert() throws Exception {
 
-		StringToGregorianCalendarConverter converter = new StringToGregorianCalendarConverter();
+		final StringToGregorianCalendarConverter converter = new StringToGregorianCalendarConverter();
 
 		assertNull(converter.convert(null));
 		assertNull(converter.convert("")); //$NON-NLS-1$
@@ -33,12 +33,12 @@ public class StringToGregorianCalendarConverterTest extends TestCase {
 		try {
 			converter.convert("somthing");
 			fail("expected exception was not thrown!");
-		} catch (RuntimeException e) {
+		} catch (final RuntimeException e) {
 			assertTrue(e instanceof ConversionFailure);
 		}
 
-		GregorianCalendar calendar = new GregorianCalendar(2007, 4, 16);
-		String input = SimpleDateFormat.getDateInstance().format(calendar.getTime());
+		final GregorianCalendar calendar = new GregorianCalendar(2007, 4, 16);
+		final String input = SimpleDateFormat.getDateInstance().format(calendar.getTime());
 		assertEquals(calendar, converter.convert(input));
 
 	}

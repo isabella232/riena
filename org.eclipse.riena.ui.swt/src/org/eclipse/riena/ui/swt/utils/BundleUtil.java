@@ -21,7 +21,7 @@ public final class BundleUtil {
 		// private constructor of utility class
 	}
 
-	public static boolean isReady(Bundle bundle) {
+	public static boolean isReady(final Bundle bundle) {
 		return bundle != null
 				&& ((bundle.getState() & (Bundle.RESOLVED | Bundle.STARTING | Bundle.ACTIVE | Bundle.STOPPING)) != 0);
 	}

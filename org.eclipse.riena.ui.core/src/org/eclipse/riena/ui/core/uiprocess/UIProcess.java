@@ -36,9 +36,9 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * Creates a new UIProcess.
 	 * <p>
-	 * For executing processes the {@code UIProcess) uses the {@code
-	 * UISynchronizer} to create {@code IUISynchronizer} instances which perform
-	 * the actual execution of the process.
+	 * For executing processes the {@code UIProcess) uses the
+	 * {@code UISynchronizer} to create {@code IUISynchronizer} instances which
+	 * perform the actual execution of the process.
 	 * 
 	 * @param name
 	 *            the name of the job
@@ -56,9 +56,9 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * Creates a new UIProcess.
 	 * <p>
-	 * For executing processes the {@code UIProcess) uses the {@code
-	 * UISynchronizer} to create {@code IUISynchronizer} instances which perform
-	 * the actual execution of the process.
+	 * For executing processes the {@code UIProcess) uses the
+	 * {@code UISynchronizer} to create {@code IUISynchronizer} instances which
+	 * perform the actual execution of the process.
 	 * 
 	 * @param name
 	 *            the name of the job
@@ -80,9 +80,9 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * Creates a new UIProcess.
 	 * <p>
-	 * For executing processes the {@code UIProcess) uses the {@code
-	 * UISynchronizer} to create {@code IUISynchronizer} instances which perform
-	 * the actual execution of the process.
+	 * For executing processes the {@code UIProcess) uses the
+	 * {@code UISynchronizer} to create {@code IUISynchronizer} instances which
+	 * perform the actual execution of the process.
 	 * 
 	 * @param name
 	 *            the name of the job
@@ -106,9 +106,9 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * Creates a new UIProcess.
 	 * <p>
-	 * For executing processes the {@code UIProcess) uses the {@code
-	 * UISynchronizer} to create {@code IUISynchronizer} instances which perform
-	 * the actual execution of the process.
+	 * For executing processes the {@code UIProcess) uses the
+	 * {@code UISynchronizer} to create {@code IUISynchronizer} instances which
+	 * perform the actual execution of the process.
 	 * 
 	 * @param name
 	 *            the name of the job
@@ -136,9 +136,9 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * Creates a new UIProcess.
 	 * <p>
-	 * For executing processes the {@code UIProcess) uses the {@code
-	 * UISynchronizer} to create {@code IUISynchronizer} instances which perform
-	 * the actual execution of the process.
+	 * For executing processes the {@code UIProcess) uses the
+	 * {@code UISynchronizer} to create {@code IUISynchronizer} instances which
+	 * perform the actual execution of the process.
 	 * 
 	 * @param name
 	 *            the name of the job
@@ -169,9 +169,9 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * Creates a new UIProcess.
 	 * <p>
-	 * For executing processes the {@code UIProcess) uses the {@code
-	 * UISynchronizer} to create {@code IUISynchronizer} instances which perform
-	 * the actual execution of the process.
+	 * For executing processes the {@code UIProcess) uses the
+	 * {@code UISynchronizer} to create {@code IUISynchronizer} instances which
+	 * perform the actual execution of the process.
 	 * 
 	 * @param job
 	 *            the job which is wrapped by the {@link UIProcess}

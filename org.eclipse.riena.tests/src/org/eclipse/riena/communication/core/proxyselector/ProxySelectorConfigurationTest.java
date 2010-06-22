@@ -29,16 +29,16 @@ public class ProxySelectorConfigurationTest extends RienaTestCase {
 
 	@SuppressWarnings("restriction")
 	public void testNullConfig() {
-		ProxySelector defaultPS = ProxySelector.getDefault();
-		ProxySelectorConfiguration config = new ProxySelectorConfiguration();
+		final ProxySelector defaultPS = ProxySelector.getDefault();
+		final ProxySelectorConfiguration config = new ProxySelectorConfiguration();
 		config.configure(null);
 		assertSame(defaultPS, ProxySelector.getDefault());
 	}
 
 	@SuppressWarnings("restriction")
 	public void testOneProxySelectorConfigAndRestore() throws URISyntaxException {
-		ProxySelector defaultPS = ProxySelector.getDefault();
-		ProxySelectorConfiguration config = new ProxySelectorConfiguration();
+		final ProxySelector defaultPS = ProxySelector.getDefault();
+		final ProxySelectorConfiguration config = new ProxySelectorConfiguration();
 		config.configure(new IProxySelectorExtension[] { new ProxySelectorExtension(100, "test", new TestProxySelector(
 				TestUtil.newProxy("test.de"))) });
 		assertNotSame(defaultPS, ProxySelector.getDefault());
@@ -49,8 +49,8 @@ public class ProxySelectorConfigurationTest extends RienaTestCase {
 
 	@SuppressWarnings("restriction")
 	public void testTwoProxySelectorsWithOrder100and10ConfigAndRestore() throws URISyntaxException {
-		ProxySelector defaultPS = ProxySelector.getDefault();
-		ProxySelectorConfiguration config = new ProxySelectorConfiguration();
+		final ProxySelector defaultPS = ProxySelector.getDefault();
+		final ProxySelectorConfiguration config = new ProxySelectorConfiguration();
 		config.configure(new IProxySelectorExtension[] {
 				new ProxySelectorExtension(100, "test1", new TestProxySelector(TestUtil.newProxy("test1.de"))),
 				new ProxySelectorExtension(10, "test2", new TestProxySelector(TestUtil.newProxy("test2.de"))) });
@@ -63,8 +63,8 @@ public class ProxySelectorConfigurationTest extends RienaTestCase {
 
 	@SuppressWarnings("restriction")
 	public void testTwoProxySelectorsWithOrder10and100ConfigAndRestore() throws URISyntaxException {
-		ProxySelector defaultPS = ProxySelector.getDefault();
-		ProxySelectorConfiguration config = new ProxySelectorConfiguration();
+		final ProxySelector defaultPS = ProxySelector.getDefault();
+		final ProxySelectorConfiguration config = new ProxySelectorConfiguration();
 		config.configure(new IProxySelectorExtension[] {
 				new ProxySelectorExtension(10, "test1", new TestProxySelector(TestUtil.newProxy("test1.de"))),
 				new ProxySelectorExtension(100, "test2", new TestProxySelector(TestUtil.newProxy("test2.de"))) });
@@ -75,22 +75,22 @@ public class ProxySelectorConfigurationTest extends RienaTestCase {
 		assertSame(defaultPS, ProxySelector.getDefault());
 	}
 
-	private String getHost(int indexInProxyList) throws URISyntaxException {
+	private String getHost(final int indexInProxyList) throws URISyntaxException {
 		return ((InetSocketAddress) getProxy(indexInProxyList).address()).getHostName();
 	}
 
-	private Proxy getProxy(int indexInProxyList) throws URISyntaxException {
+	private Proxy getProxy(final int indexInProxyList) throws URISyntaxException {
 		return ProxySelector.getDefault().select(new URI("http://www.eclipse.org")).get(indexInProxyList);
 	}
 
 	@SuppressWarnings("restriction")
 	private static final class ProxySelectorExtension implements IProxySelectorExtension {
 
-		private int order;
-		private String name;
-		private ProxySelector proxySelector;
+		private final int order;
+		private final String name;
+		private final ProxySelector proxySelector;
 
-		private ProxySelectorExtension(int order, String name, ProxySelector proxySelector) {
+		private ProxySelectorExtension(final int order, final String name, final ProxySelector proxySelector) {
 			this.order = order;
 			this.name = name;
 			this.proxySelector = proxySelector;

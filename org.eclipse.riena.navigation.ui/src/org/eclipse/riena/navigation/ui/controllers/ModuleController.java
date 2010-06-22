@@ -26,14 +26,14 @@ import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 public class ModuleController extends NavigationNodeController<IModuleNode> {
 
 	private IWindowRidget windowRidget;
-	private IWindowRidgetListener windowListener;
+	private final IWindowRidgetListener windowListener;
 	private boolean closeable;
 	private boolean dragEnabled;
 
 	/**
 	 * @param navigationNode
 	 */
-	public ModuleController(IModuleNode navigationNode) {
+	public ModuleController(final IModuleNode navigationNode) {
 		super(navigationNode);
 
 		closeable = true;
@@ -54,7 +54,7 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 		 *      (org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void labelChanged(IModuleNode moduleNode) {
+		public void labelChanged(final IModuleNode moduleNode) {
 			updateLabel();
 		}
 
@@ -63,7 +63,7 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 		 *      (org.eclipse.riena.navigation.INavigationNode)
 		 */
 		@Override
-		public void iconChanged(IModuleNode source) {
+		public void iconChanged(final IModuleNode source) {
 			updateIcon();
 		}
 	}
@@ -72,7 +72,7 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	 * @param windowRidget
 	 *            the windowRidget to set
 	 */
-	public void setWindowRidget(IWindowRidget windowRidget) {
+	public void setWindowRidget(final IWindowRidget windowRidget) {
 		if (getWindowRidget() != null) {
 			getWindowRidget().removeWindowRidgetListener(windowListener);
 		}
@@ -137,7 +137,7 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 
 	public boolean hasSingleLeafChild() {
 
-		List<INavigationNode<?>> children = getVisibleChildren(getNavigationNode());
+		final List<INavigationNode<?>> children = getVisibleChildren(getNavigationNode());
 		return children.size() == 1 && children.get(0).isLeaf();
 	}
 
@@ -148,13 +148,13 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	 *            parent node
 	 * @return list of visible child nodes
 	 */
-	public List<INavigationNode<?>> getVisibleChildren(INavigationNode<?> parent) {
+	public List<INavigationNode<?>> getVisibleChildren(final INavigationNode<?> parent) {
 
-		List<INavigationNode<?>> visibleChildren = new ArrayList<INavigationNode<?>>();
+		final List<INavigationNode<?>> visibleChildren = new ArrayList<INavigationNode<?>>();
 
-		for (Object child : parent.getChildren()) {
+		for (final Object child : parent.getChildren()) {
 			if (child instanceof INavigationNode<?>) {
-				INavigationNode<?> childNode = (INavigationNode<?>) child;
+				final INavigationNode<?> childNode = (INavigationNode<?>) child;
 				if (childNode.isVisible()) {
 					visibleChildren.add(childNode);
 				}
@@ -181,7 +181,7 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	 * @param closeable
 	 *            the closeable to set
 	 */
-	public void setCloseable(boolean closeable) {
+	public void setCloseable(final boolean closeable) {
 		this.closeable = closeable;
 	}
 
@@ -196,7 +196,7 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	 * @param dragEnabled
 	 *            the dragEnabled to set
 	 */
-	public void setDragEnabled(boolean dragEnabled) {
+	public void setDragEnabled(final boolean dragEnabled) {
 		this.dragEnabled = dragEnabled;
 	}
 

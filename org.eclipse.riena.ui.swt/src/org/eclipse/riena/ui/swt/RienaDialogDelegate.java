@@ -37,6 +37,7 @@ import org.eclipse.riena.ui.swt.lnf.renderer.DialogTitleBarRenderer;
 /**
  * @deprecated use {@link RienaWindowRenderer}
  */
+@Deprecated
 public class RienaDialogDelegate {
 
 	private boolean hideOsBorder;
@@ -47,16 +48,16 @@ public class RienaDialogDelegate {
 	private boolean minimizeable;
 	private boolean resizeable;
 	private boolean applicationModal;
-	private IRienaDialog dialog;
+	private final IRienaDialog dialog;
 	private Composite topComposite;
 	private Composite centerComposite;
 
-	public RienaDialogDelegate(IRienaDialog dialog) {
+	public RienaDialogDelegate(final IRienaDialog dialog) {
 		this.dialog = dialog;
 
 		// if we are in design time, supply default renderer
 		if (Beans.isDesignTime() || Activator.getDefault() == null) {
-			ILnfRendererExtension[] extensions = new ILnfRendererExtension[] {
+			final ILnfRendererExtension[] extensions = new ILnfRendererExtension[] {
 					new LnfRendererExtension(new DialogBorderRenderer(), LnfKeyConstants.DIALOG_BORDER_RENDERER),
 					new LnfRendererExtension(new DialogTitleBarRenderer(), LnfKeyConstants.DIALOG_RENDERER) };
 			LnfManager.getLnf().update(extensions);
@@ -69,7 +70,7 @@ public class RienaDialogDelegate {
 	 */
 	public void evaluateStyle() {
 
-		int style = dialog.getShellStyle();
+		final int style = dialog.getShellStyle();
 		setCloseable((style & SWT.CLOSE) == SWT.CLOSE);
 		setMinimizeable((style & SWT.MIN) == SWT.MIN);
 		setMaximizeable((style & SWT.MAX) == SWT.MAX);
@@ -82,11 +83,11 @@ public class RienaDialogDelegate {
 		updateDialogStyle();
 	}
 
-	public Control createContents(Composite parent) {
+	public Control createContents(final Composite parent) {
 
 		int padding = 0;
 
-		Composite contentsComposite = new Composite(parent, SWT.NONE);
+		final Composite contentsComposite = new Composite(parent, SWT.NONE);
 		contentsComposite.setLayout(new FormLayout());
 		if (isHideOsBorder()) {
 			SWTFacade.getDefault().addPaintListener(contentsComposite, new DialogBorderPaintListener());
@@ -113,7 +114,7 @@ public class RienaDialogDelegate {
 		topComposite.setLayoutData(formData);
 
 		centerComposite = new Composite(contentsComposite, SWT.NONE);
-		GridLayout layout = new GridLayout();
+		final GridLayout layout = new GridLayout();
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		layout.verticalSpacing = 0;
@@ -129,7 +130,7 @@ public class RienaDialogDelegate {
 
 	}
 
-	public void setHideOsBorder(boolean hideOsBorder) {
+	public void setHideOsBorder(final boolean hideOsBorder) {
 		this.hideOsBorder = hideOsBorder;
 	}
 
@@ -175,34 +176,34 @@ public class RienaDialogDelegate {
 	//////////////////
 
 	private int getBorderWidth() {
-		DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(
+		final DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.DIALOG_BORDER_RENDERER);
 		return borderRenderer != null ? borderRenderer.getBorderWidth() : 0;
 	}
 
 	private int getTitleBarHeight() {
-		DialogTitleBarRenderer titleBarRenderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(
+		final DialogTitleBarRenderer titleBarRenderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.DIALOG_RENDERER);
 		return titleBarRenderer != null ? titleBarRenderer.getHeight() : 0;
 	}
 
-	private void setApplicationModal(boolean applicationModal) {
+	private void setApplicationModal(final boolean applicationModal) {
 		this.applicationModal = applicationModal;
 	}
 
-	private void setCloseable(boolean closeable) {
+	private void setCloseable(final boolean closeable) {
 		this.closeable = closeable;
 	}
 
-	private void setMaximizeable(boolean maximizeable) {
+	private void setMaximizeable(final boolean maximizeable) {
 		this.maximizeable = maximizeable;
 	}
 
-	private void setMinimizeable(boolean minimizeable) {
+	private void setMinimizeable(final boolean minimizeable) {
 		this.minimizeable = minimizeable;
 	}
 
-	private void setResizeable(boolean resizeable) {
+	private void setResizeable(final boolean resizeable) {
 		this.resizeable = resizeable;
 	}
 
@@ -211,7 +212,7 @@ public class RienaDialogDelegate {
 	 */
 	private void updateDialogStyle() {
 
-		boolean hide = LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.DIALOG_HIDE_OS_BORDER);
+		final boolean hide = LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.DIALOG_HIDE_OS_BORDER);
 		setHideOsBorder(hide);
 
 		int style = dialog.getShellStyle();

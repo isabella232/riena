@@ -35,7 +35,7 @@ public class SSLConfigurationTest extends RienaTestCase {
 	public void testZeroConfiguration() {
 		printTestName();
 
-		SSLConfiguration config = new SSLConfiguration();
+		final SSLConfiguration config = new SSLConfiguration();
 		assertNull(ReflectionUtils.getHidden(config, "protocol"));
 		assertNull(ReflectionUtils.getHidden(config, "keystore"));
 		assertNull(ReflectionUtils.getHidden(config, "password"));
@@ -47,7 +47,7 @@ public class SSLConfigurationTest extends RienaTestCase {
 		addPluginXml(SSLConfigurationTest.class, "plugin.xml");
 
 		try {
-			SSLConfiguration config = new SSLConfiguration();
+			final SSLConfiguration config = new SSLConfiguration();
 			Wire.instance(config).andStart(getContext());
 
 			assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1");
@@ -66,7 +66,7 @@ public class SSLConfigurationTest extends RienaTestCase {
 		addPluginXml(SSLConfigurationTest.class, "pluginWithHostnameVerifier.xml");
 
 		try {
-			SSLConfiguration config = new SSLConfiguration();
+			final SSLConfiguration config = new SSLConfiguration();
 			Wire.instance(config).andStart(getContext());
 
 			assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1");
@@ -80,8 +80,8 @@ public class SSLConfigurationTest extends RienaTestCase {
 
 	public void testLocateKeystoreJreCacerts() {
 		printTestName();
-		ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "#jre-cacerts#", "changeit");
-		SSLConfiguration config = new SSLConfiguration();
+		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "#jre-cacerts#", "changeit");
+		final SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
 		assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1");
@@ -94,9 +94,10 @@ public class SSLConfigurationTest extends RienaTestCase {
 
 	public void testLocateKeystoreJreCacertsAndCustomHostnameVerifier() {
 		printTestName();
-		HostnameVerifier hostnameVerifier = new TestHostnameVerifier();
-		ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "#jre-cacerts#", "changeit", hostnameVerifier);
-		SSLConfiguration config = new SSLConfiguration();
+		final HostnameVerifier hostnameVerifier = new TestHostnameVerifier();
+		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "#jre-cacerts#", "changeit",
+				hostnameVerifier);
+		final SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
 		assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1");
@@ -107,40 +108,41 @@ public class SSLConfigurationTest extends RienaTestCase {
 
 	public void testLocateKeystoreFile() {
 		printTestName();
-		String jreDir = System.getProperty("java.home"); //$NON-NLS-1$
-		File cacertFile = new File(new File(new File(new File(jreDir), "lib"), "security"), "cacerts");
+		final String jreDir = System.getProperty("java.home"); //$NON-NLS-1$
+		final File cacertFile = new File(new File(new File(new File(jreDir), "lib"), "security"), "cacerts");
 
-		ISSLPropertiesExtension properties = new SSLProperties("TLSv1", cacertFile.toString(), "changeit");
-		SSLConfiguration config = new SSLConfiguration();
+		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", cacertFile.toString(), "changeit");
+		final SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
 	}
 
 	public void testLocateKeystoreResource() {
 		printTestName();
-		ISSLPropertiesExtension properties = new SSLProperties("TLSv1",
+		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1",
 				"/org/eclipse/riena/communication/core/ssl/cacerts", "changeit");
-		SSLConfiguration config = new SSLConfiguration();
+		final SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
 	}
 
 	public void testLocateKeystoreEntry() {
 		printTestName();
-		ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "/keystore/cacerts", "changeit");
-		SSLConfiguration config = new SSLConfiguration();
+		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "/keystore/cacerts", "changeit");
+		final SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
 	}
 
 	public void testLocateKeystoreUrl() throws IOException {
 		printTestName();
-		String jreDir = System.getProperty("java.home"); //$NON-NLS-1$
-		File cacertDir = new File(new File(new File(jreDir), "lib"), "security");
-		TestServer nano = new TestServer(8888, cacertDir);
+		final String jreDir = System.getProperty("java.home"); //$NON-NLS-1$
+		final File cacertDir = new File(new File(new File(jreDir), "lib"), "security");
+		final TestServer nano = new TestServer(8888, cacertDir);
 
-		ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "http://localhost:8888/cacerts", "changeit");
-		SSLConfiguration config = new SSLConfiguration();
+		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "http://localhost:8888/cacerts",
+				"changeit");
+		final SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
 		nano.stop();
@@ -148,16 +150,17 @@ public class SSLConfigurationTest extends RienaTestCase {
 
 	private static class SSLProperties implements ISSLPropertiesExtension {
 
-		private String protocol;
-		private String keystore;
-		private String password;
-		private HostnameVerifier hostnameVerifier;
+		private final String protocol;
+		private final String keystore;
+		private final String password;
+		private final HostnameVerifier hostnameVerifier;
 
-		public SSLProperties(String protocol, String keystore, String password) {
+		public SSLProperties(final String protocol, final String keystore, final String password) {
 			this(protocol, keystore, password, null);
 		}
 
-		public SSLProperties(String protocol, String keystore, String password, HostnameVerifier hostnameVerifier) {
+		public SSLProperties(final String protocol, final String keystore, final String password,
+				final HostnameVerifier hostnameVerifier) {
 			this.protocol = protocol;
 			this.keystore = keystore;
 			this.password = password;

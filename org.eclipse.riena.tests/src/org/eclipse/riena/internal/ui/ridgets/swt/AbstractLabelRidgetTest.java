@@ -64,7 +64,7 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 	protected abstract Class<? extends ILabelRidget> getRidgetClass();
 
 	public void testRidgetMapping() {
-		SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
+		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertSame(getRidgetClass(), mapper.getRidgetClass(getWidget()));
 	}
 
@@ -73,7 +73,7 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public final void testSetIcon() {
 
-		ILabelRidget ridget = getRidget();
+		final ILabelRidget ridget = getRidget();
 
 		ridget.setIcon(ICON_ECLIPSE);
 
@@ -86,7 +86,7 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 		assertNull(getImage(getWidget()));
 
 		Widget label = createWidget(getShell());
-		Image labelImage = label.getDisplay().getSystemImage(SWT.ICON_INFORMATION);
+		final Image labelImage = label.getDisplay().getSystemImage(SWT.ICON_INFORMATION);
 		setImage(label, labelImage);
 		ILabelRidget labelRidget = createRidget();
 		// binding doesn't remove image of label, because the icon of the ridget is null and the method #setIcon wasn't called yet.
@@ -117,7 +117,7 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 	 * Test method get/setText.
 	 */
 	public final void testSetText() throws Exception {
-		ILabelRidget ridget = getRidget();
+		final ILabelRidget ridget = getRidget();
 		final Object widget = ridget.getUIControl();
 
 		ridget.setText(LABEL2);
@@ -133,7 +133,7 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.setText(null);
 			fail();
-		} catch (IllegalArgumentException iae) {
+		} catch (final IllegalArgumentException iae) {
 			ok();
 		}
 	}
@@ -142,10 +142,10 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 	 * Test method updateFromModel().
 	 */
 	public void testUpdateFromModel() throws Exception {
-		ILabelRidget ridget = getRidget();
+		final ILabelRidget ridget = getRidget();
 		final Object widget = ridget.getUIControl();
 
-		TestBean bean = new TestBean();
+		final TestBean bean = new TestBean();
 		bean.setProperty("NewLabel");
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
@@ -166,10 +166,10 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 	 * ridget.
 	 */
 	public void testUpdateFromRidget() {
-		ILabelRidget ridget = getRidget();
+		final ILabelRidget ridget = getRidget();
 		final Object widget = ridget.getUIControl();
 
-		TestBean bean = new TestBean();
+		final TestBean bean = new TestBean();
 		bean.setProperty("NewLabel");
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
@@ -191,10 +191,10 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 	 * from the control.
 	 */
 	public void testUpdateFromControl() {
-		ILabelRidget ridget = getRidget();
+		final ILabelRidget ridget = getRidget();
 		final Object widget = ridget.getUIControl();
 
-		TestBean bean = new TestBean();
+		final TestBean bean = new TestBean();
 		bean.setProperty("NewLabel");
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
@@ -212,10 +212,10 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testUpdateFromRidgetOnRebind() throws Exception {
-		ILabelRidget ridget = getRidget();
+		final ILabelRidget ridget = getRidget();
 		Object widget = ridget.getUIControl();
 
-		TestBean bean = new TestBean();
+		final TestBean bean = new TestBean();
 		bean.setProperty("NewLabel");
 
 		ridget.bindToModel(bean, TestBean.PROPERTY);
@@ -246,9 +246,9 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 	 * Test for problem report #536.
 	 */
 	public void testDontReadValueInConstructor() throws Exception {
-		ILabelRidget ridget = getRidget();
+		final ILabelRidget ridget = getRidget();
 
-		IObservableValue observableValue = new AbstractObservableValue() {
+		final IObservableValue observableValue = new AbstractObservableValue() {
 			@Override
 			protected Object doGetValue() {
 				return "TestText";
@@ -271,13 +271,13 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 	 * Test method get/setIconLocation().
 	 */
 	public void testSetIconLocation() throws Exception {
-		ILabelRidget ridget = getRidget();
+		final ILabelRidget ridget = getRidget();
 		final Object widget = ridget.getUIControl();
 
 		assertNull(ridget.getIconLocation());
 		assertNull(getImage(widget));
 
-		URL url = new URL("http://www.compeople.de/assets/compeople-logo.gif");
+		final URL url = new URL("http://www.compeople.de/assets/compeople-logo.gif");
 		ridget.setIconLocation(url);
 
 		assertEquals(url, ridget.getIconLocation());
@@ -293,7 +293,7 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 	 * Test method setUIControl().
 	 */
 	public void testSetUIControl() throws Exception {
-		ILabelRidget ridget = getRidget();
+		final ILabelRidget ridget = getRidget();
 
 		assertEquals(LABEL, ridget.getText());
 		assertEquals(LABEL, getText(getWidget()));
@@ -315,7 +315,7 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testInitText() {
 
-		ILabelRidget ridget = getRidget();
+		final ILabelRidget ridget = getRidget();
 		final Object widget = ridget.getUIControl();
 
 		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false);
@@ -341,10 +341,10 @@ public abstract class AbstractLabelRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testHasChanged() throws MalformedURLException {
 
-		ILabelRidget ridget = getRidget();
+		final ILabelRidget ridget = getRidget();
 
-		URL url1 = new URL("file:/a");
-		URL url2 = new URL("file:/b");
+		final URL url1 = new URL("file:/a");
+		final URL url2 = new URL("file:/b");
 		boolean ret = ReflectionUtils.invokeHidden(ridget, "hasChanged", url1, url2);
 		assertTrue(ret);
 		ret = ReflectionUtils.invokeHidden(ridget, "hasChanged", url1, url1);

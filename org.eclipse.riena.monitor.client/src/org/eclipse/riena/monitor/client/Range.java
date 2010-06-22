@@ -52,13 +52,13 @@ public class Range {
 					list.add(new Value(token));
 				}
 			}
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			throw new IllegalArgumentException("Error parsing range '" + range + "' with token '" + token + "'.", t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 
 	public boolean matches(final int value) {
-		for (Match match : list) {
+		for (final Match match : list) {
 			if (match.matches(value)) {
 				return true;
 			}
@@ -99,8 +99,8 @@ public class Range {
 		protected final int lower;
 		protected final int upper;
 
-		public Interval(String token) {
-			int dotdot = token.indexOf(TILL);
+		public Interval(final String token) {
+			final int dotdot = token.indexOf(TILL);
 			Assert.isLegal(dotdot > 0);
 			lower = Integer.valueOf(token.substring(0, dotdot).trim());
 			upper = Integer.valueOf(token.substring(dotdot + TILL.length()).trim());

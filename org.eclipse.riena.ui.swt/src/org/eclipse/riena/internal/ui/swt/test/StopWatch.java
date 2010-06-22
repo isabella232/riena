@@ -27,7 +27,7 @@ public class StopWatch {
 	private long start;
 	private long stop;
 
-	public StopWatch(String name) {
+	public StopWatch(final String name) {
 		synchronized (StopWatch.class) {
 			this.name = String.format("%s-%d", name, ++instanceCount); //$NON-NLS-1$
 		}
@@ -43,7 +43,7 @@ public class StopWatch {
 			throw new IllegalStateException("not started"); //$NON-NLS-1$
 		}
 		stop = System.currentTimeMillis();
-		long result = stop - start;
+		final long result = stop - start;
 		System.out.println(toString(stop));
 		start = 0;
 		return result;
@@ -59,7 +59,7 @@ public class StopWatch {
 	// helping methods
 	//////////////////
 
-	private String toString(long stopTime) {
+	private String toString(final long stopTime) {
 		return String.format("[%s] %s: %d ms", StopWatch.class.getSimpleName(), name, stopTime - start); //$NON-NLS-1$
 	}
 

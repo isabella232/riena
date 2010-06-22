@@ -65,7 +65,7 @@ public class EmbeddedTitleBarRidgetTest extends AbstractSWTRidgetTest {
 	 * @see org.eclipse.riena.internal.ui.ridgets.swt.AbstractSWTRidgetTest#createWidget(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	protected Control createWidget(Composite parent) {
+	protected Control createWidget(final Composite parent) {
 		return new EmbeddedTitleBar(parent, SWT.NONE);
 	}
 
@@ -74,8 +74,8 @@ public class EmbeddedTitleBarRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testSetTitle() {
 
-		EmbeddedTitleBarRidget ridget = getRidget();
-		EmbeddedTitleBar control = ridget.getUIControl();
+		final EmbeddedTitleBarRidget ridget = getRidget();
+		final EmbeddedTitleBar control = ridget.getUIControl();
 
 		ridget.setTitle(LABEL2);
 
@@ -97,8 +97,8 @@ public class EmbeddedTitleBarRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testSetIcon() {
 
-		EmbeddedTitleBarRidget ridget = getRidget();
-		EmbeddedTitleBar control = ridget.getUIControl();
+		final EmbeddedTitleBarRidget ridget = getRidget();
+		final EmbeddedTitleBar control = ridget.getUIControl();
 
 		ridget.setIcon(ICON_ECLIPSE);
 
@@ -117,17 +117,17 @@ public class EmbeddedTitleBarRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testCheckUIControl() {
 
-		EmbeddedTitleBarRidget ridget = getRidget();
-		EmbeddedTitleBar control = ridget.getUIControl();
+		final EmbeddedTitleBarRidget ridget = getRidget();
+		final EmbeddedTitleBar control = ridget.getUIControl();
 
 		// no exception expected
 		ReflectionUtils.invokeHidden(ridget, "checkUIControl", control);
 
-		Label label = new Label(control.getParent(), SWT.NONE);
+		final Label label = new Label(control.getParent(), SWT.NONE);
 		try {
 			ReflectionUtils.invokeHidden(ridget, "checkUIControl", label);
 			fail("Missing expected BindingException!");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// exception expected
 			assertTrue(e.getCause() instanceof BindingException);
 		}

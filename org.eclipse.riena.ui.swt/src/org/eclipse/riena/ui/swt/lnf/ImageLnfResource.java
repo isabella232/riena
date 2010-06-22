@@ -19,13 +19,13 @@ import org.eclipse.riena.ui.swt.utils.ImageStore;
  */
 public class ImageLnfResource extends AbstractLnfResource<Image> {
 
-	private String imagePath;
+	private final String imagePath;
 
 	/**
 	 * @param image
 	 *            image to wrap
 	 */
-	public ImageLnfResource(String imagePath) {
+	public ImageLnfResource(final String imagePath) {
 		super();
 		this.imagePath = imagePath;
 	}

@@ -40,32 +40,32 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		super.checkUIControl(uiControl);
 		AbstractSWTRidget.assertType(uiControl, MasterDetailsComposite.class);
 	}
 
 	@Override
 	protected void bindUIControl() {
-		MasterDetailsComposite control = getUIControl();
+		final MasterDetailsComposite control = getUIControl();
 		if (control != null) {
-			Table table = control.getTable();
+			final Table table = control.getTable();
 			table.addSelectionListener(dirtyDetailsChecker);
 		}
 	}
 
 	@Override
 	protected void unbindUIControl() {
-		MasterDetailsComposite control = getUIControl();
+		final MasterDetailsComposite control = getUIControl();
 		if (control != null) {
-			Table table = control.getTable();
+			final Table table = control.getTable();
 			table.removeSelectionListener(dirtyDetailsChecker);
 		}
 	}
 
 	@Override
-	protected final void bindTableToModel(IObservableList rowObservables, Class<? extends Object> rowClass,
-			String[] columnPropertyNames, String[] columnHeaders) {
+	protected final void bindTableToModel(final IObservableList rowObservables, final Class<? extends Object> rowClass,
+			final String[] columnPropertyNames, final String[] columnHeaders) {
 		getTableRidget().bindToModel(rowObservables, rowClass, columnPropertyNames, columnHeaders);
 	}
 
@@ -75,7 +75,7 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 	}
 
 	@Override
-	protected final void setTableSelection(Object value) {
+	protected final void setTableSelection(final Object value) {
 		getTableRidget().setSelection(value);
 	}
 
@@ -113,7 +113,7 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 	@Override
 	public void handleApply() {
 		super.handleApply();
-		Table table = getUIControl().getTable();
+		final Table table = getUIControl().getTable();
 		/*
 		 * Fix for bug 283694: if only one element is in the table, remove the
 		 * selection on apply, so it can be selected again for editing.
@@ -143,8 +143,8 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 		private int oldIndex = -1; // single selection 
 
 		@Override
-		public void widgetSelected(SelectionEvent e) {
-			Table table = (Table) e.widget;
+		public void widgetSelected(final SelectionEvent e) {
+			final Table table = (Table) e.widget;
 			if (oldIndex == table.getSelectionIndex()) { // already selected
 				return;
 			}

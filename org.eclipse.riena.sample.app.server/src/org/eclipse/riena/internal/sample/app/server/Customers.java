@@ -37,8 +37,8 @@ import org.eclipse.riena.security.common.authorization.Sentinel;
  */
 public class Customers implements ICustomers, ICustomerSearch {
 
-	private Map<Integer, Customer> customers;
-	private Map<Integer, Set<Offer>> offers;
+	private final Map<Integer, Customer> customers;
+	private final Map<Integer, Set<Offer>> offers;
 	private int nextUniqueCustomerNumber;
 
 	public Customers() {
@@ -62,8 +62,8 @@ public class Customers implements ICustomers, ICustomerSearch {
 	/**
 	 * @see org.eclipse.riena.sample.app.common.model.ICustomers#store(org.eclipse.riena.sample.app.common.model.Customer)
 	 */
-	public void store(Customer customer) {
-		SecurityManager sm = System.getSecurityManager();
+	public void store(final Customer customer) {
+		final SecurityManager sm = System.getSecurityManager();
 		if (sm != null) {
 			sm.checkPermission(new CustomersPermission("riena.sample", "store")); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -76,7 +76,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 	 * 
 	 * @param customer
 	 */
-	private void storeInternal(Customer customer) {
+	private void storeInternal(final Customer customer) {
 		customer.setId(customer.getCustomerNumber());
 		customers.put(customer.getCustomerNumber(), customer);
 
@@ -85,10 +85,10 @@ public class Customers implements ICustomers, ICustomerSearch {
 	/**
 	 * @see org.eclipse.riena.sample.app.common.model.ICustomerSearch#findCustomer(org.eclipse.riena.sample.app.common.model.Customer)
 	 */
-	public Customer[] findCustomer(Customer searchedCustomer) {
-		List<Customer> l = new ArrayList<Customer>();
+	public Customer[] findCustomer(final Customer searchedCustomer) {
+		final List<Customer> l = new ArrayList<Customer>();
 
-		for (Customer c : customers.values()) {
+		for (final Customer c : customers.values()) {
 			if (isIdentical(c, searchedCustomer)) {
 				l.add(c);
 			}
@@ -97,7 +97,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 		return l.toArray(new Customer[l.size()]);
 	}
 
-	public Customer[] findCustomerWithPermission(Customer searchedCustomer) {
+	public Customer[] findCustomerWithPermission(final Customer searchedCustomer) {
 		if (!Sentinel.checkAccess(new CustomersPermission("riena.sample", "find"))) { //$NON-NLS-1$ //$NON-NLS-2$
 			throw new AccessControlException("no rights for current user for this operation"); //$NON-NLS-1$
 		}
@@ -107,9 +107,9 @@ public class Customers implements ICustomers, ICustomerSearch {
 	/**
 	 * @see org.eclipse.riena.sample.app.common.model.ICustomers#getOffers(java.lang.Integer)
 	 */
-	public Offer[] getOffers(Integer customerNumber) {
+	public Offer[] getOffers(final Integer customerNumber) {
 
-		Set<Offer> customerOffers = offers.get(customerNumber);
+		final Set<Offer> customerOffers = offers.get(customerNumber);
 		if (customerOffers == null) {
 			return new Offer[0];
 		} else {
@@ -117,7 +117,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 		}
 	}
 
-	private boolean isIdentical(Customer customer, Customer searchedCustomer) {
+	private boolean isIdentical(final Customer customer, final Customer searchedCustomer) {
 
 		if (searchedCustomer.getCustomerNumber() != null
 				&& !searchedCustomer.getCustomerNumber().equals(customer.getCustomerNumber())) {
@@ -135,7 +135,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 		return true;
 	}
 
-	private boolean contains(String original, String other) {
+	private boolean contains(final String original, final String other) {
 
 		if (other == null || other.equals("")) { //$NON-NLS-1$
 			return true;
@@ -157,10 +157,10 @@ public class Customers implements ICustomers, ICustomerSearch {
 		customer.setAddress(address);
 
 		customer.setBirth(new Birth());
-		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy"); //$NON-NLS-1$
+		final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy"); //$NON-NLS-1$
 		try {
 			customer.getBirth().setBirthDay(format.parse("01.04.1962")); //$NON-NLS-1$
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			// TODO Throw exception
 			e.printStackTrace();
 		}
@@ -180,7 +180,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 		customer.setBirth(new Birth());
 		try {
 			customer.getBirth().setBirthDay(format.parse("01.04.1963")); //$NON-NLS-1$
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			// TODO Throw exception
 			e.printStackTrace();
 		}
@@ -200,7 +200,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 		customer.setBirth(new Birth());
 		try {
 			customer.getBirth().setBirthDay(format.parse("01.04.1964")); //$NON-NLS-1$
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			// TODO Throw exception
 			e.printStackTrace();
 		}
@@ -217,7 +217,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 		addOffer(offer);
 	}
 
-	private void addOffer(Offer offer) {
+	private void addOffer(final Offer offer) {
 
 		Set<Offer> customerOffers = offers.get(offer.getCustomerNumber());
 		if (customerOffers == null) {
@@ -227,7 +227,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 		customerOffers.add(offer);
 	}
 
-	private void initializeCustomerNumber(Customer customer) {
+	private void initializeCustomerNumber(final Customer customer) {
 
 		customer.setCustomerNumber(getNextUniqueCustomerNumber());
 		storeInternal(customer);

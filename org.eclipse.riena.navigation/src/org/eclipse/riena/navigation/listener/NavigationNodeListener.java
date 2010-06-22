@@ -29,112 +29,112 @@ public class NavigationNodeListener<S extends INavigationNode<C>, C extends INav
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#activated(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void activated(S source) {
+	public void activated(final S source) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#beforeActivated(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void beforeActivated(S source) {
+	public void beforeActivated(final S source) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#afterActivated(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void afterActivated(S source) {
+	public void afterActivated(final S source) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void disposed(S source) {
+	public void disposed(final S source) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#beforeDisposed(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void beforeDisposed(S source) {
+	public void beforeDisposed(final S source) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#afterDisposed(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void afterDisposed(S source) {
+	public void afterDisposed(final S source) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#childAdded(org.eclipse.riena.navigation.INavigationNode,
 	 *      org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void childAdded(S source, C childAdded) {
+	public void childAdded(final S source, final C childAdded) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#childRemoved(org.eclipse.riena.navigation.INavigationNode,
 	 *      org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void childRemoved(S source, C childRemoved) {
+	public void childRemoved(final S source, final C childRemoved) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#deactivated(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void deactivated(S source) {
+	public void deactivated(final S source) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#beforeDeactivated(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void beforeDeactivated(S source) {
+	public void beforeDeactivated(final S source) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#afterDeactivated(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void afterDeactivated(S source) {
+	public void afterDeactivated(final S source) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#expandedChanged(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void expandedChanged(S source) {
+	public void expandedChanged(final S source) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#labelChanged(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void labelChanged(S source) {
+	public void labelChanged(final S source) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#iconChanged(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void iconChanged(S source) {
+	public void iconChanged(final S source) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#markerChanged(org.eclipse.riena.navigation.INavigationNode,
 	 *      IMarker)
 	 */
-	public void markerChanged(S source, IMarker marker) {
+	public void markerChanged(final S source, final IMarker marker) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#parentChanged(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void parentChanged(S source) {
+	public void parentChanged(final S source) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#presentationChanged(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void presentationChanged(S source) {
+	public void presentationChanged(final S source) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#selectedChildChanged(org.eclipse.riena.navigation.INavigationNode)
 	 */
-	public void selectedChanged(S source) {
+	public void selectedChanged(final S source) {
 	}
 
 	/**
@@ -142,33 +142,33 @@ public class NavigationNodeListener<S extends INavigationNode<C>, C extends INav
 	 *      org.eclipse.riena.navigation.INavigationNode.State,
 	 *      org.eclipse.riena.navigation.INavigationNode.State)
 	 */
-	public void stateChanged(S source, State oldState, State newState) {
+	public void stateChanged(final S source, final State oldState, final State newState) {
 	}
 
 	/**
 	 * @see org.eclipse.riena.navigation.listener.INavigationNodeListener#block(org.eclipse.riena.navigation.INavigationNode,
 	 *      boolean)
 	 */
-	public void block(S source, boolean block) {
+	public void block(final S source, final boolean block) {
 
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void filterAdded(S source, IUIFilter filter) {
+	public void filterAdded(final S source, final IUIFilter filter) {
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void filterRemoved(S source, IUIFilter filter) {
+	public void filterRemoved(final S source, final IUIFilter filter) {
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void prepared(S source) {
+	public void prepared(final S source) {
 	}
 
 }

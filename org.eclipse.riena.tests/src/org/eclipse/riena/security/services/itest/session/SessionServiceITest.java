@@ -52,9 +52,9 @@ public class SessionServiceITest extends RienaTestCase {
 		startBundles("org\\.eclipse\\.riena.communication.core", null);
 		startBundles("org\\.eclipse\\.riena.communication.factory.hessian", null);
 		startBundles("org\\.eclipse\\.riena.communication.registry", null);
-		sessionService = Register.remoteProxy(ISessionService.class).usingUrl(
-				"http://localhost:8080/hessian/SessionService").withProtocol("hessian").andStart(
-				Activator.getDefault().getContext());
+		sessionService = Register.remoteProxy(ISessionService.class)
+				.usingUrl("http://localhost:8080/hessian/SessionService").withProtocol("hessian")
+				.andStart(Activator.getDefault().getContext());
 	}
 
 	/*
@@ -70,20 +70,20 @@ public class SessionServiceITest extends RienaTestCase {
 	 * @throws Exception
 	 */
 	public void testController1() throws Exception {
-		ServiceReference ref = getContext().getServiceReference(ISessionService.class.getName());
-		ISessionService service = (ISessionService) getContext().getService(ref);
+		final ServiceReference ref = getContext().getServiceReference(ISessionService.class.getName());
+		final ISessionService service = (ISessionService) getContext().getService(ref);
 		assertNotNull("SessionControllerAccessor returns null", service);
-		Session session = service.generateSession(new Principal[] { new SimplePrincipal("testuid") });
+		final Session session = service.generateSession(new Principal[] { new SimplePrincipal("testuid") });
 		assertNotNull("generateSession returns null", session);
 
-		Principal[] principals = service.findPrincipals(session);
+		final Principal[] principals = service.findPrincipals(session);
 		assertNotNull("findUser returns null", principals);
 		assertTrue("returned userid is not equal to the correct one", principals[0].getName().equals("testuid"));
 
 		service.invalidateSession(session);
 		assertFalse("session should be invalid", service.isValidSession(session));
 
-		Principal[] temp = service.findPrincipals(session);
+		final Principal[] temp = service.findPrincipals(session);
 		assertNull("no user should be found for invalid session", temp);
 	}
 
@@ -99,8 +99,8 @@ public class SessionServiceITest extends RienaTestCase {
 		createNNNThreads(THREAD_100, LOOP_400);
 	}
 
-	private void createNNNThreads(int noOfThreads, int loopCounter) {
-		Thread[] t = new Thread[noOfThreads];
+	private void createNNNThreads(final int noOfThreads, final int loopCounter) {
+		final Thread[] t = new Thread[noOfThreads];
 		// trace("threads=" + noOfThreads + " loop=" + loopCounter);
 		// create threads
 		for (int i = 0; i < noOfThreads; i++) {
@@ -130,11 +130,11 @@ public class SessionServiceITest extends RienaTestCase {
 	}
 
 	class Threader extends Thread {
-		private ISessionService sessionService;
-		private int loopCounter;
+		private final ISessionService sessionService;
+		private final int loopCounter;
 
-		Threader(int loopCounter) {
-			ServiceReference ref = getContext().getServiceReference(ISessionService.class.getName());
+		Threader(final int loopCounter) {
+			final ServiceReference ref = getContext().getServiceReference(ISessionService.class.getName());
 			sessionService = (ISessionService) getContext().getService(ref);
 			this.loopCounter = loopCounter;
 			assertNotNull("SessionServiceAccessor returns null", sessionService);
@@ -146,18 +146,19 @@ public class SessionServiceITest extends RienaTestCase {
 		@Override
 		public void run() {
 			for (int i = 0; i < loopCounter; i++) {
-				Session session = sessionService.generateSession(new Principal[] { new SimplePrincipal("testuid") });
+				final Session session = sessionService
+						.generateSession(new Principal[] { new SimplePrincipal("testuid") });
 				assertNotNull("generateSession returns null", session);
 
-				Principal[] principals = sessionService.findPrincipals(session);
+				final Principal[] principals = sessionService.findPrincipals(session);
 				assertTrue("returned userid is not equal to the correct one", principals == null
 						|| principals[0].getName().equals("testuid"));
 
 				sessionService.invalidateSession(session);
 
-				Principal[] temp = sessionService.findPrincipals(session);
-				assertTrue("no user should be found for invalid session", temp == null
-						|| temp[0].getName().equals("testuid"));
+				final Principal[] temp = sessionService.findPrincipals(session);
+				assertTrue("no user should be found for invalid session",
+						temp == null || temp[0].getName().equals("testuid"));
 			}
 			// SessionServiceITest.this.trace("K");
 		}

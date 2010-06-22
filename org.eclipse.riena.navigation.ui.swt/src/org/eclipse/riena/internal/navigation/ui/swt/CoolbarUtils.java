@@ -35,18 +35,18 @@ public final class CoolbarUtils {
 	 *            cool bar
 	 * @return the first cool item of the given cool bar
 	 */
-	public static CoolItem initCoolBar(CoolBar coolBar, Font font) {
+	public static CoolItem initCoolBar(final CoolBar coolBar, final Font font) {
 
 		if (coolBar.getItemCount() == 0) {
-			CoolItem coolItem = new CoolItem(coolBar, SWT.DROP_DOWN);
-			ToolBar toolBar = new ToolBar(coolBar, SWT.FLAT);
+			final CoolItem coolItem = new CoolItem(coolBar, SWT.DROP_DOWN);
+			final ToolBar toolBar = new ToolBar(coolBar, SWT.FLAT);
 			toolBar.setFont(font);
 			coolItem.setControl(toolBar);
 			// sets the default size of an empty menu bar or tool bar
 			coolItem.setSize(new Point(0, 1));
 		} else {
-			CoolItem[] itmes = coolBar.getItems();
-			for (CoolItem coolItem : itmes) {
+			final CoolItem[] itmes = coolBar.getItems();
+			for (final CoolItem coolItem : itmes) {
 				if (coolItem.getControl() != null) {
 					coolItem.getControl().setFont(font);
 				}

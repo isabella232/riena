@@ -31,9 +31,9 @@ public class WorkareaDefinitionRegistryFacadeTest extends TestCase {
 	 */
 	public void testGetInstance() {
 
-		WorkareaDefinitionRegistryFacade facade1 = WorkareaDefinitionRegistryFacade.getInstance();
+		final WorkareaDefinitionRegistryFacade facade1 = WorkareaDefinitionRegistryFacade.getInstance();
 		assertNotNull(facade1);
-		WorkareaDefinitionRegistryFacade facade2 = WorkareaDefinitionRegistryFacade.getInstance();
+		final WorkareaDefinitionRegistryFacade facade2 = WorkareaDefinitionRegistryFacade.getInstance();
 		assertNotNull(facade2);
 		assertSame(facade1, facade2);
 
@@ -44,8 +44,9 @@ public class WorkareaDefinitionRegistryFacadeTest extends TestCase {
 	 */
 	public void testRegisterDefinition() {
 
-		WorkareaDefinitionRegistryFacade facade = WorkareaDefinitionRegistryFacade.getInstance();
-		IWorkareaDefinition def = facade.registerDefinition("id0101", SubModuleController.class, "secondId", true);
+		final WorkareaDefinitionRegistryFacade facade = WorkareaDefinitionRegistryFacade.getInstance();
+		final IWorkareaDefinition def = facade
+				.registerDefinition("id0101", SubModuleController.class, "secondId", true);
 		assertEquals(SubModuleController.class, def.getControllerClass());
 		assertEquals("secondId", def.getViewId());
 		assertTrue(def.isViewShared());
@@ -58,11 +59,11 @@ public class WorkareaDefinitionRegistryFacadeTest extends TestCase {
 	 */
 	public void testRegister() {
 
-		WorkareaDefinitionRegistryFacade facade = WorkareaDefinitionRegistryFacade.getInstance();
-		IWorkareaDefinition def1 = new WorkareaDefinition("IdOfView");
-		IWorkareaDefinition def2 = facade.register("id0201", def1);
+		final WorkareaDefinitionRegistryFacade facade = WorkareaDefinitionRegistryFacade.getInstance();
+		final IWorkareaDefinition def1 = new WorkareaDefinition("IdOfView");
+		final IWorkareaDefinition def2 = facade.register("id0201", def1);
 		assertSame(def1, def2);
-		IWorkareaDefinition def3 = facade.getDefinition("id0201");
+		final IWorkareaDefinition def3 = facade.getDefinition("id0201");
 		assertSame(def1, def3);
 
 	}
@@ -72,32 +73,32 @@ public class WorkareaDefinitionRegistryFacadeTest extends TestCase {
 	 */
 	public void testGetDefinition() {
 
-		WorkareaDefinitionRegistryFacade facade = WorkareaDefinitionRegistryFacade.getInstance();
-		IWorkareaDefinition def1 = new WorkareaDefinition("IdOfView01");
+		final WorkareaDefinitionRegistryFacade facade = WorkareaDefinitionRegistryFacade.getInstance();
+		final IWorkareaDefinition def1 = new WorkareaDefinition("IdOfView01");
 		facade.register("id0301", def1);
 		IWorkareaDefinition retdef = facade.getDefinition("id0301");
 		assertSame(def1, retdef);
 
-		Object id = new Object();
-		IWorkareaDefinition def2 = new WorkareaDefinition("view2");
+		final Object id = new Object();
+		final IWorkareaDefinition def2 = new WorkareaDefinition("view2");
 		facade.register(id, def2);
 		retdef = facade.getDefinition(id);
 		assertSame(def2, retdef);
 
-		ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("id0302"));
-		IWorkareaDefinition def3 = new WorkareaDefinition("IdOfView02");
+		final ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("id0302"));
+		final IWorkareaDefinition def3 = new WorkareaDefinition("IdOfView02");
 		facade.register(node1, def3);
 		retdef = facade.getDefinition(node1);
 		assertSame(def3, retdef);
 
-		ISubModuleNode node2 = new SubModuleNode(new NavigationNodeId("id0303"));
-		IWorkareaDefinition def4 = new WorkareaDefinition("IdOfView03");
+		final ISubModuleNode node2 = new SubModuleNode(new NavigationNodeId("id0303"));
+		final IWorkareaDefinition def4 = new WorkareaDefinition("IdOfView03");
 		facade.register("id0303", def4);
 		retdef = facade.getDefinition(node2);
 		assertSame(def4, retdef);
 
-		ISubModuleNode node3 = new SubModuleNode(new NavigationNodeId("id0304"));
-		IWorkareaDefinition def5 = new WorkareaDefinition("IdOfView04");
+		final ISubModuleNode node3 = new SubModuleNode(new NavigationNodeId("id0304"));
+		final IWorkareaDefinition def5 = new WorkareaDefinition("IdOfView04");
 		facade.register(node3, def5);
 		retdef = facade.getDefinition("id0304");
 		assertSame(def5, retdef);

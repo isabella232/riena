@@ -434,7 +434,7 @@ public class ValidDecimalTest extends RienaTestCase {
 	 */
 	public final void testSetLocalStringArray() throws Exception {
 
-		MyValidDecimal validator = new MyValidDecimal();
+		final MyValidDecimal validator = new MyValidDecimal();
 		Locale locale = ReflectionUtils.getHidden(validator, "locale");
 		assertSame(locale, Locale.getDefault());
 
@@ -489,7 +489,7 @@ public class ValidDecimalTest extends RienaTestCase {
 	private static class MyValidDecimal extends ValidDecimal {
 
 		@Override
-		public void setLocal(String[] localArgs) {
+		public void setLocal(final String[] localArgs) {
 			super.setLocal(localArgs);
 		}
 

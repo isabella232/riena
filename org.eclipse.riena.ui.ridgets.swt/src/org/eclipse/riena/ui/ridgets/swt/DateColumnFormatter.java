@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.eclipse.core.databinding.conversion.IConverter;
+
 import org.eclipse.riena.ui.ridgets.databinding.DateToStringConverter;
 
 /**
@@ -31,7 +32,7 @@ public abstract class DateColumnFormatter extends ColumnFormatter {
 	 *            null. Must be compatible with formatting strings as expected
 	 *            by {@link SimpleDateFormat}.
 	 */
-	public DateColumnFormatter(String format) {
+	public DateColumnFormatter(final String format) {
 		converter = new DateToStringConverter(format);
 	}
 
@@ -39,9 +40,9 @@ public abstract class DateColumnFormatter extends ColumnFormatter {
 	 * Returns a formatted date for this cell.
 	 */
 	@Override
-	public String getText(Object element) {
+	public String getText(final Object element) {
 		String result = null;
-		Date date = getDate(element);
+		final Date date = getDate(element);
 		if (date != null) {
 			result = (String) converter.convert(date);
 		}

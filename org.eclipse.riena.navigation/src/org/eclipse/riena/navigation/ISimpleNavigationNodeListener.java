@@ -196,8 +196,8 @@ public interface ISimpleNavigationNodeListener {
 	 * @param source
 	 *            the node which has been blocked or unblocked
 	 * @param block
-	 *            {@code true} if the node has been blocked; otherwise {@code
-	 *            false}
+	 *            {@code true} if the node has been blocked; otherwise
+	 *            {@code false}
 	 */
 	void block(INavigationNode<?> source, boolean block);
 

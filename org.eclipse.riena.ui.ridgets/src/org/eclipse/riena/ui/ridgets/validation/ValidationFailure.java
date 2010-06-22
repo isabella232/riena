@@ -27,7 +27,7 @@ public class ValidationFailure extends Failure {
 	 * @param msg
 	 *            A message.
 	 */
-	public ValidationFailure(String msg) {
+	public ValidationFailure(final String msg) {
 		super(msg);
 	}
 
@@ -39,7 +39,7 @@ public class ValidationFailure extends Failure {
 	 * @param cause
 	 *            The cause.
 	 */
-	ValidationFailure(String msg, Throwable cause) {
+	ValidationFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
 

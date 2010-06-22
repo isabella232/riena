@@ -40,7 +40,7 @@ public class MessageBoxRidgetTest extends AbstractRidgetTestCase {
 	 * (org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
-	protected MessageBox createWidget(Composite parent) {
+	protected MessageBox createWidget(final Composite parent) {
 		return new MockMessageBox(parent);
 	}
 
@@ -193,7 +193,7 @@ public class MessageBoxRidgetTest extends AbstractRidgetTestCase {
 		assertEquals(IDialogConstants.CANCEL_LABEL, getWidget().buttonLabels[2]);
 		assertEquals(IMessageBoxRidget.OPTIONS_YES_NO_CANCEL, getRidget().getOptions());
 
-		MessageBoxOption[] semiCustomOptions = new IMessageBoxRidget.MessageBoxOption[] { IMessageBoxRidget.OK,
+		final MessageBoxOption[] semiCustomOptions = new IMessageBoxRidget.MessageBoxOption[] { IMessageBoxRidget.OK,
 				new IMessageBoxRidget.MessageBoxOption("TestCustomOptionText") };
 		getRidget().setOptions(semiCustomOptions);
 		// show message box to transfer values set
@@ -204,7 +204,7 @@ public class MessageBoxRidgetTest extends AbstractRidgetTestCase {
 		assertEquals("TestCustomOptionText", getWidget().buttonLabels[1]);
 		assertEquals(semiCustomOptions, getRidget().getOptions());
 
-		MessageBoxOption[] customOptions = new IMessageBoxRidget.MessageBoxOption[] {
+		final MessageBoxOption[] customOptions = new IMessageBoxRidget.MessageBoxOption[] {
 				new IMessageBoxRidget.MessageBoxOption("TestCustomOptionText1"),
 				new IMessageBoxRidget.MessageBoxOption("TestCustomOptionText2"),
 				new IMessageBoxRidget.MessageBoxOption("TestCustomOptionText3") };
@@ -236,7 +236,7 @@ public class MessageBoxRidgetTest extends AbstractRidgetTestCase {
 		// show message box to transfer values set
 		getRidget().show();
 
-		IMessageBoxRidget ridget2 = new MessageBoxRidget();
+		final IMessageBoxRidget ridget2 = new MessageBoxRidget();
 		ridget2.setText("TestMessageText2");
 		ridget2.setTitle("TestMessageTitle2");
 		ridget2.setType(IMessageBoxRidget.Type.WARNING);
@@ -284,7 +284,7 @@ public class MessageBoxRidgetTest extends AbstractRidgetTestCase {
 
 		assertEquals(IMessageBoxRidget.CLOSED, getRidget().show());
 
-		IMessageBoxRidget.MessageBoxOption option3 = new IMessageBoxRidget.MessageBoxOption("TestCustomOption3");
+		final IMessageBoxRidget.MessageBoxOption option3 = new IMessageBoxRidget.MessageBoxOption("TestCustomOption3");
 		getRidget().setOptions(
 				new IMessageBoxRidget.MessageBoxOption[] { new IMessageBoxRidget.MessageBoxOption("TestCustomOption1"),
 						new IMessageBoxRidget.MessageBoxOption("TestCustomOption2"), option3,
@@ -321,7 +321,7 @@ public class MessageBoxRidgetTest extends AbstractRidgetTestCase {
 
 	public void testGetFocusable() {
 
-		IRidget aRidget = getRidget();
+		final IRidget aRidget = getRidget();
 
 		assertTrue(aRidget.isFocusable());
 
@@ -336,8 +336,8 @@ public class MessageBoxRidgetTest extends AbstractRidgetTestCase {
 
 	public void testSetFocusable() {
 
-		IRidget aRidget = getRidget();
-		MockMessageBox aControl = getWidget();
+		final IRidget aRidget = getRidget();
+		final MockMessageBox aControl = getWidget();
 		// getOtherControl().moveAbove(aControl); ???
 
 		aControl.requestFocus();
@@ -364,7 +364,7 @@ public class MessageBoxRidgetTest extends AbstractRidgetTestCase {
 
 	public void testRequestFocus() throws Exception {
 
-		MessageBox aControl = getWidget();
+		final MessageBox aControl = getWidget();
 		aControl.requestFocus();
 		// TODO: focus not gained here, because control has to be shown to requested focus
 		if (aControl.hasFocus()) { // skip if control cannot receive focus
@@ -375,12 +375,12 @@ public class MessageBoxRidgetTest extends AbstractRidgetTestCase {
 
 			final List<FocusEvent> focusGainedEvents = new ArrayList<FocusEvent>();
 			final List<FocusEvent> focusLostEvents = new ArrayList<FocusEvent>();
-			IFocusListener focusListener = new IFocusListener() {
-				public void focusGained(FocusEvent event) {
+			final IFocusListener focusListener = new IFocusListener() {
+				public void focusGained(final FocusEvent event) {
 					focusGainedEvents.add(event);
 				}
 
-				public void focusLost(FocusEvent event) {
+				public void focusLost(final FocusEvent event) {
 					focusLostEvents.add(event);
 				}
 			};
@@ -431,7 +431,7 @@ public class MessageBoxRidgetTest extends AbstractRidgetTestCase {
 		getRidget().setUIControl(new MessageBox(getShell()) {
 
 			@Override
-			public void show(String title, String text, int type, String[] buttonLabels) {
+			public void show(final String title, final String text, final int type, final String[] buttonLabels) {
 			}
 
 			@Override
@@ -441,7 +441,7 @@ public class MessageBoxRidgetTest extends AbstractRidgetTestCase {
 		});
 	}
 
-	private void assertEquals(MessageBoxOption[] expected, MessageBoxOption[] actual) {
+	private void assertEquals(final MessageBoxOption[] expected, final MessageBoxOption[] actual) {
 		if (Arrays.equals(expected, actual)) {
 			return;
 		}
@@ -455,12 +455,12 @@ public class MessageBoxRidgetTest extends AbstractRidgetTestCase {
 		private int type;
 		private String[] buttonLabels;
 
-		private MockMessageBox(Composite parent) {
+		private MockMessageBox(final Composite parent) {
 			super(parent);
 		}
 
 		@Override
-		public void show(String title, String text, int type, String[] buttonLabels) {
+		public void show(final String title, final String text, final int type, final String[] buttonLabels) {
 			// save values her to check after showing that the call of show was performed with the correct arguments.
 			this.title = title;
 			this.text = text;

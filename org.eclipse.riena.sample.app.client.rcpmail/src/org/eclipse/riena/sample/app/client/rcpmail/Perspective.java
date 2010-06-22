@@ -16,12 +16,12 @@ import org.eclipse.ui.IPerspectiveFactory;
 
 public class Perspective implements IPerspectiveFactory {
 
-	public void createInitialLayout(IPageLayout layout) {
-		String editorArea = layout.getEditorArea();
+	public void createInitialLayout(final IPageLayout layout) {
+		final String editorArea = layout.getEditorArea();
 		layout.setEditorAreaVisible(false);
 
 		layout.addStandaloneView(NavigationView.ID, false, IPageLayout.LEFT, 0.25f, editorArea);
-		IFolderLayout folder = layout.createFolder("messages", IPageLayout.TOP, 0.5f, editorArea); //$NON-NLS-1$
+		final IFolderLayout folder = layout.createFolder("messages", IPageLayout.TOP, 0.5f, editorArea); //$NON-NLS-1$
 		folder.addView(MessageView.ID);
 		folder.addView(MarkerSubModuleView.ID);
 		folder.addPlaceholder(MessageView.ID + ":*"); //$NON-NLS-1$

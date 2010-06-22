@@ -55,7 +55,7 @@ public class RienaWindowRendererTest extends TestCase {
 	public void testComputeShellStyle() {
 
 		dialog.setShellStyle(SWT.CLOSE | SWT.MIN | SWT.MAX | SWT.DIALOG_TRIM);
-		int ret = renderer.computeShellStyle();
+		final int ret = renderer.computeShellStyle();
 		assertEquals(SWT.CLOSE, ret & SWT.CLOSE);
 		assertEquals(SWT.MIN, ret & SWT.MIN);
 		assertEquals(SWT.MAX, ret & SWT.MAX);
@@ -64,12 +64,12 @@ public class RienaWindowRendererTest extends TestCase {
 
 	private class MyDialog extends Dialog {
 
-		public MyDialog(Shell shell) {
+		public MyDialog(final Shell shell) {
 			super(shell);
 		}
 
 		@Override
-		public void setShellStyle(int newShellStyle) {
+		public void setShellStyle(final int newShellStyle) {
 			super.setShellStyle(newShellStyle);
 		}
 

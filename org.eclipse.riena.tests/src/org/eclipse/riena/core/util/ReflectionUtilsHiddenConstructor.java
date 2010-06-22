@@ -15,9 +15,9 @@ package org.eclipse.riena.core.util;
  */
 public final class ReflectionUtilsHiddenConstructor {
 
-	private String s;
+	private final String s;
 
-	private ReflectionUtilsHiddenConstructor(String s) {
+	private ReflectionUtilsHiddenConstructor(final String s) {
 		this.s = s;
 	}
 

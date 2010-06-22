@@ -59,22 +59,22 @@ public class SwitchModule extends AbstractNavigationHandler implements IExecutab
 	 */
 	private boolean activateSubmodule;
 
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		doSwitch(toNext);
 		return null;
 	}
 
-	public void setActivateSubmodule(boolean activate) {
+	public void setActivateSubmodule(final boolean activate) {
 		activateSubmodule = activate;
 	}
 
-	public void doSwitch(boolean forward) {
+	public void doSwitch(final boolean forward) {
 		// assumes there is only one application node
-		IApplicationNode application = ApplicationNodeManager.getApplicationNode();
-		INavigationNode<?>[] modules = collectModules(application);
-		INavigationNode<?> nextModule = forward ? findNextNode(modules) : findPreviousNode(modules, true);
+		final IApplicationNode application = ApplicationNodeManager.getApplicationNode();
+		final INavigationNode<?>[] modules = collectModules(application);
+		final INavigationNode<?> nextModule = forward ? findNextNode(modules) : findPreviousNode(modules, true);
 		if (nextModule != null) {
-			INavigationNode<?> nextSubModule = findNextSubModule(forward, nextModule);
+			final INavigationNode<?> nextSubModule = findNextSubModule(forward, nextModule);
 			if (nextSubModule != null) {
 				nextSubModule.activate();
 			} else {
@@ -87,7 +87,7 @@ public class SwitchModule extends AbstractNavigationHandler implements IExecutab
 	 * This method is called by the framework. Not intented to be called by
 	 * clients.
 	 */
-	public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 		toNext = "next".equalsIgnoreCase(String.valueOf(data)); //$NON-NLS-1$
 	}
@@ -95,7 +95,7 @@ public class SwitchModule extends AbstractNavigationHandler implements IExecutab
 	// helping methods
 	//////////////////
 
-	private INavigationNode<?> findNextSubModule(boolean forward, INavigationNode<?> nextModule) {
+	private INavigationNode<?> findNextSubModule(final boolean forward, final INavigationNode<?> nextModule) {
 		INavigationNode<?> nextSubModule;
 		if (activateSubmodule) {
 			nextSubModule = getSubModule(nextModule, forward);
@@ -105,12 +105,12 @@ public class SwitchModule extends AbstractNavigationHandler implements IExecutab
 		return nextSubModule;
 	}
 
-	private INavigationNode<?> getSubModule(INavigationNode<?> module, boolean forward) {
+	private INavigationNode<?> getSubModule(final INavigationNode<?> module, final boolean forward) {
 		INavigationNode<?> result = null;
-		List<ISubModuleNode> subModules = ((IModuleNode) module).getChildren();
-		int subModuleCount = subModules.size();
+		final List<ISubModuleNode> subModules = ((IModuleNode) module).getChildren();
+		final int subModuleCount = subModules.size();
 		if (subModuleCount > 1) {
-			int index = forward ? 0 : subModuleCount - 1;
+			final int index = forward ? 0 : subModuleCount - 1;
 			result = subModules.get(index);
 		}
 		return result;

@@ -26,7 +26,7 @@ final class ExplicitWorkareaDefinitionRegistry extends AbstractWorkareaDefinitio
 	}
 
 	@Override
-	public IWorkareaDefinition register(Object id, IWorkareaDefinition definition) {
+	public IWorkareaDefinition register(final Object id, final IWorkareaDefinition definition) {
 
 		if (id instanceof INavigationNode<?>) {
 			return registerDefinition((INavigationNode<?>) id, definition);
@@ -35,7 +35,7 @@ final class ExplicitWorkareaDefinitionRegistry extends AbstractWorkareaDefinitio
 		}
 	}
 
-	private IWorkareaDefinition registerDefinition(INavigationNode<?> node, IWorkareaDefinition definition) {
+	private IWorkareaDefinition registerDefinition(final INavigationNode<?> node, final IWorkareaDefinition definition) {
 
 		// this may be specific - register with submodule
 		workareas.put(node, definition);

@@ -63,19 +63,19 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		verifyListener = new ValidationListener();
 		isDirectWriting = false;
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				forceTextToControl(getTextInternal());
 			}
 		});
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(final PropertyChangeEvent evt) {
 				updateEditable();
 				forceTextToControl(getTextInternal());
 			}
 		});
 	}
 
-	protected TextRidget(String initialValue) {
+	protected TextRidget(final String initialValue) {
 		this();
 		Assert.isNotNull(initialValue);
 		textValue = initialValue;
@@ -87,7 +87,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	@Override
-	protected void checkUIControl(Object uiControl) {
+	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, Text.class);
 	}
 
@@ -102,13 +102,13 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 *            a String; never null
 	 * @return false if the input is considered 'empty', true otherwise
 	 */
-	protected boolean isNotEmpty(String input) {
+	protected boolean isNotEmpty(final String input) {
 		return input.length() > 0;
 	}
 
 	@Override
 	protected final synchronized void bindUIControl() {
-		Text control = getTextWidget();
+		final Text control = getTextWidget();
 		if (control != null) {
 			setUIText(getTextBasedOnMarkerState(textValue));
 			updateEditable();
@@ -119,7 +119,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	@Override
 	protected final synchronized void unbindUIControl() {
 		super.unbindUIControl();
-		Text control = getTextWidget();
+		final Text control = getTextWidget();
 		if (control != null) {
 			removeListeners(control);
 		}
@@ -132,7 +132,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 * @param control
 	 *            a Text instance (never null)
 	 */
-	protected synchronized void addListeners(Text control) {
+	protected synchronized void addListeners(final Text control) {
 		control.addKeyListener(crKeyListener);
 		control.addFocusListener(focusListener);
 		control.addModifyListener(modifyListener);
@@ -146,7 +146,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 * @param control
 	 *            a Text instance (never null)
 	 */
-	protected synchronized void removeListeners(Text control) {
+	protected synchronized void removeListeners(final Text control) {
 		control.removeKeyListener(crKeyListener);
 		control.removeFocusListener(focusListener);
 		control.removeModifyListener(modifyListener);
@@ -167,17 +167,17 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	protected String getUIText() {
-		Text control = getTextWidget();
+		final Text control = getTextWidget();
 		Assert.isNotNull(control);
 		return control.getText();
 	}
 
 	protected void updateEditable() {
-		Text control = getTextWidget();
+		final Text control = getTextWidget();
 		if (control != null && !control.isDisposed()) {
-			boolean isEditable = isOutputOnly() ? false : true;
+			final boolean isEditable = isOutputOnly() ? false : true;
 			if (isEditable != control.getEditable()) {
-				Color bgColor = control.getBackground();
+				final Color bgColor = control.getBackground();
 				control.setEditable(isEditable);
 				// workaround for Bug 315689 / 315691
 				control.setBackground(bgColor);
@@ -185,8 +185,8 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		}
 	}
 
-	protected void setUIText(String text) {
-		Text control = getTextWidget();
+	protected void setUIText(final String text) {
+		final Text control = getTextWidget();
 		if (control != null) {
 			control.setText(text);
 			control.setSelection(0, 0);
@@ -194,7 +194,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	protected void selectAll() {
-		Text text = getTextWidget();
+		final Text text = getTextWidget();
 		// if not multi line text field
 		if (text != null && (text.getStyle() & SWT.MULTI) == 0) {
 			text.selectAll();
@@ -205,7 +205,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		return textValue;
 	}
 
-	public void setInputToUIControlConverter(IConverter converter) {
+	public void setInputToUIControlConverter(final IConverter converter) {
 		if (converter != null) {
 			Assert.isLegal(converter.getFromType() == String.class,
 					"Invalid from-type. Need a String-to-String converter"); //$NON-NLS-1$
@@ -225,12 +225,12 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 * <p>
 	 * Passing a null value is equivalent to {@code setText("")}.
 	 */
-	public synchronized void setText(String text) {
-		String oldValue = textValue;
+	public synchronized void setText(final String text) {
+		final String oldValue = textValue;
 		textValue = text != null ? text : ""; //$NON-NLS-1$
 		forceTextToControl(textValue);
 		disableMandatoryMarkers(isNotEmpty(textValue));
-		IStatus onEdit = checkOnEditRules(textValue, new ValidationCallback(false));
+		final IStatus onEdit = checkOnEditRules(textValue, new ValidationCallback(false));
 		if (onEdit.isOK()) {
 			firePropertyChange(ITextRidget.PROPERTY_TEXT, oldValue, textValue);
 			firePropertyChange("textAfter", oldValue, textValue); //$NON-NLS-1$
@@ -243,7 +243,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		}
 		forceTextToControl(textValue);
 		disableMandatoryMarkers(isNotEmpty(textValue));
-		IStatus status = checkAllRules(textValue, new ValidationCallback(false));
+		final IStatus status = checkAllRules(textValue, new ValidationCallback(false));
 		if (status.isOK()) {
 			getValueBindingSupport().updateFromTarget();
 		}
@@ -267,7 +267,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		return isDirectWriting;
 	}
 
-	public synchronized void setDirectWriting(boolean directWriting) {
+	public synchronized void setDirectWriting(final boolean directWriting) {
 		if (this.isDirectWriting != directWriting) {
 			this.isDirectWriting = directWriting;
 		}
@@ -290,20 +290,20 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 * 
 	 * @since 2.0
 	 */
-	protected String getTextBasedOnMarkerState(String value) {
-		boolean hideValue = !isEnabled() && MarkerSupport.isHideDisabledRidgetContent();
+	protected String getTextBasedOnMarkerState(final String value) {
+		final boolean hideValue = !isEnabled() && MarkerSupport.isHideDisabledRidgetContent();
 		return hideValue ? EMPTY_STRING : value;
 	}
 
-	private synchronized void forceTextToControl(String newValue) {
-		Text control = getTextWidget();
+	private synchronized void forceTextToControl(final String newValue) {
+		final Text control = getTextWidget();
 		if (control != null) {
-			Listener[] listeners = control.getListeners(SWT.Verify);
-			for (Listener listener : listeners) {
+			final Listener[] listeners = control.getListeners(SWT.Verify);
+			for (final Listener listener : listeners) {
 				control.removeListener(SWT.Verify, listener);
 			}
 			TextRidget.this.setUIText(getTextBasedOnMarkerState(newValue));
-			for (Listener listener : listeners) {
+			for (final Listener listener : listeners) {
 				control.addListener(SWT.Verify, listener);
 			}
 		}
@@ -314,8 +314,8 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	private synchronized void updateTextValue() {
-		String oldValue = textValue;
-		String newValue = getUIText();
+		final String oldValue = textValue;
+		final String newValue = getUIText();
 		if (!oldValue.equals(newValue)) {
 			textValue = newValue;
 			if (checkOnEditRules(newValue, null).isOK()) {
@@ -339,7 +339,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 */
 	private final class CRKeyListener extends KeyAdapter implements KeyListener {
 		@Override
-		public void keyReleased(KeyEvent e) {
+		public void keyReleased(final KeyEvent e) {
 			if (e.character == '\r') {
 				updateTextValue();
 			}
@@ -354,13 +354,13 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 * <ol>
 	 */
 	private final class FocusManager implements FocusListener {
-		public void focusGained(FocusEvent e) {
+		public void focusGained(final FocusEvent e) {
 			if (isFocusable() && !isOutputOnly()) {
 				selectAll();
 			}
 		}
 
-		public void focusLost(FocusEvent e) {
+		public void focusLost(final FocusEvent e) {
 			updateTextValue();
 		}
 	}
@@ -369,9 +369,9 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 * Updates the text value in the ridget, if direct writing is enabled.
 	 */
 	private final class SyncModifyListener implements ModifyListener {
-		public void modifyText(ModifyEvent e) {
+		public void modifyText(final ModifyEvent e) {
 			updateTextValueWhenDirectWriting();
-			String text = getUIText();
+			final String text = getUIText();
 			disableMandatoryMarkers(isNotEmpty(text));
 		}
 	}
@@ -388,21 +388,21 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 */
 	private final class ValidationListener implements VerifyListener {
 
-		public synchronized void verifyText(VerifyEvent e) {
+		public synchronized void verifyText(final VerifyEvent e) {
 			if (!e.doit) {
 				return;
 			}
 			if (inputConverter != null) {
 				e.text = (String) inputConverter.convert(e.text);
 			}
-			String newText = getText(e);
-			IStatus status = checkOnEditRules(newText, new ValidationCallback(true));
-			boolean doit = !(status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH);
+			final String newText = getText(e);
+			final IStatus status = checkOnEditRules(newText, new ValidationCallback(true));
+			final boolean doit = !(status.getCode() == ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH);
 			e.doit = doit;
 		}
 
-		private String getText(VerifyEvent e) {
-			String oldText = getUIText();
+		private String getText(final VerifyEvent e) {
+			final String oldText = getUIText();
 			String newText;
 			// deletion
 			if (e.keyCode == 127 || e.keyCode == 8) {

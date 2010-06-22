@@ -25,17 +25,17 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 public class JavaSystemPropertiesResolverTest extends RienaTestCase {
 
 	public void testResolveUserDir() throws CoreException {
-		String expected = System.getProperty("user.dir");
+		final String expected = System.getProperty("user.dir");
 		assertEquals(expected, VariableManagerUtil.substitute("${java.system.property:user.dir}"));
 	}
 
 	public void testResolveRienaHostName() throws CoreException, UnknownHostException {
-		String expected = InetAddress.getLocalHost().getHostName();
+		final String expected = InetAddress.getLocalHost().getHostName();
 		assertEquals(expected, VariableManagerUtil.substitute("${java.system.property:riena.host.name}"));
 	}
 
 	public void testResolveRienaHostAddress() throws CoreException, UnknownHostException {
-		String expected = InetAddress.getLocalHost().getHostAddress();
+		final String expected = InetAddress.getLocalHost().getHostAddress();
 		assertEquals(expected, VariableManagerUtil.substitute("${java.system.property:riena.host.address}"));
 	}
 

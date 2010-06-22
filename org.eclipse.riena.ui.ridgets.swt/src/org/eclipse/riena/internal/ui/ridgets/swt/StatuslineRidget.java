@@ -59,7 +59,7 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 		setMessage(LONG_EMPTY_STRING);
 	}
 
-	public void error(String message) {
+	public void error(final String message) {
 		setImage(LnfManager.getLnf().getImage(LnfKeyConstants.STATUSLINE_ERROR_ICON));
 		setMessage(message);
 	}
@@ -76,12 +76,12 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 	 * @param statuslineNumberRidget
 	 *            the statuslineNumberRidget to set
 	 */
-	public void setStatuslineNumberRidget(IStatuslineNumberRidget statuslineNumberRidget) {
+	public void setStatuslineNumberRidget(final IStatuslineNumberRidget statuslineNumberRidget) {
 		this.statuslineNumberRidget = statuslineNumberRidget;
 		addRidget(Statusline.SL_NUMBER_RIDGET_ID, statuslineNumberRidget);
 	}
 
-	public void setStatuslineUIProcessRidget(IStatuslineUIProcessRidget statuslineUIProcessRidget) {
+	public void setStatuslineUIProcessRidget(final IStatuslineUIProcessRidget statuslineUIProcessRidget) {
 		addRidget(Statusline.SL_UIPROCES_RIDGET_ID, statuslineUIProcessRidget);
 		this.statuslineUIProcessRidget = statuslineUIProcessRidget;
 	}
@@ -90,33 +90,33 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 		return statuslineUIProcessRidget;
 	}
 
-	public void info(String message) {
+	public void info(final String message) {
 		setImage(LnfManager.getLnf().getImage(LnfKeyConstants.STATUSLINE_INFO_ICON));
 		setMessage(message);
 	}
 
-	public void setMessage(String message) {
+	public void setMessage(final String message) {
 		if (message != null && !message.equals(this.message)) {
 			this.message = message;
 			updateMessage();
 		}
 	}
 
-	public void warning(String message) {
+	public void warning(final String message) {
 		setImage(LnfManager.getLnf().getImage(LnfKeyConstants.STATUSLINE_WARNING_ICON));
 		setMessage(message);
 	}
 
 	@Override
 	public String getID() {
-		IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
+		final IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		return locator.locateBindingProperty(getUIControl());
 	}
 
 	// helping methods
 	//////////////////
 
-	private void setImage(Image image) {
+	private void setImage(final Image image) {
 		if (this.image != image) {
 			this.image = image;
 			updateImage();
@@ -124,14 +124,14 @@ public class StatuslineRidget extends AbstractCompositeRidget implements IStatus
 	}
 
 	private void updateImage() {
-		Statusline control = getUIControl();
+		final Statusline control = getUIControl();
 		if (control != null) {
 			control.getMessageComposite().setImage(image);
 		}
 	}
 
 	private void updateMessage() {
-		Statusline control = getUIControl();
+		final Statusline control = getUIControl();
 		if (control != null) {
 			control.getMessageComposite().setMessage(message);
 		}

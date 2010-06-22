@@ -41,13 +41,13 @@ public class ValidEmailAddress implements IValidator {
 		if (toBeChecked.length() == 0 || GenericValidator.isEmail(toBeChecked)) {
 			return ValidationRuleStatus.ok();
 		}
-		String message = NLS.bind(Messages.ValidEmailAddress_error_notValid, toBeChecked);
+		final String message = NLS.bind(Messages.ValidEmailAddress_error_notValid, toBeChecked);
 		return ValidationRuleStatus.error(false, message);
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder buffer = new StringBuilder(this.getClass().getSimpleName());
+		final StringBuilder buffer = new StringBuilder(this.getClass().getSimpleName());
 		return buffer.toString();
 	}
 
