@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.riena.ui.core.context.IContext;
+import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -102,6 +103,29 @@ public abstract class AbstractWindowController implements IController, IContext 
 
 	public void configureRidgets() {
 		setWindowRidget((IWindowRidget) getRidget(RIDGET_ID_WINDOW));
+		configureOkCancelButtons();
+	}
+
+	protected void configureOkCancelButtons() {
+		final IActionRidget okAction = getRidget(IActionRidget.class, RIDGET_ID_OK);
+		if (okAction != null) {
+			okAction.setText("&Okay"); //$NON-NLS-1$
+			okAction.addListener(new IActionListener() {
+				public void callback() {
+					setReturnCode(OK);
+					getWindowRidget().dispose();
+				}
+			});
+		}
+		final IActionRidget cancelAction = getRidget(IActionRidget.class, RIDGET_ID_CANCEL);
+		if (cancelAction != null) {
+			cancelAction.addListener(new IActionListener() {
+				public void callback() {
+					setReturnCode(CANCEL);
+					getWindowRidget().dispose();
+				}
+			});
+		}
 	}
 
 	/**

@@ -110,7 +110,6 @@ public class HelloDialogView extends AbstractDialogViewWithButtonBar {
 
 		final Composite buttonComposite = createChoiceGroupButtons(group);
 		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(buttonComposite);
-		//		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(createButtons(parent));
 
 		return group;
 	}
@@ -129,20 +128,4 @@ public class HelloDialogView extends AbstractDialogViewWithButtonBar {
 		return buttonComposite;
 	}
 
-	//	private Composite createButtons(final Composite parent) {
-	//
-	//		final Composite buttonComposite = UIControlsFactory.createComposite(parent);
-	//		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).applyTo(buttonComposite);
-	//
-	//		final Button okButton = UIControlsFactory.createButton(buttonComposite);
-	//		GridDataFactory.fillDefaults().grab(true, false).align(SWT.END, SWT.BEGINNING).applyTo(okButton);
-	//		okButton.setText("Ok"); //$NON-NLS-1$
-	//		addUIControl(okButton, HelloDialogController.RIDGET_ID_OK);
-	//
-	//		final Button cancelButton = UIControlsFactory.createButton(buttonComposite);
-	//		cancelButton.setText("Cancel"); //$NON-NLS-1$
-	//		addUIControl(cancelButton, HelloDialogController.RIDGET_ID_CANCEL);
-	//
-	//		return buttonComposite;
-	//	}
 }

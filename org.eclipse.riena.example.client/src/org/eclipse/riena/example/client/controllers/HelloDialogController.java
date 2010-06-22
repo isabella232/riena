@@ -99,22 +99,6 @@ public class HelloDialogController extends AbstractWindowController {
 				compositeCarPlates.updateFromModel();
 			}
 		});
-
-		final IActionRidget okAction = getRidget(IActionRidget.class, RIDGET_ID_OK);
-		okAction.setText("&Okay"); //$NON-NLS-1$
-		okAction.addListener(new IActionListener() {
-			public void callback() {
-				setReturnCode(OK);
-				getWindowRidget().dispose();
-			}
-		});
-		final IActionRidget cancelAction = getRidget(IActionRidget.class, RIDGET_ID_CANCEL);
-		cancelAction.addListener(new IActionListener() {
-			public void callback() {
-				setReturnCode(CANCEL);
-				getWindowRidget().dispose();
-			}
-		});
 	}
 
 	// helping methods
