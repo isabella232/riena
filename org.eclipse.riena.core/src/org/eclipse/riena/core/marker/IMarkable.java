@@ -32,6 +32,7 @@ public interface IMarkable {
 	 * 
 	 * @param marker
 	 *            the marker to remove.
+	 * @return true, if marker is removed, else false.
 	 */
 	boolean removeMarker(IMarker marker);
 
