@@ -26,6 +26,9 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public abstract class AbstractDialogViewWithButtonBar extends AbstractDialogView {
 
+	private Button okButton;
+	private Button cancelButton;
+
 	protected AbstractDialogViewWithButtonBar(final Shell parentShell) {
 		super(parentShell);
 	}
@@ -40,12 +43,19 @@ public abstract class AbstractDialogViewWithButtonBar extends AbstractDialogView
 	}
 
 	protected void fillButtonBar(final Composite parent) {
-		final Button okButton = UIControlsFactory.createButton(parent, "&Ok", AbstractWindowController.RIDGET_ID_OK); //$NON-NLS-1$
+		okButton = UIControlsFactory.createButton(parent, "&Ok", AbstractWindowController.RIDGET_ID_OK); //$NON-NLS-1$
 		GridDataFactory.fillDefaults().grab(true, true).align(SWT.END, SWT.END).applyTo(okButton);
 
-		final Button cancelButton = UIControlsFactory.createButton(parent,
-				"&Cancel", AbstractWindowController.RIDGET_ID_CANCEL); //$NON-NLS-1$
+		cancelButton = UIControlsFactory.createButton(parent, "&Cancel", AbstractWindowController.RIDGET_ID_CANCEL); //$NON-NLS-1$
 
 		setDefaultButton(cancelButton);
+	}
+
+	protected Button getButtonBarOkButton() {
+		return okButton;
+	}
+
+	protected Button getButtonBarCancelButton() {
+		return cancelButton;
 	}
 }
