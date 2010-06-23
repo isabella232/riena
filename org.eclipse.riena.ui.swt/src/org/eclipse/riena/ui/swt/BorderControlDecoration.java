@@ -127,7 +127,7 @@ public class BorderControlDecoration {
 			 * After moving the control will be redrawn.
 			 */
 			public void controlMoved(final ControlEvent e) {
-				redrawControl(e);
+				// Do nothing here
 			}
 
 			/**
