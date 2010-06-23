@@ -46,6 +46,6 @@ public abstract class AbstractDialogViewWithButtonBar extends AbstractDialogView
 		final Button cancelButton = UIControlsFactory.createButton(parent,
 				"&Cancel", AbstractWindowController.RIDGET_ID_CANCEL); //$NON-NLS-1$
 
-		getShell().setDefaultButton(cancelButton);
+		setDefaultButton(cancelButton);
 	}
 }

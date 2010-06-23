@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -153,6 +154,16 @@ public abstract class AbstractDialogView extends Dialog {
 	 */
 	public final AbstractWindowController getController() {
 		return controlledView.getController();
+	}
+
+	/**
+	 * Sets the default button for the dialog.
+	 * 
+	 * @param defaultButton
+	 *            the button that should be "focused" by default.
+	 */
+	public void setDefaultButton(final Button defaultButton) {
+		getShell().setDefaultButton(defaultButton);
 	}
 
 	/**
