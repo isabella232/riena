@@ -206,6 +206,15 @@ public abstract class AbstractWindowController implements IController, IContext 
 		this.windowRidget = windowRidget;
 	}
 
+	/**
+	 * Closes the dialog and sets given return code.
+	 * 
+	 * @param returnCode
+	 *            the return code to set. These codes are window specific, but
+	 *            two return codes are already defined: {@link #OK} and
+	 *            {@link #CANCEL}.
+	 * @since 2.1
+	 */
 	public void close(final int returnCode) {
 		setReturnCode(returnCode);
 		getWindowRidget().dispose();
