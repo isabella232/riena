@@ -262,6 +262,10 @@ public class SWTModuleController extends ModuleController {
 		@Override
 		public void childAdded(final ISubModuleNode source, final ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
+			if (source.getIndexOfChild(childAdded) < source.getChildren().size() - 1) {
+				tree.updateFromModel();
+				return;
+			}
 			updateTree(childAdded);
 		}
 	}
@@ -276,6 +280,10 @@ public class SWTModuleController extends ModuleController {
 		@Override
 		public void childAdded(final IModuleNode source, final ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
+			if (source.getIndexOfChild(childAdded) < source.getChildren().size() - 1) {
+				tree.updateFromModel();
+				return;
+			}
 			updateTree(childAdded);
 		}
 
