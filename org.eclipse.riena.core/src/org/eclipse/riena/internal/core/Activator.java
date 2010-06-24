@@ -50,8 +50,6 @@ public class Activator extends RienaPlugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
-		LoggerProvider.instance().start();
-		logStage();
 		startStartupListener();
 		startExceptionHandling();
 	}
@@ -110,7 +108,7 @@ public class Activator extends RienaPlugin {
 	}
 
 	/**
-	 *
+	 * Listens for riena.core activation and performs startup actions.
 	 */
 	private class StartupBundleListener implements BundleListener {
 
@@ -119,11 +117,14 @@ public class Activator extends RienaPlugin {
 				return;
 			}
 			if (event.getBundle() == getContext().getBundle() && event.getType() == BundleEvent.STARTED) {
+				getContext().removeBundleListener(this);
 				active = true;
+				LoggerProvider.instance().start();
+				logStage();
+
 				final ISafeRunnable safeRunnable = new StartupsSafeRunnable();
 				Wire.instance(safeRunnable).andStart(getContext());
 				SafeRunner.run(safeRunnable);
-				getContext().removeBundleListener(this);
 			}
 		}
 	}
