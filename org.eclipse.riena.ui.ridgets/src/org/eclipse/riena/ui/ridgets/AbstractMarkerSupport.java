@@ -112,11 +112,12 @@ public abstract class AbstractMarkerSupport {
 	 * @see org.eclipse.riena.ui.internal.ridgets.IBasicMarkableRidget#getMarkers()
 	 */
 	public Collection<IMarker> getMarkers() {
-		if (markers != null) {
-			return Collections.unmodifiableSet(markers);
-		} else {
-			return Collections.emptySet();
-		}
+		//		if (markers != null) {
+		//			return Collections.unmodifiableSet(markers);
+		//		} else {
+		//			return Collections.emptySet();
+		//		}
+		return cloneMarkers();
 	}
 
 	/**
@@ -203,11 +204,11 @@ public abstract class AbstractMarkerSupport {
 
 	private void fireEnabledPropertyChangeEvent(final Collection<IMarker> oldMarkers,
 			final Collection<IMarker> newMarkers) {
-		final Boolean oldValue = isOutput(oldMarkers);
-		final Boolean newValue = isOutput(newMarkers);
+		final Boolean oldValue = isEnabled(oldMarkers);
+		final Boolean newValue = isEnabled(newMarkers);
 		if (!oldValue.equals(newValue)) {
-			final PropertyChangeEvent evt = new PropertyChangeEvent(getRidget(), IRidget.PROPERTY_ENABLED,
-					isEnabled(oldMarkers), isEnabled(newMarkers));
+			final PropertyChangeEvent evt = new PropertyChangeEvent(getRidget(), IRidget.PROPERTY_ENABLED, oldValue,
+					newValue);
 			propertyChangeSupport.firePropertyChange(evt);
 		}
 	}
