@@ -42,8 +42,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackAdapter;
-import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -59,6 +59,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
@@ -78,6 +79,7 @@ import org.eclipse.riena.ui.swt.facades.GCFacade;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Ridget for SWT {@link Table} widgets.
@@ -87,7 +89,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private final Listener itemEraser;
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener clickForwarder;
-	private final MouseTrackListener tooltipManager;
+	private final TableTooltipManager tooltipManager;
 	private final ColumnSortListener sortListener;
 	private ListenerList<IClickListener> clickListeners;
 	private ListenerList<IActionListener> doubleClickListeners;
@@ -179,7 +181,9 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			control.addSelectionListener(selectionTypeEnforcer);
 			control.addMouseListener(clickForwarder);
 			final SWTFacade facade = SWTFacade.getDefault();
+			tooltipManager.init(control);
 			facade.addMouseTrackListener(control, tooltipManager);
+			facade.addMouseMoveListener(control, tooltipManager);
 			facade.addEraseItemListener(control, itemEraser);
 		}
 	}
@@ -201,6 +205,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			control.removeMouseListener(clickForwarder);
 			final SWTFacade facade = SWTFacade.getDefault();
 			facade.removeMouseTrackListener(control, tooltipManager);
+			facade.removeMouseMoveListener(control, tooltipManager);
 			facade.removeEraseItemListener(control, itemEraser);
 		}
 		viewer = null;
@@ -738,27 +743,39 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	 * Shows the appropriate tooltip (error tooltip / regular tooltip / no
 	 * tooltip) for the current hovered row.
 	 */
-	private final class TableTooltipManager extends MouseTrackAdapter {
+	private final class TableTooltipManager extends MouseTrackAdapter implements MouseMoveListener {
 
-		private boolean restore;
-		private String savedToolTip;
+		private String defaultToolTip;
+
+		public void init(final Table table) {
+			final String tableToolTip = table.getToolTipText();
+			defaultToolTip = tableToolTip != null ? tableToolTip : ""; //$NON-NLS-1$
+		}
+
+		public void mouseMove(final MouseEvent event) {
+			final Table table = (Table) event.widget;
+			hideToolTip(table);
+		}
 
 		@Override
 		public void mouseExit(final MouseEvent event) {
 			final Table table = (Table) event.widget;
-			restoreToolTip(table);
+			resetToolTip(table);
 		}
 
 		@Override
 		public void mouseHover(final MouseEvent event) {
 			final Table table = (Table) event.widget;
-			final TableItem item = table.getItem(new Point(event.x, event.y));
+			final Point mousePt = new Point(event.x, event.y);
+			final TableItem item = table.getItem(mousePt);
 			final String errorToolTip = getErrorToolTip(item);
-			if (errorToolTip != null && errorToolTip.length() > 0) {
-				saveToolTip(table);
+			final String itemToolTip = getItemToolTip(item, mousePt);
+			if (!StringUtils.isEmpty(errorToolTip)) {
 				table.setToolTipText(errorToolTip);
+			} else if (!StringUtils.isEmpty(itemToolTip)) {
+				table.setToolTipText(itemToolTip);
 			} else {
-				restoreToolTip(table);
+				resetToolTip(table);
 			}
 		}
 
@@ -778,18 +795,26 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			return null;
 		}
 
-		private void restoreToolTip(final Table table) {
-			if (restore) {
-				table.setToolTipText(savedToolTip);
-				savedToolTip = null;
-				restore = false;
+		private String getItemToolTip(final TableItem item, final Point mousePt) {
+			String result = null;
+			if (item != null) {
+				final int column = SwtUtilities.findColumn(item.getParent(), mousePt);
+				if (column != -1) {
+					result = item.getText(column);
+				}
+			}
+			return result;
+		}
+
+		private void hideToolTip(final Table table) {
+			if (!"".equals(table.getToolTipText())) { //$NON-NLS-1$
+				table.setToolTipText(""); //$NON-NLS-1$
 			}
 		}
 
-		private void saveToolTip(final Table table) {
-			if (!restore) {
-				restore = true;
-				savedToolTip = table.getToolTipText();
+		private void resetToolTip(final Table table) {
+			if (table.getToolTipText() == null || !table.getToolTipText().equals(defaultToolTip)) {
+				table.setToolTipText(defaultToolTip);
 			}
 		}
 	}
@@ -824,40 +849,12 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 		private ClickEvent createClickEvent(final MouseEvent e) {
 			final Table table = (Table) e.widget;
-			final int colIndex = findColumn(table, new Point(e.x, e.y));
+			final int colIndex = SwtUtilities.findColumn(table, new Point(e.x, e.y));
 			// x = 0 gets us an item even not using SWT.FULL_SELECTION
 			final TableItem item = table.getItem(new Point(0, e.y));
 			final Object rowData = item != null ? item.getData() : null;
 			final ClickEvent event = new ClickEvent(colIndex, e.button, rowData);
 			return event;
-		}
-
-		/**
-		 * Returns the 0 based index of the column at {@code pt}. The code can
-		 * handle re-ordered columns. The index refers to the original ordering
-		 * (as used by SWT API).
-		 * <p>
-		 * Will return -1 if no column could be computed -- this is the case
-		 * when all columns are resized to have width 0.
-		 */
-		private int findColumn(final Table table, final Point pt) {
-			int width = 0;
-			final int[] colOrder = table.getColumnOrder();
-			// compute the current column ordering
-			final TableColumn[] columns = new TableColumn[colOrder.length];
-			for (int i = 0; i < colOrder.length; i++) {
-				final int idx = colOrder[i];
-				columns[i] = table.getColumn(idx);
-			}
-			// find the column under Point pt\
-			for (final TableColumn col : columns) {
-				final int colWidth = col.getWidth();
-				if (width < pt.x && pt.x < width + colWidth) {
-					return table.indexOf(col);
-				}
-				width += colWidth;
-			}
-			return -1;
 		}
 	}
 

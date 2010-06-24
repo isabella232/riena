@@ -16,8 +16,11 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Resource;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.cache.LRUHashMap;
@@ -116,6 +119,86 @@ public final class SwtUtilities {
 	}
 
 	/**
+	 * Disposes the given resource, if the the resource is not null and isn't
+	 * already disposed.
+	 * 
+	 * @param resource
+	 *            resource to dispose
+	 */
+	public static void disposeResource(final Resource resource) {
+		if (!isDisposed(resource)) {
+			resource.dispose();
+		}
+	}
+
+	/**
+	 * Disposes the given widget, if the the widget is not {@code null} and
+	 * isn't already disposed.
+	 * 
+	 * @param widget
+	 *            widget to dispose
+	 */
+	public static void disposeWidget(final Widget widget) {
+		if (!isDisposed(widget)) {
+			widget.dispose();
+		}
+	}
+
+	/**
+	 * Returns the 0 based index of the column at {@code pt}. The code can
+	 * handle re-ordered columns. The index refers to the original ordering (as
+	 * used by SWT API).
+	 * <p>
+	 * Will return -1 if no column could be computed -- this is the case when
+	 * all columns are resized to have width 0.
+	 * 
+	 * @since 2.1
+	 */
+	public static int findColumn(final Table table, final Point pt) {
+		int width = 0;
+		final int[] colOrder = table.getColumnOrder();
+		// compute the current column ordering
+		final TableColumn[] columns = new TableColumn[colOrder.length];
+		for (int i = 0; i < colOrder.length; i++) {
+			final int idx = colOrder[i];
+			columns[i] = table.getColumn(idx);
+		}
+		// find the column under Point pt\
+		for (final TableColumn col : columns) {
+			final int colWidth = col.getWidth();
+			if (width < pt.x && pt.x < width + colWidth) {
+				return table.indexOf(col);
+			}
+			width += colWidth;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns {@code true}, if the given widget is disposed or {@code null}.
+	 * 
+	 * @param widget
+	 *            widget to check
+	 * @return {@code true}, if the widget is disposed or {@code null};
+	 *         otherwise {@code false}.
+	 */
+	public static boolean isDisposed(final Widget widget) {
+		return widget == null || widget.isDisposed();
+	}
+
+	/**
+	 * Returns {@code true}, if the given resource is disposed or {@code null}.
+	 * 
+	 * @param resource
+	 *            resource to check
+	 * @return {@code true}, if the resource is disposed or {@code null};
+	 *         otherwise {@code false}.
+	 */
+	public static boolean isDisposed(final Resource resource) {
+		return !((resource != null) && (!resource.isDisposed()));
+	}
+
+	/**
 	 * Creates a new instance of <code>Color</code> that is a brighter version
 	 * of the given color.
 	 * 
@@ -146,56 +229,6 @@ public final class SwtUtilities {
 		final RGB rgb = new RGB(h, s, b);
 
 		return new Color(color.getDevice(), rgb);
-	}
-
-	/**
-	 * Disposes the given resource, if the the resource is not null and isn't
-	 * already disposed.
-	 * 
-	 * @param resource
-	 *            resource to dispose
-	 */
-	public static void disposeResource(final Resource resource) {
-		if (!isDisposed(resource)) {
-			resource.dispose();
-		}
-	}
-
-	/**
-	 * Disposes the given widget, if the the widget is not {@code null} and
-	 * isn't already disposed.
-	 * 
-	 * @param widget
-	 *            widget to dispose
-	 */
-	public static void disposeWidget(final Widget widget) {
-		if (!isDisposed(widget)) {
-			widget.dispose();
-		}
-	}
-
-	/**
-	 * Returns {@code true}, if the given widget is disposed or {@code null}.
-	 * 
-	 * @param widget
-	 *            widget to check
-	 * @return {@code true}, if the widget is disposed or {@code null};
-	 *         otherwise {@code false}.
-	 */
-	public static boolean isDisposed(final Widget widget) {
-		return widget == null || widget.isDisposed();
-	}
-
-	/**
-	 * Returns {@code true}, if the given resource is disposed or {@code null}.
-	 * 
-	 * @param resource
-	 *            resource to check
-	 * @return {@code true}, if the resource is disposed or {@code null};
-	 *         otherwise {@code false}.
-	 */
-	public static boolean isDisposed(final Resource resource) {
-		return !((resource != null) && (!resource.isDisposed()));
 	}
 
 	private final static class GCString {
