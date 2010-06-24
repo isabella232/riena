@@ -146,6 +146,7 @@ public abstract class AbstractMarkerSupport {
 
 	/**
 	 * @see org.eclipse.riena.ui.internal.ridgets.IBasicMarkableRidget#removeMarker(org.eclipse.riena.core.marker.IMarker)
+	 * @since 2.1
 	 */
 	public boolean removeMarker(final IMarker marker) {
 		if ((markers != null) && !markers.isEmpty()) {

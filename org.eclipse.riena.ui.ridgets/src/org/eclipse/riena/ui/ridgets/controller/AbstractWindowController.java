@@ -27,7 +27,13 @@ import org.eclipse.riena.ui.ridgets.IWindowRidget;
  */
 public abstract class AbstractWindowController implements IController, IContext {
 
+	/**
+	 * @since 2.1
+	 */
 	public static final String RIDGET_ID_OK = "dialogOkButton"; //$NON-NLS-1$
+	/**
+	 * @since 2.1
+	 */
 	public static final String RIDGET_ID_CANCEL = "dialogCancelButton"; //$NON-NLS-1$
 
 	/**
@@ -106,6 +112,9 @@ public abstract class AbstractWindowController implements IController, IContext 
 		configureOkCancelButtons();
 	}
 
+	/**
+	 * @since 2.1
+	 */
 	protected void configureOkCancelButtons() {
 		final IActionRidget okAction = getRidget(IActionRidget.class, RIDGET_ID_OK);
 		if (okAction != null) {
