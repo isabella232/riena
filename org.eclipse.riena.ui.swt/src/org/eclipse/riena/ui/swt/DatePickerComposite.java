@@ -24,6 +24,7 @@ import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -185,12 +186,6 @@ public class DatePickerComposite extends Composite {
 	 */
 	public static final class DatePicker {
 
-		/**
-		 * Height of the widget's header on windows. Don't close when clicked
-		 * there.
-		 */
-		private static final int WIN32_CALENDAR_HEADER_HEIGHT = 45;
-
 		private Shell shell;
 		private DateTime calendar;
 		private DatePickerComposite datePicker;
@@ -216,6 +211,7 @@ public class DatePickerComposite extends Composite {
 			calendar.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
 			shell.pack();
 
+			final IZoneFinder zoneFinder = createZoneFinder(calendar);
 			calendar.addMouseListener(new MouseAdapter() {
 				/*
 				 * On windows the Calendar widget has a header that has a
@@ -223,34 +219,30 @@ public class DatePickerComposite extends Composite {
 				 * needed until we can close the widget (i.e. last zoom in
 				 * level). See Bug 288354, comment #4, point #3.
 				 */
-				private int win32clicks = init();
+				private int clicksToClose = 1;
 
 				@Override
 				public void mouseUp(final MouseEvent e) {
 					if (e.button != 1) {
 						return;
 					}
-					if (Util.isWin32()) {
-						if (e.y < WIN32_CALENDAR_HEADER_HEIGHT) {
-							win32clicks = Math.min(4, win32clicks + 1);
-						} else {
-							win32clicks = Math.max(win32clicks - 1, 0);
-						}
+					if (zoneFinder.getZone() == IZoneFinder.BODY) {
+						clicksToClose = Math.max(clicksToClose - 1, 0);
+					} else if (zoneFinder.getZone() == IZoneFinder.ZOOM_OUT) {
+						clicksToClose = Math.min(4, clicksToClose + 1);
 					}
-					if (win32clicks == 0) {
+					//					System.out.println(String.format("[y,m,d] = %d,%d,%d @ %d", calendar.getYear(),
+					//							calendar.getMonth(), calendar.getDay(), clicksToClose));
+					if (clicksToClose == 0) {
 						final Calendar cal = Calendar.getInstance();
 						cal.set(Calendar.YEAR, calendar.getYear());
 						cal.set(Calendar.MONTH, calendar.getMonth());
 						cal.set(Calendar.DAY_OF_MONTH, calendar.getDay());
 
 						setDateToTextfield(cal.getTime());
-						win32clicks = init();
+						clicksToClose = 1;
 						close();
 					}
-				}
-
-				private int init() {
-					return Util.isWin32() ? 1 : 0;
 				}
 			});
 
@@ -307,8 +299,149 @@ public class DatePickerComposite extends Composite {
 			calendar.setDay(newDate.get(Calendar.DAY_OF_MONTH));
 		}
 
+		private IZoneFinder createZoneFinder(final DateTime parent) {
+			IZoneFinder result;
+			if (isVistaOrLater()) {
+				result = new VistaZoneFinder(parent);
+			} else if (Util.isWin32()) {
+				result = new XPZoneFinder(parent);
+			} else {
+				result = new DefaultZoneFinder();
+			}
+			return result;
+		}
+
+		private boolean isVistaOrLater() {
+			boolean result = false;
+			if (Util.isWin32()) {
+				final String osVer = System.getProperty("os.version"); //$NON-NLS-1$
+				try {
+					final double version = Double.valueOf(osVer);
+					result = version >= 6.0;
+				} catch (final NumberFormatException nfe) {
+					// ignore
+				} catch (final NullPointerException npe) {
+					// ignore
+				}
+			}
+			return result;
+		}
+
 		private void setDateToTextfield(final Date date) {
 			datePicker.getDateConverterStrategy().setDateToTextField(date);
+		}
+	}
+
+	/**
+	 * Determines what will happen on a click, based on the current cursor
+	 * position within the widget (header / body / zoom out area).
+	 */
+	private interface IZoneFinder extends MouseMoveListener {
+		/**
+		 * The cursor is in the body of the native picker. Clicking here selects
+		 * a date.
+		 */
+		int BODY = 0;
+		/**
+		 * The cursor is in the header of the native picker. Clicking here does
+		 * not select a date.
+		 */
+		int HEADER = 1;
+		/**
+		 * The cursor is in the zoom out area of the native picker (vista /
+		 * win7). Clicking here zoom's out. Adds an extra click (zoom in) to the
+		 * number of click's required to close the picker (!).
+		 */
+		int ZOOM_OUT = 2;
+
+		int getZone();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Calculations for Vista and Win7.
+	 */
+	private static final class VistaZoneFinder implements IZoneFinder {
+		/** Height of the header. */
+		final int headerHeight = 48;
+		/** Height of 'dead' zone at top of header. */
+		final int topDeadZone = 4;
+		/** Height of 'dead' zone at bottom of header. */
+		final int bottomDeadZone = 16;
+		/** Top of the buttons. */
+		final int buttonTop = 9;
+		/** Bottom of the buttons. */
+		final int buttonBottom = 26;
+		/** Right end of the button / Left start of header. */
+		final int headerLeft = 20;
+		/** right end of header / Left start of button. */
+		final int headerRight = 204;
+
+		private int zone = BODY;
+
+		public VistaZoneFinder(final DateTime parent) {
+			parent.addMouseMoveListener(this);
+		}
+
+		public void mouseMove(final MouseEvent e) {
+			if (e.y < headerHeight) {
+				if (e.y > headerHeight - bottomDeadZone || e.y < topDeadZone) {
+					zone = HEADER;
+				} else {
+					if ((e.x < headerLeft && e.y > buttonTop && e.y < buttonBottom)
+							|| (e.x > headerRight && e.y > buttonTop && e.y < buttonBottom)) {
+						zone = HEADER;
+					} else {
+						zone = ZOOM_OUT;
+					}
+				}
+			} else {
+				zone = BODY;
+			}
+		}
+
+		public int getZone() {
+			return zone;
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Calculations for XP (or earlier).
+	 */
+	private static final class XPZoneFinder implements IZoneFinder {
+		/** Height of the header. */
+		final int headerHeight = 45;
+
+		private int zone = BODY;
+
+		public XPZoneFinder(final DateTime parent) {
+			parent.addMouseMoveListener(this);
+		}
+
+		public void mouseMove(final MouseEvent e) {
+			zone = e.y < headerHeight ? HEADER : BODY;
+		}
+
+		public int getZone() {
+			return zone;
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Generic implementation. Always assumes to be in the 'body' zone.
+	 */
+	private static final class DefaultZoneFinder implements IZoneFinder {
+		public void mouseMove(final MouseEvent e) {
+			// unused
+		}
+
+		public int getZone() {
+			return BODY;
 		}
 	}
 
