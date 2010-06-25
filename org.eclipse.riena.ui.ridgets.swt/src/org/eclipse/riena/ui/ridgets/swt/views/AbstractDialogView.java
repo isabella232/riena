@@ -242,10 +242,10 @@ public abstract class AbstractDialogView extends Dialog {
 
 	private void createContentComposite(final Composite parent) {
 		final Composite mainContentComposite = UIControlsFactory.createComposite(parent, parent.getStyle());
-		GridLayoutFactory.swtDefaults().applyTo(mainContentComposite);
+		GridLayoutFactory.fillDefaults().applyTo(mainContentComposite);
 		final Composite contentComposite = UIControlsFactory.createComposite(mainContentComposite, parent.getStyle());
 		GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL).applyTo(contentComposite);
-		GridLayoutFactory.swtDefaults().applyTo(contentComposite);
+		GridLayoutFactory.fillDefaults().applyTo(contentComposite);
 		buildView(contentComposite);
 		addUIControl(getShell(), AbstractWindowController.RIDGET_ID_WINDOW);
 		final FormData resultFormData = new FormData();
