@@ -100,6 +100,18 @@ public class DatePickerComposite extends Composite {
 	}
 
 	@Override
+	public void setEnabled(final boolean enabled) {
+		super.setEnabled(enabled);
+		// we have to put the following on the event queue, because the call above
+		// completes asynchronously, and the new state is now immedialy available
+		getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				updateButtonEnablement();
+			}
+		});
+	}
+
+	@Override
 	public void setForeground(final Color color) {
 		super.setForeground(color);
 		textfield.setForeground(color);
@@ -111,8 +123,18 @@ public class DatePickerComposite extends Composite {
 		textfield.setBackground(color);
 	}
 
-	// helping methods
-	//////////////////
+	/**
+	 * Updates the enabled state of the picker button, based on the composite's
+	 * enabled state and the text fields editable state.
+	 * 
+	 * @since 2.1
+	 */
+	public void updateButtonEnablement() {
+		if (!isDisposed()) {
+			final boolean enabledButton = getEnabled() && textfield.getEditable();
+			pickerButton.setEnabled(enabledButton);
+		}
+	}
 
 	/**
 	 * Removes the {@link SWT.BORDER} style, to prevent a awkward representation

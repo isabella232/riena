@@ -12,11 +12,13 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.swt.DatePickerComposite;
@@ -96,6 +98,61 @@ public class DateTextRidgetWithDatePickerCompositeTest extends AbstractSWTRidget
 		assertTrue(ridget.isVisible());
 		assertTrue(text.isVisible());
 		assertTrue(text.getParent().isVisible());
+	}
+
+	/**
+	 * As per Bug 317564.
+	 */
+	public void testPickerButtonDisabledWhenOutputOnly() {
+		final DateTextRidget ridget = getRidget();
+		final DatePickerComposite control = getWidget();
+		final Button pickerButton = (Button) ReflectionUtils.getHidden(control, "pickerButton");
+
+		assertTrue(ridget.isEnabled());
+		assertFalse(ridget.isOutputOnly());
+		assertTrue(control.isEnabled());
+		assertTrue(pickerButton.isEnabled());
+
+		ridget.setOutputOnly(true);
+
+		assertTrue(control.isEnabled());
+		assertFalse(pickerButton.isEnabled());
+
+		ridget.setOutputOnly(false);
+
+		assertTrue(control.isEnabled());
+		assertTrue(pickerButton.isEnabled());
+
+		ridget.setEnabled(false);
+
+		assertFalse(control.isEnabled());
+		assertFalse(pickerButton.isEnabled());
+
+		ridget.setEnabled(true);
+
+		assertTrue(control.isEnabled());
+		assertTrue(pickerButton.isEnabled());
+
+		// not editable, toggle enabled
+		ridget.setOutputOnly(true);
+		ridget.setEnabled(false);
+		ridget.setEnabled(true);
+		UITestHelper.readAndDispatch(control);
+
+		assertTrue(control.isEnabled());
+		assertFalse(pickerButton.isEnabled());
+
+		// reset
+		ridget.setOutputOnly(false);
+		// not ednabled, toggle editable 
+		ridget.setEnabled(false);
+		ridget.setOutputOnly(true);
+		ridget.setOutputOnly(false);
+		UITestHelper.readAndDispatch(control);
+
+		assertFalse(control.isEnabled());
+		assertFalse(pickerButton.isEnabled());
+
 	}
 
 }

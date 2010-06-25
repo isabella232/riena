@@ -137,6 +137,16 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	}
 
 	@Override
+	protected boolean isNotEmpty(final String input) {
+		boolean result = false;
+		if (pattern != null) {
+			final String emptyString = new SegmentedString(pattern).toString();
+			result = !emptyString.equals(input);
+		}
+		return result;
+	}
+
+	@Override
 	protected final synchronized void removeListeners(final Text control) {
 		// control.removePaintListener(paintListener);
 		control.removeFocusListener(focusListener);
@@ -146,13 +156,12 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 	}
 
 	@Override
-	protected boolean isNotEmpty(final String input) {
-		boolean result = false;
-		if (pattern != null) {
-			final String emptyString = new SegmentedString(pattern).toString();
-			result = !emptyString.equals(input);
+	protected void updateEditable() {
+		super.updateEditable();
+		final Control control = getUIControl();
+		if (control instanceof DatePickerComposite) {
+			((DatePickerComposite) control).updateButtonEnablement();
 		}
-		return result;
 	}
 
 	public final void setFormat(final String datePattern) {
