@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
@@ -41,6 +43,7 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
+import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -527,10 +530,14 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		public void disposed(final ISubModuleNode source) {
 			// not selectable SubModules dont't have an associated view and therefore no view has to be hidden
 			if (source.isSelectable()) {
-				final SwtViewId id = getViewId(source);
-				hideView(id);
-				final SwtViewProvider viewProvider = SwtViewProvider.getInstance();
-				viewProvider.unregisterSwtViewId(source);
+				try {
+					final SwtViewId id = getViewId(source);
+					hideView(id);
+					final SwtViewProvider viewProvider = SwtViewProvider.getInstance();
+					viewProvider.unregisterSwtViewId(source);
+				} catch (final ApplicationModelFailure amf) {
+					LOGGER.log(LogService.LOG_ERROR, "Error disposing node " + source + ": " + amf.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
+				}
 			}
 		}
 
