@@ -587,6 +587,8 @@ public final class LnfKeyConstants {
 
 	/**
 	 * Image used for indicating the region sensible for resizing a dialog.
+	 * 
+	 * @since 2.1
 	 */
 	public static final String DIALOG_GRAB_CORNER_IMAGE = "Dialog.grabCornerImage"; //$NON-NLS-1$
 

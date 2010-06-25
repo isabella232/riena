@@ -31,6 +31,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * Mouse listener to be used together with a {@link GrabCorner}.
  * <p>
  * This implementation relies on a SWT {@link Tracker} for resize operations.
+ * 
+ * @since 2.1
  */
 public final class DialogGrabCornerListenerWithTracker extends MouseAdapter implements MouseTrackListener {
 

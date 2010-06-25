@@ -71,7 +71,7 @@ import org.eclipse.riena.core.util.StringUtils;
  * <dd>DefaultSelection, Modify, Selection, Verify</dd>
  * </dl>
  * 
- * @since 2.0
+ * @since 2.1
  */
 public class CompletionCombo2 extends Composite {
 
