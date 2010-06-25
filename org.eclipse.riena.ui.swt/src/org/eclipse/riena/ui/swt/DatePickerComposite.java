@@ -22,6 +22,8 @@ import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -191,6 +193,14 @@ public class DatePickerComposite extends Composite {
 		private DatePickerComposite datePicker;
 
 		/**
+		 * On windows the Calendar widget has a header that has a zoomOut /
+		 * zoomIn ability. We need to keep count of the clicks needed until we
+		 * can close the widget (i.e. last zoom in level). See Bug 288354,
+		 * comment #4, point #3.
+		 */
+		private int clicksToClose = 1;
+
+		/**
 		 * Create a new DatePicker instance.
 		 * <p>
 		 * You must invoke {@link #dispose()} to give up native resources held
@@ -211,15 +221,8 @@ public class DatePickerComposite extends Composite {
 			calendar.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, true));
 			shell.pack();
 
-			final IZoneFinder zoneFinder = createZoneFinder(calendar);
 			calendar.addMouseListener(new MouseAdapter() {
-				/*
-				 * On windows the Calendar widget has a header that has a
-				 * zoomOut / zoomIn ability. We need to keep count of the clicks
-				 * needed until we can close the widget (i.e. last zoom in
-				 * level). See Bug 288354, comment #4, point #3.
-				 */
-				private int clicksToClose = 1;
+				private final IZoneFinder zoneFinder = createZoneFinder(calendar);
 
 				@Override
 				public void mouseUp(final MouseEvent e) {
@@ -231,17 +234,24 @@ public class DatePickerComposite extends Composite {
 					} else if (zoneFinder.getZone() == IZoneFinder.ZOOM_OUT) {
 						clicksToClose = Math.min(4, clicksToClose + 1);
 					}
-					//					System.out.println(String.format("[y,m,d] = %d,%d,%d @ %d", calendar.getYear(),
-					//							calendar.getMonth(), calendar.getDay(), clicksToClose));
 					if (clicksToClose == 0) {
-						final Calendar cal = Calendar.getInstance();
-						cal.set(Calendar.YEAR, calendar.getYear());
-						cal.set(Calendar.MONTH, calendar.getMonth());
-						cal.set(Calendar.DAY_OF_MONTH, calendar.getDay());
-
-						setDateToTextfield(cal.getTime());
+						setDateToTextfield();
 						clicksToClose = 1;
 						close();
+					}
+				}
+			});
+
+			calendar.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(final KeyEvent e) {
+					if (e.character == SWT.CR) {
+						clicksToClose = Math.max(clicksToClose - 1, 0);
+						if (clicksToClose == 0) {
+							setDateToTextfield();
+							clicksToClose = 1;
+							close();
+						}
 					}
 				}
 			});
@@ -299,6 +309,9 @@ public class DatePickerComposite extends Composite {
 			calendar.setDay(newDate.get(Calendar.DAY_OF_MONTH));
 		}
 
+		// helping methods
+		//////////////////
+
 		private IZoneFinder createZoneFinder(final DateTime parent) {
 			IZoneFinder result;
 			if (isVistaOrLater()) {
@@ -327,8 +340,12 @@ public class DatePickerComposite extends Composite {
 			return result;
 		}
 
-		private void setDateToTextfield(final Date date) {
-			datePicker.getDateConverterStrategy().setDateToTextField(date);
+		private void setDateToTextfield() {
+			final Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.YEAR, calendar.getYear());
+			cal.set(Calendar.MONTH, calendar.getMonth());
+			cal.set(Calendar.DAY_OF_MONTH, calendar.getDay());
+			datePicker.getDateConverterStrategy().setDateToTextField(cal.getTime());
 		}
 	}
 
