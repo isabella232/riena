@@ -747,6 +747,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	/**
 	 * @param marker
 	 * @see org.eclipse.riena.core.marker.IMarkable#removeMarker(org.eclipse.riena.core.marker.IMarker)
+	 * @since 2.1
 	 */
 	public boolean removeMarker(final IMarker marker) {
 		final boolean removedMarker = getMarkable().removeMarker(marker);

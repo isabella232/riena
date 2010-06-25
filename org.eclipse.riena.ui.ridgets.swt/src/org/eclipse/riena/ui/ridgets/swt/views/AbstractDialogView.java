@@ -161,6 +161,7 @@ public abstract class AbstractDialogView extends Dialog {
 	 * 
 	 * @param defaultButton
 	 *            the button that should be "focused" by default.
+	 * @since 2.1
 	 */
 	public void setDefaultButton(final Button defaultButton) {
 		getShell().setDefaultButton(defaultButton);
@@ -228,6 +229,9 @@ public abstract class AbstractDialogView extends Dialog {
 		return mainComposite;
 	}
 
+	/**
+	 * @since 2.1
+	 */
 	protected void createOkCancelButtons(final Composite parent) {
 		// do nothing by default
 	}

@@ -115,6 +115,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		bindToModel(rowObservableList, rowClass, columnPropertyNames, headerNames);
 	}
 
+	/**
+	 * @since 2.1
+	 */
 	public boolean canSuggest() {
 		boolean result = true;
 		if (areDetailsChanged()) {

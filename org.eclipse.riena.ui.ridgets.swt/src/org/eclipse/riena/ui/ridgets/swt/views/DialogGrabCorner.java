@@ -26,6 +26,8 @@ import org.eclipse.riena.ui.swt.utils.ImageStore;
 
 /**
  * Area to grab so that the shell can be resized.
+ * 
+ * @since 2.1
  */
 public class DialogGrabCorner extends Composite {
 

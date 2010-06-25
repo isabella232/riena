@@ -14,6 +14,9 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * @since 2.1
+ */
 public class ReusableBufferedInputStream extends BufferedInputStream {
 
 	private BufferEntry entry = null;
