@@ -29,6 +29,7 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
@@ -151,6 +152,23 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		control.removeFocusListener(focusListener);
 		control.removeModifyListener(modifyListener);
 		control.removeVerifyListener(verifyListener);
+	}
+
+	// helping methods
+	// ////////////////
+
+	/**
+	 * Given an input {@value} , compute an output value for the UI control,
+	 * based on the current marker state. The method is called when any of the
+	 * following markers changes state: output, read-only.
+	 * <p>
+	 * Subclasses may override, but should call super.
+	 * 
+	 * @since 2.0
+	 */
+	protected String getTextBasedOnMarkerState(final String value) {
+		final boolean hideValue = !isEnabled() && MarkerSupport.isHideDisabledRidgetContent();
+		return hideValue ? EMPTY_STRING : value;
 	}
 
 	/**
@@ -281,36 +299,33 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	// helping methods
 	// ////////////////
 
-	/**
-	 * Given an input {@value} , compute an output value for the UI control,
-	 * based on the current marker state. The method is called when any of the
-	 * following markers changes state: output, read-only.
-	 * <p>
-	 * Subclasses may override, but should call super.
-	 * 
-	 * @since 2.0
-	 */
-	protected String getTextBasedOnMarkerState(final String value) {
-		final boolean hideValue = !isEnabled() && MarkerSupport.isHideDisabledRidgetContent();
-		return hideValue ? EMPTY_STRING : value;
-	}
-
-	private synchronized void forceTextToControl(final String newValue) {
-		final Text control = getTextWidget();
-		if (control != null) {
-			final Listener[] listeners = control.getListeners(SWT.Verify);
-			for (final Listener listener : listeners) {
-				control.removeListener(SWT.Verify, listener);
-			}
-			TextRidget.this.setUIText(getTextBasedOnMarkerState(newValue));
-			for (final Listener listener : listeners) {
-				control.addListener(SWT.Verify, listener);
-			}
+	private void addListeners(final Control control, final int eventType, final Listener[] listeners) {
+		for (final Listener listener : listeners) {
+			control.addListener(eventType, listener);
 		}
 	}
 
 	private synchronized String getTextInternal() {
 		return textValue;
+	}
+
+	private synchronized void forceTextToControl(final String newValue) {
+		final Text control = getTextWidget();
+		if (control != null) {
+			final Listener[] vListeners = removeListeners(control, SWT.Verify);
+			final Listener[] mListeners = removeListeners(control, SWT.Modify);
+			TextRidget.this.setUIText(getTextBasedOnMarkerState(newValue));
+			addListeners(control, SWT.Modify, mListeners);
+			addListeners(control, SWT.Verify, vListeners);
+		}
+	}
+
+	private Listener[] removeListeners(final Control control, final int eventType) {
+		final Listener[] result = control.getListeners(eventType);
+		for (final Listener listener : result) {
+			control.removeListener(eventType, listener);
+		}
+		return result;
 	}
 
 	private synchronized void updateTextValue() {
@@ -322,12 +337,6 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 				firePropertyChange(ITextRidget.PROPERTY_TEXT, oldValue, newValue);
 				firePropertyChange("textAfter", oldValue, newValue); //$NON-NLS-1$
 			}
-		}
-	}
-
-	private synchronized void updateTextValueWhenDirectWriting() {
-		if (isDirectWriting) {
-			updateTextValue();
 		}
 	}
 
@@ -370,7 +379,9 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 */
 	private final class SyncModifyListener implements ModifyListener {
 		public void modifyText(final ModifyEvent e) {
-			updateTextValueWhenDirectWriting();
+			if (isDirectWriting) {
+				updateTextValue();
+			}
 			final String text = getUIText();
 			disableMandatoryMarkers(isNotEmpty(text));
 		}

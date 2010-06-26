@@ -1586,7 +1586,6 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	 * .
 	 */
 	public void testIsSubModuleViewComposite() {
-
 		final Text text = new Text(getShell(), SWT.BORDER);
 
 		boolean ret = ReflectionUtils.invokeHidden(getRidget(), "isSubModuleViewComposite", text);
@@ -1606,14 +1605,12 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		ret = ReflectionUtils.invokeHidden(getRidget(), "isSubModuleViewComposite", comp);
 		assertTrue(ret);
 		SwtUtilities.disposeWidget(comp);
-
 	}
 
 	/**
 	 * Tests the <i>private</i> method {@code isChildOfSubModuleView(Control)} .
 	 */
 	public void testIsChildOfSubModuleView() {
-
 		Text text = new Text(getShell(), SWT.BORDER);
 		boolean ret = ReflectionUtils.invokeHidden(getRidget(), "isChildOfSubModuleView", text);
 		assertFalse(ret);
@@ -1629,14 +1626,12 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertTrue(ret);
 		SwtUtilities.disposeWidget(text);
 		SwtUtilities.disposeWidget(comp);
-
 	}
 
 	/**
 	 * Tests the <i>private</i> method {@code isControlVisible(Control)} .
 	 */
 	public void testIsControlVisible() {
-
 		Text text = new Text(getShell(), SWT.BORDER);
 		boolean ret = ReflectionUtils.invokeHidden(getRidget(), "isControlVisible", text);
 		assertTrue(ret);
@@ -1673,7 +1668,38 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		SwtUtilities.disposeWidget(text);
 		SwtUtilities.disposeWidget(compChild);
 		SwtUtilities.disposeWidget(compTop);
+	}
 
+	/**
+	 * As per Bug 317028.
+	 */
+	public void testTogglingEnabledWithDirectWritingPreservesContent() {
+		final ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+
+		ridget.setDirectWriting(true);
+
+		assertTrue(ridget.isDirectWriting());
+
+		bean.setProperty("abcd");
+		ridget.bindToModel(bean, TestBean.PROPERTY);
+		ridget.updateFromModel();
+
+		assertEquals("abcd", control.getText());
+		assertEquals("abcd", ridget.getText());
+		assertEquals("abcd", bean.getProperty());
+
+		ridget.setEnabled(false);
+
+		assertEquals("", control.getText());
+		assertEquals("abcd", ridget.getText());
+		assertEquals("abcd", bean.getProperty());
+
+		ridget.setEnabled(true);
+
+		assertEquals("abcd", control.getText());
+		assertEquals("abcd", ridget.getText());
+		assertEquals("abcd", bean.getProperty());
 	}
 
 	// helping methods

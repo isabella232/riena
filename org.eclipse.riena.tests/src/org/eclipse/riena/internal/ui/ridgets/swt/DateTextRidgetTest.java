@@ -532,6 +532,72 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("  .  .    ", control.getText());
 	}
 
+	/**
+	 * As per Bug 317028.
+	 */
+	public void testTogglingEnabledWithDirectWritingPreservesContent() {
+		final IDateTextRidget ridget = getRidget();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+		final Text control = getWidget();
+
+		ridget.setDirectWriting(true);
+
+		assertTrue(ridget.isDirectWriting());
+
+		final StringBean bean = new StringBean("  .  .    ");
+		ridget.bindToModel(bean, StringBean.PROP_VALUE);
+		ridget.updateFromModel();
+
+		assertEquals("  .  .    ", control.getText());
+		assertEquals("  .  .    ", ridget.getText());
+		assertEquals("  .  .    ", bean.getValue());
+
+		ridget.setEnabled(false);
+
+		assertEquals("", control.getText());
+		assertEquals("  .  .    ", ridget.getText());
+		assertEquals("  .  .    ", bean.getValue());
+
+		ridget.setEnabled(true);
+
+		assertEquals("  .  .    ", control.getText());
+		assertEquals("  .  .    ", ridget.getText());
+		assertEquals("  .  .    ", bean.getValue());
+	}
+
+	/**
+	 * As per Bug 317028.
+	 */
+	public void testTogglingOutputOnlyWithDirectWritingPreservesContent() {
+		final IDateTextRidget ridget = getRidget();
+		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
+		final Text control = getWidget();
+
+		ridget.setDirectWriting(true);
+
+		assertTrue(ridget.isDirectWriting());
+
+		final StringBean bean = new StringBean("  .  .    ");
+		ridget.bindToModel(bean, StringBean.PROP_VALUE);
+		ridget.updateFromModel();
+
+		assertEquals("  .  .    ", control.getText());
+		assertEquals("  .  .    ", ridget.getText());
+		assertEquals("  .  .    ", bean.getValue());
+
+		ridget.setOutputOnly(true);
+
+		assertEquals("", control.getText());
+		assertEquals("  .  .    ", ridget.getText());
+		assertEquals("  .  .    ", bean.getValue());
+
+		ridget.setOutputOnly(false);
+
+		assertEquals("  .  .    ", control.getText());
+		assertEquals("  .  .    ", ridget.getText());
+		assertEquals("  .  .    ", bean.getValue());
+	}
+
 	// helping methods
 	//////////////////
 
