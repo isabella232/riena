@@ -318,7 +318,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	 * {@inheritDoc}
 	 * <p>
 	 * The constructor of this implementation sets the margin width and the
-	 * image to avoid unnesseccary updates.
+	 * image to avoid unnecessary updates.
 	 */
 	private static class MarkerControlDecoration extends ControlDecoration {
 
