@@ -15,6 +15,11 @@ package org.eclipse.riena.beans.common;
  */
 public class BooleanBean extends AbstractBean {
 
+	/**
+	 * Key for the value property (PROP_VALUE = "value").
+	 */
+	public static final String PROP_VALUE = "value"; //$NON-NLS-1$
+
 	private boolean value;
 
 	/**
