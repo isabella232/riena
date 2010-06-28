@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.databinding;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
@@ -93,5 +95,29 @@ public class DateToStringConverterTest extends TestCase {
 
 		final String result = (String) toString.convert(toDate.convert("01/01/1970"));
 		assertEquals("01/01/1970", result);
+	}
+
+	public void testDateToStringLocal1() {
+		final Calendar calendarInstance = Calendar.getInstance();
+		calendarInstance.set(2010, 10, 12, 0, 0, 0);
+		calendarInstance.setTimeZone(TimeZone.getDefault());
+		final Date date = calendarInstance.getTime();
+		System.out.println(date);
+
+		final DateToStringConverter dateToStringConverter = new DateToStringConverter("dd.MM.yyyy HH:mm:ss");
+		final String dateAsString = (String) dateToStringConverter.convert(date);
+		assertEquals("12.11.2010 00:00:00", dateAsString);
+	}
+
+	public void testDateToStringLocal2() {
+		final Calendar calendarInstance = Calendar.getInstance();
+		calendarInstance.set(2010, 10, 12, 0, 0, 0);
+		calendarInstance.setTimeZone(TimeZone.getDefault());
+		final Date date = calendarInstance.getTime();
+		System.out.println(date);
+
+		final DateToStringConverter dateToStringConverter = new DateToStringConverter("dd.MM.yyyy HH:mm:ss zzz");
+		final String dateAsString = (String) dateToStringConverter.convert(date);
+		assertEquals("12.11.2010 00:00:00 CET", dateAsString);
 	}
 }
