@@ -108,7 +108,7 @@ public final class LnfManager {
 	 * @param currentLnf
 	 *            new look and feel to install.
 	 */
-	public static void setLnf(final RienaDefaultLnf currentLnf) {
+	public static synchronized void setLnf(final RienaDefaultLnf currentLnf) {
 		if (LnfManager.currentLnf == currentLnf) {
 			return;
 		}
