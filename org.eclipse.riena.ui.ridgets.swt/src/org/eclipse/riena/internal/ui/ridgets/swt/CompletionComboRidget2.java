@@ -14,6 +14,8 @@ import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.databinding.swt.WidgetValueProperty;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 
@@ -114,5 +116,56 @@ public class CompletionComboRidget2 extends AbstractComboRidget {
 	@Override
 	protected void setTextToControl(final String text) {
 		getUIControl().setText(text);
+	}
+
+	// helping classes
+	//////////////////
+
+	/**
+	 * Based on CComboSelectionProperty from Eclipse Databinding
+	 */
+	class CompletionComboSelectionProperty extends WidgetValueProperty {
+
+		public CompletionComboSelectionProperty() {
+			super(SWT.Modify);
+		}
+
+		@Override
+		protected Object doGetValue(final Object source) {
+			return ((CompletionCombo2) source).getText();
+		}
+
+		@Override
+		protected void doSetValue(final Object source, final Object value) {
+			final String value1 = (String) value;
+			final CompletionCombo2 ccombo = (CompletionCombo2) source;
+			final String items[] = ccombo.getItems();
+			int index = -1;
+			if (value1 == null) {
+				ccombo.select(-1);
+			} else if (items != null) {
+				for (int i = 0; i < items.length; i++) {
+					if (value1.equals(items[i])) {
+						index = i;
+						break;
+					}
+				}
+				if (index == -1) {
+					ccombo.setText(value1);
+				} else {
+					ccombo.select(index); // -1 will not "unselect"
+				}
+			}
+		}
+
+		@Override
+		public String toString() {
+			return "CompletionCombo2.selection <String>"; //$NON-NLS-1$
+		}
+
+		public Object getValueType() {
+			return String.class;
+		}
+
 	}
 }
