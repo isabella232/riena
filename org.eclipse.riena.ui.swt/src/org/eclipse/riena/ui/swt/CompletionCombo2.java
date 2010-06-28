@@ -70,8 +70,8 @@ import org.eclipse.riena.core.util.StringUtils;
  * <dt><b>Events:</b>
  * <dd>DefaultSelection, Modify, Selection, Verify</dd>
  * </dl>
- * 
- * @since 2.1
+ * <p>
+ * <b>This is not API - do not reference in client code!</b>
  */
 public class CompletionCombo2 extends Composite {
 
