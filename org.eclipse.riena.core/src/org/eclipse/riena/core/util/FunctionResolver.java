@@ -90,8 +90,7 @@ public class FunctionResolver implements IDynamicVariableResolver {
 		public String apply(final String[] arguments) throws Exception {
 			Assert.isLegal(arguments.length == 1, "exactly one argument expected (a file URL)"); //$NON-NLS-1$
 			final URL url = new URL(arguments[0]);
-			return new File(url.getPath()).getCanonicalPath();
+			return new File(url.getPath()).getAbsolutePath().replace('\\', '/');
 		}
-
 	}
 }
