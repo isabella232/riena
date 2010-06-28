@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.Platform;
 
 import org.eclipse.riena.core.exception.Failure;
 import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.internal.core.ignore.IgnoreCheckStyle;
 import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.BundleUtil;
@@ -59,7 +60,7 @@ public final class LnfManager {
 	public static final String RIENA_LNF_SYSTEM_PROPERTY = "riena.lnf"; //$NON-NLS-1$
 
 	private static RienaDefaultLnf defaultLnf = new RienaDefaultLnf();
-	private static RienaDefaultLnf currentLnf;
+	private static volatile RienaDefaultLnf currentLnf;
 
 	private LnfManager() {
 		// cannot instantiated, because all methods are static
@@ -129,13 +130,18 @@ public final class LnfManager {
 	 * 
 	 * @return current look and feel
 	 */
+	@IgnoreCheckStyle("http://www.angelikalanger.com/Articles/EffectiveJava/41.JMM-DoubleCheck/41.JMM-DoubleCheck.html")
 	public static RienaDefaultLnf getLnf() {
 		if (currentLnf == null) {
-			final String className = System.getProperty(RIENA_LNF_SYSTEM_PROPERTY);
-			if (className != null) {
-				setLnf(className);
-			} else {
-				setLnf(defaultLnf);
+			synchronized (LnfManager.class) {
+				if (currentLnf == null) {
+					final String className = System.getProperty(RIENA_LNF_SYSTEM_PROPERTY);
+					if (className != null) {
+						setLnf(className);
+					} else {
+						setLnf(defaultLnf);
+					}
+				}
 			}
 		}
 		return currentLnf;
