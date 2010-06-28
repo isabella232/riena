@@ -531,9 +531,6 @@ public class CompletionCombo extends Composite {
 				return;
 			}
 			if (isAutoCompletion()) {
-				if (!isDropped()) {
-					dropDown(true);
-				}
 				text.setFocus();
 			} else {
 				if (isDropped()) {
@@ -1808,7 +1805,7 @@ public class CompletionCombo extends Composite {
 	@Override
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
-		if (popup != null) {
+		if (popup != null && !enabled) {
 			popup.setVisible(false);
 		}
 		if (text != null) {
