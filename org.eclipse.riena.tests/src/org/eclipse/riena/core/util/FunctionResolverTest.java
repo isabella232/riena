@@ -46,7 +46,7 @@ public class FunctionResolverTest extends RienaTestCase {
 	public void testResolveToFile() throws CoreException, IOException {
 		final String property = System.getProperty("osgi.instance.area");
 		final URL url = new URL(property);
-		final String expected = new File(url.getPath()).getCanonicalPath();
+		final String expected = new File(url.getPath()).getCanonicalPath().replace('\\', '/');
 		assertEquals(expected,
 				VariableManagerUtil.substitute("${fn:toFile,${java.system.property:osgi.instance.area}}"));
 	}
