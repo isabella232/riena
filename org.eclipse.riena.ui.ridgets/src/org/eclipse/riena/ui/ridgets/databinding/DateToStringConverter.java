@@ -13,7 +13,6 @@ package org.eclipse.riena.ui.ridgets.databinding;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 import org.eclipse.core.databinding.conversion.Converter;
 
@@ -23,7 +22,6 @@ import org.eclipse.core.databinding.conversion.Converter;
 public class DateToStringConverter extends Converter {
 
 	private final DateFormat format;
-	private final TimeZone timezone;
 
 	/**
 	 * Creates a DateToStringConverter.
@@ -34,11 +32,6 @@ public class DateToStringConverter extends Converter {
 	public DateToStringConverter(final String pattern) {
 		super(Date.class, String.class);
 		format = new SimpleDateFormat(pattern);
-		if (!hasTimeZone(pattern)) {
-			timezone = TimeZone.getDefault();
-		} else {
-			timezone = null;
-		}
 	}
 
 	/**
@@ -49,29 +42,8 @@ public class DateToStringConverter extends Converter {
 			return null;
 		}
 		synchronized (format) {
-			final Date localDate = createLocalDate((Date) fromObject);
-			return format.format(localDate);
+			return format.format((Date) fromObject);
 		}
-	}
-
-	// helping methods
-	// ////////////////
-
-	/**
-	 * If necessary convert from GMT date into local Date.
-	 */
-	private Date createLocalDate(final Date date) {
-		Date result = date;
-		if (timezone != null) {
-			final long time = date.getTime();
-			final int offset = timezone.getOffset(time);
-			result = new Date(time - offset);
-		}
-		return result;
-	}
-
-	private boolean hasTimeZone(final String pattern) {
-		return pattern.contains("zzz") || pattern.contains("ZZZZ"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

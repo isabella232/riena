@@ -653,7 +653,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		final ITextRidget ridget = getRidget();
 
 		final DateBean dateBean = new DateBean();
-		dateBean.setValue(new Date(0L));
+		dateBean.setValue(localize(0L));
 
 		ridget.addValidationRule(new ValidIntermediateDate("dd.MM.yyyy"), ValidationTime.ON_UI_CONTROL_EDIT);
 		ridget.setUIControlToModelConverter(new StringToDateConverter("dd.MM.yyyy"));
@@ -1705,6 +1705,12 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	// helping methods
 	//////////////////
 
+	@SuppressWarnings("deprecation")
+	private Date localize(final long msSinceEpochUtc) {
+		final Date localDate = new Date(msSinceEpochUtc);
+		return new Date(localDate.getTime() + (60 * 1000 * localDate.getTimezoneOffset()));
+	}
+
 	private String localize(final String number) {
 		return TestUtils.getLocalizedNumber(number);
 	}
@@ -1730,7 +1736,6 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	}
 
 	private static final class AlwaysWrongValidator implements IValidator {
-
 		private final String message;
 		private int invokeCount = 0;
 

@@ -284,14 +284,14 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	public void testBindToDate() {
 		final IDateTextRidget ridget = getRidget();
 		final Text control = getWidget();
-		final DateBean bean = new DateBean(new Date(0L));
+		final DateBean bean = new DateBean(localize(0L));
 
 		ridget.bindToModel(bean, DateBean.DATE_PROPERTY);
 		ridget.updateFromModel();
 
 		assertEquals("01.01.1970", control.getText());
 		assertEquals("01.01.1970", ridget.getText());
-		assertEquals(new Date(0L), bean.getValue());
+		assertEquals(localize(0L), bean.getValue());
 	}
 
 	/**
@@ -304,7 +304,7 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 	public void testSetFormatWithDateBean() {
 		final IDateTextRidget ridget = getRidget();
 		final Text control = getWidget();
-		final DateBean bean = new DateBean(new Date(0L));
+		final DateBean bean = new DateBean(localize(0L));
 
 		ridget.bindToModel(bean, DateBean.DATE_PROPERTY);
 		ridget.updateFromModel();
@@ -312,13 +312,13 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals("01.01.70", ridget.getText());
 		assertEquals("01.01.70", control.getText());
-		assertEquals(new Date(0L), bean.getValue());
+		assertEquals(localize(0L), bean.getValue());
 
 		ridget.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 
 		assertEquals("01.01.1970", ridget.getText());
 		assertEquals("01.01.1970", control.getText());
-		assertEquals(new Date(0L), bean.getValue());
+		assertEquals(localize(0L), bean.getValue());
 	}
 
 	/**
@@ -615,6 +615,12 @@ public class DateTextRidgetTest extends AbstractSWTRidgetTest {
 		for (final MandatoryMarker marker : markers) {
 			assertEquals(isDisabled, marker.isDisabled());
 		}
+	}
+
+	@SuppressWarnings("deprecation")
+	private Date localize(final long msSinceEpochUtc) {
+		final Date localDate = new Date(msSinceEpochUtc);
+		return new Date(localDate.getTime() + (60 * 1000 * localDate.getTimezoneOffset()));
 	}
 
 }

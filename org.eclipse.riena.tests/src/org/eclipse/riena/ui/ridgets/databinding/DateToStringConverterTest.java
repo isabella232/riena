@@ -31,23 +31,24 @@ public class DateToStringConverterTest extends TestCase {
 		Object result = converter.convert(null);
 		assertEquals(null, result);
 
-		result = converter.convert(new Date(0L));
+		result = converter.convert(localize(0L));
 		assertEquals("01/01/1970", result); //$NON-NLS-1$
 
-		final Date date = new Date(1221011682194L);
+		final Date date = localize(1221011682194L);
 		result = converter.convert(date);
 		assertEquals("09/10/2008", result);
 	}
 
 	public void testConvertToDateNoTimezone() {
-		// Problem: in what timezone is MM/dd/yyyy ?
 		final StringToDateConverter converter = new StringToDateConverter("MM/dd/yyyy");
 
 		Date result = (Date) converter.convert(null);
 		assertEquals(null, result);
 
 		result = (Date) converter.convert("01/01/1970");
-		assertEquals(0, result.getTime());
+		@SuppressWarnings("deprecation")
+		final int offset = result.getTimezoneOffset() * 60 * 1000;
+		assertEquals(0 + offset, result.getTime());
 	}
 
 	public void testConvertToDateGMT() {
@@ -84,7 +85,7 @@ public class DateToStringConverterTest extends TestCase {
 		final DateToStringConverter toString = new DateToStringConverter("MM/dd/yyyy");
 		final StringToDateConverter toDate = new StringToDateConverter("MM/dd/yyyy");
 
-		final Date input = new Date(0);
+		final Date input = localize(0L);
 		final Date result = (Date) toDate.convert(toString.convert(input));
 		assertEquals(input.getTime(), result.getTime());
 	}
@@ -102,7 +103,6 @@ public class DateToStringConverterTest extends TestCase {
 		calendarInstance.set(2010, 10, 12, 0, 0, 0);
 		calendarInstance.setTimeZone(TimeZone.getDefault());
 		final Date date = calendarInstance.getTime();
-		System.out.println(date);
 
 		final DateToStringConverter dateToStringConverter = new DateToStringConverter("dd.MM.yyyy HH:mm:ss");
 		final String dateAsString = (String) dateToStringConverter.convert(date);
@@ -114,10 +114,22 @@ public class DateToStringConverterTest extends TestCase {
 		calendarInstance.set(2010, 10, 12, 0, 0, 0);
 		calendarInstance.setTimeZone(TimeZone.getDefault());
 		final Date date = calendarInstance.getTime();
-		System.out.println(date);
 
 		final DateToStringConverter dateToStringConverter = new DateToStringConverter("dd.MM.yyyy HH:mm:ss zzz");
 		final String dateAsString = (String) dateToStringConverter.convert(date);
-		assertEquals("12.11.2010 00:00:00 CET", dateAsString);
+		if ("America/Los_Angeles".equals(TimeZone.getDefault().getID())) {
+			assertEquals("12.11.2010 00:00:00 PST", dateAsString);
+		} else {
+			assertEquals("12.11.2010 00:00:00 CET", dateAsString);
+		}
+	}
+
+	// helping methods
+	//////////////////
+
+	@SuppressWarnings("deprecation")
+	private Date localize(final long msSinceEpochUtc) {
+		final Date localDate = new Date(msSinceEpochUtc);
+		return new Date(localDate.getTime() + (60 * 1000 * localDate.getTimezoneOffset()));
 	}
 }
