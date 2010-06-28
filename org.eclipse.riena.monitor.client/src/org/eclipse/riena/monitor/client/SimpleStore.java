@@ -432,6 +432,9 @@ public class SimpleStore implements IStore, IExecutableExtension {
 					return name.endsWith(COLLECT_FILE_EXTENSION) || name.endsWith(DEL_FILE_EXTENSION);
 				}
 			});
+			if (scrutinizedFiles == null || scrutinizedFiles.length == 0) {
+				return;
+			}
 			final Map<String, List<File>> categorizedScrutinized = new HashMap<String, List<File>>(
 					scrutinizedFiles.length);
 			for (final File scrutinizedFile : scrutinizedFiles) {
