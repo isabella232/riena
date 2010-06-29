@@ -69,20 +69,10 @@ public class DialogGrabCorner extends Composite {
 	public static Point getGrabCornerSize() {
 		Point grabCornerSize = new Point(0, 0);
 		final Image grabCorner = getGrabCornerImage();
-
-		if ((grabCorner != null) && isResizeable()) {
-			grabCornerSize = new Point(grabCorner.getImageData().width, grabCorner.getImageData().height);
+		if ((grabCorner != null)) {
+			grabCornerSize = new Point(grabCorner.getBounds().width, grabCorner.getBounds().height);
 		}
 		return grabCornerSize;
-	}
-
-	/**
-	 * Returns if the shell is resizeable or not.
-	 * 
-	 * @return true if shell is resizeable; otherwise false
-	 */
-	public static boolean isResizeable() {
-		return true; // TODO: make this a value that can be set for each dialog
 	}
 
 	/**
