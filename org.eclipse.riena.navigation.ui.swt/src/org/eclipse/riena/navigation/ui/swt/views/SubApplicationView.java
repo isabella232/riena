@@ -528,14 +528,14 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 
 		@Override
 		public void disposed(final ISubModuleNode source) {
-			// not selectable SubModules dont't have an associated view and therefore no view has to be hidden
-			if (source.isSelectable()) {
-				try {
-					final SwtViewId id = getViewId(source);
-					hideView(id);
-					final SwtViewProvider viewProvider = SwtViewProvider.getInstance();
-					viewProvider.unregisterSwtViewId(source);
-				} catch (final ApplicationModelFailure amf) {
+			try {
+				final SwtViewId id = getViewId(source);
+				hideView(id);
+				final SwtViewProvider viewProvider = SwtViewProvider.getInstance();
+				viewProvider.unregisterSwtViewId(source);
+			} catch (final ApplicationModelFailure amf) {
+				// not selectable SubModules dont't have an associated view, so if hidding creates an exception we can ignore it TODO : never close a not selectable node
+				if (source.isSelectable()) {
 					LOGGER.log(LogService.LOG_ERROR, "Error disposing node " + source + ": " + amf.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
