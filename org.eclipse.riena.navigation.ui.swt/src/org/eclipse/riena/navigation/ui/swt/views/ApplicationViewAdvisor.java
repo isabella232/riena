@@ -393,10 +393,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	 * 
 	 * @param shell
 	 */
-	private GrabCorner createGrabCorner(final Shell shell) {
+	private org.eclipse.riena.ui.swt.GrabCorner createGrabCorner(final Shell shell) {
 
-		if (GrabCorner.isResizeable() && LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
-			return new GrabCorner(shell, SWT.DOUBLE_BUFFERED);
+		if (org.eclipse.riena.ui.swt.GrabCorner.isResizeable()
+				&& LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER)) {
+			return new org.eclipse.riena.ui.swt.GrabCorner(shell, SWT.DOUBLE_BUFFERED);
 		}
 
 		return null;

@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.views;
+package org.eclipse.riena.ui.swt;
 
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -21,40 +21,48 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 
 /**
  * Area to grab so that the shell can be resized.
  * 
- * @deprecated This class has moved to org.eclipse.riena.ui.swt
+ * @since 2.1
  */
-@Deprecated
 public class GrabCorner extends Composite {
+	private final Composite parent;
 
 	/**
-	 * @param shell
+	 * @param parent
 	 * @param style
 	 */
-	public GrabCorner(final Shell shell, final int style) {
+	public GrabCorner(final Composite parent, final int style) {
+		super(parent, style);
+		this.parent = parent;
 
-		super(shell, style);
-		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.GRAB_CORNER_BACKGROUND));
+		setBackground(parent.getBackground());
+		//		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.GRAB_CORNER_BACKGROUND));
 		setData("sizeexecutor", "grabcorner"); //$NON-NLS-1$ //$NON-NLS-2$
-
-		setLayoutData();
+		if (isMainShell()) {
+			setLayoutData();
+		} else {
+			setDialogLayoutData();
+		}
 
 		addPaintListener(new GrabPaintListener());
 		new GrabCornerListenerWithTracker(this);
+	}
+
+	private boolean isMainShell() {
+		return parent instanceof Shell;
 	}
 
 	/**
 	 * Sets the (form) layout data for the grab corner.
 	 */
 	private void setLayoutData() {
-
 		final Point grabCornerSize = getGrabCornerSize();
 		final int borderWidth = getShellBorderWidth();
 
@@ -64,7 +72,17 @@ public class GrabCorner extends Composite {
 		grabFormData.bottom = new FormAttachment(100, -borderWidth);
 		grabFormData.right = new FormAttachment(100, -borderWidth);
 		setLayoutData(grabFormData);
+	}
 
+	private void setDialogLayoutData() {
+		final Point grabCornerSize = getGrabCornerSize();
+		final FormData grabFormData = new FormData();
+		grabFormData.width = grabCornerSize.x;
+		grabFormData.height = grabCornerSize.y;
+		grabFormData.bottom = new FormAttachment(100, 0);
+		grabFormData.right = new FormAttachment(100, 0);
+
+		setLayoutData(grabFormData);
 	}
 
 	/**
@@ -73,15 +91,19 @@ public class GrabCorner extends Composite {
 	 * 
 	 * @return size of grab corner
 	 */
-	public static Point getGrabCornerSize() {
+	public Point getGrabCornerSize() {
 
 		Point grabCornerSize = new Point(getShellBorderWidth(), getShellBorderWidth());
 		final Image grabCorner = getGrabCornerImage();
-		if ((grabCorner != null) && isResizeable()) {
-			final Rectangle imageBounds = grabCorner.getBounds();
-			final int width = grabCornerSize.x + imageBounds.width;
-			final int height = grabCornerSize.y + imageBounds.height;
-			grabCornerSize = new Point(width, height);
+		if (grabCorner != null) {
+			if (!isMainShell()) {
+				grabCornerSize = new Point(grabCorner.getBounds().width, grabCorner.getBounds().height);
+			} else {
+				final Rectangle imageBounds = grabCorner.getBounds();
+				final int width = grabCornerSize.x + imageBounds.width;
+				final int height = grabCornerSize.y + imageBounds.height;
+				grabCornerSize = new Point(width, height);
+			}
 		}
 		return grabCornerSize;
 
@@ -101,8 +123,10 @@ public class GrabCorner extends Composite {
 	 * 
 	 * @return grab corner image
 	 */
-	private static Image getGrabCornerImage() {
-		Image image = LnfManager.getLnf().getImage(LnfKeyConstants.TITLELESS_SHELL_GRAB_CORNER_IMAGE);
+	private Image getGrabCornerImage() {
+		Image image = LnfManager.getLnf().getImage(
+				isMainShell() ? LnfKeyConstants.TITLELESS_SHELL_GRAB_CORNER_IMAGE
+						: LnfKeyConstants.DIALOG_GRAB_CORNER_IMAGE);
 		if (image == null) {
 			image = ImageStore.getInstance().getMissingImage();
 		}
@@ -116,7 +140,7 @@ public class GrabCorner extends Composite {
 	 */
 	private static int getShellBorderWidth() {
 
-		final ShellBorderRenderer borderRenderer = (ShellBorderRenderer) LnfManager.getLnf().getRenderer(
+		final DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 		if (borderRenderer != null) {
 			return borderRenderer.getBorderWidth();
@@ -129,7 +153,7 @@ public class GrabCorner extends Composite {
 	/**
 	 * This Listener paint the grab corner.
 	 */
-	private static class GrabPaintListener implements PaintListener {
+	private class GrabPaintListener implements PaintListener {
 
 		public void paintControl(final PaintEvent e) {
 
@@ -142,5 +166,4 @@ public class GrabCorner extends Composite {
 		}
 
 	}
-
 }

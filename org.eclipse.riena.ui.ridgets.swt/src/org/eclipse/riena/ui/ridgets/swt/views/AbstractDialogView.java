@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
+import org.eclipse.riena.ui.swt.GrabCorner;
 import org.eclipse.riena.ui.swt.RienaWindowRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -223,7 +224,7 @@ public abstract class AbstractDialogView extends Dialog {
 	protected final Control createDialogArea(final Composite parent) {
 		final Composite mainComposite = createMainComposite(parent);
 		if (isResizable() && isHideOsBorder()) {
-			new DialogGrabCorner(mainComposite, mainComposite.getStyle());
+			new GrabCorner(mainComposite, mainComposite.getStyle());
 		}
 		createContentComposite(mainComposite);
 		return mainComposite;

@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui.swt.views;
+package org.eclipse.riena.ui.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
@@ -28,13 +28,9 @@ import org.eclipse.swt.widgets.Tracker;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
- * Mouse listener to be used together with a {@link GrabCorner}.
- * <p>
- * This implementation relies on a SWT {@link Tracker} for resize operations.
+ * @since 2.1
  * 
- * @deprecated This class has moved to org.eclipse.riena.ui.swt
  */
-@Deprecated
 public final class GrabCornerListenerWithTracker extends MouseAdapter implements MouseTrackListener {
 
 	private final GrabCorner control;
@@ -169,25 +165,13 @@ public final class GrabCornerListenerWithTracker extends MouseAdapter implements
 
 	}
 
-	/**
-	 *
-	 */
 	private class TrackerListener implements ControlListener {
 
-		/**
-		 * @see org.eclipse.swt.events.ControlListener#controlMoved(org.eclipse.swt
-		 *      .events.ControlEvent)
-		 */
 		public void controlMoved(final ControlEvent e) {
 			// nothing to do
 		}
 
-		/**
-		 * @see org.eclipse.swt.events.ControlListener#controlResized(org.eclipse
-		 *      .swt.events.ControlEvent)
-		 */
 		public void controlResized(final ControlEvent e) {
-
 			if (e.widget instanceof Tracker) {
 				final Tracker tracker = (Tracker) e.widget;
 				setMinimumBounds(tracker);
@@ -196,5 +180,4 @@ public final class GrabCornerListenerWithTracker extends MouseAdapter implements
 		}
 
 	}
-
 }
