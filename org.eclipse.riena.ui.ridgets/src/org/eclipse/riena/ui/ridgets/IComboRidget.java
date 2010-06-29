@@ -40,9 +40,12 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	 * @param rowClass
 	 *            The class of the objects in the list.
 	 * @param renderingMethod
-	 *            A property of rowClass that returns the value to display for
-	 *            each option of the combo box combo box (examples: 'name' ->
-	 *            getName(); null for {@code toString()}).
+	 *            A zero-argument method that is used to convert each model
+	 *            value into a String representation. This method MUST return an
+	 *            object that is not {@code null}. Additionally calling
+	 *            {@code toString()} on the result MUST NOT return {@code null}.<br/>
+	 *            If rendereringMethod is {@code null}, then {@code toString()}
+	 *            is invoked on each model value by default.
 	 * @param selectionValue
 	 *            A non-null observable value holding the selection.
 	 */
@@ -60,9 +63,12 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	 * @param rowClass
 	 *            The class of the objects in the list.
 	 * @param renderingMethod
-	 *            A property of rowClass that returns the value to display for
-	 *            each option of the combo box combo box (examples: 'name' ->
-	 *            getName(); null for {@code toString()}).
+	 *            A zero-argument method that is used to convert each model
+	 *            value into a String representation. This method MUST return an
+	 *            object that is not {@code null}. Additionally calling
+	 *            {@code toString()} on the result MUST NOT return {@code null}.<br/>
+	 *            If rendereringMethod is {@code null}, then {@code toString()}
+	 *            is invoked on each model value by default.
 	 * @param selectionHolder
 	 *            A non-null object holding the selection.
 	 * @param selectionPropertyName
