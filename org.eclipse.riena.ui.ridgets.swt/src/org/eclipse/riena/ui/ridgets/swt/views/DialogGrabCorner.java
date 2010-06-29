@@ -21,7 +21,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 
 /**
@@ -97,21 +96,6 @@ public class DialogGrabCorner extends Composite {
 			image = ImageStore.getInstance().getMissingImage();
 		}
 		return image;
-	}
-
-	/**
-	 * Returns the width of the shell border.
-	 * 
-	 * @return border width
-	 */
-	private static int getShellBorderWidth() {
-		final DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.DIALOG_BORDER_RENDERER);
-		if (borderRenderer != null) {
-			return borderRenderer.getBorderWidth();
-		} else {
-			return 0;
-		}
 	}
 
 	/**
