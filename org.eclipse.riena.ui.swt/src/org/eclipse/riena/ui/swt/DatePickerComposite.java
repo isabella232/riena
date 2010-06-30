@@ -99,6 +99,9 @@ public class DatePickerComposite extends Composite {
 		this.dateConverterStrategy = dateConverterStrategy;
 	}
 
+	/**
+	 * @since 2.1
+	 */
 	@Override
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
