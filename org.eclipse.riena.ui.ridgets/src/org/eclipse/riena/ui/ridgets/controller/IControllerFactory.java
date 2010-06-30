@@ -11,12 +11,17 @@
 package org.eclipse.riena.ui.ridgets.controller;
 
 /**
- * Simple interface for a factory that create an IController instance
+ * Factory that creates {@code IController} instances.
  * 
  * @since 2.1
  */
 public interface IControllerFactory {
 
+	/**
+	 * Create an {@code IController} instance.
+	 * 
+	 * @return a controller
+	 */
 	IController createController();
 
 }
