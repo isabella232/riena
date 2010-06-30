@@ -58,6 +58,15 @@ public interface ISubModuleNode2Extension extends INode2Extension {
 	Class<? extends IController> getController();
 
 	/**
+	 * Returns a new instance for the controller instance each time this method
+	 * is called.
+	 * 
+	 * @return instance of sub module controller
+	 * @since 2.1
+	 */
+	IController createController();
+
+	/**
 	 * Indicates whether the view is shared i.e. whether one instance of the
 	 * view should be used for all sub module instances.
 	 * 

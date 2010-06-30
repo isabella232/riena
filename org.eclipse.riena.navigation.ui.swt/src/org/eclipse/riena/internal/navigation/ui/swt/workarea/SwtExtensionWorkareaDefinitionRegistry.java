@@ -17,6 +17,8 @@ import org.eclipse.riena.navigation.extension.INavigationAssembly2Extension;
 import org.eclipse.riena.navigation.extension.ISubApplicationNode2Extension;
 import org.eclipse.riena.navigation.extension.ISubModuleNode2Extension;
 import org.eclipse.riena.navigation.model.AssembliesConverter;
+import org.eclipse.riena.ui.ridgets.controller.IController;
+import org.eclipse.riena.ui.ridgets.controller.IControllerFactory;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaDefinition;
 import org.eclipse.riena.ui.workarea.spi.AbstractWorkareaDefinitionRegistry;
@@ -183,7 +185,12 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 	protected void register(final ISubModuleNode2Extension subModuleExt) {
 
 		// create and register view definition
-		final WorkareaDefinition def = new WorkareaDefinition(subModuleExt.getController(), subModuleExt.getViewId());
+		final WorkareaDefinition def = new WorkareaDefinition(new IControllerFactory() {
+
+			public IController createController() {
+				return subModuleExt.createController();
+			}
+		}, subModuleExt.getViewId());
 		def.setViewShared(subModuleExt.isSharedView());
 		def.setRequiredPreparation(subModuleExt.isRequiresPreparation());
 		register(subModuleExt.getNodeId(), def);
@@ -194,7 +201,6 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 				register(nestedSubmoduleDefinition);
 			}
 		}
-
 	}
 
 }

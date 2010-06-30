@@ -70,6 +70,13 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	}
 
 	/**
+	 * @since 2.1
+	 */
+	public IController createController() {
+		return null;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public boolean isSharedView() {

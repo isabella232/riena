@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.workarea;
 
 import org.eclipse.riena.ui.ridgets.controller.IController;
+import org.eclipse.riena.ui.ridgets.controller.IControllerFactory;
 
 /**
  * A WorkareaDefinition consists of viewId and a {@link IController}. Also other
@@ -20,6 +21,7 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
 public class WorkareaDefinition implements IWorkareaDefinition {
 
 	private final Class<? extends IController> controllerClass;
+	private final IControllerFactory controllerFactory;
 	private final Object viewId;
 	private boolean viewShared;
 	private boolean requiredPreparation;
@@ -33,7 +35,7 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	 *            extension point)
 	 */
 	public WorkareaDefinition(final Object viewId) {
-		this(null, viewId);
+		this((Class<? extends IController>) null, viewId);
 	}
 
 	/**
@@ -48,6 +50,16 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	 */
 	public WorkareaDefinition(final Class<? extends IController> controllerClass, final Object viewId) {
 		this.controllerClass = controllerClass;
+		this.controllerFactory = null;
+		this.viewId = viewId;
+	}
+
+	/**
+	 * @since 2.1
+	 */
+	public WorkareaDefinition(final IControllerFactory controllerFactory, final Object viewId) {
+		this.controllerFactory = controllerFactory;
+		this.controllerClass = null;
 		this.viewId = viewId;
 	}
 
@@ -69,6 +81,9 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 		if (getControllerClass() != null) {
 			return getControllerClass().newInstance();
 		} else {
+			if (controllerFactory != null) {
+				return controllerFactory.createController();
+			}
 			return null;
 		}
 	}
