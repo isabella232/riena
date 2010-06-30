@@ -70,19 +70,12 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	}
 
 	/**
+	 * @throws IllegalAccessException
+	 * @throws InstantiationException
 	 * @since 2.1
 	 */
-	public IController createController() {
-		try {
-			return controller.newInstance();
-		} catch (final InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (final IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	public IController createController() throws InstantiationException, IllegalAccessException {
+		return controller.newInstance();
 	}
 
 	/**
