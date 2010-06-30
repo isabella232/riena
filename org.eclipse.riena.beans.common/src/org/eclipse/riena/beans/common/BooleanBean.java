@@ -17,6 +17,8 @@ public class BooleanBean extends AbstractBean {
 
 	/**
 	 * Key for the value property (PROP_VALUE = "value").
+	 * 
+	 * @since 2.1
 	 */
 	public static final String PROP_VALUE = "value"; //$NON-NLS-1$
 
