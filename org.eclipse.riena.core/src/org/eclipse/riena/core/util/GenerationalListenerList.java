@@ -17,10 +17,10 @@ import org.eclipse.core.runtime.Assert;
 
 /**
  * The {@code GenerationalListenerList} is a sort of {@code List}
- * implementation. It does not implemented all of the required methods of
+ * implementation. It does not implement all of the required methods of
  * {@code List}.<br>
- * The {@code GenerationalListenerList} main purpose is for dealing as a list of
- * listeners.<br>
+ * The {@code GenerationalListenerList}'s main purpose is for dealing as a list
+ * of listeners.<br>
  * It main characteristic is that it provides stable iterators although it can
  * be modified while iterating (within the same thread), e.g. a notified
  * listener could add or remove listeners.<br>
@@ -28,6 +28,14 @@ import org.eclipse.core.runtime.Assert;
  * lists just for the sake of iterating over it. Since this list is based on a
  * linked list approach it has similar speed characteristics as the
  * {@code LinkedList}.
+ * <p>
+ * Implementation note:<br>
+ * The GenerationalListenerList is based on the concept of time, i.e. each list
+ * entry which keeps the actual object and a reference to the next entry also
+ * remembers when it was added and/or removed. This is called the generation.<br>
+ * When an iterator is created it is given the actual generation. With this it
+ * can traverse the list pick only those entries that are visible to this
+ * generation.
  * 
  * @NotThreadSafe
  */
