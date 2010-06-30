@@ -72,6 +72,8 @@ import org.eclipse.riena.core.util.StringUtils;
  * </dl>
  * <p>
  * <b>This is not API - do not reference in client code!</b>
+ * 
+ * @since 2.1
  */
 public class CompletionCombo2 extends Composite {
 
