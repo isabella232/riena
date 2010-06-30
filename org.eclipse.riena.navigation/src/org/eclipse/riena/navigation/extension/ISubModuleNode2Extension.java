@@ -55,6 +55,7 @@ public interface ISubModuleNode2Extension extends INode2Extension {
 	 * 
 	 * @return controller of the sub module
 	 */
+	@Deprecated
 	Class<? extends IController> getController();
 
 	/**
