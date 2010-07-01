@@ -13,10 +13,12 @@ package org.eclipse.riena.core.util;
 import java.util.Iterator;
 
 import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
- *
+ * Test the {@code GenerationalListenerList}
  */
+@NonUITestCase
 public class GenerationalListenerListTest extends RienaTestCase {
 
 	private final GenerationalListenerList<String> list = new GenerationalListenerList<String>();
