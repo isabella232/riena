@@ -534,7 +534,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 				final SwtViewProvider viewProvider = SwtViewProvider.getInstance();
 				viewProvider.unregisterSwtViewId(source);
 			} catch (final ApplicationModelFailure amf) {
-				// not selectable SubModules dont't have an associated view, so if hidding creates an exception we can ignore it TODO : never close a not selectable node
+				// not selectable SubModules dont't have an associated view, so if hiding creates an exception we can ignore it TODO : never close a not selectable node
 				if (source.isSelectable()) {
 					LOGGER.log(LogService.LOG_ERROR, "Error disposing node " + source + ": " + amf.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
