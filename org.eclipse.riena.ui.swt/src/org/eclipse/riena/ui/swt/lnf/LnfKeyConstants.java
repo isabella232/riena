@@ -636,7 +636,7 @@ public final class LnfKeyConstants {
 	 * 
 	 * @since 1.2
 	 */
-	public static final String SUB_MODULE_TREE_ERROR_MARKER_ICON = "subModuleTreeErrorMarker.icon"; //$NON-NLS-1$
+	public static final String SUB_MODULE_TREE_ERROR_MARKER_ICON = ErrorMarker.MARKER_KEY;
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
@@ -709,7 +709,7 @@ public final class LnfKeyConstants {
 	public static final String NAVIGATION_SCROLL_UP_ICON = "navigation.scrollup"; //$NON-NLS-1$
 	public static final String NAVIGATION_SCROLL_DOWN_ICON = "navigation.scrollDown"; //$NON-NLS-1$
 
-	public static final String ERROR_MARKER_ICON = ErrorMarker.MARKER_KEY;
+	public static final String ERROR_MARKER_ICON = "ControlErrorMarker"; //$NON-NLS-1$
 
 	/**
 	 * Setting keys
