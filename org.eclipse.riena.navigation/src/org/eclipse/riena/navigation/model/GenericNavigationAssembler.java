@@ -457,6 +457,10 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 
 	protected String resolveVariables(final String string) {
 
+		if (string == null) {
+			return string;
+		}
+
 		try {
 			return VariableManagerUtil.substitute(string);
 		} catch (final CoreException ex) {
@@ -464,5 +468,4 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 			return string;
 		}
 	}
-
 }
