@@ -38,6 +38,7 @@ import org.eclipse.core.runtime.Assert;
  * generation.
  * 
  * @NotThreadSafe
+ * @since 2.1
  */
 public class GenerationalListenerList<E> implements Iterable<E> {
 
@@ -325,8 +326,8 @@ public class GenerationalListenerList<E> implements Iterable<E> {
 
 	}
 
-	// helpers for testing/debugging
-	void printDebugList(final String header) {
+	// helpers for testing/debugging, not API but needs to be public to be accessible by Junit Plug-in test
+	public void printDebugList(final String header) {
 		Entry<E> next = head;
 		System.out.println(header + "(debug)");
 		while (next != null) {
@@ -337,7 +338,8 @@ public class GenerationalListenerList<E> implements Iterable<E> {
 		}
 	}
 
-	void printList(final String header) {
+	// helpers for testing/debugging, not API but needs to be public to be accessible by Junit Plug-in test
+	public void printList(final String header) {
 		Entry<E> next = head;
 		System.out.println(header);
 		while (next != null) {
