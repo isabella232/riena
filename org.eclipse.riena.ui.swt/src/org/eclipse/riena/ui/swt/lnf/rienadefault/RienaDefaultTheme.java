@@ -251,17 +251,15 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource("magenta", new ColorLnfResource(255, 0, 255)); //$NON-NLS-1$
 		lnf.putLnfResource("cyan", new ColorLnfResource(0, 255, 255)); //$NON-NLS-1$
 		lnf.putLnfResource("blue", new ColorLnfResource(0, 0, 255)); //$NON-NLS-1$
-
 	}
 
 	private void customizeFonts(final ILnfCustomizer lnf) {
-
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_FONT, getPrimaryFont());
 
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_FONT, getPrimaryFont());
 
 		lnf.putLnfResource(LnfKeyConstants.MENUBAR_FONT, getPrimaryFont());
-		// lnf.putLnfResource(LnfKeyConstants.TOOLBAR_FONT, getPrimaryFont());
+		lnf.putLnfResource(LnfKeyConstants.TOOLBAR_FONT, getPrimaryFont());
 
 		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_FONT, getPrimaryFont());
 
@@ -299,11 +297,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource("Text.font", getPrimaryFont()); //$NON-NLS-1$
 
 		lnf.putLnfResource("Tree.font", getPrimaryFont()); //$NON-NLS-1$
-
 	}
 
 	private void customizeImages(final ILnfCustomizer lnf) {
-
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(IMAGE_BACKGROUND));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(IMAGE_LOGO));
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_CLOSE_ICON, new ImageLnfResource(IMAGE_CLOSE));
@@ -390,11 +386,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource(LnfKeyConstants.NAVIGATION_SCROLL_DOWN_ICON, new ImageLnfResource(IMAGE_SCROLL_DOWN));
 
 		lnf.putLnfResource(LnfKeyConstants.ERROR_MARKER_ICON, new ImageLnfResource(IMAGE_ERROR_MARKER));
-
 	}
 
 	private void customizeSettings(final ILnfCustomizer lnf) {
-
 		lnf.putLnfSetting(LnfKeyConstants.SHELL_HIDE_OS_BORDER, hideOsBorder());
 
 		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_PADDING, 2);
