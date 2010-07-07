@@ -613,19 +613,12 @@ public final class LnfKeyConstants {
 	public static final String SUB_MODULE_TREE_FOLDER_CLOSED_ICON = "subModuleTreeFolderClosed.icon"; //$NON-NLS-1$
 
 	/**
-	 * This constant is described in Eclipsepedia.
-	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
-	 *      Riena Wiki</a>
+	 * Tree open icon for trees in the workarea
 	 */
 	public static final String WORKAREA_TREE_FOLDER_OPEN_ICON = "workareaTreeFolderOpen.icon"; //$NON-NLS-1$
+
 	/**
-	 * This constant is described in Eclipsepedia.
-	 * 
-	 * @see <a
-	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
-	 *      Riena Wiki</a>
+	 * Tree closed icon for trees in the workarea
 	 */
 	public static final String WORKAREA_TREE_FOLDER_CLOSED_ICON = "workareaTreeFolderClosed.icon"; //$NON-NLS-1$
 	/**
