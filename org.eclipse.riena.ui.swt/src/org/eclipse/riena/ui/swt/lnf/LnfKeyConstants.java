@@ -611,6 +611,23 @@ public final class LnfKeyConstants {
 	 *      Riena Wiki</a>
 	 */
 	public static final String SUB_MODULE_TREE_FOLDER_CLOSED_ICON = "subModuleTreeFolderClosed.icon"; //$NON-NLS-1$
+
+	/**
+	 * This constant is described in Eclipsepedia.
+	 * 
+	 * @see <a
+	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
+	 *      Riena Wiki</a>
+	 */
+	public static final String WORKAREA_TREE_FOLDER_OPEN_ICON = "workareaTreeFolderOpen.icon"; //$NON-NLS-1$
+	/**
+	 * This constant is described in Eclipsepedia.
+	 * 
+	 * @see <a
+	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
+	 *      Riena Wiki</a>
+	 */
+	public static final String WORKAREA_TREE_FOLDER_CLOSED_ICON = "workareaTreeFolderClosed.icon"; //$NON-NLS-1$
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
@@ -753,8 +770,8 @@ public final class LnfKeyConstants {
 	@Deprecated
 	public static final String DISABLED_MARKER_COMPLEX_ALPHA = "DisabledMarker.complexAlpha"; //$NON-NLS-1$
 	/**
-	 * This constants turns the advanced disabled marker rendering on (
-	 * {@code true}) or off ({@code false}).<br>
+	 * This constants turns the advanced disabled marker rendering on ( {@code
+	 * true}) or off ({@code false}).<br>
 	 * Is advanced rendering turned off for disabled UI control only the method
 	 * setEnabled is called. Is advanced rendering turned off the widgets are
 	 * renderer in a spacial way (@see DisabledMarkerVisualizer).

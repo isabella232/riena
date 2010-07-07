@@ -117,7 +117,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 				220));
 
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND, new ColorLnfResource(170, 170, 170));
-		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR, new ColorLnfResource(233, 233, 238));
+		lnf
+				.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR, new ColorLnfResource(233, 233,
+						238));
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND, getPrimaryForeground());
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(196,
 				225, 244));
@@ -357,6 +359,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 				IMAGE_EMPTY_DOCUMENT));
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON,
 				new ImageLnfResource(IMAGE_FOLDER_CLOSED));
+
+		lnf.putLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(IMAGE_FOLDER_CLOSED));
+
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_ERROR_MARKER_ICON, new ImageLnfResource(IMAGE_ERROR_MARKER));
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_MANDATORY_MARKER_ICON, new ImageLnfResource(
 				IMAGE_MANDATORY_MARKER));
@@ -367,6 +372,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		// lnf.putLnfResource(LnfKeyConstants."treeFolderOpen.icon",
 		// getSharedImageResource(ISharedImages.IMG_OBJ_FOLDER));
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(IMAGE_FOLDER));
+		lnf.putLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(IMAGE_FOLDER));
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_ICON, new ImageLnfResource(IMAGE_CLOSE_MODULE));
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_CLOSE_HOVER_ICON, new ImageLnfResource(
 				IMAGE_CLOSE_MODULE_HOVER));

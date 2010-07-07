@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.internal.ui.ridgets.swt.TreeRidgetLabelProvider;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -364,6 +365,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		formData.right = new FormAttachment(100, 0);
 		formData.bottom = new FormAttachment(100, 0);
 		subModuleTree.setLayoutData(formData);
+		subModuleTree.setData(TreeRidgetLabelProvider.TREE_KIND_KEY, TreeRidgetLabelProvider.TREE_KIND_NAVIGATION);
 
 		addListeners();
 

@@ -52,6 +52,9 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	private static final UpdateIconsTreeListener LISTENER = new UpdateIconsTreeListener();
 	private static final String KEY_LABELPROVIDER = "K_TRLP"; //$NON-NLS-1$
 
+	public static final String TREE_KIND_KEY = "kind"; //$NON-NLS-1$
+	public static final String TREE_KIND_NAVIGATION = "navigation"; //$NON-NLS-1$
+
 	private final TreeViewer viewer;
 	private final IObservableMap enablementAttribute;
 	private final IObservableMap imageAttribute;
@@ -293,10 +296,18 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		}
 		if ((result == null) && (isSubModuleNode(element.getClass()))) {
 			ILnfResource lnfResource = null;
+			final Tree tree = (Tree) viewer.getControl();
+
+			final boolean navigation = TREE_KIND_NAVIGATION.equals(tree.getData(TREE_KIND_KEY));
 			if (isExpanded) {
-				lnfResource = LnfManager.getLnf().getLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON);
+
+				lnfResource = navigation ? LnfManager.getLnf().getLnfResource(
+						LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON) : LnfManager.getLnf().getLnfResource(
+						LnfKeyConstants.WORKAREA_TREE_FOLDER_OPEN_ICON);
 			} else {
-				lnfResource = LnfManager.getLnf().getLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON);
+				lnfResource = navigation ? LnfManager.getLnf().getLnfResource(
+						LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON) : LnfManager.getLnf().getLnfResource(
+						LnfKeyConstants.WORKAREA_TREE_FOLDER_CLOSED_ICON);
 			}
 			if (lnfResource instanceof ImageLnfResource) {
 				final ImageLnfResource imageResource = (ImageLnfResource) lnfResource;
