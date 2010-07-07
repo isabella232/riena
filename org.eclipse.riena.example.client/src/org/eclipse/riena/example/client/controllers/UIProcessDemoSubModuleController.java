@@ -71,13 +71,13 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 			@Override
 			public void initialUpdateUI(final int totalWork) {
 				super.initialUpdateUI(totalWork);
-				//				setBlocked(true);
+				setBlocked(true);
 			}
 
 			@Override
 			public boolean runJob(final IProgressMonitor monitor) {
 				try {
-					Thread.sleep(1500);
+					Thread.sleep(500);
 				} catch (final InterruptedException e1) {
 					e1.getCause(); // .ignore();
 				}
@@ -87,7 +87,7 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 						return false;
 					}
 					try {
-						Thread.sleep(8000);
+						Thread.sleep(500);
 					} catch (final InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -100,7 +100,7 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 			@Override
 			public void finalUpdateUI() {
 				super.finalUpdateUI();
-				//				setBlocked(false);
+				setBlocked(false);
 			}
 
 			@Override
