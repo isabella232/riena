@@ -14,6 +14,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
+/**
+ * A component separating different areas inside a ui-parent
+ */
 public class Separator extends Canvas {
 
 	public static enum ORIENTATION {

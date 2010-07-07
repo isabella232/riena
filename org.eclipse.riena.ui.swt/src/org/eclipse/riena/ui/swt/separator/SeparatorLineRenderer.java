@@ -6,6 +6,9 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.separator.Separator.ORIENTATION;
 
+/**
+ * Renderer for the {@link Separator} component
+ */
 public class SeparatorLineRenderer extends AbstractLnfRenderer {
 
 	private SeparatorDescriptor descriptor;
