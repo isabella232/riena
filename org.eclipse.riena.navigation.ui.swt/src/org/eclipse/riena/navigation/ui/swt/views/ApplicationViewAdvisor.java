@@ -32,7 +32,6 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveRegistry;
@@ -93,6 +92,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.TestingSupport;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
@@ -465,11 +465,12 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 
 		int padding = getCoolBarSeparatorPadding();
 
-		final Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
+		final Composite separator = UIControlsFactory.createSeparator(parent, SWT.HORIZONTAL);
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(previous);
 		formData.left = new FormAttachment(0, padding);
 		formData.right = new FormAttachment(100, -padding);
+		formData.height = 2;
 		separator.setLayoutData(formData);
 
 		padding = getShellPadding();

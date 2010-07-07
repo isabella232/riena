@@ -200,6 +200,11 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource(LnfKeyConstants.INFO_FLYOUT_BACKGROUND_COLOR, new ColorLnfResource(222, 237, 244));
 
 		lnf.putLnfResource(LnfKeyConstants.INFO_FLYOUT_BORDER_COLOR, new ColorLnfResource(150, 165, 170));
+
+		lnf.putLnfResource(LnfKeyConstants.TITLEBAR_SEPARATOR_FIRST_LINE_FOREGROUND,
+				new ColorLnfResource(212, 208, 200));
+		lnf.putLnfResource(LnfKeyConstants.TITLEBAR_SEPARATOR_SECOND_LINE_FOREGROUND, new ColorLnfResource(245, 245,
+				245));
 	}
 
 	private void customizeSWTControls(final ILnfCustomizer lnf) {

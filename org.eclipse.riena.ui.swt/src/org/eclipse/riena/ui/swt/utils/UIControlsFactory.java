@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.utils;
 
+import java.beans.Beans;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -50,6 +52,7 @@ import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.separator.Separator;
 
 /**
  * Convenience class for creating SWT controls.
@@ -1565,6 +1568,35 @@ public class UIControlsFactory {
 	 */
 	public static Slider createSlider(final Composite parent) {
 		return createSlider(parent, SWT.HORIZONTAL);
+	}
+
+	/**
+	 * Create a {@link Separator} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style bits
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
+	 */
+	public static Separator createSeparator(final Composite parent, final int style) {
+		final Separator separator = createSeparatorTwoLine(parent, SWT.HORIZONTAL,
+				LnfKeyConstants.TITLEBAR_SEPARATOR_FIRST_LINE_FOREGROUND,
+				LnfKeyConstants.TITLEBAR_SEPARATOR_SECOND_LINE_FOREGROUND);
+		return separator;
+	}
+
+	private static Separator createSeparatorTwoLine(final Composite parent, final int style,
+			final String firstLineColor, final String secondLineColor) {
+
+		if (Beans.isDesignTime()) {
+			// design time fallback
+			return new Separator(parent, style, Display.getDefault().getSystemColor(SWT.COLOR_BLACK), Display
+					.getDefault().getSystemColor(SWT.COLOR_WHITE));
+		}
+		return new Separator(parent, style, LnfManager.getLnf().getColor(firstLineColor), LnfManager.getLnf().getColor(
+				secondLineColor));
 	}
 
 	/**

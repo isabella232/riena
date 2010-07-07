@@ -1049,6 +1049,20 @@ public final class LnfKeyConstants {
 	 */
 	public static final String APPLICATION_MIN_SIZE = "riena.application.size.minimum"; //$NON-NLS-1$
 
+	/**
+	 * Key to access the first color of the titlebar separator.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String TITLEBAR_SEPARATOR_FIRST_LINE_FOREGROUND = "titlebar.separator.firstline.color"; //$NON-NLS-1$
+
+	/**
+	 * Key to access the second color of the titlebar separator.
+	 * 
+	 * @since 2.0
+	 */
+	public static final String TITLEBAR_SEPARATOR_SECOND_LINE_FOREGROUND = "titlebar.separator.secondtline.color"; //$NON-NLS-1$
+
 	private LnfKeyConstants() {
 		super();
 	}
