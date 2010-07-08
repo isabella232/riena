@@ -16,6 +16,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * A component separating different areas inside a ui-parent
+ * 
+ * @since 2.1
  */
 public class Separator extends Canvas {
 
@@ -29,8 +31,7 @@ public class Separator extends Canvas {
 			final Color firstLineColor, final Color secondLineColor) {
 		super(parent, style | SWT.NO_SCROLL);
 
-		// TODO [ev] hack to run this in SWT only mode - need to check if color is initialized by LnF...
-		//           will remove later this week
+		// [ev] hack to run this in SWT only mode - need to check if color is initialized by LnF...
 		final Color firstLine = firstLineColor == null ? getDisplay().getSystemColor(SWT.COLOR_WHITE) : firstLineColor;
 
 		this.descriptor = new SeparatorDescriptor(orientation, secondLineColor == null ? 1 : 2, firstLine,

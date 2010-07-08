@@ -5,7 +5,9 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.riena.ui.swt.separator.Separator.ORIENTATION;
 
 /**
- * bean class holding information about a {@link Separator}
+ * Bean class holding information about a {@link Separator}.
+ * 
+ * @since 2.1
  */
 public class SeparatorDescriptor {
 

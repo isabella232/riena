@@ -1579,6 +1579,7 @@ public class UIControlsFactory {
 	 *            the style bits
 	 * 
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
+	 * @since 2.1
 	 */
 	public static Separator createSeparator(final Composite parent, final int style) {
 		final Separator separator = createSeparatorTwoLine(parent, SWT.HORIZONTAL,
