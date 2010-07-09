@@ -231,5 +231,14 @@ public interface INavigationNodeListener<S extends INavigationNode<C>, C extends
 	 */
 	void prepared(S source);
 
+	/**
+	 * This method is called when the node id has changed.
+	 * 
+	 * @param source
+	 *            the node
+	 * @param newId
+	 *            the new node id
+	 * @since 2.1
+	 */
 	void nodeIdChange(INavigationNode<?> source, NavigationNodeId newId);
 }

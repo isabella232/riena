@@ -495,6 +495,13 @@ public class NavigationTreeObserver {
 			}
 		}
 
+		@Override
+		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
+			super.nodeIdChange(source, newId);
+			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
+				next.nodeIdChange(source, newId);
+			}
+		}
 	}
 
 	private class MySubApplicationNodeListener extends SubApplicationNodeListener {
@@ -728,6 +735,13 @@ public class NavigationTreeObserver {
 			}
 		}
 
+		@Override
+		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
+			super.nodeIdChange(source, newId);
+			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
+				next.nodeIdChange(source, newId);
+			}
+		}
 	}
 
 	private class MyModuleGroupNodeListener extends ModuleGroupNodeListener {
@@ -960,6 +974,14 @@ public class NavigationTreeObserver {
 				next.stateChanged(source, oldState, newState);
 			}
 		}
+
+		@Override
+		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
+			super.nodeIdChange(source, newId);
+			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
+				next.nodeIdChange(source, newId);
+			}
+		}
 	}
 
 	private class MyModuleNodeListener extends ModuleNodeListener {
@@ -1190,6 +1212,14 @@ public class NavigationTreeObserver {
 			super.stateChanged(source, oldState, newState);
 			for (final IModuleNodeListener next : getModuleNodeListeners()) {
 				next.stateChanged(source, oldState, newState);
+			}
+		}
+
+		@Override
+		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
+			super.nodeIdChange(source, newId);
+			for (final IModuleNodeListener next : getModuleNodeListeners()) {
+				next.nodeIdChange(source, newId);
 			}
 		}
 	}
@@ -1447,5 +1477,4 @@ public class NavigationTreeObserver {
 			}
 		}
 	}
-
 }

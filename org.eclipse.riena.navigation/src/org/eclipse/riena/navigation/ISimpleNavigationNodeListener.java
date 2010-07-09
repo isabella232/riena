@@ -230,5 +230,14 @@ public interface ISimpleNavigationNodeListener {
 	 */
 	void prepared(INavigationNode<?> source);
 
+	/**
+	 * This method is called when the node id has changed.
+	 * 
+	 * @param source
+	 *            the node
+	 * @param newId
+	 *            the new node id
+	 * @since 2.1
+	 */
 	void nodeIdChange(INavigationNode<?> source, NavigationNodeId newId);
 }
