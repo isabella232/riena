@@ -17,8 +17,6 @@ import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -39,6 +37,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
@@ -46,7 +45,6 @@ import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
-import org.eclipse.ui.internal.WorkbenchWindow;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.wire.InjectExtension;
@@ -363,15 +361,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	/**
-	 * Returns the menu manager of the main menu (menu bar).
-	 * 
-	 * @return menu manager
-	 */
-	private MenuManager getMenuManager() {
-		return ((WorkbenchWindow) getWindowConfigurer().getWindow()).getMenuManager();
-	}
-
-	/**
 	 * Create the composite that contains the:
 	 * <ul>
 	 * <li>shell title and title buttons</li>
@@ -419,10 +408,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		final int padding = getShellPadding();
 
 		// menu bar
-		final MenuCoolBarComposite composite = new MenuCoolBarComposite(parent, SWT.NONE);
-		composite.setLayout(new FillLayout());
-
-		createMenuBar(composite);
+		final IWorkbenchWindow window = getWindowConfigurer().getWindow();
+		final MenuCoolBarComposite composite = new MenuCoolBarComposite(parent, SWT.NONE, window);
 
 		final FormData formData = new FormData();
 		formData.top = new FormAttachment(previous, getMenuBarTopMargin());
@@ -431,24 +418,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		composite.setLayoutData(formData);
 
 		return composite;
-	}
-
-	/**
-	 * Creates a cool bar with menus.
-	 * 
-	 * @param parent
-	 * @return cool bar with menus
-	 */
-	private void createMenuBar(final MenuCoolBarComposite parent) {
-
-		final IContributionItem[] contribItems = getMenuManager().getItems();
-		for (final IContributionItem contribItem : contribItems) {
-			if (contribItem instanceof MenuManager) {
-				final MenuManager topMenuManager = (MenuManager) contribItem;
-				parent.createAndAddMenu(topMenuManager);
-			}
-		}
-
 	}
 
 	/**

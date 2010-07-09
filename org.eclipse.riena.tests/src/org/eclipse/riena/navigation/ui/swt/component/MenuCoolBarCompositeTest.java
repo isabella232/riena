@@ -52,8 +52,8 @@ public class MenuCoolBarCompositeTest extends TestCase {
 	 */
 	public void testMenuCoolBarComposite() {
 
-		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE);
-		final ToolBar toolBar = ReflectionUtils.getHidden(composite, "toolBar");
+		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, null);
+		final ToolBar toolBar = ReflectionUtils.getHidden(composite, "menuToolBar");
 		assertNotNull(toolBar);
 		final Listener[] listeners = toolBar.getListeners(SWT.MouseMove);
 		assertEquals(1, listeners.length);
@@ -70,10 +70,10 @@ public class MenuCoolBarCompositeTest extends TestCase {
 	 */
 	public void testCreateAndAddMenu() {
 
-		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE);
+		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, null);
 
 		final MenuManager manager = new MenuManager("TestMenu", "0815");
-		final ToolItem topItem = composite.createAndAddMenu(manager);
+		final ToolItem topItem = ReflectionUtils.invokeHidden(composite, "createAndAddMenu", manager);
 		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		assertEquals("0815", locator.locateBindingProperty(topItem));
 		assertEquals("TestMenu", topItem.getText());
@@ -85,10 +85,10 @@ public class MenuCoolBarCompositeTest extends TestCase {
 	 */
 	public void testGetTopLevelItems() {
 
-		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE);
+		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, null);
 
 		final MenuManager manager = new MenuManager("TestMenu", "0815");
-		final ToolItem topItem = composite.createAndAddMenu(manager);
+		final ToolItem topItem = ReflectionUtils.invokeHidden(composite, "createAndAddMenu", manager);
 		final List<ToolItem> items = composite.getTopLevelItems();
 		assertEquals(1, items.size());
 		assertTrue(items.contains(topItem));

@@ -13,18 +13,22 @@ package org.eclipse.riena.navigation.ui.swt.component;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.internal.WorkbenchWindow;
 
 import org.eclipse.riena.internal.navigation.ui.swt.CoolbarUtils;
 import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
@@ -38,8 +42,10 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
  */
 public class MenuCoolBarComposite extends Composite {
 
-	private CoolItem coolItem;
-	private ToolBar toolBar;
+	private final IWorkbenchWindow window;
+
+	private CoolItem menuCoolItem;
+	private ToolBar menuToolBar;
 
 	/**
 	 * Creates an new instance of {@code MenuCoolBarComposite} given its parent
@@ -50,29 +56,20 @@ public class MenuCoolBarComposite extends Composite {
 	 *            (cannot be null)
 	 * @param style
 	 *            the style of widget to construct
+	 * @param window
+	 *            an IWorkbenchWindow instance, used to determine the menu
+	 *            entries. May be null.
+	 * @since 2.1
 	 */
-	public MenuCoolBarComposite(final Composite parent, final int style) {
+	public MenuCoolBarComposite(final Composite parent, final int style, final IWorkbenchWindow window) {
 		super(parent, style);
+		setLayout(new FillLayout());
+		this.window = window;
 		create();
 	}
 
-	/**
-	 * Creates a top-level menu and adds it to the Riena menu bar.
-	 * 
-	 * @param menuManager
-	 */
-	public ToolItem createAndAddMenu(final MenuManager menuManager) {
-		final ToolItem toolItem = new ToolItem(toolBar, SWT.CHECK);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(toolItem, menuManager.getId());
-		toolItem.setText(menuManager.getMenuText());
-		final MenuManagerHelper helper = new MenuManagerHelper();
-		helper.createMenu(toolBar, toolItem, menuManager);
-		calcSize(coolItem);
-		return toolItem;
-	}
-
 	public List<ToolItem> getTopLevelItems() {
-		final ToolItem[] toolItems = toolBar.getItems();
+		final ToolItem[] toolItems = menuToolBar.getItems();
 		return Arrays.asList(toolItems);
 	}
 
@@ -93,19 +90,59 @@ public class MenuCoolBarComposite extends Composite {
 	}
 
 	/**
+	 * Creates a top-level menu and adds it to the Riena menu bar.
+	 * 
+	 * @param menuManager
+	 */
+	private ToolItem createAndAddMenu(final MenuManager menuManager) {
+		final ToolItem toolItem = new ToolItem(menuToolBar, SWT.CHECK);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(toolItem, menuManager.getId());
+		toolItem.setText(menuManager.getMenuText());
+		final MenuManagerHelper helper = new MenuManagerHelper();
+		helper.createMenu(menuToolBar, toolItem, menuManager);
+		calcSize(menuCoolItem);
+		return toolItem;
+	}
+
+	/**
 	 * Creates the cool and tool bar. These build the menu bar of the Riena
 	 * sub-application.
 	 */
 	private void create() {
-		final CoolBar coolBar = new CoolBar(this, SWT.FLAT);
-		coolItem = CoolbarUtils.initCoolBar(coolBar, getMenuBarFont());
+		final CoolBar menuCoolBar = new CoolBar(this, SWT.FLAT);
+		menuCoolItem = CoolbarUtils.initCoolBar(menuCoolBar, getMenuBarFont());
 
-		toolBar = (ToolBar) coolItem.getControl();
-		toolBar.addMouseMoveListener(new ToolBarMouseListener());
+		menuToolBar = (ToolBar) menuCoolItem.getControl();
+		menuToolBar.addMouseMoveListener(new ToolBarMouseListener());
+
+		fillMenuBar();
+	}
+
+	private void fillMenuBar() {
+		for (final IContributionItem contribItem : getTopLevelMenuEntries()) {
+			if (contribItem instanceof MenuManager) {
+				final MenuManager topMenuManager = (MenuManager) contribItem;
+				createAndAddMenu(topMenuManager);
+			}
+		}
 	}
 
 	private Font getMenuBarFont() {
 		return LnfManager.getLnf().getFont(LnfKeyConstants.MENUBAR_FONT);
+	}
+
+	/**
+	 * Returns the top-level menu entries.
+	 */
+	private IContributionItem[] getTopLevelMenuEntries() {
+		IContributionItem[] result = new IContributionItem[0];
+		if (window instanceof WorkbenchWindow) {
+			final MenuManager menuManager = ((WorkbenchWindow) window).getMenuManager();
+			result = menuManager.getItems();
+		} else {
+			result = new IContributionItem[0];
+		}
+		return result;
 	}
 
 	// helping classes

@@ -109,7 +109,7 @@ public class SubApplicationViewTest extends TestCase {
 		assertNotNull(composites);
 		assertTrue(composites.isEmpty());
 
-		final MenuCoolBarComposite menuComposite = new MenuCoolBarComposite(comp1, SWT.NONE);
+		final MenuCoolBarComposite menuComposite = new MenuCoolBarComposite(comp1, SWT.NONE, null);
 
 		composites = ReflectionUtils.invokeHidden(view, "getMenuCoolBarComposites", shell);
 		assertNotNull(composites);
@@ -130,7 +130,7 @@ public class SubApplicationViewTest extends TestCase {
 		assertNotNull(coolBars);
 		assertTrue(coolBars.isEmpty());
 
-		new MenuCoolBarComposite(comp1, SWT.NONE);
+		new MenuCoolBarComposite(comp1, SWT.NONE, null);
 		coolBars = ReflectionUtils.invokeHidden(view, "getCoolBars", shell);
 		assertNotNull(coolBars);
 		assertTrue(coolBars.isEmpty());
