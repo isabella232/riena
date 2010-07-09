@@ -71,7 +71,7 @@ public class CustomerSearchController extends SubModuleController {
 						result.setCustomers(null);
 						getRidget("result").updateFromModel(); //$NON-NLS-1$
 
-						result.setCustomers(customerDemoService.search(null));
+						result.setCustomers(customerDemoService.search(customerSearchBean.getLastName()));
 
 						getRidget("result").updateFromModel(); //$NON-NLS-1$
 						getRidget("hits").updateFromModel(); //$NON-NLS-1$

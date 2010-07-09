@@ -36,7 +36,18 @@ public class CustomerRepository implements ICustomerRepository {
 	}
 
 	public List<Customer> search(final String lastName) {
-		return customers;
+		if (lastName == null || lastName.isEmpty()) {
+			return customers;
+		}
+		final String pattern = lastName.toLowerCase();
+		final List<Customer> result = new ArrayList<Customer>();
+		for (final Customer customer : customers) {
+			if (customer.getLastName().toLowerCase().contains(pattern)) {
+				result.add(customer);
+			}
+
+		}
+		return result;
 	}
 
 	public void store(final Customer customer) {
