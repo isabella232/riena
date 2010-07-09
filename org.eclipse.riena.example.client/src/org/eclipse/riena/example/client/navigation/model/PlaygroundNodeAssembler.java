@@ -108,10 +108,38 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds = null;
 
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationAssembler#buildNode(org.eclipse.riena.navigation.NavigationNodeId,
-	 *      org.eclipse.riena.navigation.NavigationArgument)
-	 */
+	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
+
+		if (knownTargetIds == null) {
+			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.playground", //$NON-NLS-1$
+					"org.eclipse.riena.example.buttons", //$NON-NLS-1$
+					"org.eclipse.riena.example.choice", //$NON-NLS-1$
+					"org.eclipse.riena.example.combo", //$NON-NLS-1$
+					"org.eclipse.riena.example.ccombo", //$NON-NLS-1$
+					"org.eclipse.riena.example.list", //$NON-NLS-1$
+					"org.eclipse.riena.example.text", //$NON-NLS-1$
+					"org.eclipse.riena.example.text.numeric", //$NON-NLS-1$
+					"org.eclipse.riena.example.text.date", //$NON-NLS-1$
+					"org.eclipse.riena.example.marker", //$NON-NLS-1$
+					"org.eclipse.riena.example.messagemarker", //$NON-NLS-1$
+					"org.eclipse.riena.example.focusable", //$NON-NLS-1$
+					"org.eclipse.riena.example.validation", //$NON-NLS-1$
+					"org.eclipse.riena.example.tree", //$NON-NLS-1$
+					"org.eclipse.riena.example.treeTable", //$NON-NLS-1$
+					"org.eclipse.riena.example.table", //$NON-NLS-1$
+					"org.eclipse.riena.example.systemProperties", //$NON-NLS-1$
+					"org.eclipse.riena.example.statusLine", //$NON-NLS-1$
+					"org.eclipse.riena.example.blocking", //$NON-NLS-1$
+					"org.eclipse.riena.example.noController", //$NON-NLS-1$
+					"org.eclipse.riena.example.dialog", //$NON-NLS-1$
+					"org.eclipse.riena.example.messageBox" //$NON-NLS-1$
+			));
+			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
+		}
+
+		return knownTargetIds.contains(nodeId.getTypeId());
+	}
+
 	public INavigationNode<?>[] buildNode(final NavigationNodeId navigationNodeId,
 			final NavigationArgument navigationArgument) {
 
@@ -138,28 +166,8 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 				ChoiceSubModuleView.class.getName(), false);
 		playgroundModule.addChild(choiceSubModule);
 
-		final ISubModuleNode comboSubModule = new SubModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.combo"), "Combo"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(comboSubModule, ComboSubModuleController.class, ComboSubModuleView.ID, false);
-		playgroundModule.addChild(comboSubModule);
-
-		final ISubModuleNode ccomboSubModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.ccombo"), "CCombo"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(ccomboSubModule, CComboSubModuleController.class, CComboSubModuleView.ID)
-				.setRequiredPreparation(true);
-		playgroundModule.addChild(ccomboSubModule);
-
-		final ISubModuleNode comboCompletionSubModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.completioncombo"), "CompletionCombo"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(comboCompletionSubModule, CompletionComboSubModuleController.class,
-				CompletionComboSubModuleView.ID, false);
-		playgroundModule.addChild(comboCompletionSubModule);
-
-		final ISubModuleNode comboAndChoiceSubModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.different"), "Combo and Choice"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(comboAndChoiceSubModule, ComboAndChoiceSubModuleController.class,
-				ComboAndChoiceSubModuleView.ID, false);
-		playgroundModule.addChild(comboAndChoiceSubModule);
+		final ISubModuleNode comboFolderSubModule = buildComboNodes();
+		playgroundModule.addChild(comboFolderSubModule);
 
 		final ISubModuleNode tablexSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.compositetable"), "Composite Table"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -307,109 +315,110 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		return new IModuleGroupNode[] { moduleGroup };
 	}
 
+	// helping methods
+	//////////////////
+
 	/**
-	 * Creates a sub-module with child nodes that demonstrates the usage of text
+	 * Creates a sub-module with child nodes that demonstrate the usage of combo
+	 * Ridgets.
+	 */
+	private ISubModuleNode buildComboNodes() {
+		final WorkareaManager workarea = WorkareaManager.getInstance();
+
+		final ISubModuleNode result = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.comboFolder"), "Combos"); //$NON-NLS-1$ //$NON-NLS-2$
+		result.setSelectable(false);
+
+		final ISubModuleNode comboSubModule = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.combo"), "Combo"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(comboSubModule, ComboSubModuleController.class, ComboSubModuleView.ID, false);
+		result.addChild(comboSubModule);
+
+		final ISubModuleNode ccomboSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.ccombo"), "CCombo"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(ccomboSubModule, CComboSubModuleController.class, CComboSubModuleView.ID)
+				.setRequiredPreparation(true);
+		result.addChild(ccomboSubModule);
+
+		final ISubModuleNode comboCompletionSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.completioncombo"), "CompletionCombo"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(comboCompletionSubModule, CompletionComboSubModuleController.class,
+				CompletionComboSubModuleView.ID, false);
+		result.addChild(comboCompletionSubModule);
+
+		final ISubModuleNode comboAndChoiceSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.different"), "Combo and Choice"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(comboAndChoiceSubModule, ComboAndChoiceSubModuleController.class,
+				ComboAndChoiceSubModuleView.ID, false);
+		result.addChild(comboAndChoiceSubModule);
+
+		return result;
+	}
+
+	/**
+	 * Creates a sub-module with child nodes that demonstrate the usage of text
 	 * Ridgets.
 	 * 
 	 * @return folder sub-module
 	 */
 	private ISubModuleNode buildTextNodes() {
-
 		final WorkareaManager workarea = WorkareaManager.getInstance();
 
-		final ISubModuleNode textFolderSubModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.textFolder"), "Text"); //$NON-NLS-1$ //$NON-NLS-2$
-		textFolderSubModule.setSelectable(false);
+		final ISubModuleNode result = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.textFolder"), "Text"); //$NON-NLS-1$ //$NON-NLS-2$
+		result.setSelectable(false);
 
 		final ISubModuleNode textSubModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.text"), "Text"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(textSubModule, TextSubModuleController.class, TextSubModuleView.ID, false);
-		textFolderSubModule.addChild(textSubModule);
+		result.addChild(textSubModule);
 
 		final ISubModuleNode textNumbersSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.text.numeric"), "Text (Numeric)"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(textNumbersSubModule, TextNumericSubModuleController.class,
 				TextNumericSubModuleView.ID, false);
-		textFolderSubModule.addChild(textNumbersSubModule);
+		result.addChild(textNumbersSubModule);
 
 		final ISubModuleNode textDateSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.text.date"), "Text (Date)"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(textDateSubModule, TextDateSubModuleController.class, TextDateSubModuleView.ID,
 				false);
-		textFolderSubModule.addChild(textDateSubModule);
+		result.addChild(textDateSubModule);
 
-		return textFolderSubModule;
-
+		return result;
 	}
 
 	/**
-	 * Creates a sub-module with child nodes that demonstrates the usage of
+	 * Creates a sub-module with child nodes that demonstrate the usage of
 	 * master-details Ridgets.
 	 * 
 	 * @return folder sub-module
 	 */
 	private ISubModuleNode buildMasterDetailsNodes() {
-
 		final WorkareaManager workarea = WorkareaManager.getInstance();
 
-		final ISubModuleNode masterDetailsFolderSubModule = new SubModuleNode(new NavigationNodeId(
+		final ISubModuleNode result = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.masterDetailsFolder"), "Master/Details"); //$NON-NLS-1$ //$NON-NLS-2$
-		masterDetailsFolderSubModule.setSelectable(false);
+		result.setSelectable(false);
 
 		final ISubModuleNode mdSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.masterdetails"), "Master/Details"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(mdSubModule, MasterDetailsSubModuleController.class, MasterDetailsSubModuleView.ID,
 				false);
-		masterDetailsFolderSubModule.addChild(mdSubModule);
+		result.addChild(mdSubModule);
 
 		final ISubModuleNode mdSubModule2 = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.masterdetails2"), "Master/Details II"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(mdSubModule2, MasterDetailsSubModuleController2.class,
 				MasterDetailsSubModuleView2.ID, false);
-		masterDetailsFolderSubModule.addChild(mdSubModule2);
+		result.addChild(mdSubModule2);
 
 		final ISubModuleNode mdSubModule3 = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.masterdetails3"), "Master/Details III"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(mdSubModule3, MasterDetailsSubModuleController.class,
 				MasterDetailsSubModuleView3.ID, false);
-		masterDetailsFolderSubModule.addChild(mdSubModule3);
+		result.addChild(mdSubModule3);
 
-		return masterDetailsFolderSubModule;
-
-	}
-
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationAssembler#acceptsTargetId(String)
-	 */
-	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
-
-		if (knownTargetIds == null) {
-			knownTargetIds = new HashSet<String>(Arrays.asList("org.eclipse.riena.example.playground", //$NON-NLS-1$
-					"org.eclipse.riena.example.buttons", //$NON-NLS-1$
-					"org.eclipse.riena.example.choice", //$NON-NLS-1$
-					"org.eclipse.riena.example.combo", //$NON-NLS-1$
-					"org.eclipse.riena.example.ccombo", //$NON-NLS-1$
-					"org.eclipse.riena.example.list", //$NON-NLS-1$
-					"org.eclipse.riena.example.text", //$NON-NLS-1$
-					"org.eclipse.riena.example.text.numeric", //$NON-NLS-1$
-					"org.eclipse.riena.example.text.date", //$NON-NLS-1$
-					"org.eclipse.riena.example.marker", //$NON-NLS-1$
-					"org.eclipse.riena.example.messagemarker", //$NON-NLS-1$
-					"org.eclipse.riena.example.focusable", //$NON-NLS-1$
-					"org.eclipse.riena.example.validation", //$NON-NLS-1$
-					"org.eclipse.riena.example.tree", //$NON-NLS-1$
-					"org.eclipse.riena.example.treeTable", //$NON-NLS-1$
-					"org.eclipse.riena.example.table", //$NON-NLS-1$
-					"org.eclipse.riena.example.systemProperties", //$NON-NLS-1$
-					"org.eclipse.riena.example.statusLine", //$NON-NLS-1$
-					"org.eclipse.riena.example.blocking", //$NON-NLS-1$
-					"org.eclipse.riena.example.noController", //$NON-NLS-1$
-					"org.eclipse.riena.example.dialog", //$NON-NLS-1$
-					"org.eclipse.riena.example.messageBox" //$NON-NLS-1$
-			));
-			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
-		}
-
-		return knownTargetIds.contains(nodeId.getTypeId());
+		return result;
 	}
 }
