@@ -12,9 +12,11 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.EventListener;
 
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
@@ -40,25 +42,6 @@ public class DisabledMarkerVisualizer {
 		updateDisabled(getControl(), getRidget().isEnabled());
 	}
 
-	private void updateDisabled(final Control control, final boolean enabled) {
-		control.setEnabled(enabled);
-		removePaintlistener(control);
-
-		if (!enabled) {
-			addPaintlistener(control);
-		}
-
-		if (control instanceof Composite) {
-			final Composite composite = (Composite) control;
-			final Control[] children = composite.getChildren();
-			for (final Control child : children) {
-				updateDisabled(child, enabled);
-			}
-		}
-
-		control.redraw();
-	}
-
 	/**
 	 * Control connect and disconnect the Paintlistener.
 	 */
@@ -81,6 +64,36 @@ public class DisabledMarkerVisualizer {
 
 	private IRidget getRidget() {
 		return ridget;
+	}
+
+	private void updateDisabled(final Control control, final boolean enabled) {
+		control.setEnabled(enabled);
+		removePaintlistener(control);
+
+		if (!enabled) {
+			addPaintlistener(control);
+		}
+
+		if (control instanceof Composite) {
+			final Composite composite = (Composite) control;
+			final Control[] children = getChildren(composite);
+			for (final Control child : children) {
+				updateDisabled(child, enabled);
+			}
+		}
+
+		control.redraw();
+	}
+
+	private Control[] getChildren(final Composite parent) {
+		Control[] result = parent.getChildren();
+		if (parent instanceof CCombo) {
+			// workaround for Bug 318301
+			result = new Control[2];
+			result[0] = ReflectionUtils.getHidden(parent, "text"); //$NON-NLS-1$
+			result[1] = ReflectionUtils.getHidden(parent, "arrow"); //$NON-NLS-1$
+		}
+		return result;
 	}
 
 }

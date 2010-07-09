@@ -813,12 +813,6 @@ public class CompletionCombo2 extends Composite {
 		return null;
 	}
 
-	@Override
-	public Control[] getChildren() {
-		checkWidget();
-		return new Control[0];
-	}
-
 	/**
 	 * Returns the background color of the Combo's List widget.
 	 * 

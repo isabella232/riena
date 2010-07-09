@@ -15,7 +15,10 @@ import junit.framework.TestCase;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -76,6 +79,17 @@ public class CompletionComboTest extends TestCase {
 		assertEquals(red, combo.getBackground());
 		assertEquals(green, combo.getTextBackground());
 		assertEquals(blue, combo.getListBackground());
+	}
+
+	/**
+	 * As per bug 318301
+	 */
+	public void testGetChildren() {
+		final Control[] children = combo.getChildren();
+
+		assertEquals(2, children.length);
+		assertTrue(children[0] instanceof Text);
+		assertTrue(children[1] instanceof Button);
 	}
 
 }
