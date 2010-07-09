@@ -16,7 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
@@ -151,7 +150,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	public boolean confirmDiscardChanges() {
 		final String title = Messages.MasterDetailsComposite_dialogMessage_confirmDiscard;
 		final String message = Messages.MasterDetailsComposite_dialogTitle_confirmDiscard;
-		final boolean result = MessageDialog.openQuestion(getShell(), title, message);
+		final boolean result = RienaMessageDialog.openQuestion(getShell(), title, message);
 		return result;
 	}
 
@@ -330,7 +329,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	public void warnApplyFailed(final String reason) {
 		Assert.isNotNull(reason);
 		final String title = Messages.MasterDetailsComposite_dialogTitle_applyFailed;
-		MessageDialog.openWarning(getShell(), title, reason);
+		RienaMessageDialog.openWarning(getShell(), title, reason);
 	}
 
 	/**
@@ -346,7 +345,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	public void warnRemoveFailed(final String reason) {
 		Assert.isNotNull(reason);
 		final String title = Messages.MasterDetailsComposite_dialogTitle_removeFailed;
-		MessageDialog.openWarning(getShell(), title, reason);
+		RienaMessageDialog.openWarning(getShell(), title, reason);
 	}
 
 	// protected methods

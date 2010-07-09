@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.sample.app.client.mail;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -23,6 +22,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
+
+import org.eclipse.riena.ui.swt.RienaMessageDialog;
 
 public class View extends ViewPart {
 
@@ -63,7 +64,7 @@ public class View extends ViewPart {
 		link.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				MessageDialog.openInformation(getSite().getShell(),
+				RienaMessageDialog.openInformation(getSite().getShell(),
 						"Not Implemented", "Imagine the address book or a new message being created now."); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		});

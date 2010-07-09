@@ -11,7 +11,6 @@
 package org.eclipse.riena.sample.snippets;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
@@ -32,6 +31,7 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
+import org.eclipse.riena.ui.swt.RienaMessageDialog;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -79,7 +79,7 @@ public final class SnippetMasterDetailsRidget007 {
 		public boolean confirmRemove(final Object item) {
 			final String title = "Confirm Remove"; //$NON-NLS-1$
 			final String message = String.format("Delete '%s' ?", item.toString()); //$NON-NLS-1$
-			final boolean result = MessageDialog.openQuestion(getShell(), title, message);
+			final boolean result = RienaMessageDialog.openQuestion(getShell(), title, message);
 			return result;
 		}
 	}

@@ -13,8 +13,9 @@ package org.eclipse.riena.example.client.handler;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.handlers.HandlerUtil;
+
+import org.eclipse.riena.ui.swt.RienaMessageDialog;
 
 /**
  * 
@@ -26,7 +27,7 @@ public class DummyHandler extends AbstractHandler {
 	 */
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 
-		MessageDialog.openInformation(HandlerUtil.getActiveShell(event), getTitle(), getMessage());
+		RienaMessageDialog.openInformation(HandlerUtil.getActiveShell(event), getTitle(), getMessage());
 
 		return null;
 

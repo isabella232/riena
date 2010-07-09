@@ -13,13 +13,14 @@ package org.eclipse.riena.sample.app.client.mail;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
+
+import org.eclipse.riena.ui.swt.RienaMessageDialog;
 
 public class MessagePopupHandler extends AbstractHandler implements IHandler {
 
 	public Object execute(final ExecutionEvent event) {
-		MessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Open", "Open Message Dialog!"); //$NON-NLS-1$ //$NON-NLS-2$
+		RienaMessageDialog.openInformation(Display.getCurrent().getActiveShell(), "Open", "Open Message Dialog!"); //$NON-NLS-1$ //$NON-NLS-2$
 		return null;
 	}
 }

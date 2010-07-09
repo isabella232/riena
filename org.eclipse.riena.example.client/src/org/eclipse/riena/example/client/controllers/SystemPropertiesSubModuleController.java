@@ -34,6 +34,7 @@ import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
+import org.eclipse.riena.ui.swt.RienaMessageDialog;
 
 /**
  * Controller for the {@link SystemPropertiesSubModuleView} example.
@@ -207,7 +208,7 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 			final String title = "Information"; //$NON-NLS-1$
 			String message = "The key ''{0}'' is selected and has the value ''{1}''"; //$NON-NLS-1$
 			message = NLS.bind(message, valueBean.getKey(), valueBean.getValue());
-			MessageDialog.openInformation(shell, title, message);
+			RienaMessageDialog.openInformation(shell, title, message);
 		}
 
 	}

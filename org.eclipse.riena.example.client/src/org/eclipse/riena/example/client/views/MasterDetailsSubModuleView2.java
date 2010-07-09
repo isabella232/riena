@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
@@ -29,6 +28,7 @@ import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleContro
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
+import org.eclipse.riena.ui.swt.RienaMessageDialog;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -93,7 +93,7 @@ public class MasterDetailsSubModuleView2 extends SubModuleView {
 			public boolean confirmRemove(final Object item) {
 				final String title = "Confirm Remove"; //$NON-NLS-1$
 				final String message = String.format("Delete '%s' ?", item.toString()); //$NON-NLS-1$
-				final boolean result = MessageDialog.openQuestion(getShell(), title, message);
+				final boolean result = RienaMessageDialog.openQuestion(getShell(), title, message);
 				return result;
 			}
 		};

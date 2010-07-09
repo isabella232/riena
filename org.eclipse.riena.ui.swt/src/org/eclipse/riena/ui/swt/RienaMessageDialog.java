@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.LayoutConstants;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -22,6 +24,135 @@ import org.eclipse.swt.widgets.Shell;
  * title bar.
  */
 public class RienaMessageDialog extends MessageDialog {
+
+	// --- start - code from JFace MessageDialog.java ---
+
+	/**
+	 * Convenience method to open a simple themed dialog as specified by the
+	 * <code>kind</code> flag.
+	 * 
+	 * @param kind
+	 *            the kind of dialog to open, one of {@link #ERROR},
+	 *            {@link #INFORMATION}, {@link #QUESTION}, {@link #WARNING},
+	 *            {@link #CONFIRM}, or {@link #QUESTION_WITH_CANCEL}.
+	 * @param parent
+	 *            the parent shell of the dialog, or <code>null</code> if none
+	 * @param title
+	 *            the dialog's title, or <code>null</code> if none
+	 * @param message
+	 *            the message
+	 * @param style
+	 *            {@link SWT#NONE} for a default dialog, or {@link SWT#SHEET}
+	 *            for a dialog with sheet behavior
+	 * @return <code>true</code> if the user presses the OK or Yes button,
+	 *         <code>false</code> otherwise
+	 * @since 2.1
+	 */
+	public static boolean open(final int kind, final Shell parent, final String title, final String message, int style) {
+		final RienaMessageDialog dialog = new RienaMessageDialog(parent, title, null, message, kind,
+				getButtonLabels(kind), 0);
+		style &= SWT.SHEET;
+		dialog.setShellStyle(dialog.getShellStyle() | style);
+		return dialog.open() == 0;
+	}
+
+	/**
+	 * Convenience method to open a themed confirm (OK/Cancel) dialog.
+	 * 
+	 * @param parent
+	 *            the parent shell of the dialog, or <code>null</code> if none
+	 * @param title
+	 *            the dialog's title, or <code>null</code> if none
+	 * @param message
+	 *            the message
+	 * @return <code>true</code> if the user presses the OK button,
+	 *         <code>false</code> otherwise
+	 * @since 2.1
+	 */
+	public static boolean openConfirm(final Shell parent, final String title, final String message) {
+		return open(CONFIRM, parent, title, message, SWT.NONE);
+	}
+
+	/**
+	 * Convenience method to open a themed error dialog.
+	 * 
+	 * @param parent
+	 *            the parent shell of the dialog, or <code>null</code> if none
+	 * @param title
+	 *            the dialog's title, or <code>null</code> if none
+	 * @param message
+	 *            the message
+	 * @since 2.1
+	 */
+	public static void openError(final Shell parent, final String title, final String message) {
+		open(ERROR, parent, title, message, SWT.NONE);
+	}
+
+	/**
+	 * Convenience method to open a themed information dialog.
+	 * 
+	 * @param parent
+	 *            the parent shell of the dialog, or <code>null</code> if none
+	 * @param title
+	 *            the dialog's title, or <code>null</code> if none
+	 * @param message
+	 *            the message
+	 * @since 2.1
+	 */
+	public static void openInformation(final Shell parent, final String title, final String message) {
+		open(INFORMATION, parent, title, message, SWT.NONE);
+	}
+
+	/**
+	 * Convenience method to open a themed Yes/No question dialog.
+	 * 
+	 * @param parent
+	 *            the parent shell of the dialog, or <code>null</code> if none
+	 * @param title
+	 *            the dialog's title, or <code>null</code> if none
+	 * @param message
+	 *            the message
+	 * @return <code>true</code> if the user presses the Yes button,
+	 *         <code>false</code> otherwise
+	 * @since 2.1
+	 */
+	public static boolean openQuestion(final Shell parent, final String title, final String message) {
+		return open(QUESTION, parent, title, message, SWT.NONE);
+	}
+
+	/**
+	 * Convenience method to open a themed warning dialog.
+	 * 
+	 * @param parent
+	 *            the parent shell of the dialog, or <code>null</code> if none
+	 * @param title
+	 *            the dialog's title, or <code>null</code> if none
+	 * @param message
+	 *            the message
+	 * @since 2.1
+	 */
+	public static void openWarning(final Shell parent, final String title, final String message) {
+		open(WARNING, parent, title, message, SWT.NONE);
+	}
+
+	private static String[] getButtonLabels(final int kind) {
+		switch (kind) {
+		case ERROR:
+		case INFORMATION:
+		case WARNING:
+			return new String[] { IDialogConstants.OK_LABEL };
+		case CONFIRM:
+			return new String[] { IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL };
+		case QUESTION:
+			return new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL };
+		case QUESTION_WITH_CANCEL:
+			return new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL };
+		default:
+			throw new IllegalArgumentException("Illegal value for kind in MessageDialog.open()"); //$NON-NLS-1$
+		}
+	}
+
+	// --- end - code from JFace MessageDialog.java ---
 
 	private final RienaWindowRenderer dlgRenderer;
 
@@ -72,7 +203,6 @@ public class RienaMessageDialog extends MessageDialog {
 	 */
 	@Override
 	protected void createDialogAndButtonArea(final Composite parent) {
-
 		// create the contents area
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 1;
