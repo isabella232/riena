@@ -26,7 +26,7 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	/**
 	 * Adds the listener to the collection of listeners who will be notified
 	 * when a row is clicked. The listener will receive information about the
-	 * column, moues button, row via a {@link ClickEvent}.
+	 * column, mouse button, row via a {@link ClickEvent}.
 	 * 
 	 * @param listener
 	 *            a non-null {@link IClickListener} instance

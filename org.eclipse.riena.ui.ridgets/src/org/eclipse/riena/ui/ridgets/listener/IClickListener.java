@@ -11,12 +11,23 @@
 package org.eclipse.riena.ui.ridgets.listener;
 
 /**
- * TODO [ev] docs
+ * A listener that is notified when something is clicked. The listener will
+ * receive information about the mouse click in a {@link ClickEvent} instance.
+ * 
+ * @see ClickEvent
  * 
  * @since 2.0
  */
 public interface IClickListener {
 
+	/**
+	 * This method is invoked when a click is registered.
+	 * 
+	 * @param event
+	 *            a {@link ClickEvent} instance; never null. Contains
+	 *            information about the mouse click.
+	 * @see ClickEvent
+	 */
 	public void callback(ClickEvent event);
 
 }
