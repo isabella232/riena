@@ -13,6 +13,7 @@ package org.eclipse.riena.navigation.listener;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNode.State;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.ui.filter.IUIFilter;
 
 /**
@@ -230,4 +231,5 @@ public interface INavigationNodeListener<S extends INavigationNode<C>, C extends
 	 */
 	void prepared(S source);
 
+	void nodeIdChange(INavigationNode<?> source, NavigationNodeId newId);
 }

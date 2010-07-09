@@ -230,4 +230,5 @@ public interface ISimpleNavigationNodeListener {
 	 */
 	void prepared(INavigationNode<?> source);
 
+	void nodeIdChange(INavigationNode<?> source, NavigationNodeId newId);
 }

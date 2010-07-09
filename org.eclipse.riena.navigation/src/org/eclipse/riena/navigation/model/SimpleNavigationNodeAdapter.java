@@ -14,6 +14,7 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNode.State;
 import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.ui.filter.IUIFilter;
 
 /**
@@ -244,4 +245,9 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 	public void prepared(final INavigationNode<?> source) {
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
+	}
 }

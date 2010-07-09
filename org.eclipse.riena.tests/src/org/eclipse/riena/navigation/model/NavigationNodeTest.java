@@ -905,6 +905,8 @@ public class NavigationNodeTest extends RienaTestCase {
 			return parentChangedCalledAfterChildAddedCalled;
 		}
 
+		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
+			// TODO: ruv234
+		}
 	}
-
 }

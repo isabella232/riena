@@ -634,5 +634,12 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 				blockView(block);
 			}
 		}
+
+		@Override
+		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
+			if (source.equals(getNavigationNode())) {
+				SwtViewProvider.getInstance().unregisterSwtViewId(source);
+			}
+		}
 	}
 }

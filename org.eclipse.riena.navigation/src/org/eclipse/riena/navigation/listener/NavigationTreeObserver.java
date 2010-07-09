@@ -17,9 +17,11 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNode.State;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.ui.filter.IUIFilter;
 
 /**
@@ -1437,6 +1439,13 @@ public class NavigationTreeObserver {
 			}
 		}
 
+		@Override
+		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
+			super.nodeIdChange(source, newId);
+			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
+				next.nodeIdChange(source, newId);
+			}
+		}
 	}
 
 }

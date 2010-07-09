@@ -39,6 +39,7 @@ import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
@@ -50,6 +51,7 @@ import org.eclipse.riena.navigation.ui.swt.component.ModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.component.SubModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleTreeItemMarkerRenderer;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.ui.core.marker.IIconizableMarker;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
@@ -748,6 +750,13 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			super.markerChanged(source, marker);
 			title.setMarkers(source.getMarkers());
 			title.redraw();
+		}
+
+		@Override
+		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
+			if (source.equals(getNavigationNode())) {
+				SwtViewProvider.getInstance().unregisterSwtViewId(source);
+			}
 		}
 	}
 

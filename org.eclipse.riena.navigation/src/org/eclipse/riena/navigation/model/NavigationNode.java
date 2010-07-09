@@ -93,8 +93,8 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 */
 	public NavigationNode(final NavigationNodeId nodeId) {
 		super();
-		setNodeId(nodeId);
 
+		this.nodeId = nodeId;
 		listeners = new LinkedList<L>();
 		propertyChangeSupport = new PropertyChangeSupport(this);
 		simpleListeners = new LinkedList<ISimpleNavigationNodeListener>();
@@ -1327,6 +1327,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.navigation.INavigationNode#setNodeId(org.eclipse.riena.navigation.NavigationNodeId)
 	 */
 	public void setNodeId(final NavigationNodeId nodeId) {
+		notifyNodeIdChange(nodeId);
 		this.nodeId = nodeId;
 	}
 
@@ -1420,6 +1421,16 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		}
 		for (final ISimpleNavigationNodeListener next : getSimpleListeners()) {
 			next.filterRemoved(this, filter);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void notifyNodeIdChange(final NavigationNodeId newId) {
+		for (final L next : getListeners()) {
+			next.nodeIdChange(this, newId);
+		}
+		for (final ISimpleNavigationNodeListener next : getSimpleListeners()) {
+			next.nodeIdChange(this, newId);
 		}
 	}
 

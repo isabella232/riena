@@ -31,11 +31,13 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.ModuleGroupNodeListener;
 import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -186,6 +188,12 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 			fireUpdated(null);
 		}
 
+		@Override
+		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
+			if (source.equals(getNavigationNode())) {
+				SwtViewProvider.getInstance().unregisterSwtViewId(source);
+			}
+		}
 	}
 
 	/**
