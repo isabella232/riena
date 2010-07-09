@@ -14,9 +14,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
 import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -46,8 +48,9 @@ public final class CoolbarUtils {
 		} else {
 			final CoolItem[] items = coolBar.getItems();
 			for (final CoolItem coolItem : items) {
-				if (coolItem.getControl() != null) {
-					coolItem.getControl().setFont(font);
+				final Control ciControl = coolItem.getControl();
+				if (updateFont(ciControl, font)) {
+					updateToolbarSize(coolItem);
 				}
 			}
 		}
@@ -59,15 +62,56 @@ public final class CoolbarUtils {
 		return coolBar.getItem(0);
 	}
 
-	// helping methods
-	//////////////////
-
 	/**
 	 * Return the coolbar / menubar background color according to the
 	 * look-and-feel.
 	 */
 	private static Color getCoolbarBackground() {
 		return LnfManager.getLnf().getColor(LnfKeyConstants.COOLBAR_BACKGROUND);
+	}
+
+	/**
+	 * Set newFont as the font for the given control, if not already set.
+	 * 
+	 * @param control
+	 *            a Control; may be null
+	 * @param font
+	 *            a Font; may be null.
+	 * @return true, if the font was changed, false otherwise.
+	 */
+	private static boolean updateFont(final Control control, final Font newFont) {
+		boolean result = false;
+		if (control != null) {
+			final Font oldFont = control.getFont();
+			if (newFont != oldFont || (newFont != null && !newFont.equals(oldFont))) {
+				control.setFont(newFont);
+				result = true;
+			}
+		}
+		return result;
+	}
+
+	private static void updateToolbarSize(final CoolItem coolItem) {
+		final Control control = coolItem.getControl();
+		if (control instanceof ToolBar) {
+			final ToolBar toolBar = (ToolBar) control;
+			for (final ToolItem item : toolBar.getItems()) {
+				final String text = item.getText();
+				// workaround for SWT issue: ToolItem size is not recomputed after
+				// chaning the font, must set a different text than the one in
+				// the item to trigger a recomputation.
+				item.setText(""); //$NON-NLS-1$
+				item.setText(text);
+			}
+
+			toolBar.pack();
+			// see ToolBarContributionItem.updateToolbarSize(...)
+			final Point newSize = toolBar.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+			final Point preferredSize = coolItem.computeSize(newSize.x, newSize.y);
+			coolItem.setPreferredSize(preferredSize);
+			coolItem.setMinimumSize(newSize);
+			coolItem.setSize(preferredSize);
+		}
 	}
 
 	private CoolbarUtils() {
