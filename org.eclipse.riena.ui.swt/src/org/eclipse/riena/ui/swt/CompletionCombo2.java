@@ -1867,19 +1867,17 @@ public class CompletionCombo2 extends Composite {
 	public void setEditable(final boolean editable) {
 		checkWidget();
 		text.setEditable(editable);
+		arrow.setEnabled(isEnabled() && editable);
 	}
 
 	@Override
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
-		if (popup != null && !enabled) {
-			popup.setVisible(false);
-		}
-		if (text != null) {
-			text.setEnabled(enabled);
-		}
-		if (arrow != null) {
-			arrow.setEnabled(enabled);
+		text.setEnabled(enabled);
+		final boolean editable = enabled && text.getEditable();
+		arrow.setEnabled(editable);
+		if (!editable) {
+			popup.setVisible(editable);
 		}
 	}
 
@@ -2250,7 +2248,7 @@ public class CompletionCombo2 extends Composite {
 			keyEvent.keyLocation = event.keyLocation;
 			keyEvent.stateMask = event.stateMask;
 			notifyListeners(SWT.KeyDown, keyEvent);
-			if (isDisposed()) {
+			if (isDisposed() || !getEditable()) {
 				break;
 			}
 			if (isAutoCompletion()) {

@@ -108,4 +108,10 @@ public class ComboRidget extends AbstractComboRidget {
 	protected void setTextToControl(final String text) {
 		getUIControl().setText(text);
 	}
+
+	@Override
+	protected void updateEditable() {
+		final boolean isControlEnabled = isEnabled() && !isOutputOnly();
+		getUIControl().setEnabled(isControlEnabled);
+	}
 }

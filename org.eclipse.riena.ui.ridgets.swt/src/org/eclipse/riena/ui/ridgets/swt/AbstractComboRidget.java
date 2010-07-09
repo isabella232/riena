@@ -42,6 +42,7 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
@@ -136,6 +137,16 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				applyEnabled();
+				if (getUIControl() != null) {
+					updateEditable();
+				}
+			}
+		});
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
+			public void propertyChange(final PropertyChangeEvent evt) {
+				if (getUIControl() != null) {
+					updateEditable();
+				}
 			}
 		});
 		this.text = ""; //$NON-NLS-1$
@@ -146,6 +157,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		if (getUIControl() != null) {
 			applyText();
 			addTextModifyListener();
+			updateEditable();
 		}
 		if (optionValues != null) {
 			// These bindings are only necessary when we have a model
@@ -271,11 +283,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	@Override
 	public boolean isDisableMandatoryMarker() {
 		return hasInput();
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return super.isEnabled() && !isOutputOnly();
 	}
 
 	public boolean isMarkSelectionMismatch() {
@@ -440,6 +447,20 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * @since 2.0
 	 */
 	protected abstract void setTextToControl(String text);
+
+	/**
+	 * Updates the editable state of the ridget's control.
+	 * <p>
+	 * <b>Implementation note</b>: This method is invoked when
+	 * <ul>
+	 * <li>a control is bound to the ridget</li>
+	 * <li>the 'output only' or 'enabled' markers change state. For some combo
+	 * widgets, not editable implies disabled so the two states overlap.</li>
+	 * </ul>
+	 * 
+	 * @since 2.1
+	 */
+	protected abstract void updateEditable();
 
 	// helping methods
 	//////////////////

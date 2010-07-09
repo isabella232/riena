@@ -115,4 +115,9 @@ public class CompletionComboRidget extends AbstractComboRidget {
 	protected void setTextToControl(final String text) {
 		getUIControl().setText(text);
 	}
+
+	@Override
+	protected void updateEditable() {
+		getUIControl().setEditable(!isOutputOnly());
+	}
 }

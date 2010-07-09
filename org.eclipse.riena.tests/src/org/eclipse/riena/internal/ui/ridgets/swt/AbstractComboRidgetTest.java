@@ -562,7 +562,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(0, getSelectionIndex(control));
 	}
 
-	public void testOutputControlIsDisabledAndHasText() {
+	public void testOutputControlIsNotEditableAndHasText() {
 		final AbstractComboRidget ridget = getRidget();
 		final Control control = getWidget();
 		ridget.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson");
@@ -575,20 +575,20 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setOutputOnly(true);
 
-		assertFalse(control.isEnabled());
+		assertControlEditable(control, false);
 		assertEquals(selection1.toString(), getText(control));
 		assertEquals(selection1, ridget.getSelection());
 
 		ridget.setEnabled(false);
 		ridget.setEnabled(true);
 
-		assertFalse(control.isEnabled());
+		assertControlEditable(control, false);
 		assertEquals(selection1.toString(), getText(control));
 		assertEquals(selection1, ridget.getSelection());
 
 		ridget.setOutputOnly(false);
 
-		assertTrue(control.isEnabled());
+		assertControlEditable(control, true);
 		assertEquals(selection1.toString(), getText(control));
 		assertEquals(selection1, ridget.getSelection());
 	}
@@ -611,7 +611,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(selection1, ridget.getSelection());
 		assertEquals(selection1.toString(), getText(control));
-		assertFalse(control.isEnabled());
+		assertControlEditable(control, false);
 	}
 
 	/**
@@ -1125,6 +1125,15 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(count, markers.size());
 		for (final MandatoryMarker marker : markers) {
 			assertEquals(isDisabled, marker.isDisabled());
+		}
+	}
+
+	private void assertControlEditable(final Control control, final boolean editable) {
+		if (control instanceof CompletionCombo) {
+			assertEquals(editable, ((CompletionCombo) control).getEditable());
+			assertTrue(control.isEnabled());
+		} else {
+			assertEquals(editable, control.isEnabled());
 		}
 	}
 
