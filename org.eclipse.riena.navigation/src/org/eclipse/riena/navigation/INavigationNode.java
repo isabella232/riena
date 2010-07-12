@@ -468,7 +468,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * Returns whether the node is prepared or not.
 	 * <p>
 	 * <i>Prepare means that the controller (among others) of the node is
-	 * already created but the node was no activated so fare.</i>
+	 * already created but the node was not activated so far.</i>
 	 * 
 	 * @return {@code true} if this node has the state PREPARED; otherwise
 	 *         {@code false}
