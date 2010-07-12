@@ -136,22 +136,20 @@ public class SWTModuleController extends ModuleController {
 		if (isShowOneSubTree()) {
 			collapseSibling(activeNode);
 			// TODO: WHY?
-//			if (!activeNode.isExpanded()) {
-//				activeNode.setExpanded(true);
-//			}
+			//			if (!activeNode.isExpanded()) {
+			//				activeNode.setExpanded(true);
+			//			}
 		}
 
 	}
 
 	/**
-	 * Collapses all sibling nodes; also in upper levels.
-	 * <p>
-	 * At the end only the sub-tree with the given node is expanded.
+	 * Collapses all sibling nodes; also in upper levels. Only nodes that are
+	 * marked as closeSubTree == true are being collapsed automatically.
 	 * 
 	 * @param node
-	 *            sub-module node
+	 *            sub-module node the active node
 	 */
-	// TODO: fix JUnit
 	private void collapseSibling(final ISubModuleNode node) {
 		final INavigationNode<?> parent = node.getParent();
 		for (final INavigationNode<?> sibling : parent.getChildren()) {
@@ -174,7 +172,6 @@ public class SWTModuleController extends ModuleController {
 
 	}
 
-	// TODO: JUnit + JavaDoc
 	private void collapseChildren(final ISubModuleNode node) {
 		final List<ISubModuleNode> childen = node.getChildren();
 		for (final ISubModuleNode child : childen) {
