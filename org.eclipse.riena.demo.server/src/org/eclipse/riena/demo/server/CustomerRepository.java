@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.demo.common.Customer;
 
 /**
@@ -36,7 +37,7 @@ public class CustomerRepository implements ICustomerRepository {
 	}
 
 	public List<Customer> search(final String lastName) {
-		if (lastName == null || lastName.isEmpty()) {
+		if (StringUtils.isEmpty(lastName)) {
 			return customers;
 		}
 		final String pattern = lastName.toLowerCase();
