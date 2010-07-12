@@ -25,7 +25,6 @@ import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.marker.IMarker;
@@ -64,6 +63,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	private final List<INavigationHistoryListener> navigationListener = new Vector<INavigationHistoryListener>();
 	private static boolean debugNaviProc = Trace.isOn(NavigationProcessor.class, "debug"); //$NON-NLS-1$
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationProcessor.class);
+	private List<ISubModuleNode> collNodes;
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#activate(org.eclipse.riena.navigation.INavigationNode)
@@ -71,7 +71,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	public void activate(final INavigationNode<?> toActivate) {
 		if (toActivate != null) {
 			final IModuleNode moduleNode = toActivate.getParentOfType(IModuleNode.class);
-			final List<ISubModuleNode> collNodes = collectCollapsedNodes(moduleNode);
+			collNodes = collectCollapsedNodes(moduleNode);
 
 			if (toActivate.isActivated()) {
 				if (debugNaviProc) {
@@ -124,19 +124,23 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 					}
 				}
 			}
-			if (toActivate.getContext("fromUI") == null) { //$NON-NLS-1$
-				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-					public void run() {
-						if (collNodes != null) {
-							for (final ISubModuleNode node : collNodes) {
-								if (node.isExpanded()) {
-									node.setCloseSubTree(true);
-								}
-							}
-						}
+		}
+	}
+
+	/**
+	 * @since 2.1
+	 */
+	public void markNodesToCollapse(final INavigationNode<?> toActivate) {
+		if (toActivate.getContext("fromUI") == null) { //$NON-NLS-1$
+			if (collNodes != null) {
+				for (final ISubModuleNode node : collNodes) {
+					if (node.isExpanded()) {
+						node.setCloseSubTree(true);
 					}
-				});
+				}
 			}
+		} else {
+			toActivate.removeContext("fromUI"); //$NON-NLS-1$
 		}
 	}
 

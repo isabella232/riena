@@ -293,7 +293,6 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 					public void run() {
 						node.setContext("fromUI", true); //$NON-NLS-1$
 						node.activate();
-						node.removeContext("fromUI"); //$NON-NLS-1$
 					}
 				});
 			}

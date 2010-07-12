@@ -135,6 +135,7 @@ public class SWTModuleController extends ModuleController {
 
 		if (isShowOneSubTree()) {
 			collapseSibling(activeNode);
+			getNavigationNode().getNavigationProcessor().markNodesToCollapse(activeNode);
 			// TODO: WHY?
 			//			if (!activeNode.isExpanded()) {
 			//				activeNode.setExpanded(true);

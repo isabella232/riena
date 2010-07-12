@@ -214,4 +214,9 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 */
 	void addMarker(INavigationNode<?> toMark, IMarker marker);
 
+	/**
+	 * @since 2.1
+	 */
+	void markNodesToCollapse(final INavigationNode<?> toActivate);
+
 }
