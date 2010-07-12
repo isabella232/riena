@@ -25,6 +25,7 @@ import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.marker.IMarker;
@@ -62,13 +63,16 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	private final Map<INavigationNode<?>, INavigationNode<?>> navigationMap = new HashMap<INavigationNode<?>, INavigationNode<?>>();
 	private final List<INavigationHistoryListener> navigationListener = new Vector<INavigationHistoryListener>();
 	private static boolean debugNaviProc = Trace.isOn(NavigationProcessor.class, "debug"); //$NON-NLS-1$
-	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationProcessor.class);;
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationProcessor.class);
 
 	/**
 	 * @see org.eclipse.riena.navigation.INavigationProcessor#activate(org.eclipse.riena.navigation.INavigationNode)
 	 */
 	public void activate(final INavigationNode<?> toActivate) {
 		if (toActivate != null) {
+			final IModuleNode moduleNode = toActivate.getParentOfType(IModuleNode.class);
+			final List<ISubModuleNode> collNodes = collectCollapsedNodes(moduleNode);
+
 			if (toActivate.isActivated()) {
 				if (debugNaviProc) {
 					LOGGER.log(
@@ -120,7 +124,40 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 					}
 				}
 			}
+			if (toActivate.getContext("fromUI") == null) { //$NON-NLS-1$
+				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+					public void run() {
+						if (collNodes != null) {
+							for (final ISubModuleNode node : collNodes) {
+								if (node.isExpanded()) {
+									node.setCloseSubTree(true);
+								}
+							}
+						}
+					}
+				});
+			}
 		}
+	}
+
+	private List<ISubModuleNode> collectCollapsedNodes(final INavigationNode<?> node) {
+		final List<ISubModuleNode> collapsedNodes = new LinkedList<ISubModuleNode>();
+		List<ISubModuleNode> children = new LinkedList<ISubModuleNode>();
+		if (node instanceof IModuleNode) {
+			children = ((IModuleNode) node).getChildren();
+		} else if (node instanceof ISubModuleNode) {
+			children = ((ISubModuleNode) node).getChildren();
+		}
+		for (final ISubModuleNode child : children) {
+			if (!collapsedNodes.contains(child) && (!child.isExpanded() || child.isCloseSubTree())) {
+				collapsedNodes.add(child);
+			}
+			if (!child.isLeaf()) {
+				collapsedNodes.addAll(collectCollapsedNodes(child));
+			}
+		}
+
+		return collapsedNodes;
 	}
 
 	/**
@@ -157,7 +194,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			}
 			fireBackHistoryChangedEvent();
 		}
-		// is forewarding history top stack element equals node toActivate,
+		// is forwarding history top stack element equals node toActivate,
 		// remove it!
 		if (!histForward.isEmpty() && histForward.peek().equals(toActivate)) {
 			histForward.pop();// remove newest node
@@ -334,9 +371,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		DEFAULT, JUMP;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	private INavigationNode<?> navigateSync(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
 			final NavigationArgument navigation, final NavigationType navigationType) {
 		INavigationNode<?> targetNode = null;
@@ -358,7 +392,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (NavigationType.JUMP == navigationType) {
 			registerJump(sourceNode, node);
 			notifyNodeWithSuccessors(node, JumpTargetState.ENABLED);
-
 		}
 
 		node.activate();
@@ -772,7 +805,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	private void addSelectableNode(final List<INavigationNode<?>> nodesToActivate, final INavigationNode<?> toActivate) {
 		if (toActivate instanceof ISubModuleNode && !((ISubModuleNode) toActivate).isSelectable()) {
-			// do not add; not selectable
+			Nop.reason("do not add; not selectable"); //$NON-NLS-1$
 		} else {
 			nodesToActivate.add(toActivate);
 		}

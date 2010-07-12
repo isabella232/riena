@@ -37,4 +37,24 @@ public interface ISubModuleNode extends INavigationNode<ISubModuleNode>,
 	 * @since 1.2
 	 */
 	void setSelectable(boolean selectable);
+
+	/**
+	 * Returns whether the tree should be closed on a navigation event. This
+	 * only works if
+	 * <code>LnfKeyConstants.SUB_MODULE_TREE_SHOW_ONE_SUB_TREE</code> is set to
+	 * true.
+	 * 
+	 * @since 2.1
+	 */
+	boolean isCloseSubTree();
+
+	/**
+	 * Sets whether the tree should be closed on a navigation event. This only
+	 * works if <code>LnfKeyConstants.SUB_MODULE_TREE_SHOW_ONE_SUB_TREE</code>
+	 * is set to true.
+	 * 
+	 * @since 2.1
+	 */
+	void setCloseSubTree(boolean close);
+
 }

@@ -291,7 +291,9 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 				// node activation must be triggered from the UI thread:
 				display.syncExec(new Runnable() {
 					public void run() {
+						node.setContext("fromUI", true); //$NON-NLS-1$
 						node.activate();
+						node.removeContext("fromUI"); //$NON-NLS-1$
 					}
 				});
 			}

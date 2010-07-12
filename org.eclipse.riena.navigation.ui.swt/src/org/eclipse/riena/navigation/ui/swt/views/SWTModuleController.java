@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
-import org.eclipse.swt.widgets.Display;
+import java.util.List;
 
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -113,12 +113,8 @@ public class SWTModuleController extends ModuleController {
 		return new IModuleNode[] { moduleNode };
 	}
 
-	private Display getDisplay() {
-		return new SwtUISynchronizer().getDisplay();
-	}
-
 	private void runAsync(final Runnable op) {
-		getDisplay().asyncExec(op);
+		new SwtUISynchronizer().asyncExec(op);
 	}
 
 	/**
@@ -139,9 +135,10 @@ public class SWTModuleController extends ModuleController {
 
 		if (isShowOneSubTree()) {
 			collapseSibling(activeNode);
-			if (!activeNode.isExpanded()) {
-				activeNode.setExpanded(true);
-			}
+			// TODO: WHY?
+//			if (!activeNode.isExpanded()) {
+//				activeNode.setExpanded(true);
+//			}
 		}
 
 	}
@@ -154,18 +151,39 @@ public class SWTModuleController extends ModuleController {
 	 * @param node
 	 *            sub-module node
 	 */
+	// TODO: fix JUnit
 	private void collapseSibling(final ISubModuleNode node) {
-
 		final INavigationNode<?> parent = node.getParent();
 		for (final INavigationNode<?> sibling : parent.getChildren()) {
-			if ((sibling != node) && (sibling.isExpanded())) {
-				sibling.setExpanded(false);
-			}
-			if (parent instanceof ISubModuleNode) {
-				collapseSibling((ISubModuleNode) parent);
+			if (sibling instanceof ISubModuleNode) {
+				final ISubModuleNode siblingSubModuleNode = (ISubModuleNode) sibling;
+				if (siblingSubModuleNode != node && siblingSubModuleNode.isCloseSubTree()
+						&& siblingSubModuleNode.isExpanded()) {
+					siblingSubModuleNode.setExpanded(false);
+				}
+				siblingSubModuleNode.setCloseSubTree(false);
+				if (siblingSubModuleNode != node && !siblingSubModuleNode.isLeaf()) {
+					collapseChildren(siblingSubModuleNode);
+				}
+				if (parent instanceof ISubModuleNode) {
+					collapseSibling((ISubModuleNode) parent);
+					collapseChildren(node);
+				}
 			}
 		}
 
+	}
+
+	// TODO: JUnit + JavaDoc
+	private void collapseChildren(final ISubModuleNode node) {
+		final List<ISubModuleNode> childen = node.getChildren();
+		for (final ISubModuleNode child : childen) {
+			if (child.isCloseSubTree() && (child.isExpanded())) {
+				child.setExpanded(false);
+			}
+			child.setCloseSubTree(false);
+			collapseChildren(child);
+		}
 	}
 
 	/**
@@ -225,9 +243,6 @@ public class SWTModuleController extends ModuleController {
 			});
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void expandedChanged(final ISubModuleNode source) {
 			super.expandedChanged(source);
@@ -240,9 +255,6 @@ public class SWTModuleController extends ModuleController {
 			}
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void childRemoved(final ISubModuleNode source, final ISubModuleNode childRemoved) {
 			super.childRemoved(source, childRemoved);
@@ -256,9 +268,6 @@ public class SWTModuleController extends ModuleController {
 
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void childAdded(final ISubModuleNode source, final ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
@@ -274,9 +283,6 @@ public class SWTModuleController extends ModuleController {
 	 * updates the tree whenever submodule are added
 	 */
 	private class ModuleListener extends ModuleNodeListener {
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void childAdded(final IModuleNode source, final ISubModuleNode childAdded) {
 			super.childAdded(source, childAdded);
