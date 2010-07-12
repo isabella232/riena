@@ -62,6 +62,8 @@ public class SWTModuleControllerTest extends TestCase {
 	 * <pre>
 	 *   m
 	 *   |
+	 *   +-sm0
+	 *   |
 	 *   +-sm1
 	 *   |  |
 	 *   |  +-sm11
@@ -94,6 +96,9 @@ public class SWTModuleControllerTest extends TestCase {
 	 * </pre>
 	 */
 	public void testCollapseSibling() {
+		// level 0
+		final ISubModuleNode sm0 = new SubModuleNode(new NavigationNodeId("sm0"));
+		moduleNode.addChild(sm0);
 
 		// level 1
 		final ISubModuleNode sm1 = new SubModuleNode(new NavigationNodeId("sm1"));
@@ -132,26 +137,75 @@ public class SWTModuleControllerTest extends TestCase {
 		sm32.addChild(sm321);
 
 		expandAll(moduleNode, true);
-		ReflectionUtils.invokeHidden(controller, "collapseSibling", sm211);
-		assertFalse(sm1.isExpanded());
+		ReflectionUtils.invokeHidden(controller, "collapseSibling", sm0);
+		assertTrue(sm1.isExpanded());
+		assertTrue(sm11.isExpanded());
+		assertTrue(sm111.isExpanded());
+		assertTrue(sm12.isExpanded());
+		assertTrue(sm121.isExpanded());
 		assertTrue(sm2.isExpanded());
-		assertFalse(sm3.isExpanded());
+		assertTrue(sm3.isExpanded());
 		assertTrue(sm21.isExpanded());
 		assertTrue(sm211.isExpanded());
-		assertFalse(sm22.isExpanded());
+		assertTrue(sm22.isExpanded());
 
 		expandAll(moduleNode, true);
-		ReflectionUtils.invokeHidden(controller, "collapseSibling", sm32);
-		assertFalse(sm1.isExpanded());
-		assertFalse(sm2.isExpanded());
+		sm111.setCloseSubTree(true);
+		ReflectionUtils.invokeHidden(controller, "collapseSibling", sm0);
+		assertTrue(sm1.isExpanded());
+		assertTrue(sm11.isExpanded());
+		assertFalse(sm111.isExpanded());
+		assertTrue(sm12.isExpanded());
+		assertTrue(sm121.isExpanded());
+		assertTrue(sm2.isExpanded());
 		assertTrue(sm3.isExpanded());
-		assertFalse(sm31.isExpanded());
+		assertTrue(sm21.isExpanded());
+		assertTrue(sm211.isExpanded());
+		assertTrue(sm22.isExpanded());
+
+		expandAll(moduleNode, true);
+		sm1.setCloseSubTree(true);
+		ReflectionUtils.invokeHidden(controller, "collapseSibling", sm211);
+		assertFalse(sm1.isExpanded());
+		assertTrue(sm11.isExpanded());
+		assertTrue(sm111.isExpanded());
+		assertTrue(sm12.isExpanded());
+		assertTrue(sm121.isExpanded());
+		assertTrue(sm2.isExpanded());
+		assertTrue(sm3.isExpanded());
+		assertTrue(sm21.isExpanded());
+		assertTrue(sm211.isExpanded());
+		assertTrue(sm22.isExpanded());
+
+		expandAll(moduleNode, true);
+		sm11.setCloseSubTree(true);
+		ReflectionUtils.invokeHidden(controller, "collapseSibling", sm211);
+		assertTrue(sm1.isExpanded());
+		assertFalse(sm11.isExpanded());
+		assertTrue(sm2.isExpanded());
+		assertTrue(sm3.isExpanded());
+		assertTrue(sm31.isExpanded());
 		assertTrue(sm32.isExpanded());
 
+		expandAll(moduleNode, false);
+		sm221.setExpanded(true);
+		sm22.setCloseSubTree(true);
+		ReflectionUtils.invokeHidden(controller, "collapseSibling", sm0);
+		assertFalse(sm1.isExpanded());
+		assertFalse(sm11.isExpanded());
+		assertFalse(sm111.isExpanded());
+		assertFalse(sm12.isExpanded());
+		assertFalse(sm121.isExpanded());
+		assertFalse(sm22.isExpanded());
+		assertTrue(sm221.isExpanded());
+		assertFalse(sm21.isExpanded());
+		assertFalse(sm211.isExpanded());
+		assertFalse(sm31.isExpanded());
+		assertFalse(sm32.isExpanded());
 	}
 
 	/**
-	 * Expands or collapsed the given node and all it's children.
+	 * Expands or collapses the given node and all it's children.
 	 * 
 	 * @param node
 	 *            navigation node
@@ -159,12 +213,10 @@ public class SWTModuleControllerTest extends TestCase {
 	 *            {@code true} expand nodes; {@code false} collapse nodes
 	 */
 	private void expandAll(final INavigationNode<?> node, final boolean expanded) {
-
 		node.setExpanded(expanded);
 		for (final INavigationNode<?> child : node.getChildren()) {
 			expandAll(child, expanded);
 		}
-
 	}
 
 }
