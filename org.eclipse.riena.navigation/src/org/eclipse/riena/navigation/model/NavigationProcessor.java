@@ -144,6 +144,46 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
+	private boolean isJumpSource(final ISubModuleNode node) {
+		final Iterator<Map.Entry<INavigationNode<?>, Stack<INavigationNode<?>>>> it = jumpTargets.entrySet().iterator();
+		while (it.hasNext()) {
+			final Map.Entry<INavigationNode<?>, Stack<INavigationNode<?>>> entry = it.next();
+			final Stack<INavigationNode<?>> value = entry.getValue();
+			if (!value.isEmpty() && value.peek().equals(node)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean isNodeOrChildJumpSource(final ISubModuleNode node) {
+		final List<ISubModuleNode> children = node.getChildren();
+		if (isJumpSource(node)) {
+			exemptNodeFromCollapsing(node);
+			return true;
+		}
+		for (final ISubModuleNode child : children) {
+			if (isJumpSource(child)) {
+				node.setCloseSubTree(false);
+				exemptNodeFromCollapsing(child);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void exemptNodeFromCollapsing(final ISubModuleNode node) {
+		node.setCloseSubTree(false);
+		ISubModuleNode parent = node.getParentOfType(ISubModuleNode.class);
+		while (parent != null) {
+			if (collNodes.contains(parent)) {
+				parent.setCloseSubTree(false);
+			}
+			parent = parent.getParentOfType(ISubModuleNode.class);
+		}
+	}
+
 	private List<ISubModuleNode> collectCollapsedNodes(final INavigationNode<?> node) {
 		final List<ISubModuleNode> collapsedNodes = new LinkedList<ISubModuleNode>();
 		List<ISubModuleNode> children = new LinkedList<ISubModuleNode>();
@@ -154,7 +194,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 		for (final ISubModuleNode child : children) {
 			if (!collapsedNodes.contains(child) && (!child.isExpanded() || child.isCloseSubTree())) {
-				collapsedNodes.add(child);
+				if (!isNodeOrChildJumpSource(child)) {
+					collapsedNodes.add(child);
+				}
 			}
 			if (!child.isLeaf()) {
 				collapsedNodes.addAll(collectCollapsedNodes(child));
@@ -493,10 +535,19 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (sourceStack != null) {
 			if (sourceStack.size() > 0) {
 				final INavigationNode<?> backTarget = sourceStack.pop();
+				setCloseSubTreeOnJumpBack(backTarget);
 				backTarget.activate();
 			}
 			jumpTargets.remove(sourceNode);
 			notifyNodeWithSuccessors(sourceNode, JumpTargetState.DISABLED);
+		}
+	}
+
+	private void setCloseSubTreeOnJumpBack(final INavigationNode<?> backTarget) {
+		if (backTarget.isLeaf() && backTarget.getParentOfType(ISubModuleNode.class) != null) {
+			backTarget.getParentOfType(ISubModuleNode.class).setCloseSubTree(true);
+		} else {
+			((ISubModuleNode) backTarget).setCloseSubTree(true);
 		}
 	}
 
