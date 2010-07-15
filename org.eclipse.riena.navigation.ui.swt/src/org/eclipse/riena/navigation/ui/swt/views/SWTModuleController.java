@@ -153,6 +153,9 @@ public class SWTModuleController extends ModuleController {
 	 */
 	private void collapseSibling(final ISubModuleNode node) {
 		final INavigationNode<?> parent = node.getParent();
+		if (parent == null) {
+			return;
+		}
 		for (final INavigationNode<?> sibling : parent.getChildren()) {
 			if (sibling instanceof ISubModuleNode) {
 				final ISubModuleNode siblingSubModuleNode = (ISubModuleNode) sibling;
