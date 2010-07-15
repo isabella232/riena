@@ -19,17 +19,34 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.ui.swt.test.TestUtils;
 
 /**
- * Tests for the MaxLength rule.
+ * Tests for the {@link ValidRange} rule.
  */
 @NonUITestCase
 public class ValidRangeTest extends RienaTestCase {
 
 	/**
-	 * @throws Exception
-	 *             Handled by JUnit.
+	 * Create a range using the 0-arg constructor.
 	 */
-	public void testRangeUSlocale() throws Exception {
-		ValidRange rule = new ValidRange(0, 10, Locale.US);
+	protected ValidRange createRange() {
+		return new ValidRange();
+	}
+
+	/**
+	 * Create a range using the 2-arg constructor.
+	 */
+	protected ValidRange createRange(final Number min, final Number max) {
+		return new ValidRange(min, max);
+	}
+
+	/**
+	 * Create a range using the 3-arg constructor.
+	 */
+	protected ValidRange createRange(final Number min, final Number max, final Locale locale) {
+		return new ValidRange(min, max, locale);
+	}
+
+	public void testRangeUSlocale() {
+		ValidRange rule = createRange(0, 10, Locale.US);
 		assertTrue(rule.validate(null).isOK());
 		assertTrue(rule.validate("").isOK());
 		assertTrue(rule.validate("0").isOK());
@@ -40,24 +57,22 @@ public class ValidRangeTest extends RienaTestCase {
 		assertFalse(rule.validate("-0.0000001").isOK());
 		assertFalse(rule.validate("10.0000001").isOK());
 
-		rule = new ValidRange(-5000, 5000, Locale.US);
+		rule = createRange(-5000, 5000, Locale.US);
 		assertTrue(rule.validate("-5000").isOK());
 		assertTrue(rule.validate("-5,000").isOK());
 		assertTrue(rule.validate("- 5,000").isOK());
 		assertFalse(rule.validate("-5000.0001").isOK());
 		assertFalse(rule.validate("-5,000.0001").isOK());
+	}
 
-		rule = new ValidRange(10, 20, Locale.US);
+	public void testEmptyValuesUSLocale() {
+		final ValidRange rule = createRange(10, 20, Locale.US);
 		assertFalse(rule.validate(null).isOK());
 		assertFalse(rule.validate("").isOK());
 	}
 
-	/**
-	 * @throws Exception
-	 *             Handled by JUnit.
-	 */
-	public void testRangeGermanLocale() throws Exception {
-		ValidRange rule = new ValidRange(0, 10, Locale.GERMANY);
+	public void testRangeGermanLocale() {
+		ValidRange rule = createRange(0, 10, Locale.GERMANY);
 		assertTrue(rule.validate(null).isOK());
 		assertTrue(rule.validate("").isOK());
 		assertTrue(rule.validate("0").isOK());
@@ -67,24 +82,21 @@ public class ValidRangeTest extends RienaTestCase {
 		assertFalse(rule.validate("-0,0000001").isOK());
 		assertFalse(rule.validate("10,0000001").isOK());
 
-		rule = new ValidRange(-5000, 5000, Locale.GERMANY);
+		rule = createRange(-5000, 5000, Locale.GERMANY);
 		assertTrue(rule.validate("-5000").isOK());
 		assertTrue(rule.validate("-5.000").isOK());
 		assertTrue(rule.validate("- 5.000").isOK());
 		assertFalse(rule.validate("-5000,0001").isOK());
 		assertFalse(rule.validate("-5.000,0001").isOK());
+	}
 
-		rule = new ValidRange(10, 20, Locale.GERMANY);
+	public void testEmptyValuesGermanLocale() {
+		final ValidRange rule = createRange(10, 20, Locale.GERMANY);
 		assertFalse(rule.validate(null).isOK());
 		assertFalse(rule.validate("").isOK());
 	}
 
-	/**
-	 * @throws Exception
-	 *             Handled by JUnit.
-	 */
-	public void testRangeArabLocale() throws Exception {
-
+	public void testRangeArabLocale() {
 		if (!TestUtils.isArabLocaleAvailable()) {
 			System.err
 					.println(getClass().getName()
@@ -93,7 +105,7 @@ public class ValidRangeTest extends RienaTestCase {
 		}
 
 		// Arab locales have a trailing minus
-		ValidRange rule = new ValidRange(0, 10, new Locale("ar", "AE"));
+		ValidRange rule = createRange(0, 10, new Locale("ar", "AE"));
 		assertTrue(rule.validate(null).isOK());
 		assertTrue(rule.validate("").isOK());
 		assertTrue(rule.validate("0").isOK());
@@ -103,88 +115,86 @@ public class ValidRangeTest extends RienaTestCase {
 		assertFalse(rule.validate("0.0000001-").isOK());
 		assertFalse(rule.validate("10.0000001").isOK());
 
-		rule = new ValidRange(-5000, 5000, new Locale("ar", "AE"));
+		rule = createRange(-5000, 5000, new Locale("ar", "AE"));
 		assertTrue(rule.validate("5000-").isOK());
 		assertTrue(rule.validate("5,000-").isOK());
 		assertTrue(rule.validate("5,000 -").isOK());
 		assertFalse(rule.validate("5000.0001-").isOK());
 		assertFalse(rule.validate("5,000.0001 -").isOK());
+	}
 
-		rule = new ValidRange(10, 20, new Locale("ar", "AE"));
+	public void testEmptyValuesArabLocale() {
+		final ValidRange rule = createRange(10, 20, new Locale("ar", "AE"));
 		assertFalse(rule.validate(null).isOK());
 		assertFalse(rule.validate("").isOK());
 	}
 
-	public void testConstructorInitTypes() throws Exception {
-		ValidRange rule = new ValidRange((byte) -10, (byte) 10);
+	public void testConstructorInitTypes() {
+		ValidRange rule = createRange((byte) -10, (byte) 10);
 		assertTrue(rule.validate("10").isOK());
-		rule = new ValidRange((short) -10, (short) 10);
+		rule = createRange((short) -10, (short) 10);
 		assertTrue(rule.validate("10").isOK());
-		rule = new ValidRange((long) -10, (long) 10);
+		rule = createRange((long) -10, (long) 10);
 		assertTrue(rule.validate("10").isOK());
-		rule = new ValidRange((float) -10, (float) 10);
+		rule = createRange((float) -10, (float) 10);
 		assertTrue(rule.validate("10").isOK());
-		rule = new ValidRange((double) -10, (double) 10);
+		rule = createRange((double) -10, (double) 10);
 		assertTrue(rule.validate("10").isOK());
-		rule = new ValidRange(BigInteger.ZERO, BigInteger.TEN);
+		rule = createRange(BigInteger.ZERO, BigInteger.TEN);
 		assertTrue(rule.validate("10").isOK());
-		rule = new ValidRange(BigDecimal.ZERO, BigDecimal.TEN);
+		rule = createRange(BigDecimal.ZERO, BigDecimal.TEN);
 		assertTrue(rule.validate("10").isOK());
 	}
 
-	public void testUnparseableNumbers() throws Exception {
-		final ValidRange rule = new ValidRange(0, 10, Locale.US);
+	public void testUnparseableNumbers() {
+		final ValidRange rule = createRange(0, 10, Locale.US);
 		assertFalse(rule.validate("A10").isOK());
 		assertFalse(rule.validate("1A0").isOK());
 		assertFalse(rule.validate("10A").isOK());
 	}
 
-	/**
-	 * @throws Exception
-	 *             Handled by JUnit.
-	 */
 	public void testConstructorSanity() throws Exception {
 		// different types:
 		try {
-			new ValidRange((byte) 10, (short) 10);
+			createRange((byte) 10, (short) 10);
 			fail("expected some RuntimeException");
 		} catch (final RuntimeException e) {
 			ok("passed test");
 		}
 		try {
-			new ValidRange(10, 1000d);
+			createRange(10, 1000d);
 			fail("expected some RuntimeException");
 		} catch (final RuntimeException e) {
 			ok("passed test");
 		}
 		// min greater max:
 		try {
-			new ValidRange(100, 10);
+			createRange(100, 10);
 			fail("expected some RuntimeException");
 		} catch (final RuntimeException e) {
 			ok("passed test");
 		}
 		// null parameter
 		try {
-			new ValidRange(null, 10);
+			createRange(null, 10);
 			fail("expected some RuntimeException");
 		} catch (final RuntimeException e) {
 			ok("passed test");
 		}
 		try {
-			new ValidRange(100, null);
+			createRange(100, null);
 			fail("expected some RuntimeException");
 		} catch (final RuntimeException e) {
 			ok("passed test");
 		}
 		try {
-			new ValidRange(null, null);
+			createRange(null, null);
 			fail("expected some RuntimeException");
 		} catch (final RuntimeException e) {
 			ok("passed test");
 		}
 		try {
-			new ValidRange(10, 100, null);
+			createRange(10, 100, null);
 			fail("expected some RuntimeException");
 		} catch (final RuntimeException e) {
 			ok("passed test");
@@ -192,24 +202,23 @@ public class ValidRangeTest extends RienaTestCase {
 	}
 
 	public void testSetInitializationData() throws Exception {
-
-		ValidRange rule = new ValidRange();
+		ValidRange rule = createRange();
 		assertTrue(rule.validate("0").isOK());
 		assertFalse(rule.validate("10").isOK());
 
-		rule = new ValidRange();
+		rule = createRange();
 		rule.setInitializationData(null, null, "1");
 		assertFalse(rule.validate("1").isOK());
 		assertFalse(rule.validate("10").isOK());
 
-		rule = new ValidRange();
+		rule = createRange();
 		rule.setInitializationData(null, null, "1,10");
 		assertTrue(rule.validate("1").isOK());
 		assertTrue(rule.validate("10").isOK());
 		assertFalse(rule.validate("0").isOK());
 		assertFalse(rule.validate("11").isOK());
 
-		rule = new ValidRange();
+		rule = createRange();
 		rule.setInitializationData(null, null, "1.1,10.1");
 		assertFalse(rule.validate("1").isOK());
 		assertTrue(rule.validate("2").isOK());
@@ -217,18 +226,17 @@ public class ValidRangeTest extends RienaTestCase {
 		assertFalse(rule.validate("0").isOK());
 		assertFalse(rule.validate("11").isOK());
 
-		rule = new ValidRange();
+		rule = createRange();
 		String localString = Locale.US.getLanguage() + "," + Locale.US.getCountry();
 		rule.setInitializationData(null, null, "1.1,10.1," + localString);
 		assertFalse(rule.validate("1").isOK());
 		assertTrue(rule.validate("1.1").isOK());
 
-		rule = new ValidRange();
+		rule = createRange();
 		localString = Locale.GERMANY.getLanguage() + "," + Locale.GERMANY.getCountry();
 		rule.setInitializationData(null, null, "1.1,10.1," + localString);
 		assertFalse(rule.validate("1").isOK());
 		assertTrue(rule.validate("1,1").isOK());
-
 	}
 
 }
