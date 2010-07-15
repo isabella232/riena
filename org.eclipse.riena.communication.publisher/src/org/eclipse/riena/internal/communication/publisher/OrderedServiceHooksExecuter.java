@@ -49,7 +49,7 @@ public class OrderedServiceHooksExecuter implements IServiceHook {
 	public void update(final IServiceHookExtension[] serviceHookExtensions) {
 		final Orderer<IServiceHook> orderer = new Orderer<IServiceHook>();
 		for (final IServiceHookExtension extension : serviceHookExtensions) {
-			orderer.add(extension.getServiceHook(), extension.getName(), extension.getPostHooks(),
+			orderer.add(extension.getServiceHook(), extension.getName(), extension.getPreHooks(),
 					extension.getPostHooks());
 		}
 		final List<IServiceHook> tempOrdered = orderer.getOrderedObjects();
