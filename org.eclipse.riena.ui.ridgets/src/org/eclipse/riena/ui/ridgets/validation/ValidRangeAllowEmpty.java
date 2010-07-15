@@ -15,41 +15,68 @@ import java.util.Locale;
 import org.eclipse.core.runtime.IStatus;
 
 /**
- * Implementation of ValidRange that response to empty value with no error.
- * Empty value can be null or empty string.
+ * A range check rule for a Number, which accepts empty values without flagging
+ * an error.
+ * <p>
+ * The empty value can be <tt>null</tt> or empty string.
  * 
+ * @see ValidRange
  * @since 2.0
  */
 public class ValidRangeAllowEmpty extends ValidRange {
 
 	/**
-	 * @see ValidRange()
+	 * Constructs a range check rule for the default locate, with the range set
+	 * to (0, 0).
 	 */
 	public ValidRangeAllowEmpty() {
 		super();
 	}
 
 	/**
-	 * @see ValidRange(Number min, Number max)
+	 * Constructs a range check rule for the default locale, with the range set
+	 * to (min, max).
+	 * 
+	 * @param min
+	 *            the minimum value
+	 * @param max
+	 *            the maximum value
+	 * 
+	 * @throws some_kind_of_runtime_exception
+	 *             if <tt>min &gt;= max</tt>.
+	 * @throws some_kind_of_runtime_exception
+	 *             if a parameter is <tt>null</tt>.
+	 * @throws some_kind_of_runtime_exception
+	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to
+	 *             the same class.
 	 */
 	public ValidRangeAllowEmpty(final Number min, final Number max) {
 		super(min, max);
 	}
 
-	/*
-	 * @see ValidRange(Number min, Number max, Locale locale)d
+	/**
+	 * Constructs a range check rule for the given locale, with the ragne set to
+	 * (min, max).
+	 * 
+	 * @param min
+	 *            the minimum value
+	 * @param max
+	 *            the maximum value
+	 * @param locale
+	 *            the Locale to use for number formatting; never null.
+	 * 
+	 * @throws some_kind_of_runtime_exception
+	 *             if <tt>min &gt;= max</tt>.
+	 * @throws some_kind_of_runtime_exception
+	 *             if a parameter is <tt>null</tt>.
+	 * @throws some_kind_of_runtime_exception
+	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to
+	 *             the same class.
 	 */
 	public ValidRangeAllowEmpty(final Number min, final Number max, final Locale locale) {
 		super(min, max, locale);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.ridgets.validation.ValidRange#validate(java.lang
-	 * .Object)
-	 */
 	@Override
 	public IStatus validate(final Object value) {
 		if (value == null) {

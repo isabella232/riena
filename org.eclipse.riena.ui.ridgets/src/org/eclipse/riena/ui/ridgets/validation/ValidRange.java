@@ -28,29 +28,38 @@ import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.ui.ridgets.nls.Messages;
 
 /**
- * Implementation for a plausibility rule for a number range check. Checks <br>
- * if a given string could be safely converted to a given number type and if the
- * input is in a given range. Note that a value of <tt>null</tt> or an empty
- * String is treated as zero.<br>
+ * A range check rule for a Number.
+ * <p>
+ * Checks if a given string could be safely converted to a given number type and
+ * if the input is in a given range. A value of <tt>null</tt> or an empty String
+ * is treated as zero.
+ * <p>
  * This rule does not support partial correctness checking.
+ * 
+ * @see ValidRangeAllowEmpty
  */
 public class ValidRange extends ValidDecimal implements IExecutableExtension {
 
 	private BigDecimal min;
 	private BigDecimal max;
 
+	/**
+	 * Constructs a range check rule for the default locate, with the range set
+	 * to (0, 0).
+	 */
 	public ValidRange() {
 		this(0, 0);
 	}
 
 	/**
-	 * Constructs a number type check plausibilisation rule for the default
-	 * locale.
+	 * Constructs a range check rule for the default locale, with the range set
+	 * to (min, max).
 	 * 
 	 * @param min
 	 *            the minimum value
 	 * @param max
 	 *            the maximum value
+	 * 
 	 * @throws some_kind_of_runtime_exception
 	 *             if <tt>min &gt;= max</tt>.
 	 * @throws some_kind_of_runtime_exception
@@ -64,13 +73,16 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	}
 
 	/**
-	 * Constructs a number type check plausibilisation rule for the default
-	 * locale.
+	 * Constructs a range check rule for the given locale, with the ragne set to
+	 * (min, max).
 	 * 
 	 * @param min
 	 *            the minimum value
 	 * @param max
 	 *            the maximum value
+	 * @param locale
+	 *            the Locale to use for number formatting; never null.
+	 * 
 	 * @throws some_kind_of_runtime_exception
 	 *             if <tt>min &gt;= max</tt>.
 	 * @throws some_kind_of_runtime_exception
@@ -92,10 +104,12 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	}
 
 	/**
-	 * @return an IStatus instance
+	 * Returns an IStatus instance; never null.
+	 * 
 	 * @param value
 	 *            a <tt>String</tt> instance or <tt>null</tt>, where
 	 *            <tt>null</tt> is treated as zero.
+	 * 
 	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#validate(java.lang.Object)
 	 */
 	@Override

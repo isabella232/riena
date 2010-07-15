@@ -56,7 +56,7 @@ public class ValidInteger extends ValidDecimal {
 	 * given locale.
 	 * 
 	 * @param locale
-	 *            the locale
+	 *            the Locale to use for number formatting; never null.
 	 */
 	public ValidInteger(final Locale locale) {
 		this(true, locale);
@@ -69,7 +69,7 @@ public class ValidInteger extends ValidDecimal {
 	 * @param signed
 	 *            if <tt>true</tt> the rule allows minus signs.
 	 * @param locale
-	 *            the locale
+	 *            the Locale to use for number formatting; never null.
 	 */
 	public ValidInteger(final boolean signed, final Locale locale) {
 		super(true, locale);

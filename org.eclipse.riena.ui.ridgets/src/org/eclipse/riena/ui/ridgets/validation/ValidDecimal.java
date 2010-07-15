@@ -60,7 +60,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	 * partialChecking and the given Locale.
 	 * 
 	 * @param locale
-	 *            the locale.
+	 *            the Locale to use for number formatting; never null.
 	 */
 	public ValidDecimal(final Locale locale) {
 		this(false, locale);
@@ -72,7 +72,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	 * @param partialCheckSupported
 	 *            <tt>true</tt> if partial checking is required.
 	 * @param locale
-	 *            the locale.
+	 *            the Locale to use for number formatting; never null
 	 */
 	public ValidDecimal(final boolean partialCheckSupported, final Locale locale) {
 		this(partialCheckSupported, 15, 2, false, locale);
@@ -90,7 +90,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	 * @param withSign
 	 *            use sign or not.
 	 * @param locale
-	 *            the locale.
+	 *            the Locale to use for number formatting; never null
 	 */
 	public ValidDecimal(final boolean partialCheckSupported, final int numberOfFractionDigits, final int maxLength,
 			final boolean withSign, final Locale locale) {
