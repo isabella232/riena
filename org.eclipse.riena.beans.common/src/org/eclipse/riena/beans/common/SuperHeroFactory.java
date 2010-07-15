@@ -14,12 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO [ev] javadoc
+ * Helper class that creates a collection of super heroes.
  * 
  * @since 2.0
  */
 public final class SuperHeroFactory {
 
+	/**
+	 * Create a collection of super heroes.
+	 * 
+	 * @return a List instance; never null.
+	 */
 	public static List<SuperHero> createInput() {
 		final List<SuperHero> nodes = new ArrayList<SuperHero>(7);
 		nodes.add(new SuperHero("Superman", "Clark Kent", 1938)); //$NON-NLS-1$ //$NON-NLS-2$

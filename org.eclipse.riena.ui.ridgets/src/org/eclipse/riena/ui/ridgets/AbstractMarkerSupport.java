@@ -96,7 +96,9 @@ public abstract class AbstractMarkerSupport {
 	 * Implementors shall check that the ui control is not null and that the
 	 * flash is not already in progress.
 	 * <p>
-	 * <b>Flashing must not alter the marker state of the ridget!</n>
+	 * <b>Flashing must not alter the marker state of the ridget!</b>
+	 * 
+	 * @since 2.1
 	 */
 	public void flash() {
 		// does nothing - subclasses should override

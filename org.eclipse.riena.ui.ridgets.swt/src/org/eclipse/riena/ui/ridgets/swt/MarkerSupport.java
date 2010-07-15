@@ -54,6 +54,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	private static final String PRE_MANDATORY_BACKGROUND_KEY = "org.eclipse.riena.MarkerSupport.preMandatoryBackground"; //$NON-NLS-1$
 	private static final String PRE_OUTPUT_BACKGROUND_KEY = "org.eclipse.riena.MarkerSupport.preOutputBackground"; //$NON-NLS-1$
 	private static final String PRE_NEGATIVE_FOREGROUND_KEY = "org.eclipse.riena.MarkerSupport.preNegativeForeground"; //$NON-NLS-1$
+	private static final long FLASH_DURATION_MS = 300;
 
 	/**
 	 * This flag defines the default value that defines whether disabled ridgets
@@ -66,12 +67,12 @@ public class MarkerSupport extends BasicMarkerSupport {
 	 * The default value is only used, if the current Look&Feel doesn't use
 	 * {@code LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT}.
 	 */
-	// TODO [ev] this breaks API - was public - at a minimum we should document it in the wiki
 	private static final boolean HIDE_DISABLED_RIDGET_CONTENT = Boolean.parseBoolean(System.getProperty(
 			"HIDE_DISABLED_RIDGET_CONTENT", Boolean.FALSE.toString())); //$NON-NLS-1$
 	private static Boolean hideDisabledRidgetContent;
 
 	private IControlDecoration errorDecoration;
+	private boolean isFlashInProgress;
 
 	/**
 	 * Returns whether the content of a disabled ridget should be visible (
@@ -98,6 +99,46 @@ public class MarkerSupport extends BasicMarkerSupport {
 
 	// protected methods
 	////////////////////
+
+	@Override
+	public synchronized final void flash() {
+		final Control control = getUIControl();
+		if (!isFlashInProgress && control != null) {
+			isFlashInProgress = true;
+
+			if (errorDecoration == null) {
+				errorDecoration = createErrorDecoration(control);
+			}
+
+			final boolean isShowing = errorDecoration.isVisible();
+			if (isShowing) {
+				errorDecoration.hide();
+			} else {
+				errorDecoration.show();
+			}
+
+			final Display display = control.getDisplay();
+			final Runnable op = new Runnable() {
+				public void run() {
+					try {
+						Thread.sleep(FLASH_DURATION_MS);
+					} catch (final InterruptedException e) {
+						Nop.reason("ignore"); //$NON-NLS-1$
+					} finally {
+						display.syncExec(new Runnable() {
+							public void run() {
+								if (!control.isDisposed()) {
+									updateError(control);
+								}
+							}
+						});
+						isFlashInProgress = false;
+					}
+				}
+			};
+			new Thread(op).start();
+		}
+	}
 
 	@Override
 	protected IMarkableRidget getRidget() {
@@ -169,48 +210,17 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
-	// TODO [ev] javadoc / cleanup
-	protected static final long FLASH_DURATION_MS = 300;
-	private boolean isFlashInProgress;
-
-	@Override
-	public synchronized final void flash() {
-		final Control control = getUIControl();
-		if (!isFlashInProgress && control != null) {
-			isFlashInProgress = true;
-
-			if (errorDecoration == null) {
-				errorDecoration = createErrorDecoration(control);
-			}
-
-			final boolean isShowing = errorDecoration.isVisible();
-			if (isShowing) {
-				errorDecoration.hide();
-			} else {
-				errorDecoration.show();
-			}
-
-			final Display display = control.getDisplay();
-			final Runnable op = new Runnable() {
-				public void run() {
-					try {
-						Thread.sleep(FLASH_DURATION_MS);
-					} catch (final InterruptedException e) {
-						Nop.reason("ignore"); //$NON-NLS-1$
-					} finally {
-						display.syncExec(new Runnable() {
-							public void run() {
-								if (!control.isDisposed()) {
-									updateError(control);
-								}
-							}
-						});
-						isFlashInProgress = false;
-					}
-				}
-			};
-			new Thread(op).start();
-		}
+	/**
+	 * Creates a decoration with an error marker for the given control.
+	 * <p>
+	 * The decoration draws an image before or after the UI control.
+	 * 
+	 * @param control
+	 *            the control to be decorated with an error marker; never null.
+	 * @since 2.1
+	 */
+	protected IControlDecoration createErrorDecoration(final Control control) {
+		return new MarkerControlDecoration(control);
 	}
 
 	/**
@@ -249,18 +259,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 			control.setForeground((Color) control.getData(PRE_NEGATIVE_FOREGROUND_KEY));
 			control.setData(PRE_NEGATIVE_FOREGROUND_KEY, null);
 		}
-	}
-
-	/**
-	 * Creates a decoration with an error marker for the given control.
-	 * <p>
-	 * The decoration draws an image before or after the UI control.
-	 * 
-	 * @param control
-	 *            the control to be decorated with an error marker
-	 */
-	protected IControlDecoration createErrorDecoration(final Control control) {
-		return new MarkerControlDecoration(control);
 	}
 
 	private boolean isButton(final Control control) {

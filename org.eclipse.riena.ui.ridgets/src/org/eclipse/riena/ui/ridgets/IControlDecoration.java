@@ -11,16 +11,25 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * TODO [ev] docs
+ * A decoration on a control.
  * 
  * @since 2.1
  */
 public interface IControlDecoration {
 
+	/**
+	 * Return true if the decoration is visible, false otherwise.
+	 */
 	boolean isVisible();
 
+	/**
+	 * Hide the decoration.
+	 */
 	void hide();
 
+	/**
+	 * Show the decoration.
+	 */
 	void show();
 
 }
