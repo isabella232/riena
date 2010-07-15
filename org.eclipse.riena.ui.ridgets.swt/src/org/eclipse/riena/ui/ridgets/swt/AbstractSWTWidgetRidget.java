@@ -38,6 +38,7 @@ import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Ridget for an SWT widget.
@@ -95,6 +96,21 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		return result;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Adding the same marker twice has no effect.
+	 */
+	public synchronized final void addMarker(final IMarker marker) {
+		if (markerSupport == null) {
+			markerSupport = createMarkerSupport();
+		}
+		if (marker instanceof MandatoryMarker) {
+			((MandatoryMarker) marker).setDisabled(isDisableMandatoryMarker());
+		}
+		markerSupport.addMarker(marker);
+	}
+
 	/*
 	 * Do not override. Template Method Pattern: Subclasses may implement {@code
 	 * unbindUIControl()} and {@code bindUIControl}, if they need to manipulate
@@ -130,12 +146,105 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		return false;
 	}
 
+	public final Collection<IMarker> getMarkers() {
+		if (markerSupport != null) {
+			return markerSupport.getMarkers();
+		}
+		return Collections.emptySet();
+	}
+
+	public final <T extends IMarker> Collection<T> getMarkersOfType(final Class<T> type) {
+		if (markerSupport != null) {
+			return markerSupport.getMarkersOfType(type);
+		}
+		return Collections.emptySet();
+	}
+
+	public final String getToolTipText() {
+		return toolTip;
+	}
+
+	public boolean isEnabled() {
+		return getMarkersOfType(DisabledMarker.class).isEmpty();
+	}
+
+	public final boolean isErrorMarked() {
+		return !getMarkersOfType(ErrorMarker.class).isEmpty();
+	}
+
 	public boolean isFocusable() {
 		return false;
 	}
 
+	public final boolean isMandatory() {
+		return !getMarkersOfType(MandatoryMarker.class).isEmpty();
+	}
+
+	public final boolean isOutputOnly() {
+		return !getMarkersOfType(OutputMarker.class).isEmpty();
+	}
+
+	public final void removeAllMarkers() {
+		if (markerSupport != null) {
+			markerSupport.removeAllMarkers();
+		}
+	}
+
+	/**
+	 * @since 2.1
+	 */
+	public final boolean removeMarker(final IMarker marker) {
+		if (markerSupport != null) {
+			return markerSupport.removeMarker(marker);
+		}
+		return false;
+	}
+
+	public synchronized void setEnabled(final boolean enabled) {
+		if (enabled) {
+			if (disabledMarker != null) {
+				removeMarker(disabledMarker);
+			}
+		} else {
+			if (disabledMarker == null) {
+				disabledMarker = new DisabledMarker();
+			}
+			addMarker(disabledMarker);
+		}
+	}
+
+	public final void setErrorMarked(final boolean errorMarked) {
+		setErrorMarked(errorMarked, null);
+	}
+
 	public void setFocusable(final boolean focusable) {
 		// not supported
+	}
+
+	public final void setMandatory(final boolean mandatory) {
+		if (!mandatory) {
+			if (mandatoryMarker != null) {
+				removeMarker(mandatoryMarker);
+			}
+		} else {
+			if (mandatoryMarker == null) {
+				mandatoryMarker = new MandatoryMarker();
+			}
+			addMarker(mandatoryMarker);
+		}
+	}
+
+	public final void setOutputOnly(final boolean outputOnly) {
+		if (!outputOnly) {
+			if (outputMarker != null) {
+				removeMarker(outputMarker);
+			}
+		} else {
+			if (outputMarker == null) {
+				outputMarker = new OutputMarker();
+			}
+			addMarker(outputMarker);
+		}
 	}
 
 	public final void setVisible(final boolean visible) {
@@ -155,10 +264,6 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		this.toolTip = toolTipText;
 		updateToolTip();
 		firePropertyChange(PROPERTY_TOOLTIP, oldValue, this.toolTip);
-	}
-
-	public final String getToolTipText() {
-		return toolTip;
 	}
 
 	// abstract methods - subclasses must implement
@@ -217,48 +322,31 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 */
 	abstract protected void updateToolTip();
 
-	// helping methods
-	// ////////////////
+	// protected methods
+	////////////////////
 
 	/**
-	 * Adds listeners to the <tt>uiControl</tt> after it was bound to the
-	 * ridget.
+	 * Creates and initializes the marker support for this Ridget.
+	 * <p>
+	 * The Look&Feel returns the marker support according of the Look&Feel
+	 * setting and the type of this Ridget. If the Look&Feel can not return a
+	 * appropriate marker support, this method creates and returns the default
+	 * marker support.
+	 * 
+	 * @return marker support
 	 */
-	protected void installListeners() {
-		if (getUIControl() != null) {
-			if (visibilityListener == null) {
-				visibilityListener = new VisibilityListener();
-			}
-			if (getUIControl() instanceof Control) {
-				addHierarchieVisibilityListener(((Control) getUIControl()).getParent(), visibilityListener);
-			}
+	protected AbstractMarkerSupport createMarkerSupport() {
+		AbstractMarkerSupport lnfMarkerSupport = null;
+		if (LnfManager.getLnf() != null) {
+			lnfMarkerSupport = LnfManager.getLnf().getMarkerSupport(this.getClass());
 		}
-	}
-
-	private void addHierarchieVisibilityListener(final Composite parent, final Listener listener) {
-		if (parent != null && !parent.isDisposed()) {
-			parent.addListener(SWT.Show, listener);
-			parent.addListener(SWT.Hide, listener);
-			addHierarchieVisibilityListener(parent.getParent(), listener);
+		if (lnfMarkerSupport == null) {
+			// No MarkerSupport exits. Default MarkerSupport is used.
+			lnfMarkerSupport = new MarkerSupport();
 		}
-	}
-
-	/**
-	 * Removes listeners from the <tt>uiControl</tt> when it is about to be
-	 * unbound from the ridget.
-	 */
-	protected void uninstallListeners() {
-		if (getUIControl() instanceof Control && visibilityListener != null) {
-			removeHierarchieVisibilityListener(((Control) getUIControl()).getParent(), visibilityListener);
-		}
-	}
-
-	private void removeHierarchieVisibilityListener(final Composite parent, final Listener listener) {
-		if (parent != null && !parent.isDisposed()) {
-			parent.removeListener(SWT.Show, listener);
-			parent.removeListener(SWT.Hide, listener);
-			removeHierarchieVisibilityListener(parent.getParent(), listener);
-		}
+		lnfMarkerSupport.init(this, propertyChangeSupport);
+		Assert.isNotNull(lnfMarkerSupport, "Marker support is null!"); //$NON-NLS-1$
+		return lnfMarkerSupport;
 	}
 
 	protected Image getManagedImage(final String key) {
@@ -288,12 +376,30 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		return !oldValue.equals(newValue);
 	}
 
-	public final boolean isErrorMarked() {
-		return !getMarkersOfType(ErrorMarker.class).isEmpty();
+	/**
+	 * Adds listeners to the <tt>uiControl</tt> after it was bound to the
+	 * ridget.
+	 */
+	protected void installListeners() {
+		if (getUIControl() != null) {
+			if (visibilityListener == null) {
+				visibilityListener = new VisibilityListener();
+			}
+			// TODO [ev] can we move this one class down? there it is always a Control instance
+			if (getUIControl() instanceof Control) {
+				addHierarchyVisibilityListener(((Control) getUIControl()).getParent(), visibilityListener);
+			}
+		}
 	}
 
-	public final void setErrorMarked(final boolean errorMarked) {
-		setErrorMarked(errorMarked, null);
+	/**
+	 * Removes listeners from the <tt>uiControl</tt> when it is about to be
+	 * unbound from the ridget.
+	 */
+	protected void uninstallListeners() {
+		if (getUIControl() instanceof Control && visibilityListener != null) {
+			removeHierarchyVisibilityListener(((Control) getUIControl()).getParent(), visibilityListener);
+		}
 	}
 
 	protected final void setErrorMarked(final boolean errorMarked, final String message) {
@@ -312,129 +418,6 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Adding the same marker twice has no effect.
-	 */
-	public synchronized final void addMarker(final IMarker marker) {
-		if (markerSupport == null) {
-			markerSupport = createMarkerSupport();
-		}
-		if (marker instanceof MandatoryMarker) {
-			((MandatoryMarker) marker).setDisabled(isDisableMandatoryMarker());
-		}
-		markerSupport.addMarker(marker);
-	}
-
-	/**
-	 * Creates and initializes the marker support for this Ridget.
-	 * <p>
-	 * The Look&Feel returns the marker support according of the Look&Feel
-	 * setting and the type of this Ridget. If the Look&Feel can not return a
-	 * appropriate marker support, this method creates and returns the default
-	 * marker support.
-	 * 
-	 * @return marker support
-	 */
-	protected AbstractMarkerSupport createMarkerSupport() {
-		AbstractMarkerSupport lnfMarkerSupport = null;
-		if (LnfManager.getLnf() != null) {
-			lnfMarkerSupport = LnfManager.getLnf().getMarkerSupport(this.getClass());
-		}
-		if (lnfMarkerSupport == null) {
-			// No MarkerSupport exits. Default MarkerSupport is used.
-			lnfMarkerSupport = new MarkerSupport();
-		}
-		lnfMarkerSupport.init(this, propertyChangeSupport);
-		Assert.isNotNull(lnfMarkerSupport, "Marker support is null!"); //$NON-NLS-1$
-		return lnfMarkerSupport;
-	}
-
-	public final Collection<IMarker> getMarkers() {
-		if (markerSupport != null) {
-			return markerSupport.getMarkers();
-		}
-		return Collections.emptySet();
-	}
-
-	public final <T extends IMarker> Collection<T> getMarkersOfType(final Class<T> type) {
-		if (markerSupport != null) {
-			return markerSupport.getMarkersOfType(type);
-		}
-		return Collections.emptySet();
-	}
-
-	public final void removeAllMarkers() {
-		if (markerSupport != null) {
-			markerSupport.removeAllMarkers();
-		}
-	}
-
-	/**
-	 * @since 2.1
-	 */
-	public final boolean removeMarker(final IMarker marker) {
-		if (markerSupport != null) {
-			return markerSupport.removeMarker(marker);
-		}
-		return false;
-	}
-
-	public boolean isEnabled() {
-		return getMarkersOfType(DisabledMarker.class).isEmpty();
-	}
-
-	public synchronized void setEnabled(final boolean enabled) {
-		if (enabled) {
-			if (disabledMarker != null) {
-				removeMarker(disabledMarker);
-			}
-		} else {
-			if (disabledMarker == null) {
-				disabledMarker = new DisabledMarker();
-			}
-			addMarker(disabledMarker);
-		}
-	}
-
-	public final boolean isOutputOnly() {
-		return !getMarkersOfType(OutputMarker.class).isEmpty();
-	}
-
-	public final void setOutputOnly(final boolean outputOnly) {
-		if (!outputOnly) {
-			if (outputMarker != null) {
-				removeMarker(outputMarker);
-			}
-		} else {
-			if (outputMarker == null) {
-				outputMarker = new OutputMarker();
-			}
-			addMarker(outputMarker);
-		}
-	}
-
-	public final boolean isMandatory() {
-		return !getMarkersOfType(MandatoryMarker.class).isEmpty();
-	}
-
-	public final void setMandatory(final boolean mandatory) {
-		if (!mandatory) {
-			if (mandatoryMarker != null) {
-				removeMarker(mandatoryMarker);
-			}
-		} else {
-			if (mandatoryMarker == null) {
-				mandatoryMarker = new MandatoryMarker();
-			}
-			addMarker(mandatoryMarker);
-		}
-	}
-
-	// protected methods
-	// //////////////////
-
-	/**
 	 * Iterates over the MandatoryMarker instances held by this ridget changing
 	 * their disabled state to given value.
 	 * 
@@ -449,7 +432,23 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	// helping methods
-	// ////////////////
+	///////////////////
+
+	private void addHierarchyVisibilityListener(final Composite parent, final Listener listener) {
+		if (parent != null && !parent.isDisposed()) {
+			parent.addListener(SWT.Show, listener);
+			parent.addListener(SWT.Hide, listener);
+			addHierarchyVisibilityListener(parent.getParent(), listener);
+		}
+	}
+
+	private void removeHierarchyVisibilityListener(final Composite parent, final Listener listener) {
+		if (parent != null && !parent.isDisposed()) {
+			parent.removeListener(SWT.Show, listener);
+			parent.removeListener(SWT.Hide, listener);
+			removeHierarchyVisibilityListener(parent.getParent(), listener);
+		}
+	}
 
 	private void updateMarkers() {
 		if (markerSupport != null) {
@@ -460,16 +459,16 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	// helping classes
 	// ////////////////
 
-	private class VisibilityListener implements Listener {
-
+	private final class VisibilityListener implements Listener {
 		public void handleEvent(final Event event) {
 			// fire a showing event for Ridgets with markers whose visibility
 			// changes because of a parent widget so that markers can be
 			// updated (bug 261980)
-			if (!getMarkers().isEmpty() && getUIControl() != null && !getUIControl().isDisposed()) {
-				getUIControl().getDisplay().asyncExec(new Runnable() {
+			final Widget control = getUIControl();
+			if (markerSupport != null && !getMarkers().isEmpty() && !SwtUtilities.isDisposed(control)) {
+				control.getDisplay().asyncExec(new Runnable() {
 					public void run() {
-						if (getUIControl() != null && !getUIControl().isDisposed()) {
+						if (!SwtUtilities.isDisposed(control)) {
 							markerSupport.fireShowingPropertyChangeEvent();
 						}
 					}
