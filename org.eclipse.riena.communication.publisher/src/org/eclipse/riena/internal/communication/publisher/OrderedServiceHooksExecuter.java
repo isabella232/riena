@@ -41,7 +41,7 @@ public class OrderedServiceHooksExecuter implements IServiceHook {
 	 */
 	public void afterService(final ServiceContext context) {
 		for (final IServiceHook sHook : reversedServiceHooks) {
-			sHook.beforeService(context);
+			sHook.afterService(context);
 		}
 	}
 
