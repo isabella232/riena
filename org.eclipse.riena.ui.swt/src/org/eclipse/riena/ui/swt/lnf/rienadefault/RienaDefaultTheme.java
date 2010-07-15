@@ -117,9 +117,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 				220));
 
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_FOREGROUND, new ColorLnfResource(170, 170, 170));
-		lnf
-				.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR, new ColorLnfResource(233, 233,
-						238));
+		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR, new ColorLnfResource(233, 233, 238));
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND, getPrimaryForeground());
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(196,
 				225, 244));
@@ -457,6 +455,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfSetting(LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT, true);
 
 		lnf.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "defaultMarkerSupport"); //$NON-NLS-1$
+		// lnf.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "borderMarkerSupport"); //$NON-NLS-1$
 
 		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_PAUSE_ANIMATION_TIME, 1000);
 		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_SHOW_AND_HIDE_ANIMATION_TIME, 1500);
