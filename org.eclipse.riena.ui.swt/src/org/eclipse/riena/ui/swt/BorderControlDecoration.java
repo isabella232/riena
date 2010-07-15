@@ -33,6 +33,7 @@ import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.ridgets.IControlDecoration;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * This class renders a decoration around the control. For every decorated
@@ -117,6 +118,35 @@ public class BorderControlDecoration implements IControlDecoration {
 	}
 
 	/**
+	 * Returns the color of the border.
+	 * 
+	 * @return border color
+	 */
+	public Color getBorderColor() {
+		return borderColor;
+	}
+
+	/**
+	 * Returns the width of the border.
+	 * 
+	 * @return border width
+	 */
+	public int getBorderWidth() {
+		return borderWidth;
+	}
+
+	/**
+	 * Hides the control decoration and any associated hovers. This message has
+	 * no effect if the decoration is already hidden.
+	 */
+	public void hide() {
+		if (visible) {
+			visible = false;
+			update();
+		}
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * 
 	 * @since 2.1
@@ -124,6 +154,31 @@ public class BorderControlDecoration implements IControlDecoration {
 	public boolean isVisible() {
 		return visible;
 	}
+
+	/**
+	 * Sets the color of the border.
+	 * 
+	 * @param borderColor
+	 *            border color
+	 */
+	public void setBorderColor(final Color borderColor) {
+		this.borderColor = borderColor;
+		update();
+	}
+
+	/**
+	 * Shows the control decoration. This message has no effect if the
+	 * decoration is already showing.
+	 */
+	public void show() {
+		if (!visible) {
+			visible = true;
+			update();
+		}
+	}
+
+	// helping methods
+	//////////////////
 
 	/**
 	 * Add any listeners needed on the target control and on the composite where
@@ -304,7 +359,7 @@ public class BorderControlDecoration implements IControlDecoration {
 		if (!visible) {
 			return false;
 		}
-		if ((control == null) || control.isDisposed()) {
+		if (SwtUtilities.isDisposed(control)) {
 			return false;
 		}
 		if (!control.isVisible()) {
@@ -317,32 +372,10 @@ public class BorderControlDecoration implements IControlDecoration {
 	}
 
 	/**
-	 * Shows the control decoration. This message has no effect if the
-	 * decoration is already showing.
-	 */
-	public void show() {
-		if (!visible) {
-			visible = true;
-			update();
-		}
-	}
-
-	/**
-	 * Hides the control decoration and any associated hovers. This message has
-	 * no effect if the decoration is already hidden.
-	 */
-	public void hide() {
-		if (visible) {
-			visible = false;
-			update();
-		}
-	}
-
-	/**
 	 * Something has changed, requiring redraw. Redraw the decoration.
 	 */
 	private void update() {
-		if ((control == null) || control.isDisposed() || getBorderWidth() <= 0) {
+		if (SwtUtilities.isDisposed(control) || getBorderWidth() <= 0) {
 			return;
 		}
 		final Rectangle rect = getDecorationRectangle(control.getShell());
@@ -382,35 +415,6 @@ public class BorderControlDecoration implements IControlDecoration {
 		final int height = controlBounds.height + getBorderWidth() * 2 - 1;
 		return new Rectangle(targetPoint.x, targetPoint.y, width, height);
 
-	}
-
-	/**
-	 * Sets the color of the border.
-	 * 
-	 * @param borderColor
-	 *            border color
-	 */
-	public void setBorderColor(final Color borderColor) {
-		this.borderColor = borderColor;
-		update();
-	}
-
-	/**
-	 * Returns the color of the border.
-	 * 
-	 * @return border color
-	 */
-	public Color getBorderColor() {
-		return borderColor;
-	}
-
-	/**
-	 * Returns the width of the border.
-	 * 
-	 * @return border width
-	 */
-	public int getBorderWidth() {
-		return borderWidth;
 	}
 
 }
