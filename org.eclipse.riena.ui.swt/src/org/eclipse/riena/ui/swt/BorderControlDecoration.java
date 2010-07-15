@@ -43,7 +43,6 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class BorderControlDecoration implements IControlDecoration {
 
-	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), BorderControlDecoration.class);
 	private static final Rectangle ZERO_RECTANGLE = new Rectangle(0, 0, 0, 0);
 	private static final int DEFAULT_BORDER_WIDTH = 1;
 
@@ -54,6 +53,11 @@ public class BorderControlDecoration implements IControlDecoration {
 	private boolean visible;
 	private Color borderColor;
 	private int borderWidth = DEFAULT_BORDER_WIDTH;
+
+	private static void logWarning(final String message) {
+		final Logger logger = Log4r.getLogger(Activator.getDefault(), BorderControlDecoration.class);
+		logger.log(LogService.LOG_WARNING, message);
+	}
 
 	/**
 	 * Creates a new instance of {@code ControlDecoration} for decorating the
@@ -84,23 +88,10 @@ public class BorderControlDecoration implements IControlDecoration {
 	 * @param control
 	 *            the control to be decorated
 	 */
-	public BorderControlDecoration(final Control control, int borderWidth, final Color borderColor) {
-		this.control = control;
-		// workaround for DatePicker
-		if (this.control.getParent() instanceof DatePickerComposite) {
-			this.control = this.control.getParent();
-		} else if (MasterDetailsComposite.BIND_ID_TABLE.equals(SWTBindingPropertyLocator.getInstance()
-				.locateBindingProperty(control))) {
-			this.control = this.control.getParent().getParent();
-		}
-		this.borderWidth = borderWidth;
-		if (this.borderWidth < 0) {
-			borderWidth = 0;
-			LOGGER.log(LogService.LOG_WARNING, "BorderWidth is lower eqauls 0!"); //$NON-NLS-1$
-		}
+	public BorderControlDecoration(final Control control, final int borderWidth, final Color borderColor) {
+		this.control = getBorderControl(control);
+		this.borderWidth = checkBorderWidth(borderWidth);
 		this.borderColor = borderColor;
-
-		visible = false;
 		addControlListeners();
 	}
 
@@ -224,9 +215,7 @@ public class BorderControlDecoration implements IControlDecoration {
 			 */
 			private void redrawControl(final ControlEvent e) {
 				if (e.widget instanceof Control) {
-					final Control ctrl = (Control) e.widget;
-					ctrl.setRedraw(false);
-					ctrl.setRedraw(true);
+					((Control) e.widget).redraw();
 				}
 			}
 		};
@@ -270,7 +259,27 @@ public class BorderControlDecoration implements IControlDecoration {
 				}
 			}
 		}
+	}
 
+	private int checkBorderWidth(final int candidate) {
+		int result = candidate;
+		if (candidate < 0) {
+			logWarning("BorderWidth is lower than 0: " + candidate); //$NON-NLS-1$
+			result = 0;
+		}
+		return result;
+	}
+
+	private Control getBorderControl(final Control control) {
+		Control result = control;
+		// workaround for DatePicker
+		if (control.getParent() instanceof DatePickerComposite) {
+			result = this.control.getParent();
+		} else if (MasterDetailsComposite.BIND_ID_TABLE.equals(SWTBindingPropertyLocator.getInstance()
+				.locateBindingProperty(control))) {
+			result = control.getParent().getParent();
+		}
+		return result;
 	}
 
 	/**
@@ -331,7 +340,6 @@ public class BorderControlDecoration implements IControlDecoration {
 	 *            the rectangle to draw
 	 */
 	private void onPaint(final GC gc, final Rectangle rect) {
-
 		if ((rect.width == 0) && (rect.height == 0)) {
 			return;
 		}
@@ -340,13 +348,12 @@ public class BorderControlDecoration implements IControlDecoration {
 		if (getBorderColor() != null) {
 			gc.setForeground(getBorderColor());
 		} else {
-			LOGGER.log(LogService.LOG_WARNING, "BorderColor is null!"); //$NON-NLS-1$
+			logWarning("BorderColor is null!"); //$NON-NLS-1$
 		}
 		for (int i = 0; i < getBorderWidth(); i++) {
 			gc.drawRectangle(rect.x + i, rect.y + i, rect.width - i * 2, rect.height - i * 2);
 		}
 		gc.setForeground(previousForeground);
-
 	}
 
 	/**
