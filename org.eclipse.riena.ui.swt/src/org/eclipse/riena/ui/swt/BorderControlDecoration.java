@@ -288,11 +288,11 @@ public class BorderControlDecoration implements IControlDecoration {
 	 * @return the rectangle in which the decoration should be rendered
 	 */
 	private Rectangle getDecorationRectangle(final Control targetControl) {
-	
+
 		if (control == null) {
 			return ZERO_RECTANGLE;
 		}
-	
+
 		final Rectangle controlBounds = control.getBounds();
 		if ((controlBounds.width <= 0) && (controlBounds.height <= 0)) {
 			return ZERO_RECTANGLE;
@@ -309,7 +309,7 @@ public class BorderControlDecoration implements IControlDecoration {
 		final int width = controlBounds.width + getBorderWidth() * 2 - 1;
 		final int height = controlBounds.height + getBorderWidth() * 2 - 1;
 		return new Rectangle(targetPoint.x, targetPoint.y, width, height);
-	
+
 	}
 
 	/**
@@ -324,7 +324,7 @@ public class BorderControlDecoration implements IControlDecoration {
 		if ((rect.width == 0) && (rect.height == 0)) {
 			return;
 		}
-	
+
 		final Color previousForeground = gc.getForeground();
 		if (getBorderColor() != null) {
 			gc.setForeground(getBorderColor());
@@ -404,11 +404,15 @@ public class BorderControlDecoration implements IControlDecoration {
 		}
 		final Shell shell = control.getShell();
 		if (updateArea != null) {
-			shell.redraw(updateArea.x - 1, updateArea.y - 1, updateArea.width + 2, updateArea.height + 2, true);
+			shell.redraw(updateArea.x, updateArea.y, updateArea.width, updateArea.height, true);
 		}
 		updateArea = getDecorationRectangle(shell);
+		updateArea.x = updateArea.x - 1;
+		updateArea.y = updateArea.y - 1;
+		updateArea.width = updateArea.width + 2;
+		updateArea.height = updateArea.height + 2;
 		// Redraw this rectangle in all children
-		shell.redraw(updateArea.x - 1, updateArea.y - 1, updateArea.width + 2, updateArea.height + 2, true);
+		shell.redraw(updateArea.x, updateArea.y, updateArea.width, updateArea.height, true);
 		shell.update();
 	}
 
