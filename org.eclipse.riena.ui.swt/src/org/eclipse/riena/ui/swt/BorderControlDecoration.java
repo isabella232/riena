@@ -24,7 +24,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
@@ -47,12 +46,20 @@ public class BorderControlDecoration implements IControlDecoration {
 	private static final int DEFAULT_BORDER_WIDTH = 1;
 
 	private Control control;
+
 	private DisposeListener disposeListener;
 	private PaintListener paintListener;
-	private ControlListener controlListener;
-	private boolean visible;
+	private ControlListener updateListener;
+	/**
+	 * The area that needs updating before drawing the decoration somewhere
+	 * else.
+	 */
+	private Rectangle updateArea;
+
 	private Color borderColor;
 	private int borderWidth = DEFAULT_BORDER_WIDTH;
+
+	private boolean visible;
 
 	private static void logWarning(final String message) {
 		final Logger logger = Log4r.getLogger(Activator.getDefault(), BorderControlDecoration.class);
@@ -92,7 +99,7 @@ public class BorderControlDecoration implements IControlDecoration {
 		this.control = getBorderControl(control);
 		this.borderWidth = checkBorderWidth(borderWidth);
 		this.borderColor = borderColor;
-		addControlListeners();
+		addListeners();
 	}
 
 	/**
@@ -104,7 +111,7 @@ public class BorderControlDecoration implements IControlDecoration {
 		if (control == null) {
 			return;
 		}
-		removeControlListeners();
+		removeListeners();
 		control = null;
 	}
 
@@ -175,48 +182,28 @@ public class BorderControlDecoration implements IControlDecoration {
 	 * Add any listeners needed on the target control and on the composite where
 	 * the decoration is to be rendered.
 	 */
-	private void addControlListeners() {
+	private void addListeners() {
 
 		disposeListener = new DisposeListener() {
-			/**
-			 * {@inheritDoc}
-			 */
 			public void widgetDisposed(final DisposeEvent event) {
 				dispose();
 			}
 		};
 		control.addDisposeListener(disposeListener);
 
-		controlListener = new ControlListener() {
+		updateListener = new ControlListener() {
 			/**
-			 * {@inheritDoc}
-			 * <p>
 			 * After moving the control will be redrawn.
 			 */
 			public void controlMoved(final ControlEvent e) {
-				// Do nothing here
+				update();
 			}
 
 			/**
-			 * {@inheritDoc}
-			 * <p>
 			 * After resizing the control will be redrawn.
 			 */
 			public void controlResized(final ControlEvent e) {
-				redrawControl(e);
-			}
-
-			/**
-			 * Redraws the control of the given ControlEvent.
-			 * 
-			 * @param e
-			 *            an event containing information about the resize or
-			 *            the move.
-			 */
-			private void redrawControl(final ControlEvent e) {
-				if (e.widget instanceof Control) {
-					((Control) e.widget).redraw();
-				}
+				update();
 			}
 		};
 
@@ -239,10 +226,10 @@ public class BorderControlDecoration implements IControlDecoration {
 		// We do not know which parent in the control hierarchy
 		// is providing the decoration space, so hook all the way up, until
 		// the shell or the specified parent composite is reached.
-		Composite c = control.getParent();
+		Control c = control;
 		final Rectangle controlBounds = control.getBounds();
 		while (c != null) {
-			installCompositeListeners(c);
+			addPaintAndUpdateListeners(c);
 			if (c instanceof Shell) {
 				// We just installed on a shell, so don't go further
 				c = null;
@@ -258,6 +245,16 @@ public class BorderControlDecoration implements IControlDecoration {
 					c = c.getParent();
 				}
 			}
+		}
+	}
+
+	/**
+	 * Installs the listeners used to paint on the control.
+	 */
+	private void addPaintAndUpdateListeners(final Control control) {
+		if (!control.isDisposed()) {
+			SWTFacade.getDefault().addPaintListener(control, paintListener);
+			control.addControlListener(updateListener);
 		}
 	}
 
@@ -283,52 +280,36 @@ public class BorderControlDecoration implements IControlDecoration {
 	}
 
 	/**
-	 * Removes every listeners installed on the controls.
+	 * Return the rectangle in which the decoration should be rendered, in
+	 * coordinates relative to the specified control.
+	 * 
+	 * @param targetControl
+	 *            the control whose coordinates should be used
+	 * @return the rectangle in which the decoration should be rendered
 	 */
-	private void removeControlListeners() {
-
+	private Rectangle getDecorationRectangle(final Control targetControl) {
+	
 		if (control == null) {
-			return;
+			return ZERO_RECTANGLE;
 		}
-		control.removeDisposeListener(disposeListener);
-		control.removeControlListener(controlListener);
-
-		Composite c = control.getParent();
-		while (c != null) {
-			removeCompositeListeners(c);
-			if (c instanceof Shell) {
-				// We previously installed listeners only up to the first Shell
-				// encountered, so stop.
-				c = null;
-			} else {
-				c = c.getParent();
-			}
+	
+		final Rectangle controlBounds = control.getBounds();
+		if ((controlBounds.width <= 0) && (controlBounds.height <= 0)) {
+			return ZERO_RECTANGLE;
 		}
-
-		paintListener = null;
-		controlListener = null;
-		disposeListener = null;
-
-	}
-
-	/**
-	 * Installs the listeners used to paint on the composite.
-	 */
-	private void installCompositeListeners(final Composite c) {
-		if (!c.isDisposed()) {
-			SWTFacade.getDefault().addPaintListener(c, paintListener);
-			c.addControlListener(controlListener);
+		final int x = controlBounds.x - getBorderWidth();
+		final int y = controlBounds.y - getBorderWidth();
+		final Point globalPoint = control.getParent().toDisplay(x, y);
+		Point targetPoint;
+		if (targetControl == null) {
+			targetPoint = globalPoint;
+		} else {
+			targetPoint = targetControl.toControl(globalPoint);
 		}
-	}
-
-	/**
-	 * Removes the listeners used to paint on the composite.
-	 */
-	private void removeCompositeListeners(final Composite c) {
-		if (!c.isDisposed()) {
-			c.removeControlListener(controlListener);
-			SWTFacade.getDefault().removePaintListener(c, paintListener);
-		}
+		final int width = controlBounds.width + getBorderWidth() * 2 - 1;
+		final int height = controlBounds.height + getBorderWidth() * 2 - 1;
+		return new Rectangle(targetPoint.x, targetPoint.y, width, height);
+	
 	}
 
 	/**
@@ -343,7 +324,7 @@ public class BorderControlDecoration implements IControlDecoration {
 		if ((rect.width == 0) && (rect.height == 0)) {
 			return;
 		}
-
+	
 		final Color previousForeground = gc.getForeground();
 		if (getBorderColor() != null) {
 			gc.setForeground(getBorderColor());
@@ -354,6 +335,42 @@ public class BorderControlDecoration implements IControlDecoration {
 			gc.drawRectangle(rect.x + i, rect.y + i, rect.width - i * 2, rect.height - i * 2);
 		}
 		gc.setForeground(previousForeground);
+	}
+
+	/**
+	 * Removes every listeners installed on the controls.
+	 */
+	private void removeListeners() {
+		if (control == null) {
+			return;
+		}
+		control.removeDisposeListener(disposeListener);
+
+		Control c = control;
+		while (c != null) {
+			removePaintAndUpdateListeners(c);
+			if (c instanceof Shell) {
+				// We previously installed listeners only up to the first Shell
+				// encountered, so stop.
+				c = null;
+			} else {
+				c = c.getParent();
+			}
+		}
+
+		paintListener = null;
+		updateListener = null;
+		disposeListener = null;
+	}
+
+	/**
+	 * Removes the listeners used to paint on the control.
+	 */
+	private void removePaintAndUpdateListeners(final Control control) {
+		if (!control.isDisposed()) {
+			control.removeControlListener(updateListener);
+			SWTFacade.getDefault().removePaintListener(control, paintListener);
+		}
 	}
 
 	/**
@@ -385,43 +402,14 @@ public class BorderControlDecoration implements IControlDecoration {
 		if (SwtUtilities.isDisposed(control) || getBorderWidth() <= 0) {
 			return;
 		}
-		final Rectangle rect = getDecorationRectangle(control.getShell());
+		final Shell shell = control.getShell();
+		if (updateArea != null) {
+			shell.redraw(updateArea.x - 1, updateArea.y - 1, updateArea.width + 2, updateArea.height + 2, true);
+		}
+		updateArea = getDecorationRectangle(shell);
 		// Redraw this rectangle in all children
-		control.getShell().redraw(rect.x - 1, rect.y - 1, rect.width + 2, rect.height + 2, true);
-		control.getShell().update();
-	}
-
-	/**
-	 * Return the rectangle in which the decoration should be rendered, in
-	 * coordinates relative to the specified control.
-	 * 
-	 * @param targetControl
-	 *            the control whose coordinates should be used
-	 * @return the rectangle in which the decoration should be rendered
-	 */
-	private Rectangle getDecorationRectangle(final Control targetControl) {
-
-		if (control == null) {
-			return ZERO_RECTANGLE;
-		}
-
-		final Rectangle controlBounds = control.getBounds();
-		if ((controlBounds.width <= 0) && (controlBounds.height <= 0)) {
-			return ZERO_RECTANGLE;
-		}
-		final int x = controlBounds.x - getBorderWidth();
-		final int y = controlBounds.y - getBorderWidth();
-		final Point globalPoint = control.getParent().toDisplay(x, y);
-		Point targetPoint;
-		if (targetControl == null) {
-			targetPoint = globalPoint;
-		} else {
-			targetPoint = targetControl.toControl(globalPoint);
-		}
-		final int width = controlBounds.width + getBorderWidth() * 2 - 1;
-		final int height = controlBounds.height + getBorderWidth() * 2 - 1;
-		return new Rectangle(targetPoint.x, targetPoint.y, width, height);
-
+		shell.redraw(updateArea.x - 1, updateArea.y - 1, updateArea.width + 2, updateArea.height + 2, true);
+		shell.update();
 	}
 
 }
