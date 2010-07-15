@@ -278,7 +278,12 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	@Override
 	public synchronized void updateFromModel() {
 		super.updateFromModel();
-		checkAllRules(textValue, new ValidationCallback(false));
+		// As per Bug 319938 - we use getText() instead of textValue for this 
+		// check, to have it done on the String that the databinging sees. Some 
+		// subclasses such as NumericTextRidget override getText() and return a 
+		// value different from textInternal. In retrospect getText() should have 
+		// been final. 
+		checkAllRules(getText(), new ValidationCallback(false));
 	}
 
 	public synchronized boolean isDirectWriting() {

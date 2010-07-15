@@ -31,6 +31,8 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
+import org.eclipse.riena.ui.ridgets.validation.ValidRange;
+import org.eclipse.riena.ui.ridgets.validation.ValidRangeAllowEmpty;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -135,6 +137,19 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			assertEquals(msg, localize(","), control.getText());
 			assertEquals(msg, null, doubleBean.getValue());
 		}
+	}
+
+	public void testSetTextDecimalSeparator() {
+		final ITextRidget ridget = getRidget();
+
+		NumberFormatException exception = null;
+		try {
+			ridget.setText(localize("."));
+			fail();
+		} catch (final NumberFormatException nfe) {
+			exception = nfe;
+		}
+		assertNotNull(exception);
 	}
 
 	public void testDeleteDecimalSeparator() {
@@ -880,6 +895,36 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(true, ridget.isOutputOnly());
 		assertEquals(localize("1.234,56"), ridget.getText());
 		assertEquals(localize("1.234,56"), control.getText());
+	}
+
+	/**
+	 * As per Bug 319938.
+	 */
+	public void testValidRangeCheckWithNullValue() {
+		final IDecimalTextRidget ridget = getRidget();
+		ridget.addValidationRule(new ValidRange(0.0, 10.0), ValidationTime.ON_UPDATE_TO_MODEL);
+
+		// DoubleBean(null) is treated as 0.0 which is in range
+		final DoubleBean bean = new DoubleBean(null);
+		ridget.bindToModel(bean, StringBean.PROP_VALUE);
+		ridget.updateFromModel();
+
+		assertFalse(ridget.isErrorMarked());
+	}
+
+	/**
+	 * As per Bug 319938.
+	 */
+	public void testValidRangeAllowEmptyCheckWithNullValue() {
+		final IDecimalTextRidget ridget = getRidget();
+		ridget.addValidationRule(new ValidRangeAllowEmpty(5.0, 10.0), ValidationTime.ON_UPDATE_TO_MODEL);
+
+		// null value should be allowed by the rule
+		final DoubleBean bean = new DoubleBean(null);
+		ridget.bindToModel(bean, StringBean.PROP_VALUE);
+		ridget.updateFromModel();
+
+		assertFalse(ridget.isErrorMarked());
 	}
 
 	// helping methods
