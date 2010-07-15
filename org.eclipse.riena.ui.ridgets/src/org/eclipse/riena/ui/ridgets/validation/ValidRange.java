@@ -16,13 +16,17 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.osgi.util.NLS;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.ArraysUtil;
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.ui.ridgets.nls.Messages;
@@ -128,10 +132,12 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 					format.setParseBigDecimal(true);
 					try {
 						currentValue = (BigDecimal) format.parse(string);
-					} catch (final ParseException e) {
+					} catch (final ParseException pex) {
 						// should never occur, as super.validate(Object) will
 						// make this method return earlier
+						final Logger logger = Log4r.getLogger(ValidRange.class);
 						final String message = NLS.bind(Messages.ValidRange_error_cannotParse, string);
+						logger.log(LogService.LOG_ERROR, message, pex);
 						return ValidationRuleStatus.error(true, message);
 					}
 				}
