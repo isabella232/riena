@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.ui.swt.Activator;
+import org.eclipse.riena.ui.ridgets.IControlDecoration;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
@@ -39,7 +40,7 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
  * 
  * @since 2.0
  */
-public class BorderControlDecoration {
+public class BorderControlDecoration implements IControlDecoration {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), BorderControlDecoration.class);
 	private static final Rectangle ZERO_RECTANGLE = new Rectangle(0, 0, 0, 0);
@@ -83,7 +84,6 @@ public class BorderControlDecoration {
 	 *            the control to be decorated
 	 */
 	public BorderControlDecoration(final Control control, int borderWidth, final Color borderColor) {
-
 		this.control = control;
 		// workaround for DatePicker
 		if (this.control.getParent() instanceof DatePickerComposite) {
@@ -101,7 +101,28 @@ public class BorderControlDecoration {
 
 		visible = false;
 		addControlListeners();
+	}
 
+	/**
+	 * Disposes this {@code BorderControlDecoration}. Unhooks any listeners that
+	 * have been installed on the target control. This method has no effect if
+	 * the receiver is already disposed.
+	 */
+	public void dispose() {
+		if (control == null) {
+			return;
+		}
+		removeControlListeners();
+		control = null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 2.1
+	 */
+	public boolean isVisible() {
+		return visible;
 	}
 
 	/**
@@ -195,19 +216,6 @@ public class BorderControlDecoration {
 			}
 		}
 
-	}
-
-	/**
-	 * Disposes this {@code BorderControlDecoration}. Unhooks any listeners that
-	 * have been installed on the target control. This method has no effect if
-	 * the receiver is already disposed.
-	 */
-	public void dispose() {
-		if (control == null) {
-			return;
-		}
-		removeControlListeners();
-		control = null;
 	}
 
 	/**

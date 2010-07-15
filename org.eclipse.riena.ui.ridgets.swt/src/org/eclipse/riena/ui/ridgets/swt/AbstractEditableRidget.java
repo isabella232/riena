@@ -17,15 +17,10 @@ import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.riena.core.util.Nop;
-import org.eclipse.riena.internal.ui.ridgets.swt.Activator;
-import org.eclipse.riena.internal.ui.ridgets.swt.SharedColors;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
+import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IEditableRidget;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
 import org.eclipse.riena.ui.ridgets.validation.IValidationCallback;
@@ -40,10 +35,11 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 	/**
 	 * The 'error' background color is shown for this duration of time, in
 	 * miliseconds ({@value} ).
+	 * 
+	 * @deprecated - flashing is now delegated to {@link AbstractMarkerSupport}
 	 */
+	@Deprecated
 	protected static final int FLASH_DURATION_MS = 300;
-
-	private boolean isFlashInProgress = false;
 
 	/**
 	 * Returns the given status object, without the ERROR_BLOCK_WITH_FLASH
@@ -174,41 +170,6 @@ public abstract class AbstractEditableRidget extends AbstractValueRidget impleme
 		final ValueBindingSupport vbs = getValueBindingSupport();
 		final ValidatorCollection afterGetValidators = vbs.getAfterGetValidators();
 		return afterGetValidators.validate(value, callback);
-	}
-
-	/**
-	 * Toggles the background color of the control to
-	 * {@link SharedColors#COLOR_FLASH_ERROR} for a short duration of time.
-	 */
-	protected synchronized final void flash() {
-		final Control control = getUIControl();
-		if (!isFlashInProgress && control != null) {
-			isFlashInProgress = true;
-
-			final Display display = control.getDisplay();
-			final Color oldBgColor = control.getBackground();
-			final Color bgColor = Activator.getSharedColor(display, SharedColors.COLOR_FLASH_ERROR);
-			control.setBackground(bgColor);
-			final Runnable op = new Runnable() {
-				public void run() {
-					try {
-						Thread.sleep(AbstractEditableRidget.FLASH_DURATION_MS);
-					} catch (final InterruptedException e) {
-						Nop.reason("ignore"); //$NON-NLS-1$
-					} finally {
-						if (!control.isDisposed()) {
-							display.syncExec(new Runnable() {
-								public void run() {
-									control.setBackground(oldBgColor);
-								}
-							});
-						}
-						isFlashInProgress = false;
-					}
-				}
-			};
-			new Thread(op).start();
-		}
 	}
 
 	// helping classes

@@ -27,8 +27,8 @@ public class SharedResourcesTest extends RienaTestCase {
 	public void testSharedColors() {
 		final Display display = Display.getDefault();
 
-		final Color colorFlash1 = Activator.getSharedColor(display, SharedColors.COLOR_FLASH_ERROR);
-		final Color colorFlash2 = Activator.getSharedColor(display, SharedColors.COLOR_FLASH_ERROR);
+		final Color colorFlash1 = Activator.getSharedColor(display, SharedColors.COLOR_MANDATORY);
+		final Color colorFlash2 = Activator.getSharedColor(display, SharedColors.COLOR_MANDATORY);
 
 		assertNotNull(colorFlash1);
 		assertNotNull(colorFlash2);
@@ -40,7 +40,7 @@ public class SharedResourcesTest extends RienaTestCase {
 		assertNotSame(colorFlash2, colorOutput);
 
 		try {
-			Activator.getSharedColor(null, SharedColors.COLOR_FLASH_ERROR);
+			Activator.getSharedColor(null, SharedColors.COLOR_MANDATORY);
 			fail();
 		} catch (final RuntimeException rex) {
 			ok();

@@ -26,8 +26,10 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.SharedColors;
@@ -35,6 +37,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.SharedImages;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IControlDecoration;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
@@ -68,7 +71,22 @@ public class MarkerSupport extends BasicMarkerSupport {
 			"HIDE_DISABLED_RIDGET_CONTENT", Boolean.FALSE.toString())); //$NON-NLS-1$
 	private static Boolean hideDisabledRidgetContent;
 
-	private ControlDecoration errorDecoration;
+	private IControlDecoration errorDecoration;
+
+	/**
+	 * Returns whether the content of a disabled ridget should be visible (
+	 * {@code false}) or hidden {@code true}.
+	 * 
+	 * @return ({@code false}): visible; {@code true}: hidden
+	 * @since 2.0
+	 */
+	public static boolean isHideDisabledRidgetContent() {
+		if (hideDisabledRidgetContent == null) {
+			hideDisabledRidgetContent = LnfManager.getLnf().getBooleanSetting(
+					LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT, HIDE_DISABLED_RIDGET_CONTENT);
+		}
+		return hideDisabledRidgetContent;
+	}
 
 	public MarkerSupport() {
 		super();
@@ -78,6 +96,9 @@ public class MarkerSupport extends BasicMarkerSupport {
 		super(ridget, propertyChangeSupport);
 	}
 
+	// protected methods
+	////////////////////
+
 	@Override
 	protected IMarkableRidget getRidget() {
 		return (IMarkableRidget) super.getRidget();
@@ -86,13 +107,37 @@ public class MarkerSupport extends BasicMarkerSupport {
 	protected void addError(final Control control) {
 		if (errorDecoration == null) {
 			errorDecoration = createErrorDecoration(control);
-			control.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(final DisposeEvent e) {
-					errorDecoration.dispose();
-				}
-			});
 		}
 		errorDecoration.show();
+	}
+
+	// helping methods
+	//////////////////
+
+	protected void addMandatory(final Control control) {
+		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) == null) {
+			control.setData(PRE_MANDATORY_BACKGROUND_KEY, control.getBackground());
+			final RienaDefaultLnf lnf = LnfManager.getLnf();
+			Color color = lnf.getColor(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND);
+			if (color == null) {
+				color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY);
+			}
+			if (control instanceof CompletionCombo) {
+				((CompletionCombo) control).setTextBackground(color);
+			} else {
+				control.setBackground(color);
+			}
+		}
+	}
+
+	// helping methods
+	//////////////////
+
+	protected void addOutput(final Control control, final Color color) {
+		if (control.getData(PRE_OUTPUT_BACKGROUND_KEY) == null) {
+			control.setData(PRE_OUTPUT_BACKGROUND_KEY, control.getBackground());
+			control.setBackground(color);
+		}
 	}
 
 	@Override
@@ -110,19 +155,62 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
-	/**
-	 * Returns whether the content of a disabled ridget should be visible (
-	 * {@code false}) or hidden {@code true}.
-	 * 
-	 * @return ({@code false}): visible; {@code true}: hidden
-	 * @since 2.0
-	 */
-	public static boolean isHideDisabledRidgetContent() {
-		if (hideDisabledRidgetContent == null) {
-			hideDisabledRidgetContent = LnfManager.getLnf().getBooleanSetting(
-					LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT, HIDE_DISABLED_RIDGET_CONTENT);
+	protected void clearMandatory(final Control control) {
+		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) != null) {
+			control.setBackground((Color) control.getData(PRE_MANDATORY_BACKGROUND_KEY));
+			control.setData(PRE_MANDATORY_BACKGROUND_KEY, null);
 		}
-		return hideDisabledRidgetContent;
+	}
+
+	protected void clearOutput(final Control control) {
+		if (control.getData(PRE_OUTPUT_BACKGROUND_KEY) != null) {
+			control.setBackground((Color) control.getData(PRE_OUTPUT_BACKGROUND_KEY));
+			control.setData(PRE_OUTPUT_BACKGROUND_KEY, null);
+		}
+	}
+
+	// TODO [ev] javadoc / cleanup
+	protected static final long FLASH_DURATION_MS = 300;
+	private boolean isFlashInProgress;
+
+	@Override
+	public synchronized final void flash() {
+		final Control control = getUIControl();
+		if (!isFlashInProgress && control != null) {
+			isFlashInProgress = true;
+
+			if (errorDecoration == null) {
+				errorDecoration = createErrorDecoration(control);
+			}
+
+			final boolean isShowing = errorDecoration.isVisible();
+			if (isShowing) {
+				errorDecoration.hide();
+			} else {
+				errorDecoration.show();
+			}
+
+			final Display display = control.getDisplay();
+			final Runnable op = new Runnable() {
+				public void run() {
+					try {
+						Thread.sleep(FLASH_DURATION_MS);
+					} catch (final InterruptedException e) {
+						Nop.reason("ignore"); //$NON-NLS-1$
+					} finally {
+						display.syncExec(new Runnable() {
+							public void run() {
+								if (!control.isDisposed()) {
+									updateError(control);
+								}
+							}
+						});
+						isFlashInProgress = false;
+					}
+				}
+			};
+			new Thread(op).start();
+		}
 	}
 
 	/**
@@ -149,40 +237,10 @@ public class MarkerSupport extends BasicMarkerSupport {
 	// helping methods
 	//////////////////
 
-	protected void addMandatory(final Control control) {
-		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) == null) {
-			control.setData(PRE_MANDATORY_BACKGROUND_KEY, control.getBackground());
-			final RienaDefaultLnf lnf = LnfManager.getLnf();
-			Color color = lnf.getColor(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND);
-			if (color == null) {
-				color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY);
-			}
-			if (control instanceof CompletionCombo) {
-				((CompletionCombo) control).setTextBackground(color);
-			} else {
-				control.setBackground(color);
-			}
-		}
-	}
-
 	private void addNegative(final Control control) {
 		if (control.getData(PRE_NEGATIVE_FOREGROUND_KEY) == null) {
 			control.setData(PRE_NEGATIVE_FOREGROUND_KEY, control.getForeground());
 			control.setForeground(control.getDisplay().getSystemColor(SWT.COLOR_RED));
-		}
-	}
-
-	protected void addOutput(final Control control, final Color color) {
-		if (control.getData(PRE_OUTPUT_BACKGROUND_KEY) == null) {
-			control.setData(PRE_OUTPUT_BACKGROUND_KEY, control.getBackground());
-			control.setBackground(color);
-		}
-	}
-
-	protected void clearMandatory(final Control control) {
-		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) != null) {
-			control.setBackground((Color) control.getData(PRE_MANDATORY_BACKGROUND_KEY));
-			control.setData(PRE_MANDATORY_BACKGROUND_KEY, null);
 		}
 	}
 
@@ -193,16 +251,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
-	protected void clearOutput(final Control control) {
-		if (control.getData(PRE_OUTPUT_BACKGROUND_KEY) != null) {
-			control.setBackground((Color) control.getData(PRE_OUTPUT_BACKGROUND_KEY));
-			control.setData(PRE_OUTPUT_BACKGROUND_KEY, null);
-		}
-	}
-
-	// helping methods
-	//////////////////
-
 	/**
 	 * Creates a decoration with an error marker for the given control.
 	 * <p>
@@ -210,47 +258,9 @@ public class MarkerSupport extends BasicMarkerSupport {
 	 * 
 	 * @param control
 	 *            the control to be decorated with an error marker
-	 * @return decoration of the given control
 	 */
-	private ControlDecoration createErrorDecoration(final Control control) {
-		final RienaDefaultLnf lnf = LnfManager.getLnf();
-		final int margin = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
-
-		final MarkerControlDecoration ctrlDecoration = new MarkerControlDecoration(control, getDecorationPosition(lnf),
-				margin, getDecorationImage(lnf));
-
-		return ctrlDecoration;
-	}
-
-	private Image getDecorationImage(final RienaDefaultLnf lnf) {
-		Image image = null;
-		if (Platform.getBundle(Activator.PLUGIN_ID) != null) {
-			// ensure OSGi is available before calling this
-			image = lnf.getImage(LnfKeyConstants.ERROR_MARKER_ICON);
-		}
-		if (image == null) {
-			image = Activator.getSharedImage(SharedImages.IMG_ERROR_DECO);
-		}
-		return image;
-	}
-
-	private int getDecorationPosition(final RienaDefaultLnf lnf) {
-		int result = SWT.NONE;
-		final int hPos = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.LEFT);
-		if (hPos == SWT.RIGHT || hPos == SWT.LEFT) {
-			result |= hPos;
-		} else {
-			LOGGER.log(LogService.LOG_WARNING, "Invalid horizonal error marker position!"); //$NON-NLS-1$
-			result |= SWT.LEFT;
-		}
-		final int vPos = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.TOP);
-		if (vPos == SWT.TOP || vPos == SWT.CENTER || vPos == SWT.BOTTOM) {
-			result |= vPos;
-		} else {
-			LOGGER.log(LogService.LOG_WARNING, "Invalid vertical error marker position!"); //$NON-NLS-1$
-			result |= SWT.TOP;
-		}
-		return result;
+	protected IControlDecoration createErrorDecoration(final Control control) {
+		return new MarkerControlDecoration(control);
 	}
 
 	private boolean isButton(final Control control) {
@@ -314,27 +324,71 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
+	// helping classes
+	//////////////////
+
 	/**
 	 * {@inheritDoc}
 	 * <p>
 	 * The constructor of this implementation sets the margin width and the
 	 * image to avoid unnecessary updates.
 	 */
-	private static class MarkerControlDecoration extends ControlDecoration {
+	private static class MarkerControlDecoration extends ControlDecoration implements IControlDecoration {
 
-		public MarkerControlDecoration(final Control control, final int position, final int marginWidth,
-				final Image image) {
-			super(control, position, getScrolledComposite(control));
+		public MarkerControlDecoration(final Control control) {
+			super(control, getDecorationPosition(), getScrolledComposite(control));
 			// TODO [ev] ControlDecorations are only stubs in RAP - need something else
 			if (SWTFacade.isRCP()) {
-				ReflectionUtils.setHidden(this, "marginWidth", marginWidth); //$NON-NLS-1$
-				ReflectionUtils.setHidden(this, "image", image); //$NON-NLS-1$
+				ReflectionUtils.setHidden(this, "marginWidth", getErrorMarginWidth()); //$NON-NLS-1$
+				ReflectionUtils.setHidden(this, "image", getDecorationImage()); //$NON-NLS-1$
 				ReflectionUtils.invokeHidden(this, "update", (Object[]) null); //$NON-NLS-1$
 			}
+			control.addDisposeListener(new DisposeListener() {
+				public void widgetDisposed(final DisposeEvent e) {
+					dispose();
+				}
+			});
+		}
+
+		private static Image getDecorationImage() {
+			Image result = null;
+			final RienaDefaultLnf lnf = LnfManager.getLnf();
+			if (Platform.getBundle(Activator.PLUGIN_ID) != null) {
+				// ensure OSGi is available before calling this
+				result = lnf.getImage(LnfKeyConstants.ERROR_MARKER_ICON);
+			}
+			if (result == null) {
+				result = Activator.getSharedImage(SharedImages.IMG_ERROR_DECO);
+			}
+			return result;
+		}
+
+		private static int getDecorationPosition() {
+			int result = SWT.NONE;
+			final RienaDefaultLnf lnf = LnfManager.getLnf();
+			final int hPos = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.LEFT);
+			if (hPos == SWT.RIGHT || hPos == SWT.LEFT) {
+				result |= hPos;
+			} else {
+				LOGGER.log(LogService.LOG_WARNING, "Invalid horizonal error marker position!"); //$NON-NLS-1$
+				result |= SWT.LEFT;
+			}
+			final int vPos = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.TOP);
+			if (vPos == SWT.TOP || vPos == SWT.CENTER || vPos == SWT.BOTTOM) {
+				result |= vPos;
+			} else {
+				LOGGER.log(LogService.LOG_WARNING, "Invalid vertical error marker position!"); //$NON-NLS-1$
+				result |= SWT.TOP;
+			}
+			return result;
+		}
+
+		private static int getErrorMarginWidth() {
+			final RienaDefaultLnf lnf = LnfManager.getLnf();
+			return lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
 		}
 
 		private static ScrolledComposite getScrolledComposite(final Control control) {
-
 			if (control == null) {
 				return null;
 			} else if (control instanceof ScrolledComposite) {
@@ -342,7 +396,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 			} else {
 				return getScrolledComposite(control.getParent());
 			}
-
 		}
 
 	}

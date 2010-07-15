@@ -35,6 +35,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 
 	private static boolean alwaysSkipRedraw = false;
 	private static boolean osChecked = false;
+
 	private DisabledMarkerVisualizer disabledMarkerVisualizer;
 
 	public BasicMarkerSupport() {
@@ -50,7 +51,6 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	 */
 	@Override
 	public void init(final IBasicMarkableRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
-
 		super.init(ridget, propertyChangeSupport);
 
 		final Control control = getUIControl();
@@ -78,8 +78,15 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		}
 
 		createDisabledMarkerVisualizer();
-
 	}
+
+	@Override
+	public void updateMarkers() {
+		updateUIControl();
+	}
+
+	// protected methods
+	////////////////////
 
 	/**
 	 * Does nothing. Subclasses may override.
@@ -99,35 +106,10 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		return (Control) super.getUIControl();
 	}
 
-	private void createDisabledMarkerVisualizer() {
-		this.disabledMarkerVisualizer = new DisabledMarkerVisualizer(getRidget());
-	}
-
-	protected DisabledMarkerVisualizer getDisabledMarkerVisualizer() {
-		return disabledMarkerVisualizer;
-	}
-
-	@Override
-	public void updateMarkers() {
-		updateUIControl();
-	}
-
 	@Override
 	protected void handleMarkerAttributesChanged() {
 		updateUIControl();
 		super.handleMarkerAttributesChanged();
-	}
-
-	private void updateUIControl() {
-		final Control control = getUIControl();
-		if (control != null) {
-			stopRedraw(control);
-			try {
-				updateUIControl(control);
-			} finally {
-				startRedraw(control);
-			}
-		}
 	}
 
 	protected void updateUIControl(final Control control) {
@@ -147,6 +129,17 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		} else {
 			control.setEnabled(getRidget().isEnabled());
 		}
+	}
+
+	// helping methods
+	//////////////////
+
+	private void createDisabledMarkerVisualizer() {
+		this.disabledMarkerVisualizer = new DisabledMarkerVisualizer(getRidget());
+	}
+
+	private DisabledMarkerVisualizer getDisabledMarkerVisualizer() {
+		return disabledMarkerVisualizer;
 	}
 
 	private void startRedraw(final Control control) {
@@ -170,6 +163,18 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 			return true;
 		}
 		return (control instanceof Combo) || (control instanceof Table) || (control instanceof List);
+	}
+
+	private void updateUIControl() {
+		final Control control = getUIControl();
+		if (control != null) {
+			stopRedraw(control);
+			try {
+				updateUIControl(control);
+			} finally {
+				startRedraw(control);
+			}
+		}
 	}
 
 }

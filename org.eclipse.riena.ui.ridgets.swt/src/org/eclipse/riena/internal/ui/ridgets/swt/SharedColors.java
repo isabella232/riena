@@ -26,7 +26,13 @@ import org.eclipse.swt.widgets.Display;
  */
 public final class SharedColors {
 
+	/**
+	 * @deprecated - since v2.1 the error marker is flashed. A special
+	 *             background color is no longer used.
+	 */
+	@Deprecated
 	public static final String COLOR_FLASH_ERROR = "COLOR_FLASH_ERROR"; //$NON-NLS-1$
+
 	public static final String COLOR_MANDATORY = "COLOR_MANDATORY"; //$NON-NLS-1$
 	public static final String COLOR_MANDATORY_OUTPUT = "COLOR_MANDATORY_OUTPUT"; //$NON-NLS-1$
 	public static final String COLOR_NEGATIVE = "COLOR_NEGATIVE"; //$NON-NLS-1$

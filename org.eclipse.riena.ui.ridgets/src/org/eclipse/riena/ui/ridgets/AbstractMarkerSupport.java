@@ -63,14 +63,6 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * Updates the UI-control to display the current markers.
-	 * 
-	 * @see #getUIControl()
-	 * @see #getMarkers()
-	 */
-	public abstract void updateMarkers();
-
-	/**
 	 * @see org.eclipse.riena.ui.internal.ridgets.IBasicMarkableRidget#addMarker(org.eclipse.riena.core.marker.IMarker)
 	 */
 	public void addMarker(final IMarker marker) {
@@ -90,22 +82,24 @@ public abstract class AbstractMarkerSupport {
 		}
 	}
 
-	private void initializeMarkers() {
-		if (markers == null) {
-			markers = new HashSet<IMarker>(1, 1.0f);
-		}
+	public void fireShowingPropertyChangeEvent() {
+		propertyChangeSupport.firePropertyChange(IRidget.PROPERTY_SHOWING, !ridget.isVisible(), ridget.isVisible());
+		updateMarkers();
 	}
 
-	private void clearMarkers() {
-		markers.clear();
-	}
-
-	private Collection<IMarker> cloneMarkers() {
-		if (markers != null) {
-			return new HashSet<IMarker>(markers);
-		} else {
-			return Collections.emptySet();
-		}
+	/**
+	 * "Flashes" some kind of notification <b>asynchronously</b>. The notion and
+	 * duration of "flashing" is implementation specific - it could flash a
+	 * special color, an error decoration, etc.
+	 * <p>
+	 * The default implementation does nothing. Subclasses should override.
+	 * Implementors shall check that the ui control is not null and that the
+	 * flash is not already in progress.
+	 * <p>
+	 * <b>Flashing must not alter the marker state of the ridget!</n>
+	 */
+	public void flash() {
+		// does nothing - subclasses should override
 	}
 
 	/**
@@ -165,6 +159,17 @@ public abstract class AbstractMarkerSupport {
 		return false;
 	}
 
+	// abstract methods
+	///////////////////
+
+	/**
+	 * Updates the UI-control to display the current markers.
+	 * 
+	 * @see #getUIControl()
+	 * @see #getMarkers()
+	 */
+	public abstract void updateMarkers();
+
 	protected Object getUIControl() {
 		return getRidget().getUIControl();
 	}
@@ -177,8 +182,30 @@ public abstract class AbstractMarkerSupport {
 		propertyChangeSupport.firePropertyChange(new MarkerPropertyChangeEvent(true, getRidget(), getMarkers()));
 	}
 
+	protected boolean hasHiddenMarkers() {
+		return !getRidget().getMarkersOfType(HiddenMarker.class).isEmpty();
+	}
+
 	// helping methods
 	//////////////////
+
+	private void clearMarkers() {
+		markers.clear();
+	}
+
+	private Collection<IMarker> cloneMarkers() {
+		if (markers != null) {
+			return new HashSet<IMarker>(markers);
+		} else {
+			return Collections.emptySet();
+		}
+	}
+
+	private void initializeMarkers() {
+		if (markers == null) {
+			markers = new HashSet<IMarker>(1, 1.0f);
+		}
+	}
 
 	private Boolean isEnabled(final Collection<IMarker> markers) {
 		boolean result = true;
@@ -229,15 +256,6 @@ public abstract class AbstractMarkerSupport {
 		}
 	}
 
-	public void fireShowingPropertyChangeEvent() {
-		propertyChangeSupport.firePropertyChange(IRidget.PROPERTY_SHOWING, !ridget.isVisible(), ridget.isVisible());
-		updateMarkers();
-	}
-
-	protected boolean hasHiddenMarkers() {
-		return !getRidget().getMarkersOfType(HiddenMarker.class).isEmpty();
-	}
-
 	// helping classes
 	//////////////////
 
@@ -265,7 +283,6 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	private final class MarkerAttributeChangeListener implements IMarkerAttributeChangeListener {
-
 		public void attributesChanged() {
 			handleMarkerAttributesChanged();
 		}

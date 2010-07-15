@@ -349,6 +349,36 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		return lnfMarkerSupport;
 	}
 
+	/**
+	 * Iterates over the MandatoryMarker instances held by this ridget changing
+	 * their disabled state to given value.
+	 * 
+	 * @param disable
+	 *            the new disabled state
+	 */
+	protected final void disableMandatoryMarkers(final boolean disable) {
+		for (final IMarker marker : getMarkersOfType(MandatoryMarker.class)) {
+			final MandatoryMarker mMarker = (MandatoryMarker) marker;
+			mMarker.setDisabled(disable);
+		}
+	}
+
+	/**
+	 * "Flashes" the error marker.
+	 * <p>
+	 * 
+	 * Note: this is deisgned to be delegated to {@link AbstractMarkerSupport}
+	 * and may vary depending on the concrete implemenetation.
+	 */
+	protected synchronized final void flash() {
+		if (getUIControl() != null) {
+			if (markerSupport == null) {
+				markerSupport = createMarkerSupport();
+			}
+			markerSupport.flash();
+		}
+	}
+
 	protected Image getManagedImage(final String key) {
 		Image image = ImageStore.getInstance().getImage(key);
 		if (image == null) {
@@ -416,23 +446,6 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 			addMarker(errorMarker);
 		}
 	}
-
-	/**
-	 * Iterates over the MandatoryMarker instances held by this ridget changing
-	 * their disabled state to given value.
-	 * 
-	 * @param disable
-	 *            the new disabled state
-	 */
-	protected final void disableMandatoryMarkers(final boolean disable) {
-		for (final IMarker marker : getMarkersOfType(MandatoryMarker.class)) {
-			final MandatoryMarker mMarker = (MandatoryMarker) marker;
-			mMarker.setDisabled(disable);
-		}
-	}
-
-	// helping methods
-	///////////////////
 
 	private void addHierarchyVisibilityListener(final Composite parent, final Listener listener) {
 		if (parent != null && !parent.isDisposed()) {
