@@ -343,6 +343,8 @@ public class DatePickerComposite extends Composite {
 				result = new VistaZoneFinder(parent);
 			} else if (Util.isWin32()) {
 				result = new XPZoneFinder(parent);
+			} else if (Util.isMac()) {
+				result = new MacZoneFinder(parent);
 			} else {
 				result = new DefaultZoneFinder();
 			}
@@ -460,6 +462,30 @@ public class DatePickerComposite extends Composite {
 		private int zone = BODY;
 
 		public XPZoneFinder(final DateTime parent) {
+			parent.addMouseMoveListener(this);
+		}
+
+		public void mouseMove(final MouseEvent e) {
+			zone = e.y < headerHeight ? HEADER : BODY;
+		}
+
+		public int getZone() {
+			return zone;
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Calculations for Mac.
+	 */
+	private static final class MacZoneFinder implements IZoneFinder {
+		/** Height of the header. */
+		final int headerHeight = 40;
+
+		private int zone = BODY;
+
+		public MacZoneFinder(final DateTime parent) {
 			parent.addMouseMoveListener(this);
 		}
 
