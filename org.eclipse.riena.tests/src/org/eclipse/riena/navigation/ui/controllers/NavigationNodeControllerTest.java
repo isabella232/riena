@@ -111,7 +111,8 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		assertFalse(node.getMarkers().isEmpty());
 		assertFalse(node.getMarkersOfType(ErrorMarker.class).isEmpty());
 
-		ridget.addMarker(new MandatoryMarker());
+		final MandatoryMarker mandatory1 = new MandatoryMarker();
+		ridget.addMarker(mandatory1);
 		controller.updateNavigationNodeMarkers();
 		assertFalse(node.getMarkers().isEmpty());
 		assertFalse(node.getMarkersOfType(ErrorMarker.class).isEmpty());
@@ -124,6 +125,21 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		// the mandatory marker of the ridget is disabled because the text is not empty
 		assertTrue(node.getMarkersOfType(MandatoryMarker.class).isEmpty());
 
+		ridget.setText(null);
+
+		ridget.addMarker(mandatory1);
+		controller.updateNavigationNodeMarkers();
+		assertFalse(node.getMarkersOfType(MandatoryMarker.class).isEmpty());
+
+		mandatory1.setDisabled(true);
+
+		final MandatoryMarker mandatory2 = new MandatoryMarker();
+		final TextRidget ridget2 = new TextRidget();
+		ridget2.setUIControl(new Text(shell, 0));
+		ridget2.addMarker(mandatory2);
+		controller.addRidget("554", ridget2);
+		controller.updateNavigationNodeMarkers();
+		assertFalse(node.getMarkersOfType(MandatoryMarker.class).isEmpty());
 	}
 
 	/**

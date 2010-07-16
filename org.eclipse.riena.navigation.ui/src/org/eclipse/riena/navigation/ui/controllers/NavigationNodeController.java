@@ -276,12 +276,10 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		for (final IMarker marker : getRidgetMarkers()) {
 			if (marker instanceof ErrorMarker) {
 				currentErrors.add(ErrorMarker.class.cast(marker));
-				getNavigationNode().addMarker(marker);
 			} else if (marker instanceof MandatoryMarker) {
 				final MandatoryMarker mandatoryMarker = (MandatoryMarker) marker;
 				if (!mandatoryMarker.isDisabled()) {
 					currentMandatory.add(MandatoryMarker.class.cast(marker));
-					getNavigationNode().addMarker(marker);
 				}
 			}
 		}
@@ -295,6 +293,14 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 			if (!currentMandatory.contains(marker)) {
 				getNavigationNode().removeMarker(marker);
 			}
+		}
+
+		for (final IMarker marker : currentErrors) {
+			getNavigationNode().addMarker(marker);
+		}
+
+		for (final IMarker marker : currentMandatory) {
+			getNavigationNode().addMarker(marker);
 		}
 	}
 
