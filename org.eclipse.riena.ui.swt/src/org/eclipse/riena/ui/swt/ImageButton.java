@@ -974,4 +974,18 @@ public class ImageButton extends Composite {
 			onPaint(e);
 		}
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.swt.widgets.Control#setToolTipText(java.lang.String)
+	 */
+	@Override
+	public void setToolTipText(final String string) {
+		super.setToolTipText(string);
+		if (hasHotStyle()) {
+			hoverButton.setToolTipText(string);
+		}
+
+	}
 }
