@@ -164,7 +164,7 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	 * Sets the converter used when updating from the model to the UI-control.
 	 * <p>
 	 * Notes: Conversion between model-to-UI and UI-to-model must be
-	 * symmetrical; eexample: FooToString and StirngToFoo. Changing the
+	 * symmetrical; example: FooToString and StringToFoo. Changing the
 	 * converters after the ridget is already bound to a model, requires calling
 	 * {@link #updateFromModel()} to apply the new converters.
 	 * 
@@ -207,7 +207,7 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	 * Sets the converter used when updating from the UI-control to the model.
 	 * <p>
 	 * Notes: Conversion between model-to-UI and UI-to-model must be
-	 * symmetrical; eexample: FooToString and StirngToFoo. Changing the
+	 * symmetrical; example: FooToString and StringToFoo. Changing the
 	 * converters after the ridget is already bound to a model, requires calling
 	 * {@link #updateFromModel()} to apply the new converters.
 	 * 
