@@ -12,11 +12,21 @@ package org.eclipse.riena.example.client.controllers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import org.eclipse.core.databinding.observable.value.WritableValue;
+import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.beans.common.ListBean;
+import org.eclipse.riena.internal.ui.ridgets.swt.CompletionComboRidget;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
+import org.eclipse.riena.ui.swt.utils.ImageStore;
 
 /**
  * Controller for the {@link ComboCompletionSubModuleView} example.
@@ -25,47 +35,146 @@ public class CompletionComboSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		final IComboRidget combo1 = getRidget(IComboRidget.class, "combo1"); //$NON-NLS-1$
-		final IComboRidget combo2 = getRidget(IComboRidget.class, "combo2"); //$NON-NLS-1$
-		final IComboRidget combo3 = getRidget(IComboRidget.class, "combo3"); //$NON-NLS-1$
-		final ITextRidget selection1 = getRidget(ITextRidget.class, "selection1"); //$NON-NLS-1$
-		final ITextRidget selection2 = getRidget(ITextRidget.class, "selection2"); //$NON-NLS-1$
-		final ITextRidget selection3 = getRidget(ITextRidget.class, "selection3"); //$NON-NLS-1$
-		final ITextRidget text1 = getRidget(ITextRidget.class, "text1"); //$NON-NLS-1$
-		final ITextRidget text2 = getRidget(ITextRidget.class, "text2"); //$NON-NLS-1$
-		final ITextRidget text3 = getRidget(ITextRidget.class, "text3"); //$NON-NLS-1$
+		final ListBean input = createInput();
 
-		final ListBean input = new ListBean("Aachen", "Athens", "Austin", "Arkansas", "Ashland", "London", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-				"Moskow", "New York", "Paris", "Portland", "Potsdam"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		combo1.bindToModel(input, ListBean.PROPERTY_VALUES, String.class, null, selection1, "text"); //$NON-NLS-1$
-		combo1.addPropertyChangeListener(IComboRidget.PROPERTY_TEXT, new PropertyChangeListener() {
-			public void propertyChange(final PropertyChangeEvent evt) {
-				text1.setText((String) evt.getNewValue());
-			}
-		});
-		combo1.updateFromModel();
+		final IComboRidget combo1 = configureCombo(input, "combo1", "selection1", "text1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		combo1.setMarkSelectionMismatch(true);
-		selection1.setOutputOnly(true);
-		text1.setOutputOnly(true);
 
-		combo2.bindToModel(input, ListBean.PROPERTY_VALUES, String.class, null, selection2, "text"); //$NON-NLS-1$
-		combo2.addPropertyChangeListener(IComboRidget.PROPERTY_TEXT, new PropertyChangeListener() {
-			public void propertyChange(final PropertyChangeEvent evt) {
-				text2.setText((String) evt.getNewValue());
-			}
-		});
-		combo2.updateFromModel();
-		selection2.setOutputOnly(true);
-		text2.setOutputOnly(true);
+		configureCombo(input, "combo2", "selection2", "text2"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		combo3.bindToModel(input, ListBean.PROPERTY_VALUES, String.class, null, selection3, "text"); //$NON-NLS-1$
-		combo3.addPropertyChangeListener(IComboRidget.PROPERTY_TEXT, new PropertyChangeListener() {
-			public void propertyChange(final PropertyChangeEvent evt) {
-				text3.setText((String) evt.getNewValue());
-			}
-		});
-		combo3.updateFromModel();
-		selection3.setOutputOnly(true);
-		text3.setOutputOnly(true);
+		final IComboRidget combo3 = configureCombo(input, "combo3", "selection3", "text3"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		combo3.setMarkSelectionMismatch(true);
+		final CityFormatter formatter = new CityFormatter();
+		((CompletionComboRidget) combo3).setColumnFormatter(formatter);
+
+		final IComboRidget combo4 = configureCombo(input, "combo4", "selection4", "text4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		((CompletionComboRidget) combo4).setColumnFormatter(formatter);
 	}
+
+	// helping methods
+	//////////////////
+
+	private IComboRidget configureCombo(final Object input, final String comboId, final String selectionId,
+			final String textId) {
+		final ITextRidget selectionRidget = getRidget(ITextRidget.class, selectionId);
+		selectionRidget.setOutputOnly(true);
+
+		final ITextRidget textRidget = getRidget(ITextRidget.class, textId);
+		textRidget.setOutputOnly(true);
+
+		final IComboRidget result = getRidget(IComboRidget.class, comboId);
+		final WritableValue selection = new WritableValue() {
+			@Override
+			public void doSetValue(final Object value) {
+				selectionRidget.setText(((City) value).getName());
+			}
+		};
+		result.bindToModel(input, ListBean.PROPERTY_VALUES, City.class, "getName", selection, "value"); //$NON-NLS-1$ //$NON-NLS-2$
+		result.addPropertyChangeListener(IComboRidget.PROPERTY_TEXT, new PropertyChangeListener() {
+			public void propertyChange(final PropertyChangeEvent evt) {
+				textRidget.setText((String) evt.getNewValue());
+			}
+		});
+		result.updateFromModel();
+
+		return result;
+	}
+
+	private ListBean createInput() {
+		final List<City> values = new ArrayList<City>();
+		values.add(new City("Rome", Country.ITALY)); //$NON-NLS-1$
+		values.add(new City("Milan", Country.ITALY)); //$NON-NLS-1$
+		values.add(new City("Napoli", Country.ITALY)); //$NON-NLS-1$
+		values.add(new City("Torino", Country.ITALY)); //$NON-NLS-1$
+		values.add(new City("Palermo", Country.ITALY)); //$NON-NLS-1$
+		values.add(new City("Genova", Country.ITALY)); //$NON-NLS-1$
+		values.add(new City("Bologna", Country.ITALY)); //$NON-NLS-1$
+		values.add(new City("Firenze", Country.ITALY)); //$NON-NLS-1$
+		values.add(new City("Venezia", Country.ITALY)); //$NON-NLS-1$
+		values.add(new City("Pisa", Country.ITALY)); //$NON-NLS-1$
+		values.add(new City("Berlin", Country.GERMANY)); //$NON-NLS-1$
+		values.add(new City("Hamburg", Country.GERMANY)); //$NON-NLS-1$
+		values.add(new City("Köln", Country.GERMANY)); //$NON-NLS-1$
+		values.add(new City("Frankfurt am Main", Country.GERMANY)); //$NON-NLS-1$
+		values.add(new City("Stuttgart", Country.GERMANY)); //$NON-NLS-1$
+		values.add(new City("Dortmund", Country.GERMANY)); //$NON-NLS-1$
+		values.add(new City("Essen", Country.GERMANY)); //$NON-NLS-1$
+		values.add(new City("Düsseldorf", Country.GERMANY)); //$NON-NLS-1$
+		values.add(new City("München", Country.GERMANY)); //$NON-NLS-1$
+		values.add(new City("Mannheim", Country.GERMANY)); //$NON-NLS-1$
+		values.add(new City("Paris", Country.FRANCE)); //$NON-NLS-1$
+		values.add(new City("Marseille", Country.FRANCE)); //$NON-NLS-1$
+		values.add(new City("Lyon", Country.FRANCE)); //$NON-NLS-1$
+		values.add(new City("Toulouse", Country.FRANCE)); //$NON-NLS-1$
+		values.add(new City("Nice", Country.FRANCE)); //$NON-NLS-1$
+		values.add(new City("Nantes", Country.FRANCE)); //$NON-NLS-1$
+		values.add(new City("Strasbourg", Country.FRANCE)); //$NON-NLS-1$
+		values.add(new City("Montpellier", Country.FRANCE)); //$NON-NLS-1$
+		values.add(new City("Bordeaux", Country.FRANCE)); //$NON-NLS-1$
+		values.add(new City("Lille", Country.FRANCE)); //$NON-NLS-1$
+		Collections.sort(values, new Comparator<City>() {
+			public int compare(final City o1, final City o2) {
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
+		return new ListBean(values);
+	}
+
+	// helping classes
+	//////////////////
+
+	public enum Country {
+		ITALY, FRANCE, GERMANY
+	}
+
+	public static final class City {
+		private final String name;
+		private final Country country;
+
+		City(final String name, final Country country) {
+			this.name = name;
+			this.country = country;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public Country getCountry() {
+			return country;
+		}
+	}
+
+	private static final class CityFormatter extends ColumnFormatter {
+
+		@Override
+		public String getText(final Object element) {
+			return ("ab" + ((City) element).getName());
+		}
+
+		@Override
+		public Image getImage(final Object element) {
+			final Country country = ((City) element).getCountry();
+			final String key = getImageKey(country);
+			Image result = null;
+			if (key != null) {
+				result = ImageStore.getInstance().getImage(key);
+			}
+			return result;
+		}
+
+		private String getImageKey(final Country country) {
+			switch (country) {
+			case ITALY:
+				return "flag_italy.png"; //$NON-NLS-1$
+			case GERMANY:
+				return "flag_germany.png"; //$NON-NLS-1$
+			case FRANCE:
+				return "flag_france.png"; //$NON-NLS-1$
+			}
+			return null;
+		}
+
+	}
+
 }

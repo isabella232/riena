@@ -16,9 +16,12 @@ import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Image;
 
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.ui.swt.AbstractCompletionCombo;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 
 /**
@@ -34,7 +37,7 @@ public class CompletionComboRidget extends AbstractComboRidget {
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, CompletionCombo.class);
+		AbstractSWTRidget.assertType(uiControl, AbstractCompletionCombo.class);
 	}
 
 	@Override
@@ -48,8 +51,8 @@ public class CompletionComboRidget extends AbstractComboRidget {
 	}
 
 	@Override
-	public CompletionCombo getUIControl() {
-		return (CompletionCombo) super.getUIControl();
+	public AbstractCompletionCombo getUIControl() {
+		return (AbstractCompletionCombo) super.getUIControl();
 	}
 
 	@Override
@@ -59,7 +62,7 @@ public class CompletionComboRidget extends AbstractComboRidget {
 
 	@Override
 	protected ISWTObservableValue getUIControlSelectionObservable() {
-		final CompletionCombo control = getUIControl();
+		final AbstractCompletionCombo control = getUIControl();
 		final Realm realm = SWTObservables.getRealm(control.getDisplay());
 		return (ISWTObservableValue) new CompletionComboSelectionProperty().observe(realm, control);
 	}
@@ -73,7 +76,7 @@ public class CompletionComboRidget extends AbstractComboRidget {
 		// as well
 		getUIControl().getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				final CompletionCombo combo = getUIControl();
+				final AbstractCompletionCombo combo = getUIControl();
 				if (combo != null && !combo.isDisposed()) {
 					combo.clearSelection(); // this does not change the text
 				}
@@ -108,7 +111,22 @@ public class CompletionComboRidget extends AbstractComboRidget {
 
 	@Override
 	protected void setItemsToControl(final String[] arrItems) {
-		getUIControl().setItems(arrItems);
+		final Image[] arrImages = getImages(arrItems);
+		getUIControl().setItems(arrItems, arrImages);
+	}
+
+	private Image[] getImages(final String[] arrItems) {
+		Image[] result = null;
+		final IColumnFormatter formatter = getColumnFormatter();
+		if (formatter != null) {
+			final IObservableList observableList = getObservableList();
+			result = new Image[arrItems.length];
+			for (int i = 0; i < result.length; i++) {
+				final Object element = observableList.get(i);
+				result[i] = (Image) formatter.getImage(element);
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -120,4 +138,5 @@ public class CompletionComboRidget extends AbstractComboRidget {
 	protected void updateEditable() {
 		getUIControl().setEditable(!isOutputOnly());
 	}
+
 }

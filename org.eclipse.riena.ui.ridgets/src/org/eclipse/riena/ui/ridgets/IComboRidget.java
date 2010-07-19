@@ -217,4 +217,18 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	 * @since 1.2
 	 */
 	void setUIControlToModelConverter(IConverter converter);
+
+	/**
+	 * Set the {@link ColumnFormatter} to be used for the first column.
+	 * <p>
+	 * Note: changing column formatters on a ridget that is already bound to a
+	 * model, requires calling {@link #updateFromModel()} to apply the new
+	 * format.
+	 * 
+	 * @param formatter
+	 *            an IColumnFormatter instance; null removes the previously used
+	 *            formatter from the selected column
+	 * @since 2.1
+	 */
+	public void setColumnFormatter(final IColumnFormatter formatter);
 }

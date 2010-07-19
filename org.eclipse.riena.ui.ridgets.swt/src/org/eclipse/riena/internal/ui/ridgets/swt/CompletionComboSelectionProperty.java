@@ -15,7 +15,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import org.eclipse.jface.databinding.swt.WidgetValueProperty;
 import org.eclipse.swt.SWT;
 
-import org.eclipse.riena.ui.swt.CompletionCombo;
+import org.eclipse.riena.ui.swt.AbstractCompletionCombo;
 
 /**
  * Based on CComboSelectionProperty from Eclipse Databinding
@@ -28,13 +28,13 @@ class CompletionComboSelectionProperty extends WidgetValueProperty {
 
 	@Override
 	protected Object doGetValue(final Object source) {
-		return ((CompletionCombo) source).getText();
+		return ((AbstractCompletionCombo) source).getText();
 	}
 
 	@Override
 	protected void doSetValue(final Object source, final Object value) {
 		final String value1 = (String) value;
-		final CompletionCombo ccombo = (CompletionCombo) source;
+		final AbstractCompletionCombo ccombo = (AbstractCompletionCombo) source;
 		final String items[] = ccombo.getItems();
 		int index = -1;
 		if (value1 == null) {
@@ -56,7 +56,7 @@ class CompletionComboSelectionProperty extends WidgetValueProperty {
 
 	@Override
 	public String toString() {
-		return "CompletionCombo.selection <String>"; //$NON-NLS-1$
+		return "AbstractCompletionCombo.selection <String>"; //$NON-NLS-1$
 	}
 
 	public Object getValueType() {

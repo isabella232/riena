@@ -41,6 +41,7 @@ import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
+import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -73,6 +74,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	private Class<? extends Object> rowClass;
 	/** The selected option (model). */
 	private IObservableValue selectionValue;
+	/** TODO [ev] docs */
+	private IColumnFormatter formatter;
 	/** A string used for converting from Object to String */
 	private String renderingMethod;
 	/**
@@ -196,6 +199,15 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	}
 
 	/**
+	 * TODO [ev] docs
+	 * 
+	 * @since 2.1
+	 */
+	protected final IColumnFormatter getColumnFormatter() {
+		return formatter;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * <p>
 	 * Implementation note: the {@link ISelectionListener} will receive a list
@@ -287,6 +299,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 
 	public boolean isMarkSelectionMismatch() {
 		return markSelectionMismatch;
+	}
+
+	public void setColumnFormatter(final IColumnFormatter formatter) {
+		this.formatter = formatter;
 	}
 
 	public void setEmptySelectionItem(final Object emptySelection) {
@@ -527,7 +543,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 
 	private String getItemFromValue(final Object value) {
 		Object valueObject = value;
-		if (value != null && renderingMethod != null) {
+		if (valueObject != null && formatter != null) {
+			valueObject = formatter.getText(value);
+		}
+		if (valueObject != null && renderingMethod != null) {
 			valueObject = ReflectionUtils.invoke(value, renderingMethod, (Object[]) null);
 		}
 		if (valueObject == null || valueObject.toString() == null) {
@@ -602,7 +621,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		if (items != null) {
 			items.clear();
 			try {
-				for (final Object value : optionValues) {
+				for (final Object value : rowObservables) {
 					final String item = (String) objToStrConverter.convert(value);
 					items.add(item);
 				}
