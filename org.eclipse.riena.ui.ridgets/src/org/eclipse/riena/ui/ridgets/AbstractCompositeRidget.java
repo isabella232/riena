@@ -258,7 +258,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 
 	/**
 	 * Returns true if the control of this ridget is visible, false otherwise.
-	 * This default implementation always returns true and should be overriden
+	 * This default implementation always returns true and should be overridden
 	 * by subclasses.
 	 * <p>
 	 * Note: this will only be called when the UI control is know to be
