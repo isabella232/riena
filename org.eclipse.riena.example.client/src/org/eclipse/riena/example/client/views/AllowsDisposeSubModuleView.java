@@ -1,4 +1,4 @@
-package org.eclipse.riena.example.client;
+package org.eclipse.riena.example.client.views;
 
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.widgets.Composite;

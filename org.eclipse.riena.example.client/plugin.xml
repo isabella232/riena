@@ -381,7 +381,7 @@
       </view>
       <view
             allowMultiple="true"
-            class="org.eclipse.riena.example.client.AllowsDisposeSubModuleView"
+            class="org.eclipse.riena.example.client.views.AllowsDisposeSubModuleView"
             id="org.eclipse.riena.example.client.allowsDisposeSubModuleView"
             name="allowsDispose"
             restorable="true">
