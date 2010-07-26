@@ -54,7 +54,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		super.init(ridget, propertyChangeSupport);
 
 		final Control control = getUIControl();
-		if (control != null) {
+		if ((control != null) && (!control.isDisposed())) {
 			control.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(final DisposeEvent e) {
 					final Control control = getUIControl();
