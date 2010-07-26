@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.TableItem;
 
 /**
  * TODO [ev] docs
+ * <p>
+ * TODO [ev] write a snippet?
  * 
  * @since 2.1
  */
