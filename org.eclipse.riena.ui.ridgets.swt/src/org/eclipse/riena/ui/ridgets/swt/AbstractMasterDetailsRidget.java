@@ -499,7 +499,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		for (final IRidget ridget : detailRidgets.getRidgets()) {
 			if (ridget instanceof IMarkableRidget) {
 				final IMarkableRidget markableRidget = (IMarkableRidget) ridget;
-				if (!markableRidget.getMarkersOfType(ErrorMarker.class).isEmpty()) {
+				if (markableRidget.isEnabled() && markableRidget.getMarkersOfType(ErrorMarker.class).size() > 0) {
 					return true;
 				}
 			}
@@ -511,9 +511,11 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		for (final IRidget ridget : detailRidgets.getRidgets()) {
 			if (ridget instanceof IMarkableRidget) {
 				final IMarkableRidget markableRidget = (IMarkableRidget) ridget;
-				for (final MandatoryMarker marker : markableRidget.getMarkersOfType(MandatoryMarker.class)) {
-					if (!marker.isDisabled()) {
-						return true;
+				if (markableRidget.isEnabled()) {
+					for (final MandatoryMarker marker : markableRidget.getMarkersOfType(MandatoryMarker.class)) {
+						if (!marker.isDisabled()) {
+							return true;
+						}
 					}
 				}
 			}

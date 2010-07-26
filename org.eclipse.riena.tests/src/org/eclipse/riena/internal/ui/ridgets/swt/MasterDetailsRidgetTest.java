@@ -867,6 +867,33 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(applyButton.isEnabled());
 	}
 
+	/**
+	 * As per bug 320962.
+	 */
+	public void testApplyRequiresNoErrorsIgnoresDisabledRidget() {
+		bindToModel(true);
+
+		final IMasterDetailsRidget ridget = getRidget();
+		final MDBean first = input.get(0);
+		ridget.setSelection(first);
+		ridget.setApplyRequiresNoErrors(true);
+
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		txtColumn1.setText("abc");
+
+		final Control applyButton = getWidget().getButtonApply();
+
+		assertTrue(applyButton.isEnabled());
+
+		txtColumn1.setErrorMarked(true);
+
+		assertFalse(applyButton.isEnabled());
+
+		txtColumn1.setEnabled(false);
+
+		assertTrue(applyButton.isEnabled());
+	}
+
 	public void testApplyRequiresNoMandatories() {
 		bindToModel(true);
 
@@ -904,6 +931,33 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(txtColumn1.isMandatory());
 		assertFalse(marker.isDisabled());
 		assertFalse(ridget.isApplyRequiresNoMandatories());
+		assertTrue(applyButton.isEnabled());
+	}
+
+	/**
+	 * As per bug 320962.
+	 */
+	public void testApplyRequiresNoMandatoriesIgnoresDisabledRidget() {
+		bindToModel(true);
+
+		final IMasterDetailsRidget ridget = getRidget();
+		final MDBean first = input.get(0);
+		ridget.setSelection(first);
+		ridget.setApplyRequiresNoMandatories(true);
+
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		txtColumn1.setText("");
+
+		final Control applyButton = getWidget().getButtonApply();
+
+		assertTrue(applyButton.isEnabled());
+
+		txtColumn1.setMandatory(true);
+
+		assertFalse(applyButton.isEnabled());
+
+		txtColumn1.setEnabled(false);
+
 		assertTrue(applyButton.isEnabled());
 	}
 
