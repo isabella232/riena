@@ -90,6 +90,15 @@ public class ChoiceComposite extends Composite {
 	}
 
 	/**
+	 * Returns the orientation of this ChoiceComposite.
+	 * 
+	 * @return one of <tt>SWT.VERTICAL</tt> or <tt>SWT.HORIZONTAL</tt>.
+	 */
+	public int getOrientation() {
+		return orientation;
+	}
+
+	/**
 	 * Return the spacing, in pixels, for the right/left and top/bottom edgets
 	 * of the cells within the widget.
 	 * 
@@ -99,15 +108,6 @@ public class ChoiceComposite extends Composite {
 	 */
 	public Point getSpacing() {
 		return new Point(hSpacing, vSpacing);
-	}
-
-	/**
-	 * Returns the orientation of this ChoiceComposite.
-	 * 
-	 * @return one of <tt>SWT.VERTICAL</tt> or <tt>SWT.HORIZONTAL</tt>.
-	 */
-	public int getOrientation() {
-		return orientation;
 	}
 
 	/**
