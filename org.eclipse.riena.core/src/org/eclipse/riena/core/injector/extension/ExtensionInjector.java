@@ -201,8 +201,7 @@ public class ExtensionInjector implements IStoppable {
 		}
 		injectorListeners.clear();
 
-		final Object emptyExtensions = isArray ? Array.newInstance(componentType, 0) : null;
-		update(new Object[] { emptyExtensions });
+		update(emptyBeans());
 	}
 
 	private Method findUpdateMethod() {
@@ -327,23 +326,28 @@ public class ExtensionInjector implements IStoppable {
 						+ " constraints."); //$NON-NLS-1$
 			}
 			if (isArray) {
-				update(new Object[] { beans });
+				update(beans);
 			} else {
-				update(new Object[] { beans.length > 0 ? beans[0] : null });
+				update(beans.length > 0 ? beans[0] : null);
 			}
 		} catch (final InjectionFailure e) {
-			if (onStart) {
-				throw e;
-			}
-			update(new Object[] { null });
+			update(emptyBeans());
+			LOGGER.log(LogService.LOG_ERROR,
+					"Failure injecting extension point " + extensionDesc.getExtensionPointId() + " into bean " //$NON-NLS-1$ //$NON-NLS-2$
+							+ targetClass + " using method " + updateMethod + "."); //$NON-NLS-1$ //$NON-NLS-2$
+			throw e;
 		}
 	}
 
-	private void update(final Object[] params) {
+	private Object emptyBeans() {
+		return isArray ? Array.newInstance(componentType, 0) : null;
+	}
+
+	private void update(final Object beans) {
 		try {
 			final Object target = targetRef.get();
 			if (target != null) {
-				updateMethod.invoke(target, params);
+				updateMethod.invoke(target, new Object[] { beans });
 			}
 		} catch (final IllegalArgumentException e) {
 			throw new InjectionFailure("Calling 'bind' method " + updateMethod + " failed.", e); //$NON-NLS-1$ //$NON-NLS-2$
