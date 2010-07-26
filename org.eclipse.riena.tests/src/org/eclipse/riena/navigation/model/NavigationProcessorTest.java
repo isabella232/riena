@@ -51,7 +51,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 	private ISubModuleNode subModule1;
 	private ISubModuleNode subModule2;
 	private ISubModuleNode subModule3;
-	private ISubModuleNode subModule4;
+	private TestSubModuleNode subModule4;
 
 	private ModuleGroupNode moduleGroup2;
 	private ModuleNode module2;
@@ -84,7 +84,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		module.addChild(subModule2);
 		subModule3 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule3"));
 		module.addChild(subModule3);
-		subModule4 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule4"));
+		subModule4 = new TestSubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule4"));
 		module2.addChild(subModule4);
 	}
 
@@ -92,6 +92,12 @@ public class NavigationProcessorTest extends RienaTestCase {
 	protected void tearDown() throws Exception {
 		applicationNode = null;
 		super.tearDown();
+	}
+
+	public void testAllowDispose() {
+		assertTrue(applicationNode.dispose());
+		subModule4.setAllowsDispose(true);
+		assertFalse(applicationNode.dispose());
 	}
 
 	public void testNavigateToRidget() throws Exception {

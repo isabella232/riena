@@ -87,12 +87,11 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 	 */
 	@Override
 	public boolean preShutdown() {
-		final boolean result = super.preShutdown();
-		if (result) {
-			controller.getNavigationNode().dispose();
+		if (super.preShutdown() && controller.getNavigationNode().dispose()) {
+			SwtUISynchronizer.setWorkbenchShutdown(true);
+			return true;
 		}
-		SwtUISynchronizer.setWorkbenchShutdown(true);
-		return result;
+		return false;
 	}
 
 	// helping methods

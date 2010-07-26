@@ -65,9 +65,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationProcessor.class);
 	private List<ISubModuleNode> collNodes;
 
-	/**
-	 * @see org.eclipse.riena.navigation.INavigationProcessor#activate(org.eclipse.riena.navigation.INavigationNode)
-	 */
 	public void activate(final INavigationNode<?> toActivate) {
 		if (toActivate != null) {
 			final IModuleNode moduleNode = toActivate.getParentOfType(IModuleNode.class);
@@ -207,8 +204,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
 	 * @since 2.0
 	 */
 	public void prepare(final INavigationNode<?> toPrepare) {
@@ -249,9 +244,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationProcessor#dispose(org.eclipse.riena.navigation.INavigationNode)
+	 * @since 2.1
 	 */
-	public void dispose(final INavigationNode<?> toDispose) {
+	public boolean dispose(final INavigationNode<?> toDispose) {
 		// 1. check which nodes are active from the node toDispose and all its
 		// children must be deactivated
 		// 2. find nodes to activate automatically
@@ -266,6 +261,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		// if there was no sub module active in the module,
 		// than no other module has to be activated
 		final INavigationNode<?> nodeToDispose = getNodeToDispose(toDispose);
+		boolean disposedSuccessfully = false;
 		if (nodeToDispose != null && !nodeToDispose.isDisposed()) {
 			unregisterJumpSource(nodeToDispose);
 			final List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToDispose);
@@ -277,12 +273,14 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 						deactivate(navigationContext);
 						dispose(navigationContext);
 						activate(navigationContext);
+						disposedSuccessfully = true;
 					}
 				}
 			}
 			cleanupHistory(nodeToDispose);
 			cleanupJumpTargetListeners(nodeToDispose);
 		}
+		return disposedSuccessfully;
 	}
 
 	public void addMarker(final INavigationNode<?> node, final IMarker marker) {
@@ -350,8 +348,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
 	 * @since 2.0
 	 */
 	public INavigationNode<?> create(final INavigationNode<?> sourceNode, final NavigationNodeId targetId) {
@@ -359,8 +355,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
 	 * @since 2.0
 	 */
 	public INavigationNode<?> create(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
@@ -369,8 +363,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
 	 * @since 2.0
 	 */
 	public void move(final INavigationNode<?> sourceNode, final NavigationNodeId targetId) {
@@ -399,8 +391,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
 	 * @since 2.0
 	 */
 	public INavigationNode<?> navigate(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
@@ -510,8 +500,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * @see INavigationProcessor#jump(INavigationNode, NavigationNodeId,
-	 *      NavigationArgument)
 	 * @since 2.0
 	 */
 	public void jump(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
@@ -520,7 +508,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * @see INavigationProcessor#jumpBack(INavigationNode, NavigationNodeId)
 	 * @since 2.0
 	 */
 	public void jumpBack(final INavigationNode<?> sourceNode) {
@@ -552,7 +539,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * @see INavigationProcessor#isJumpTarget(INavigationNode)
 	 * @since 2.0
 	 */
 	public boolean isJumpTarget(final INavigationNode<?> node) {
@@ -568,8 +554,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * @see INavigationProcessor#addJumpTargetListener(INavigationNode,
-	 *      IJumpTargetListener)
 	 * @since 2.0
 	 */
 	public void addJumpTargetListener(final INavigationNode<?> node, final IJumpTargetListener listener) {
@@ -582,8 +566,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * @see INavigationProcessor#removeJumpTargetListener(INavigationNode,
-	 *      IJumpTargetListener)
 	 * @since 2.0
 	 */
 	public void removeJumpTargetListener(final INavigationNode<?> node, final IJumpTargetListener listener) {
@@ -634,13 +616,12 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	/**
-	 * 
-	 * @see org.eclipse.riena.navigation.INavigationProcessor#navigate(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.NavigationNodeId,
-	 *      org.eclipse.riena.navigation.NavigationArgument)
-	 */
-
+	//	/**
+	//	 * 
+	//	 * @see org.eclipse.riena.navigation.INavigationProcessor#navigate(org.eclipse.riena.navigation.INavigationNode,
+	//	 *      org.eclipse.riena.navigation.NavigationNodeId,
+	//	 *      org.eclipse.riena.navigation.NavigationArgument)
+	//	 */
 	// TODO see https://bugs.eclipse.org/bugs/show_bug.cgi?id=261832
 	//	private void navigateAsync(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
 	//
@@ -709,6 +690,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	//		p.setTitle("sample uiProcess title"); //$NON-NLS-1$
 	//		p.start();
 	//	}
+
 	private INavigationNode<?> provideNode(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
 			final NavigationArgument argument) {
 
@@ -725,7 +707,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	/**
 	 * Ascertain the correct node to dispose. If e.g. the first module in a
-	 * Group is disposed, than the whole group has to be disposed
+	 * Group is disposed, then the whole group has to be disposed
 	 * 
 	 * @param toDispose
 	 * @return the correct node to dispose
@@ -1101,23 +1083,14 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			}
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public List<INavigationNode<?>> getToActivate() {
 			return toActivate;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public List<INavigationNode<?>> getToDeactivate() {
 			return toDeactivate;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public List<INavigationNode<?>> getToPrepare() {
 			return toPrepare;
 		}
@@ -1331,11 +1304,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		return listReverse;
 	}
 
-	/**
-	 * Navigates one step back in the navigation history
-	 * 
-	 * @see org.eclipse.riena.navigation.INavigationNode#navigateHistoryBack()
-	 */
 	public void historyBack() {
 		if (getHistoryBackSize() > 0) {
 			final INavigationNode<?> current = histBack.pop();// skip self
@@ -1366,11 +1334,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	/**
-	 * Navigates one step forward in the navigation history
-	 * 
-	 * @see org.eclipse.riena.navigation.INavigationNode#navigateHistoryBack()
-	 */
 	public void historyForward() {
 		if (getHistoryForwardSize() > 0) {
 			final INavigationNode<?> current = histForward.pop();
@@ -1454,13 +1417,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		navigate(targetNode, sourceNode.getNodeId(), null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.navigation.INavigationHistoryListernable#
-	 * addNavigationHistoryListener
-	 * (org.eclipse.riena.navigation.INavigationHistoryListener)
-	 */
 	public synchronized void addNavigationHistoryListener(final INavigationHistoryListener listener) {
 		if (!navigationListener.contains(listener)) {
 			navigationListener.add(listener);
@@ -1472,13 +1428,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.navigation.INavigationHistoryListernable#
-	 * removeNavigationHistoryListener
-	 * (org.eclipse.riena.navigation.INavigationHistoryListener)
-	 */
 	public synchronized void removeNavigationHistoryListener(final INavigationHistoryListener listener) {
 		navigationListener.remove(listener);
 	}

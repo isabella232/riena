@@ -379,6 +379,13 @@
             name="org.eclipse.riena.example.client.views.AllowActivateSubModuleView"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.AllowsDisposeSubModuleView"
+            id="org.eclipse.riena.example.client.allowsDisposeSubModuleView"
+            name="allowsDispose"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -869,8 +876,8 @@
             parentNodeId="org.eclipse.riena.example.navigation.subapplication"
             startOrder="2">
          <moduleGroup
-               name="Before Activate"
-               nodeId="org.eclipse.riena.example.beforeactivate.mg">
+               name="Activate/Deactivate"
+               nodeId="org.eclipse.riena.example.activatedeactivate.mg">
             <module
                   closable="true"
                   name="Before Activate"
@@ -892,6 +899,21 @@
                      selectable="true"
                      sharedView="false"
                      viewId="org.eclipse.riena.example.client.views.AllowActivateSubModuleView">
+               </subModule>
+            </module>
+            <module
+                  closable="true"
+                  name="Allows Dispose"
+                  nodeId="org.eclipse.riena.example.allowsdispose.module">
+               <subModule
+                     controller="AllowsDisposeSubModuleController"
+                     expanded="false"
+                     name="Allows Dispose"
+                     nodeId="org.eclipse.riena.example.client.subModule.allowsDispose"
+                     selectable="true"
+                     sharedView="false"
+                     viewId="org.eclipse.riena.example.client.allowsDisposeSubModuleView"
+                     visible="true">
                </subModule>
             </module>
          </moduleGroup>

@@ -20,8 +20,12 @@ public interface IDisposable {
 
 	/**
 	 * Disposes this object, i.e. free any resources.
+	 * 
+	 * @return <code>true</code> if the disposing was successful,
+	 *         <code>false</code> otherwise
+	 * @since 2.1
 	 */
-	void dispose();
+	boolean dispose();
 
 	/**
 	 * Check whether this object has already disposed or not.

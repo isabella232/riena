@@ -1001,10 +1001,10 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNode#dispose()
+	 * @since 2.1
 	 */
-	public void dispose() {
-		getNavigationProcessor().dispose(this);
+	public boolean dispose() {
+		return getNavigationProcessor().dispose(this);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1424,7 +1424,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private void notifyNodeIdChange(final NavigationNodeId newId) {
 		for (final L next : getListeners()) {
 			next.nodeIdChange(this, newId);

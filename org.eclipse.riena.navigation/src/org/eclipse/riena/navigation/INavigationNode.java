@@ -61,8 +61,12 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * closing the navigation processor deactivates all affected nodes. Than a
 	 * dispose change is fired, and at the end the node itself is removed from
 	 * the tree.
+	 * 
+	 * @return <code>true</code> if the NavigationNode was really disposed,
+	 *         <code>false</code> if the NavigationNode itself or one of its
+	 *         children could not be disposed
 	 */
-	void dispose();
+	boolean dispose();
 
 	/**
 	 * Call this method to prepare this node. A prepared node is created but not
