@@ -142,4 +142,124 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		assertTrue(child1.getEnabled());
 	}
 
+	/**
+	 * As per Bug 317568.
+	 */
+	public void testSetMarginsVerticalOrientation() {
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		assertEquals(SWT.VERTICAL, control.getOrientation());
+
+		assertEquals(0, control.getMargins().x);
+		assertEquals(0, control.getMargins().y);
+		assertEquals(0, ((FillLayout) control.getLayout()).marginHeight);
+		assertEquals(0, ((FillLayout) control.getLayout()).marginWidth);
+
+		control.setMargins(10, 20);
+
+		assertEquals(10, control.getMargins().x);
+		assertEquals(20, control.getMargins().y);
+		assertEquals(10, ((FillLayout) control.getLayout()).marginHeight);
+		assertEquals(20, ((FillLayout) control.getLayout()).marginWidth);
+	}
+
+	/**
+	 * As per Bug 317568.
+	 */
+	public void testSetMarginsHorizontalOrientation() {
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		control.setOrientation(SWT.HORIZONTAL);
+		assertEquals(SWT.HORIZONTAL, control.getOrientation());
+
+		assertEquals(0, control.getMargins().x);
+		assertEquals(0, control.getMargins().y);
+		assertEquals(0, ((RowLayout) control.getLayout()).marginHeight);
+		assertEquals(0, ((RowLayout) control.getLayout()).marginWidth);
+
+		control.setMargins(10, 20);
+
+		assertEquals(10, control.getMargins().x);
+		assertEquals(20, control.getMargins().y);
+		assertEquals(10, ((RowLayout) control.getLayout()).marginHeight);
+		assertEquals(20, ((RowLayout) control.getLayout()).marginWidth);
+	}
+
+	/**
+	 * As per Bug 317568.
+	 */
+	public void testSetMarginsNegativeValue() {
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+
+		try {
+			control.setMargins(-5, 10);
+			fail();
+		} catch (final RuntimeException rex) {
+			ok();
+		}
+
+		try {
+			control.setMargins(10, -5);
+			fail();
+		} catch (final RuntimeException rex) {
+			ok();
+		}
+	}
+
+	/**
+	 * As per Bug 317568.
+	 */
+	public void testSetSpacingVerticalOrientation() {
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		assertEquals(SWT.VERTICAL, control.getOrientation());
+
+		assertEquals(3, control.getSpacing().x);
+		assertEquals(0, control.getSpacing().y);
+		assertEquals(0, ((FillLayout) control.getLayout()).spacing);
+
+		control.setSpacing(0, 10);
+
+		assertEquals(0, control.getSpacing().x);
+		assertEquals(10, control.getSpacing().y);
+		assertEquals(10, ((FillLayout) control.getLayout()).spacing);
+	}
+
+	/**
+	 * As per Bug 317568.
+	 */
+	public void testSetSpacingHorizontalOrientation() {
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		control.setOrientation(SWT.HORIZONTAL);
+		assertEquals(SWT.HORIZONTAL, control.getOrientation());
+
+		assertEquals(3, control.getSpacing().x);
+		assertEquals(0, control.getSpacing().y);
+		assertEquals(3, ((RowLayout) control.getLayout()).spacing);
+
+		control.setSpacing(10, 0);
+
+		assertEquals(10, control.getSpacing().x);
+		assertEquals(0, control.getSpacing().y);
+		assertEquals(10, ((RowLayout) control.getLayout()).spacing);
+	}
+
+	/**
+	 * As per Bug 317568.
+	 */
+	public void testSetSpacingNegativeValue() {
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+
+		try {
+			control.setSpacing(-5, 10);
+			fail();
+		} catch (final RuntimeException rex) {
+			ok();
+		}
+
+		try {
+			control.setSpacing(10, -5);
+			fail();
+		} catch (final RuntimeException rex) {
+			ok();
+		}
+	}
+
 }
