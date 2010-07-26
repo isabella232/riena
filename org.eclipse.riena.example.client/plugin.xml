@@ -906,7 +906,7 @@
                   name="Allows Dispose"
                   nodeId="org.eclipse.riena.example.allowsdispose.module">
                <subModule
-                     controller="AllowsDisposeSubModuleController"
+                     controller="org.eclipse.riena.example.client.controllers.AllowsDisposeSubModuleController"
                      expanded="false"
                      name="Allows Dispose"
                      nodeId="org.eclipse.riena.example.client.subModule.allowsDispose"
