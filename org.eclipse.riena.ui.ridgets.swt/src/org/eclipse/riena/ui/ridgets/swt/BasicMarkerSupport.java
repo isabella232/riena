@@ -25,6 +25,7 @@ import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Helper class for Ridgets to delegate their marker issues to that just handles
@@ -54,7 +55,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		super.init(ridget, propertyChangeSupport);
 
 		final Control control = getUIControl();
-		if ((control != null) && (!control.isDisposed())) {
+		if (!SwtUtilities.isDisposed(control)) {
 			control.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(final DisposeEvent e) {
 					final Control control = getUIControl();
