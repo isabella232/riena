@@ -55,12 +55,8 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 * @see INavigationNode#allowsDeactivate(INavigationContext)
 	 * @param toDispose
 	 *            The node to dispose.
-	 * @return <code>true</code> if the NavigationNode was really disposed,
-	 *         <code>false</code> if the NavigationNode itself or one of its
-	 *         children could not be disposed
-	 * @since 2.1
 	 */
-	boolean dispose(INavigationNode<?> toDispose);
+	void dispose(INavigationNode<?> toDispose);
 
 	/**
 	 * Creates the specified navigation node and adds it to the application

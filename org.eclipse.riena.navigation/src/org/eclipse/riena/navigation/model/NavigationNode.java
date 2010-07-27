@@ -1003,8 +1003,8 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	/**
 	 * @since 2.1
 	 */
-	public boolean dispose() {
-		return getNavigationProcessor().dispose(this);
+	public void dispose() {
+		getNavigationProcessor().dispose(this);
 	}
 
 	@SuppressWarnings("unchecked")

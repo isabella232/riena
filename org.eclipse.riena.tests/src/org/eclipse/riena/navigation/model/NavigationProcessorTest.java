@@ -97,16 +97,6 @@ public class NavigationProcessorTest extends RienaTestCase {
 		super.tearDown();
 	}
 
-	public void testAllowDispose() {
-		assertTrue(applicationNode.dispose());
-		initializeNavigationStructure();
-		subModule4.setAllowsDispose(false);
-		assertFalse(applicationNode.dispose());
-		subModule4.setAllowsDispose(true);
-		assertTrue(applicationNode.dispose());
-		assertFalse(applicationNode.dispose());
-	}
-
 	public void testNavigateToRidget() throws Exception {
 		// create a IRidgetMock that returns false on hasFocus
 		final IRidget ridgetStubWithoutFocus = EasyMock.createStrictMock(IRidget.class);

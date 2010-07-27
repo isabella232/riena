@@ -246,7 +246,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	/**
 	 * @since 2.1
 	 */
-	public boolean dispose(final INavigationNode<?> toDispose) {
+	public void dispose(final INavigationNode<?> toDispose) {
 		// 1. check which nodes are active from the node toDispose and all its
 		// children must be deactivated
 		// 2. find nodes to activate automatically
@@ -261,7 +261,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		// if there was no sub module active in the module,
 		// than no other module has to be activated
 		final INavigationNode<?> nodeToDispose = getNodeToDispose(toDispose);
-		boolean disposedSuccessfully = false;
 		if (nodeToDispose != null && !nodeToDispose.isDisposed()) {
 			unregisterJumpSource(nodeToDispose);
 			final List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToDispose);
@@ -273,14 +272,12 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 						deactivate(navigationContext);
 						dispose(navigationContext);
 						activate(navigationContext);
-						disposedSuccessfully = true;
 					}
 				}
 			}
 			cleanupHistory(nodeToDispose);
 			cleanupJumpTargetListeners(nodeToDispose);
 		}
-		return disposedSuccessfully;
 	}
 
 	public void addMarker(final INavigationNode<?> node, final IMarker marker) {
