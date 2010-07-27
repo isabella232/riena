@@ -285,7 +285,7 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * @param visibilityAccessor
 	 *            a String specifying an accessor for obtaining a boolean
 	 *            visible value (example "visible" specifies "isVisible()" or
-	 *            "getVisible()"). Nodes that are not visible, will not be shown
+	 *            "isEnabled()"). Nodes that are not visible, will not be shown
 	 *            in the tree. The visibilityAccessor can be null; in that case
 	 *            all tree nodes will be shown.
 	 * @param imageAccessor
@@ -305,17 +305,11 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 *            openNodeImageAccessor can be null; in that case the default
 	 *            icon is used for all nodes. Note: nodes will only get a custom
 	 *            icon if an imageAccessor is supplied as well (see above).
-	 * @param expandedAccessor
-	 *            a String specifying an accessor for obtaining a boolean
-	 *            expanded value (example "expanded" specifies "isExpanded()" or
-	 *            "setExpanded()"). Nodes that are not expanded, will not be
-	 *            expanded in the tree. The expandedAccessor can be null; in
-	 *            that case no tree nodes except a root node will be expanded.
-	 * @since 2.0
+	 * @since 1.2
 	 */
 	void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String valueAccessor, String enablementAccessor, String visibilityAccessor,
-			String imageAccessor, String openNodeImageAccessor, String expandedAccessor);
+			String imageAccessor, String openNodeImageAccessor);
 
 	/**
 	 * Creates a binding between the Tree Ridget and the specified treeRoots.
@@ -374,7 +368,7 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 * @param visibilityAccessor
 	 *            a String specifying an accessor for obtaining a boolean
 	 *            visible value (example "visible" specifies "isVisible()" or
-	 *            "isEnabled()"). Nodes that are not visible, will not be shown
+	 *            "getVisible()"). Nodes that are not visible, will not be shown
 	 *            in the tree. The visibilityAccessor can be null; in that case
 	 *            all tree nodes will be shown.
 	 * @param imageAccessor
@@ -394,11 +388,17 @@ public interface ITreeRidget extends IRidget, ISelectableRidget {
 	 *            openNodeImageAccessor can be null; in that case the default
 	 *            icon is used for all nodes. Note: nodes will only get a custom
 	 *            icon if an imageAccessor is supplied as well (see above).
-	 * @since 1.2
+	 * @param expandedAccessor
+	 *            a String specifying an accessor for obtaining a boolean
+	 *            expanded value (example "expanded" specifies "isExpanded()" or
+	 *            "setExpanded()"). Nodes that are not expanded, will not be
+	 *            expanded in the tree. The expandedAccessor can be null; in
+	 *            that case no tree nodes except a root node will be expanded.
+	 * @since 2.0
 	 */
 	void bindToModel(Object[] treeRoots, Class<? extends Object> treeElementClass, String childrenAccessor,
 			String parentAccessor, String valueAccessor, String enablementAccessor, String visibilityAccessor,
-			String imageAccessor, String openNodeImageAccessor);
+			String imageAccessor, String openNodeImageAccessor, String expandedAccessor);
 
 	/**
 	 * Collapses a node if it is part of the data-model currently bound to the
