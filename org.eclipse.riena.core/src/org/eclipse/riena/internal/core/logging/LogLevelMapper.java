@@ -13,8 +13,7 @@ package org.eclipse.riena.internal.core.logging;
 import org.osgi.service.log.LogService;
 
 /**
- * Map {@code LogService} log level ints to a string representation and vice
- * versa.
+ * Map {@code LogService} log level into a string representation and vice versa.
  */
 public final class LogLevelMapper {
 
