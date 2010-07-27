@@ -58,8 +58,11 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	@Override
 	protected void setUp() throws Exception {
-
 		super.setUp();
+		initializeNavigationStructure();
+	}
+
+	private void initializeNavigationStructure() {
 		applicationNode = new ApplicationNode(new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.application"));
 		navigationProcessor = new NavigationProcessor();
@@ -96,7 +99,11 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	public void testAllowDispose() {
 		assertTrue(applicationNode.dispose());
+		initializeNavigationStructure();
+		subModule4.setAllowsDispose(false);
+		assertFalse(applicationNode.dispose());
 		subModule4.setAllowsDispose(true);
+		assertTrue(applicationNode.dispose());
 		assertFalse(applicationNode.dispose());
 	}
 
