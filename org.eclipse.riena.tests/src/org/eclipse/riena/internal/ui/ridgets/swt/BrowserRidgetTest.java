@@ -242,9 +242,10 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		// browser may add line breaks - just check if 'Riena' is in the output
 		while (tries > 3) {
 			try {
-				tries--;
 				assertTrue("control2.text:" + control2.getText(), control2.getText().contains("Riena"));
+				tries = 0;
 			} catch (final AssertionFailedError afe) {
+				tries--;
 				if (tries > 0) {
 					Thread.sleep(500);
 					UITestHelper.readAndDispatch(control2);
