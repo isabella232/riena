@@ -54,11 +54,9 @@ public class ExampleTheme extends RienaDefaultTheme {
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(151, 150, 180));
 
 		lnf.putLnfResource("Text.background", new ColorLnfResource(255, 255, 235)); //$NON-NLS-1$
-
 	}
 
 	private void customizeImages(final ILnfCustomizer lnf) {
-
 		String imagePath = "exampleBackground.png"; //$NON-NLS-1$ 
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(imagePath));
 		imagePath = "exampleRIENA_Logo_RGB.png"; //$NON-NLS-1$ 
@@ -71,11 +69,9 @@ public class ExampleTheme extends RienaDefaultTheme {
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(imagePath));
 		lnf.putLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(imagePath));
 		lnf.putLnfResource(LnfKeyConstants.WORKAREA_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(imagePath));
-
 	}
 
 	private void customizeFonts(final ILnfCustomizer lnf) {
-
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_FONT, new FontLnfResource("Arial", 12, SWT.BOLD)); //$NON-NLS-1$
 
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_FONT, new FontLnfResource("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
@@ -87,11 +83,9 @@ public class ExampleTheme extends RienaDefaultTheme {
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_ITEM_FONT, new FontLnfResource("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
 
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, new FontLnfResource("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
-
 	}
 
 	private void customizeSettings(final ILnfCustomizer lnf) {
-
 		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.TOP);
 		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN, 7);
 		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.CENTER);
@@ -99,6 +93,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 		lnf.putLnfSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.LEFT);
 		lnf.putLnfSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, true);
 
+		lnf.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "defaultMarkerSupport"); //$NON-NLS-1$
 	}
 
 	@Override

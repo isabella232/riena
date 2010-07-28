@@ -35,7 +35,6 @@ public class EclipseTheme extends RienaDefaultTheme {
 	}
 
 	private void customizeColors(final ILnfCustomizer lnf) {
-
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_FOREGROUND, new ColorLnfResource(255, 255, 255));
 
 		lnf.putLnfResource(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FOREGROUND, new ColorLnfResource(64, 0, 64));
@@ -71,11 +70,9 @@ public class EclipseTheme extends RienaDefaultTheme {
 				lnf.getLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR));
 
 		lnf.putLnfResource("Label.foreground", new ColorLnfResource(112, 54, 190)); //$NON-NLS-1$
-
 	}
 
 	private void customizeImages(final ILnfCustomizer lnf) {
-
 		String imagePath = "Tabback.png"; //$NON-NLS-1$ 
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(imagePath));
 		imagePath = "EclipseLogo.png"; //$NON-NLS-1$ 
@@ -86,11 +83,9 @@ public class EclipseTheme extends RienaDefaultTheme {
 		imagePath = "folder_favorite.png"; //$NON-NLS-1$ 
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(imagePath));
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(imagePath));
-
 	}
 
 	private void customizeFonts(final ILnfCustomizer lnf) {
-
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_FONT, new FontLnfResource("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
 
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_FONT, new FontLnfResource("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
@@ -102,18 +97,10 @@ public class EclipseTheme extends RienaDefaultTheme {
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_ITEM_FONT, new FontLnfResource("Arial", 11, SWT.NORMAL)); //$NON-NLS-1$
 
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_FONT, new FontLnfResource("Arial", 11, SWT.NORMAL)); //$NON-NLS-1$
-
 	}
 
 	private void customSettings(final ILnfCustomizer lnf) {
-
-		//		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_POSITION, SWT.TOP);
-		//		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_VERTICAL_LOGO_MARGIN, 7);
-		//		lnf.putLnfSetting(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION, SWT.CENTER);
-
-		//		lnf.putLnfSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HORIZONTAL_TAB_POSITION, SWT.CENTER);
-		//		lnf.putLnfSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_SHOW_ICON, true);
-
+		lnf.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "defaultMarkerSupport"); //$NON-NLS-1$
 	}
 
 	@Override

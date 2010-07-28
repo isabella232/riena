@@ -454,8 +454,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		// lnf.putLnfSetting(LnfKeyConstants.DISABLED_MARKER_COMPLEX_ALPHA, 190);
 		lnf.putLnfSetting(LnfKeyConstants.DISABLED_MARKER_HIDE_CONTENT, true);
 
-		lnf.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "defaultMarkerSupport"); //$NON-NLS-1$
-		// lnf.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "borderMarkerSupport"); //$NON-NLS-1$
+		// lnf.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "defaultMarkerSupport"); //$NON-NLS-1$
+		lnf.putLnfSetting(LnfKeyConstants.MARKER_SUPPORT_ID, "borderMarkerSupport"); //$NON-NLS-1$
+		lnf.putLnfSetting(LnfKeyConstants.ERROR_MARKER_BORDER_WIDTH, 2);
 
 		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_PAUSE_ANIMATION_TIME, 1000);
 		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_SHOW_AND_HIDE_ANIMATION_TIME, 1500);
