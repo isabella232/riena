@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import junit.framework.AssertionFailedError;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
@@ -219,7 +221,7 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		verifyPropertyChangeEvents();
 	}
 
-	public void testApplyTextOnRebind() {
+	public void testApplyTextOnRebind() throws Exception {
 		final IBrowserRidget ridget = getRidget();
 		final Browser control1 = getWidget();
 
@@ -234,7 +236,22 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setUIControl(control2);
 		UITestHelper.readAndDispatch(control2);
 
+		// TODO [ev] refactor -- experimental code
+
+		int tries = 3;
 		// browser may add line breaks - just check if 'Riena' is in the output
-		assertTrue("control2.text:" + control2.getText(), control2.getText().contains("Riena"));
+		while (tries > 3) {
+			try {
+				tries--;
+				assertTrue("control2.text:" + control2.getText(), control2.getText().contains("Riena"));
+			} catch (final AssertionFailedError afe) {
+				if (tries > 0) {
+					Thread.sleep(500);
+					UITestHelper.readAndDispatch(control2);
+				} else {
+					throw afe;
+				}
+			}
+		}
 	}
 }
