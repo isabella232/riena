@@ -257,7 +257,7 @@ public class RienaDefaultLnfTest extends RienaTestCase {
 
 		AbstractMarkerSupport markerSupport = lnf.getMarkerSupport(null);
 		assertNotNull(markerSupport);
-		assertTrue(markerSupport.getClass() == MarkerSupport.class);
+		assertTrue(markerSupport.getClass() == BorderMarkerSupport.class);
 
 		lnf.setTheme(new DummyTheme());
 		lnf.initialize();
