@@ -45,8 +45,8 @@ public final class GrabCornerListenerWithTracker extends MouseAdapter implements
 	public GrabCornerListenerWithTracker(final GrabCorner control) {
 		control.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(final DisposeEvent e) {
-				SwtUtilities.disposeResource(resizeCursor);
-				SwtUtilities.disposeResource(defaultCursor);
+				SwtUtilities.dispose(resizeCursor);
+				SwtUtilities.dispose(defaultCursor);
 			}
 		});
 		control.addMouseListener(this);
@@ -63,7 +63,7 @@ public final class GrabCornerListenerWithTracker extends MouseAdapter implements
 				handleResize(tracker);
 			}
 		} finally {
-			SwtUtilities.disposeWidget(tracker);
+			SwtUtilities.dispose(tracker);
 		}
 	}
 

@@ -1594,7 +1594,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		text.setData("isSubModuleViewComposite", Boolean.TRUE);
 		ret = ReflectionUtils.invokeHidden(getRidget(), "isSubModuleViewComposite", text);
 		assertFalse(ret);
-		SwtUtilities.disposeWidget(text);
+		SwtUtilities.dispose(text);
 
 		final Composite comp = new Composite(getShell(), SWT.NONE);
 
@@ -1604,7 +1604,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		comp.setData("isSubModuleViewComposite", Boolean.TRUE);
 		ret = ReflectionUtils.invokeHidden(getRidget(), "isSubModuleViewComposite", comp);
 		assertTrue(ret);
-		SwtUtilities.disposeWidget(comp);
+		SwtUtilities.dispose(comp);
 	}
 
 	/**
@@ -1614,7 +1614,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		Text text = new Text(getShell(), SWT.BORDER);
 		boolean ret = ReflectionUtils.invokeHidden(getRidget(), "isChildOfSubModuleView", text);
 		assertFalse(ret);
-		SwtUtilities.disposeWidget(text);
+		SwtUtilities.dispose(text);
 
 		final Composite comp = new Composite(getShell(), SWT.NONE);
 		text = new Text(comp, SWT.BORDER);
@@ -1624,8 +1624,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		comp.setData("isSubModuleViewComposite", Boolean.TRUE);
 		ret = ReflectionUtils.invokeHidden(getRidget(), "isChildOfSubModuleView", text);
 		assertTrue(ret);
-		SwtUtilities.disposeWidget(text);
-		SwtUtilities.disposeWidget(comp);
+		SwtUtilities.dispose(text);
+		SwtUtilities.dispose(comp);
 	}
 
 	/**
@@ -1638,7 +1638,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		getShell().setVisible(false);
 		ret = ReflectionUtils.invokeHidden(getRidget(), "isControlVisible", text);
 		assertFalse(ret);
-		SwtUtilities.disposeWidget(text);
+		SwtUtilities.dispose(text);
 		getShell().setVisible(true);
 
 		final Composite compTop = new Composite(getShell(), SWT.NONE);
@@ -1665,9 +1665,9 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertFalse(ret);
 
 		getShell().setVisible(true);
-		SwtUtilities.disposeWidget(text);
-		SwtUtilities.disposeWidget(compChild);
-		SwtUtilities.disposeWidget(compTop);
+		SwtUtilities.dispose(text);
+		SwtUtilities.dispose(compChild);
+		SwtUtilities.dispose(compTop);
 	}
 
 	/**

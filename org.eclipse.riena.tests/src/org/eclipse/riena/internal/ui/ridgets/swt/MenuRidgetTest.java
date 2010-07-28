@@ -39,7 +39,7 @@ public class MenuRidgetTest extends RienaTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 
 		super.tearDown();
 	}

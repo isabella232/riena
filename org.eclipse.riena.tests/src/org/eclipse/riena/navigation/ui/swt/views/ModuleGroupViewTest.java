@@ -56,8 +56,8 @@ public class ModuleGroupViewTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(view);
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(view);
+		SwtUtilities.dispose(shell);
 		node = null;
 	}
 

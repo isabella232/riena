@@ -43,7 +43,7 @@ public class BasicMarkerSupportTest extends TestCase {
 
 	@Override
 	protected void tearDown() {
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 		display = null;
 	}
 

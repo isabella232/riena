@@ -47,8 +47,8 @@ public class LogoCompositeTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		SwtUtilities.disposeWidget(logoComposite);
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(logoComposite);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**

@@ -86,7 +86,7 @@ public class ModuleViewTest extends RienaTestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		view.dispose();
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 		node = null;
 
 		super.tearDown();

@@ -364,9 +364,9 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#dispose()
 	 */
 	public void dispose() {
-		SwtUtilities.disposeResource(selStartColor);
-		SwtUtilities.disposeResource(selEndColor);
-		SwtUtilities.disposeResource(defaultColor);
+		SwtUtilities.dispose(selStartColor);
+		SwtUtilities.dispose(selEndColor);
+		SwtUtilities.dispose(defaultColor);
 	}
 
 	/**

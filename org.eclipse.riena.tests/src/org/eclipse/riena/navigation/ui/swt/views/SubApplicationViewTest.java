@@ -63,7 +63,7 @@ public class SubApplicationViewTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		view = null;
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**

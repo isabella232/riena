@@ -43,7 +43,7 @@ public class MenuCoolBarCompositeTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**

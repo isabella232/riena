@@ -131,7 +131,7 @@ public class EmbeddedTitleBarRidgetTest extends AbstractSWTRidgetTest {
 			// exception expected
 			assertTrue(e.getCause() instanceof BindingException);
 		}
-		SwtUtilities.disposeWidget(label);
+		SwtUtilities.dispose(label);
 
 	}
 

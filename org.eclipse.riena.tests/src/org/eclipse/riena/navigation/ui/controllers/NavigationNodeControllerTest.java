@@ -79,7 +79,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	protected void tearDown() throws Exception {
 		controller = null;
 		node = null;
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**

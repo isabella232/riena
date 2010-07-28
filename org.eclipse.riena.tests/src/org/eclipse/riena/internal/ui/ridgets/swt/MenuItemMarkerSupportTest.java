@@ -45,7 +45,7 @@ public class MenuItemMarkerSupportTest extends TestCase {
 		markerSupport.updateMarkers();
 		assertFalse(item.isEnabled());
 
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 
 	}
 
@@ -72,7 +72,7 @@ public class MenuItemMarkerSupportTest extends TestCase {
 		ridget.setVisible(true);
 		ReflectionUtils.invokeHidden(markerSupport, "updateVisible", item);
 
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 
 	}
 

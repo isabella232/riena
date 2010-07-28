@@ -66,7 +66,7 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 		super.tearDown();
 		gc.dispose();
 		gc = null;
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 		LnfManager.setLnf(originalLnf);
 	}
 
@@ -217,7 +217,7 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 		ReflectionUtils.invokeHidden(renderer, "paintMarkers", paintGC, markers, item);
 		final byte[] paintBytes = paintImage.getImageData().data;
 		paintGC.dispose();
-		SwtUtilities.disposeResource(paintImage);
+		SwtUtilities.dispose(paintImage);
 
 		return paintBytes;
 	}
@@ -253,8 +253,8 @@ public class SubModuleTreeItemMarkerRendererTest extends RienaTestCase {
 		assertEquals(2 + 5, pos.x);
 		assertEquals(3 + 5, pos.y);
 
-		SwtUtilities.disposeResource(itemImage);
-		SwtUtilities.disposeResource(markerImage);
+		SwtUtilities.dispose(itemImage);
+		SwtUtilities.dispose(markerImage);
 
 	}
 

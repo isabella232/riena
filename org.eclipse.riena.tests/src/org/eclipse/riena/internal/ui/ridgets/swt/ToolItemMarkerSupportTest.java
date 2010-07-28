@@ -38,8 +38,8 @@ public class ToolItemMarkerSupportTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(shell);
-		SwtUtilities.disposeWidget(toolbar);
+		SwtUtilities.dispose(shell);
+		SwtUtilities.dispose(toolbar);
 	}
 
 	/**

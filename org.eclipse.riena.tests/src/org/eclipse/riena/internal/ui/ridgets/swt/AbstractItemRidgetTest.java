@@ -42,8 +42,8 @@ public class AbstractItemRidgetTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		itemRidget = null;
-		SwtUtilities.disposeWidget(shell);
-		SwtUtilities.disposeWidget(toolbar);
+		SwtUtilities.dispose(shell);
+		SwtUtilities.dispose(toolbar);
 	}
 
 	/**

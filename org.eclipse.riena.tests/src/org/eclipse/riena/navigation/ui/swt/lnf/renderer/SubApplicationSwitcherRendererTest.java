@@ -42,7 +42,7 @@ public class SubApplicationSwitcherRendererTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**

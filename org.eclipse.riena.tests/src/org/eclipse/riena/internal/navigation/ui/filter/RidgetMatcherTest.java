@@ -54,7 +54,7 @@ public class RidgetMatcherTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class RidgetMatcherTest extends TestCase {
 		matcher = new RidgetMatcher("*4711");
 		assertTrue(matcher.matches(ridget, node));
 
-		SwtUtilities.disposeWidget(control);
+		SwtUtilities.dispose(control);
 
 	}
 }

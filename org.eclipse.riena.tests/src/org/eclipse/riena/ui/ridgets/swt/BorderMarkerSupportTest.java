@@ -48,7 +48,7 @@ public class BorderMarkerSupportTest extends TestCase {
 
 	@Override
 	protected void tearDown() {
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class BorderMarkerSupportTest extends TestCase {
 			assertNull(deco.getBorderColor());
 
 			support = null;
-			SwtUtilities.disposeWidget(text);
+			SwtUtilities.dispose(text);
 		} finally {
 			LnfManager.setLnf(originalLnf);
 			realm.dispose();

@@ -50,8 +50,8 @@ public class SubApplicationSwitcherWidgetTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(switcher);
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(switcher);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**

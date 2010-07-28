@@ -61,7 +61,7 @@ public class MarkerSupportTest extends RienaTestCase {
 
 	@Override
 	protected void tearDown() {
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 		display = null;
 	}
 
@@ -102,7 +102,7 @@ public class MarkerSupportTest extends RienaTestCase {
 			assertNotNull(deco.getImage());
 
 			support = null;
-			SwtUtilities.disposeWidget(text);
+			SwtUtilities.dispose(text);
 		} finally {
 			LnfManager.setLnf(originalLnf);
 			realm.dispose();

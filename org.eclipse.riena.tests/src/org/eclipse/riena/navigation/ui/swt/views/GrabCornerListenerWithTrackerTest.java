@@ -52,10 +52,10 @@ public class GrabCornerListenerWithTrackerTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 
-		SwtUtilities.disposeWidget(corner);
+		SwtUtilities.dispose(corner);
 		grabCornerListener = null;
-		SwtUtilities.disposeWidget(tracker);
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(tracker);
+		SwtUtilities.dispose(shell);
 
 	}
 

@@ -81,7 +81,7 @@ public class ApplicationViewAdvisorTest extends RienaTestCase {
 		assertFalse(defMinSize.equals(shell.getMinimumSize()));
 		assertNotNull(shell.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
 
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**

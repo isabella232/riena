@@ -56,7 +56,7 @@ public class SubApplicationTabRendererTest extends TestCase {
 		super.tearDown();
 		gc.dispose();
 		gc = null;
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 		lnf.uninitialize();
 		lnf = null;
 		LnfManager.setLnf(originalLnf);

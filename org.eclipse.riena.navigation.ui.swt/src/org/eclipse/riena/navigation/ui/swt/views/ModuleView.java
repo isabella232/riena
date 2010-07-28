@@ -137,9 +137,9 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	public void dispose() {
 		subModuleMarkerCache.clear();
 		unbind();
-		SwtUtilities.disposeWidget(title);
-		SwtUtilities.disposeWidget(getBody());
-		SwtUtilities.disposeWidget(getTree());
+		SwtUtilities.dispose(title);
+		SwtUtilities.dispose(getBody());
+		SwtUtilities.dispose(getTree());
 	}
 
 	/**

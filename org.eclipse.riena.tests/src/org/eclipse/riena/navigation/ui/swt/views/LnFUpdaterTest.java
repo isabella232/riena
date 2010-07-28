@@ -59,7 +59,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 		lnFUpdater = null;
 	}
 
@@ -77,7 +77,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 		assertNotNull(message);
 		assertTrue(message.indexOf(Label.class.getSimpleName()) > 0);
 		assertTrue(message.indexOf(property.getName()) > 0);
-		SwtUtilities.disposeWidget(label);
+		SwtUtilities.dispose(label);
 
 	}
 
@@ -97,7 +97,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 			final Label label = new Label(shell, SWT.NONE);
 			final PropertyDescriptor property = new PropertyDescriptor("foreground", Label.class);
 			Object value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfValue", label, property);
-			SwtUtilities.disposeWidget(label);
+			SwtUtilities.dispose(label);
 
 			assertNotNull(value);
 			assertTrue(value instanceof Color);
@@ -109,7 +109,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 			lnf.setTheme(new MyTheme());
 			final Text text = new Text(shell, SWT.NONE);
 			value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfValue", text, property);
-			SwtUtilities.disposeWidget(text);
+			SwtUtilities.dispose(text);
 
 			assertNull(value);
 		} finally {
@@ -136,7 +136,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 			label.setData(UIControlsFactory.KEY_LNF_STYLE, "section");
 			final PropertyDescriptor property = new PropertyDescriptor("foreground", Label.class);
 			Object value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfStyleValue", label, property);
-			SwtUtilities.disposeWidget(label);
+			SwtUtilities.dispose(label);
 
 			assertNotNull(value);
 			assertTrue(value instanceof Color);
@@ -150,7 +150,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 			label = new Label(shell, SWT.NONE);
 			label.setData(UIControlsFactory.KEY_LNF_STYLE, "dummy");
 			value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfStyleValue", label, property);
-			SwtUtilities.disposeWidget(label);
+			SwtUtilities.dispose(label);
 
 			assertNull(value);
 
@@ -160,7 +160,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 			final Text text = new Text(shell, SWT.NONE);
 			text.setData(UIControlsFactory.KEY_LNF_STYLE, "section");
 			value = ReflectionUtils.invokeHidden(lnFUpdater, "getLnfStyleValue", text, property);
-			SwtUtilities.disposeWidget(label);
+			SwtUtilities.dispose(label);
 
 			assertNotNull(value);
 			assertTrue(value instanceof Color);
@@ -304,7 +304,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 			final Label label = new Label(shell, SWT.NONE);
 			boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "checkLnfKeys", label);
 			lnf.setTheme(oldTheme);
-			SwtUtilities.disposeWidget(label);
+			SwtUtilities.dispose(label);
 
 			assertTrue(ret);
 
@@ -312,7 +312,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 			final Text text = new Text(shell, SWT.NONE);
 			ret = ReflectionUtils.invokeHidden(lnFUpdater, "checkLnfKeys", text);
 			lnf.setTheme(oldTheme);
-			SwtUtilities.disposeWidget(text);
+			SwtUtilities.dispose(text);
 
 			assertFalse(ret);
 		} finally {
