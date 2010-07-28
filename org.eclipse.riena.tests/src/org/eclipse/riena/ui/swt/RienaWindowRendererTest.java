@@ -45,7 +45,7 @@ public class RienaWindowRendererTest extends TestCase {
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		renderer = null;
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 		dialog = null;
 	}
 

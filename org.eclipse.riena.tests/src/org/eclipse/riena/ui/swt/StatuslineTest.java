@@ -47,8 +47,8 @@ public class StatuslineTest extends TestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(shell);
-		SwtUtilities.disposeWidget(statusline);
+		SwtUtilities.dispose(shell);
+		SwtUtilities.dispose(statusline);
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class StatuslineTest extends TestCase {
 		assertSame(label, labelOfList);
 		assertEquals("labelName", labelOfList.getData(SWTBindingPropertyLocator.BINDING_PROPERTY));
 
-		SwtUtilities.disposeWidget(label);
+		SwtUtilities.dispose(label);
 
 	}
 

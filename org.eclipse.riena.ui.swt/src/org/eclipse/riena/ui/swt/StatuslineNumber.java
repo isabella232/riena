@@ -67,7 +67,7 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 
 		super.dispose();
 
-		SwtUtilities.disposeWidget(numberLabel);
+		SwtUtilities.dispose(numberLabel);
 
 	}
 

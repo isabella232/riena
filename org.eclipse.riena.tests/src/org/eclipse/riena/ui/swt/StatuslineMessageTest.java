@@ -43,8 +43,8 @@ public class StatuslineMessageTest extends TestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(shell);
-		SwtUtilities.disposeWidget(statusMessage);
+		SwtUtilities.dispose(shell);
+		SwtUtilities.dispose(statusMessage);
 	}
 
 	/**

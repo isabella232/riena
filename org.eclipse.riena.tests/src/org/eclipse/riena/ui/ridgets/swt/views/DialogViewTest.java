@@ -66,7 +66,7 @@ public class DialogViewTest extends RienaTestCase {
 	protected void tearDown() throws Exception {
 		dialogView.close();
 		shell.close();
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 	}
 
 	private void createDefaultRealm() {

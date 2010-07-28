@@ -42,8 +42,8 @@ public class NumberLabelTest extends TestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(shell);
-		SwtUtilities.disposeWidget(statusline);
+		SwtUtilities.dispose(shell);
+		SwtUtilities.dispose(statusline);
 	}
 
 	/**

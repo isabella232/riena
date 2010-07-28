@@ -64,7 +64,7 @@ public class ImageStoreTest extends RienaTestCase {
 		image = store.getImage("spirit");
 		assertNotNull(image);
 
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 
 	}
 
@@ -103,7 +103,7 @@ public class ImageStoreTest extends RienaTestCase {
 		image = store.getImage("eclipse", ImageFileExtension.JPG);
 		assertNull(image);
 
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 
 	}
 

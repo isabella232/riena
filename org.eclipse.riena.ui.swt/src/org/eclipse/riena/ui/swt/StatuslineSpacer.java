@@ -54,7 +54,7 @@ public class StatuslineSpacer extends AbstractStatuslineComposite {
 
 		super.dispose();
 
-		SwtUtilities.disposeWidget(separator);
+		SwtUtilities.dispose(separator);
 
 	}
 

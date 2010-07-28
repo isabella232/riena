@@ -43,8 +43,8 @@ public class ImageButtonTest extends RienaTestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		SwtUtilities.disposeWidget(button);
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(button);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**
@@ -159,12 +159,12 @@ public class ImageButtonTest extends RienaTestCase {
 		retImage = ReflectionUtils.invokeHidden(button, "getImageToDraw");
 		assertSame(disabledImage, retImage);
 
-		SwtUtilities.disposeResource(image);
-		SwtUtilities.disposeResource(focusedImage);
-		SwtUtilities.disposeResource(hoverFocusedImage);
-		SwtUtilities.disposeResource(hoverImage);
-		SwtUtilities.disposeResource(pressedImage);
-		SwtUtilities.disposeResource(disabledImage);
+		SwtUtilities.dispose(image);
+		SwtUtilities.dispose(focusedImage);
+		SwtUtilities.dispose(hoverFocusedImage);
+		SwtUtilities.dispose(hoverImage);
+		SwtUtilities.dispose(pressedImage);
+		SwtUtilities.dispose(disabledImage);
 
 	}
 
@@ -200,9 +200,9 @@ public class ImageButtonTest extends RienaTestCase {
 		assertTrue(size.y > 1);
 		assertEquals(1, size.x);
 
-		SwtUtilities.disposeResource(image);
-		SwtUtilities.disposeResource(focusedImage);
-		SwtUtilities.disposeResource(miniImage);
+		SwtUtilities.dispose(image);
+		SwtUtilities.dispose(focusedImage);
+		SwtUtilities.dispose(miniImage);
 
 	}
 
@@ -225,8 +225,8 @@ public class ImageButtonTest extends RienaTestCase {
 		retPos = ReflectionUtils.invokeHidden(button, "computeImagePos", event, bigImage);
 		assertEquals(new Point(0, 0), retPos);
 
-		SwtUtilities.disposeResource(image);
-		SwtUtilities.disposeResource(bigImage);
+		SwtUtilities.dispose(image);
+		SwtUtilities.dispose(bigImage);
 
 	}
 

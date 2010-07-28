@@ -41,7 +41,7 @@ public class RienaDialogDelegateTest extends TestCase {
 	protected void tearDown() throws Exception {
 		delegate = null;
 		dlg = null;
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**

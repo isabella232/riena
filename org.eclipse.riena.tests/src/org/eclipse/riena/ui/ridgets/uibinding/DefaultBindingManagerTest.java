@@ -60,7 +60,7 @@ public class DefaultBindingManagerTest extends TestCase {
 		super.tearDown();
 		manager = null;
 		ridgetContainer = null;
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 		realm.dispose();
 		realm = null;
 	}

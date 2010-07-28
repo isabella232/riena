@@ -42,7 +42,7 @@ public class CompletionComboTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 	}
 
 	// testing methods

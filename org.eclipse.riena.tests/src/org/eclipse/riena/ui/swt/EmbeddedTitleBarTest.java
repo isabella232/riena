@@ -48,8 +48,8 @@ public class EmbeddedTitleBarTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		SwtUtilities.disposeWidget(titleBar);
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(titleBar);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**

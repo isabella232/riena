@@ -70,8 +70,8 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	 * @see org.eclipse.riena.navigation.ui.swt.lnf.ILnfRenderer#dispose()
 	 */
 	public void dispose() {
-		SwtUtilities.disposeResource(getImage());
-		SwtUtilities.disposeResource(defaultColor);
+		SwtUtilities.dispose(getImage());
+		SwtUtilities.dispose(defaultColor);
 		control = null;
 	}
 

@@ -44,7 +44,7 @@ public class DatePickerCompositeTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**

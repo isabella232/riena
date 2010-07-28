@@ -49,7 +49,7 @@ public class AbstractTitleBarRendererTest extends RienaTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(shell);
 		gc = null;
 		renderer.dispose();
 		renderer = null;

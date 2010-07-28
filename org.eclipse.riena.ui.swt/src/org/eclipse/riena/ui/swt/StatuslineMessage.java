@@ -60,7 +60,7 @@ public class StatuslineMessage extends AbstractStatuslineComposite {
 
 		super.dispose();
 
-		SwtUtilities.disposeWidget(messageLabel);
+		SwtUtilities.dispose(messageLabel);
 
 	}
 

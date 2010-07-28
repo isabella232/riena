@@ -44,8 +44,8 @@ public final class DialogGrabCornerListenerWithTracker extends MouseAdapter impl
 	public DialogGrabCornerListenerWithTracker(final DialogGrabCorner control) {
 		control.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(final DisposeEvent e) {
-				SwtUtilities.disposeResource(resizeCursor);
-				SwtUtilities.disposeResource(defaultCursor);
+				SwtUtilities.dispose(resizeCursor);
+				SwtUtilities.dispose(defaultCursor);
 			}
 		});
 		control.addMouseListener(this);
@@ -62,7 +62,7 @@ public final class DialogGrabCornerListenerWithTracker extends MouseAdapter impl
 				handleResize(tracker);
 			}
 		} finally {
-			SwtUtilities.disposeWidget(tracker);
+			SwtUtilities.dispose(tracker);
 		}
 	}
 

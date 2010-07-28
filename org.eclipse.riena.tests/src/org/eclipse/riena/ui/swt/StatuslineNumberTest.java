@@ -43,8 +43,8 @@ public class StatuslineNumberTest extends TestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(statusNumber);
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(statusNumber);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**

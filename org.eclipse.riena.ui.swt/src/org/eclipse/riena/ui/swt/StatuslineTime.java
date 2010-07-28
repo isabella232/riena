@@ -76,7 +76,7 @@ public class StatuslineTime extends AbstractStatuslineComposite {
 			timer = null;
 		}
 
-		SwtUtilities.disposeWidget(timeLabel);
+		SwtUtilities.dispose(timeLabel);
 
 	}
 

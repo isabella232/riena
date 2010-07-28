@@ -50,8 +50,8 @@ public class StatuslineTimeTest extends TestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
-		SwtUtilities.disposeWidget(shell);
-		SwtUtilities.disposeWidget(statusTime);
+		SwtUtilities.dispose(shell);
+		SwtUtilities.dispose(statusTime);
 	}
 
 	/**

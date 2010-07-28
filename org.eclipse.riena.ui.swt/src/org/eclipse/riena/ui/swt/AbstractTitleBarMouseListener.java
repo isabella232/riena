@@ -368,8 +368,8 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	}
 
 	public void dispose() {
-		SwtUtilities.disposeResource(handCursor);
-		SwtUtilities.disposeResource(grabCursor);
-		SwtUtilities.disposeResource(defaultCursor);
+		SwtUtilities.dispose(handCursor);
+		SwtUtilities.dispose(grabCursor);
+		SwtUtilities.dispose(defaultCursor);
 	}
 }

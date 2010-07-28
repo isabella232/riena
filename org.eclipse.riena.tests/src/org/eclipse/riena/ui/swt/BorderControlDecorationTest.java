@@ -46,8 +46,8 @@ public class BorderControlDecorationTest extends TestCase {
 
 	@Override
 	protected void tearDown() {
-		SwtUtilities.disposeWidget(text);
-		SwtUtilities.disposeWidget(shell);
+		SwtUtilities.dispose(text);
+		SwtUtilities.dispose(shell);
 	}
 
 	/**
