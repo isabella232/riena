@@ -23,8 +23,18 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 
 /**
- * Label provider that shows checked / unchecked icons, if the attribute in a
- * column is of Boolean type.
+ * Label provider that formats the columns of a {@link TableRidget}.
+ * {@link IColumnFormatter}s can be used to modify the text, image, foreground
+ * color, background color or font of a particular column.
+ * <p>
+ * The appropriate image for a column is computed in the following fashion:
+ * <ul>
+ * <li>if a column has a formatter, use the image from the formatter, if not
+ * null</li>
+ * <li>if the column has a boolean or Boolean value, use the default image for
+ * boolean values (i.e. checked / unchecked box)</li>
+ * <li>otherwise no image is shown</li>
+ * </ul>
  * 
  * @see TableRidget
  */
