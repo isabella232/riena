@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
+import org.eclipse.riena.ui.ridgets.ITreeImageProvider;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
@@ -36,16 +37,50 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
- * Label provider for TreeViewers that provides different images based on the
- * expansion state of a tree element:
+ * Label provider that formats the columns of a {@link TreeRidget} or
+ * {@link TreeTableRidget}. {@link IColumnFormatter}s can be used to modify the
+ * text, image, foreground color, background color or font of a particular
+ * column.
+ * <p>
+ * The appropriate image for a column is computed in the following fashion:
+ * <p>
+ * For the tree image (TreeRidget and column 0 in the TreeTableRidget):
  * <ul>
- * <li>expandable node - collapsed</li>
- * <li>expandable node - expanded</li>
- * <li>leaf (i.e. node with no children)</li>
+ * <li>if the column has a formatter, use the image from the formatter, if not
+ * null</li>
+ * <li>if image accessor properties are specified, use the image returned by the
+ * property, if not null</li>
+ * <li>if image accessor properties for leaves are specified, use the image
+ * returned by the property, if not null</li>
+ * <li>the image returned by the {@link ITreeImageProvider}, if not null</li>
+ * <li>otherwise no image is shown</li>
  * </ul>
  * <p>
- * In addition, nodes corresponding to 'disabled' model values will be colored
- * in a distinct color.
+ * For columns 1-n (TreeTableRidget):
+ * <ul>
+ * <li>if the column has a formatter, use the image from the formatter, if not
+ * null</li>
+ * <li>if the column has a boolean or Boolean value, use the default image for
+ * boolean values (i.e. checked / unchecked box)</li>
+ * <li>otherwise no image is shown</li>
+ * </ul>
+ * <p>
+ * The appropriate foreground color for a column is computed in the following
+ * fashion:
+ * <p>
+ * For column 0 (TreeRidget):
+ * <ul>
+ * <li>if an enablement accessor property is specified and the corresponding
+ * tree node is disabled, use a gray color</li>
+ * <li>otherwise use the widget's foreground color</li>
+ * </ul>
+ * <p>
+ * For columns 0-n (TreeTableRidget):
+ * <ul>
+ * <li>if the column has a formatter, use the foreground color from the
+ * formatter, if not null</li>
+ * <li>otherwise use the widget's foreground</li>
+ * </ul>
  */
 public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider implements IColorProvider {
 
