@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import static org.eclipse.riena.ui.swt.utils.SwtUtilities.*;
+
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
@@ -30,10 +32,8 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, Button.class);
 		if (uiControl != null) {
-			final Button uiButton = (Button) uiControl;
-			final int style = uiButton.getStyle();
-			if ((style & SWT.CHECK) != SWT.CHECK && (style & SWT.TOGGLE) != SWT.TOGGLE
-					&& (style & SWT.RADIO) != SWT.RADIO) {
+			final Button button = (Button) uiControl;
+			if (!(hasStyle(button, SWT.CHECK) || hasStyle(button, SWT.RADIO) || hasStyle(button, SWT.TOGGLE))) {
 				throw new BindingException("Button must be a check box, a radio button or a toggle button"); //$NON-NLS-1$
 			}
 		}

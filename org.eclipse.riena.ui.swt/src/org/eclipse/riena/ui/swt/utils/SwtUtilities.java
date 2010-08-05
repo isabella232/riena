@@ -211,6 +211,15 @@ public final class SwtUtilities {
 	}
 
 	/**
+	 * TODO [ev] docs
+	 * 
+	 * @since 2.1
+	 */
+	public static boolean hasStyle(final Widget widget, final int styleBit) {
+		return widget == null ? false : (widget.getStyle() & styleBit) == styleBit;
+	}
+
+	/**
 	 * Returns {@code true}, if the given widget is disposed or {@code null}.
 	 * 
 	 * @param widget
