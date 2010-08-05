@@ -54,14 +54,14 @@ public interface IRidget {
 	String PROPERTY_SHOWING = "showing"; //$NON-NLS-1$
 
 	/**
-	 * Returns whether the UI-control is visible or invisible.
+	 * Returns whether the ridget is visible or invisible.
 	 * 
-	 * @return Indicates whether the UI-control is visible.
+	 * @return Indicates whether the ridget is visible.
 	 */
 	boolean isVisible();
 
 	/**
-	 * Sets whether the UI-control is visible.
+	 * Sets whether the ridget is visible.
 	 * 
 	 * @param visible
 	 *            The new visibility state.
@@ -69,14 +69,14 @@ public interface IRidget {
 	void setVisible(boolean visible);
 
 	/**
-	 * Returns whether the UI-control is enabled or disabled.
+	 * Returns whether the ridget is enabled or disabled.
 	 * 
-	 * @return Indicates whether the UI-control is enabled.
+	 * @return Indicates whether the ridget is enabled.
 	 */
 	boolean isEnabled();
 
 	/**
-	 * Sets whether the UI-control is enabled.
+	 * Sets whether the ridget is enabled.
 	 * 
 	 * @param enabled
 	 *            The new enabled state.
