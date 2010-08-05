@@ -23,8 +23,8 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractToggleButtonRidget;
 
 /**
- * Adapter of the SWT Widget <code>Button</code> with the style SWT.CHECK or
- * SWT.TOGGLE .
+ * Adapter of the SWT Widget <code>Button</code> with the style SWT.CHECK,
+ * SWT.RADIO or SWT.TOGGLE.
  */
 public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 
