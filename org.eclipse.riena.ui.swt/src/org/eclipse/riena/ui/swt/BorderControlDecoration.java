@@ -236,16 +236,57 @@ public class BorderControlDecoration implements IControlDecoration {
 			} else if (c instanceof ScrolledComposite) {
 				c = null;
 			} else {
-				final Rectangle decoRect = getDecorationRectangle(c);
-				if (((decoRect.x >= 0) && (decoRect.y >= 0))
-						&& ((controlBounds.width + getBorderWidth() <= decoRect.width) && (controlBounds.height
-								+ getBorderWidth() <= decoRect.height))) {
+				final Rectangle globalRect = getGlobalRectangle(c);
+				if (((globalRect.x >= 0) && (globalRect.y >= 0))
+						&& ((controlBounds.width + getBorderWidth() <= globalRect.width) && (controlBounds.height
+								+ getBorderWidth() <= globalRect.height))) {
 					c = null;
 				} else {
 					c = c.getParent();
 				}
 			}
 		}
+	}
+
+	private Rectangle getDecorationRectangle(final Control targetControl) {
+
+		final Rectangle globalRect = getGlobalRectangle(targetControl);
+		if ((globalRect.width <= 0) && (globalRect.height <= 0)) {
+			return globalRect;
+		}
+
+		globalRect.x -= getBorderWidth();
+		globalRect.y -= getBorderWidth();
+		globalRect.height += 2 * getBorderWidth();
+		globalRect.width += 2 * getBorderWidth();
+
+		return globalRect;
+
+	}
+
+	private Rectangle getGlobalRectangle(final Control targetControl) {
+
+		if (control == null) {
+			return ZERO_RECTANGLE;
+		}
+
+		final Rectangle controlBounds = control.getBounds();
+		if ((controlBounds.width <= 0) && (controlBounds.height <= 0)) {
+			return ZERO_RECTANGLE;
+		}
+		final int x = controlBounds.x;
+		final int y = controlBounds.y;
+		final Point globalPoint = control.getParent().toDisplay(x, y);
+		Point targetPoint;
+		if (targetControl == null) {
+			targetPoint = globalPoint;
+		} else {
+			targetPoint = targetControl.toControl(globalPoint);
+		}
+		final int width = controlBounds.width - 1;
+		final int height = controlBounds.height - 1;
+		return new Rectangle(targetPoint.x, targetPoint.y, width, height);
+
 	}
 
 	/**
@@ -277,39 +318,6 @@ public class BorderControlDecoration implements IControlDecoration {
 			result = control.getParent().getParent();
 		}
 		return result;
-	}
-
-	/**
-	 * Return the rectangle in which the decoration should be rendered, in
-	 * coordinates relative to the specified control.
-	 * 
-	 * @param targetControl
-	 *            the control whose coordinates should be used
-	 * @return the rectangle in which the decoration should be rendered
-	 */
-	private Rectangle getDecorationRectangle(final Control targetControl) {
-
-		if (control == null) {
-			return ZERO_RECTANGLE;
-		}
-
-		final Rectangle controlBounds = control.getBounds();
-		if ((controlBounds.width <= 0) && (controlBounds.height <= 0)) {
-			return ZERO_RECTANGLE;
-		}
-		final int x = controlBounds.x - getBorderWidth();
-		final int y = controlBounds.y - getBorderWidth();
-		final Point globalPoint = control.getParent().toDisplay(x, y);
-		Point targetPoint;
-		if (targetControl == null) {
-			targetPoint = globalPoint;
-		} else {
-			targetPoint = targetControl.toControl(globalPoint);
-		}
-		final int width = controlBounds.width + getBorderWidth() * 2 - 1;
-		final int height = controlBounds.height + getBorderWidth() * 2 - 1;
-		return new Rectangle(targetPoint.x, targetPoint.y, width, height);
-
 	}
 
 	/**
