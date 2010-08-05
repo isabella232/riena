@@ -10,11 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import junit.framework.AssertionFailedError;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
@@ -229,28 +228,43 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setText(text);
 		UITestHelper.readAndDispatch(control1);
 
-		// browser may add line breaks - just check if 'Riena' is in the output
-		assertTrue("control1.text:" + control1.getText(), control1.getText().contains("Riena"));
+		retry(new Runnable() {
+			public void run() {
+				// browser may add line breaks - just check if 'Riena' is in the output
+				assertTrue("control1.text:" + control1.getText(), control1.getText().contains("Riena"));
+			}
+		}, control1, 3);
 
 		final Browser control2 = createWidget(getShell());
 		ridget.setUIControl(control2);
 		UITestHelper.readAndDispatch(control2);
 
-		// TODO [ev] refactor -- experimental code
-
-		int tries = 3;
-		// browser may add line breaks - just check if 'Riena' is in the output
-		while (tries > 3) {
-			try {
+		retry(new Runnable() {
+			public void run() {
 				assertTrue("control2.text:" + control2.getText(), control2.getText().contains("Riena"));
+			}
+		}, control2, 3);
+	}
+
+	// helping methods
+	//////////////////
+
+	/**
+	 * Execute the 'closure' op up to {@code tries}-times and process the ui
+	 * queue between tries.
+	 */
+	private void retry(final Runnable op, final Control withControl, int tries) throws Exception {
+		while (tries > 0) {
+			try {
+				op.run();
 				tries = 0;
-			} catch (final AssertionFailedError afe) {
+			} catch (final Exception exc) {
 				tries--;
 				if (tries > 0) {
 					Thread.sleep(500);
-					UITestHelper.readAndDispatch(control2);
+					UITestHelper.readAndDispatch(withControl);
 				} else {
-					throw afe;
+					throw exc;
 				}
 			}
 		}
