@@ -39,9 +39,11 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
  *
  */
 public abstract class AbstractToggleButtonRidget extends AbstractValueRidget implements IToggleButtonRidget {
+
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	private final ActionObserver actionObserver;
+
 	private Binding controlBinding;
 	private String text;
 	private String iconID;
@@ -62,35 +64,37 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		});
 	}
 
-	@Override
-	protected void bindUIControl() {
-		final DataBindingContext context = getValueBindingSupport().getContext();
-		if (getUIControl() != null) {
-			controlBinding = context.bindValue(getUIControlSelectionObservable(), getRidgetObservable(),
-					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(
-							UpdateValueStrategy.POLICY_UPDATE)
-							.setBeforeSetValidator(new CancelControlUpdateWhenDisabled()));
-			initText();
-			updateUIText();
-			updateSelection(isEnabled());
-			updateUIIcon();
+	public void addListener(final IActionListener listener) {
+		actionObserver.addListener(listener);
+	}
+
+	/**
+	 * @deprecated use {@link #addListener(IActionListener)}
+	 */
+	@Deprecated
+	public void addListener(final Object target, final String action) {
+		final IActionListener listener = EventHandler.create(IActionListener.class, target, action);
+		actionObserver.addListener(listener);
+	}
+
+	/**
+	 * @since 2.0
+	 */
+	public void fireAction() {
+		if (isVisible() && isEnabled()) {
+			setSelected(!isSelected());
+			actionObserver.widgetSelected(null);
 		}
 	}
 
-	protected abstract ISWTObservableValue getUIControlSelectionObservable();
-
-	@Override
-	protected void unbindUIControl() {
-		super.unbindUIControl();
-		if (controlBinding != null) {
-			controlBinding.dispose();
-			controlBinding = null;
-		}
+	public String getIcon() {
+		final IIconManager manager = IconManagerProvider.getInstance().getIconManager();
+		final String icon = manager.getName(this.iconID);
+		return icon;
 	}
 
-	@Override
-	protected IObservableValue getRidgetObservable() {
-		return BeansObservables.observeValue(this, IToggleButtonRidget.PROPERTY_SELECTED);
+	public final String getText() {
+		return text;
 	}
 
 	/**
@@ -106,63 +110,8 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		return selected;
 	}
 
-	public void setSelected(final boolean selected) {
-		if (!getMarkersOfType(OutputMarker.class).isEmpty()) {
-			/*
-			 * TODO If the Ridget has an OutputMarker all events from UI should
-			 * be "reverted". At the moment this only works if the control is
-			 * unbound at the moment the selection is reset to the saved value
-			 * in the Ridget. Needs some investigation. See bug #271762
-			 */
-			//
-			////// Revert
-			unbindUIControl();
-			setUIControlSelection(this.selected);
-			bindUIControl();
-			////// End Revert
-			return;
-		}
-		if (this.selected != selected) {
-			final boolean oldValue = this.selected;
-			this.selected = selected;
-			actionObserver.widgetSelected(null);
-			firePropertyChange(IToggleButtonRidget.PROPERTY_SELECTED, Boolean.valueOf(oldValue),
-					Boolean.valueOf(selected));
-		}
-	}
-
-	public void addListener(final IActionListener listener) {
-		actionObserver.addListener(listener);
-	}
-
-	/**
-	 * @deprecated use {@link #addListener(IActionListener)}
-	 */
-	@Deprecated
-	public void addListener(final Object target, final String action) {
-		final IActionListener listener = EventHandler.create(IActionListener.class, target, action);
-		actionObserver.addListener(listener);
-	}
-
 	public void removeListener(final IActionListener listener) {
 		actionObserver.removeListener(listener);
-	}
-
-	public final String getText() {
-		return text;
-	}
-
-	public final void setText(final String newText) {
-		final String oldText = this.text;
-		this.text = newText;
-		updateUIText();
-		firePropertyChange(IActionRidget.PROPERTY_TEXT, oldText, this.text);
-	}
-
-	public String getIcon() {
-		final IIconManager manager = IconManagerProvider.getInstance().getIconManager();
-		final String icon = manager.getName(this.iconID);
-		return icon;
 	}
 
 	public void setIcon(final String icon) {
@@ -183,10 +132,86 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		}
 	}
 
-	// helping methods
-	// ////////////////
+	public void setSelected(final boolean selected) {
+		if (!getMarkersOfType(OutputMarker.class).isEmpty()) {
+			/*
+			 * TODO If the Ridget has an OutputMarker all events from UI should
+			 * be "reverted". At the moment this only works if the control is
+			 * unbound at the moment the selection is reset to the saved value
+			 * in the Ridget. Needs some investigation. See bug #271762
+			 * 
+			 * TODO [ev] works but is a hack, there should be a better way
+			 */
+			////// Revert
+			unbindUIControl();
+			setUIControlSelection(this.selected);
+			bindUIControl();
+			////// End Revert
+			return;
+		}
+		if (this.selected != selected) {
+			final boolean oldValue = this.selected;
+			this.selected = selected;
+			actionObserver.widgetSelected(null);
+			firePropertyChange(IToggleButtonRidget.PROPERTY_SELECTED, Boolean.valueOf(oldValue),
+					Boolean.valueOf(selected));
+		}
+	}
+
+	public final void setText(final String newText) {
+		final String oldText = this.text;
+		this.text = newText;
+		updateUIText();
+		firePropertyChange(IActionRidget.PROPERTY_TEXT, oldText, this.text);
+	}
+
+	// protected methods
+	////////////////////
+
+	@Override
+	protected void bindUIControl() {
+		final DataBindingContext context = getValueBindingSupport().getContext();
+		if (getUIControl() != null) {
+			controlBinding = context.bindValue(getUIControlSelectionObservable(), getRidgetObservable(),
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE), new UpdateValueStrategy(
+							UpdateValueStrategy.POLICY_UPDATE)
+							.setBeforeSetValidator(new CancelControlUpdateWhenDisabled()));
+			initText();
+			updateUIText();
+			updateSelection(isEnabled());
+			updateUIIcon();
+		}
+	}
+
+	@Override
+	protected IObservableValue getRidgetObservable() {
+		return BeansObservables.observeValue(this, IToggleButtonRidget.PROPERTY_SELECTED);
+	}
+
+	@Override
+	protected void unbindUIControl() {
+		super.unbindUIControl();
+		if (controlBinding != null) {
+			controlBinding.dispose();
+			controlBinding = null;
+		}
+	}
+
+	// protected abstract methods
+	/////////////////////////////
+
+	protected abstract ISWTObservableValue getUIControlSelectionObservable();
+
+	protected abstract String getUIControlText();
+
+	protected abstract void setUIControlImage(Image image);
 
 	protected abstract void setUIControlSelection(boolean selected);
+
+	protected abstract void setUIControlText(String text);
+
+	// helping methods
+	//////////////////
 
 	/**
 	 * If the text of the ridget has no value, initialize it with the text of
@@ -204,8 +229,6 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		}
 	}
 
-	protected abstract String getUIControlText();
-
 	/**
 	 * Update the selection state of this ridget's control (button)
 	 * 
@@ -222,14 +245,6 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		}
 	}
 
-	private void updateUIText() {
-		if (getUIControl() != null) {
-			setUIControlText(text);
-		}
-	}
-
-	protected abstract void setUIControlText(String text);
-
 	/**
 	 * Updates the images of the control.
 	 */
@@ -245,7 +260,11 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		}
 	}
 
-	protected abstract void setUIControlImage(Image image);
+	private void updateUIText() {
+		if (getUIControl() != null) {
+			setUIControlText(text);
+		}
+	}
 
 	// helping classes
 	//////////////////
@@ -259,16 +278,6 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		public IStatus validate(final Object value) {
 			final boolean cancel = MarkerSupport.isHideDisabledRidgetContent() && !isEnabled();
 			return cancel ? Status.CANCEL_STATUS : Status.OK_STATUS;
-		}
-	}
-
-	/**
-	 * @since 2.0
-	 */
-	public void fireAction() {
-		if (isVisible() && isEnabled()) {
-			setSelected(!isSelected());
-			actionObserver.widgetSelected(null);
 		}
 	}
 
