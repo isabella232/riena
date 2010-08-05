@@ -123,13 +123,16 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		assertTrue(buttonToggle.isSelected());
 
 		final IToggleButtonRidget buttonRadioA = getController().getRidget(IToggleButtonRidget.class, "buttonRadioA"); //$NON-NLS-1$
-		assertFalse(buttonRadioA.isSelected());
+		assertTrue(buttonRadioA.isSelected());
 
 		final IToggleButtonRidget buttonRadioB = getController().getRidget(IToggleButtonRidget.class, "buttonRadioB"); //$NON-NLS-1$
 		assertFalse(buttonRadioB.isSelected());
 
-		final IToggleButtonRidget buttonCheck = getController().getRidget(IToggleButtonRidget.class, "buttonCheck"); //$NON-NLS-1$
-		assertFalse(buttonCheck.isSelected());
+		final IToggleButtonRidget buttonCheckA = getController().getRidget(IToggleButtonRidget.class, "buttonCheckA"); //$NON-NLS-1$
+		assertTrue(buttonCheckA.isSelected());
+
+		final IToggleButtonRidget buttonCheckB = getController().getRidget(IToggleButtonRidget.class, "buttonCheckB"); //$NON-NLS-1$
+		assertFalse(buttonCheckB.isSelected());
 	}
 
 	public void testMandatoryMarkerOptions() {
@@ -143,13 +146,13 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 				"checkMandatory");
 		assertFalse(mandatoryToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertFalse(ridget.isMandatory());
+			assertFalse("failed on: " + ridget, ridget.isMandatory());
 		}
 
 		mandatoryToggle.setSelected(true);
 		assertTrue(mandatoryToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertTrue(ridget.isMandatory());
+			assertTrue("failed on: " + ridget, ridget.isMandatory());
 		}
 	}
 
@@ -157,13 +160,13 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		final IToggleButtonRidget errorToggle = getController().getRidget(IToggleButtonRidget.class, "checkError");
 		assertFalse(errorToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertFalse(ridget.isErrorMarked());
+			assertFalse("failed on: " + ridget, ridget.isErrorMarked());
 		}
 
 		errorToggle.setSelected(true);
 		assertTrue(errorToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertTrue(ridget.isErrorMarked());
+			assertTrue("failed on: " + ridget, ridget.isErrorMarked());
 		}
 	}
 
@@ -172,13 +175,13 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 				.getRidget(IToggleButtonRidget.class, "checkDisabled");
 		assertFalse(disabledToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertTrue(ridget.isEnabled());
+			assertTrue("failed on: " + ridget, ridget.isEnabled());
 		}
 
 		disabledToggle.setSelected(true);
 		assertTrue(disabledToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertFalse(ridget.isEnabled());
+			assertFalse("failed on: " + ridget, ridget.isEnabled());
 		}
 
 		assertFalse(getController().getRidget(IActionRidget.class, "buttonPush").isEnabled());
@@ -188,13 +191,13 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		final IToggleButtonRidget outputToggle = getController().getRidget(IToggleButtonRidget.class, "checkOutput");
 		assertFalse(outputToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertFalse(ridget.isOutputOnly());
+			assertFalse("failed on: " + ridget, ridget.isOutputOnly());
 		}
 
 		outputToggle.setSelected(true);
 		assertTrue(outputToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertTrue(ridget.isOutputOnly());
+			assertTrue("failed on: " + ridget, ridget.isOutputOnly());
 		}
 	}
 
@@ -202,20 +205,19 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		final IToggleButtonRidget hiddenToggle = getController().getRidget(IToggleButtonRidget.class, "checkHidden");
 		assertFalse(hiddenToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertTrue(ridget.isVisible());
+			assertTrue("failed on: " + ridget, ridget.isVisible());
 		}
 
 		hiddenToggle.setSelected(true);
 		assertTrue(hiddenToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertFalse(ridget.isVisible());
+			assertFalse("failed on: " + ridget, ridget.isVisible());
 		}
 
 		assertFalse(getController().getRidget(IActionRidget.class, "buttonPush").isVisible());
 	}
 
 	public void testList() {
-
 		Person expected = null;
 		Person actual = null;
 		final IListRidget listPersons = getController().getRidget(IListRidget.class, "listPersons"); //$NON-NLS-1$
@@ -239,7 +241,6 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 	}
 
 	public void testTable() {
-
 		Person expected = null;
 		Person actual = null;
 		final ITableRidget tablePersons = getController().getRidget(ITableRidget.class, "tablePersons"); //$NON-NLS-1$
@@ -263,7 +264,6 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 	}
 
 	public void testCompositeTable() {
-
 		Person expected = null;
 		Person actual = null;
 		final ICompositeTableRidget compTable = getController().getRidget(ICompositeTableRidget.class, "compTable"); //$NON-NLS-1$
@@ -407,7 +407,8 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonToggle"));
 		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonRadioA"));
 		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonRadioB"));
-		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonCheck"));
+		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonCheckA"));
+		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonCheckB"));
 
 		return markableRidgets;
 	}

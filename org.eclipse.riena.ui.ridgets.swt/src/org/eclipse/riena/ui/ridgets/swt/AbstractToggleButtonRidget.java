@@ -22,7 +22,6 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionObserver;
@@ -188,6 +187,18 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		return BeansObservables.observeValue(this, IToggleButtonRidget.PROPERTY_SELECTED);
 	}
 
+	/**
+	 * TODO [ev] docs
+	 */
+	@Override
+	public boolean isEnabled() {
+		boolean isEnabled = super.isEnabled();
+		if (isEnabled && isOutputOnly() && !isSelected()) {
+			isEnabled = false;
+		}
+		return isEnabled;
+	}
+
 	@Override
 	protected void unbindUIControl() {
 		super.unbindUIControl();
@@ -200,7 +211,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	// protected abstract methods
 	/////////////////////////////
 
-	protected abstract ISWTObservableValue getUIControlSelectionObservable();
+	protected abstract IObservableValue getUIControlSelectionObservable();
 
 	protected abstract String getUIControlText();
 
