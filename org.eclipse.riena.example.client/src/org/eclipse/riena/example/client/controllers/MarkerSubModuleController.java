@@ -171,12 +171,16 @@ public class MarkerSubModuleController extends SubModuleController {
 		buttonToggle.setSelected(true);
 		final IActionRidget buttonPush = getRidget(IActionRidget.class, "buttonPush"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonRadioA = getRidget(IToggleButtonRidget.class, "buttonRadioA"); //$NON-NLS-1$
+		buttonRadioA.setSelected(true);
 		final IToggleButtonRidget buttonRadioB = getRidget(IToggleButtonRidget.class, "buttonRadioB"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonCheck = getRidget(IToggleButtonRidget.class, "buttonCheck"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonCheckA = getRidget(IToggleButtonRidget.class, "buttonCheckA"); //$NON-NLS-1$
+		buttonCheckA.setSelected(true);
+		final IToggleButtonRidget buttonCheckB = getRidget(IToggleButtonRidget.class, "buttonCheckB"); //$NON-NLS-1$
 
 		final IRidget[] markables = new IRidget[] { textName, textPrice, textAmount, textDate, dtDate, dtPicker,
 				comboAge, comboStyle, comboSize, choiceType, choiceFlavor, listPersons, tablePersons, compTable,
-				treePersons, treeWCols, buttonToggle, buttonPush, buttonRadioA, buttonRadioB, buttonCheck };
+				treePersons, treeWCols, buttonToggle, buttonPush, buttonRadioA, buttonRadioB, buttonCheckA,
+				buttonCheckB };
 
 		final IToggleButtonRidget checkMandatory = getRidget(IToggleButtonRidget.class, "checkMandatory"); //$NON-NLS-1$
 		final IToggleButtonRidget checkError = getRidget(IToggleButtonRidget.class, "checkError"); //$NON-NLS-1$
@@ -215,7 +219,8 @@ public class MarkerSubModuleController extends SubModuleController {
 					buttonToggle.setSelected(false);
 					buttonRadioA.setSelected(false);
 					buttonRadioB.setSelected(false);
-					buttonCheck.setSelected(false);
+					buttonCheckA.setSelected(false);
+					buttonCheckB.setSelected(false);
 				}
 			}
 		});

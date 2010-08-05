@@ -186,12 +186,13 @@ public class MarkerSubModuleView extends SubModuleView {
 		hFillFactory.hint(200, hHint).applyTo(treeWCols);
 
 		UIControlsFactory.createLabel(group, "Buttons:", "labelbuttonToggle"); //$NON-NLS-1$ //$NON-NLS-2$
-		final Composite cmpButtons = createComposite(group, 5, false);
+		final Composite cmpButtons = createComposite(group, 6, false);
 		UIControlsFactory.createButtonToggle(cmpButtons, "Toggle", "buttonToggle"); //$NON-NLS-1$ //$NON-NLS-2$
 		UIControlsFactory.createButton(cmpButtons, "Push", "buttonPush"); //$NON-NLS-1$ //$NON-NLS-2$
-		UIControlsFactory.createButtonRadio(cmpButtons, "Radio A", "buttonRadioA"); //$NON-NLS-1$ //$NON-NLS-2$
-		UIControlsFactory.createButtonRadio(cmpButtons, "Radio B", "buttonRadioB"); //$NON-NLS-1$ //$NON-NLS-2$
-		UIControlsFactory.createButtonCheck(cmpButtons, "Check", "buttonCheck"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonRadio(cmpButtons, "RadioA", "buttonRadioA"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonRadio(cmpButtons, "RadioB", "buttonRadioB"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonCheck(cmpButtons, "CheckA", "buttonCheckA"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonCheck(cmpButtons, "CheckB", "buttonCheckB"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		return group;
 	}
