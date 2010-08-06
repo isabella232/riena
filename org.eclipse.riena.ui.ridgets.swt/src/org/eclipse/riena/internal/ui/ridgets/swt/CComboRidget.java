@@ -122,8 +122,12 @@ public class CComboRidget extends AbstractComboRidget {
 	}
 
 	@Override
+	public boolean isEnabled() {
+		return super.isEnabled() && !isOutputOnly();
+	}
+
+	@Override
 	protected void updateEditable() {
-		final boolean isControlEnabled = isEnabled() && !isOutputOnly();
-		getUIControl().setEnabled(isControlEnabled);
+		// unused
 	}
 }

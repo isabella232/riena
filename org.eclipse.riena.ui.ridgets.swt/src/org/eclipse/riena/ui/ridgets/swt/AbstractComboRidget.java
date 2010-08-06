@@ -140,9 +140,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				applyEnabled();
-				if (getUIControl() != null) {
-					updateEditable();
-				}
 			}
 		});
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {

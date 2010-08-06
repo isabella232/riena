@@ -593,6 +593,29 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(selection1, ridget.getSelection());
 	}
 
+	public void testOutputOnlyAndMandatoryControlIsNotEditable() {
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+
+		assertControlEditable(control, true);
+
+		ridget.setOutputOnly(true);
+
+		assertControlEditable(control, false);
+
+		ridget.setMandatory(true);
+
+		assertControlEditable(control, false);
+
+		ridget.setMandatory(false);
+
+		assertControlEditable(control, false);
+
+		ridget.setOutputOnly(false);
+
+		assertControlEditable(control, true);
+	}
+
 	public void testOuputControlIsUpdatedOnBind() {
 		final AbstractComboRidget ridget = getRidget();
 		final Control control = getWidget();
