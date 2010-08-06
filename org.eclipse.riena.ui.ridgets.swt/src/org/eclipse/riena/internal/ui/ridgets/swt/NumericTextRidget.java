@@ -311,9 +311,9 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	@Override
-	public void setUIControlToModelConverter(final IConverter converter) {
+	public void setModelToUIControlConverter(final IConverter converter) {
 		hasCustomConverter = converter != null;
-		super.setUIControlToModelConverter(converter);
+		super.setModelToUIControlConverter(converter);
 	}
 
 	// API methods

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.SWT;
@@ -30,6 +31,7 @@ import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
+import org.eclipse.riena.ui.ridgets.swt.ToStringConverterFactory;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.validation.ValidRange;
 import org.eclipse.riena.ui.ridgets.validation.ValidRangeAllowEmpty;
@@ -925,6 +927,26 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.updateFromModel();
 
 		assertFalse(ridget.isErrorMarked());
+	}
+
+	/**
+	 * As per Bug 321944.
+	 */
+	public void testCustomConverterAndUpdateFromModel() {
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
+		final DoubleBean model = new DoubleBean(3.14159265);
+
+		ridget.setMaxLength(8);
+		ridget.setPrecision(2);
+		ridget.bindToModel(model, DoubleBean.PROP_VALUE);
+		final IConverter myConverter = ToStringConverterFactory.createNumberConverter(Double.class, 2);
+		ridget.setModelToUIControlConverter(myConverter);
+		ridget.updateFromModel();
+
+		assertEquals(localize("3,14"), control.getText());
+		assertEquals(localize("3,14"), ridget.getText());
+		assertEquals(3.14159265, model.getValue());
 	}
 
 	// helping methods
