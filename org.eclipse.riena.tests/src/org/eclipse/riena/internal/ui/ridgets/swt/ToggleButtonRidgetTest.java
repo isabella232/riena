@@ -17,9 +17,13 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -45,7 +49,26 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 	@Override
 	protected Button createWidget(final Composite parent) {
-		return new Button(parent, SWT.CHECK);
+		final Button result = new Button(parent, SWT.CHECK);
+		result.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+				System.out.println("## widget.selected:  " + result.getSelection());
+			}
+		});
+		result.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(final MouseEvent e) {
+				System.out.println("## widget.mouseDown");
+			}
+
+			@Override
+			public void mouseUp(final MouseEvent e) {
+				System.out.println("## widget.mouseUp");
+				super.mouseUp(e);
+			}
+		});
+		return result;
 	}
 
 	@Override
@@ -537,6 +560,118 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(7, listener1.getCount());
 		assertEquals(2, listener2.getCount());
 		assertFalse(ridget.isSelected());
+	}
+
+	/**
+	 * As per Bug 321927
+	 */
+	public void testOutputOnlyWidgetsAreDisabledWhenNotSelected() {
+		final IToggleButtonRidget ridget = getRidget();
+		final Button control = getWidget();
+
+		setEnabledOutputSelected(ridget, false, false, false);
+
+		assertEquals(false, ridget.isEnabled());
+		assertEquals(false, control.isEnabled());
+
+		setEnabledOutputSelected(ridget, false, false, true);
+
+		assertEquals(false, ridget.isEnabled());
+		assertEquals(false, control.isEnabled());
+
+		setEnabledOutputSelected(ridget, false, false, false);
+
+		assertEquals(false, ridget.isEnabled());
+		assertEquals(false, control.isEnabled());
+
+		setEnabledOutputSelected(ridget, false, false, true);
+
+		assertEquals(false, ridget.isEnabled());
+		assertEquals(false, control.isEnabled());
+
+		setEnabledOutputSelected(ridget, true, true, false);
+
+		assertEquals(false, ridget.isEnabled());
+		assertEquals(false, control.isEnabled());
+
+		setEnabledOutputSelected(ridget, true, true, true);
+
+		assertEquals(true, ridget.isEnabled());
+		assertEquals(true, control.isEnabled());
+
+		setEnabledOutputSelected(ridget, true, false, false);
+
+		assertEquals(true, ridget.isEnabled());
+		assertEquals(true, control.isEnabled());
+
+		setEnabledOutputSelected(ridget, true, false, true);
+
+		assertEquals(true, ridget.isEnabled());
+		assertEquals(true, control.isEnabled());
+	}
+
+	/**
+	 * As per Bug 271762
+	 */
+	public void testClickOnOutputOnlyCheckboxDoesNotChangeState() {
+		final IToggleButtonRidget ridget = getRidget();
+		final Button control = getWidget();
+
+		ridget.setEnabled(true);
+		ridget.setOutputOnly(false);
+		ridget.setSelected(true);
+		ridget.setOutputOnly(true);
+
+		assertTrue(ridget.isSelected());
+		assertTrue(control.getSelection());
+
+		control.setSelection(false);
+		fireSelection(control);
+
+		assertTrue(ridget.isSelected());
+		assertTrue(control.getSelection());
+
+		ridget.setOutputOnly(false);
+		control.setSelection(false);
+		fireSelection(control);
+
+		assertFalse(ridget.isSelected());
+		assertFalse(control.getSelection());
+	}
+
+	/**
+	 * As per Bug 321935
+	 */
+	public void testSetSelectedOnOutputOnlyCheckboxChangesState() {
+		final IToggleButtonRidget ridget = getRidget();
+
+		ridget.setOutputOnly(false);
+		ridget.setSelected(false);
+
+		assertFalse(ridget.isSelected());
+
+		ridget.setOutputOnly(true);
+		ridget.setSelected(true);
+
+		assertTrue(ridget.isSelected());
+	}
+
+	// helping methods
+	//////////////////
+
+	private void fireSelection(final Button control) {
+		final Event event = new Event();
+		event.type = SWT.Selection;
+		event.widget = control;
+		event.display = control.getDisplay();
+		control.notifyListeners(SWT.Selection, event); // fire a selection on the control
+	}
+
+	private void setEnabledOutputSelected(final IToggleButtonRidget ridget, final boolean enabled,
+			final boolean output, final boolean selected) {
+		ridget.setEnabled(enabled);
+		ridget.setOutputOnly(output);
+		ridget.setSelected(selected);
 	}
 
 	// helping classes

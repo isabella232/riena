@@ -25,12 +25,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionObserver;
-import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.resource.IconManagerProvider;
 import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 
@@ -59,6 +59,16 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 			public void propertyChange(final PropertyChangeEvent evt) {
 				final boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
 				updateSelection(isEnabled);
+			}
+		});
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
+			public void propertyChange(final PropertyChangeEvent evt) {
+				updateEnabled();
+			}
+		});
+		addPropertyChangeListener(IToggleButtonRidget.PROPERTY_SELECTED, new PropertyChangeListener() {
+			public void propertyChange(final PropertyChangeEvent evt) {
+				updateEnabled();
 			}
 		});
 	}
@@ -132,22 +142,6 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	}
 
 	public void setSelected(final boolean selected) {
-		if (!getMarkersOfType(OutputMarker.class).isEmpty()) {
-			/*
-			 * TODO If the Ridget has an OutputMarker all events from UI should
-			 * be "reverted". At the moment this only works if the control is
-			 * unbound at the moment the selection is reset to the saved value
-			 * in the Ridget. Needs some investigation. See bug #271762
-			 * 
-			 * TODO [ev] works but is a hack, there should be a better way
-			 */
-			////// Revert
-			unbindUIControl();
-			setUIControlSelection(this.selected);
-			bindUIControl();
-			////// End Revert
-			return;
-		}
 		if (this.selected != selected) {
 			final boolean oldValue = this.selected;
 			this.selected = selected;
@@ -188,7 +182,14 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * {@inheritDoc}
+	 * <p>
+	 * Will return false if any of the following conditions are true:
+	 * <ul>
+	 * <li>the ridget is not enabled &ndash; via
+	 * {@code ridget.setEnabled(false)}</li>
+	 * <li>the ridget is output only and not selected</li>
+	 * </ul>
 	 */
 	@Override
 	public boolean isEnabled() {
