@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.core.resource;
 /**
  * Constants for icon sizes.
  */
-public final class IconSize {
+public class IconSize {
 
 	/**
 	 * None special size.
