@@ -22,6 +22,11 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.ui.ridgets.IComboRidget;
+import org.eclipse.riena.ui.ridgets.IDateTextRidget;
+import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
+import org.eclipse.riena.ui.swt.CompletionCombo;
+import org.eclipse.riena.ui.swt.DatePickerComposite;
 
 /**
  * Tests for {@link DisabledMarkerVisualizer}.
@@ -30,13 +35,13 @@ import org.eclipse.riena.internal.core.test.collect.UITestCase;
 public class DisabledMarkerVisualizerTest extends RienaTestCase {
 
 	private Shell shell;
-	private DisabledMarkerVisualizer visualizer;
+	private DefaultRealm realm;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		shell = new Shell();
-		visualizer = new DisabledMarkerVisualizer(null);
+		realm = new DefaultRealm();
 	}
 
 	@Override
@@ -44,6 +49,10 @@ public class DisabledMarkerVisualizerTest extends RienaTestCase {
 		if (shell != null) {
 			shell.dispose();
 			shell = null;
+		}
+		if (realm != null) {
+			realm.dispose();
+			realm = null;
 		}
 		super.tearDown();
 	}
@@ -56,6 +65,7 @@ public class DisabledMarkerVisualizerTest extends RienaTestCase {
 		new Label(parent, SWT.NONE);
 		new Text(parent, SWT.NONE);
 
+		final DisabledMarkerVisualizer visualizer = new DisabledMarkerVisualizer(null);
 		final Control[] result = ReflectionUtils.invokeHidden(visualizer, "getChildren", parent);
 
 		assertEquals(2, result.length);
@@ -69,6 +79,7 @@ public class DisabledMarkerVisualizerTest extends RienaTestCase {
 	public void testGetChildrenFromCCombo() {
 		final CCombo parent = new CCombo(shell, SWT.NONE);
 
+		final DisabledMarkerVisualizer visualizer = new DisabledMarkerVisualizer(null);
 		final Control[] result = ReflectionUtils.invokeHidden(visualizer, "getChildren", parent);
 
 		assertEquals(2, result.length);
@@ -76,4 +87,47 @@ public class DisabledMarkerVisualizerTest extends RienaTestCase {
 		assertTrue(result[1] instanceof Button);
 	}
 
+	/**
+	 * As per Bug 322030
+	 */
+	public void testVisualizerAndDatePickerEnablement() {
+		final IDateTextRidget ridget = new DateTextRidget();
+		final DatePickerComposite control = new DatePickerComposite(shell, SWT.NONE);
+		final Button pickerButton = ReflectionUtils.getHidden(control, "pickerButton");
+		ridget.setUIControl(control);
+		ridget.setOutputOnly(true);
+
+		assertFalse(pickerButton.isEnabled());
+
+		final DisabledMarkerVisualizer visualizer = new DisabledMarkerVisualizer(ridget);
+		ReflectionUtils.invokeHidden(visualizer, "updateDisabled", control, false);
+
+		assertFalse(pickerButton.isEnabled());
+
+		ReflectionUtils.invokeHidden(visualizer, "updateDisabled", control, true);
+
+		assertFalse(pickerButton.isEnabled());
+	}
+
+	/**
+	 * As per Bug 322030
+	 */
+	public void testVisualizerAndCompletionComboEnablement() {
+		final IComboRidget ridget = new CompletionComboRidget();
+		final CompletionCombo control = new CompletionCombo(shell, SWT.NONE);
+		final Button arrow = ReflectionUtils.getHidden(control, "arrow");
+		ridget.setUIControl(control);
+		ridget.setOutputOnly(true);
+
+		assertFalse(arrow.isEnabled());
+
+		final DisabledMarkerVisualizer visualizer = new DisabledMarkerVisualizer(ridget);
+		ReflectionUtils.invokeHidden(visualizer, "updateDisabled", control, false);
+
+		assertFalse(arrow.isEnabled());
+
+		ReflectionUtils.invokeHidden(visualizer, "updateDisabled", control, true);
+
+		assertFalse(arrow.isEnabled());
+	}
 }

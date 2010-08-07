@@ -105,13 +105,7 @@ public class DatePickerComposite extends Composite {
 	@Override
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
-		// we have to put the following on the event queue, because the call above
-		// completes asynchronously, and the new state is not available immediately
-		getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				updateButtonEnablement();
-			}
-		});
+		updateButtonEnablement();
 	}
 
 	@Override

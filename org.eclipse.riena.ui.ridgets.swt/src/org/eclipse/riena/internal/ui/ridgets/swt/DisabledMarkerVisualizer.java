@@ -39,7 +39,9 @@ public class DisabledMarkerVisualizer {
 	 * This is the entry point for {@link MarkerSupport}
 	 */
 	public void updateDisabled() {
-		updateDisabled(getControl(), getRidget().isEnabled());
+		final Control control = getControl();
+		final boolean enabled = getRidget().isEnabled();
+		updateDisabled(control, enabled);
 	}
 
 	/**
@@ -67,7 +69,16 @@ public class DisabledMarkerVisualizer {
 	}
 
 	private void updateDisabled(final Control control, final boolean enabled) {
+		// Bug 322030: only change the enablement of the control bound to the 
+		// ridget. The enabled state of the controls within this control (if  
+		// a composite) can depend on internal state not available here.
+		// Examples: DatePickerComposite, CompletionCombo, CCombo
 		control.setEnabled(enabled);
+		updatePaintListener(control, enabled);
+		control.redraw();
+	}
+
+	private void updatePaintListener(final Control control, final boolean enabled) {
 		removePaintlistener(control);
 
 		if (!enabled) {
@@ -78,11 +89,9 @@ public class DisabledMarkerVisualizer {
 			final Composite composite = (Composite) control;
 			final Control[] children = getChildren(composite);
 			for (final Control child : children) {
-				updateDisabled(child, enabled);
+				updatePaintListener(child, enabled);
 			}
 		}
-
-		control.redraw();
 	}
 
 	private Control[] getChildren(final Composite parent) {
