@@ -29,6 +29,7 @@ import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellRenderer;
 import org.eclipse.riena.ui.swt.AbstractTitleBarMouseListener;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.AbstractTitleBarRenderer;
@@ -55,14 +56,12 @@ public class TitleComposite extends Composite {
 	 *            node of the application
 	 */
 	public TitleComposite(final Shell parentShell, final ApplicationNode node) {
-
 		super(parentShell, SWT.NONE);
 
 		this.node = node;
 		appNodeListener = new ApplicationLabelListener();
 		node.addListener(appNodeListener);
 		init(parentShell);
-
 	}
 
 	/**
@@ -71,7 +70,6 @@ public class TitleComposite extends Composite {
 	 * @param parentShell
 	 */
 	private void init(final Shell parentShell) {
-
 		// force result's background into logo and switcher
 		setBackgroundMode(SWT.INHERIT_FORCE);
 		// sets the background of the composite
@@ -92,21 +90,20 @@ public class TitleComposite extends Composite {
 		new SwitcherComposite(this, node);
 
 		addListeners();
-
 	}
 
 	/**
 	 * Adds a paint and a mouse listener to this composite.
 	 */
 	private void addListeners() {
+		final SWTFacade facade = SWTFacade.getDefault();
 
-		addPaintListener(new TitlelessPaintListener());
+		facade.addPaintListener(this, new TitlelessPaintListener());
 
 		mouseListener = new TitlelessShellMouseListener();
 		addMouseListener(mouseListener);
-		addMouseMoveListener(mouseListener);
-		addMouseTrackListener(mouseListener);
-
+		facade.addMouseMoveListener(this, mouseListener);
+		facade.addMouseTrackListener(this, mouseListener);
 	}
 
 	/**
@@ -127,11 +124,11 @@ public class TitleComposite extends Composite {
 	 */
 	@Override
 	public void dispose() {
-
 		if (mouseListener != null) {
+			final SWTFacade facade = SWTFacade.getDefault();
 			removeMouseListener(mouseListener);
-			removeMouseMoveListener(mouseListener);
-			removeMouseTrackListener(mouseListener);
+			facade.removeMouseMoveListener(this, mouseListener);
+			facade.removeMouseTrackListener(this, mouseListener);
 			mouseListener.dispose();
 			mouseListener = null;
 		}

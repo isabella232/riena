@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ShellLogoRenderer;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
@@ -59,7 +60,6 @@ public class LogoComposite extends Composite {
 	 *            parent composite
 	 */
 	private void init(final Composite parent) {
-
 		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
 		final FormData logoData = new FormData();
@@ -91,8 +91,7 @@ public class LogoComposite extends Composite {
 		}
 		setLayoutData(logoData);
 
-		addPaintListener(new LogoPaintListener());
-
+		SWTFacade.getDefault().addPaintListener(this, new LogoPaintListener());
 	}
 
 	/**
@@ -117,13 +116,11 @@ public class LogoComposite extends Composite {
 	 * @return horizontal position (SWT.LEFT, SWT.CENTER, SWT.RIGHT)
 	 */
 	private int getHorizontalLogoPosition() {
-
 		Integer hPos = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_HORIZONTAL_LOGO_POSITION);
 		if (hPos == null) {
 			hPos = SWT.LEFT;
 		}
 		return hPos;
-
 	}
 
 	/**
@@ -133,10 +130,8 @@ public class LogoComposite extends Composite {
 	 * @return margin
 	 */
 	private int getSwitchterTopMargin() {
-
 		final int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_MARGIN);
 		return margin;
-
 	}
 
 	/**
@@ -145,17 +140,14 @@ public class LogoComposite extends Composite {
 	 * @return height
 	 */
 	private int getSwitchterHeight() {
-
 		final int margin = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_HEIGHT);
 		return margin;
-
 	}
 
 	/**
 	 * This listener paints the logo.
 	 */
 	private static class LogoPaintListener implements PaintListener {
-
 		/**
 		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
 		 */
@@ -170,16 +162,12 @@ public class LogoComposite extends Composite {
 		 *            an event containing information about the paint
 		 */
 		private void onPaint(final PaintEvent e) {
-
 			final Composite logoComposite = (Composite) e.getSource();
 			final Rectangle compositeBounds = logoComposite.getBounds();
 			final ShellLogoRenderer renderer = (ShellLogoRenderer) LnfManager.getLnf().getRenderer(
 					LnfKeyConstants.TITLELESS_SHELL_LOGO_RENDERER);
 			renderer.setBounds(compositeBounds);
 			renderer.paint(e.gc, null);
-
 		}
-
 	}
-
 }

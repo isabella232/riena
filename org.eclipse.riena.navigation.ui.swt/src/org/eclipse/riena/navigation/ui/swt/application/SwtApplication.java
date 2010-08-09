@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.application;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -25,9 +27,10 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.internal.Workbench;
-import org.eclipse.ui.splash.AbstractSplashHandler;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.ExceptionFailure;
+import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.Wire;
@@ -42,6 +45,7 @@ import org.eclipse.riena.navigation.ui.login.ILoginDialogView;
 import org.eclipse.riena.navigation.ui.swt.login.ILoginSplashViewExtension;
 import org.eclipse.riena.navigation.ui.swt.splashHandlers.AbstractLoginSplashHandler;
 import org.eclipse.riena.navigation.ui.swt.views.ApplicationAdvisor;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 
 /**
@@ -231,20 +235,22 @@ public class SwtApplication extends AbstractApplication {
 	}
 
 	private AbstractLoginSplashHandler getLoginSplashHandler() {
-		if (!PlatformUI.isWorkbenchRunning()) {
-			return null;
+		AbstractLoginSplashHandler result = null;
+		if (PlatformUI.isWorkbenchRunning() && !SWTFacade.isRAP()) { // RAP does not have a splash
+			// Use the splash handler of the workbench both for the login and for
+			// a later re-login after inactivity timeout. Unfortunately it is not
+			// accessible and an enhancement request to change that was rejected:
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=260736.
+			try {
+				final Object loginSplashHandler = ReflectionUtils.invokeHidden(Workbench.class, "getSplash"); //$NON-NLS-1$
+				if (loginSplashHandler instanceof AbstractLoginSplashHandler) {
+					result = (AbstractLoginSplashHandler) loginSplashHandler;
+				}
+			} catch (final ReflectionFailure refFail) {
+				Log4r.getLogger(SwtApplication.class).log(LogService.LOG_ERROR, "Workbench.getSplash()", refFail); //$NON-NLS-1$
+			}
 		}
-
-		// Use the splash handler of the workbench both for the login and for
-		// a later re-login after inactivity timeout. Unfortunately it is not
-		// accessible and an enhancement request to change that was rejected:
-		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=260736.
-		final AbstractSplashHandler loginSplashHandler = ReflectionUtils.invokeHidden(Workbench.class, "getSplash"); //$NON-NLS-1$
-		if (loginSplashHandler instanceof AbstractLoginSplashHandler) {
-			return (AbstractLoginSplashHandler) loginSplashHandler;
-		} else {
-			return null;
-		}
+		return result;
 	}
 
 	private void initializeLoginNonActivityTimer(final Display display, final IApplicationNode pNode,
@@ -340,13 +346,12 @@ public class SwtApplication extends AbstractApplication {
 			display.addFilter(SWT.KeyUp, eventListener);
 			display.addFilter(SWT.MouseDoubleClick, eventListener);
 			display.addFilter(SWT.MouseDown, eventListener);
-			//display.addFilter(SWT.MouseEnter, eventListener);
-			display.addFilter(SWT.MouseExit, eventListener);
-			//display.addFilter(SWT.MouseHover, eventListener);
-			display.addFilter(SWT.MouseMove, eventListener);
 			display.addFilter(SWT.MouseUp, eventListener);
-			display.addFilter(SWT.MouseWheel, eventListener);
 			display.addFilter(SWT.Traverse, eventListener);
+			final SWTFacade facade = SWTFacade.getDefault();
+			facade.addFilterMouseExit(display, eventListener);
+			facade.addFilterMouseMove(display, eventListener);
+			facade.addFilterMouseWheel(display, eventListener);
 		}
 
 		private void schedule() {

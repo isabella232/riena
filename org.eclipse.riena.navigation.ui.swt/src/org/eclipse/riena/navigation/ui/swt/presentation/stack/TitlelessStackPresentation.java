@@ -36,6 +36,7 @@ import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -75,6 +76,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * Property to distinguish the view of the navigation.
 	 */
 	public static final String PROPERTY_NAVIGATION = "navigation"; //$NON-NLS-1$
+
 	/**
 	 * Property to distinguish the view of the status line.
 	 */
@@ -87,6 +89,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * @since 1.2
 	 */
 	public static final int DEFAULT_PADDING_LEFT = 2;
+
 	/**
 	 * Right padding of the sub-module view.<br>
 	 * Gap between right shell border and sub-module view.
@@ -94,11 +97,13 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * @since 1.2
 	 */
 	public static final int DEFAULT_PADDING_RIGHT = DEFAULT_PADDING_LEFT;
+
 	/**
 	 * Bottom padding of the navigation/the sub-module view.<br>
 	 * Gap between bottom shell border and sub-module view.
 	 */
 	public static final int PADDING_BOTTOM = 2;
+
 	/**
 	 * Gap between navigation and sub-module view
 	 * 
@@ -277,7 +282,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * @return outer bounds sub-module view
 	 */
 	private Rectangle calcSubModuleOuterBounds() {
-
 		final Rectangle naviBounds = calcNavigationBounds(parent);
 
 		final int x = naviBounds.x + naviBounds.width + getNavigationSubModuleGap();
@@ -295,7 +299,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * @return bounds of navigation
 	 */
 	public static Rectangle calcNavigationBounds(final Composite parent) {
-
 		final GC gc = new GC(parent);
 		try {
 			final Point size = getModuleGroupRenderer().computeSize(gc, SWT.DEFAULT, SWT.DEFAULT);
@@ -307,7 +310,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 		} finally {
 			gc.dispose();
 		}
-
 	}
 
 	/**
@@ -315,15 +317,12 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * is displayed.
 	 */
 	private void createSubModuleViewArea() {
-
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-		parent.addPaintListener(new PaintListener() {
-
+		SWTFacade.getDefault().addPaintListener(parent, new PaintListener() {
 			/**
 			 * Paints the border of the current active sub-module.
 			 */
 			public void paintControl(final PaintEvent e) {
-
 				if (current != null) {
 					final SubModuleViewRenderer viewRenderer = getRenderer();
 					if (viewRenderer != null) {
@@ -476,5 +475,4 @@ public class TitlelessStackPresentation extends StackPresentation {
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		return lnf.getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_SUB_MODULE_HORIZONTAL_GAP, DEFAULT_PADDING_RIGHT);
 	}
-
 }

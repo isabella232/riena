@@ -21,6 +21,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.DialogBorderRenderer;
@@ -51,8 +52,10 @@ public class GrabCorner extends Composite {
 			setDialogLayoutData();
 		}
 
-		addPaintListener(new GrabPaintListener());
-		new GrabCornerListenerWithTracker(this);
+		if (SWTFacade.isRCP()) {
+			SWTFacade.getDefault().addPaintListener(this, new GrabPaintListener());
+			new GrabCornerListenerWithTracker(this);
+		}
 	}
 
 	private boolean isMainShell() {
@@ -92,7 +95,6 @@ public class GrabCorner extends Composite {
 	 * @return size of grab corner
 	 */
 	public Point getGrabCornerSize() {
-
 		Point grabCornerSize = new Point(getShellBorderWidth(), getShellBorderWidth());
 		final Image grabCorner = getGrabCornerImage();
 		if (grabCorner != null) {
@@ -106,7 +108,6 @@ public class GrabCorner extends Composite {
 			}
 		}
 		return grabCornerSize;
-
 	}
 
 	/**
@@ -139,31 +140,21 @@ public class GrabCorner extends Composite {
 	 * @return border width
 	 */
 	private static int getShellBorderWidth() {
-
 		final DialogBorderRenderer borderRenderer = (DialogBorderRenderer) LnfManager.getLnf().getRenderer(
 				LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
-		if (borderRenderer != null) {
-			return borderRenderer.getBorderWidth();
-		} else {
-			return 0;
-		}
-
+		return borderRenderer != null ? borderRenderer.getBorderWidth() : 0;
 	}
 
 	/**
 	 * This Listener paint the grab corner.
 	 */
 	private class GrabPaintListener implements PaintListener {
-
 		public void paintControl(final PaintEvent e) {
-
 			final GC gc = e.gc;
 			final Image grabCornerImage = getGrabCornerImage();
 			if (grabCornerImage != null) {
 				gc.drawImage(grabCornerImage, 0, 0);
 			}
-
 		}
-
 	}
 }

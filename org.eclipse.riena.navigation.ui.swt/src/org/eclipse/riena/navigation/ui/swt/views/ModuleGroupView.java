@@ -39,6 +39,7 @@ import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.ui.filter.IUIFilter;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
@@ -116,7 +117,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 		moduleListener = new ModuleListener();
 
 		paintDelegation = new PaintDelegation();
-		addPaintListener(paintDelegation);
+		SWTFacade.getDefault().addPaintListener(this, paintDelegation);
 	}
 
 	/**
@@ -124,7 +125,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 	 */
 	public void unbind() {
 		getNavigationNode().removeListener(moduleGroupListener);
-		removePaintListener(paintDelegation);
+		SWTFacade.getDefault().removePaintListener(this, paintDelegation);
 		moduleGroupNode = null;
 	}
 

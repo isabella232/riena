@@ -100,6 +100,10 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		@Override
 		public void run() {
 
+			// TODO [ev] I think there are two problems with this code:
+			//   (a) getDisplay().isDisposed() will NPE when getDisplay() == null
+			//   (b) if the display is disposed, we won't get another one. What happens with 
+			//       the things that need to run?
 			while (PlatformUI.isWorkbenchRunning() && getDisplay() == null || getDisplay().isDisposed()) {
 				try {
 					Thread.sleep(50);

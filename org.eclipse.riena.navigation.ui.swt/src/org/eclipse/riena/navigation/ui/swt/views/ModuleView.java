@@ -17,7 +17,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
@@ -47,8 +50,6 @@ import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
-import org.eclipse.riena.navigation.ui.swt.component.ModuleToolTip;
-import org.eclipse.riena.navigation.ui.swt.component.SubModuleToolTip;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleTreeItemMarkerRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
@@ -56,6 +57,7 @@ import org.eclipse.riena.ui.core.marker.IIconizableMarker;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -371,7 +373,12 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 		addListeners();
 
-		new SubModuleToolTip(subModuleTree);
+		SWTFacade.getDefault().createSubModuleToolTip(subModuleTree, new LabelProvider() {
+			@Override
+			public String getText(final Object element) {
+				return ((INavigationNode<?>) element).getLabel();
+			}
+		});
 		setTreeBackGround();
 
 	}
@@ -426,11 +433,12 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 * Adds listeners to the sub-module tree.
 	 */
 	private void addListeners() {
-		getTree().addListener(SWT.Paint, new Listener() {
-			public void handleEvent(final Event event) {
+		final PaintListener paintListener = new PaintListener() {
+			public void paintControl(final PaintEvent event) {
 				onTreePaint(event.gc);
 			}
-		});
+		};
+		SWTFacade.getDefault().addPaintListener(getTree(), paintListener);
 
 		getTree().addListener(SWT.Expand, new Listener() {
 			public void handleEvent(final Event event) {
@@ -447,11 +455,12 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 		});
 
-		getTree().addListener(SWT.PaintItem, new Listener() {
+		final Listener paintItemListener = new Listener() {
 			public void handleEvent(final Event event) {
 				paintTreeItem(event);
 			}
-		});
+		};
+		SWTFacade.getDefault().addPaintItemListener(getTree(), paintItemListener);
 
 		new ModuleNavigationListener(getTree());
 	}
@@ -474,7 +483,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		title = new ModuleTitleBar(getParent(), SWT.NONE);
 		binding.addUIControl(title, WINDOW_RIDGET);
 		//		layoutTitle();
-		new ModuleToolTip(title);
+		SWTFacade.getDefault().createModuleToolTip(title);
 
 		body = new Composite(getParent(), SWT.DOUBLE_BUFFERED);
 		//		updateModuleView();

@@ -28,6 +28,8 @@ public class DisabledMarkerVisualizer {
 
 	// the painter
 	private static final EventListener DISABLED_MARKER_PAINTER = SWTFacade.getDefault().createDisabledPainter();
+	// true if running in RCP
+	private static boolean isRCP = SWTFacade.isRCP();
 	// the ridget
 	private final IRidget ridget;
 
@@ -96,7 +98,7 @@ public class DisabledMarkerVisualizer {
 
 	private Control[] getChildren(final Composite parent) {
 		Control[] result = parent.getChildren();
-		if (parent instanceof CCombo) {
+		if (isRCP && parent instanceof CCombo) {
 			// workaround for Bug 318301
 			result = new Control[2];
 			result[0] = ReflectionUtils.getHidden(parent, "text"); //$NON-NLS-1$

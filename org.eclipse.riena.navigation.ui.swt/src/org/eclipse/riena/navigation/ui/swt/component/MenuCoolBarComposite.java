@@ -32,6 +32,7 @@ import org.eclipse.ui.internal.WorkbenchWindow;
 
 import org.eclipse.riena.internal.navigation.ui.swt.CoolbarUtils;
 import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -113,7 +114,7 @@ public class MenuCoolBarComposite extends Composite {
 		menuCoolItem = CoolbarUtils.initCoolBar(menuCoolBar, getMenuBarFont());
 
 		menuToolBar = (ToolBar) menuCoolItem.getControl();
-		menuToolBar.addMouseMoveListener(new ToolBarMouseListener());
+		SWTFacade.getDefault().addMouseMoveListener(menuToolBar, new ToolBarMouseListener());
 
 		fillMenuBar();
 	}

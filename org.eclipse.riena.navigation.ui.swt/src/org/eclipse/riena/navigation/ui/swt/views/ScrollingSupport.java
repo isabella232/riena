@@ -40,6 +40,7 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
@@ -94,10 +95,10 @@ public class ScrollingSupport {
 	private void initMouseWheelObserver(final Composite navigationComponent) {
 		final Display display = navigationComponent.getDisplay();
 		final MouseWheelAdapter wheelAdapter = new MouseWheelAdapter();
-		display.addFilter(SWT.MouseWheel, wheelAdapter);
+		SWTFacade.getDefault().addFilterMouseWheel(display, wheelAdapter);
 		navigationComponent.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(final DisposeEvent e) {
-				display.removeFilter(SWT.MouseWheel, wheelAdapter);
+				SWTFacade.getDefault().removeFilterMouseWheel(display, wheelAdapter);
 			}
 		});
 	}

@@ -83,6 +83,7 @@ import org.eclipse.riena.ui.swt.IStatusLineContentFactory;
 import org.eclipse.riena.ui.swt.InfoFlyout;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineSpacer;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -187,8 +188,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	private void createInfoFlyout(final Composite mainComposite) {
-		final InfoFlyout flyout = new InfoFlyout(mainComposite);
-		binding.addUIControl(flyout, "infoFlyout"); //$NON-NLS-1$
+		// TODO [ev] need to provide an alternative for RAP
+		if (SWTFacade.isRCP()) {
+			final InfoFlyout flyout = new InfoFlyout(mainComposite);
+			binding.addUIControl(flyout, "infoFlyout"); //$NON-NLS-1$
+		}
 	}
 
 	@Override
@@ -204,6 +208,15 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	@Override
 	public void preWindowOpen() {
 		configureWindow();
+	}
+
+	@Override
+	public void postWindowCreate() {
+		super.postWindowCreate();
+		if (SWTFacade.isRAP()) {
+			final Shell shell = getWindowConfigurer().getWindow().getShell();
+			shell.setMaximized(true);
+		}
 	}
 
 	@Override
@@ -807,7 +820,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				final ILnfRenderer borderRenderer = LnfManager.getLnf().getRenderer(
 						LnfKeyConstants.TITLELESS_SHELL_BORDER_RENDERER);
 				borderRenderer.setBounds(bounds);
-				borderRenderer.paint(e.gc, null);
+				// TODO [ev] gc is sometimes disposed -- looks like a RAP bug, adding a workaround, need to file bug
+				if (!e.gc.isDisposed()) {
+					borderRenderer.paint(e.gc, null);
+				}
 			}
 		}
 	}

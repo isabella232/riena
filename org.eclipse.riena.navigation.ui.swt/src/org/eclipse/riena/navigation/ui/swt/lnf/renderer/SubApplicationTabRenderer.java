@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -201,7 +202,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		if (control.getBounds().height - (y + fontHeight) < 0) {
 			y = control.getBounds().height - fontHeight;
 		}
-		gc.drawText(getLabel(), x, y, SWT.DRAW_TRANSPARENT | SWT.DRAW_MNEMONIC);
+		gc.drawText(getLabel(), x, y, SWT.DRAW_TRANSPARENT | SWTFacade.DRAW_MNEMONIC);
 
 		// Selection
 		if (isActive() || flasherSupport.isProcessMarkerVisible()) {

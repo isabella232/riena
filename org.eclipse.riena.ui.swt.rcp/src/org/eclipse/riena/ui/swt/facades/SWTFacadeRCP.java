@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.swt.facades;
 
 import java.util.EventListener;
 
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
@@ -27,7 +28,10 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
+import org.eclipse.riena.ui.swt.ModuleTitleBar;
 import org.eclipse.riena.ui.swt.facades.internal.DisabledPainter;
+import org.eclipse.riena.ui.swt.facades.internal.ModuleToolTip;
+import org.eclipse.riena.ui.swt.facades.internal.SubModuleToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.TreeItemEraserAndPainter;
 
 /**
@@ -46,9 +50,24 @@ public final class SWTFacadeRCP extends SWTFacade {
 	}
 
 	@Override
-	public void addMouseMoveListener(final Control control, final Object listener) {
+	public void addFilterMouseExit(final Display display, final Listener listener) {
+		display.addFilter(SWT.MouseExit, listener);
+	}
+
+	@Override
+	public void addFilterMouseMove(final Display display, final Listener listener) {
+		display.addFilter(SWT.MouseMove, listener);
+	}
+
+	@Override
+	public void addFilterMouseWheel(final Display display, final Listener listener) {
+		display.addFilter(SWT.MouseWheel, listener);
+	}
+
+	@Override
+	public void addMouseMoveListener(final Control control, final MouseMoveListener listener) {
 		if (listener != null) {
-			control.addMouseMoveListener((MouseMoveListener) listener);
+			control.addMouseMoveListener(listener);
 		}
 	}
 
@@ -90,6 +109,16 @@ public final class SWTFacadeRCP extends SWTFacade {
 	}
 
 	@Override
+	public void createModuleToolTip(final ModuleTitleBar parent) {
+		new ModuleToolTip(parent);
+	}
+
+	@Override
+	public void createSubModuleToolTip(final Tree parent, final ILabelProvider labelProvider) {
+		new SubModuleToolTip(parent, labelProvider);
+	}
+
+	@Override
 	public Listener createTreeItemEraserAndPainter() {
 		return new TreeItemEraserAndPainter();
 	}
@@ -115,6 +144,11 @@ public final class SWTFacadeRCP extends SWTFacade {
 	}
 
 	@Override
+	public void removeFilterMouseWheel(final Display display, final Listener listener) {
+		display.removeFilter(SWT.MouseWheel, listener);
+	}
+
+	@Override
 	public void removeMouseMoveListener(final Control control, final Object listener) {
 		if (control != null) {
 			control.removeMouseMoveListener((MouseMoveListener) listener);
@@ -137,5 +171,4 @@ public final class SWTFacadeRCP extends SWTFacade {
 			control.removePaintListener((PaintListener) listener);
 		}
 	}
-
 }

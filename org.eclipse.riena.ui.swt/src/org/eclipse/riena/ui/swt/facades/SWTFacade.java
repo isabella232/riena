@@ -13,7 +13,9 @@ package org.eclipse.riena.ui.swt.facades;
 import java.util.EventListener;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
@@ -23,6 +25,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
+
+import org.eclipse.riena.ui.swt.ModuleTitleBar;
 
 /**
  * Single-sourced access to SWT methods that are not available in RAP.
@@ -36,6 +40,12 @@ import org.eclipse.swt.widgets.Tree;
 public abstract class SWTFacade {
 
 	private static final SWTFacade INSTANCE = (SWTFacade) FacadeFactory.newFacade(SWTFacade.class);
+
+	/**
+	 * Draw constant indicating whether the string drawing operation should
+	 * handle mnemonics (value is 1&lt;&lt;3).
+	 */
+	public static final int DRAW_MNEMONIC = 1 << 3;
 
 	/**
 	 * Traversal event detail field value indicating that a mnemonic key
@@ -63,6 +73,13 @@ public abstract class SWTFacade {
 	}
 
 	/**
+	 * Returns true if the trident animation library is available.
+	 */
+	public static final boolean hasTrident() {
+		return Platform.getBundle("org.pushingpixels.trident") != null; //$NON-NLS-1$
+	}
+
+	/**
 	 * Returns true if running on the RAP platform, false otherwise.
 	 */
 	public static final boolean isRAP() {
@@ -77,13 +94,6 @@ public abstract class SWTFacade {
 	}
 
 	/**
-	 * Returns true if the trident animation library is available.
-	 */
-	public static final boolean hasTrident() {
-		return Platform.getBundle("org.pushingpixels.trident") != null; //$NON-NLS-1$
-	}
-
-	/**
 	 * Adds an SWT.EraseItem listener to the given table.
 	 */
 	public abstract void addEraseItemListener(Table table, Listener listener);
@@ -94,16 +104,52 @@ public abstract class SWTFacade {
 	public abstract void addEraseItemListener(Tree tree, Listener listener);
 
 	/**
+	 * Adds the given listener as an SWT.MouseExit filter to the given display.
+	 * 
+	 * @param display
+	 *            a Display instance; never null
+	 * @param listener
+	 *            a {@link Listener}; never null
+	 * @since 2.1
+	 */
+	public abstract void addFilterMouseExit(Display display, Listener listener);
+
+	/**
+	 * Adds the given listener as an SWT.MouseMove filter to the given display.
+	 * 
+	 * @param display
+	 *            a Display instance; never null
+	 * @param listener
+	 *            a {@link Listener}; never null
+	 * @since 2.1
+	 */
+	public abstract void addFilterMouseMove(Display display, Listener listener);
+
+	/**
+	 * Adds the given listener as an SWT.MouseWheel filter to the given display.
+	 * 
+	 * @param display
+	 *            a Display instance; never null
+	 * @param listener
+	 *            a {@link Listener}; never null
+	 * @since 2.1
+	 */
+	public abstract void addFilterMouseWheel(Display display, Listener listener);
+
+	/**
 	 * Adds a MouseMoveListener to the given control.
 	 * 
 	 * @param listener
 	 *            an Object that implements the MouseMoveListener interface, or
 	 *            null
 	 */
-	public abstract void addMouseMoveListener(Control control, Object listener);
+	public abstract void addMouseMoveListener(Control control, MouseMoveListener listener);
 
 	/**
 	 * Adds a MouseTrackListener to the given control.
+	 * 
+	 * @param listener
+	 *            an {@link MouseTrackListener}; never null
 	 */
 	public abstract void addMouseTrackListener(Control control, MouseTrackListener listener);
 
@@ -122,13 +168,6 @@ public abstract class SWTFacade {
 	public abstract void addPaintListener(Control control, EventListener listener);
 
 	/**
-	 * Returns a paint listener for modifying the disabled look of a control.
-	 * 
-	 * @return a PaintListener or null (in RAP)
-	 */
-	public abstract EventListener createDisabledPainter();
-
-	/**
 	 * Create a custom cursor from the given {@code cursorImage}. If the image
 	 * is null, or custom cursors are not supported, create a standard cursor
 	 * with the given {@code alternateStyle}.
@@ -144,6 +183,27 @@ public abstract class SWTFacade {
 	 *         instance once no longer needed.
 	 */
 	public abstract Cursor createCursor(Display display, Image cursorImage, int alternateStyle);
+
+	/**
+	 * Returns a paint listener for modifying the disabled look of a control.
+	 * 
+	 * @return a PaintListener or null (in RAP)
+	 */
+	public abstract EventListener createDisabledPainter();
+
+	/**
+	 * TODO [ev] docs
+	 * 
+	 * @since 2.1
+	 */
+	public abstract void createModuleToolTip(ModuleTitleBar parent);
+
+	/**
+	 * TODO [ev] docs
+	 * 
+	 * @since 2.1
+	 */
+	public abstract void createSubModuleToolTip(Tree parent, ILabelProvider labelProvider);
 
 	/**
 	 * Returns an SWT.EraseItem / SWT.PaintItem listener, that will paint all
@@ -177,6 +237,18 @@ public abstract class SWTFacade {
 	 * Removes an SWT.EraseItem listener from the given tree.
 	 */
 	public abstract void removeEraseItemListener(Tree tree, Listener listener);
+
+	/**
+	 * Removes the given listener as an SWT.MouseWheel filter to the given
+	 * display.
+	 * 
+	 * @param display
+	 *            a Display instance; never null
+	 * @param listener
+	 *            a {@link Listener}; never null
+	 * @since 2.1
+	 */
+	public abstract void removeFilterMouseWheel(Display display, Listener listener);
 
 	/**
 	 * Removes a MouseMoveListener from the given control.
