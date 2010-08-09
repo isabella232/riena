@@ -23,7 +23,7 @@ import org.eclipse.riena.navigation.listener.INavigationNodeListener;
 public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IModuleNodeListener> implements IModuleNode {
 
 	private boolean presentSingleSubModule;
-	private boolean closeable;
+	private boolean closable;
 
 	/**
 	 * Creates a ModuleNode.
@@ -77,16 +77,9 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 */
 	private void initialize() {
 		presentSingleSubModule = false;
-		closeable = true;
+		closable = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.navigation.model.NavigationNode#moveTo(org.eclipse.
-	 * riena.navigation.NavigationNodeId)
-	 */
 	@Override
 	public void moveTo(final NavigationNodeId targetId) {
 		getNavigationProcessor().move(this, targetId);
@@ -121,17 +114,12 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 		return isPresentSingleSubModule() || !(getChildren().size() == 1 && getChild(0).getChildren().isEmpty());
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.IModuleNode#calcDepth()
-	 */
 	public int calcDepth() {
-
 		if (!isPresentSubModules()) {
 			return 0;
 		}
 
 		return calcDepth(this);
-
 	}
 
 	/**
@@ -158,18 +146,12 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.IModuleNode#isClosable()
-	 */
 	public boolean isClosable() {
-		return closeable;
+		return closable;
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.IModuleNode#setClosable(boolean)
-	 */
 	public void setClosable(final boolean closeable) {
-		this.closeable = closeable;
+		this.closable = closeable;
 	}
 
 }
