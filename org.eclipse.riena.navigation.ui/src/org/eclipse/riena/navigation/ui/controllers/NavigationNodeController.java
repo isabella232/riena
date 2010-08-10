@@ -106,41 +106,44 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	/**
-	 * Overwrite in concrete subclass
-	 * 
-	 * @see org.eclipse.riena.navigation.IActivateable#allowsActivate(org.eclipse.riena.navigation.INavigationNode)
+	 * {@inheritDoc}
+	 * <p>
+	 * Override in concrete subclass.
 	 */
 	public boolean allowsActivate(final INavigationNode<?> pNode, final INavigationContext context) {
 		return true;
 	}
 
 	/**
-	 * Overwrite in concrete subclass
-	 * 
-	 * @see org.eclipse.riena.navigation.IActivateable#allowsDeactivate(org.eclipse.riena.navigation.INavigationNode)
+	 * {@inheritDoc}
+	 * <p>
+	 * Override in concrete subclass.
 	 */
 	public boolean allowsDeactivate(final INavigationNode<?> pNode, final INavigationContext context) {
 		return true;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.controller.IController#afterBind()
-	 */
 	public void afterBind() {
 		updateNavigationNodeMarkers();
 	}
 
 	/**
-	 * @return true if the controller is activated
+	 * @return <code>true</code> if the controller is activated
 	 */
 	public boolean isActivated() {
 		return getNavigationNode() != null && getNavigationNode().isActivated();
 	}
 
+	/**
+	 * @return <code>true</code> if the node is enabled
+	 */
 	public boolean isEnabled() {
 		return getNavigationNode() != null && getNavigationNode().isEnabled();
 	}
 
+	/**
+	 * @return <code>true</code> if the node is visible
+	 */
 	public boolean isVisible() {
 		return getNavigationNode() != null && getNavigationNode().isVisible();
 	}
@@ -153,24 +156,21 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	/**
-	 * @return true if the controller is activated
+	 * @return <code>true</code> if the controller is created
 	 */
 	public boolean isCreated() {
 		return getNavigationNode() == null || getNavigationNode().isCreated();
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.INavigationNodeController#allowsDispose(org.eclipse.riena.navigation.INavigationNode,
-	 *      org.eclipse.riena.navigation.INavigationContext)
+	 * {@inheritDoc}
+	 * <p>
+	 * Override in concrete subclass.
 	 */
 	public boolean allowsDispose(final INavigationNode<?> node, final INavigationContext context) {
 		return true;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#addRidget(java.lang.String,
-	 *      org.eclipse.riena.ui.internal.ridgets.IRidget)
-	 */
 	public void addRidget(final String id, final IRidget ridget) {
 		ridget.addPropertyChangeListener(IBasicMarkableRidget.PROPERTY_MARKER, propertyChangeListener);
 		ridget.addPropertyChangeListener(IRidget.PROPERTY_SHOWING, propertyChangeListener);
@@ -238,9 +238,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		return ridget;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#getRidgets()
-	 */
 	public Collection<? extends IRidget> getRidgets() {
 		return ridgets.values();
 	}
@@ -347,12 +344,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.navigation.IContext#setContext(java.lang.String,
-	 * java.lang.Object)
-	 */
 	/**
 	 * @since 1.2
 	 */
@@ -361,11 +352,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		getNavigationNode().setContext(key, value);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.navigation.IContext#getContext(java.lang.String)
-	 */
 	/**
 	 * @since 1.2
 	 */
@@ -374,9 +360,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		return getNavigationNode().getContext(key);
 	}
 
-	/**
-	 * @see INavigationNodeController#navigationArgumentChanged(NavigationArgument)
-	 */
 	public void navigationArgumentChanged(final NavigationArgument argument) {
 	}
 
