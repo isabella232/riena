@@ -18,7 +18,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import com.caucho.hessian.client.HessianProxyFactory;
@@ -28,7 +27,6 @@ import com.caucho.hessian.io.Hessian2Output;
 
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
-import org.eclipse.riena.communication.core.zipsupport.ReusableBufferedInputStream;
 
 public class RienaHessianProxyFactory extends HessianProxyFactory {
 
@@ -63,10 +61,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 		setChunkedPost(transferDataChunked);
 
 		if (!propertiesInitialized) {
-			final String zipProp = System.getProperty(RIENA_COMMUNICATION_ZIP_PROPERTY);
-			if (zipProp != null && zipProp.length() > 0) {
-				zipClientRequest = zipProp.equalsIgnoreCase("true");
-			}
+			zipClientRequest = Boolean.getBoolean(RIENA_COMMUNICATION_ZIP_PROPERTY);
 			propertiesInitialized = true;
 		}
 	}
@@ -94,7 +89,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 
 	@Override
 	protected URLConnection openConnection(final URL url) throws IOException {
-		URLConnection connection;
+		final URLConnection connection;
 		final ICallMessageContext mc = mca.getMessageContext();
 		String methodName = mc.getMethodName();
 		final String requestId = mc.getRequestId();
@@ -121,49 +116,24 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 		}
 
 		CONNECTIONS.set((HttpURLConnection) connection);
+		if (isZipClientRequest()) {
+			return new GZippingHttpURLConnectionWrapper((HttpURLConnection) connection);
+		}
 		return connection;
 	}
 
 	@Override
 	public AbstractHessianInput getHessianInput(final InputStream is) {
 		final ICallMessageContext messageContext = mca.getMessageContext();
-		boolean inputWasGZIP = false;
-
-		final InputStream myInputStream;
-
-		try {
-			if (isZipClientRequest()) {
-				final InputStream zipTestInputStream = new ReusableBufferedInputStream(is);
-				if (zipTestInputStream.markSupported()) {
-					zipTestInputStream.mark(20);
-					int readMAGIC;
-					readMAGIC = zipTestInputStream.read() + zipTestInputStream.read() * 256;
-					if (readMAGIC == GZIPInputStream.GZIP_MAGIC) {
-						inputWasGZIP = true;
-					}
-					zipTestInputStream.reset();
-				}
-				if (inputWasGZIP) {
-					myInputStream = new GZIPInputStream(zipTestInputStream);
-				} else {
-					myInputStream = zipTestInputStream;
-				}
-			} else {
-				myInputStream = is;
-			}
-		} catch (final IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
 
 		if (messageContext.getProgressMonitorList() == null) {
-			return super.getHessianInput(myInputStream);
+			return super.getHessianInput(is);
 		} else {
 			return super.getHessianInput(new InputStream() {
 
 				@Override
 				public int read() throws IOException {
-					final int b = myInputStream.read();
+					final int b = is.read();
 					if (b != -1) {
 						messageContext.fireReadEvent(1);
 					}
@@ -175,29 +145,17 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 	}
 
 	@Override
-	public AbstractHessianOutput getHessianOutput(final OutputStream outputStreamParameter) {
+	public AbstractHessianOutput getHessianOutput(final OutputStream os) {
 		final ICallMessageContext messageContext = mca.getMessageContext();
 
-		final OutputStream myOutputStream;
-		if (isZipClientRequest()) {
-			try {
-				myOutputStream = new GZIPOutputStream(outputStreamParameter);
-			} catch (final IOException e) {
-				throw new RuntimeException(e);
-			}
-		} else {
-			myOutputStream = outputStreamParameter;
-		}
-
 		if (messageContext.getProgressMonitorList() == null) {
-			//			return super.getHessianOutput(myOutputStream);
-			return getHessianOutputImpl(myOutputStream);
+			return getHessianOutputImpl(os);
 		} else {
 			return getHessianOutputImpl(new OutputStream() {
 
 				@Override
 				public void write(final int b) throws IOException {
-					myOutputStream.write(b);
+					os.write(b);
 					messageContext.fireWriteEvent(1);
 				}
 

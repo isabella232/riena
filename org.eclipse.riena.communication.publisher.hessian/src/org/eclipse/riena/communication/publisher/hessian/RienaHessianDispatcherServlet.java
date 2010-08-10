@@ -122,35 +122,26 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 			httpRes.sendError(HttpServletResponse.SC_NOT_FOUND, "unknown url :" + httpReq.getRequestURI()); //$NON-NLS-1$
 			return;
 		}
-		final Object instance = rsd.getService();
-		final HessianSkeleton sk = new HessianSkeleton(instance, rsd.getServiceInterfaceClass());
+
 		final String gzip = httpReq.getHeader("Content-Encoding"); //$NON-NLS-1$
-		boolean gzipFlag = false;
+		final boolean gzipFlag = "gzip".equals(gzip); //$NON-NLS-1$
 		boolean inputWasGZIP = false;
 
-		if (gzip != null && gzip.equals("gzip")) { //$NON-NLS-1$
-			gzipFlag = true;
-		}
 		InputStream requestInputStream = httpReq.getInputStream();
 		if (gzipFlag) {
 			final BufferedInputStream tempInput = new ReusableBufferedInputStream(requestInputStream);
 			if (tempInput.markSupported()) {
 				tempInput.mark(20);
 				final int readMAGIC = tempInput.read() + tempInput.read() * 256;
-				if (readMAGIC == GZIPInputStream.GZIP_MAGIC) {
-					inputWasGZIP = true;
-				}
+				inputWasGZIP = (readMAGIC == GZIPInputStream.GZIP_MAGIC);
 				tempInput.reset();
-				requestInputStream = tempInput;
 			}
-			if (inputWasGZIP) {
-				requestInputStream = new GZIPInputStream(requestInputStream);
-			}
+			requestInputStream = inputWasGZIP ? new GZIPInputStream(tempInput) : tempInput;
 		}
 
 		final Hessian2Input inp = new Hessian2Input(requestInputStream);
-		AbstractHessianOutput out;
 		inp.setSerializerFactory(serializerFactory);
+		inp.setCloseStreamOnClose(true);
 
 		final int code = inp.read();
 		if (code != 'c') {
@@ -167,8 +158,11 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 		if (inputWasGZIP) {
 			outputStream = new GZIPOutputStream(outputStream);
 		}
+
+		AbstractHessianOutput out;
 		if (major >= 2) {
 			out = new Hessian2Output(outputStream);
+			((Hessian2Output) out).setCloseStreamOnClose(true);
 		} else {
 			out = new HessianOutput(outputStream);
 		}
@@ -176,6 +170,8 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 		out.setSerializerFactory(serializerFactory);
 
 		try {
+			final Object instance = rsd.getService();
+			final HessianSkeleton sk = new HessianSkeleton(instance, rsd.getServiceInterfaceClass());
 			sk.invoke(inp, out);
 		} catch (final Throwable t) {
 			Throwable t2 = t;
@@ -186,11 +182,8 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 			Service.get(IExceptionHandlerManager.class).handleException(t2);
 			throw new ServletException(t);
 		} finally {
+			inp.close();
 			out.close(); // Hessian2Output forgets to close if the service throws an exception
-			if (outputStream instanceof GZIPOutputStream) {
-				((GZIPOutputStream) outputStream).finish();
-			}
-			outputStream.flush();
 		}
 	}
 
