@@ -44,24 +44,16 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	}
 
 	/**
-	 * Listener observes the node of the module. If the lable or the icon
+	 * Listener observes the node of the module. If the label or the icon
 	 * changed, the window ridget will be updated.
 	 */
 	private final class MyModuleNodeListener extends ModuleNodeListener {
 
-		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#labelChanged
-		 *      (org.eclipse.riena.navigation.INavigationNode)
-		 */
 		@Override
 		public void labelChanged(final IModuleNode moduleNode) {
 			updateLabel();
 		}
 
-		/**
-		 * @see org.eclipse.riena.navigation.model.NavigationNodeAdapter#iconChanged
-		 *      (org.eclipse.riena.navigation.INavigationNode)
-		 */
 		@Override
 		public void iconChanged(final IModuleNode source) {
 			updateIcon();
@@ -89,16 +81,10 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 		return windowRidget;
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
-	 */
 	public void configureRidgets() {
 		setCloseable(getNavigationNode().isClosable());
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.NavigationNodeController#afterBind()
-	 */
 	@Override
 	public void afterBind() {
 		super.afterBind();
@@ -166,7 +152,6 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	}
 
 	public boolean isFirstChild() {
-
 		return getNavigationNode().getParent().getChild(0) == getNavigationNode();
 	}
 
@@ -202,16 +187,10 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 
 	private class WindowListener implements IWindowRidgetListener {
 
-		/**
-		 * @see org.eclipse.riena.ui.internal.ridgets.listener.IWindowRidgetListener#activated()
-		 */
 		public void activated() {
 			getNavigationNode().activate();
 		}
 
-		/**
-		 * @see org.eclipse.riena.ui.internal.ridgets.listener.IWindowRidgetListener#closed()
-		 */
 		public void closed() {
 			getNavigationNode().dispose();
 		}
