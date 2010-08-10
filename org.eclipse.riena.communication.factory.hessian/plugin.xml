@@ -69,6 +69,14 @@
 	</extension>
 
 	<extension
+       id="org.eclipse.riena.communication.hessian.ELIndirectListSerializerFactory"
+       point="org.eclipse.riena.communication.factory.hessian.serializerFactories">
+		<factory
+			implementation="org.eclipse.riena.internal.communication.factory.hessian.EclipsePersistenceIndirectListSerializerFactory">
+		</factory>
+	</extension>
+
+	<extension
 		point="org.eclipse.riena.communication.core.remoteServiceFactories">
 		<factory
 			protocol="hessian"
