@@ -229,7 +229,7 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			gc.drawText(text, x, y, true);
 		}
 
-		// Hover border -> it would be better to have a separated renderer for the modules
+		// Hover border -> it would be better to have a separated renderer for the ModuleTitleBar
 		if (control instanceof ModuleTitleBar && isHover() && (!isPressed() || isActive())) {
 			x = getBounds().x;
 			y = getBounds().y;
