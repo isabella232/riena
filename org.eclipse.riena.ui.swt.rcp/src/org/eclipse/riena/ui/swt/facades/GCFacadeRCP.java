@@ -44,4 +44,9 @@ public class GCFacadeRCP extends GCFacade {
 		gc.setAntialias(option);
 	}
 
+	@Override
+	public void setLineDash(final GC gc, final int[] dashes) {
+		gc.setLineDash(dashes);
+	}
+
 }

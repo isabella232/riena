@@ -36,6 +36,7 @@ import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubApplicationSwitcherRenderer;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
@@ -158,7 +159,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	private final class MnemonicListener implements TraverseListener {
 
 		public void keyTraversed(final TraverseEvent evt) {
-			if (evt.detail == SWT.TRAVERSE_MNEMONIC) {
+			if (evt.detail == SWTFacade.TRAVERSE_MNEMONIC) {
 				final SubApplicationItem item = getItem(evt.character);
 				activateItem(item);
 			}

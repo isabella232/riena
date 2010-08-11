@@ -98,4 +98,19 @@ public abstract class GCFacade {
 	 */
 	public abstract void setAntialias(GC gc, int option);
 
+	/**
+	 * Sets the line dash style to the given argument. A non-null argument
+	 * implies that the line style is set to SWT.LINE_CUSTOM. A null value
+	 * implies that the line style is set to SWT.LINE_SOLID.
+	 * <p>
+	 * The default value for {@code dashes} is null.
+	 * 
+	 * @param GC
+	 *            the GC instance, never null
+	 * @param dashes
+	 *            the dash style to use when drawing a line. Example:
+	 *            <tt>new int[] { 5, 5 }</tt>
+	 * @since 2.1
+	 */
+	public abstract void setLineDash(GC gc, int[] dashes);
 }
