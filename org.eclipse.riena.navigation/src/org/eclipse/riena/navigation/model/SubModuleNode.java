@@ -22,6 +22,7 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 
 	private boolean selectable = true;
 	private boolean closeSubTree = false;
+	private boolean closable = false;
 
 	/**
 	 * Creates a SubModuleNode.
@@ -94,6 +95,20 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	 */
 	public void setCloseSubTree(final boolean close) {
 		this.closeSubTree = close;
+	}
+
+	/**
+	 * @since 2.1
+	 */
+	public boolean isClosable() {
+		return closable;
+	}
+
+	/**
+	 * @since 2.1
+	 */
+	public void setClosable(final boolean closeable) {
+		this.closable = closeable;
 	}
 
 }

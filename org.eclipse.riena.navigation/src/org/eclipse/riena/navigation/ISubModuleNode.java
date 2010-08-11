@@ -57,4 +57,23 @@ public interface ISubModuleNode extends INavigationNode<ISubModuleNode>,
 	 */
 	void setCloseSubTree(boolean close);
 
+	/**
+	 * Indicates whether the user should have an opportunity to close the
+	 * subModule.
+	 * 
+	 * @return {@code true} if the subModule should never be closed; by default
+	 *         is {@code false}
+	 * @since 2.1
+	 */
+	boolean isClosable();
+
+	/**
+	 * Sets whether the user should have an opportunity to close the subModule.
+	 * 
+	 * @param closable
+	 *            {@code false} if the subModule should never be closed
+	 * @since 2.1
+	 */
+	void setClosable(boolean closable);
+
 }

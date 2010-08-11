@@ -29,42 +29,33 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	private boolean requiresPreparation;
 	private boolean visible;
 	private boolean expanded;
+	private boolean closable;
 
 	/**
 	 * Creates a new instance of {@code SubModuleNode2Extension} and sets the
-	 * default value of the property {@code selectable}.
+	 * default value of the properties {@code selectable, visible, expanded} and
+	 * {@code closable}.
 	 */
 	public SubModuleNode2Extension() {
 		selectable = true;
 		visible = true;
 		expanded = false;
+		closable = false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ISubModuleNode2Extension[] getChildNodes() {
 		return (ISubModuleNode2Extension[]) super.getChildNodes();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public ISubModuleNode2Extension[] getSubModuleNodes() {
 		return getChildNodes();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public String getViewId() {
 		return viewId;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Class<? extends IController> getController() {
 		return controller;
 	}
@@ -78,16 +69,10 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 		return controller.newInstance();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public boolean isSharedView() {
 		return sharedView;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public boolean isSelectable() {
 		return selectable;
 	}
@@ -155,14 +140,6 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 		this.requiresPreparation = requiresPreparation;
 	}
 
-	public boolean isExpanded() {
-		return expanded;
-	}
-
-	public boolean isVisible() {
-		return visible;
-	}
-
 	/**
 	 * Sets whether the SubModule should be expanded on system start.
 	 * 
@@ -173,6 +150,28 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 		this.expanded = expanded;
 	}
 
+	public boolean isExpanded() {
+		return expanded;
+	}
+
+	/**
+	 * Sets whether the SubModule can be closed.
+	 * 
+	 * @param expanded
+	 *            {@code true} can be closed; otherwise {@code false}
+	 * @since 2.1
+	 */
+	public void setClosable(final boolean closeable) {
+		this.closable = closeable;
+	}
+
+	/**
+	 * @since 2.1
+	 */
+	public boolean isClosable() {
+		return closable;
+	}
+
 	/**
 	 * Sets whether the SubModule should be visible on system start.
 	 * 
@@ -181,6 +180,10 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	 */
 	public void setVisible(final boolean visible) {
 		this.visible = visible;
+	}
+
+	public boolean isVisible() {
+		return visible;
 	}
 
 }

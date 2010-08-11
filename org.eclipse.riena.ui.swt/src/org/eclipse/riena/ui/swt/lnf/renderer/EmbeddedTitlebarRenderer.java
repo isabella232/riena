@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.ui.swt.ModuleTitleBar;
 import org.eclipse.riena.ui.swt.facades.GCFacade;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
@@ -228,8 +229,8 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 			gc.drawText(text, x, y, true);
 		}
 
-		// Hover border
-		if (isHover() && (!isPressed() || isActive())) {
+		// Hover border -> it would be better to have a separated renderer for the modules
+		if (control instanceof ModuleTitleBar && isHover() && (!isPressed() || isActive())) {
 			x = getBounds().x;
 			y = getBounds().y;
 			w = getBounds().width;
@@ -239,7 +240,6 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		}
 
 		getFlasherSupport().startFlasher();
-
 	}
 
 	public boolean isActive() {

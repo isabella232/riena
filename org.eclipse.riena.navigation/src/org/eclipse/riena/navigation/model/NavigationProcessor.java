@@ -33,6 +33,7 @@ import org.eclipse.riena.core.util.Trace;
 import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.IJumpTargetListener;
 import org.eclipse.riena.navigation.IJumpTargetListener.JumpTargetState;
+import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationHistory;
@@ -41,6 +42,7 @@ import org.eclipse.riena.navigation.INavigationHistoryListener;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
 import org.eclipse.riena.navigation.INavigationProcessor;
+import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -734,7 +736,14 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	private List<INavigationNode<?>> getNodesToDeactivateOnDispose(final INavigationNode<?> toDispose) {
 		final List<INavigationNode<?>> allToDispose = new LinkedList<INavigationNode<?>>();
 		addAllChildren(allToDispose, toDispose);
+		if (isOnlySubModule(toDispose)) {
+			allToDispose.add(toDispose.getParent());
+		}
 		return allToDispose;
+	}
+
+	private boolean isOnlySubModule(final INavigationNode<?> node) {
+		return node.getParent() instanceof IModuleNode && node.getParent().getChildren().size() == 1;
 	}
 
 	private void addAllChildren(final List<INavigationNode<?>> allToDispose, final INavigationNode<?> toDispose) {
@@ -753,13 +762,13 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @return a list of nodes
 	 */
 	private List<INavigationNode<?>> getNodesToActivateOnDispose(final INavigationNode<?> toDispose) {
-		// on dispose must only then something be activated, if one of the
-		// modules to dispose was active
+		// only if the module to dispose was active on dispose,
+		// something else has to be activated
 		// we assume, that if any submodule of this module was active,
 		// than this module is active itself
 		// while dispose of a node, the next brother node must be activated
 		if (toDispose.isActivated()) {
-			final INavigationNode<?> parentOfToDispose = toDispose.getParent();
+			final INavigationNode<?> parentOfToDispose = getParentToActivate(toDispose);
 			INavigationNode<?> brotherToActivate = null;
 			if (parentOfToDispose != null) {
 				final List<?> childrenOfParentOfToDispose = parentOfToDispose.getChildren();
@@ -783,8 +792,19 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		return new LinkedList<INavigationNode<?>>();
 	}
 
+	private INavigationNode<?> getParentToActivate(final INavigationNode<?> node) {
+		if (isOnlySubModule(node)) {
+			if (node.getParentOfType(IModuleGroupNode.class).getChildren().size() == 1) {
+				return node.getParentOfType(ISubApplicationNode.class);
+			}
+			return node.getParentOfType(IModuleGroupNode.class);
+		}
+		return node.getParent();
+
+	}
+
 	/**
-	 * Removes all not activateable nodes (e.g. hidden nodes) from the given
+	 * Removes all not activatable nodes (e.g. hidden nodes) from the given
 	 * list.
 	 * 
 	 * @param nodes

@@ -158,12 +158,14 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		final ISubModuleNode buttonsSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.buttons"), "Buttons"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(buttonsSubModule, RidgetsSubModuleController.class, RidgetsSubModuleView.ID, false);
+		buttonsSubModule.setClosable(true);
 		playgroundModule.addChild(buttonsSubModule);
 
 		final ISubModuleNode choiceSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.choice"), "Choice"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(choiceSubModule, ChoiceSubModuleController.class,
 				ChoiceSubModuleView.class.getName(), false);
+		choiceSubModule.setClosable(true);
 		playgroundModule.addChild(choiceSubModule);
 
 		final ISubModuleNode comboFolderSubModule = buildComboNodes();

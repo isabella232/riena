@@ -31,6 +31,7 @@ import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
+import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
 /**
  * Default implementation for a SubModuleController.
@@ -52,12 +53,15 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 */
 	private IRidget initialFocus;
 
+	private final WindowListener windowListener;
+
 	public SubModuleController() {
 		this(null);
 	}
 
 	public SubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
+		windowListener = new WindowListener();
 	}
 
 	/**
@@ -94,6 +98,10 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		updateIcon();
 		updateCloseable();
 		updateActive();
+
+		if (getWindowRidget() != null) {
+			getWindowRidget().addWindowRidgetListener(windowListener);
+		}
 	}
 
 	/**
@@ -224,7 +232,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 *            the windowRidget to set
 	 */
 	public void setWindowRidget(final IWindowRidget windowRidget) {
-		if (getRidget(IWindowRidget.class, WINDOW_RIDGET) != windowRidget) {
+		if (getWindowRidget() != windowRidget) {
 			addRidget(WINDOW_RIDGET, windowRidget);
 		}
 	}
@@ -328,7 +336,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	private void updateCloseable() {
 		final IWindowRidget windowRidget = getWindowRidget();
 		if (windowRidget != null) {
-			windowRidget.setCloseable(false);
+			windowRidget.setCloseable(getNavigationNode().isClosable());
 		}
 	}
 
@@ -341,5 +349,17 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		if (windowRidget != null) {
 			windowRidget.setTitle(getFullTitle());
 		}
+	}
+
+	private class WindowListener implements IWindowRidgetListener {
+
+		public void closed() {
+			getNavigationNode().dispose();
+		}
+
+		public void activated() {
+
+		}
+
 	}
 }

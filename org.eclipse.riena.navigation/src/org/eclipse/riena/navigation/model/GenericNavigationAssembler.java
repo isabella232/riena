@@ -338,6 +338,7 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 			submodule.setIcon(subModuleDefinition.getIcon());
 			submodule.setVisible(subModuleDefinition.isVisible());
 			submodule.setExpanded(subModuleDefinition.isExpanded());
+			submodule.setClosable(subModuleDefinition.isClosable());
 			submodule.setSelectable(subModuleDefinition.isSelectable());
 
 			updateContext(submodule, navigationArgument);

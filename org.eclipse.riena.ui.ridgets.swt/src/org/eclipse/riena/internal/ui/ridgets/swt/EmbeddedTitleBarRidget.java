@@ -45,7 +45,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	 * Creates a new instance of {@code EmbeddedTitleBarRidget}.
 	 */
 	public EmbeddedTitleBarRidget() {
-		closeable = true;
+		closeable = false;
 		active = true;
 		windowRidgetListeners = new ListenerList<IWindowRidgetListener>(IWindowRidgetListener.class);
 		titleBarListener = new TitleBarListener();

@@ -105,6 +105,16 @@ public interface ISubModuleNode2Extension extends INode2Extension {
 	boolean isExpanded();
 
 	/**
+	 * Indicates whether the view can be closed.
+	 * 
+	 * @return {@code true} if the specified view can be closed, {@code false}
+	 *         otherwise
+	 * @since 2.1
+	 */
+	@DefaultValue("false")
+	boolean isClosable();
+
+	/**
 	 * Indicates whether the SubModule is visible in the navigation tree on
 	 * system start. <br>
 	 * The default value is {@code true}

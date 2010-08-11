@@ -665,6 +665,7 @@
                   name="Selectable Submodule"
                   closable="true">
                <subModule
+                     closable="true"
                      controller="org.eclipse.riena.example.client.controllers.SalaryController"
                      expanded="false"
                      name="Salary"
@@ -675,6 +676,7 @@
                      visible="true">
                </subModule>
                <subModule
+                     closable="true"
                      expanded="true"
                      name="Contracts (not selectable)"
                      nodeId="org.eclipse.riena.example.selectablesubmodule.contracts"
@@ -682,6 +684,7 @@
                      sharedView="false"
                      visible="true">
                   <subModule
+                        closable="true"
                         controller="org.eclipse.riena.example.client.controllers.ServiceContractsController"
                         expanded="false"
                         name="ServiceContracts"
@@ -692,6 +695,7 @@
                         visible="true">
                   </subModule>
                   <subModule
+                        closable="true"
                         controller="org.eclipse.riena.example.client.controllers.OutlineContractsController"
                         expanded="false"
                         name="OutlineContracts"
@@ -906,6 +910,7 @@
                   name="Allows Dispose"
                   nodeId="org.eclipse.riena.example.allowsdispose.module">
                <subModule
+                     closable="true"
                      controller="org.eclipse.riena.example.client.controllers.AllowsDisposeSubModuleController"
                      expanded="false"
                      name="Allows Dispose"
@@ -1130,9 +1135,10 @@
                    nodeId="org.eclipse.riena.example.exceptiontest.module"
                    closable="true">
                 <subModule
+                      closable="true"
                       controller="org.eclipse.riena.example.client.controllers.ExceptionTestController"
-                      sharedView="false"
                       nodeId="org.eclipse.riena.example.exceptiontest.submodule"
+                      sharedView="false"
                       viewId="org.eclipse.riena.example.client.exceptiontest.view">
                 </subModule>
              </module>

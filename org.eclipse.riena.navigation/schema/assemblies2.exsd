@@ -306,6 +306,13 @@
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="closable" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  Indicates whether the SubModule can be closed.
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
