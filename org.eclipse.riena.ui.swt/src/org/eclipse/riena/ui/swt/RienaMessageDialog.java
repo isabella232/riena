@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
-import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.LayoutConstants;
 import org.eclipse.swt.SWT;
@@ -18,6 +17,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.riena.ui.swt.facades.DialogConstantsFacade;
 
 /**
  * A dialog for showing messages and with an own renderer for the border and the
@@ -136,17 +137,18 @@ public class RienaMessageDialog extends MessageDialog {
 	}
 
 	private static String[] getButtonLabels(final int kind) {
+		final DialogConstantsFacade facade = DialogConstantsFacade.getDefault();
 		switch (kind) {
 		case ERROR:
 		case INFORMATION:
 		case WARNING:
-			return new String[] { IDialogConstants.OK_LABEL };
+			return new String[] { facade.getOkLabel() };
 		case CONFIRM:
-			return new String[] { IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL };
+			return new String[] { facade.getOkLabel(), facade.getCancelLabel() };
 		case QUESTION:
-			return new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL };
+			return new String[] { facade.getYesLabel(), facade.getNoLabel() };
 		case QUESTION_WITH_CANCEL:
-			return new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL, IDialogConstants.CANCEL_LABEL };
+			return new String[] { facade.getYesLabel(), facade.getNoLabel(), facade.getCancelLabel() };
 		default:
 			throw new IllegalArgumentException("Illegal value for kind in MessageDialog.open()"); //$NON-NLS-1$
 		}
