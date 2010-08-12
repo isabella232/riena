@@ -39,7 +39,7 @@ import org.eclipse.riena.ui.swt.ModuleTitleBar;
  */
 public abstract class SWTFacade {
 
-	private static final SWTFacade INSTANCE = (SWTFacade) FacadeFactory.newFacade(SWTFacade.class);
+	private static final SWTFacade INSTANCE = FacadeFactory.newFacade(SWTFacade.class);
 
 	/**
 	 * Draw constant indicating whether the string drawing operation should

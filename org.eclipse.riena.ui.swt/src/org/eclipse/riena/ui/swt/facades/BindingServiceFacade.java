@@ -23,8 +23,7 @@ import org.eclipse.ui.keys.IBindingService;
  */
 public abstract class BindingServiceFacade {
 
-	private static final BindingServiceFacade INSTANCE = (BindingServiceFacade) FacadeFactory
-			.newFacade(BindingServiceFacade.class);
+	private static final BindingServiceFacade INSTANCE = FacadeFactory.newFacade(BindingServiceFacade.class);
 
 	/**
 	 * The applicable implementation of this class.

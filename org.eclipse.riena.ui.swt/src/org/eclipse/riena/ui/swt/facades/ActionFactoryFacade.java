@@ -21,8 +21,7 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
  */
 public abstract class ActionFactoryFacade {
 
-	private static final ActionFactoryFacade INSTANCE = (ActionFactoryFacade) FacadeFactory
-			.newFacade(ActionFactoryFacade.class);
+	private static final ActionFactoryFacade INSTANCE = FacadeFactory.newFacade(ActionFactoryFacade.class);
 
 	public static final ActionFactoryFacade getDefault() {
 		return INSTANCE;

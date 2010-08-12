@@ -20,8 +20,7 @@ package org.eclipse.riena.ui.swt.facades;
  */
 public abstract class DialogConstantsFacade {
 
-	private static final DialogConstantsFacade INSTANCE = (DialogConstantsFacade) FacadeFactory
-			.newFacade(DialogConstantsFacade.class);
+	private static final DialogConstantsFacade INSTANCE = FacadeFactory.newFacade(DialogConstantsFacade.class);
 
 	/**
 	 * The applicable implementation of this class.

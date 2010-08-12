@@ -19,7 +19,7 @@ import org.eclipse.swt.graphics.GC;
  */
 public abstract class GCFacade {
 
-	private static final GCFacade INSTANCE = (GCFacade) FacadeFactory.newFacade(GCFacade.class);
+	private static final GCFacade INSTANCE = FacadeFactory.newFacade(GCFacade.class);
 
 	/**
 	 * The applicable implementation of this class.
