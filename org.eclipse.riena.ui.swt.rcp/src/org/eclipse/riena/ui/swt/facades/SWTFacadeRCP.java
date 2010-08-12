@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
+import org.eclipse.riena.ui.swt.facades.internal.DialogGrabCornerListenerWithTracker;
 import org.eclipse.riena.ui.swt.facades.internal.DisabledPainter;
 import org.eclipse.riena.ui.swt.facades.internal.ModuleToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.SubModuleToolTip;
@@ -101,6 +102,11 @@ public final class SWTFacadeRCP extends SWTFacade {
 			result = new Cursor(display, alternateStyle);
 		}
 		return result;
+	}
+
+	@Override
+	public void createDialogGrabCornerListenerWithTracker(final Control control) {
+		new DialogGrabCornerListenerWithTracker(control);
 	}
 
 	@Override

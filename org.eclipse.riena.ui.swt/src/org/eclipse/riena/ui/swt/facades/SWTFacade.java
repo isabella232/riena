@@ -185,6 +185,13 @@ public abstract class SWTFacade {
 	public abstract Cursor createCursor(Display display, Image cursorImage, int alternateStyle);
 
 	/**
+	 * TODO [ev] docs
+	 * 
+	 * @since 2.1
+	 */
+	public abstract void createDialogGrabCornerListenerWithTracker(Control control);
+
+	/**
 	 * Returns a paint listener for modifying the disabled look of a control.
 	 * 
 	 * @return a PaintListener or null (in RAP)

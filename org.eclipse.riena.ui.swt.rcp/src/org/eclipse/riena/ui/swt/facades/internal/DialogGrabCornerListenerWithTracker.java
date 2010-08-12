@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.swt.views;
+package org.eclipse.riena.ui.swt.facades.internal;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
@@ -21,27 +21,27 @@ import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tracker;
 
+import org.eclipse.riena.ui.swt.GrabCorner;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Mouse listener to be used together with a {@link GrabCorner}.
  * <p>
  * This implementation relies on a SWT {@link Tracker} for resize operations.
- * 
- * @since 2.1
  */
 public final class DialogGrabCornerListenerWithTracker extends MouseAdapter implements MouseTrackListener {
 
-	private final DialogGrabCorner control;
+	private final Control control;
 
 	private Cursor resizeCursor;
 	private Cursor defaultCursor;
 
-	public DialogGrabCornerListenerWithTracker(final DialogGrabCorner control) {
+	public DialogGrabCornerListenerWithTracker(final Control control) {
 		control.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(final DisposeEvent e) {
 				SwtUtilities.dispose(resizeCursor);

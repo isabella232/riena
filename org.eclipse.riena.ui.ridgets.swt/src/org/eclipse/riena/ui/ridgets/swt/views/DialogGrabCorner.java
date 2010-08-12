@@ -19,6 +19,7 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
@@ -42,8 +43,9 @@ public class DialogGrabCorner extends Composite {
 
 		setLayoutData();
 
-		addPaintListener(new GrabPaintListener());
-		new DialogGrabCornerListenerWithTracker(this);
+		final SWTFacade facade = SWTFacade.getDefault();
+		facade.addPaintListener(this, new GrabPaintListener());
+		facade.createDialogGrabCornerListenerWithTracker(this);
 	}
 
 	/**
