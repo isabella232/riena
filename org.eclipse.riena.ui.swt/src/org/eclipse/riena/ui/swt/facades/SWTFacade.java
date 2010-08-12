@@ -185,11 +185,12 @@ public abstract class SWTFacade {
 	public abstract Cursor createCursor(Display display, Image cursorImage, int alternateStyle);
 
 	/**
-	 * TODO [ev] docs
+	 * Attaches a drag-to-resize-listener with an SWT Tracker to the bottom
+	 * right corner of the given control.
 	 * 
 	 * @since 2.1
 	 */
-	public abstract void createDialogGrabCornerListenerWithTracker(Control control);
+	public abstract void createGrabCornerListenerWithTracker(Control control);
 
 	/**
 	 * Returns a paint listener for modifying the disabled look of a control.

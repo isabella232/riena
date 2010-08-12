@@ -29,8 +29,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
-import org.eclipse.riena.ui.swt.facades.internal.DialogGrabCornerListenerWithTracker;
 import org.eclipse.riena.ui.swt.facades.internal.DisabledPainter;
+import org.eclipse.riena.ui.swt.facades.internal.GrabCornerListenerWithTracker;
 import org.eclipse.riena.ui.swt.facades.internal.ModuleToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.SubModuleToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.TreeItemEraserAndPainter;
@@ -105,8 +105,8 @@ public final class SWTFacadeRCP extends SWTFacade {
 	}
 
 	@Override
-	public void createDialogGrabCornerListenerWithTracker(final Control control) {
-		new DialogGrabCornerListenerWithTracker(control);
+	public void createGrabCornerListenerWithTracker(final Control control) {
+		new GrabCornerListenerWithTracker(control);
 	}
 
 	@Override

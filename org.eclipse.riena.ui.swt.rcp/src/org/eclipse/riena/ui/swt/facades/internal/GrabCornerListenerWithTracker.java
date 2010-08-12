@@ -34,14 +34,14 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * <p>
  * This implementation relies on a SWT {@link Tracker} for resize operations.
  */
-public final class DialogGrabCornerListenerWithTracker extends MouseAdapter implements MouseTrackListener {
+public final class GrabCornerListenerWithTracker extends MouseAdapter implements MouseTrackListener {
 
 	private final Control control;
 
 	private Cursor resizeCursor;
 	private Cursor defaultCursor;
 
-	public DialogGrabCornerListenerWithTracker(final Control control) {
+	public GrabCornerListenerWithTracker(final Control control) {
 		control.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(final DisposeEvent e) {
 				SwtUtilities.dispose(resizeCursor);

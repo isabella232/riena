@@ -52,10 +52,9 @@ public class GrabCorner extends Composite {
 			setDialogLayoutData();
 		}
 
-		if (SWTFacade.isRCP()) {
-			SWTFacade.getDefault().addPaintListener(this, new GrabPaintListener());
-			new GrabCornerListenerWithTracker(this);
-		}
+		final SWTFacade facade = SWTFacade.getDefault();
+		facade.addPaintListener(this, new GrabPaintListener());
+		facade.createGrabCornerListenerWithTracker(this);
 	}
 
 	private boolean isMainShell() {

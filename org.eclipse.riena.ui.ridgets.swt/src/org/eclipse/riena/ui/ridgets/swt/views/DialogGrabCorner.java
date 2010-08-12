@@ -45,7 +45,7 @@ public class DialogGrabCorner extends Composite {
 
 		final SWTFacade facade = SWTFacade.getDefault();
 		facade.addPaintListener(this, new GrabPaintListener());
-		facade.createDialogGrabCornerListenerWithTracker(this);
+		facade.createGrabCornerListenerWithTracker(this);
 	}
 
 	/**

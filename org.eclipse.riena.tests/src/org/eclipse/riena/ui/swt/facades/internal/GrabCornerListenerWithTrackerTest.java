@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.swt;
+package org.eclipse.riena.ui.swt.facades.internal;
 
 import junit.framework.TestCase;
 
@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Tracker;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.ui.swt.GrabCorner;
+import org.eclipse.riena.ui.swt.facades.internal.GrabCornerListenerWithTracker;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
