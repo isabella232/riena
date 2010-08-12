@@ -335,10 +335,9 @@ public class MarkerSupport extends BasicMarkerSupport {
 
 		public MarkerControlDecoration(final Control control) {
 			super(control, getDecorationPosition(), getScrolledComposite(control));
-			// TODO [ev] ControlDecorations are only stubs in RAP - need something else
+			setMarginWidth(getErrorMarginWidth());
+			setImage(getDecorationImage());
 			if (SWTFacade.isRCP()) {
-				ReflectionUtils.setHidden(this, "marginWidth", getErrorMarginWidth()); //$NON-NLS-1$
-				ReflectionUtils.setHidden(this, "image", getDecorationImage()); //$NON-NLS-1$
 				ReflectionUtils.invokeHidden(this, "update", (Object[]) null); //$NON-NLS-1$
 			}
 			control.addDisposeListener(new DisposeListener() {
