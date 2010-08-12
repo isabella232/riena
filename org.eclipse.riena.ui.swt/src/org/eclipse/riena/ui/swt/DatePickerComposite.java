@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -419,7 +420,7 @@ public class DatePickerComposite extends Composite {
 		private int zone = BODY;
 
 		public VistaZoneFinder(final DateTime parent) {
-			parent.addMouseMoveListener(this);
+			SWTFacade.getDefault().addMouseMoveListener(parent, this);
 		}
 
 		public void mouseMove(final MouseEvent e) {
@@ -456,7 +457,7 @@ public class DatePickerComposite extends Composite {
 		private int zone = BODY;
 
 		public XPZoneFinder(final DateTime parent) {
-			parent.addMouseMoveListener(this);
+			SWTFacade.getDefault().addMouseMoveListener(parent, this);
 		}
 
 		public void mouseMove(final MouseEvent e) {
@@ -480,7 +481,7 @@ public class DatePickerComposite extends Composite {
 		private int zone = BODY;
 
 		public MacZoneFinder(final DateTime parent) {
-			parent.addMouseMoveListener(this);
+			SWTFacade.getDefault().addMouseMoveListener(parent, this);
 		}
 
 		public void mouseMove(final MouseEvent e) {
