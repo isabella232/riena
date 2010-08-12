@@ -40,6 +40,15 @@ public class FacadeFactoryTest extends RienaTestCase {
 		}
 	}
 
+	public void testSpecificFacadeNotFound() {
+		try {
+			FacadeFactory.newFacade(FacadeFactoryTest.class);
+			fail();
+		} catch (final RuntimeException e) {
+			assertTrue(e.getCause() instanceof ClassNotFoundException);
+		}
+	}
+
 	public void testSomethingGood() {
 		final GCFacade gcFacade = FacadeFactory.newFacade(GCFacade.class);
 		assertTrue(gcFacade.getClass() != GCFacade.class);
