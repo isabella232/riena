@@ -24,6 +24,7 @@ import org.eclipse.riena.ui.ridgets.IBrowserRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractValueRidget;
 import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
+import org.eclipse.riena.ui.swt.facades.BrowserFacade;
 
 /**
  * Ridget for an SWT {@link Browser} widget.
@@ -128,18 +129,19 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	}
 
 	private void updateUIControl() {
-		final Browser control = getUIControl();
-		if (control != null) {
+		final Browser browser = getUIControl();
+		if (browser != null) {
 			if (text != null) {
-				if (!text.equals(control.getText())) {
+				final String browserText = BrowserFacade.getDefault().getText(browser);
+				if (!text.equals(browserText)) {
 					locationListener.unblock();
-					control.setText(text);
+					browser.setText(text);
 				}
 			} else {
 				final String url = convertNullToEmpty(this.url);
-				if (!url.equals(control.getUrl())) {
+				if (!url.equals(browser.getUrl())) {
 					locationListener.unblock();
-					control.setUrl(url);
+					browser.setUrl(url);
 				}
 			}
 		}
