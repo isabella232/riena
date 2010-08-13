@@ -21,7 +21,6 @@ import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.beans.common.ListBean;
-import org.eclipse.riena.internal.ui.ridgets.swt.CompletionComboRidget;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -45,10 +44,10 @@ public class CompletionComboSubModuleController extends SubModuleController {
 		final IComboRidget combo3 = configureCombo(input, "combo3", "selection3", "text3"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		combo3.setMarkSelectionMismatch(true);
 		final CityFormatter formatter = new CityFormatter();
-		((CompletionComboRidget) combo3).setColumnFormatter(formatter);
+		combo3.setColumnFormatter(formatter);
 
 		final IComboRidget combo4 = configureCombo(input, "combo4", "selection4", "text4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		((CompletionComboRidget) combo4).setColumnFormatter(formatter);
+		combo4.setColumnFormatter(formatter);
 	}
 
 	// helping methods

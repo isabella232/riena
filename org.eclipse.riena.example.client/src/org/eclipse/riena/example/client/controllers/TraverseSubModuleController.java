@@ -82,6 +82,7 @@ public class TraverseSubModuleController extends SubModuleController {
 		private int degreeCelsius;
 		private int degreeFahrenheit;
 
+		@SuppressWarnings("unused")
 		public void setDegreeCelsius(final int degreeCelsius) {
 			setDegreeCelsius(degreeCelsius, true);
 		}
@@ -97,10 +98,12 @@ public class TraverseSubModuleController extends SubModuleController {
 			firePropertyChanged(PROPERTY_DEGREE_CELSIUS, oldValue, degreeCelsius);
 		}
 
+		@SuppressWarnings("unused")
 		public int getDegreeCelsius() {
 			return degreeCelsius;
 		}
 
+		@SuppressWarnings("unused")
 		public void setDegreeFahrenheit(final int degreeFahrenheit) {
 			setDegreeFahrenheit(degreeFahrenheit, true);
 		}
@@ -117,13 +120,14 @@ public class TraverseSubModuleController extends SubModuleController {
 			firePropertyChanged(PROPERTY_DEGREE_FAHRENHEITN, oldValue, degreeFahrenheit);
 		}
 
+		@SuppressWarnings("unused")
 		public int getDegreeFahrenheit() {
 			return degreeFahrenheit;
 		}
 
 		public void setKelvin(final float kelvin) {
 			this.kelvin = kelvin;
-			System.out.println("TraverseSubModuleController.Temperature.setKelvin() " + kelvin);
+			System.out.println("TraverseSubModuleController.Temperature.setKelvin() " + kelvin); //$NON-NLS-1$
 		}
 
 		public float getKelvin() {
