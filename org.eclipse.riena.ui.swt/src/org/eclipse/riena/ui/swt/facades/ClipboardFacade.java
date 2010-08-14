@@ -10,12 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.facades;
 
-import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Facade for the {@link Clipboard} class and copy / cut / paste invocation on
+ * Facade for the SWT Clipboard class and copy / cut / paste invocation on
  * widgets.
  * 
  * @since 2.1
