@@ -19,11 +19,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.swt.AbstractCompletionCombo.AutoCompletionMode;
 import org.eclipse.riena.ui.swt.CompletionCombo;
-import org.eclipse.riena.ui.swt.CompletionComboWithImage;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.CompletionCombo.AutoCompletionMode;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -106,9 +103,7 @@ public class CompletionComboSubModuleView extends SubModuleView {
 		// row
 
 		UIControlsFactory.createLabel(parent, "allow missmatch:"); //$NON-NLS-1$
-		final CompletionComboWithImage combo3 = new CompletionComboWithImage(parent, SWT.BORDER);
-		combo3.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-		addUIControl(combo3, "combo3"); //$NON-NLS-1$
+		final CompletionCombo combo3 = UIControlsFactory.createCompletionComboWithImage(parent, "combo3"); //$NON-NLS-1$
 		fill.applyTo(combo3);
 		combo3.setAutoCompletionMode(AutoCompletionMode.ALLOW_MISSMATCH);
 
@@ -120,9 +115,7 @@ public class CompletionComboSubModuleView extends SubModuleView {
 		// row
 
 		UIControlsFactory.createLabel(parent, "allow no missmatch:"); //$NON-NLS-1$
-		final CompletionComboWithImage combo4 = new CompletionComboWithImage(parent, SWT.BORDER);
-		combo4.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
-		addUIControl(combo4, "combo4"); //$NON-NLS-1$
+		final CompletionCombo combo4 = UIControlsFactory.createCompletionComboWithImage(parent, "combo4"); //$NON-NLS-1$
 		fill.applyTo(combo4);
 
 		final Text selection4 = UIControlsFactory.createText(parent, SWT.BORDER, "selection4"); //$NON-NLS-1$ 

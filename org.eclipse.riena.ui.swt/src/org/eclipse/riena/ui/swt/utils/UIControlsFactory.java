@@ -50,6 +50,7 @@ import org.eclipse.riena.ui.swt.DatePickerComposite;
 import org.eclipse.riena.ui.swt.ImageButton;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.separator.Separator;
@@ -394,7 +395,24 @@ public class UIControlsFactory {
 	 * @since 2.0
 	 */
 	public static CompletionCombo createCompletionCombo(final Composite parent) {
-		final CompletionCombo result = new CompletionCombo(parent, SWT.BORDER);
+		return createCompletionCombo(parent, SWT.BORDER);
+	}
+
+	/**
+	 * Creates a {@link CompletionCombo} control with the given style.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style of the control to construct
+	 * 
+	 * @return a {@link CompletionCombo} instance
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @since 2.1
+	 */
+	public static CompletionCombo createCompletionCombo(final Composite parent, final int style) {
+		final CompletionCombo result = SWTFacade.getDefault().createCompletionCombo(parent, style);
 		result.setBackground(SHARED_BG_COLOR);
 		return result;
 	}
@@ -414,7 +432,60 @@ public class UIControlsFactory {
 	 * @since 2.0
 	 */
 	public static CompletionCombo createCompletionCombo(final Composite parent, final String bindingId) {
-		final CompletionCombo combo = createCompletionCombo(parent);
+		final CompletionCombo combo = createCompletionCombo(parent, SWT.BORDER);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(combo, bindingId);
+		return combo;
+	}
+
+	/**
+	 * Creates a {@link CompletionCombo} control with support for images.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @return a {@link CompletionCombo} instance with the SWT.BORDER style
+	 * 
+	 * @since 2.1
+	 */
+	public static CompletionCombo createCompletionComboWithImage(final Composite parent) {
+		return createCompletionComboWithImage(parent, SWT.BORDER);
+	}
+
+	/**
+	 * Creates a {@link CompletionCombo} control with support for images using
+	 * the given style.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param style
+	 *            the style of the control to construct
+	 * 
+	 * @return a {@link CompletionCombo} instance
+	 * 
+	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
+	 * @since 2.1
+	 */
+	public static CompletionCombo createCompletionComboWithImage(final Composite parent, final int style) {
+		final CompletionCombo result = SWTFacade.getDefault().createCompletionComboWithImage(parent, style);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
+	}
+
+	/**
+	 * Creates a {@link CompletionCombo} control with support for images.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param bindingId
+	 *            the binding property; never null; must not be empty. The given
+	 *            value will also be assigned to the Ridget that is paired to
+	 *            this control.
+	 * @return a {@link CCombo} instance with the SWT.BORDER style
+	 * 
+	 * @wbp.factory.parameter.source bindingId "myComboId"
+	 * @since 2.1
+	 */
+	public static CompletionCombo createCompletionComboWithImage(final Composite parent, final String bindingId) {
+		final CompletionCombo combo = createCompletionComboWithImage(parent, SWT.BORDER);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(combo, bindingId);
 		return combo;
 	}

@@ -8,132 +8,107 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.swt;
+package org.eclipse.riena.ui.swt.facades.internal;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.List;
 
 /**
  * TODO [ev] docs
- * <p>
- * TODO [ev] write a snippet?
- * 
- * @since 2.1
  */
-public class CompletionComboWithImage extends AbstractCompletionCombo {
+public class CompletionComboRCP extends AbstractCompletionComboRCP {
 
-	public CompletionComboWithImage(final Composite parent, final int style) {
+	public CompletionComboRCP(final Composite parent, final int style) {
 		super(parent, style);
 	}
 
 	@Override
 	protected Label createLabel(final Composite parent) {
-		final Label result = new Label(parent, SWT.NONE);
-		result.setBackground(getBackground());
-		return result;
+		return null;
 	}
 
 	@Override
 	protected Control createList(final Composite parent) {
-		final int style = SWT.SINGLE | SWT.V_SCROLL | SWT.FULL_SELECTION;
-		return new Table(parent, style);
+		final int style = getStyle();
+		int listStyle = SWT.SINGLE | SWT.V_SCROLL;
+		if ((style & SWT.FLAT) != 0) {
+			listStyle |= SWT.FLAT;
+		}
+		if ((style & SWT.RIGHT_TO_LEFT) != 0) {
+			listStyle |= SWT.RIGHT_TO_LEFT;
+		}
+		if ((style & SWT.LEFT_TO_RIGHT) != 0) {
+			listStyle |= SWT.LEFT_TO_RIGHT;
+		}
+		return new List(parent, listStyle);
 	}
 
 	@Override
 	protected void deselectAll(final Control list) {
-		((Table) list).deselectAll();
+		((List) list).deselectAll();
 	}
 
 	@Override
 	protected Image getImage(final Control list, final int index) {
-		final TableItem item = ((Table) list).getItem(index);
-		return item.getImage();
+		return null;
 	}
 
 	@Override
 	protected Image[] getImages(final Control list) {
-		final TableItem[] items = ((Table) list).getItems();
-		final Image[] result = new Image[items.length];
-		for (int i = 0; i < items.length; i++) {
-			result[i] = items[i].getImage();
-		}
-		return result;
+		return null;
 	}
 
 	@Override
 	protected String getItem(final Control list, final int index) {
-		final TableItem item = ((Table) list).getItem(index);
-		return item.getText();
+		return ((List) list).getItem(index);
 	}
 
 	@Override
 	protected int getItemHeight(final Control list) {
-		return ((Table) list).getItemHeight();
+		return ((List) list).getItemHeight();
 	}
 
 	@Override
 	protected String[] getItems(final Control list) {
-		final TableItem[] items = ((Table) list).getItems();
-		final String[] result = new String[items.length];
-		for (int i = 0; i < items.length; i++) {
-			result[i] = items[i].getText();
-		}
-		return result;
+		return ((List) list).getItems();
 	}
 
 	@Override
 	protected int getItemCount(final Control list) {
-		return ((Table) list).getItemCount();
+		return ((List) list).getItemCount();
 	}
 
 	@Override
 	protected int getSelectionIndex(final Control list) {
-		return ((Table) list).getSelectionIndex();
+		return ((List) list).getSelectionIndex();
 	}
 
 	@Override
 	protected int indexOf(final Control list, final String string, final int start) {
-		final Table table = (Table) list;
-		final int max = table.getItemCount();
-		for (int i = start; i < max; i++) {
-			final TableItem item = table.getItem(i);
-			if (string.equals(item.getText())) {
-				return i;
-			}
-		}
-		return -1;
+		return ((List) list).indexOf(string, start);
 	}
 
 	@Override
 	protected void removeAll(final Control list) {
-		((Table) list).removeAll();
+		((List) list).removeAll();
 	}
 
 	@Override
 	protected void setItems(final Control list, final String[] items, final Image[] images) {
-		final Table table = (Table) list;
-		table.removeAll();
-		for (int i = 0; i < items.length; i++) {
-			final TableItem item = new TableItem(table, SWT.NONE, i);
-			item.setText(items[i]);
-			if (images != null) {
-				item.setImage(images[i]);
-			}
-		}
+		((List) list).setItems(items);
 	}
 
 	@Override
 	protected void setSelection(final Control list, final int index) {
-		((Table) list).setSelection(index);
+		((List) list).setSelection(index);
 	}
 
 	@Override
 	protected void setTopIndex(final Control list, final int index) {
-		((Table) list).setTopIndex(index);
+		((List) list).setTopIndex(index);
 	}
 }

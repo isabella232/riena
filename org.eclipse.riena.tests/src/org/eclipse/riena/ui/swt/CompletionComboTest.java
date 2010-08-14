@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Tests of the class {@link CompletionCombo}.
@@ -37,7 +38,7 @@ public class CompletionComboTest extends TestCase {
 		super.setUp();
 		shell = new Shell();
 		shell.setLayout(new RowLayout());
-		combo = new CompletionCombo(shell, SWT.NONE);
+		combo = UIControlsFactory.createCompletionCombo(shell, SWT.NONE);
 	}
 
 	@Override

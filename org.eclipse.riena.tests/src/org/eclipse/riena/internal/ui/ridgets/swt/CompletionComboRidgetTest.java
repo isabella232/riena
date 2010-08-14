@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -19,6 +18,7 @@ import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.CompletionCombo;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Tests of the class {@link ComboRidget}.
@@ -27,12 +27,12 @@ public class CompletionComboRidgetTest extends AbstractComboRidgetTest {
 
 	@Override
 	protected Control createWidget(final Composite parent) {
-		return new CompletionCombo(parent, SWT.NONE);
+		return UIControlsFactory.createCompletionCombo(parent);
 	}
 
 	@Override
 	protected Control createWidget(final Composite parent, final int style) {
-		return new CompletionCombo(parent, style);
+		return UIControlsFactory.createCompletionCombo(parent, style);
 	}
 
 	@Override

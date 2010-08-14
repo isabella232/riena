@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -28,7 +29,10 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
+import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
+import org.eclipse.riena.ui.swt.facades.internal.CompletionComboRCP;
+import org.eclipse.riena.ui.swt.facades.internal.CompletionComboWithImageRCP;
 import org.eclipse.riena.ui.swt.facades.internal.DisabledPainter;
 import org.eclipse.riena.ui.swt.facades.internal.GrabCornerListenerWithTracker;
 import org.eclipse.riena.ui.swt.facades.internal.ModuleToolTip;
@@ -87,6 +91,21 @@ public final class SWTFacadeRCP extends SWTFacade {
 		if (listener != null) {
 			control.addPaintListener((PaintListener) listener);
 		}
+	}
+
+	@Override
+	public CompletionCombo createCompletionCombo(final Composite parent, final int style) {
+		return new CompletionComboRCP(parent, style);
+	}
+
+	@Override
+	public CompletionCombo createCompletionComboWithImage(final Composite parent, final int style) {
+		return new CompletionComboWithImageRCP(parent, style);
+	}
+
+	@Override
+	public void copyEventKeyLocation(final Event source, final Event target) {
+		target.keyLocation = source.keyLocation;
 	}
 
 	@Override
@@ -176,5 +195,10 @@ public final class SWTFacadeRCP extends SWTFacade {
 		if (listener != null) {
 			control.removePaintListener((PaintListener) listener);
 		}
+	}
+
+	@Override
+	public boolean traverse(final Control control, final int traversal) {
+		return control.traverse(traversal);
 	}
 }

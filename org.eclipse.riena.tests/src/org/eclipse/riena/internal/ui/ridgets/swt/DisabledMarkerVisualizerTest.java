@@ -27,6 +27,7 @@ import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.DatePickerComposite;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Tests for {@link DisabledMarkerVisualizer}.
@@ -114,7 +115,7 @@ public class DisabledMarkerVisualizerTest extends RienaTestCase {
 	 */
 	public void testVisualizerAndCompletionComboEnablement() {
 		final IComboRidget ridget = new CompletionComboRidget();
-		final CompletionCombo control = new CompletionCombo(shell, SWT.NONE);
+		final CompletionCombo control = UIControlsFactory.createCompletionCombo(shell, SWT.NONE);
 		final Button arrow = ReflectionUtils.getHidden(control, "arrow");
 		ridget.setUIControl(control);
 		ridget.setOutputOnly(true);

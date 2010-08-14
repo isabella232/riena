@@ -80,7 +80,6 @@ import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.CompletionCombo;
-import org.eclipse.riena.ui.swt.CompletionComboWithImage;
 import org.eclipse.riena.ui.swt.DatePickerComposite;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.ImageButton;
@@ -148,7 +147,6 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(Combo.class, ComboRidget.class);
 		addMapping(CCombo.class, CComboRidget.class);
 		addMapping(CompletionCombo.class, CompletionComboRidget.class);
-		addMapping(CompletionComboWithImage.class, CompletionComboRidget.class);
 		addMapping(DateTime.class, DateTimeRidget.class);
 		addMapping(org.eclipse.swt.widgets.List.class, ListRidget.class);
 		addMapping(Link.class, LinkRidget.class);

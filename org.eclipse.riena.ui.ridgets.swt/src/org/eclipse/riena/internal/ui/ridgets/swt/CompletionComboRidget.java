@@ -21,7 +21,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
-import org.eclipse.riena.ui.swt.AbstractCompletionCombo;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 
 /**
@@ -37,7 +36,7 @@ public class CompletionComboRidget extends AbstractComboRidget {
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, AbstractCompletionCombo.class);
+		AbstractSWTRidget.assertType(uiControl, CompletionCombo.class);
 	}
 
 	@Override
@@ -51,8 +50,8 @@ public class CompletionComboRidget extends AbstractComboRidget {
 	}
 
 	@Override
-	public AbstractCompletionCombo getUIControl() {
-		return (AbstractCompletionCombo) super.getUIControl();
+	public CompletionCombo getUIControl() {
+		return (CompletionCombo) super.getUIControl();
 	}
 
 	@Override
@@ -62,7 +61,7 @@ public class CompletionComboRidget extends AbstractComboRidget {
 
 	@Override
 	protected ISWTObservableValue getUIControlSelectionObservable() {
-		final AbstractCompletionCombo control = getUIControl();
+		final CompletionCombo control = getUIControl();
 		final Realm realm = SWTObservables.getRealm(control.getDisplay());
 		return (ISWTObservableValue) new CompletionComboSelectionProperty().observe(realm, control);
 	}
@@ -76,7 +75,7 @@ public class CompletionComboRidget extends AbstractComboRidget {
 		// as well
 		getUIControl().getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				final AbstractCompletionCombo combo = getUIControl();
+				final CompletionCombo combo = getUIControl();
 				if (combo != null && !combo.isDisposed()) {
 					combo.clearSelection(); // this does not change the text
 				}
