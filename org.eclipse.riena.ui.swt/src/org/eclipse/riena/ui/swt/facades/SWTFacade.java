@@ -51,28 +51,6 @@ public abstract class SWTFacade {
 	public static final int DRAW_MNEMONIC = 1 << 3;
 
 	/**
-	 * Style constant for right to left orientation (value is 1&lt;&lt;26).
-	 * <p>
-	 * When orientation is not explicitly specified, orientation is inherited.
-	 * This means that children will be assigned the orientation of their
-	 * parent. To override this behavior and force an orientation for a child,
-	 * explicitly set the orientation of the child when that child is created. <br>
-	 * Note that this is a <em>HINT</em>.
-	 * </p>
-	 * <p>
-	 * <b>Used By:</b>
-	 * <ul>
-	 * <li><code>Control</code></li>
-	 * <li><code>Menu</code></li>
-	 * <li><code>GC</code></li>
-	 * </ul>
-	 * </p>
-	 * 
-	 * @since 2.1
-	 */
-	public static final int RIGHT_TO_LEFT = 1 << 26;
-
-	/**
 	 * Traversal event detail field value indicating that the key which
 	 * designates that focus should be given to the previous tab item was
 	 * pressed; typically, this is either the LEFT-ARROW or UP-ARROW keys (value
@@ -97,6 +75,28 @@ public abstract class SWTFacade {
 	 * sequence was pressed (value is 1&lt;&lt;7).
 	 */
 	public static final int TRAVERSE_MNEMONIC = 1 << 7;
+
+	/**
+	 * Style constant for right to left orientation (value is 1&lt;&lt;26).
+	 * <p>
+	 * When orientation is not explicitly specified, orientation is inherited.
+	 * This means that children will be assigned the orientation of their
+	 * parent. To override this behavior and force an orientation for a child,
+	 * explicitly set the orientation of the child when that child is created. <br>
+	 * Note that this is a <em>HINT</em>.
+	 * </p>
+	 * <p>
+	 * <b>Used By:</b>
+	 * <ul>
+	 * <li><code>Control</code></li>
+	 * <li><code>Menu</code></li>
+	 * <li><code>GC</code></li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @since 2.1
+	 */
+	public static final int RIGHT_TO_LEFT = 1 << 26;
 
 	/**
 	 * The mouse move event type (value is 5).
