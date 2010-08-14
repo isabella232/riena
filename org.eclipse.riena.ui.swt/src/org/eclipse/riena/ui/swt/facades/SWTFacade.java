@@ -19,6 +19,7 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -26,6 +27,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
+import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
 
 /**
@@ -37,6 +39,7 @@ import org.eclipse.riena.ui.swt.ModuleTitleBar;
  * 
  * @since 2.0
  */
+// TODO [ev] review parameter javadoc
 public abstract class SWTFacade {
 
 	private static final SWTFacade INSTANCE = FacadeFactory.newFacade(SWTFacade.class);
@@ -48,10 +51,127 @@ public abstract class SWTFacade {
 	public static final int DRAW_MNEMONIC = 1 << 3;
 
 	/**
+	 * Style constant for right to left orientation (value is 1&lt;&lt;26).
+	 * <p>
+	 * When orientation is not explicitly specified, orientation is inherited.
+	 * This means that children will be assigned the orientation of their
+	 * parent. To override this behavior and force an orientation for a child,
+	 * explicitly set the orientation of the child when that child is created. <br>
+	 * Note that this is a <em>HINT</em>.
+	 * </p>
+	 * <p>
+	 * <b>Used By:</b>
+	 * <ul>
+	 * <li><code>Control</code></li>
+	 * <li><code>Menu</code></li>
+	 * <li><code>GC</code></li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @since 2.1
+	 */
+	public static final int RIGHT_TO_LEFT = 1 << 26;
+
+	/**
+	 * Traversal event detail field value indicating that the key which
+	 * designates that focus should be given to the previous tab item was
+	 * pressed; typically, this is either the LEFT-ARROW or UP-ARROW keys (value
+	 * is 1&lt;&lt;5).
+	 * 
+	 * @since 2.1
+	 */
+	public static final int TRAVERSE_ARROW_PREVIOUS = 1 << 5;
+
+	/**
+	 * Traversal event detail field value indicating that the key which
+	 * designates that focus should be given to the previous tab item was
+	 * pressed; typically, this is either the RIGHT-ARROW or DOWN-ARROW keys
+	 * (value is 1&lt;&lt;6).
+	 * 
+	 * @since 2.1
+	 */
+	public static final int TRAVERSE_ARROW_NEXT = 1 << 6;
+
+	/**
 	 * Traversal event detail field value indicating that a mnemonic key
 	 * sequence was pressed (value is 1&lt;&lt;7).
 	 */
 	public static final int TRAVERSE_MNEMONIC = 1 << 7;
+
+	/**
+	 * The mouse move event type (value is 5).
+	 * 
+	 * @see org.eclipse.swt.widgets.Widget#addListener
+	 * @see org.eclipse.swt.widgets.Display#addFilter
+	 * @see org.eclipse.swt.widgets.Event
+	 * 
+	 * @see org.eclipse.swt.widgets.Control#addMouseMoveListener
+	 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove
+	 * @see org.eclipse.swt.events.MouseEvent
+	 * 
+	 * @since 2.1
+	 */
+	public static final int MouseMove = 5;
+
+	/**
+	 * The mouse enter event type (value is 6).
+	 * 
+	 * @see org.eclipse.swt.widgets.Widget#addListener
+	 * @see org.eclipse.swt.widgets.Display#addFilter
+	 * @see org.eclipse.swt.widgets.Event
+	 * 
+	 * @see org.eclipse.swt.widgets.Control#addMouseTrackListener
+	 * @see org.eclipse.swt.events.MouseTrackListener#mouseEnter
+	 * @see org.eclipse.swt.events.MouseEvent
+	 * 
+	 * @since 2.1
+	 */
+	public static final int MouseEnter = 6;
+
+	/**
+	 * The mouse exit event type (value is 7).
+	 * 
+	 * @see org.eclipse.swt.widgets.Widget#addListener
+	 * @see org.eclipse.swt.widgets.Display#addFilter
+	 * @see org.eclipse.swt.widgets.Event
+	 * 
+	 * @see org.eclipse.swt.widgets.Control#addMouseTrackListener
+	 * @see org.eclipse.swt.events.MouseTrackListener#mouseExit
+	 * @see org.eclipse.swt.events.MouseEvent
+	 * 
+	 * @since 2.1
+	 */
+	public static final int MouseExit = 7;
+
+	/**
+	 * The paint event type (value is 9).
+	 * 
+	 * @see org.eclipse.swt.widgets.Widget#addListener
+	 * @see org.eclipse.swt.widgets.Display#addFilter
+	 * @see org.eclipse.swt.widgets.Event
+	 * 
+	 * @see org.eclipse.swt.widgets.Control#addPaintListener
+	 * @see org.eclipse.swt.events.PaintListener#paintControl
+	 * @see org.eclipse.swt.events.PaintEvent
+	 * 
+	 * @since 2.1
+	 */
+	public static final int Paint = 9;
+
+	/**
+	 * The mouse hover event type (value is 32).
+	 * 
+	 * @see org.eclipse.swt.widgets.Widget#addListener
+	 * @see org.eclipse.swt.widgets.Display#addFilter
+	 * @see org.eclipse.swt.widgets.Event
+	 * 
+	 * @see org.eclipse.swt.widgets.Control#addMouseTrackListener
+	 * @see org.eclipse.swt.events.MouseTrackListener#mouseHover
+	 * @see org.eclipse.swt.events.MouseEvent
+	 * 
+	 * @since 2.1
+	 */
+	public static final int MouseHover = 32;
 
 	/**
 	 * The mouse wheel event type (value is 37). This is a synonym for
@@ -168,6 +288,26 @@ public abstract class SWTFacade {
 	public abstract void addPaintListener(Control control, EventListener listener);
 
 	/**
+	 * TODO [ev] docs
+	 * 
+	 * @param parent
+	 * @param style
+	 * @return
+	 * @since 2.1
+	 */
+	public abstract CompletionCombo createCompletionCombo(Composite parent, int style);
+
+	/**
+	 * TODO [ev] docs
+	 * 
+	 * @param parent
+	 * @param style
+	 * @return
+	 * @since 2.1
+	 */
+	public abstract CompletionCombo createCompletionComboWithImage(Composite parent, int style);
+
+	/**
 	 * Create a custom cursor from the given {@code cursorImage}. If the image
 	 * is null, or custom cursors are not supported, create a standard cursor
 	 * with the given {@code alternateStyle}.
@@ -183,6 +323,19 @@ public abstract class SWTFacade {
 	 *         instance once no longer needed.
 	 */
 	public abstract Cursor createCursor(Display display, Image cursorImage, int alternateStyle);
+
+	/**
+	 * Copies the value of the {@code keyLocation} field from the source Event
+	 * to the target Event.
+	 * 
+	 * @param from
+	 *            the source Event instance; never null
+	 * @param target
+	 *            the target Event instance; never null
+	 * 
+	 * @since 2.1
+	 */
+	public abstract void copyEventKeyLocation(Event source, Event target);
 
 	/**
 	 * Attaches a drag-to-resize-listener with an SWT Tracker to the bottom
@@ -285,4 +438,15 @@ public abstract class SWTFacade {
 	 *            or null
 	 */
 	public abstract void removePaintListener(Control control, EventListener listener);
+
+	/**
+	 * TODO [ev] docs
+	 * 
+	 * @param control
+	 * @param traversal
+	 * @return
+	 * 
+	 * @since 2.1
+	 */
+	public abstract boolean traverse(Control control, int traversal);
 }
