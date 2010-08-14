@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.swt.facades;
 
 import org.eclipse.swt.SWT;
 
+import org.eclipse.riena.core.util.InvocationTargetFailure;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
@@ -21,37 +23,48 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 @NonUITestCase
 public class FacadeFactoryTest extends RienaTestCase {
 
-	public void testBadCast() {
+	public void testBadCast() throws Throwable {
 		SWT.getPlatform();
 		try {
-			FacadeFactory.newFacade(TestBadCastFacade.class);
+			newFacade(TestBadCastFacade.class);
 			fail();
 		} catch (final RuntimeException e) {
 			assertTrue(e.getCause() instanceof ClassCastException);
 		}
 	}
 
-	public void testInstantiationBug() {
+	public void testInstantiationBug() throws Throwable {
 		try {
-			FacadeFactory.newFacade(TestInstantiationBugFacade.class);
+			newFacade(TestInstantiationBugFacade.class);
 			fail();
 		} catch (final RuntimeException e) {
 			assertTrue(e.getCause() instanceof NullPointerException);
 		}
 	}
 
-	public void testSpecificFacadeNotFound() {
+	public void testSpecificFacadeNotFound() throws Throwable {
 		try {
-			FacadeFactory.newFacade(FacadeFactoryTest.class);
+			newFacade(FacadeFactoryTest.class);
 			fail();
 		} catch (final RuntimeException e) {
 			assertTrue(e.getCause() instanceof ClassNotFoundException);
 		}
 	}
 
-	public void testSomethingGood() {
-		final GCFacade gcFacade = FacadeFactory.newFacade(GCFacade.class);
+	public void testSomethingGood() throws Throwable {
+		final GCFacade gcFacade = (GCFacade) newFacade(GCFacade.class);
 		assertTrue(gcFacade.getClass() != GCFacade.class);
 		assertTrue(gcFacade instanceof GCFacade);
+	}
+
+	// helping methods
+	//////////////////
+
+	private Object newFacade(final Class<?> clazz) throws Throwable {
+		try {
+			return ReflectionUtils.invokeHidden(FacadeFactory.class, "newFacade", new Object[] { clazz });
+		} catch (final InvocationTargetFailure itaf) {
+			throw itaf.getCause();
+		}
 	}
 }
