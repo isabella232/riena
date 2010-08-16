@@ -25,7 +25,6 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.swt.controllers.AbstractSubModuleControllerTest;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
-import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
@@ -259,28 +258,6 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		assertEquals(1, tablePersons.getSelection().size());
 		expected = personList.get(1);
 		actual = (Person) tablePersons.getSelection().get(0);
-		assertEquals(expected.getFirstname(), actual.getFirstname());
-		assertEquals(expected.getLastname(), actual.getLastname());
-	}
-
-	public void testCompositeTable() {
-		Person expected = null;
-		Person actual = null;
-		final ICompositeTableRidget compTable = getController().getRidget(ICompositeTableRidget.class, "compTable"); //$NON-NLS-1$
-		assertEquals(personList.size(), compTable.getOptionCount());
-		assertEquals(-1, compTable.getSelectionIndex());
-		assertEquals(0, compTable.getSelection().size());
-		for (int i = 0; i < compTable.getOptionCount(); i++) {
-			expected = personList.get(i);
-			actual = (Person) compTable.getOption(i);
-			assertEquals(expected.getFirstname(), actual.getFirstname());
-			assertEquals(expected.getLastname(), actual.getLastname());
-		}
-		compTable.setSelection(1);
-		assertEquals(1, compTable.getSelectionIndex());
-		assertEquals(1, compTable.getSelection().size());
-		expected = personList.get(1);
-		actual = (Person) compTable.getSelection().get(0);
 		assertEquals(expected.getFirstname(), actual.getFirstname());
 		assertEquals(expected.getLastname(), actual.getLastname());
 	}
