@@ -193,11 +193,6 @@
             name="org.eclipse.riena.example.client.views.TableSubModuleView">
       </view>
       <view allowMultiple="true"
-            class="org.eclipse.riena.example.client.views.CompositeTableSubModuleView"
-            id="org.eclipse.riena.example.client.views.CompositeTableSubModuleView"
-            name="org.eclipse.riena.example.client.views.CompositeTableSubModuleView">
-      </view>
-      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             id="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             name="org.eclipse.riena.example.client.views.NavigationSubModuleView">

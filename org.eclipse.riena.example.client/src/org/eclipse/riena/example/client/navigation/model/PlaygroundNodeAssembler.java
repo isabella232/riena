@@ -21,7 +21,6 @@ import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboAndChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
 import org.eclipse.riena.example.client.controllers.CompletionComboSubModuleController;
-import org.eclipse.riena.example.client.controllers.CompositeTableSubModuleController;
 import org.eclipse.riena.example.client.controllers.ContextMenuSubModuleController;
 import org.eclipse.riena.example.client.controllers.ControllerTestsPlaygroundSubModuleController;
 import org.eclipse.riena.example.client.controllers.DateTimeSubModuleController;
@@ -55,7 +54,6 @@ import org.eclipse.riena.example.client.views.ChoiceSubModuleView;
 import org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.example.client.views.CompletionComboSubModuleView;
-import org.eclipse.riena.example.client.views.CompositeTableSubModuleView;
 import org.eclipse.riena.example.client.views.ContextMenuSubModuleView;
 import org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView;
 import org.eclipse.riena.example.client.views.DateTimeSubModuleView;
@@ -170,12 +168,6 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
 		final ISubModuleNode comboFolderSubModule = buildComboNodes();
 		playgroundModule.addChild(comboFolderSubModule);
-
-		final ISubModuleNode tablexSubModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.compositetable"), "Composite Table"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(tablexSubModule, CompositeTableSubModuleController.class,
-				CompositeTableSubModuleView.ID, false);
-		playgroundModule.addChild(tablexSubModule);
 
 		final ISubModuleNode contextMenuSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.contextMenu"), "Context Menu"); //$NON-NLS-1$ //$NON-NLS-2$

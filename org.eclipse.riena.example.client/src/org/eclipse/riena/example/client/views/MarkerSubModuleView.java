@@ -10,16 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
-import java.util.Arrays;
-
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
-import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
-import org.eclipse.swt.nebula.widgets.compositetable.ResizableGridRowLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DateTime;
@@ -33,15 +28,12 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.swt.optional.OptionalUIControlsFactory;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.DatePickerComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -146,7 +138,7 @@ public class MarkerSubModuleView extends SubModuleView {
 
 		final Label lblReviewed = UIControlsFactory.createLabel(group, "Reviewed by:", "labellistPersons"); //$NON-NLS-1$ //$NON-NLS-2$
 		GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblReviewed);
-		final Composite cmpReviewed = createComposite(group, 3, true);
+		final Composite cmpReviewed = createComposite(group, 2, true);
 
 		final List listPersons = UIControlsFactory.createList(cmpReviewed, false, true, "listPersons"); //$NON-NLS-1$
 		final int hHint = UIControlsFactory.getHeightHint(listPersons, 5);
@@ -161,15 +153,8 @@ public class MarkerSubModuleView extends SubModuleView {
 		tac2.setWidth(70);
 		hFillFactory.hint(170, hHint).applyTo(tablePersons);
 
-		final CompositeTable compTable = OptionalUIControlsFactory.createCompositeTable(cmpReviewed, SWT.BORDER);
-		new Header(compTable, SWT.NONE);
-		new Row(compTable, SWT.NONE);
-		compTable.setRunTime(true);
-		addUIControl(compTable, "compTable"); //$NON-NLS-1$
-		hFillFactory.hint(200, hHint).applyTo(compTable);
-
 		UIControlsFactory.createLabel(group, ""); //$NON-NLS-1$
-		final Composite cmpReviewed2 = createComposite(group, 3, true);
+		final Composite cmpReviewed2 = createComposite(group, 2, true);
 
 		final Tree treePersons = UIControlsFactory.createTree(cmpReviewed2, SWT.V_SCROLL | SWT.BORDER
 				| SWT.FULL_SELECTION, "treePersons"); //$NON-NLS-1$
@@ -211,41 +196,6 @@ public class MarkerSubModuleView extends SubModuleView {
 		layout.marginWidth = 20;
 		layout.marginHeight = 20;
 		return layout;
-	}
-
-	// helping classes
-	//////////////////
-
-	/**
-	 * A header control for {@link CompositeTable}.
-	 */
-	private static final class Header extends AbstractNativeHeader {
-		public Header(final Composite parent, final int style) {
-			super(parent, style);
-			setWeights(new int[] { 100, 100 });
-			setColumnText(new String[] { "Last Name", "First Name" }); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-	}
-
-	/**
-	 * A row control with two text fields used by {@link CompositeTable}.
-	 */
-	private static final class Row extends Composite implements IComplexComponent {
-		private final Text txtLast;
-		private final Text txtFirst;
-
-		public Row(final Composite parent, final int style) {
-			super(parent, style);
-			this.setLayout(new ResizableGridRowLayout());
-			txtLast = new Text(this, SWT.BORDER);
-			SWTBindingPropertyLocator.getInstance().setBindingProperty(txtLast, "txtLast"); //$NON-NLS-1$
-			txtFirst = new Text(this, SWT.BORDER);
-			SWTBindingPropertyLocator.getInstance().setBindingProperty(txtFirst, "txtFirst"); //$NON-NLS-1$
-		}
-
-		public java.util.List<Object> getUIControls() {
-			return Arrays.asList(new Object[] { txtLast, txtFirst });
-		}
 	}
 
 }

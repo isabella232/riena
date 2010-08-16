@@ -147,11 +147,6 @@ public class MarkerSubModuleController extends SubModuleController {
 		tablePersons.bindToModel(createPersonList(), Person.class, colValues, colHeaders);
 		tablePersons.updateFromModel();
 
-		final ICompositeTableRidget compTable = getRidget(ICompositeTableRidget.class, "compTable"); //$NON-NLS-1$
-		final WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
-		compTable.bindToModel(input, Person.class, RowRidget.class);
-		compTable.updateFromModel();
-
 		final ITreeRidget treePersons = getRidget(ITreeRidget.class, "treePersons"); //$NON-NLS-1$
 		treePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		treePersons.bindToModel(createTreeRoots(), ITreeNode.class, ITreeNode.PROPERTY_CHILDREN,
@@ -178,9 +173,8 @@ public class MarkerSubModuleController extends SubModuleController {
 		final IToggleButtonRidget buttonCheckB = getRidget(IToggleButtonRidget.class, "buttonCheckB"); //$NON-NLS-1$
 
 		final IRidget[] markables = new IRidget[] { textName, textPrice, textAmount, textDate, dtDate, dtPicker,
-				comboAge, comboStyle, comboSize, choiceType, choiceFlavor, listPersons, tablePersons, compTable,
-				treePersons, treeWCols, buttonToggle, buttonPush, buttonRadioA, buttonRadioB, buttonCheckA,
-				buttonCheckB };
+				comboAge, comboStyle, comboSize, choiceType, choiceFlavor, listPersons, tablePersons, treePersons,
+				treeWCols, buttonToggle, buttonPush, buttonRadioA, buttonRadioB, buttonCheckA, buttonCheckB };
 
 		final IToggleButtonRidget checkMandatory = getRidget(IToggleButtonRidget.class, "checkMandatory"); //$NON-NLS-1$
 		final IToggleButtonRidget checkError = getRidget(IToggleButtonRidget.class, "checkError"); //$NON-NLS-1$
@@ -213,7 +207,6 @@ public class MarkerSubModuleController extends SubModuleController {
 					choiceFlavor.setSelection(null);
 					listPersons.setSelection((Object) null);
 					tablePersons.setSelection((Object) null);
-					compTable.clearSelection();
 					treePersons.setSelection((Object) null);
 					treeWCols.setSelection((Object) null);
 					buttonToggle.setSelected(false);
