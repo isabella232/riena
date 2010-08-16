@@ -20,7 +20,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.internal.navigation.ui.Activator;
-import org.eclipse.riena.navigation.IApplicationNode;
+import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -155,8 +155,8 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @since 2.0
 	 */
 	public IInfoFlyoutRidget getInfoFlyout() {
-		final ApplicationController appController = (ApplicationController) getNavigationNode().getParentOfType(
-				IApplicationNode.class).getNavigationNodeController();
+		final ApplicationController appController = (ApplicationController) ApplicationNodeManager.getApplicationNode()
+				.getNavigationNodeController();
 		return appController.getInfoFlyout();
 	}
 
