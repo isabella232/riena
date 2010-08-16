@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.ui.swt.CompletionCombo;
+import org.eclipse.riena.ui.swt.InfoFlyout;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
 
 /**
@@ -288,6 +289,19 @@ public abstract class SWTFacade {
 	public abstract void addPaintListener(Control control, EventListener listener);
 
 	/**
+	 * Copies the value of the {@code keyLocation} field from the source Event
+	 * to the target Event.
+	 * 
+	 * @param from
+	 *            the source Event instance; never null
+	 * @param target
+	 *            the target Event instance; never null
+	 * 
+	 * @since 2.1
+	 */
+	public abstract void copyEventKeyLocation(Event source, Event target);
+
+	/**
 	 * TODO [ev] docs
 	 * 
 	 * @param parent
@@ -325,17 +339,11 @@ public abstract class SWTFacade {
 	public abstract Cursor createCursor(Display display, Image cursorImage, int alternateStyle);
 
 	/**
-	 * Copies the value of the {@code keyLocation} field from the source Event
-	 * to the target Event.
+	 * Returns a paint listener for modifying the disabled look of a control.
 	 * 
-	 * @param from
-	 *            the source Event instance; never null
-	 * @param target
-	 *            the target Event instance; never null
-	 * 
-	 * @since 2.1
+	 * @return a PaintListener or null (in RAP)
 	 */
-	public abstract void copyEventKeyLocation(Event source, Event target);
+	public abstract EventListener createDisabledPainter();
 
 	/**
 	 * Attaches a drag-to-resize-listener with an SWT Tracker to the bottom
@@ -346,11 +354,11 @@ public abstract class SWTFacade {
 	public abstract void createGrabCornerListenerWithTracker(Control control);
 
 	/**
-	 * Returns a paint listener for modifying the disabled look of a control.
+	 * TODO [ev] docs
 	 * 
-	 * @return a PaintListener or null (in RAP)
+	 * @since 2.1
 	 */
-	public abstract EventListener createDisabledPainter();
+	public abstract InfoFlyout createInfoFlyout(Composite parent);
 
 	/**
 	 * TODO [ev] docs

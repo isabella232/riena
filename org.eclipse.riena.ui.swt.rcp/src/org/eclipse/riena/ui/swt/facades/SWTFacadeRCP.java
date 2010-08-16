@@ -30,11 +30,13 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.ui.swt.CompletionCombo;
+import org.eclipse.riena.ui.swt.InfoFlyout;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
 import org.eclipse.riena.ui.swt.facades.internal.CompletionComboRCP;
 import org.eclipse.riena.ui.swt.facades.internal.CompletionComboWithImageRCP;
 import org.eclipse.riena.ui.swt.facades.internal.DisabledPainter;
 import org.eclipse.riena.ui.swt.facades.internal.GrabCornerListenerWithTracker;
+import org.eclipse.riena.ui.swt.facades.internal.InfoFlyoutRCP;
 import org.eclipse.riena.ui.swt.facades.internal.ModuleToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.SubModuleToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.TreeItemEraserAndPainter;
@@ -124,13 +126,18 @@ public final class SWTFacadeRCP extends SWTFacade {
 	}
 
 	@Override
+	public EventListener createDisabledPainter() {
+		return new DisabledPainter();
+	}
+
+	@Override
 	public void createGrabCornerListenerWithTracker(final Control control) {
 		new GrabCornerListenerWithTracker(control);
 	}
 
 	@Override
-	public EventListener createDisabledPainter() {
-		return new DisabledPainter();
+	public InfoFlyout createInfoFlyout(final Composite parent) {
+		return new InfoFlyoutRCP(parent);
 	}
 
 	@Override

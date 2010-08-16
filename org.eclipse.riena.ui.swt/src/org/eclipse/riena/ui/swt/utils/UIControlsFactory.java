@@ -48,6 +48,7 @@ import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.DatePickerComposite;
 import org.eclipse.riena.ui.swt.ImageButton;
+import org.eclipse.riena.ui.swt.InfoFlyout;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
@@ -794,6 +795,18 @@ public class UIControlsFactory {
 		final ImageButton btn = createImageButton(parent, style);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(btn, bindingId);
 		return btn;
+	}
+
+	/**
+	 * Creates a platform specific {@link InfoFlyout} on the given composite.
+	 * 
+	 * @param parent
+	 *            the parent Composite; never null
+	 * @return an {@link InfoFlyout} instance; never null
+	 * @since 2.1
+	 */
+	public static InfoFlyout createInfoFlyout(final Composite parent) {
+		return SWTFacade.getDefault().createInfoFlyout(parent);
 	}
 
 	/**

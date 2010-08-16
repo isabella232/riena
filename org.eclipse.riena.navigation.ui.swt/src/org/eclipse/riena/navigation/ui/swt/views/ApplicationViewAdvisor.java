@@ -188,11 +188,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	private void createInfoFlyout(final Composite mainComposite) {
-		// TODO [ev] need to provide an alternative for RAP
-		if (SWTFacade.isRCP()) {
-			final InfoFlyout flyout = new InfoFlyout(mainComposite);
-			binding.addUIControl(flyout, "infoFlyout"); //$NON-NLS-1$
-		}
+		final InfoFlyout flyout = UIControlsFactory.createInfoFlyout(mainComposite);
+		binding.addUIControl(flyout, "infoFlyout"); //$NON-NLS-1$
 	}
 
 	@Override
