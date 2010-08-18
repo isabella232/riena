@@ -16,6 +16,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.internal.core.test.RienaTestCase;
@@ -174,6 +175,30 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		assertTrue(child1.isEnabled());
 		assertTrue(child2.isEnabled());
 		assertTrue(child3.isEnabled());
+	}
+
+	/**
+	 * As per Bug 321927
+	 */
+	public void testSetEditableFalseBlocksChangesFromUI() {
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, true);
+		final Button child1 = control.createChild("child1");
+
+		child1.setSelection(true);
+		control.setEditable(false);
+
+		assertTrue(child1.getSelection());
+		assertFalse(control.getEditable());
+
+		child1.setSelection(false);
+		final Event event = new Event();
+		event.type = SWT.Selection;
+		event.widget = child1;
+		event.display = child1.getDisplay();
+		child1.notifyListeners(event.type, event);
+
+		// editable = false -> selection reverted
+		assertTrue(child1.getSelection());
 	}
 
 	/**

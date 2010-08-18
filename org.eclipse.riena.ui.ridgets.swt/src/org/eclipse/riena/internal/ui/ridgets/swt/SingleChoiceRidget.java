@@ -308,25 +308,17 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 				final Object value = values[i];
 				final String caption = optionLabels != null ? optionLabels[i] : String.valueOf(value);
 
-				final Button button = new Button(control, SWT.RADIO);
-				button.setText(caption);
-				button.setForeground(control.getForeground());
-				button.setBackground(control.getBackground());
+				final Button button = control.createChild(caption);
 				button.setData(value);
 				button.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(final SelectionEvent e) {
 						final Button button = (Button) e.widget;
 						final Object data = button.getData();
-						if (button.getSelection()) {
-							if (isOutputOnly()) {
-								// silently revert UI change
-								updateSelection(getUIControl());
-							} else {
-								// this is a workaround to make composite table aware of focus changes, Bug #264627
-								SingleChoiceRidget.this.setSelection(data);
-								fireFocusIn(button.getParent());
-							}
+						if (button.getSelection() && !isOutputOnly()) {
+							// this is a workaround to make composite table aware of focus changes, Bug #264627
+							SingleChoiceRidget.this.setSelection(data);
+							fireFocusIn(button.getParent());
 						}
 					}
 				});

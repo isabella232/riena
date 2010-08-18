@@ -13,6 +13,8 @@ package org.eclipse.riena.ui.swt;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
@@ -32,7 +34,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  * {@link org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget}.
  */
 @IgnoreLnFUpdater("background")
-public class ChoiceComposite extends Composite {
+public class ChoiceComposite extends Composite implements SelectionListener {
 
 	private final boolean isMulti;
 
@@ -91,13 +93,13 @@ public class ChoiceComposite extends Composite {
 	 * 
 	 * @since 2.1
 	 */
-	public Button createChild(final String caption, final Object value) {
+	public Button createChild(final String caption) {
 		final int style = isMulti ? SWT.CHECK : SWT.RADIO;
 		final Button result = new Button(this, style);
 		result.setText(caption);
 		result.setForeground(getForeground());
 		result.setBackground(getBackground());
-		result.setData(value);
+		result.addSelectionListener(this);
 		updateEnabled(result, isEnabled());
 		return result;
 	}
@@ -184,6 +186,17 @@ public class ChoiceComposite extends Composite {
 
 	/**
 	 * Sets the editable state.
+	 * <p>
+	 * Implementation notes:
+	 * <p>
+	 * (a) {@code setEnabled(false)} takes precedence over
+	 * {@code setEditable(boolean)}
+	 * <p>
+	 * (b) on {@code setEditable(false)} the widget will automatically disable
+	 * all buttons which are not selected. It will also block / revert selection
+	 * events from the user. However, if the selection of the buttons is changed
+	 * programatically, you have to invoke {@code choice.setEditable(false)}
+	 * afterwards to update the state of the contained buttons.
 	 * 
 	 * @param editable
 	 *            the new editable state
@@ -191,9 +204,8 @@ public class ChoiceComposite extends Composite {
 	 * @exception SWTException
 	 *                <ul>
 	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                disposed</li> <li>ERROR_THREAD_INVALID_ACCESS - if not
+	 *                called from the thread that created the receiver</li>
 	 *                </ul>
 	 * 
 	 * @since 2.1
@@ -203,6 +215,15 @@ public class ChoiceComposite extends Composite {
 		updateEnabled(getEnabled());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This will also update the enabled state all buttons contained in this
+	 * widget.
+	 * <p>
+	 * Implementation note: {@code setEnabled(false)} takes precedence over
+	 * {@code setEditable(boolean)}.
+	 */
 	@Override
 	public final void setEnabled(final boolean enabled) {
 		setRedraw(false);
@@ -293,6 +314,23 @@ public class ChoiceComposite extends Composite {
 		this.hSpacing = hSpacing;
 		this.vSpacing = vSpacing;
 		applyLayout();
+	}
+
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public void widgetSelected(final SelectionEvent e) {
+		if (!isEditable) {
+			final Button button = (Button) e.widget;
+			button.setSelection(button.isEnabled());
+		}
+	}
+
+	/**
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public void widgetDefaultSelected(final SelectionEvent e) {
+		// unused
 	}
 
 	// helping methods

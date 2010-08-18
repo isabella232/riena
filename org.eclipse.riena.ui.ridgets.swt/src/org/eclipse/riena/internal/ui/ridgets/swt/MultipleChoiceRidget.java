@@ -319,10 +319,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 				final Object value = values[i];
 				final String caption = optionLabels != null ? optionLabels[i] : String.valueOf(value);
 
-				final Button button = new Button(control, SWT.CHECK);
-				button.setText(caption);
-				button.setForeground(control.getForeground());
-				button.setBackground(control.getBackground());
+				final Button button = control.createChild(caption);
 				button.setData(value);
 				button.addSelectionListener(new SelectionAdapter() {
 					@SuppressWarnings("unchecked")
@@ -330,10 +327,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 					public void widgetSelected(final SelectionEvent e) {
 						final Button button = (Button) e.widget;
 						final Object data = button.getData();
-						if (isOutputOnly()) {
-							// silently revert button state
-							updateSelection(getUIControl());
-						} else {
+						if (!isOutputOnly()) {
 							if (button.getSelection()) {
 								if (!selectionObservable.contains(data)) {
 									final List<?> oldSelection = new ArrayList<Object>(selectionObservable);
