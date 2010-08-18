@@ -143,6 +143,72 @@ public class ChoiceCompositeTest extends RienaTestCase {
 	}
 
 	/**
+	 * As per Bug 321927
+	 */
+	public void testSetEditable() {
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, true);
+		final Button child1 = new Button(control, SWT.CHECK);
+		child1.setSelection(true);
+		final Button child2 = new Button(control, SWT.CHECK);
+		child2.setSelection(true);
+		final Button child3 = new Button(control, SWT.CHECK);
+		child3.setSelection(false);
+
+		assertTrue(control.isEnabled());
+
+		assertTrue(control.getEditable());
+		assertTrue(child1.isEnabled());
+		assertTrue(child2.isEnabled());
+		assertTrue(child3.isEnabled());
+
+		control.setEditable(false);
+
+		assertFalse(control.getEditable());
+		assertTrue(child1.isEnabled()); // selected
+		assertTrue(child2.isEnabled()); // selected
+		assertFalse(child3.isEnabled());
+
+		control.setEditable(true);
+
+		assertTrue(control.getEditable());
+		assertTrue(child1.isEnabled());
+		assertTrue(child2.isEnabled());
+		assertTrue(child3.isEnabled());
+	}
+
+	/**
+	 * As per Bug 321927
+	 */
+	public void testToggleEditableWhenDisabled() {
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, true);
+		final Button child1 = new Button(control, SWT.CHECK);
+		child1.setSelection(true);
+		final Button child2 = new Button(control, SWT.CHECK);
+		child2.setSelection(true);
+		final Button child3 = new Button(control, SWT.CHECK);
+		child3.setSelection(false);
+
+		control.setEditable(false);
+		control.setEnabled(false);
+
+		assertFalse(child1.isEnabled());
+		assertFalse(child2.isEnabled());
+		assertFalse(child3.isEnabled());
+
+		control.setEnabled(true);
+
+		assertTrue(child1.isEnabled()); // selected
+		assertTrue(child2.isEnabled()); // selected
+		assertFalse(child3.isEnabled());
+
+		control.setEditable(true);
+
+		assertTrue(child1.isEnabled());
+		assertTrue(child2.isEnabled());
+		assertTrue(child3.isEnabled());
+	}
+
+	/**
 	 * As per Bug 317568.
 	 */
 	public void testSetMarginsVerticalOrientation() {

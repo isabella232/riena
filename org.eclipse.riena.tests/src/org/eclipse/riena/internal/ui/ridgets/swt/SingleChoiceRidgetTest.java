@@ -589,7 +589,6 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	}
 
 	public void testAddSelectionListener() {
-
 		final ISingleChoiceRidget ridget = getRidget();
 
 		try {
@@ -616,6 +615,33 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		ridget.setSelection(null);
 		assertEquals(ridget.getSelection(), optionProvider.getSelectedOption());
 		assertEquals(2, selectionListener.getCount());
+	}
+
+	/**
+	 * As per Bug 321927
+	 */
+	public void testToggleDisabledWhenOutputOnly() {
+		final ISingleChoiceRidget ridget = getRidget();
+		final ChoiceComposite control = getWidget();
+		final Button btnFirst = (Button) control.getChildren()[0];
+		final String first = optionProvider.getOptions().get(0);
+		ridget.setSelection(first);
+
+		assertTrue(btnFirst.getSelection());
+
+		ridget.setOutputOnly(true);
+		ridget.setEnabled(false);
+		ridget.setEnabled(true);
+		for (final Control child : control.getChildren()) {
+			final Button button = (Button) child;
+			if (button == btnFirst) {
+				assertTrue(btnFirst.isEnabled());
+				assertTrue(btnFirst.getSelection());
+			} else {
+				assertFalse(button.isEnabled());
+				assertFalse(button.getSelection());
+			}
+		}
 	}
 
 	// helping methods

@@ -12,10 +12,12 @@ package org.eclipse.riena.ui.swt;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
@@ -39,6 +41,7 @@ public class ChoiceComposite extends Composite {
 	private int vSpacing;
 	private int hSpacing = 3;
 	private int orientation;
+	private boolean isEditable;
 
 	/**
 	 * Create a new ChoiceComposite instance given its parent and style value.
@@ -72,9 +75,51 @@ public class ChoiceComposite extends Composite {
 		super(parent, style);
 		this.isMulti = multipleSelection;
 		this.orientation = SWT.VERTICAL;
+		isEditable = true;
 		applyLayout();
 		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		LnFUpdater.addControlsAfterBind(this.getClass());
+	}
+
+	/**
+	 * Creates an appropriate button (check or radio) within this composite.
+	 * 
+	 * @param caption
+	 *            the String on the Button; never null
+	 * @param value
+	 *            the selection value for the button
+	 * 
+	 * @since 2.1
+	 */
+	public Button createChild(final String caption, final Object value) {
+		final int style = isMulti ? SWT.CHECK : SWT.RADIO;
+		final Button result = new Button(this, style);
+		result.setText(caption);
+		result.setForeground(getForeground());
+		result.setBackground(getBackground());
+		result.setData(value);
+		updateEnabled(result, isEnabled());
+		return result;
+	}
+
+	/**
+	 * Gets the editable state.
+	 * 
+	 * @return whether or not the receiver is editable
+	 * 
+	 * @exception SWTException
+	 *                <ul>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
+	 *                disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
+	 *                thread that created the receiver</li>
+	 *                </ul>
+	 * 
+	 * @since 2.1
+	 */
+	public final boolean getEditable() {
+		checkWidget();
+		return isEditable;
 	}
 
 	/**
@@ -83,9 +128,10 @@ public class ChoiceComposite extends Composite {
 	 * 
 	 * @return a Point; never null. The x value corresponds to the top/bottom
 	 *         margin. The y value corresponds to the left/right margin.
+	 * 
 	 * @since 2.1
 	 */
-	public Point getMargins() {
+	public final Point getMargins() {
 		return new Point(marginHeight, marginWidth);
 	}
 
@@ -104,9 +150,10 @@ public class ChoiceComposite extends Composite {
 	 * 
 	 * @return a Point; never null. The x value corresponds to the right/left
 	 *         spacing. The y value corresponds to the top/bottom spacing.
+	 * 
 	 * @since 2.1
 	 */
-	public Point getSpacing() {
+	public final Point getSpacing() {
 		return new Point(hSpacing, vSpacing);
 	}
 
@@ -135,14 +182,33 @@ public class ChoiceComposite extends Composite {
 		}
 	}
 
+	/**
+	 * Sets the editable state.
+	 * 
+	 * @param editable
+	 *            the new editable state
+	 * 
+	 * @exception SWTException
+	 *                <ul>
+	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
+	 *                disposed</li>
+	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
+	 *                thread that created the receiver</li>
+	 *                </ul>
+	 * 
+	 * @since 2.1
+	 */
+	public final void setEditable(final boolean editable) {
+		this.isEditable = editable;
+		updateEnabled(getEnabled());
+	}
+
 	@Override
 	public final void setEnabled(final boolean enabled) {
 		setRedraw(false);
 		try {
 			super.setEnabled(enabled);
-			for (final Control child : getChildren()) {
-				child.setEnabled(enabled);
-			}
+			updateEnabled(enabled);
 		} finally {
 			setRedraw(true);
 		}
@@ -175,9 +241,10 @@ public class ChoiceComposite extends Composite {
 	 * @param marginWidth
 	 *            the margin, in pixels, that will be placed along the left and
 	 *            right edges of the widget. The default value is 0.
+	 * 
 	 * @since 2.1
 	 */
-	public void setMargins(final int marginHeight, final int marginWidth) {
+	public final void setMargins(final int marginHeight, final int marginWidth) {
 		Assert.isLegal(marginHeight >= 0, "marginHeight must be greater or equal to zero: " + marginHeight); //$NON-NLS-1$
 		Assert.isLegal(marginWidth >= 0, "marginWidth must be greater or equal to zero: " + marginWidth); //$NON-NLS-1$
 		this.marginHeight = marginHeight;
@@ -217,9 +284,10 @@ public class ChoiceComposite extends Composite {
 	 * @param vSpacing
 	 *            the space, in pixels, between the bottom edge of a cell and
 	 *            the top edge of the cell underneath. The default value is 0.
+	 * 
 	 * @since 2.1
 	 */
-	public void setSpacing(final int hSpacing, final int vSpacing) {
+	public final void setSpacing(final int hSpacing, final int vSpacing) {
 		Assert.isLegal(hSpacing >= 0, "hSpacing must be greater or equal to zero: " + hSpacing); //$NON-NLS-1$
 		Assert.isLegal(vSpacing >= 0, "vSpacing must be greater or equal to zero: " + vSpacing); //$NON-NLS-1$
 		this.hSpacing = hSpacing;
@@ -251,4 +319,18 @@ public class ChoiceComposite extends Composite {
 		}
 	}
 
+	private void updateEnabled(final boolean isEnabled) {
+		for (final Control child : getChildren()) {
+			updateEnabled(child, isEnabled);
+		}
+	}
+
+	private void updateEnabled(final Control child, final boolean isEnabled) {
+		if (!isEditable && isEnabled) {
+			final Button button = (Button) child;
+			child.setEnabled(button.getSelection());
+		} else { // isEditable && (isEnabled == true || isEnabled == false)
+			child.setEnabled(isEnabled);
+		}
+	}
 }

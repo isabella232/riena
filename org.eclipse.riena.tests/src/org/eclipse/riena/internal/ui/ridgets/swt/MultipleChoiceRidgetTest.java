@@ -757,6 +757,33 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		assertEquals(2, selectionListener.getCount());
 	}
 
+	/**
+	 * As per Bug 321927
+	 */
+	public void testToggleDisabledWhenOutputOnly() {
+		final IMultipleChoiceRidget ridget = getRidget();
+		final ChoiceComposite control = getWidget();
+		final Button btnFirst = (Button) control.getChildren()[0];
+		final String first = optionProvider.getOptions().get(0);
+		ridget.setSelection(Arrays.asList(first));
+
+		assertTrue(btnFirst.getSelection());
+
+		ridget.setOutputOnly(true);
+		ridget.setEnabled(false);
+		ridget.setEnabled(true);
+		for (final Control child : control.getChildren()) {
+			final Button button = (Button) child;
+			if (button == btnFirst) {
+				assertTrue(btnFirst.isEnabled());
+				assertTrue(btnFirst.getSelection());
+			} else {
+				assertFalse(button.isEnabled());
+				assertFalse(button.getSelection());
+			}
+		}
+	}
+
 	// helping methods
 	// ////////////////
 

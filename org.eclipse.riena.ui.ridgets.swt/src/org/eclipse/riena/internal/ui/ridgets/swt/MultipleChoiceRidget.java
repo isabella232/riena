@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.riena.beans.common.ListBean;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.IChoiceRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
@@ -77,6 +78,12 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				updateSelection(getUIControl());
+			}
+		});
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final boolean isOutput = ((Boolean) evt.getNewValue()).booleanValue();
+				updateEditable(getUIControl(), !isOutput);
 			}
 		});
 	}
@@ -305,7 +312,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		bindUIControl();
 	}
 
-	private void createChildren(final Composite control) {
+	private void createChildren(final ChoiceComposite control) {
 		if (control != null && !control.isDisposed()) {
 			final Object[] values = optionsObservable.toArray();
 			for (int i = 0; i < values.length; i++) {
@@ -370,13 +377,19 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 		return selectionObservable != null && selectionObservable.size() > 0;
 	}
 
+	private void updateEditable(final ChoiceComposite control, final boolean isEditable) {
+		if (control != null && !control.isDisposed()) {
+			control.setEditable(isEditable);
+		}
+	}
+
 	/**
 	 * Iterates over the composite's children, disabling all buttons, except the
 	 * one that has value as it's data element. If the ridget is not enabled, it
 	 * may deselect all buttons, as mandated by
 	 * {@link MarkerSupport#isHideDisabledRidgetContent()}.
 	 */
-	private void updateSelection(final Composite control) {
+	private void updateSelection(final ChoiceComposite control) {
 		final boolean canSelect = isEnabled() || !MarkerSupport.isHideDisabledRidgetContent();
 		if (control != null && !control.isDisposed()) {
 			for (final Control child : control.getChildren()) {
@@ -385,6 +398,7 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 				button.setSelection(isSelected);
 			}
 		}
+		updateEditable(control, !isOutputOnly());
 	}
 
 	private void notifySelectionListeners(final List<?> oldSelectionList, final List<?> newSelectionList) {
