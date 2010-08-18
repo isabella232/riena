@@ -115,8 +115,9 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		final IMultipleChoiceRidget choiceFlavor = getController().getRidget(IMultipleChoiceRidget.class,
 				"choiceFlavor"); //$NON-NLS-1$
 		assertNotNull(choiceFlavor.getSelection());
-		assertEquals(1, choiceFlavor.getSelection().size());
+		assertEquals(2, choiceFlavor.getSelection().size());
 		assertEquals("dry", choiceFlavor.getSelection().get(0));
+		assertEquals("spicy", choiceFlavor.getSelection().get(1));
 
 		final IToggleButtonRidget buttonToggle = getController().getRidget(IToggleButtonRidget.class, "buttonToggle"); //$NON-NLS-1$
 		assertTrue(buttonToggle.isSelected());
