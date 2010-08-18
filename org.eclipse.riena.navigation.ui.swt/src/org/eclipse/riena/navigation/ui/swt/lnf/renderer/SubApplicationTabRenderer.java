@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.ui.swt.facades.GCFacade;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.FlasherSupportForRenderer;
@@ -114,7 +115,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		int x2 = x;
 		int y2 = getBounds().y + getHeight() - 1;
 		if (isActive()) {
-			gc.setAntialias(SWT.OFF);
+			GCFacade.getDefault().setAntialias(gc, SWT.OFF);
 		}
 		gc.drawLine(x, y, x2, y2);
 		if (isActive()) {
@@ -232,7 +233,7 @@ public class SubApplicationTabRenderer extends AbstractLnfRenderer {
 		}
 
 		flasherSupport.startFlasher();
-		gc.setAntialias(SWT.DEFAULT);
+		GCFacade.getDefault().setAntialias(gc, SWT.DEFAULT);
 	}
 
 	private void paintSelection(final GC gc) {
