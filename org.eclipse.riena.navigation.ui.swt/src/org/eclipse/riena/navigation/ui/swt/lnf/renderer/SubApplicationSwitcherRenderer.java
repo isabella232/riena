@@ -35,10 +35,6 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 	private Control control;
 	private List<SubApplicationItem> items;
 
-	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer#paint(org.eclipse.swt.graphics.GC,
-	 *      java.lang.Object)
-	 */
 	@Override
 	public void paint(final GC gc, final Object value) {
 
@@ -68,11 +64,15 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 
 		// line below tab items
 		final Color bottomColor = lnf.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR);
+		final Color bottomSecondaryColor = lnf
+				.getColor(LnfKeyConstants.SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_SECONDARY_COLOR);
 		gc.setForeground(bottomColor);
 		int x = 0;
 		int y = getBounds().height - 1;
 		final int x2 = getBounds().width;
 		final int y2 = y;
+		gc.drawLine(x, y - 1, x2, y2 - 1);
+		gc.setForeground(bottomSecondaryColor);
 		gc.drawLine(x, y, x2, y2);
 
 		// all NOT active tab items
