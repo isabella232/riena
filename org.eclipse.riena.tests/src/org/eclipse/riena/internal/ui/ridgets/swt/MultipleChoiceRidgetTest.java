@@ -784,6 +784,37 @@ public final class MultipleChoiceRidgetTest extends MarkableRidgetTest {
 		}
 	}
 
+	/**
+	 * As per Bug 321927 - test setSelection() and output only := true
+	 */
+	public void testSelectionWithOutputOnly() {
+		final IMultipleChoiceRidget ridget = getRidget();
+		final ChoiceComposite control = getWidget();
+		final String first = optionProvider.getOptions().get(0);
+		final String second = optionProvider.getOptions().get(1);
+		ridget.setSelection(Arrays.asList(first));
+
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(first, ridget.getSelection().get(0));
+
+		ridget.setOutputOnly(true);
+		ridget.setSelection(Arrays.asList(second));
+
+		assertEquals(1, ridget.getSelection().size());
+		assertEquals(second, ridget.getSelection().get(0));
+		final Button btnSecond = (Button) control.getChildren()[1];
+		for (final Control child : control.getChildren()) {
+			final Button button = (Button) child;
+			if (button == btnSecond) {
+				assertTrue(btnSecond.isEnabled());
+				assertTrue(btnSecond.getSelection());
+			} else {
+				assertFalse(button.isEnabled());
+				assertFalse(button.getSelection());
+			}
+		}
+	}
+
 	// helping methods
 	// ////////////////
 

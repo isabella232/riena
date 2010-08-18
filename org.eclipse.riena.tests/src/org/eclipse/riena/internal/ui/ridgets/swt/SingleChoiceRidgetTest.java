@@ -133,8 +133,6 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	public void testSetSelection() {
 		final ISingleChoiceRidget ridget = getRidget();
 
-		ridget.updateFromModel();
-
 		assertEquals(optionProvider.getSelectedOption(), ridget.getSelection());
 
 		ridget.setSelection(optionProvider.getOptions().get(1));
@@ -637,6 +635,35 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 			if (button == btnFirst) {
 				assertTrue(btnFirst.isEnabled());
 				assertTrue(btnFirst.getSelection());
+			} else {
+				assertFalse(button.isEnabled());
+				assertFalse(button.getSelection());
+			}
+		}
+	}
+
+	/**
+	 * As per Bug 321927 - test setSelection() and output only := true
+	 */
+	public void testSelectionWithOutputOnly() {
+		final ISingleChoiceRidget ridget = getRidget();
+		final ChoiceComposite control = getWidget();
+		final String first = optionProvider.getOptions().get(0);
+		final String second = optionProvider.getOptions().get(1);
+		ridget.setSelection(first);
+
+		assertEquals(first, ridget.getSelection());
+
+		ridget.setOutputOnly(true);
+		ridget.setSelection(second);
+
+		assertEquals(second, ridget.getSelection());
+		final Button btnSecond = (Button) control.getChildren()[1];
+		for (final Control child : control.getChildren()) {
+			final Button button = (Button) child;
+			if (button == btnSecond) {
+				assertTrue(btnSecond.isEnabled());
+				assertTrue(btnSecond.getSelection());
 			} else {
 				assertFalse(button.isEnabled());
 				assertFalse(button.getSelection());
