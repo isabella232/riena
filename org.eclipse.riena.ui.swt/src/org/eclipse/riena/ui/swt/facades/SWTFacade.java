@@ -40,7 +40,6 @@ import org.eclipse.riena.ui.swt.ModuleTitleBar;
  * 
  * @since 2.0
  */
-// TODO [ev] review parameter javadoc
 public abstract class SWTFacade {
 
 	private static final SWTFacade INSTANCE = FacadeFactory.newFacade(SWTFacade.class);
@@ -216,11 +215,21 @@ public abstract class SWTFacade {
 
 	/**
 	 * Adds an SWT.EraseItem listener to the given table.
+	 * 
+	 * @param table
+	 *            a {@link Table} instance; never null
+	 * @param listener
+	 *            a {@link Listener} instance; never null
 	 */
 	public abstract void addEraseItemListener(Table table, Listener listener);
 
 	/**
 	 * Adds an SWT.EraseItem listener to the given tree.
+	 * 
+	 * @param tree
+	 *            a {@link Tree} instance; never null
+	 * @param listener
+	 *            a {@link Listener} instance; never null
 	 */
 	public abstract void addEraseItemListener(Tree tree, Listener listener);
 
@@ -231,6 +240,7 @@ public abstract class SWTFacade {
 	 *            a Display instance; never null
 	 * @param listener
 	 *            a {@link Listener}; never null
+	 * 
 	 * @since 2.1
 	 */
 	public abstract void addFilterMouseExit(Display display, Listener listener);
@@ -242,6 +252,7 @@ public abstract class SWTFacade {
 	 *            a Display instance; never null
 	 * @param listener
 	 *            a {@link Listener}; never null
+	 * 
 	 * @since 2.1
 	 */
 	public abstract void addFilterMouseMove(Display display, Listener listener);
@@ -253,6 +264,7 @@ public abstract class SWTFacade {
 	 *            a Display instance; never null
 	 * @param listener
 	 *            a {@link Listener}; never null
+	 * 
 	 * @since 2.1
 	 */
 	public abstract void addFilterMouseWheel(Display display, Listener listener);
@@ -260,6 +272,8 @@ public abstract class SWTFacade {
 	/**
 	 * Adds a MouseMoveListener to the given control.
 	 * 
+	 * @param control
+	 *            a {@link Control} instance; never null
 	 * @param listener
 	 *            an Object that implements the MouseMoveListener interface, or
 	 *            null
@@ -269,6 +283,8 @@ public abstract class SWTFacade {
 	/**
 	 * Adds a MouseTrackListener to the given control.
 	 * 
+	 * @param control
+	 *            a {@link Control} instance; never null
 	 * @param listener
 	 *            an {@link MouseTrackListener}; never null
 	 */
@@ -276,12 +292,19 @@ public abstract class SWTFacade {
 
 	/**
 	 * Adds an SWT.PaintItem listener to the given tree.
+	 * 
+	 * @param tree
+	 *            a {@link Tree} instance; never null
+	 * @param listener
+	 *            a {@link Listener} instance; never null
 	 */
 	public abstract void addPaintItemListener(Tree tree, Listener listener);
 
 	/**
 	 * Adds a PaintListener to the given control.
 	 * 
+	 * @param control
+	 *            a {@link Control} instance; never null
 	 * @param listener
 	 *            an EventListener that implements the PaintListener interface,
 	 *            or null
@@ -302,21 +325,30 @@ public abstract class SWTFacade {
 	public abstract void copyEventKeyLocation(Event source, Event target);
 
 	/**
-	 * TODO [ev] docs
+	 * Creates a platform specific {@link CompletionCombo} instance.
 	 * 
 	 * @param parent
+	 *            the parent {@link Composite}; never null
 	 * @param style
-	 * @return
+	 *            the style bits of the widget to construct. Must be a value
+	 *            supported by {@link Composite}
+	 * @return an {@link CompletionCombo} instance; never null
+	 * 
 	 * @since 2.1
 	 */
 	public abstract CompletionCombo createCompletionCombo(Composite parent, int style);
 
 	/**
-	 * TODO [ev] docs
+	 * Creates a platform specific {@link CompletionCombo} instance (with
+	 * support for images).
 	 * 
 	 * @param parent
+	 *            the parent {@link Composite}; never null
 	 * @param style
-	 * @return
+	 *            the style bits of the widget to construct. Must be a value
+	 *            supported by {@link Composite}
+	 * @return an {@link CompletionCombo} instance; never null
+	 * 
 	 * @since 2.1
 	 */
 	public abstract CompletionCombo createCompletionComboWithImage(Composite parent, int style);
@@ -349,27 +381,44 @@ public abstract class SWTFacade {
 	 * Attaches a drag-to-resize-listener with an SWT Tracker to the bottom
 	 * right corner of the given control.
 	 * 
+	 * @param control
+	 *            a {@link Control} instance; never null
+	 * 
 	 * @since 2.1
 	 */
 	public abstract void createGrabCornerListenerWithTracker(Control control);
 
 	/**
-	 * TODO [ev] docs
+	 * Creates a platform specific {@link InfoFlyout} instance.
+	 * 
+	 * @param parent
+	 *            the parent {@link Composite}; never null
+	 * @return an {@link InfoFlyout} instance; never null
 	 * 
 	 * @since 2.1
 	 */
 	public abstract InfoFlyout createInfoFlyout(Composite parent);
 
 	/**
-	 * TODO [ev] docs
+	 * Create a custom tooltip on a Module navigation control (i.e. on the title
+	 * bar of a module).
 	 * 
+	 * @param parent
+	 *            the parent {@link ModuleTitleBar} instance; never null
 	 * @since 2.1
 	 */
 	public abstract void createModuleToolTip(ModuleTitleBar parent);
 
 	/**
-	 * TODO [ev] docs
+	 * Create a custom tooltip on a SubModule navigation control (i.e. in
+	 * implementation terms: a TreeItem in the Tree).
 	 * 
+	 * @param parent
+	 *            a {@link Tree} instance; never null
+	 * @param labelProvider
+	 *            an {@link ILabelProvider} instance; never null. It has to
+	 *            return the text for the tooltip, presumably based on the
+	 *            corresponding sub-module navigation node.
 	 * @since 2.1
 	 */
 	public abstract void createSubModuleToolTip(Tree parent, ILabelProvider labelProvider);
@@ -393,17 +442,31 @@ public abstract class SWTFacade {
 	/**
 	 * Posts the given event on the display.
 	 * 
+	 * @param display
+	 *            a {@link Display} instance; never null
+	 * @param event
+	 *            an {@link Event} instance; never null
 	 * @return true if the event was generated, false otherwise
 	 */
 	public abstract boolean postEvent(Display display, Event event);
 
 	/**
 	 * Removes an SWT.EraseItem listener from the given table.
+	 * 
+	 * @param table
+	 *            a {@link Table} instance; never null
+	 * @param listener
+	 *            a {@link Listener} instance; never null
 	 */
 	public abstract void removeEraseItemListener(Table table, Listener listener);
 
 	/**
 	 * Removes an SWT.EraseItem listener from the given tree.
+	 * 
+	 * @param tree
+	 *            a {@link Tree} instance; never null
+	 * @param listener
+	 *            a {@link Listener} instance; never null
 	 */
 	public abstract void removeEraseItemListener(Tree tree, Listener listener);
 
@@ -415,6 +478,7 @@ public abstract class SWTFacade {
 	 *            a Display instance; never null
 	 * @param listener
 	 *            a {@link Listener}; never null
+	 * 
 	 * @since 2.1
 	 */
 	public abstract void removeFilterMouseWheel(Display display, Listener listener);
@@ -422,6 +486,8 @@ public abstract class SWTFacade {
 	/**
 	 * Removes a MouseMoveListener from the given control.
 	 * 
+	 * @param control
+	 *            a {@link Control} instance; never null
 	 * @param listener
 	 *            an Object that implements the MouseMoveListener interface, or
 	 *            null
@@ -430,17 +496,29 @@ public abstract class SWTFacade {
 
 	/**
 	 * Removes a MouseTrackListener from the given control.
+	 * 
+	 * @param control
+	 *            a {@link Control} instance; never null
+	 * @param listener
+	 *            a {@link MouseTrackListener} instance; never null
 	 */
 	public abstract void removeMouseTrackListener(Control control, MouseTrackListener listener);
 
 	/**
 	 * Removes an SWT.PaintItem listener from the given tree.
+	 * 
+	 * @param tree
+	 *            a {@link Tree} instance; never null
+	 * @param listener
+	 *            a {@link Listener} instance; never null
 	 */
 	public abstract void removePaintItemListener(Tree tree, Listener listener);
 
 	/**
 	 * Removes a PaintListener from the given control.
 	 * 
+	 * @param control
+	 *            a {@link Control} instance; never null
 	 * @param listener
 	 *            an EventListener that implements the PaintListener interface,
 	 *            or null
@@ -448,11 +526,24 @@ public abstract class SWTFacade {
 	public abstract void removePaintListener(Control control, EventListener listener);
 
 	/**
-	 * TODO [ev] docs
+	 * Perform a platform specific traversal action as indicated by the value of
+	 * the {@code traversal} argument. The following values are supported:
+	 * <ul>
+	 * <li>SWT.TRAVERSE_ARROW_NEXT</li>
+	 * <li>SWT.TRAVERSE_ARROW_PREVIOUS</li>
+	 * <li>SWT.TRAVERSE_ESCAPE</li>
+	 * <li>SWT.TRAVERSE_PAGE_NEXT</li>
+	 * <li>SWT.TRAVERSE_PAGE_PREVIOUS</li>
+	 * <li>SWT.TRAVERSE_RETURN</li>
+	 * <li>SWT.TRAVERSE_TAB_NEXT</li>
+	 * <li>SWT.TRAVERSE_TAB_PREVIOUS</li>
+	 * </ul>
 	 * 
 	 * @param control
+	 *            the {@link Control} to traverse; never null
 	 * @param traversal
-	 * @return
+	 *            one of the traversal values listed above
+	 * @return true on successful traversal, false otherwise
 	 * 
 	 * @since 2.1
 	 */
