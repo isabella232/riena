@@ -324,11 +324,13 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		if (closeImage == null) {
 			return closeBounds;
 		}
-		closeBounds.width = closeImage.getBounds().width;
-		closeBounds.height = closeImage.getBounds().height;
-		closeBounds.x = getBounds().x + getWidth() - closeBounds.width - TITLEBAR_LABEL_PADDING;
-		closeBounds.y = getBounds().y + (getHeight() - closeBounds.height) / 2;
-
+		final Rectangle bounds = getBounds();
+		if (bounds != null) {
+			closeBounds.width = closeImage.getBounds().width;
+			closeBounds.height = closeImage.getBounds().height;
+			closeBounds.x = bounds.x + getWidth() - closeBounds.width - TITLEBAR_LABEL_PADDING;
+			closeBounds.y = bounds.y + (getHeight() - closeBounds.height) / 2;
+		}
 		return closeBounds;
 
 	}
@@ -414,20 +416,23 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 	public Rectangle computeTextBounds(final GC gc) {
 
 		final Rectangle textBounds = new Rectangle(0, 0, 0, 0);
+		final Rectangle bounds = getBounds();
 
-		textBounds.x = getBounds().x + TITLEBAR_LABEL_PADDING_LEFT;
-		if (getImage() != null) {
-			textBounds.x += getImage().getBounds().width + TITLEBAR_ICON_TEXT_GAP;
+		if (bounds != null) {
+			textBounds.x = bounds.x + TITLEBAR_LABEL_PADDING_LEFT;
+			if (getImage() != null) {
+				textBounds.x += getImage().getBounds().width + TITLEBAR_ICON_TEXT_GAP;
+			}
+
+			textBounds.width = getWidth() - (textBounds.x - bounds.x) - TITLEBAR_LABEL_PADDING;
+
+			final Font font = getTitlebarFont();
+			gc.setFont(font);
+			final FontMetrics fontMetrics = gc.getFontMetrics();
+
+			textBounds.height = fontMetrics.getHeight();
+			textBounds.y = bounds.y + (bounds.height - textBounds.height) / 2;
 		}
-
-		textBounds.width = getWidth() - (textBounds.x - getBounds().x) - TITLEBAR_LABEL_PADDING;
-
-		final Font font = getTitlebarFont();
-		gc.setFont(font);
-		final FontMetrics fontMetrics = gc.getFontMetrics();
-
-		textBounds.height = fontMetrics.getHeight();
-		textBounds.y = getBounds().y + (getBounds().height - textBounds.height) / 2;
 
 		return textBounds;
 
