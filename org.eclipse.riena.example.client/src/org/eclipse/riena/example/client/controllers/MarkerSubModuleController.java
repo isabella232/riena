@@ -133,7 +133,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		choiceFlavor.bindToModel(Arrays.asList("dry", "sweet", "sour", "spicy"), (List<String>) null, new TestBean(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				TestBean.PROPERTY);
 		choiceFlavor.updateFromModel();
-		choiceFlavor.setSelection(Arrays.asList("dry")); //$NON-NLS-1$
+		choiceFlavor.setSelection(Arrays.asList("dry", "spicy")); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final IListRidget listPersons = getRidget(IListRidget.class, "listPersons"); //$NON-NLS-1$
 		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
