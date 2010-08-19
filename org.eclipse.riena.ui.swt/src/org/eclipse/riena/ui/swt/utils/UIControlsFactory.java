@@ -1615,6 +1615,7 @@ public class UIControlsFactory {
 	 * 
 	 * @param parent
 	 *            the parent composite; never null
+	 * @since 2.1
 	 */
 	public static StatusMeterWidget createStatusMeter(final Composite parent) {
 		return new StatusMeterWidget(parent);
@@ -1631,6 +1632,7 @@ public class UIControlsFactory {
 	 *            this control.
 	 * 
 	 * @wbp.factory.parameter.source bindingId "myStatusMeterId"
+	 * @since 2.1
 	 */
 	public static StatusMeterWidget createStatusMeter(final Composite parent, final String bindingId) {
 		final StatusMeterWidget statusMeter = createStatusMeter(parent);

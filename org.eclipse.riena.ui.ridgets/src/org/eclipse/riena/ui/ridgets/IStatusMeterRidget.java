@@ -13,6 +13,8 @@ package org.eclipse.riena.ui.ridgets;
 /**
  * Interface that reflects the extended possibilities of a
  * {@link StatusMeterRidget} over a normal {@link ITraverseRidget}.
+ * 
+ * @since 2.1
  */
 public interface IStatusMeterRidget extends ITraverseRidget {
 
