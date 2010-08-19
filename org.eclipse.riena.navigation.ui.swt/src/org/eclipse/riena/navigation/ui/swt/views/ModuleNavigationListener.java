@@ -251,8 +251,7 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 
 	private void startSwitch(final TreeItem item) {
 		cancelSwitch();
-		if (item != null && item.getData(ModuleView.SUPPRESS_TIMER) == null) {
-			item.setData(ModuleView.SUPPRESS_TIMER, null);
+		if (item != null) {
 			nodeSwitcher = new NodeSwitcher(item.getDisplay(), (INavigationNode<?>) item.getData());
 			nodeSwitcher.start();
 		}

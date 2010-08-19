@@ -70,7 +70,6 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 	private static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
-	public static final String SUPPRESS_TIMER = "suppressTimer"; //$NON-NLS-1$
 	private static final LnFUpdater LNF_UPDATER = new LnFUpdater();
 	private final AbstractViewBindingDelegate binding;
 	private final Composite parent;
@@ -790,10 +789,22 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			 */
 			final Tree tree = getTree();
 			if (tree.getSelectionCount() == 0 && tree.getItemCount() > 0) {
-				final TreeItem firstItem = tree.getItem(0);
-				firstItem.setData(SUPPRESS_TIMER, true);
-				tree.select(firstItem);
+				final TreeItem item = findItem(tree.getItems(), source);
+				tree.select(item);
 			}
+		}
+
+		private TreeItem findItem(final TreeItem[] items, final ISubModuleNode source) {
+			for (final TreeItem item : items) {
+				if (item.getData() == source) {
+					return item;
+				}
+				final TreeItem result = item.getItemCount() > 0 ? findItem(item.getItems(), source) : null;
+				if (result != null) {
+					return result;
+				}
+			}
+			return null;
 		}
 
 		@Override
