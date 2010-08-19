@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -18,6 +19,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.StatusMeterWidget;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -87,6 +89,27 @@ public class TraverseSubModuleView extends SubModuleView {
 
 		final Label lbl300 = new Label(compositeKelvin, SWT.NONE);
 		lbl300.setText("323"); //$NON-NLS-1$
+
+		// Rankine (StatusMeter demo)
+		UIControlsFactory.createLabel(parent, "Rankine:"); //$NON-NLS-1$
+
+		final StatusMeterWidget statusMeter = UIControlsFactory.createStatusMeter(parent, "rankineStatusMeter"); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().hint(SWT.DEFAULT, 24).applyTo(statusMeter);
+
+		new Label(parent, SWT.NONE);
+
+		final Composite compositeRankine = new Composite(parent, SWT.NONE);
+		compositeRankine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		compositeRankine.setLayout(new GridLayout(3, false));
+
+		final Label lblRankineStart = new Label(compositeRankine, SWT.NONE);
+		lblRankineStart.setText("491"); //$NON-NLS-1$
+
+		final Label labelDummy3 = new Label(compositeRankine, SWT.NONE);
+		labelDummy3.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+
+		final Label lblRankineEnd = new Label(compositeRankine, SWT.NONE);
+		lblRankineEnd.setText("582"); //$NON-NLS-1$
 
 	}
 

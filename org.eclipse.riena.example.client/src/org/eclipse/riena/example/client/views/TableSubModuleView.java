@@ -13,6 +13,7 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -59,12 +60,14 @@ public class TableSubModuleView extends SubModuleView {
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 
+		final TableColumn columnState = new TableColumn(table, SWT.CENTER);
 		final TableColumn columnWord = new TableColumn(table, SWT.LEFT);
 		final TableColumn columnUppercase = new TableColumn(table, SWT.LEFT);
 		final TableColumn columnACount = new TableColumn(table, SWT.LEFT);
 		final TableColumn columnAQuota = new TableColumn(table, SWT.LEFT);
 
 		final TableColumnLayout layout = new TableColumnLayout();
+		layout.setColumnData(columnState, new ColumnPixelData(30));
 		layout.setColumnData(columnWord, new ColumnWeightData(25));
 		layout.setColumnData(columnUppercase, new ColumnWeightData(25));
 		layout.setColumnData(columnACount, new ColumnWeightData(25));

@@ -207,6 +207,13 @@ public class RienaDefaultTheme implements ILnfTheme {
 				new ColorLnfResource(212, 208, 200));
 		lnf.putLnfResource(LnfKeyConstants.TITLEBAR_SEPARATOR_SECOND_LINE_FOREGROUND, new ColorLnfResource(245, 245,
 				245));
+
+		// StatusMeter
+		lnf.putLnfResource(LnfKeyConstants.STATUS_METER_BORDER_COLOR, new ColorLnfResource(128, 128, 128));
+		lnf.putLnfResource(LnfKeyConstants.STATUS_METER_BACKGROUND_COLOR, new ColorLnfResource(255, 255, 255));
+		lnf.putLnfResource(LnfKeyConstants.STATUS_METER_GRADIENT_START_COLOR, new ColorLnfResource(255, 255, 255));
+		lnf.putLnfResource(LnfKeyConstants.STATUS_METER_GRADIENT_END_COLOR, new ColorLnfResource(0, 0, 128));
+		lnf.putLnfResource(LnfKeyConstants.STATUS_METER_TRANSPARENT_COLOR, new ColorLnfResource(255, 0, 255));
 	}
 
 	private void customizeSWTControls(final ILnfCustomizer lnf) {

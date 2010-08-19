@@ -21,7 +21,11 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.beans.common.TypedComparator;
@@ -37,7 +41,9 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
+import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.NumberColumnFormatter;
+import org.eclipse.riena.ui.swt.StatusMeter;
 
 /**
  * Controller for the {@link TableSubModuleView} example.
@@ -48,8 +54,15 @@ public class TableSubModuleController extends SubModuleController {
 	private ITableRidget table;
 	private List<WordNode> input;
 
+	private Color green;
+	private Color darkGreen;
+
 	public TableSubModuleController() {
 		this(null);
+
+		final Display display = Display.getCurrent();
+		green = display.getSystemColor(SWT.COLOR_GREEN);
+		darkGreen = display.getSystemColor(SWT.COLOR_DARK_GREEN);
 	}
 
 	public TableSubModuleController(final ISubModuleNode navigationNode) {
@@ -67,21 +80,39 @@ public class TableSubModuleController extends SubModuleController {
 
 	private void bindModel() {
 		input = createInput();
-		final String[] columnPropertyNames = { "word", "upperCase", "ACount", "AQuota" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		final String[] columnHeaders = { "Word", "Uppercase", "A Count", "A Quota [%]" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		final String[] columnPropertyNames = { "AQuota", "word", "upperCase", "ACount", "AQuota" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		final String[] columnHeaders = { "S", "Word", "Uppercase", "A Count", "A Quota [%]" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		table.bindToModel(new WritableList(input, WordNode.class), WordNode.class, columnPropertyNames, columnHeaders);
 		table.updateFromModel();
-		table.setComparator(0, new TypedComparator<String>());
-		table.setComparator(1, new TypedComparator<Boolean>());
-		table.setColumnFormatter(3, new NumberColumnFormatter(Float.class, 2) {
+		table.setComparator(1, new TypedComparator<String>());
+		table.setComparator(2, new TypedComparator<Boolean>());
+		table.setColumnFormatter(4, new NumberColumnFormatter(Float.class, 2) {
 			@Override
 			protected Number getValue(final Object element) {
 				return ((WordNode) element).getAQuota();
 			}
 		});
-		table.setColumnSortable(2, false);
+		table.setColumnSortable(3, false);
 		table.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		table.setSelection(0);
+
+		table.setColumnFormatter(0, new ColumnFormatter() {
+			@Override
+			public String getText(final Object element) {
+				return ""; //$NON-NLS-1$
+			}
+
+			@Override
+			public Image getImage(final Object element) {
+				if (((WordNode) element).isUpperCase()) {
+					return StatusMeter.imageFinished().width(16).gradientStartColor(green)
+							.gradientEndColor(darkGreen).getImage();
+				} else {
+					final int value = (int) ((WordNode) element).getAQuota();
+					return StatusMeter.imageDefault().width(16).value(value).getImage();
+				}
+			}
+		});
 	}
 
 	/**

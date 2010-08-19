@@ -51,6 +51,7 @@ import org.eclipse.riena.ui.swt.ImageButton;
 import org.eclipse.riena.ui.swt.InfoFlyout;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
+import org.eclipse.riena.ui.swt.StatusMeterWidget;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -1607,6 +1608,34 @@ public class UIControlsFactory {
 	 */
 	public static ProgressBar createProgressBar(final Composite parent) {
 		return createProgressBar(parent, SWT.HORIZONTAL);
+	}
+
+	/**
+	 * Create a {@link StatusMeterWidget} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 */
+	public static StatusMeterWidget createStatusMeter(final Composite parent) {
+		return new StatusMeterWidget(parent);
+	}
+
+	/**
+	 * Create a {@link StatusMeterWidget} control.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param bindingId
+	 *            the binding property; never null; must not be empty. The given
+	 *            value will also be assigned to the Ridget that is paired to
+	 *            this control.
+	 * 
+	 * @wbp.factory.parameter.source bindingId "myStatusMeterId"
+	 */
+	public static StatusMeterWidget createStatusMeter(final Composite parent, final String bindingId) {
+		final StatusMeterWidget statusMeter = createStatusMeter(parent);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(statusMeter, bindingId);
+		return statusMeter;
 	}
 
 	/**

@@ -16,6 +16,7 @@ import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.riena.ui.swt.InfoFlyout;
+import org.eclipse.riena.ui.swt.StatusMeter;
 
 /**
  * Keys of the look and feel of riena.
@@ -1073,6 +1074,42 @@ public final class LnfKeyConstants {
 	 * @since 2.0
 	 */
 	public static final String TITLEBAR_SEPARATOR_SECOND_LINE_FOREGROUND = "titlebar.separator.secondtline.color"; //$NON-NLS-1$
+
+	/**
+	 * The border color for {@link StatusMeter}.
+	 * 
+	 * @since 2.1
+	 */
+	public static final String STATUS_METER_BORDER_COLOR = "StatusMeter.borderColor"; //$NON-NLS-1$
+
+	/**
+	 * The background color for {@link StatusMeter}.
+	 * 
+	 * @since 2.1
+	 */
+	public static final String STATUS_METER_BACKGROUND_COLOR = "StatusMeter.backgroundColor"; //$NON-NLS-1$
+
+	/**
+	 * The gradient start color for the bar in {@link StatusMeter}.
+	 * 
+	 * @since 2.1
+	 */
+	public static final String STATUS_METER_GRADIENT_START_COLOR = "StatusMeter.gradientStartColor"; //$NON-NLS-1$
+
+	/**
+	 * The gradient end color for the bar in {@link StatusMeter}.
+	 * 
+	 * @since 2.1
+	 */
+	public static final String STATUS_METER_GRADIENT_END_COLOR = "StatusMeter.gradientEndColor"; //$NON-NLS-1$
+
+	/**
+	 * The color used to create a transparent background around the bar of
+	 * {@link StatusMeter}.
+	 * 
+	 * @since 2.1
+	 */
+	public static final String STATUS_METER_TRANSPARENT_COLOR = "StatusMeter.transperentColor"; //$NON-NLS-1$
 
 	private LnfKeyConstants() {
 		super();

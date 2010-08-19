@@ -11,11 +11,13 @@
 package org.eclipse.riena.example.client.controllers;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
+import org.eclipse.swt.graphics.Color;
 
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.ISpinnerRidget;
+import org.eclipse.riena.ui.ridgets.IStatusMeterRidget;
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
 
 /**
@@ -24,7 +26,9 @@ import org.eclipse.riena.ui.ridgets.ITraverseRidget;
  */
 public class TraverseSubModuleController extends SubModuleController {
 
+	private static final int RANKINE_MAX = 582;
 	private final Temperature temperature;
+	private IStatusMeterRidget rankineStatusMeter;
 
 	/**
 	 * Creates a new instance of {@code TraverseSubModuleController} and
@@ -67,6 +71,16 @@ public class TraverseSubModuleController extends SubModuleController {
 		kelvinProgressBar.bindToModel(BeansObservables.observeValue(temperature, Temperature.PROPERTY_KELVIN));
 		kelvinProgressBar.updateFromModel();
 
+		rankineStatusMeter = (IStatusMeterRidget) getRidget("rankineStatusMeter"); //$NON-NLS-1$
+		rankineStatusMeter.bindToModel(BeansObservables.observeValue(temperature, Temperature.PROPERTY_RANKINE));
+		rankineStatusMeter.setMaximum(RANKINE_MAX);
+		rankineStatusMeter.setMinimum(491);
+		// set custom colors
+		//		rankineStatusMeter.setBackgroundColor(Display.getDefault().getSystemColor(SWT.COLOR_YELLOW));
+		//		rankineStatusMeter.setGradientStartColor(Display.getDefault().getSystemColor(SWT.COLOR_RED));
+		//		rankineStatusMeter.setGradientEndColor(Display.getDefault().getSystemColor(SWT.COLOR_BLUE));
+		//		rankineStatusMeter.setBorderColor(Display.getDefault().getSystemColor(SWT.COLOR_CYAN));
+		rankineStatusMeter.updateFromModel();
 	}
 
 	/**
@@ -77,10 +91,12 @@ public class TraverseSubModuleController extends SubModuleController {
 		static final String PROPERTY_DEGREE_CELSIUS = "degreeCelsius"; //$NON-NLS-1$
 		static final String PROPERTY_DEGREE_FAHRENHEITN = "degreeFahrenheit"; //$NON-NLS-1$
 		static final String PROPERTY_KELVIN = "kelvin"; //$NON-NLS-1$
+		static final String PROPERTY_RANKINE = "rankine"; //$NON-NLS-1$
 
 		private float kelvin;
 		private int degreeCelsius;
 		private int degreeFahrenheit;
+		private int rankine;
 
 		@SuppressWarnings("unused")
 		public void setDegreeCelsius(final int degreeCelsius) {
@@ -94,6 +110,7 @@ public class TraverseSubModuleController extends SubModuleController {
 				final float k = degreeCelsius + 273.15f;
 				setKelvin(k);
 				updateFahrenheit();
+				updateRankine();
 			}
 			firePropertyChanged(PROPERTY_DEGREE_CELSIUS, oldValue, degreeCelsius);
 		}
@@ -116,6 +133,7 @@ public class TraverseSubModuleController extends SubModuleController {
 				final float k = c + 273.15f;
 				setKelvin(k);
 				updateCelsius();
+				updateRankine();
 			}
 			firePropertyChanged(PROPERTY_DEGREE_FAHRENHEITN, oldValue, degreeFahrenheit);
 		}
@@ -134,6 +152,23 @@ public class TraverseSubModuleController extends SubModuleController {
 			return kelvin;
 		}
 
+		public void setRankine(final int rankine) {
+			this.rankine = rankine;
+
+			if (rankine == RANKINE_MAX) {
+				rankineStatusMeter.setGradientStartColor(new Color(null, 0, 255, 0));
+				rankineStatusMeter.setGradientEndColor(new Color(null, 0, 128, 0));
+			} else {
+				rankineStatusMeter.setGradientStartColor(new Color(null, 255, 255, 255));
+				rankineStatusMeter.setGradientEndColor(new Color(null, 0, 0, 128));
+			}
+		}
+
+		@SuppressWarnings("unused")
+		public int getRankine() {
+			return rankine;
+		}
+
 		private void updateCelsius() {
 			final int c = Math.round(getKelvin() - 273.15f);
 			setDegreeCelsius(c, false);
@@ -143,6 +178,11 @@ public class TraverseSubModuleController extends SubModuleController {
 			final int c = Math.round(getKelvin() - 273.15f);
 			final int f = Math.round(c * 1.8f + 32);
 			setDegreeFahrenheit(f, false);
+		}
+
+		private void updateRankine() {
+			final int r = Math.round(getKelvin() * 9 / 5.0f);
+			setRankine(r);
 		}
 
 	}
