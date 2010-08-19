@@ -84,6 +84,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private IMarker disabledMarker;
 	private Boolean cachedVisible;
 	private Boolean cachedEnabled;
+	private boolean isNodeIdChange;
 
 	/**
 	 * Creates a NavigationNode.
@@ -104,6 +105,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		actions = new LinkedHashSet<IAction>();
 		state = State.CREATED;
 		context = null;
+		isNodeIdChange = false;
 	}
 
 	/**
@@ -1327,8 +1329,12 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @see org.eclipse.riena.navigation.INavigationNode#setNodeId(org.eclipse.riena.navigation.NavigationNodeId)
 	 */
 	public void setNodeId(final NavigationNodeId nodeId) {
-		notifyNodeIdChange(nodeId);
+		if (!isNodeIdChange) {
+			isNodeIdChange = true;
+			notifyNodeIdChange(nodeId);
+		}
 		this.nodeId = nodeId;
+		isNodeIdChange = false;
 	}
 
 	/**

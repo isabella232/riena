@@ -502,7 +502,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		@Override
 		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
 			if (source.equals(getNavigationNode())) {
-				SwtViewProvider.getInstance().unregisterSwtViewId(source);
+				SwtViewProvider.getInstance().replaceNavigationNodeId(source, newId);
 			}
 		}
 	}

@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
@@ -53,7 +54,7 @@ public class SwtViewProvider {
 	}
 
 	public SwtViewId getSwtViewId(final INavigationNode<?> node) {
-
+		
 		SwtViewId swtViewId = views.get(node);
 		if (swtViewId == null) {
 			final ISubModuleNode submodule = node.getTypecastedAdapter(ISubModuleNode.class);
@@ -72,13 +73,21 @@ public class SwtViewProvider {
 		views.remove(node);
 	}
 
+	public void replaceNavigationNodeId(final INavigationNode<?> node, final NavigationNodeId newId) {
+		final SwtViewId swtViewId = views.get(node);
+		if (swtViewId != null) {
+			views.remove(node);
+			node.setNodeId(newId);
+			views.put(node, swtViewId);
+		}
+	}
+
 	private SwtViewId createAndRegisterSwtViewId(final INavigationNode<?> node) {
 
-		SwtViewId swtViewId = null;
 		final IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(node);
 		final String viewId = getViewId(node, def);
 
-		swtViewId = new SwtViewId(viewId, getNextSecondaryId(viewId));
+		final SwtViewId swtViewId = new SwtViewId(viewId, getNextSecondaryId(viewId));
 		views.put(node, swtViewId);
 
 		return swtViewId;
@@ -86,7 +95,6 @@ public class SwtViewProvider {
 
 	private SwtViewId createAndRegisterSwtViewId(final ISubModuleNode submodule) {
 
-		SwtViewId swtViewId = null;
 		final IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(submodule);
 		final String viewId = getViewId(submodule, def);
 
@@ -100,6 +108,7 @@ public class SwtViewProvider {
 		} else {
 			viewShared.put(viewId, def.isViewShared());
 		}
+		SwtViewId swtViewId = null;
 		if (def.isViewShared()) {
 			if (views.get(submodule) == null) {
 				viewCounter.put(viewId, 0);
@@ -114,7 +123,6 @@ public class SwtViewProvider {
 				swtViewId = views.get(getNavigationNode(viewId, null, ISubModuleNode.class, true));
 				views.put(submodule, swtViewId);
 			}
-
 		} else {
 			swtViewId = new SwtViewId(viewId, getNextSecondaryId(viewId));
 			views.put(submodule, swtViewId);
