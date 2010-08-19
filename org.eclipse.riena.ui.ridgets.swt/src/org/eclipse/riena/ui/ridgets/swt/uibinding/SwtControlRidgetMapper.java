@@ -59,6 +59,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.MessageBoxRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ModuleTitleBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MultipleChoiceRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.NumericTextRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.StatusMeterRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ProgressBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ScaleRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ShellRidget;
@@ -87,6 +88,7 @@ import org.eclipse.riena.ui.swt.InfoFlyout;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MessageBox;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
+import org.eclipse.riena.ui.swt.StatusMeterWidget;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineNumber;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -164,6 +166,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(Slider.class, SliderRidget.class);
 		addMapping(ProgressBar.class, ProgressBarRidget.class);
 		addMapping(InfoFlyout.class, InfoFlyoutRidget.class);
+		addMapping(StatusMeterWidget.class, StatusMeterRidget.class);
 	}
 
 	public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz) {
