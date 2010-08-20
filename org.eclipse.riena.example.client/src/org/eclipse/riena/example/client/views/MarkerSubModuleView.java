@@ -170,21 +170,23 @@ public class MarkerSubModuleView extends SubModuleView {
 		trc2.setWidth(40);
 		hFillFactory.hint(200, hHint).applyTo(treeWCols);
 
-		UIControlsFactory.createLabel(group, "Buttons:", "labelbuttonToggle"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createLabel(group, "Toggle Buttons:", "labelbuttonToggle"); //$NON-NLS-1$ //$NON-NLS-2$
 		final Composite cmpButtons = createComposite(group, 6, false);
-		UIControlsFactory.createButtonToggle(cmpButtons, "Toggle", "buttonToggle"); //$NON-NLS-1$ //$NON-NLS-2$
-		UIControlsFactory.createButton(cmpButtons, "Push", "buttonPush"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonToggle(cmpButtons, "ToggleA", "buttonToggleA"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButtonToggle(cmpButtons, "ToggleB", "buttonToggleB"); //$NON-NLS-1$ //$NON-NLS-2$
 		UIControlsFactory.createButtonRadio(cmpButtons, "RadioA", "buttonRadioA"); //$NON-NLS-1$ //$NON-NLS-2$
 		UIControlsFactory.createButtonRadio(cmpButtons, "RadioB", "buttonRadioB"); //$NON-NLS-1$ //$NON-NLS-2$
 		UIControlsFactory.createButtonCheck(cmpButtons, "CheckA", "buttonCheckA"); //$NON-NLS-1$ //$NON-NLS-2$
 		UIControlsFactory.createButtonCheck(cmpButtons, "CheckB", "buttonCheckB"); //$NON-NLS-1$ //$NON-NLS-2$
 
+		UIControlsFactory.createLabel(group, "Push Buttons:", "labelbuttonPush"); //$NON-NLS-1$ //$NON-NLS-2$
+		UIControlsFactory.createButton(group, "Push", "buttonPush"); //$NON-NLS-1$ //$NON-NLS-2$
+
 		return group;
 	}
 
 	private Composite createComposite(final Group group, final int numColumns, final boolean equalWidth) {
-		final Composite composite = new Composite(group, SWT.NONE);
-		composite.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
+		final Composite composite = UIControlsFactory.createComposite(group);
 		GridLayoutFactory.fillDefaults().numColumns(numColumns).equalWidth(equalWidth).spacing(10, 0)
 				.applyTo(composite);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);

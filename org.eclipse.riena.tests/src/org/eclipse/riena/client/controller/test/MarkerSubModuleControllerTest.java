@@ -119,8 +119,11 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		assertEquals("dry", choiceFlavor.getSelection().get(0));
 		assertEquals("spicy", choiceFlavor.getSelection().get(1));
 
-		final IToggleButtonRidget buttonToggle = getController().getRidget(IToggleButtonRidget.class, "buttonToggle"); //$NON-NLS-1$
-		assertTrue(buttonToggle.isSelected());
+		final IToggleButtonRidget buttonToggleA = getController().getRidget(IToggleButtonRidget.class, "buttonToggleA"); //$NON-NLS-1$
+		assertTrue(buttonToggleA.isSelected());
+
+		final IToggleButtonRidget buttonToggleB = getController().getRidget(IToggleButtonRidget.class, "buttonToggleB"); //$NON-NLS-1$
+		assertFalse(buttonToggleB.isSelected());
 
 		final IToggleButtonRidget buttonRadioA = getController().getRidget(IToggleButtonRidget.class, "buttonRadioA"); //$NON-NLS-1$
 		assertTrue(buttonRadioA.isSelected());
@@ -382,7 +385,8 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		markableRidgets.add(getController().getRidget(IComboRidget.class, "comboAge"));
 		markableRidgets.add(getController().getRidget(ISingleChoiceRidget.class, "choiceType"));
 		markableRidgets.add(getController().getRidget(IMultipleChoiceRidget.class, "choiceFlavor"));
-		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonToggle"));
+		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonToggleA"));
+		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonToggleB"));
 		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonRadioA"));
 		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonRadioB"));
 		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonCheckA"));
