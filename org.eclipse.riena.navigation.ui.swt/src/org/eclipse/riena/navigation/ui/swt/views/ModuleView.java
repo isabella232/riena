@@ -789,7 +789,10 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			 */
 			final Tree tree = getTree();
 			if (tree.getSelectionCount() == 0 && tree.getItemCount() > 0) {
-				final TreeItem item = findItem(tree.getItems(), source);
+				TreeItem item = findItem(tree.getItems(), source);
+				if (item == null) {
+					item = tree.getItem(0);
+				}
 				tree.select(item);
 			}
 		}
