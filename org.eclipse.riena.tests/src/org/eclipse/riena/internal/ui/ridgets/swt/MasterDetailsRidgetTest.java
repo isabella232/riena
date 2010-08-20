@@ -1029,6 +1029,9 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
 	}
 
+	/**
+	 * As per Bug 323210
+	 */
 	public void testHasErrorsWithCompositeRidget() {
 		final IMasterDetailsRidget ridget = getRidget();
 		final ICompositeRidget details = new CompositeRidget();
@@ -1097,6 +1100,9 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
 	}
 
+	/**
+	 * As per Bug 323210
+	 */
 	public void testHasMandatoriesWithCompositeRidget() {
 		final IMasterDetailsRidget ridget = getRidget();
 		final ICompositeRidget details = new CompositeRidget();
