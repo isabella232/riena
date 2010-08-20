@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.databinding.BindingException;
@@ -303,8 +304,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		if (applyRequiresNoErrors || applyRequiresNoMandatories) {
 			// inlined for performance
 			// isEnabled = areDetailsChanged() && noErrors && noMandatories
-			final boolean isEnabled = areDetailsChanged() && (applyRequiresNoErrors ? !hasErrors() : true)
-					&& (applyRequiresNoMandatories ? !hasMandatories() : true);
+			final boolean isEnabled = areDetailsChanged() && (applyRequiresNoErrors ? !hasErrors(detailRidgets) : true)
+					&& (applyRequiresNoMandatories ? !hasMandatories(detailRidgets) : true);
 			getApplyButtonRidget().setEnabled(isEnabled);
 		} else {
 			getApplyButtonRidget().setEnabled(areDetailsChanged());
@@ -442,8 +443,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	private boolean canApplyDirectly() {
-		final boolean noErrors = applyRequiresNoErrors ? !hasErrors() : true;
-		final boolean noMandatories = applyRequiresNoMandatories ? !hasMandatories() : true;
+		final boolean noErrors = applyRequiresNoErrors ? !hasErrors(detailRidgets) : true;
+		final boolean noMandatories = applyRequiresNoMandatories ? !hasMandatories(detailRidgets) : true;
 		return noErrors && noMandatories && (delegate.isValid(detailRidgets) == null);
 	}
 
@@ -495,8 +496,22 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
 	}
 
-	private boolean hasErrors() {
-		for (final IRidget ridget : detailRidgets.getRidgets()) {
+	private boolean hasErrors(final IRidgetContainer ridgetContainer) {
+		boolean foundMarker = hasErrors(ridgetContainer.getRidgets());
+		if (!foundMarker) {
+			final Iterator<? extends IRidget> iter = ridgetContainer.getRidgets().iterator();
+			while (!foundMarker && iter.hasNext()) {
+				final IRidget ridget = iter.next();
+				if (ridget instanceof IRidgetContainer) {
+					foundMarker = hasErrors((IRidgetContainer) ridget);
+				}
+			}
+		}
+		return foundMarker;
+	}
+
+	private boolean hasErrors(final Collection<? extends IRidget> ridgets) {
+		for (final IRidget ridget : ridgets) {
 			if (ridget instanceof IMarkableRidget) {
 				final IMarkableRidget markableRidget = (IMarkableRidget) ridget;
 				if (markableRidget.isEnabled() && markableRidget.getMarkersOfType(ErrorMarker.class).size() > 0) {
@@ -507,8 +522,22 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return false;
 	}
 
-	private boolean hasMandatories() {
-		for (final IRidget ridget : detailRidgets.getRidgets()) {
+	private boolean hasMandatories(final IRidgetContainer ridgetContainer) {
+		boolean foundMarker = hasMandatories(ridgetContainer.getRidgets());
+		if (!foundMarker) {
+			final Iterator<? extends IRidget> iter = ridgetContainer.getRidgets().iterator();
+			while (!foundMarker && iter.hasNext()) {
+				final IRidget ridget = iter.next();
+				if (ridget instanceof IRidgetContainer) {
+					foundMarker = hasMandatories((IRidgetContainer) ridget);
+				}
+			}
+		}
+		return foundMarker;
+	}
+
+	private boolean hasMandatories(final Collection<? extends IRidget> ridgets) {
+		for (final IRidget ridget : ridgets) {
 			if (ridget instanceof IMarkableRidget) {
 				final IMarkableRidget markableRidget = (IMarkableRidget) ridget;
 				if (markableRidget.isEnabled()) {

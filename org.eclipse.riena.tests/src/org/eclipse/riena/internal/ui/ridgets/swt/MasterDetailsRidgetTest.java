@@ -37,6 +37,7 @@ import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
+import org.eclipse.riena.ui.ridgets.ICompositeRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
@@ -993,6 +994,134 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		} finally {
 			System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, String.valueOf(isTesting));
 		}
+	}
+
+	public void testHasErrors() {
+		final IMasterDetailsRidget ridget = getRidget();
+		final ICompositeRidget details = new CompositeRidget();
+		final ITextRidget textRidget = new TextRidget();
+		details.addRidget("textRidget", textRidget);
+
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+
+		textRidget.setErrorMarked(true);
+
+		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+
+		textRidget.setErrorMarked(false);
+
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+	}
+
+	public void testHasErrosConsidersEnablement() {
+		final IMasterDetailsRidget ridget = getRidget();
+		final ICompositeRidget details = new CompositeRidget();
+		final ITextRidget textRidget = new TextRidget();
+		details.addRidget("textRidget", textRidget);
+
+		textRidget.setErrorMarked(true);
+		textRidget.setEnabled(false);
+
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+
+		textRidget.setEnabled(true);
+
+		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+	}
+
+	public void testHasErrorsWithCompositeRidget() {
+		final IMasterDetailsRidget ridget = getRidget();
+		final ICompositeRidget details = new CompositeRidget();
+		final ICompositeRidget cRidget1 = new CompositeRidget();
+		final ICompositeRidget cRidget2 = new CompositeRidget();
+		final TextRidget textRidget = new TextRidget();
+		details.addRidget("cRidget1", cRidget1);
+		details.addRidget("cRidget2", cRidget2);
+		cRidget2.addRidget("textRidget", textRidget);
+
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+		assertTrue(textRidget.isEnabled());
+
+		textRidget.setErrorMarked(true);
+
+		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+
+		textRidget.setErrorMarked(false);
+
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+
+		textRidget.setErrorMarked(true);
+		textRidget.setEnabled(false);
+
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+	}
+
+	public void testHasMandatories() {
+		final IMasterDetailsRidget ridget = getRidget();
+		final ICompositeRidget details = new CompositeRidget();
+		final ITextRidget textRidget = new TextRidget();
+		details.addRidget("textRidget", textRidget);
+
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+
+		textRidget.setMandatory(true);
+
+		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+
+		textRidget.setText("abc");
+
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+
+		textRidget.setText("");
+
+		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+
+		textRidget.setMandatory(false);
+
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+	}
+
+	public void testHasMandatoriesConsidersEnablement() {
+		final IMasterDetailsRidget ridget = getRidget();
+		final ICompositeRidget details = new CompositeRidget();
+		final ITextRidget textRidget = new TextRidget();
+		details.addRidget("textRidget", textRidget);
+
+		textRidget.setMandatory(true);
+		textRidget.setEnabled(false);
+
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+
+		textRidget.setEnabled(true);
+
+		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+	}
+
+	public void testHasMandatoriesWithCompositeRidget() {
+		final IMasterDetailsRidget ridget = getRidget();
+		final ICompositeRidget details = new CompositeRidget();
+		final ICompositeRidget cRidget1 = new CompositeRidget();
+		final ICompositeRidget cRidget2 = new CompositeRidget();
+		final TextRidget textRidget = new TextRidget();
+		details.addRidget("cRidget1", cRidget1);
+		details.addRidget("cRidget2", cRidget2);
+		cRidget2.addRidget("textRidget", textRidget);
+
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+		assertTrue(textRidget.isEnabled());
+
+		textRidget.setMandatory(true);
+
+		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+
+		textRidget.setMandatory(false);
+
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+
+		textRidget.setMandatory(true);
+		textRidget.setEnabled(false);
+
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
 	}
 
 	// helping methods
