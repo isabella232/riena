@@ -13,6 +13,8 @@
 package org.eclipse.riena.core.util;
 
 import java.lang.reflect.Array;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 
@@ -49,7 +51,7 @@ import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
  * </p>
  * 
  */
-public class ListenerList<L> {
+public class ListenerList<L> implements Iterable<L> {
 
 	public enum Mode {
 
@@ -230,4 +232,54 @@ public class ListenerList<L> {
 		listeners = (L[]) emptyArray;
 	}
 
+	/**
+	 * Returns an iterator over a set of elements of type L.
+	 * <p>
+	 * <b>Note:</b> Using this is slightly less efficient than using
+	 * {@code getListeners()}.
+	 * 
+	 * @return an Iterator.
+	 */
+	public Iterator<L> iterator() {
+		return new ArrayIterator(listeners);
+	}
+
+	private final class ArrayIterator implements Iterator<L> {
+
+		// backed by the listeners
+		private final L[] listeners;
+
+		// Index of element to be returned by subsequent call to next.
+		private int cursor = 0;
+
+		// Index of element returned by most recent call to next or previous. 
+		// Reset to -1 if this element is deleted by a call to remove.
+		private int lastReturned = -1;
+
+		private ArrayIterator(final L[] listeners) {
+			this.listeners = listeners;
+		}
+
+		public boolean hasNext() {
+			return cursor != listeners.length;
+		}
+
+		public L next() {
+			try {
+				final L next = listeners[cursor];
+				lastReturned = cursor++;
+				return next;
+			} catch (final IndexOutOfBoundsException e) {
+				throw new NoSuchElementException();
+			}
+		}
+
+		public void remove() {
+			if (lastReturned == -1) {
+				throw new IllegalStateException();
+			}
+			ListenerList.this.remove(listeners[lastReturned]);
+			lastReturned = -1;
+		}
+	}
 }
