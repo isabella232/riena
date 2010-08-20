@@ -239,6 +239,7 @@ public class ListenerList<L> implements Iterable<L> {
 	 * {@code getListeners()}.
 	 * 
 	 * @return an Iterator.
+	 * @since 2.1
 	 */
 	public Iterator<L> iterator() {
 		return new ArrayIterator(listeners);
