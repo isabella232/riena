@@ -17,7 +17,7 @@ import org.eclipse.riena.ui.common.IComplexComponent;
  * <p>
  * Implementors are advised to subclass {@link AbstractCompositeRidget} and
  * override the widget-specific protected methods. Implementations are often
- * bound against an IComplexCompontent widget, but do not have to.
+ * bound against an IComplexComponent widget, but do not have to.
  * <p>
  * To enable API-like access to the ridgets contained herein, it is recommended
  * to expose the IDs of the contained ridgets via constants, such as
