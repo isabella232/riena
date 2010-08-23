@@ -212,6 +212,7 @@ public class MarkerSubModuleController extends SubModuleController {
 					treePersons.setSelection((Object) null);
 					treeWCols.setSelection((Object) null);
 					buttonToggleA.setSelected(false);
+					buttonToggleB.setSelected(false);
 					buttonRadioA.setSelected(false);
 					buttonRadioB.setSelected(false);
 					buttonCheckA.setSelected(false);
