@@ -367,8 +367,8 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * "Flashes" the error marker.
 	 * <p>
 	 * 
-	 * Note: this is deisgned to be delegated to {@link AbstractMarkerSupport}
-	 * and may vary depending on the concrete implemenetation.
+	 * Note: this is designed to be delegated to {@link AbstractMarkerSupport}
+	 * and may vary depending on the concrete implementation.
 	 */
 	protected synchronized final void flash() {
 		if (getUIControl() != null) {
