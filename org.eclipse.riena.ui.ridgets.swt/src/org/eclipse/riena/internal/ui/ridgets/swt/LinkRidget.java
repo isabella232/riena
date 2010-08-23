@@ -99,7 +99,7 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 	 */
 	@Override
 	public boolean isDisableMandatoryMarker() {
-		return false;
+		return true;
 	}
 
 	public void removeSelectionListener(final ISelectionListener listener) {
