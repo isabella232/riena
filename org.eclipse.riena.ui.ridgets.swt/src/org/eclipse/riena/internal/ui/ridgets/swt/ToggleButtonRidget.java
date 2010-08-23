@@ -12,6 +12,9 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import static org.eclipse.riena.ui.swt.utils.SwtUtilities.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.internal.databinding.property.value.SimplePropertyObservableValue;
@@ -21,6 +24,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractToggleButtonRidget;
@@ -32,7 +36,23 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractToggleButtonRidget;
 // Note: TBR and ATBR could be merged - TBR is the only subclass
 public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 
+	/**
+	 * ToggleButtonRidgets use this property to store a reference to themselves
+	 * in their assigned control.
+	 */
+	private static final String TOGGLE_BUTTON_RIDGET = "tbr"; //$NON-NLS-1$
+
 	private IObservableValue selectionObservable;
+
+	@Override
+	protected void bindUIControl() {
+		super.bindUIControl();
+		final Button control = getUIControl();
+		if (control != null) {
+			control.setData(TOGGLE_BUTTON_RIDGET, this);
+			updateMandatoryMarkers();
+		}
+	}
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
@@ -56,6 +76,34 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 			selectionObservable = new SelectionObservableWithOutputOnly(getUIControl());
 		}
 		return selectionObservable;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The disabled state for mandatory markers on this ridget is computed as
+	 * follows:
+	 * <ul>
+	 * <li>if this ridget is selected, return true</li>
+	 * <li>if an enabled sibling control (i.e. a Button of the same type &ndash;
+	 * where type is check, radio or toggle &ndash; located in the same parent
+	 * Composite) is checked, return true</li>
+	 * <li>otherwise, return false</li>
+	 * </ul>
+	 * <p>
+	 * Correspondingly, this method only returns a fully accurate result when
+	 * this ridget has a bound UI-control. Without a UI-control is it not
+	 * possible to look at the siblings when computing the result.
+	 * 
+	 * @return true if mandatory markers should be disabled, false otherwise
+	 */
+	@Override
+	public boolean isDisableMandatoryMarker() {
+		boolean isSelected = isSelected();
+		if (!isSelected && getUIControl() != null) {
+			isSelected = siblingsAreSelected();
+		}
+		return isSelected;
 	}
 
 	@Override
@@ -85,6 +133,67 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 	@Override
 	protected void setUIControlImage(final Image image) {
 		getUIControl().setImage(image);
+	}
+
+	@Override
+	protected void updateMandatoryMarkers() {
+		final boolean disableMarker = isDisableMandatoryMarker();
+		final Button control = getUIControl();
+		if (control != null) {
+			final Button[] siblings = getSiblings(control);
+			for (final Button sibling : siblings) {
+				final Object ridget = sibling.getData(TOGGLE_BUTTON_RIDGET);
+				if (ridget instanceof ToggleButtonRidget) {
+					((ToggleButtonRidget) ridget).disableMandatoryMarkers(disableMarker);
+				}
+			}
+		}
+		disableMandatoryMarkers(disableMarker);
+	}
+
+	// helping methods
+	//////////////////
+
+	private Button[] getSiblings(final Button control) {
+		final List<Button> result = new ArrayList<Button>();
+		final boolean isCheck = isCheck(control);
+		final boolean isRadio = isRadio(control);
+		final boolean isPush = isToggle(control);
+		final Control[] siblings = control.getParent().getChildren();
+		for (final Control candidate : siblings) {
+			if (candidate != control && candidate instanceof Button) {
+				if ((isCheck && isCheck(candidate)) || (isRadio && isRadio(candidate))
+						|| (isPush && isToggle(candidate))) {
+					result.add((Button) candidate);
+				}
+			}
+		}
+		return result.toArray(new Button[result.size()]);
+	}
+
+	private boolean isCheck(final Control control) {
+		return (control.getStyle() & SWT.CHECK) > 0;
+	}
+
+	private boolean isRadio(final Control control) {
+		return (control.getStyle() & SWT.RADIO) > 0;
+	}
+
+	private boolean isToggle(final Control control) {
+		return (control.getStyle() & SWT.TOGGLE) > 0;
+	}
+
+	private boolean siblingsAreSelected() {
+		boolean result = false;
+		final Button control = getUIControl();
+		final Button[] siblings = getSiblings(control);
+		for (int i = 0; !result && i < siblings.length; i++) {
+			final Button sibling = siblings[i];
+			if (sibling.isEnabled()) {
+				result = sibling.getSelection();
+			}
+		}
+		return result;
 	}
 
 	// helping classes
@@ -131,5 +240,4 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 			}
 		}
 	}
-
 }

@@ -162,16 +162,19 @@ public class MarkerSubModuleController extends SubModuleController {
 				ITreeNode.PROPERTY_PARENT, colValues, colHeaders2);
 		treeWCols.updateFromModel();
 
+		final IActionRidget buttonPush = getRidget(IActionRidget.class, "buttonPush"); //$NON-NLS-1$
+
 		final IToggleButtonRidget buttonToggleA = getRidget(IToggleButtonRidget.class, "buttonToggleA"); //$NON-NLS-1$
 		final IToggleButtonRidget buttonToggleB = getRidget(IToggleButtonRidget.class, "buttonToggleB"); //$NON-NLS-1$
 		buttonToggleA.setSelected(true);
-		final IActionRidget buttonPush = getRidget(IActionRidget.class, "buttonPush"); //$NON-NLS-1$
+
 		final IToggleButtonRidget buttonRadioA = getRidget(IToggleButtonRidget.class, "buttonRadioA"); //$NON-NLS-1$
-		buttonRadioA.setSelected(true);
 		final IToggleButtonRidget buttonRadioB = getRidget(IToggleButtonRidget.class, "buttonRadioB"); //$NON-NLS-1$
+		buttonRadioA.setSelected(true);
+
 		final IToggleButtonRidget buttonCheckA = getRidget(IToggleButtonRidget.class, "buttonCheckA"); //$NON-NLS-1$
-		buttonCheckA.setSelected(true);
 		final IToggleButtonRidget buttonCheckB = getRidget(IToggleButtonRidget.class, "buttonCheckB"); //$NON-NLS-1$
+		buttonCheckA.setSelected(true);
 
 		final IRidget[] markables = new IRidget[] { textName, textPrice, textAmount, textDate, dtDate, dtPicker,
 				comboAge, comboStyle, comboSize, choiceType, choiceFlavor, listPersons, tablePersons, treePersons,

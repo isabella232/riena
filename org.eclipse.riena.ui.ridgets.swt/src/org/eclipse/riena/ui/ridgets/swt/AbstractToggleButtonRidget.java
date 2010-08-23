@@ -106,15 +106,6 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 		return text;
 	}
 
-	/**
-	 * Always returns true because mandatory markers do not make sense for this
-	 * ridget.
-	 */
-	@Override
-	public boolean isDisableMandatoryMarker() {
-		return true;
-	}
-
 	public boolean isSelected() {
 		return selected;
 	}
@@ -148,6 +139,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 			actionObserver.widgetSelected(null);
 			firePropertyChange(IToggleButtonRidget.PROPERTY_SELECTED, Boolean.valueOf(oldValue),
 					Boolean.valueOf(selected));
+			updateMandatoryMarkers();
 		}
 	}
 
@@ -222,6 +214,14 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 
 	protected abstract void setUIControlText(String text);
 
+	/**
+	 * Updates the mandatory marker state in this ridget and it's siblings
+	 * (i.e. other ToggleButtonRidgets for Buttons in the same composite).
+	 * 
+	 * @since 2.1
+	 */
+	protected abstract void updateMandatoryMarkers();
+
 	// helping methods
 	//////////////////
 
@@ -292,5 +292,4 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 			return cancel ? Status.CANCEL_STATUS : Status.OK_STATUS;
 		}
 	}
-
 }
