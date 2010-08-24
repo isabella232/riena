@@ -39,6 +39,7 @@ public abstract class GCFacade {
 	 * 
 	 * @param img
 	 * @return
+	 * @since 2.1
 	 */
 	public abstract GC createGCFromImage(Image img);
 
@@ -53,6 +54,7 @@ public abstract class GCFacade {
 	 * @param width
 	 * @param height
 	 * @return
+	 * @since 2.1
 	 */
 	public abstract Image createImage(Display display, int width, int height);
 
