@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
@@ -18,7 +21,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Color;
 
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
@@ -27,11 +32,29 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
  */
 public class CComboRidget extends AbstractComboRidget {
 
-	private final ModifyListener modifyListener = new ModifyListener() {
-		public void modifyText(final ModifyEvent e) {
-			setText(getUIControlText());
+	private static final String ORIGINAL_BACKGROUND_KEY = "CCR.orBaKe"; //$NON-NLS-1$
+
+	private final ModifyListener modifyListener;
+
+	public CComboRidget() {
+		modifyListener = new CComboModifyListener();
+		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+			public void propertyChange(final PropertyChangeEvent evt) {
+				if (getUIControl() != null) {
+					final boolean isEnabled = ((Boolean) evt.getNewValue()).booleanValue();
+					updateBgColor(isEnabled);
+				}
+			}
+		});
+	}
+
+	@Override
+	protected void bindUIControl() {
+		super.bindUIControl();
+		if (getUIControl() != null) {
+			updateBgColor(isEnabled());
 		}
-	};
+	}
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
@@ -129,5 +152,45 @@ public class CComboRidget extends AbstractComboRidget {
 	@Override
 	protected void updateEditable() {
 		// unused
+	}
+
+	// helping methods
+	//////////////////
+
+	/**
+	 * This was introduced as to address Bug 323449.
+	 * <p>
+	 * The Text/CCombo widgets will not change their background to gray when
+	 * disabled, once a non-null background color has been used in the enabled
+	 * state.
+	 */
+	private void updateBgColor(final boolean isEnabled) {
+		// pre-condition: control is known to be != null
+		final CCombo control = getUIControl();
+		if (isEnabled) {
+			if (control.getData(ORIGINAL_BACKGROUND_KEY) != null) {
+				control.setBackground((Color) control.getData(ORIGINAL_BACKGROUND_KEY));
+				control.setData(ORIGINAL_BACKGROUND_KEY, null);
+			}
+		} else {
+			if (control.getData(ORIGINAL_BACKGROUND_KEY) == null) {
+				control.setData(ORIGINAL_BACKGROUND_KEY, control.getBackground());
+			}
+			final Color disabledBg = control.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+			// note: the DisabledPainter will paint the DISABLED_MARKER_BACKGROUND over this, so we are good
+			control.setBackground(disabledBg);
+		}
+	}
+
+	// helping classes
+	//////////////////
+
+	/**
+	 * Keeps the ridget's text value in-sync with the widget's text value
+	 */
+	private final class CComboModifyListener implements ModifyListener {
+		public void modifyText(final ModifyEvent e) {
+			setText(getUIControlText());
+		}
 	}
 }

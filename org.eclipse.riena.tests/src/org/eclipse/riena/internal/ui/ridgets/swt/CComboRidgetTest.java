@@ -13,10 +13,15 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
@@ -39,14 +44,38 @@ public class CComboRidgetTest extends AbstractComboRidgetTest {
 		return new CComboRidget();
 	}
 
+	// testing methods
+	//////////////////
+
 	public void testRidgetMapping() {
 		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertTrue(getWidget() instanceof CCombo);
 		assertSame(CComboRidget.class, mapper.getRidgetClass(getWidget()));
 	}
 
-	// testing methods
-	//////////////////
+	/**
+	 * As per Bug 323449
+	 */
+	public void testDisabledWidgetHasGrayBackground() {
+		final AbstractComboRidget ridget = getRidget();
+		final CCombo control = (CCombo) getWidget();
+		final Display display = control.getDisplay();
+		final Color bgColor = display.getSystemColor(SWT.COLOR_WHITE);
+		final Color disabledBg = display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+
+		assertTrue(ridget.isEnabled());
+
+		control.setBackground(bgColor);
+		ridget.setEnabled(false);
+
+		assertEquals(disabledBg, control.getBackground());
+		assertEquals(disabledBg, getText(control).getBackground());
+
+		ridget.setEnabled(true);
+
+		assertEquals(bgColor, control.getBackground());
+		assertEquals(bgColor, getText(control).getBackground());
+	}
 
 	public void testRequireReadOnlyUIControl() {
 		try {
@@ -56,6 +85,13 @@ public class CComboRidgetTest extends AbstractComboRidgetTest {
 		} catch (final BindingException bex) {
 			ok();
 		}
+	}
+
+	// helping methods
+	//////////////////
+
+	private Text getText(final CCombo control) {
+		return (Text) ReflectionUtils.getHidden(control, "text");
 	}
 
 }
