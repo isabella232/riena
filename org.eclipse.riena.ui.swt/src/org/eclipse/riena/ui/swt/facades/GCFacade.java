@@ -11,6 +11,8 @@
 package org.eclipse.riena.ui.swt.facades;
 
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Facade for the {@link GC} class.
@@ -27,6 +29,32 @@ public abstract class GCFacade {
 	public static final GCFacade getDefault() {
 		return INSTANCE;
 	}
+
+	/**
+	 * Creates an graphics context from a given image.
+	 * <p>
+	 * 
+	 * The RAP implementation creates a graphics context by leveraging
+	 * Display.getCurrent().
+	 * 
+	 * @param img
+	 * @return
+	 */
+	public abstract GC createGCFromImage(Image img);
+
+	/**
+	 * Creates an image width a given width and heigt.
+	 * <p>
+	 * 
+	 * The RAP implementation doesn't work properly and is only used to get rid
+	 * of the compile errors.
+	 * 
+	 * @param display
+	 * @param width
+	 * @param height
+	 * @return
+	 */
+	public abstract Image createImage(Display display, int width, int height);
 
 	/**
 	 * @deprecated - RAP's GC now supports this directly TODO [ev] remove

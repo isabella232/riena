@@ -12,6 +12,8 @@
 package org.eclipse.riena.ui.swt.facades;
 
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * Implements {@link GCFacade} for RCP.
@@ -47,6 +49,16 @@ public class GCFacadeRCP extends GCFacade {
 	@Override
 	public void setLineDash(final GC gc, final int[] dashes) {
 		gc.setLineDash(dashes);
+	}
+
+	@Override
+	public GC createGCFromImage(final Image img) {
+		return new GC(img);
+	}
+
+	@Override
+	public Image createImage(final Display display, final int width, final int height) {
+		return new Image(display, width, height);
 	}
 
 }

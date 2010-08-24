@@ -16,6 +16,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.riena.ui.swt.facades.GCFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -175,9 +176,12 @@ public class StatusMeter {
 
 			// TODO sma@2010-08-17 Is this the Riena way?
 			final Display display = Display.getCurrent();
+			final Image image = GCFacade.getDefault().createImage(display, width, height);
 
-			final Image image = new Image(display, width, height);
-			final GC gc = new GC(image);
+			//final Image image = new Image(display, width, height);
+			//final GC gc = new GC(image);
+
+			final GC gc = GCFacade.getDefault().createGCFromImage(image);
 
 			final int start = margin + indent + BORDER_WIDTH;
 			final int end = width - (margin * 2) - BORDER_WIDTH - 1;

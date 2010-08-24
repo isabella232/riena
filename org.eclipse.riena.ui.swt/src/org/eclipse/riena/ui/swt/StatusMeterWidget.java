@@ -12,6 +12,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.riena.ui.swt.StatusMeter.StatusMeterBuilder;
@@ -22,7 +23,7 @@ import org.eclipse.riena.ui.swt.StatusMeter.StatusMeterBuilder;
  * @see StatusMeter
  * @since 2.1
  */
-public final class StatusMeterWidget extends Composite {
+public final class StatusMeterWidget extends Canvas {
 	private int value = 0;
 	private int maximum = 100;
 	private int minimum = 0;
