@@ -118,7 +118,9 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	public static Browser createBrowser(final Composite parent, final int style) {
-		return new Browser(parent, style);
+		final Browser result = new Browser(parent, style);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**
@@ -166,7 +168,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source text "myButtonText"
 	 */
 	public static Button createButton(final Composite parent, final String text) {
-		final Button result = new Button(parent, SWT.PUSH);
+		final Button result = createButton(parent);
 		result.setText(text);
 		return result;
 	}
@@ -284,7 +286,9 @@ public class UIControlsFactory {
 	 *            the parent composite; never null
 	 */
 	public static Button createButtonToggle(final Composite parent) {
-		return new Button(parent, SWT.TOGGLE);
+		final Button result = new Button(parent, SWT.TOGGLE);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	@Deprecated
@@ -547,7 +551,9 @@ public class UIControlsFactory {
 	 *         styles
 	 */
 	public static Combo createCombo(final Composite parent) {
-		return new Combo(parent, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+		final Combo result = new Combo(parent, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**
@@ -708,8 +714,8 @@ public class UIControlsFactory {
 	 */
 	public static Group createGroup(final Composite parent, final String text) {
 		final Group result = new Group(parent, SWT.NONE);
-		result.setText(text);
 		result.setBackground(SHARED_BG_COLOR);
+		result.setText(text);
 		return result;
 	}
 
@@ -839,8 +845,8 @@ public class UIControlsFactory {
 	 */
 	public static Label createLabel(final Composite parent, final String text, final int style) {
 		final Label label = new Label(parent, style);
-		label.setText(text);
 		label.setBackground(SHARED_BG_COLOR);
+		label.setText(text);
 		return label;
 	}
 
@@ -959,7 +965,9 @@ public class UIControlsFactory {
 		if (vScroll) {
 			style |= SWT.V_SCROLL;
 		}
-		return new List(parent, style);
+		final List result = new List(parent, style);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**
@@ -1142,7 +1150,9 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
 	 */
 	public static Table createTable(final Composite parent, final int style) {
-		return new Table(parent, style);
+		final Table result = new Table(parent, style);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**
@@ -1173,7 +1183,9 @@ public class UIControlsFactory {
 	 *            the parent composite; never null
 	 */
 	public static Text createText(final Composite parent) {
-		return new Text(parent, SWT.SINGLE | SWT.BORDER);
+		final Text result = new Text(parent, SWT.SINGLE | SWT.BORDER);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**
@@ -1188,7 +1200,9 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.BORDER
 	 */
 	public static Text createText(final Composite parent, final int style) {
-		return new Text(parent, style | SWT.BORDER);
+		final Text result = new Text(parent, style | SWT.BORDER);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**
@@ -1208,7 +1222,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myTextId"
 	 */
 	public static Text createText(final Composite parent, final int style, final String bindingId) {
-		final Text text = new Text(parent, style | SWT.BORDER);
+		final Text text = createText(parent, style);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(text, bindingId);
 		return text;
 	}
@@ -1222,6 +1236,7 @@ public class UIControlsFactory {
 	 */
 	public static Text createTextDate(final Composite parent) {
 		final Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
+		result.setBackground(SHARED_BG_COLOR);
 		result.setData(KEY_TYPE, TYPE_DATE);
 		return result;
 	}
@@ -1254,6 +1269,7 @@ public class UIControlsFactory {
 	 */
 	public static Text createTextDecimal(final Composite parent) {
 		final Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
+		result.setBackground(SHARED_BG_COLOR);
 		result.setData(KEY_TYPE, TYPE_DECIMAL);
 		return result;
 	}
@@ -1346,7 +1362,9 @@ public class UIControlsFactory {
 		if (vScroll) {
 			txStyle |= SWT.V_SCROLL;
 		}
-		return new Text(parent, txStyle);
+		final Text result = new Text(parent, txStyle);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**
@@ -1376,6 +1394,7 @@ public class UIControlsFactory {
 	 */
 	public static Text createTextNumeric(final Composite parent) {
 		final Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
+		result.setBackground(SHARED_BG_COLOR);
 		result.setData(KEY_TYPE, TYPE_NUMERIC);
 		return result;
 	}
@@ -1451,7 +1470,9 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
 	 */
 	public static Tree createTree(final Composite parent, final int style) {
-		return new Tree(parent, style);
+		final Tree result = new Tree(parent, style);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**
@@ -1507,7 +1528,9 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.BORDER
 	 */
 	public static Spinner createSpinner(final Composite parent, final int style) {
-		return new Spinner(parent, style);
+		final Spinner result = new Spinner(parent, style);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**
@@ -1552,7 +1575,9 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
 	 */
 	public static Scale createScale(final Composite parent, final int style) {
-		return new Scale(parent, style);
+		final Scale result = new Scale(parent, style);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**
@@ -1597,7 +1622,9 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
 	 */
 	public static ProgressBar createProgressBar(final Composite parent, final int style) {
-		return new ProgressBar(parent, style);
+		final ProgressBar result = new ProgressBar(parent, style);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**
@@ -1618,7 +1645,9 @@ public class UIControlsFactory {
 	 * @since 2.1
 	 */
 	public static StatusMeterWidget createStatusMeter(final Composite parent) {
-		return new StatusMeterWidget(parent);
+		final StatusMeterWidget result = new StatusMeterWidget(parent);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**
@@ -1672,7 +1701,9 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
 	 */
 	public static Slider createSlider(final Composite parent, final int style) {
-		return new Slider(parent, style);
+		final Slider result = new Slider(parent, style);
+		result.setBackground(SHARED_BG_COLOR);
+		return result;
 	}
 
 	/**
@@ -1708,8 +1739,9 @@ public class UIControlsFactory {
 
 		if (Beans.isDesignTime()) {
 			// design time fallback
-			return new Separator(parent, style, Display.getDefault().getSystemColor(SWT.COLOR_BLACK), Display
-					.getDefault().getSystemColor(SWT.COLOR_WHITE));
+			final Display display = parent.getDisplay();
+			return new Separator(parent, style, display.getSystemColor(SWT.COLOR_BLACK),
+					display.getSystemColor(SWT.COLOR_WHITE));
 		}
 		return new Separator(parent, style, LnfManager.getLnf().getColor(firstLineColor), LnfManager.getLnf().getColor(
 				secondLineColor));
