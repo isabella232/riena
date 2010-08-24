@@ -45,6 +45,8 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	private int orientation;
 	private boolean isEditable;
 
+	private Color bgColor;
+
 	/**
 	 * Create a new ChoiceComposite instance given its parent and style value.
 	 * The default orientation is <tt>SWT.VERTICAL</tt> (see also
@@ -175,10 +177,8 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	public final void setBackground(final Color color) {
 		setRedraw(false);
 		try {
-			super.setBackground(color);
-			for (final Control child : getChildren()) {
-				child.setBackground(color);
-			}
+			this.bgColor = color;
+			updateBgColor(isEnabled());
 		} finally {
 			setRedraw(true);
 		}
@@ -230,6 +230,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 		try {
 			super.setEnabled(enabled);
 			updateEnabled(enabled);
+			updateBgColor(enabled);
 		} finally {
 			setRedraw(true);
 		}
@@ -354,6 +355,14 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 			layout.spacing = hSpacing;
 			layout.wrap = false;
 			setLayout(layout);
+		}
+	}
+
+	private void updateBgColor(final boolean isEnabled) {
+		final Color color = isEnabled ? bgColor : getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+		super.setBackground(color);
+		for (final Control child : getChildren()) {
+			child.setBackground(color);
 		}
 	}
 

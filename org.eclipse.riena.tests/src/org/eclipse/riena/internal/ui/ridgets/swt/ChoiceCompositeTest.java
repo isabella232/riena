@@ -353,4 +353,50 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		}
 	}
 
+	/**
+	 * As per Bug 323449
+	 */
+	public void testDisabledWidgetHasGrayBackground() {
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		final Button child1 = control.createChild("child1");
+
+		assertTrue(control.isEnabled());
+
+		final Color defaultBg = control.getBackground();
+		final Color defaultChildBg = child1.getBackground();
+		final Color disabledBg = control.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+
+		control.setEnabled(false);
+
+		assertEquals(disabledBg, control.getBackground());
+		assertEquals(disabledBg, child1.getBackground());
+
+		control.setEnabled(true);
+
+		assertEquals(defaultBg, control.getBackground());
+		assertEquals(defaultChildBg, child1.getBackground());
+	}
+
+	/**
+	 * As per Bug 323449
+	 */
+	public void testSetBackgroundColorWhileDisabled() {
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		final Button child1 = control.createChild("child1");
+		final Display display = control.getDisplay();
+		final Color disabledBg = display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+		final Color red = display.getSystemColor(SWT.COLOR_RED);
+
+		control.setEnabled(false);
+		control.setBackground(red);
+
+		assertEquals(disabledBg, control.getBackground());
+		assertEquals(disabledBg, child1.getBackground());
+
+		control.setEnabled(true);
+
+		assertEquals(red, control.getBackground());
+		assertEquals(red, child1.getBackground());
+	}
+
 }

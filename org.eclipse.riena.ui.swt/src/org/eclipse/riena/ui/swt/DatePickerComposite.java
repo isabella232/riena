@@ -41,6 +41,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -56,6 +58,7 @@ public class DatePickerComposite extends Composite {
 	private final Text textfield;
 	private final Button pickerButton;
 
+	private Color bgColor;
 	private DatePicker datePicker;
 	private IDateConverterStrategy dateConverterStrategy;
 
@@ -64,7 +67,7 @@ public class DatePickerComposite extends Composite {
 
 		GridLayoutFactory.fillDefaults().numColumns(2).spacing(0, 0).applyTo(this);
 		textfield = new Text(this, checkStyle(textStyles));
-		setBackground(getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(textfield);
 
 		pickerButton = new Button(this, SWT.ARROW | SWT.DOWN);
@@ -107,6 +110,7 @@ public class DatePickerComposite extends Composite {
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		updateButtonEnablement();
+		updateBgColor(enabled);
 	}
 
 	@Override
@@ -117,8 +121,8 @@ public class DatePickerComposite extends Composite {
 
 	@Override
 	public void setBackground(final Color color) {
-		super.setBackground(color);
-		textfield.setBackground(color);
+		this.bgColor = color;
+		updateBgColor(isEnabled());
 	}
 
 	/**
@@ -133,6 +137,9 @@ public class DatePickerComposite extends Composite {
 			pickerButton.setEnabled(enabledButton);
 		}
 	}
+
+	// helping methods
+	//////////////////
 
 	/**
 	 * Removes the {@link SWT.BORDER} style, to prevent a awkward representation
@@ -176,6 +183,12 @@ public class DatePickerComposite extends Composite {
 			result.setTime(date);
 		}
 		return result;
+	}
+
+	private void updateBgColor(final boolean isEnabled) {
+		final Color color = isEnabled ? bgColor : getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+		super.setBackground(color);
+		textfield.setBackground(color);
 	}
 
 	// helping classes

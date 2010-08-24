@@ -13,7 +13,9 @@ package org.eclipse.riena.ui.swt;
 import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -29,13 +31,13 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public class DatePickerCompositeTest extends TestCase {
 
 	private Shell shell;
-	private DatePickerComposite dpComposite;
+	private DatePickerComposite control;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		shell = new Shell();
-		dpComposite = new DatePickerComposite(shell, SWT.NONE);
+		control = new DatePickerComposite(shell, SWT.NONE);
 	}
 
 	/**
@@ -67,11 +69,51 @@ public class DatePickerCompositeTest extends TestCase {
 		assertTrue(getPicker().isVisible());
 	}
 
+	/**
+	 * As per Bug 323449
+	 */
+	public void testDisabledWidgetHasGrayBackground() {
+		assertTrue(control.isEnabled());
+
+		final Color defaultBg = control.getBackground();
+		final Color disabledBg = control.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+
+		control.setEnabled(false);
+
+		assertEquals(disabledBg, control.getBackground());
+		assertEquals(disabledBg, control.getTextfield().getBackground());
+
+		control.setEnabled(true);
+
+		assertEquals(defaultBg, control.getBackground());
+		assertEquals(defaultBg, control.getTextfield().getBackground());
+	}
+
+	/**
+	 * As per Bug 323449
+	 */
+	public void testSetBackgroundColorWhileDisabled() {
+		final Display display = control.getDisplay();
+		final Color disabledBg = display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+		final Color red = display.getSystemColor(SWT.COLOR_RED);
+
+		control.setEnabled(false);
+		control.setBackground(red);
+
+		assertEquals(disabledBg, control.getBackground());
+		assertEquals(disabledBg, control.getTextfield().getBackground());
+
+		control.setEnabled(true);
+
+		assertEquals(red, control.getBackground());
+		assertEquals(red, control.getTextfield().getBackground());
+	}
+
 	// helping methods
 	//////////////////
 
 	private DatePicker getPicker() {
-		return ReflectionUtils.getHidden(dpComposite, "datePicker");
+		return ReflectionUtils.getHidden(control, "datePicker");
 	}
 
 	private Shell getPickerShell() {
@@ -79,7 +121,7 @@ public class DatePickerCompositeTest extends TestCase {
 	}
 
 	private Button getPickerButton() {
-		return ReflectionUtils.getHidden(dpComposite, "pickerButton");
+		return ReflectionUtils.getHidden(control, "pickerButton");
 	}
 
 }
