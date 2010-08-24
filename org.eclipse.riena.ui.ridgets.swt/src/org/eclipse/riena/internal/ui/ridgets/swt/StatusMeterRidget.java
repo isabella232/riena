@@ -24,7 +24,7 @@ import org.eclipse.riena.ui.swt.StatusMeterWidget;
  */
 public class StatusMeterRidget extends AbstractTraverseRidget implements IStatusMeterRidget {
 
-	private static final String COLOR_WARNING = "Parameter color is not an instance of 'org.eclipse.swt.graphics.Color'";
+	private static final String COLOR_WARNING = "Parameter color is not an instance of 'org.eclipse.swt.graphics.Color'"; //$NON-NLS-1$
 	private boolean initialized;
 	private boolean maxInitialized;
 	private boolean minInitialized;
@@ -132,21 +132,25 @@ public class StatusMeterRidget extends AbstractTraverseRidget implements IStatus
 	public void setBorderColor(final Object color) {
 		Assert.isTrue(color instanceof Color, COLOR_WARNING);
 		borderColor = (Color) color;
+		updateUIControl();
 	}
 
 	public void setBackgroundColor(final Object color) {
 		Assert.isTrue(color instanceof Color, COLOR_WARNING);
 		backgroundColor = (Color) color;
+		updateUIControl();
 	}
 
 	public void setGradientStartColor(final Object color) {
 		Assert.isTrue(color instanceof Color, COLOR_WARNING);
 		gradientStartColor = (Color) color;
+		updateUIControl();
 	}
 
 	public void setGradientEndColor(final Object color) {
 		Assert.isTrue(color instanceof Color, COLOR_WARNING);
 		gradientEndColor = (Color) color;
+		updateUIControl();
 	}
 
 	@Override
