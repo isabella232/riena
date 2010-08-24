@@ -51,9 +51,9 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 public class MarkerSupport extends BasicMarkerSupport {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), MarkerSupport.class);
-	private static final String PRE_MANDATORY_BACKGROUND_KEY = "org.eclipse.riena.MarkerSupport.preMandatoryBackground"; //$NON-NLS-1$
-	private static final String PRE_OUTPUT_BACKGROUND_KEY = "org.eclipse.riena.MarkerSupport.preOutputBackground"; //$NON-NLS-1$
-	private static final String PRE_NEGATIVE_FOREGROUND_KEY = "org.eclipse.riena.MarkerSupport.preNegativeForeground"; //$NON-NLS-1$
+	private static final String PRE_MANDATORY_BACKGROUND_KEY = "MaSu.preMaBa"; //$NON-NLS-1$
+	private static final String PRE_OUTPUT_BACKGROUND_KEY = "MaSu.preOuBa"; //$NON-NLS-1$
+	private static final String PRE_NEGATIVE_FOREGROUND_KEY = "MaSu.preNeFo"; //$NON-NLS-1$
 	private static final long FLASH_DURATION_MS = 300;
 
 	/**
