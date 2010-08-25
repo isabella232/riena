@@ -962,6 +962,33 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(applyButton.isEnabled());
 	}
 
+	/**
+	 * As per Bug 323547
+	 */
+	public void testApplyRevealsSelection() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		final Table mdTable = widget.getTable();
+
+		input = createInput(42);
+		bindToModel(true);
+
+		ridget.setSelection(input.get(0));
+
+		assertEquals(0, mdTable.getTopIndex());
+
+		mdTable.setTopIndex(30);
+
+		assertTrue(mdTable.getTopIndex() > 0);
+
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		txtColumn1.setText("abc");
+		ridget.handleApply();
+
+		// apply should reveal edited editem
+		assertEquals(0, mdTable.getTopIndex());
+	}
+
 	public void testApplyTriggersNew() {
 		final IMasterDetailsRidget ridget = getRidget();
 

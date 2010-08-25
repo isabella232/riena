@@ -678,10 +678,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			rowObservables.add(editable);
 			getTableRidget().updateFromModel();
 			setTableSelection(editable);
-			revealTableSelection();
 		} else { // update
 			getTableRidget().updateFromModel();
 		}
+		revealTableSelection();
 		delegate.itemApplied(editable);
 		if (!isDirectWriting && isApplyTriggersNew()) {
 			handleAdd(); // automatically hit the 'new/add' button
