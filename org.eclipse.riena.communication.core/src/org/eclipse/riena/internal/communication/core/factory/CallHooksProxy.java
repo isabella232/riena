@@ -65,10 +65,12 @@ public class CallHooksProxy extends AbstractHooksProxy {
 				Throwable cause = e.getTargetException();
 				while (cause.getCause() != null) {
 					if (cause.getCause() instanceof RemoteFailure) {
+						context.setRemoteFailure(true);
 						throw cause.getCause();
 					}
 					cause = cause.getCause();
 				}
+				context.setRemoteFailure(true);
 				throw new RemoteFailure("Error while invoking remote service", e.getTargetException()); //$NON-NLS-1$
 			}
 			// if runtime exception throw it anyway
@@ -82,8 +84,8 @@ public class CallHooksProxy extends AbstractHooksProxy {
 				}
 			}
 			// otherwise throw a remote failure
+			context.setRemoteFailure(true);
 			throw new RemoteFailure("Error while invoking remote service", e.getTargetException()); //$NON-NLS-1$
-			// throw e.getTargetException();
 		} finally {
 			context.getMessageContext().fireEndCall();
 			// call hooks after the call
