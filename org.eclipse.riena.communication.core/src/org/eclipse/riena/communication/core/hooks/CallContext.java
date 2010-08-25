@@ -33,6 +33,7 @@ public class CallContext {
 	private final String methodName;
 	private HashMap<String, String> properties;
 	private final ICallMessageContext messageContext;
+	private boolean hasRemoteFailure;
 
 	public CallContext(final RemoteServiceDescription rsd, final String methodName,
 			final ICallMessageContext messageContext) {
@@ -165,5 +166,28 @@ public class CallContext {
 			setCookies.put(temp.substring(0, temp.indexOf("=")), temp.substring(temp.indexOf("=") + 1)); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return setCookies;
+	}
+
+	/**
+	 * Return {@code true} when a {@code RemoteFailure} has been occurred;
+	 * otherwise {@code false}.
+	 * 
+	 * @return {@code true} for a {@code RemoteFailure}; otherwise {@code false}
+	 * 
+	 * @since 2.1
+	 */
+	public boolean hasRemoteFailure() {
+		return hasRemoteFailure;
+	}
+
+	/**
+	 * Indicate whether a {@code RemoteFailure} has been occurred.
+	 * 
+	 * @param hasRemoteFailure
+	 * 
+	 * @since 2.1
+	 */
+	public void setRemoteFailure(final boolean hasRemoteFailure) {
+		this.hasRemoteFailure = hasRemoteFailure;
 	}
 }
