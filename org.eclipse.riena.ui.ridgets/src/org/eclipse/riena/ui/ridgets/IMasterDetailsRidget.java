@@ -225,7 +225,7 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 
 	/**
 	 * When direct writing is enabled, changes in the details area will be
-	 * Immediately and automatically applied back to the model. When adding new
+	 * immediately and automatically applied back to the model. When adding new
 	 * rows, these will be immediately added to the table. Since there is no
 	 * need to apply, the 'Apply' button will not be shown.
 	 * <p>
