@@ -22,7 +22,6 @@ import org.eclipse.osgi.util.NLS;
 
 import org.eclipse.riena.core.util.PropertiesUtils;
 import org.eclipse.riena.ui.ridgets.nls.Messages;
-import org.eclipse.riena.ui.ridgets.validation.ValidExpression.Option;
 
 /**
  * Implementation for a regular expression check. If the rule fails it will
@@ -83,7 +82,7 @@ public class ValidExpression implements IValidator, IExecutableExtension {
 	private final Perl5Util matcher = new Perl5Util();
 
 	private String pattern;
-	private final StringBuffer options;
+	private final String options;
 
 	/**
 	 * Constructs a new ValidExpression rule with the given options.
@@ -107,10 +106,11 @@ public class ValidExpression implements IValidator, IExecutableExtension {
 		Assert.isNotNull(pattern, "pattern must not be null"); //$NON-NLS-1$
 		Assert.isLegal(pattern.length() > 0, "pattern must not be empty"); //$NON-NLS-1$
 		this.pattern = pattern;
-		this.options = new StringBuffer(4);
+		final StringBuilder optionsBuilder = new StringBuilder(4);
 		for (final Option option : options) {
-			this.options.append(option.symbol);
+			optionsBuilder.append(option.symbol);
 		}
+		this.options = optionsBuilder.toString();
 	}
 
 	/**
