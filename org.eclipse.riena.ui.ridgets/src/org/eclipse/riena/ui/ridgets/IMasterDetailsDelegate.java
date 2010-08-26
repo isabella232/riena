@@ -141,6 +141,7 @@ public interface IMasterDetailsDelegate {
 	 *            the item behind the master row. Can never be null.
 	 * @return null if the item is removable; otherwise an error message when
 	 *         removal is not possible.
+	 * 
 	 * @since 2.0
 	 */
 	String isRemovable(Object item);
@@ -193,6 +194,17 @@ public interface IMasterDetailsDelegate {
 	void updateDetails(IRidgetContainer container);
 
 	/**
+	 * This method the <b>first</b> method called during an apply operation. It
+	 * is invoked <b>before</b> any changes are made.
+	 * 
+	 * @param selection
+	 *            the selected item behind the master row. Can never be null.
+	 * 
+	 * @since 2.1
+	 */
+	void prepareItemApplied(Object selection);
+
+	/**
 	 * This is the <b>first</b> method called when a row in the master table is
 	 * selected. It will be called before any other methods of the delegate. The
 	 * given <code>newSelection</code> is the selection.
@@ -211,6 +223,7 @@ public interface IMasterDetailsDelegate {
 	 * @param newSelection
 	 *            the selected item behind the master row. <b>May be null</b>,
 	 *            if nothing becomes selected
+	 * 
 	 * @since 2.0
 	 */
 	void itemSelected(Object newSelection);
@@ -220,6 +233,7 @@ public interface IMasterDetailsDelegate {
 	 * 
 	 * @param newItem
 	 *            the added item behind the master row. Can never be null.
+	 * 
 	 * @since 2.0
 	 */
 	void itemCreated(Object newItem);
@@ -229,6 +243,7 @@ public interface IMasterDetailsDelegate {
 	 * 
 	 * @param oldItem
 	 *            the removed item behind the master row. Can never be null.
+	 * 
 	 * @since 2.0
 	 */
 	void itemRemoved(Object oldItem);
@@ -239,6 +254,7 @@ public interface IMasterDetailsDelegate {
 	 * 
 	 * @param changedItem
 	 *            the changed item behind the master row. Can never be null.
+	 * 
 	 * @since 2.0
 	 */
 	void itemApplied(Object changedItem);

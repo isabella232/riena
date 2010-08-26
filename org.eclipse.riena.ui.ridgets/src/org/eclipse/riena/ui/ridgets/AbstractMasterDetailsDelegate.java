@@ -95,6 +95,15 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
 	 */
+	public void prepareItemApplied(final Object selection) {
+		// empty
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Default implementation for this method. Subclasses may override.
+	 */
 	public void prepareItemSelected(final Object newSelection) {
 		// empty
 	}

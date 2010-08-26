@@ -177,32 +177,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			});
 		}
 
+		final PropertyChangeListener directWritingPCL = new DirectWritingPropertyChangeListener();
 		for (final IRidget ridget : detailRidgets.getRidgets()) {
-			ridget.addPropertyChangeListener(new PropertyChangeListener() {
-				public void propertyChange(final PropertyChangeEvent evt) {
-					final String propertyName = evt.getPropertyName();
-					if (!isDirectWriting
-							|| ignoreChanges
-							|| delegate == null
-							|| editable == null
-							// ignore these events:
-							|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER
-									.equals(propertyName)) || IRidget.PROPERTY_ENABLED.equals(propertyName)
-							|| ITextRidget.PROPERTY_TEXT.equals(propertyName)
-							|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)) {
-						return;
-					}
-					// traceEvent(evt);
-					if (canApplyDirectly()) {
-						// this is only reached when direct writing is on and one of 'interesting' events happens
-						delegate.copyBean(delegate.getWorkingCopy(), editable);
-						getTableRidget().updateFromModel();
-						// we are already editing, so we want to invoke getTR().setSelection(editable) instead
-						// of setSelection(editable). This will just select the editable in the table.
-						setTableSelection(editable);
-					}
-				}
-			});
+			ridget.addPropertyChangeListener(directWritingPCL);
 		}
 	}
 
@@ -673,6 +650,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	public void handleApply() {
 		assertIsBoundToModel();
 		Assert.isNotNull(editable);
+		delegate.prepareItemApplied(editable);
 		delegate.copyBean(delegate.getWorkingCopy(), editable);
 		if (!rowObservables.contains(editable)) { // add to table
 			rowObservables.add(editable);
@@ -691,6 +669,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			setFocusToTable();
 		}
 	}
+
+	// helping classes
+	//////////////////
 
 	/**
 	 * IRidgetContainer exposing the 'detail' ridgets only (instead of all
@@ -735,4 +716,31 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	}
 
+	private final class DirectWritingPropertyChangeListener implements PropertyChangeListener {
+		public void propertyChange(final PropertyChangeEvent evt) {
+			final String propertyName = evt.getPropertyName();
+			if (!isDirectWriting
+					|| ignoreChanges
+					|| delegate == null
+					|| editable == null
+					// ignore these events:
+					|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER
+							.equals(propertyName)) || IRidget.PROPERTY_ENABLED.equals(propertyName)
+					|| ITextRidget.PROPERTY_TEXT.equals(propertyName)
+					|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)) {
+				return;
+			}
+			// traceEvent(evt);
+			if (canApplyDirectly()) {
+				delegate.prepareItemApplied(editable);
+				// this is only reached when direct writing is on and one of 'interesting' events happens
+				delegate.copyBean(delegate.getWorkingCopy(), editable);
+				delegate.itemApplied(editable);
+				getTableRidget().updateFromModel();
+				// we are already editing, so we want to invoke getTR().setSelection(editable) instead
+				// of setSelection(editable). This will just select the editable in the table.
+				setTableSelection(editable);
+			}
+		}
+	}
 }

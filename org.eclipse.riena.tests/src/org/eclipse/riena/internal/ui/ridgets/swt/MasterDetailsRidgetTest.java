@@ -701,37 +701,73 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final MDWidget widget = getWidget();
 		bindToModel(true);
 
+		assertFalse(ridget.isDirectWriting());
+
+		assertEquals(0, delegate.prepareAppliedCount);
 		assertEquals(0, delegate.applyCount);
-		assertEquals(0, delegate.prepareCount);
+		assertEquals(0, delegate.prepareSelectionCount);
 		assertEquals(0, delegate.selectionCount);
 
 		final MDBean first = input.get(0);
 		ridget.setSelection(first);
 
+		assertEquals(0, delegate.prepareAppliedCount);
 		assertEquals(0, delegate.applyCount);
-		assertEquals(1, delegate.prepareCount);
+		assertEquals(1, delegate.prepareSelectionCount);
 		assertEquals(1, delegate.selectionCount);
 
 		widget.txtColumn1.setFocus();
 		UITestHelper.sendString(widget.getDisplay(), "A\r");
 		ridget.handleApply();
 
+		assertEquals(1, delegate.prepareAppliedCount);
 		assertEquals(1, delegate.applyCount);
-		assertEquals(1, delegate.prepareCount);
+		assertEquals(1, delegate.prepareSelectionCount);
+		assertEquals(1, delegate.selectionCount);
+	}
+
+	public void testDelegateItemAppliedWithDirectWriting() {
+		final MasterDetailsRidget ridget = getRidget();
+		ridget.setDirectWriting(true);
+		final MDWidget widget = getWidget();
+
+		assertTrue(ridget.isDirectWriting());
+
+		bindToModel(true);
+
+		assertEquals(0, delegate.prepareAppliedCount);
+		assertEquals(0, delegate.applyCount);
+		assertEquals(0, delegate.prepareSelectionCount);
+		assertEquals(0, delegate.selectionCount);
+
+		final MDBean first = input.get(0);
+		ridget.setSelection(first);
+
+		assertEquals(0, delegate.prepareAppliedCount);
+		assertEquals(0, delegate.applyCount);
+		assertEquals(1, delegate.prepareSelectionCount);
+		assertEquals(1, delegate.selectionCount);
+
+		widget.txtColumn1.setFocus();
+		UITestHelper.sendString(widget.getDisplay(), "abc\t");
+
+		assertEquals(1, delegate.prepareAppliedCount);
+		assertEquals(1, delegate.applyCount);
+		assertEquals(1, delegate.prepareSelectionCount);
 		assertEquals(1, delegate.selectionCount);
 	}
 
 	public void testDelegateItemSelected() {
 		bindToModel(true);
 
-		assertEquals(0, delegate.prepareCount);
+		assertEquals(0, delegate.prepareSelectionCount);
 		assertEquals(0, delegate.selectionCount);
 		assertNull(delegate.lastItem);
 
 		final Object first = input.get(0);
 		getRidget().setSelection(first);
 
-		assertEquals(1, delegate.prepareCount);
+		assertEquals(1, delegate.prepareSelectionCount);
 		assertEquals(1, delegate.selectionCount);
 		assertEquals(first, delegate.lastItem);
 	}
@@ -741,7 +777,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final MDWidget widget = getWidget();
 		final Object first = input.get(0);
 
-		assertEquals(0, delegate.prepareCount);
+		assertEquals(0, delegate.prepareSelectionCount);
 		assertEquals(0, delegate.selectionCount);
 		assertNull(delegate.lastItem);
 
@@ -752,7 +788,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final Event event2 = createSelectionEvent(widget, first);
 		table.notifyListeners(SWT.Selection, event2);
 
-		assertEquals(1, delegate.prepareCount);
+		assertEquals(1, delegate.prepareSelectionCount);
 		assertEquals(1, delegate.selectionCount);
 		assertEquals(first, delegate.lastItem);
 	}
@@ -1312,7 +1348,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		private int createCount;
 		private int removeCount;
 		private int applyCount;
-		private int prepareCount;
+		private int prepareAppliedCount;
+		private int prepareSelectionCount;
 		private int selectionCount;
 		private Object lastItem;
 		private ITextRidget txtColumn1;
@@ -1383,8 +1420,14 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		}
 
 		@Override
+		public void prepareItemApplied(final Object selection) {
+			prepareAppliedCount++;
+			lastItem = selection;
+		}
+
+		@Override
 		public void prepareItemSelected(final Object newSelection) {
-			prepareCount++;
+			prepareSelectionCount++;
 			lastItem = newSelection;
 		}
 
