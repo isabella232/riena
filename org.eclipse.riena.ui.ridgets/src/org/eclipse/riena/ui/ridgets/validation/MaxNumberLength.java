@@ -68,7 +68,8 @@ public class MaxNumberLength extends MaxLength {
 			return ValidationRuleStatus.ok();
 		}
 		if (value instanceof String) {
-			String string = removeWhitespaceAndGroupingCharacter((String) value);
+			String string = Utils.removeWhitespaceAndGroupingCharacter((String) value, getSymbols()
+					.getGroupingSeparator());
 			if (string.length() > 0) {
 				if (string.charAt(0) == getSymbols().getMinusSign()) {
 					string = string.substring(1);
@@ -80,18 +81,6 @@ public class MaxNumberLength extends MaxLength {
 			return super.validate(string);
 		}
 		throw new ValidationFailure(getClass().getName() + " can only validate objects of type String."); //$NON-NLS-1$
-	}
-
-	// TODO: move this and the copy in ValidDecimal to a common utility class
-	private String removeWhitespaceAndGroupingCharacter(final String string) {
-		final StringBuffer sb = new StringBuffer(string.length());
-		for (int t = 0; t < string.length(); ++t) {
-			final char currentChar = string.charAt(t);
-			if (!(Character.isWhitespace(currentChar) || currentChar == getSymbols().getGroupingSeparator())) {
-				sb.append(currentChar);
-			}
-		}
-		return sb.toString();
 	}
 
 	/**
