@@ -34,10 +34,35 @@ public final class Utils {
 	 *             if parameter is <tt>null</tt>
 	 */
 	public static String removeWhitespace(final String string) {
-		final StringBuffer sb = new StringBuffer(string.length());
+		final StringBuilder sb = new StringBuilder(string.length());
 		for (int t = 0; t < string.length(); ++t) {
 			final char currentChar = string.charAt(t);
 			if (!Character.isWhitespace(currentChar)) {
+				sb.append(currentChar);
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Returns a new string not containing whitespace and the groupingSeparator
+	 * of the input string.
+	 * 
+	 * @see Character#isWhitespace(char)
+	 * @param string
+	 *            the original String
+	 * @param groupingSeparator
+	 *            the grouping separator
+	 * @return a new String which is a copy of the given String without
+	 *         whitespace.
+	 * @throws some_kind_of_runtime_exception
+	 *             if parameter is <tt>null</tt>
+	 */
+	public static String removeWhitespaceAndGroupingCharacter(final String string, final char groupingSeparator) {
+		final StringBuilder sb = new StringBuilder(string.length());
+		for (int t = 0; t < string.length(); ++t) {
+			final char currentChar = string.charAt(t);
+			if (!(Character.isWhitespace(currentChar) || currentChar == groupingSeparator)) {
 				sb.append(currentChar);
 			}
 		}
