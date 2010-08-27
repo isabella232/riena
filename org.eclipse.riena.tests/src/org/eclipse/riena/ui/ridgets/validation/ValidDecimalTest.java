@@ -29,7 +29,7 @@ public class ValidDecimalTest extends RienaTestCase {
 	 *             Handled by JUnit.
 	 */
 	public final void testUSlocale() throws Exception {
-		final ValidDecimal rule = new ValidDecimal(Locale.US);
+		final ValidDecimal rule = new ValidDecimal(false, 3, 15, true, Locale.US);
 		assertTrue(rule.validate(null).isOK());
 
 		assertTrue(rule.validate("0.00").isOK());
@@ -108,7 +108,7 @@ public class ValidDecimalTest extends RienaTestCase {
 	 *             Handled by JUnit.
 	 */
 	public final void testGermanLocale() throws Exception {
-		final ValidDecimal rule = new ValidDecimal(Locale.GERMANY);
+		final ValidDecimal rule = new ValidDecimal(false, 3, 15, true, Locale.GERMANY);
 		assertTrue(rule.validate(null).isOK());
 		assertTrue(rule.validate("0,00").isOK());
 		assertTrue(rule.validate("1,01").isOK());
@@ -173,7 +173,7 @@ public class ValidDecimalTest extends RienaTestCase {
 	 *             Handled by JUnit.
 	 */
 	public final void testSwissLocale() throws Exception {
-		final ValidDecimal rule = new ValidDecimal(new Locale("de", "CH"));
+		final ValidDecimal rule = new ValidDecimal(false, 3, 15, true, new Locale("de", "CH"));
 		assertTrue(rule.validate(null).isOK());
 		assertTrue(rule.validate("0.00").isOK());
 		assertTrue(rule.validate("1.01").isOK());
@@ -242,7 +242,7 @@ public class ValidDecimalTest extends RienaTestCase {
 	 *             Handled by JUnit.
 	 */
 	public final void testFrenchLocale() throws Exception {
-		final ValidDecimal rule = new ValidDecimal(Locale.FRANCE);
+		final ValidDecimal rule = new ValidDecimal(false, 3, 15, true, Locale.FRANCE);
 		assertTrue(rule.validate(null).isOK());
 		assertTrue(rule.validate("0,00").isOK());
 		assertTrue(rule.validate("1,01").isOK());
@@ -438,23 +438,23 @@ public class ValidDecimalTest extends RienaTestCase {
 		Locale locale = ReflectionUtils.getHidden(validator, "locale");
 		assertSame(locale, Locale.getDefault());
 
-		validator.setLocal(new String[] {});
+		validator.setLocale(new String[] {});
 		locale = ReflectionUtils.getHidden(validator, "locale");
 		assertSame(locale, Locale.getDefault());
 
-		validator.setLocal(new String[] { "hi" });
+		validator.setLocale(new String[] { "hi" });
 		locale = ReflectionUtils.getHidden(validator, "locale");
 		assertEquals("hi", locale.getLanguage());
 		assertEquals("", locale.getCountry());
 		assertEquals("", locale.getVariant());
 
-		validator.setLocal(new String[] { "hi", "IND" });
+		validator.setLocale(new String[] { "hi", "IND" });
 		locale = ReflectionUtils.getHidden(validator, "locale");
 		assertEquals("hi", locale.getLanguage());
 		assertEquals("IND", locale.getCountry());
 		assertEquals("", locale.getVariant());
 
-		validator.setLocal(new String[] { "es", "ES", "Traditional_WIN" });
+		validator.setLocale(new String[] { "es", "ES", "Traditional_WIN" });
 		locale = ReflectionUtils.getHidden(validator, "locale");
 		assertEquals("es", locale.getLanguage());
 		assertEquals("ES", locale.getCountry());
@@ -486,11 +486,34 @@ public class ValidDecimalTest extends RienaTestCase {
 
 	}
 
+	public void testMaxLengthAndFractionDigitsDifferentLocales() {
+		testMaxLengthAndFractionDigits(Locale.US, '.');
+		testMaxLengthAndFractionDigits(Locale.GERMAN, ',');
+		testMaxLengthAndFractionDigits(new Locale("hi", "IN"), '.');
+		testMaxLengthAndFractionDigits(new Locale("de", "CH"), '.');
+		testMaxLengthAndFractionDigits(new Locale("ar", "AE"), '.');
+		testMaxLengthAndFractionDigits(Locale.FRANCE, ',');
+		testMaxLengthAndFractionDigits(new Locale("th", "TH"), '.');
+	}
+
+	private void testMaxLengthAndFractionDigits(final Locale locale, final char separator) {
+		final ValidDecimal rule = new ValidDecimal(false, 2, 4, true, locale);
+
+		assertTrue(rule.validate("0" + separator + "0").isOK());
+		assertTrue(rule.validate("0" + separator + "00").isOK());
+		assertFalse(rule.validate("0" + separator + "000").isOK());
+		assertTrue(rule.validate("00" + separator + "00").isOK());
+		assertTrue(rule.validate("000" + separator + "00").isOK());
+		assertTrue(rule.validate("0000" + separator + "00").isOK());
+		assertFalse(rule.validate("00000" + separator + "00").isOK());
+		assertFalse(rule.validate("00000" + separator + "000").isOK());
+	}
+
 	private static class MyValidDecimal extends ValidDecimal {
 
 		@Override
-		public void setLocal(final String[] localArgs) {
-			super.setLocal(localArgs);
+		public void setLocale(final String[] localArgs) {
+			super.setLocale(localArgs);
 		}
 
 	}
