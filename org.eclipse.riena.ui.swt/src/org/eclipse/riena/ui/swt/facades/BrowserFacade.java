@@ -15,7 +15,7 @@ import org.eclipse.swt.browser.Browser;
 /**
  * Facade for the {@link Browser} class.
  * 
- * @since 2.1
+ * @since 3.0
  */
 public abstract class BrowserFacade {
 

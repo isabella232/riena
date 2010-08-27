@@ -39,7 +39,7 @@ public abstract class GCFacade {
 	 * 
 	 * @param img
 	 * @return
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract GC createGCFromImage(Image img);
 
@@ -54,7 +54,7 @@ public abstract class GCFacade {
 	 * @param width
 	 * @param height
 	 * @return
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract Image createImage(Display display, int width, int height);
 
@@ -140,7 +140,7 @@ public abstract class GCFacade {
 	 * @param dashes
 	 *            the dash style to use when drawing a line. Example:
 	 *            <tt>new int[] { 5, 5 }</tt>
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract void setLineDash(GC gc, int[] dashes);
 }

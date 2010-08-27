@@ -117,7 +117,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public boolean canSuggest() {
 		boolean result = true;

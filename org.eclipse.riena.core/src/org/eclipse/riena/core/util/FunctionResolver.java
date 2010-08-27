@@ -42,7 +42,7 @@ import org.eclipse.core.variables.IDynamicVariableResolver;
  * that is the URL representation of a file and it returns the canonical form of
  * the file representation.
  * 
- * @since 2.1
+ * @since 3.0
  */
 public class FunctionResolver implements IDynamicVariableResolver {
 

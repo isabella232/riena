@@ -47,7 +47,7 @@ public class RienaMessageDialog extends MessageDialog {
 	 *            for a dialog with sheet behavior
 	 * @return <code>true</code> if the user presses the OK or Yes button,
 	 *         <code>false</code> otherwise
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static boolean open(final int kind, final Shell parent, final String title, final String message, int style) {
 		final RienaMessageDialog dialog = new RienaMessageDialog(parent, title, null, message, kind,
@@ -68,7 +68,7 @@ public class RienaMessageDialog extends MessageDialog {
 	 *            the message
 	 * @return <code>true</code> if the user presses the OK button,
 	 *         <code>false</code> otherwise
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static boolean openConfirm(final Shell parent, final String title, final String message) {
 		return open(CONFIRM, parent, title, message, SWT.NONE);
@@ -83,7 +83,7 @@ public class RienaMessageDialog extends MessageDialog {
 	 *            the dialog's title, or <code>null</code> if none
 	 * @param message
 	 *            the message
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static void openError(final Shell parent, final String title, final String message) {
 		open(ERROR, parent, title, message, SWT.NONE);
@@ -98,7 +98,7 @@ public class RienaMessageDialog extends MessageDialog {
 	 *            the dialog's title, or <code>null</code> if none
 	 * @param message
 	 *            the message
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static void openInformation(final Shell parent, final String title, final String message) {
 		open(INFORMATION, parent, title, message, SWT.NONE);
@@ -115,7 +115,7 @@ public class RienaMessageDialog extends MessageDialog {
 	 *            the message
 	 * @return <code>true</code> if the user presses the Yes button,
 	 *         <code>false</code> otherwise
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static boolean openQuestion(final Shell parent, final String title, final String message) {
 		return open(QUESTION, parent, title, message, SWT.NONE);
@@ -130,7 +130,7 @@ public class RienaMessageDialog extends MessageDialog {
 	 *            the dialog's title, or <code>null</code> if none
 	 * @param message
 	 *            the message
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static void openWarning(final Shell parent, final String title, final String message) {
 		open(WARNING, parent, title, message, SWT.NONE);

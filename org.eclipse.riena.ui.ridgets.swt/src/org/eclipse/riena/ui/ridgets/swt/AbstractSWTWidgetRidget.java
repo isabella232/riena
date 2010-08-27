@@ -191,7 +191,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public final boolean removeMarker(final IMarker marker) {
 		if (markerSupport != null) {

@@ -84,28 +84,28 @@ public class SubModuleNode extends NavigationNode<ISubModuleNode, ISubModuleNode
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public boolean isCloseSubTree() {
 		return closeSubTree;
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void setCloseSubTree(final boolean close) {
 		this.closeSubTree = close;
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public boolean isClosable() {
 		return closable;
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void setClosable(final boolean closeable) {
 		this.closable = closeable;

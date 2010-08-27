@@ -7,7 +7,7 @@ import org.eclipse.riena.ui.swt.separator.Separator.ORIENTATION;
 /**
  * Bean class holding information about a {@link Separator}.
  * 
- * @since 2.1
+ * @since 3.0
  */
 public class SeparatorDescriptor {
 

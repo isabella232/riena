@@ -68,7 +68,7 @@ public class WirePuller implements IStoppable {
 	 * wiring will be done and this method returns {@code null}.
 	 * 
 	 * @return the {@code WirePuller} or null if wiring was no possible
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public synchronized WirePuller andStart() {
 		final Bundle bundle = FrameworkUtil.getBundle(bean.getClass());

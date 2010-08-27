@@ -65,7 +65,7 @@ public interface ISubModuleNode2Extension extends INode2Extension {
 	 * @return instance of sub module controller
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	IController createController() throws InstantiationException, IllegalAccessException;
 
@@ -109,7 +109,7 @@ public interface ISubModuleNode2Extension extends INode2Extension {
 	 * 
 	 * @return {@code true} if the specified view can be closed, {@code false}
 	 *         otherwise
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	@DefaultValue("false")
 	boolean isClosable();

@@ -162,7 +162,7 @@ public final class LnfKeyConstants {
 	public static final String SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_COLOR = "SubApplicationSwitcher.borderBottomLeftColor"; //$NON-NLS-1$
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_BORDER_BOTTOM_LEFT_SECONDARY_COLOR = "SubApplicationSwitcher.borderBottomLeftSecondaryColor"; //$NON-NLS-1$
 
@@ -175,7 +175,7 @@ public final class LnfKeyConstants {
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_COLOR = "SubApplicationSwitcher.borderTopRightColor"; //$NON-NLS-1$
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_BORDER_TOP_RIGHT_SECONDARY_COLOR = "SubApplicationSwitcher.borderTopRightSecondaryColor"; //$NON-NLS-1$
 	/**
@@ -600,7 +600,7 @@ public final class LnfKeyConstants {
 	/**
 	 * Image used for indicating the region sensible for resizing a dialog.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final String DIALOG_GRAB_CORNER_IMAGE = "Dialog.grabCornerImage"; //$NON-NLS-1$
 
@@ -1078,28 +1078,28 @@ public final class LnfKeyConstants {
 	/**
 	 * The border color for {@link StatusMeter}.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final String STATUS_METER_BORDER_COLOR = "StatusMeter.borderColor"; //$NON-NLS-1$
 
 	/**
 	 * The background color for {@link StatusMeter}.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final String STATUS_METER_BACKGROUND_COLOR = "StatusMeter.backgroundColor"; //$NON-NLS-1$
 
 	/**
 	 * The gradient start color for the bar in {@link StatusMeter}.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final String STATUS_METER_GRADIENT_START_COLOR = "StatusMeter.gradientStartColor"; //$NON-NLS-1$
 
 	/**
 	 * The gradient end color for the bar in {@link StatusMeter}.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final String STATUS_METER_GRADIENT_END_COLOR = "StatusMeter.gradientEndColor"; //$NON-NLS-1$
 
@@ -1107,7 +1107,7 @@ public final class LnfKeyConstants {
 	 * The color used to create a transparent background around the bar of
 	 * {@link StatusMeter}.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final String STATUS_METER_TRANSPARENT_COLOR = "StatusMeter.transperentColor"; //$NON-NLS-1$
 

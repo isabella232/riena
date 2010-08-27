@@ -17,7 +17,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 /**
  * A component separating different areas inside a ui-parent
  * 
- * @since 2.1
+ * @since 3.0
  */
 public class Separator extends Canvas {
 

@@ -200,7 +200,7 @@ public interface IMasterDetailsDelegate {
 	 * @param selection
 	 *            the selected item behind the master row. Can never be null.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	void prepareItemApplied(Object selection);
 

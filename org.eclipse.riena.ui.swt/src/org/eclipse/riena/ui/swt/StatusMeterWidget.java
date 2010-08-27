@@ -21,7 +21,7 @@ import org.eclipse.riena.ui.swt.StatusMeter.StatusMeterBuilder;
  * A widget displaying a StatusMeter image.
  * 
  * @see StatusMeter
- * @since 2.1
+ * @since 3.0
  */
 public final class StatusMeterWidget extends Canvas {
 	private int value = 0;

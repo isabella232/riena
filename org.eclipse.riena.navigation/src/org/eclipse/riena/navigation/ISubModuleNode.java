@@ -44,7 +44,7 @@ public interface ISubModuleNode extends INavigationNode<ISubModuleNode>,
 	 * <code>LnfKeyConstants.SUB_MODULE_TREE_SHOW_ONE_SUB_TREE</code> is set to
 	 * true.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	boolean isCloseSubTree();
 
@@ -53,7 +53,7 @@ public interface ISubModuleNode extends INavigationNode<ISubModuleNode>,
 	 * works if <code>LnfKeyConstants.SUB_MODULE_TREE_SHOW_ONE_SUB_TREE</code>
 	 * is set to true.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	void setCloseSubTree(boolean close);
 
@@ -63,7 +63,7 @@ public interface ISubModuleNode extends INavigationNode<ISubModuleNode>,
 	 * 
 	 * @return {@code true} if the subModule should never be closed; by default
 	 *         is {@code false}
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	boolean isClosable();
 
@@ -72,7 +72,7 @@ public interface ISubModuleNode extends INavigationNode<ISubModuleNode>,
 	 * 
 	 * @param closable
 	 *            {@code false} if the subModule should never be closed
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	void setClosable(boolean closable);
 

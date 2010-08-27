@@ -60,7 +60,7 @@ public class MenuCoolBarComposite extends Composite {
 	 * @param window
 	 *            an IWorkbenchWindow instance, used to determine the menu
 	 *            entries. May be null.
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public MenuCoolBarComposite(final Composite parent, final int style, final IWorkbenchWindow window) {
 		super(parent, style);

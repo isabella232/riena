@@ -714,7 +714,7 @@ public abstract class CompletionCombo extends Composite {
 	 * Returns the background color of the Combo's List widget.
 	 * 
 	 * @return a Color instance
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public Color getListBackground() {
 		return listBackground != null ? listBackground : getBackground();
@@ -724,7 +724,7 @@ public abstract class CompletionCombo extends Composite {
 	 * Returns the background color of the Combo's Text widget.
 	 * 
 	 * @return a Color instance
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public Color getTextBackground() {
 		return text.getBackground();
@@ -1122,7 +1122,7 @@ public abstract class CompletionCombo extends Composite {
 	 * TODO [ev] docs
 	 * 
 	 * @return
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	protected boolean isDropped() {
 		return popup.getVisible();
@@ -1495,7 +1495,7 @@ public abstract class CompletionCombo extends Composite {
 	 * 
 	 * @param color
 	 *            the new color (or null to set to the default system color)
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void setListBackground(final Color color) {
 		listBackground = color;
@@ -1509,7 +1509,7 @@ public abstract class CompletionCombo extends Composite {
 	 * 
 	 * @param color
 	 *            the new color (or null to set to the default system color)
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void setTextBackground(final Color color) {
 		if (label != null && !label.isDisposed()) {
@@ -1620,7 +1620,7 @@ public abstract class CompletionCombo extends Composite {
 	 * 
 	 * @param items
 	 * @param images
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void setItems(final String[] items, final Image[] images) {
 		checkWidget();

@@ -415,7 +415,7 @@ public class UIControlsFactory {
 	 * @return a {@link CompletionCombo} instance
 	 * 
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static CompletionCombo createCompletionCombo(final Composite parent, final int style) {
 		final CompletionCombo result = SWTFacade.getDefault().createCompletionCombo(parent, style);
@@ -450,7 +450,7 @@ public class UIControlsFactory {
 	 *            the parent composite; never null
 	 * @return a {@link CompletionCombo} instance with the SWT.BORDER style
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static CompletionCombo createCompletionComboWithImage(final Composite parent) {
 		return createCompletionComboWithImage(parent, SWT.BORDER);
@@ -468,7 +468,7 @@ public class UIControlsFactory {
 	 * @return a {@link CompletionCombo} instance
 	 * 
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static CompletionCombo createCompletionComboWithImage(final Composite parent, final int style) {
 		final CompletionCombo result = SWTFacade.getDefault().createCompletionComboWithImage(parent, style);
@@ -488,7 +488,7 @@ public class UIControlsFactory {
 	 * @return a {@link CCombo} instance with the SWT.BORDER style
 	 * 
 	 * @wbp.factory.parameter.source bindingId "myComboId"
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static CompletionCombo createCompletionComboWithImage(final Composite parent, final String bindingId) {
 		final CompletionCombo combo = createCompletionComboWithImage(parent, SWT.BORDER);
@@ -810,7 +810,7 @@ public class UIControlsFactory {
 	 * @param parent
 	 *            the parent Composite; never null
 	 * @return an {@link InfoFlyout} instance; never null
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static InfoFlyout createInfoFlyout(final Composite parent) {
 		return SWTFacade.getDefault().createInfoFlyout(parent);
@@ -1642,7 +1642,7 @@ public class UIControlsFactory {
 	 * 
 	 * @param parent
 	 *            the parent composite; never null
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static StatusMeterWidget createStatusMeter(final Composite parent) {
 		final StatusMeterWidget result = new StatusMeterWidget(parent);
@@ -1661,7 +1661,7 @@ public class UIControlsFactory {
 	 *            this control.
 	 * 
 	 * @wbp.factory.parameter.source bindingId "myStatusMeterId"
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static StatusMeterWidget createStatusMeter(final Composite parent, final String bindingId) {
 		final StatusMeterWidget statusMeter = createStatusMeter(parent);
@@ -1725,7 +1725,7 @@ public class UIControlsFactory {
 	 *            the style bits
 	 * 
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static Separator createSeparator(final Composite parent, final int style) {
 		final Separator separator = createSeparatorTwoLine(parent, SWT.HORIZONTAL,

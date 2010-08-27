@@ -38,7 +38,7 @@ import org.eclipse.core.runtime.Assert;
  * generation.
  * 
  * @NotThreadSafe
- * @since 2.1
+ * @since 3.0
  */
 public class GenerationalListenerList<E> implements Iterable<E> {
 

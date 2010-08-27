@@ -104,7 +104,7 @@ public class DatePickerComposite extends Composite {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	@Override
 	public void setEnabled(final boolean enabled) {
@@ -129,7 +129,7 @@ public class DatePickerComposite extends Composite {
 	 * Updates the enabled state of the picker button, based on the composite's
 	 * enabled state and the text fields editable state.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void updateButtonEnablement() {
 		if (!isDisposed()) {

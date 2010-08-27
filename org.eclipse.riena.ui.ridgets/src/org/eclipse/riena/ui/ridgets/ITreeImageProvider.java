@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.ridgets;
 /**
  * TODO [ev] docs
  * 
- * @since 2.1
+ * @since 3.0
  */
 public interface ITreeImageProvider {
 

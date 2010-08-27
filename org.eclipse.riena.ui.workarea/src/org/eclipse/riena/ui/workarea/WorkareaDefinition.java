@@ -55,7 +55,7 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public WorkareaDefinition(final IControllerFactory controllerFactory, final Object viewId) {
 		this.controllerFactory = controllerFactory;

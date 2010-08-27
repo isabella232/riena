@@ -56,7 +56,7 @@ public abstract class SWTFacade {
 	 * pressed; typically, this is either the LEFT-ARROW or UP-ARROW keys (value
 	 * is 1&lt;&lt;5).
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final int TRAVERSE_ARROW_PREVIOUS = 1 << 5;
 
@@ -66,7 +66,7 @@ public abstract class SWTFacade {
 	 * pressed; typically, this is either the RIGHT-ARROW or DOWN-ARROW keys
 	 * (value is 1&lt;&lt;6).
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final int TRAVERSE_ARROW_NEXT = 1 << 6;
 
@@ -94,7 +94,7 @@ public abstract class SWTFacade {
 	 * </ul>
 	 * </p>
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final int RIGHT_TO_LEFT = 1 << 26;
 
@@ -109,7 +109,7 @@ public abstract class SWTFacade {
 	 * @see org.eclipse.swt.events.MouseMoveListener#mouseMove
 	 * @see org.eclipse.swt.events.MouseEvent
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final int MouseMove = 5;
 
@@ -124,7 +124,7 @@ public abstract class SWTFacade {
 	 * @see org.eclipse.swt.events.MouseTrackListener#mouseEnter
 	 * @see org.eclipse.swt.events.MouseEvent
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final int MouseEnter = 6;
 
@@ -139,7 +139,7 @@ public abstract class SWTFacade {
 	 * @see org.eclipse.swt.events.MouseTrackListener#mouseExit
 	 * @see org.eclipse.swt.events.MouseEvent
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final int MouseExit = 7;
 
@@ -154,7 +154,7 @@ public abstract class SWTFacade {
 	 * @see org.eclipse.swt.events.PaintListener#paintControl
 	 * @see org.eclipse.swt.events.PaintEvent
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final int Paint = 9;
 
@@ -169,7 +169,7 @@ public abstract class SWTFacade {
 	 * @see org.eclipse.swt.events.MouseTrackListener#mouseHover
 	 * @see org.eclipse.swt.events.MouseEvent
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final int MouseHover = 32;
 
@@ -241,7 +241,7 @@ public abstract class SWTFacade {
 	 * @param listener
 	 *            a {@link Listener}; never null
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract void addFilterMouseExit(Display display, Listener listener);
 
@@ -253,7 +253,7 @@ public abstract class SWTFacade {
 	 * @param listener
 	 *            a {@link Listener}; never null
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract void addFilterMouseMove(Display display, Listener listener);
 
@@ -265,7 +265,7 @@ public abstract class SWTFacade {
 	 * @param listener
 	 *            a {@link Listener}; never null
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract void addFilterMouseWheel(Display display, Listener listener);
 
@@ -320,7 +320,7 @@ public abstract class SWTFacade {
 	 * @param target
 	 *            the target Event instance; never null
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract void copyEventKeyLocation(Event source, Event target);
 
@@ -334,7 +334,7 @@ public abstract class SWTFacade {
 	 *            supported by {@link Composite}
 	 * @return an {@link CompletionCombo} instance; never null
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract CompletionCombo createCompletionCombo(Composite parent, int style);
 
@@ -349,7 +349,7 @@ public abstract class SWTFacade {
 	 *            supported by {@link Composite}
 	 * @return an {@link CompletionCombo} instance; never null
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract CompletionCombo createCompletionComboWithImage(Composite parent, int style);
 
@@ -384,7 +384,7 @@ public abstract class SWTFacade {
 	 * @param control
 	 *            a {@link Control} instance; never null
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract void createGrabCornerListenerWithTracker(Control control);
 
@@ -395,7 +395,7 @@ public abstract class SWTFacade {
 	 *            the parent {@link Composite}; never null
 	 * @return an {@link InfoFlyout} instance; never null
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract InfoFlyout createInfoFlyout(Composite parent);
 
@@ -405,7 +405,7 @@ public abstract class SWTFacade {
 	 * 
 	 * @param parent
 	 *            the parent {@link ModuleTitleBar} instance; never null
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract void createModuleToolTip(ModuleTitleBar parent);
 
@@ -419,7 +419,7 @@ public abstract class SWTFacade {
 	 *            an {@link ILabelProvider} instance; never null. It has to
 	 *            return the text for the tooltip, presumably based on the
 	 *            corresponding sub-module navigation node.
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract void createSubModuleToolTip(Tree parent, ILabelProvider labelProvider);
 
@@ -479,7 +479,7 @@ public abstract class SWTFacade {
 	 * @param listener
 	 *            a {@link Listener}; never null
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract void removeFilterMouseWheel(Display display, Listener listener);
 
@@ -545,7 +545,7 @@ public abstract class SWTFacade {
 	 *            one of the traversal values listed above
 	 * @return true on successful traversal, false otherwise
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public abstract boolean traverse(Control control, int traversal);
 }

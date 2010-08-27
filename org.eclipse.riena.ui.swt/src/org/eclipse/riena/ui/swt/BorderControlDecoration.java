@@ -147,7 +147,7 @@ public class BorderControlDecoration implements IControlDecoration {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public boolean isVisible() {
 		return visible;

@@ -98,7 +98,7 @@ public abstract class AbstractMarkerSupport {
 	 * <p>
 	 * <b>Flashing must not alter the marker state of the ridget!</b>
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void flash() {
 		// does nothing - subclasses should override
@@ -143,7 +143,7 @@ public abstract class AbstractMarkerSupport {
 
 	/**
 	 * @see org.eclipse.riena.ui.internal.ridgets.IBasicMarkableRidget#removeMarker(org.eclipse.riena.core.marker.IMarker)
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public boolean removeMarker(final IMarker marker) {
 		if ((markers != null) && !markers.isEmpty()) {

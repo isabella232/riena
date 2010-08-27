@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Text;
  * Facade for the SWT Clipboard class and copy / cut / paste invocation on
  * widgets.
  * 
- * @since 2.1
+ * @since 3.0
  */
 public abstract class ClipboardFacade {
 

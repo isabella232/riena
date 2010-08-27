@@ -217,7 +217,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	 * 
 	 * @param control
 	 *            the control to be decorated with an error marker; never null.
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	protected IControlDecoration createErrorDecoration(final Control control) {
 		return new MarkerControlDecoration(control);

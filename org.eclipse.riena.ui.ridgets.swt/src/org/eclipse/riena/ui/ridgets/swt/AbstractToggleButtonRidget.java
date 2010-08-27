@@ -218,7 +218,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	 * Updates the mandatory marker state in this ridget and it's siblings
 	 * (i.e. other ToggleButtonRidgets for Buttons in the same composite).
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	protected abstract void updateMandatoryMarkers();
 

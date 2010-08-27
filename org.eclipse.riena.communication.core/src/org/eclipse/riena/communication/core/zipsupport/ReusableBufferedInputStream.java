@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * @since 2.1
+ * @since 3.0
  */
 public class ReusableBufferedInputStream extends BufferedInputStream {
 

@@ -81,7 +81,7 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * 
 	 * @return true if the details or not dirty or can be overwritten (@see
 	 *         {@link #suggestNewEntry(Object)}, false otherwise
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public boolean canSuggest();
 

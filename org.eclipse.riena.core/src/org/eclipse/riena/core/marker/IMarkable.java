@@ -34,7 +34,7 @@ public interface IMarkable {
 	 *            the marker to remove.
 	 * @return true, if marker is removed, else false.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	boolean removeMarker(IMarker marker);
 

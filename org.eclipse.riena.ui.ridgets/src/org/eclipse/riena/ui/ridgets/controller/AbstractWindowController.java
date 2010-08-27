@@ -28,11 +28,11 @@ import org.eclipse.riena.ui.ridgets.IWindowRidget;
 public abstract class AbstractWindowController implements IController, IContext {
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final String RIDGET_ID_OK = "dialogOkButton"; //$NON-NLS-1$
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final String RIDGET_ID_CANCEL = "dialogCancelButton"; //$NON-NLS-1$
 
@@ -113,7 +113,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	protected void configureOkCancelButtons() {
 		final IActionRidget okAction = getRidget(IActionRidget.class, RIDGET_ID_OK);
@@ -222,7 +222,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	 *            the return code to set. These codes are window specific, but
 	 *            two return codes are already defined: {@link #OK} and
 	 *            {@link #CANCEL}.
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void close(final int returnCode) {
 		setReturnCode(returnCode);

@@ -228,7 +228,7 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	 * @param formatter
 	 *            an IColumnFormatter instance; null removes the previously used
 	 *            formatter from the selected column
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void setColumnFormatter(final IColumnFormatter formatter);
 }

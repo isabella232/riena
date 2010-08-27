@@ -27,11 +27,11 @@ public class ProcessInfo {
 	public static final String PROPERTY_STYLE = "style"; //$NON-NLS-1$
 	public static final String PROPERTY_PROGRESS_STRATEGY = "progress.strategy"; //$NON-NLS-1$
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final String PROPERTY_CANCEL_VISIBLE = "cancel.visible"; //$NON-NLS-1$
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static final String PROPERTY_CANCEL_ENABLED = "cancel.enabled"; //$NON-NLS-1$
 
@@ -177,7 +177,7 @@ public class ProcessInfo {
 	/**
 	 * @param cancelEnabled
 	 *            the cancelEnabled to set
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void setCancelEnabled(final boolean cancelEnabled) {
 		final boolean oldValue = isCancelEnabled();
@@ -187,7 +187,7 @@ public class ProcessInfo {
 
 	/**
 	 * @return the cancelEnabled
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public boolean isCancelEnabled() {
 		return cancelEnabled;
@@ -196,7 +196,7 @@ public class ProcessInfo {
 	/**
 	 * @param cancelVisible
 	 *            the cancelVisible to set
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void setCancelVisible(final boolean cancelVisible) {
 		final boolean oldValue = isCancelVisible();
@@ -206,7 +206,7 @@ public class ProcessInfo {
 
 	/**
 	 * @return the cancelVisible
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public boolean isCancelVisible() {
 		return cancelVisible;

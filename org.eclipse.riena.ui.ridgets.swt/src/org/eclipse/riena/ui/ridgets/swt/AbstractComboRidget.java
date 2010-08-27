@@ -198,7 +198,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	/**
 	 * TODO [ev] docs
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	protected final IColumnFormatter getColumnFormatter() {
 		return formatter;
@@ -471,7 +471,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * widgets, not editable implies disabled so the two states overlap.</li>
 	 * </ul>
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	protected abstract void updateEditable();
 

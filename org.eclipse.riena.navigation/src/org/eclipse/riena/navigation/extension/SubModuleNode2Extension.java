@@ -63,7 +63,7 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	/**
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public IController createController() throws InstantiationException, IllegalAccessException {
 		return controller.newInstance();
@@ -159,14 +159,14 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	 * 
 	 * @param expanded
 	 *            {@code true} can be closed; otherwise {@code false}
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void setClosable(final boolean closeable) {
 		this.closable = closeable;
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public boolean isClosable() {
 		return closable;

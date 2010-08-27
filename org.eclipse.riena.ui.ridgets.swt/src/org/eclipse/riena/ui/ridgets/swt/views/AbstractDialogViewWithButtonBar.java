@@ -24,7 +24,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * A specialized version of AbstractDialogView, e.g. adding default OK and
  * CANCEL buttons.
  * 
- * @since 2.1
+ * @since 3.0
  */
 public abstract class AbstractDialogViewWithButtonBar extends AbstractDialogView {
 

@@ -9,7 +9,7 @@ import org.eclipse.riena.ui.swt.separator.Separator.ORIENTATION;
 /**
  * Renderer for the {@link Separator} component.
  * 
- * @since 2.1
+ * @since 3.0
  */
 public class SeparatorLineRenderer extends AbstractLnfRenderer {
 

@@ -127,7 +127,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void markNodesToCollapse(final INavigationNode<?> toActivate) {
 		if (toActivate.getContext("fromUI") == null) { //$NON-NLS-1$
@@ -246,7 +246,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	/**
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void dispose(final INavigationNode<?> toDispose) {
 		// 1. check which nodes are active from the node toDispose and all its

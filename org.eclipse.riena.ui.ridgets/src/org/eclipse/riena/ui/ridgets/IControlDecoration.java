@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.ridgets;
 /**
  * A decoration on a control.
  * 
- * @since 2.1
+ * @since 3.0
  */
 public interface IControlDecoration {
 

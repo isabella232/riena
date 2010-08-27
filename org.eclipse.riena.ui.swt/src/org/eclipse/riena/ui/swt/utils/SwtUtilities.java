@@ -125,7 +125,7 @@ public final class SwtUtilities {
 	 * @param resource
 	 *            resource to dispose
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static void dispose(final Resource resource) {
 		if (!isDisposed(resource)) {
@@ -156,7 +156,7 @@ public final class SwtUtilities {
 	 * @param widget
 	 *            widget to dispose
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static void dispose(final Widget widget) {
 		if (!isDisposed(widget)) {
@@ -188,7 +188,7 @@ public final class SwtUtilities {
 	 * Will return -1 if no column could be computed -- this is the case when
 	 * all columns are resized to have width 0.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static int findColumn(final Table table, final Point pt) {
 		int width = 0;
@@ -213,7 +213,7 @@ public final class SwtUtilities {
 	/**
 	 * TODO [ev] docs
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public static boolean hasStyle(final Widget widget, final int styleBit) {
 		return widget == null ? false : (widget.getStyle() & styleBit) == styleBit;

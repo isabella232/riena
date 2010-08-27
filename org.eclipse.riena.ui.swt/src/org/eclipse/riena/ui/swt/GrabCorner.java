@@ -30,7 +30,7 @@ import org.eclipse.riena.ui.swt.utils.ImageStore;
 /**
  * Area to grab so that the shell can be resized.
  * 
- * @since 2.1
+ * @since 3.0
  */
 public class GrabCorner extends Composite {
 	private final Composite parent;

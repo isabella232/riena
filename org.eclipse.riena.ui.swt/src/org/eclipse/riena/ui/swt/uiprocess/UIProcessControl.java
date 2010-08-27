@@ -292,7 +292,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	/**
 	 * @param sets
 	 *            the cancelButton of the {@link UIProcessWindow} visible/hidden
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void setCancelVisible(final boolean cancelVisible) {
 		getCancelButton().setVisible(cancelVisible);
@@ -303,7 +303,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	 * @param sets
 	 *            the cancelButton of the {@link UIProcessWindow}
 	 *            enabled/disabled
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void setCancelEnabled(final boolean cancelEnabled) {
 		getCancelButton().setEnabled(cancelEnabled);

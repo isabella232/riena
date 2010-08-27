@@ -93,7 +93,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	 * @param value
 	 *            the selection value for the button
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public Button createChild(final String caption) {
 		final int style = isMulti ? SWT.CHECK : SWT.RADIO;
@@ -119,7 +119,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	 *                thread that created the receiver</li>
 	 *                </ul>
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public final boolean getEditable() {
 		checkWidget();
@@ -133,7 +133,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	 * @return a Point; never null. The x value corresponds to the top/bottom
 	 *         margin. The y value corresponds to the left/right margin.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public final Point getMargins() {
 		return new Point(marginHeight, marginWidth);
@@ -155,7 +155,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	 * @return a Point; never null. The x value corresponds to the right/left
 	 *         spacing. The y value corresponds to the top/bottom spacing.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public final Point getSpacing() {
 		return new Point(hSpacing, vSpacing);
@@ -208,7 +208,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	 *                called from the thread that created the receiver</li>
 	 *                </ul>
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public final void setEditable(final boolean editable) {
 		this.isEditable = editable;
@@ -264,7 +264,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	 *            the margin, in pixels, that will be placed along the left and
 	 *            right edges of the widget. The default value is 0.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public final void setMargins(final int marginHeight, final int marginWidth) {
 		Assert.isLegal(marginHeight >= 0, "marginHeight must be greater or equal to zero: " + marginHeight); //$NON-NLS-1$
@@ -307,7 +307,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 	 *            the space, in pixels, between the bottom edge of a cell and
 	 *            the top edge of the cell underneath. The default value is 0.
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public final void setSpacing(final int hSpacing, final int vSpacing) {
 		Assert.isLegal(hSpacing >= 0, "hSpacing must be greater or equal to zero: " + hSpacing); //$NON-NLS-1$

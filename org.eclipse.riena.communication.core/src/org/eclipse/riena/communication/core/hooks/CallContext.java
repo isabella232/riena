@@ -174,7 +174,7 @@ public class CallContext {
 	 * 
 	 * @return {@code true} for a {@code RemoteFailure}; otherwise {@code false}
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public boolean hasRemoteFailure() {
 		return hasRemoteFailure;
@@ -185,7 +185,7 @@ public class CallContext {
 	 * 
 	 * @param hasRemoteFailure
 	 * 
-	 * @since 2.1
+	 * @since 3.0
 	 */
 	public void setRemoteFailure(final boolean hasRemoteFailure) {
 		this.hasRemoteFailure = hasRemoteFailure;

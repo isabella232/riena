@@ -34,7 +34,7 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
  * StatusMeter uses a builder pattern. Use one of the static methods to create a
  * builder.
  * 
- * @since 2.1
+ * @since 3.0
  */
 public class StatusMeter {
 
