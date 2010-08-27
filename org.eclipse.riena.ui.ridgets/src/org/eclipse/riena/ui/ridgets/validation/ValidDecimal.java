@@ -47,8 +47,8 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	private Locale locale;
 
 	/**
-	 * Constructs a decimal type check plausibilisation rule with no
-	 * partialChecking and the default Locale.
+	 * Constructs a decimal type check rule with no partialChecking and the
+	 * default {@code Locale}.
 	 * 
 	 */
 	public ValidDecimal() {
@@ -56,30 +56,32 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	}
 
 	/**
-	 * Constructs a decimal type check plausibilisation rule with no
-	 * partialChecking and the given Locale.
+	 * Constructs a decimal type check rule with no partialChecking and the
+	 * given {@code Locale}.<br>
+	 * <b>Note:</b> this constructor sets {@code maxLength} to 15 and
+	 * {@code numberOfFractionDigits} to 2
 	 * 
 	 * @param locale
-	 *            the Locale to use for number formatting; never null.
+	 *            the {@code Locale} to use for number formatting; never null.
 	 */
 	public ValidDecimal(final Locale locale) {
 		this(false, locale);
 	}
 
 	/**
-	 * Constructs a decimal type check plausibilisation rule.
+	 * Constructs a decimal type check rule.
 	 * 
 	 * @param partialCheckSupported
 	 *            <tt>true</tt> if partial checking is required.
 	 * @param locale
-	 *            the Locale to use for number formatting; never null
+	 *            the {@code Locale} to use for number formatting; never null
 	 */
 	public ValidDecimal(final boolean partialCheckSupported, final Locale locale) {
-		this(partialCheckSupported, 15, 2, false, locale);
+		this(partialCheckSupported, 2, 15, false, locale);
 	}
 
 	/**
-	 * Constructs a decimal type check plausibilisation rule.
+	 * Constructs a decimal type check rule.
 	 * 
 	 * @param partialCheckSupported
 	 *            <tt>true</tt> if partial checking is required.
@@ -90,7 +92,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	 * @param withSign
 	 *            use sign or not.
 	 * @param locale
-	 *            the Locale to use for number formatting; never null
+	 *            the {@code Locale} to use for number formatting; never null
 	 */
 	public ValidDecimal(final boolean partialCheckSupported, final int numberOfFractionDigits, final int maxLength,
 			final boolean withSign, final Locale locale) {
@@ -121,13 +123,13 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 			if (string.length() > 0) {
 				final ScanResult scanned = scan(string);
 				if (!partialCheckSupported) {
-					if (scanned.decimalSeperatorIndex < 0) {
+					if (scanned.decimalSeparatorIndex < 0) {
 						final Character decSep = Character.valueOf(getSymbols().getDecimalSeparator());
 						final String message = NLS.bind(Messages.ValidDecimal_error_noDecSep, decSep, string);
 						return ValidationRuleStatus.error(true, message);
 					}
 					// test if grouping character is behind decimal separator:
-					if (scanned.groupingSeparatorIndex > scanned.decimalSeperatorIndex) {
+					if (scanned.groupingSeparatorIndex > scanned.decimalSeparatorIndex) {
 						final Character groupSep = Character.valueOf(getSymbols().getGroupingSeparator());
 						final Character decSep = Character.valueOf(getSymbols().getDecimalSeparator());
 						final String message = NLS.bind(Messages.ValidDecimal_error_trailingGroupSep, new Object[] {
@@ -142,11 +144,20 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 					return ValidationRuleStatus.error(true, message);
 				}
 				try {
-					synchronized (getFormat()) {// NumberFormat not threadsafe!
+					synchronized (getFormat()) {// NumberFormat not thread-safe!
 						getFormat().parse(string);
 					}
 				} catch (final ParseException e) {
 					final String message = NLS.bind(Messages.ValidDecimal_error_cannotParse, string);
+					return ValidationRuleStatus.error(true, message);
+				}
+				if (scanned.length > maxLength) {
+					final String message = NLS.bind(Messages.ValidDecimal_error_maxLength, string, maxLength);
+					return ValidationRuleStatus.error(true, message);
+				}
+				if (scanned.fractionDigits > numberOfFractionDigits) {
+					final String message = NLS.bind(Messages.ValidDecimal_error_numberOfFractionDigits, string,
+							numberOfFractionDigits);
 					return ValidationRuleStatus.error(true, message);
 				}
 			}
@@ -162,7 +173,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 		 * The index of the decimal-separator character. If more than one is
 		 * present, this will hold the last index.
 		 */
-		protected int decimalSeperatorIndex = -1;
+		protected int decimalSeparatorIndex = -1;
 		/**
 		 * The index of the last grouping-separator character found.
 		 */
@@ -196,6 +207,12 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 		 */
 		protected int lastAlienCharIndex = -1;
 
+		// The number of digits before the decimal separator
+		protected int length = 0;
+
+		// The number of digits behind the decimal separator
+		protected int fractionDigits = 0;
+
 		private ScanResult() {
 			// empty
 		}
@@ -211,21 +228,27 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	 */
 	protected ScanResult scan(final String string) {
 		final ScanResult result = new ScanResult();
-		final boolean acceptWhitespaceAsGroupingSeperator = Character.isWhitespace(getSymbols().getGroupingSeparator())
+		final boolean acceptWhitespaceAsGroupingSeparator = Character.isWhitespace(getSymbols().getGroupingSeparator())
 				|| getSymbols().getGroupingSeparator() == FRENCH_GROUPING_SEPARATOR;
 		final char minusSign = getSymbols().getMinusSign();
 		for (int t = 0; t < string.length(); ++t) {
 			final char currentChar = string.charAt(t);
 			if (currentChar == getSymbols().getDecimalSeparator()) {
-				result.decimalSeperatorIndex = t;
+				result.decimalSeparatorIndex = t;
 			} else if (currentChar == getSymbols().getGroupingSeparator()
-					|| (Character.isWhitespace(currentChar) && acceptWhitespaceAsGroupingSeperator)) {
+					|| (Character.isWhitespace(currentChar) && acceptWhitespaceAsGroupingSeparator)) {
 				result.groupingSeparatorIndex = t;
 			} else if (currentChar == minusSign) {
 				result.minusSignIndex = t;
 			} else if (!Character.isDigit(currentChar)) {
 				result.lastAlienCharacter = currentChar;
 				result.lastAlienCharIndex = t;
+			} else if (Character.isDigit(currentChar)) {
+				if (result.decimalSeparatorIndex == -1) {
+					result.length++;
+				} else {
+					result.fractionDigits++;
+				}
 			}
 		}
 		return result;
@@ -263,25 +286,18 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	}
 
 	/**
-	 * Creates and sets the Local for this validator.
+	 * Creates and sets the {@code Locale} for this validator.
 	 * 
-	 * @param localArgs
+	 * @param localeArgs
 	 *            language, country, variant
 	 */
-	protected void setLocal(final String[] localArgs) {
-		if (localArgs.length > 0) {
-			final String language = localArgs[0];
-			String country = ""; //$NON-NLS-1$
-			String variant = ""; //$NON-NLS-1$
-			if (localArgs.length > 1) {
-				country = localArgs[1];
-			}
-			if (localArgs.length > 2) {
-				variant = localArgs[2];
-			}
+	protected void setLocale(final String[] localeArgs) {
+		if (localeArgs.length > 0) {
+			final String language = localeArgs[0];
+			final String country = localeArgs.length > 1 ? localeArgs[1] : ""; //$NON-NLS-1$
+			final String variant = localeArgs.length > 2 ? localeArgs[2] : ""; //$NON-NLS-1$
 			setLocale(new Locale(language, country, variant));
 		}
-
 	}
 
 	private void setLocale(final Locale locale) {
@@ -299,7 +315,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	 * 
 	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
 	 *      java.lang.String, java.lang.Object)
-	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocal(java.lang.String[])
+	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocale(java.lang.String[])
 	 */
 	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
@@ -338,7 +354,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 			}
 			if (args.length > localStart) {
 				final String[] localArgs = ArraysUtil.copyRange(args, localStart, args.length);
-				setLocal(localArgs);
+				setLocale(localArgs);
 			}
 		}
 
