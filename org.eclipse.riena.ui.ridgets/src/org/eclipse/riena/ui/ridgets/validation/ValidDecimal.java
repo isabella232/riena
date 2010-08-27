@@ -290,6 +290,7 @@ public class ValidDecimal implements IValidator, IExecutableExtension {
 	 * 
 	 * @param localeArgs
 	 *            language, country, variant
+	 * @since 3.0
 	 */
 	protected void setLocale(final String[] localeArgs) {
 		if (localeArgs.length > 0) {

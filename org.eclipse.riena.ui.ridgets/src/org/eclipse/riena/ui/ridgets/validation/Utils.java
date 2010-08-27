@@ -57,6 +57,7 @@ public final class Utils {
 	 *         whitespace.
 	 * @throws some_kind_of_runtime_exception
 	 *             if parameter is <tt>null</tt>
+	 * @since 3.0
 	 */
 	public static String removeWhitespaceAndGroupingCharacter(final String string, final char groupingSeparator) {
 		final StringBuilder sb = new StringBuilder(string.length());
