@@ -47,6 +47,8 @@ public class Messages extends NLS {
 	public static String ValidDecimal_error_trailingGroupSep;
 	public static String ValidDecimal_error_alienChar;
 	public static String ValidDecimal_error_cannotParse;
+	public static String ValidDecimal_error_maxLength;
+	public static String ValidDecimal_error_numberOfFractionDigits;
 
 	public static String ValidRange_error_cannotParse;
 	public static String ValidRange_error_outOfRange;
