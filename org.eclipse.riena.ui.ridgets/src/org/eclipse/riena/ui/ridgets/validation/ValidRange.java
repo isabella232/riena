@@ -183,7 +183,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	 * 
 	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
 	 *      java.lang.String, java.lang.Object)
-	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocal(java.lang.String[])
+	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocale(java.lang.String[])
 	 */
 	@Override
 	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
@@ -199,7 +199,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 			}
 			if (args.length > 2) {
 				final String[] localArgs = ArraysUtil.copyRange(args, 2, args.length);
-				setLocal(localArgs);
+				setLocale(localArgs);
 			}
 		}
 

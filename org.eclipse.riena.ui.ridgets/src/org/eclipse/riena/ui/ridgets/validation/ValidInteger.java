@@ -95,7 +95,7 @@ public class ValidInteger extends ValidDecimal {
 
 			if (string.length() > 0) {
 				final ScanResult scanned = scan(string);
-				if (scanned.decimalSeperatorIndex >= 0) {
+				if (scanned.decimalSeparatorIndex >= 0) {
 					final Character decSep = Character.valueOf(getSymbols().getDecimalSeparator());
 					final String message = NLS.bind(Messages.ValidInteger_error_hasDecSep, decSep, string);
 					return ValidationRuleStatus.error(true, message);
@@ -139,7 +139,7 @@ public class ValidInteger extends ValidDecimal {
 	 * 
 	 * @see org.eclipse.core.runtime.IExecutableExtension#setInitializationData(org.eclipse.core.runtime.IConfigurationElement,
 	 *      java.lang.String, java.lang.Object)
-	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocal(java.lang.String[])
+	 * @see org.eclipse.riena.ui.ridgets.validation.ValidDecimal#setLocale(java.lang.String[])
 	 */
 	@Override
 	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
@@ -159,7 +159,7 @@ public class ValidInteger extends ValidDecimal {
 			}
 			if (args.length > localStart) {
 				final String[] localArgs = ArraysUtil.copyRange(args, localStart, args.length);
-				setLocal(localArgs);
+				setLocale(localArgs);
 			}
 		}
 
