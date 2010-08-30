@@ -259,6 +259,11 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
+	public void suggestNewEntry() {
+		final Object entry = delegate.createWorkingCopy();
+		suggestNewEntry(entry);
+	}
+
 	public void suggestNewEntry(final Object entry) {
 		ignoreChanges = true;
 		try {

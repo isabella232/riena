@@ -249,6 +249,16 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	void setSelection(final Object newSelection);
 
 	/**
+	 * Suggest a blank object &ndash; obtained from
+	 * {@link IMasterDetailsDelegate#createWorkingCopy()}) &ndash; as a 'new'
+	 * entry. It will be made editable in the details area. The apply button
+	 * will be disabled until the user edits the contents.
+	 * 
+	 * @since 3.0
+	 */
+	void suggestNewEntry();
+
+	/**
 	 * Suggest the given object as a 'new' entry. It will be made editable in
 	 * the details area. The apply button will enable.
 	 * 
