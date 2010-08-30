@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -34,8 +32,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.DateTime;
 
 import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractEditableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
@@ -54,19 +50,6 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	private DataBindingContext dbc;
 	private Binding controlBinding;
 
-	public DateTimeRidget() {
-		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
-			public void propertyChange(final PropertyChangeEvent evt) {
-				updateEditable();
-			}
-		});
-		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
-			public void propertyChange(final PropertyChangeEvent evt) {
-				updateEditable();
-			}
-		});
-	}
-
 	@Override
 	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTWidgetRidget.assertType(uiControl, DateTime.class);
@@ -76,8 +59,6 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	protected void bindUIControl() {
 		final DateTime control = getUIControl();
 		if (control != null) {
-			updateEditable();
-
 			dbc = new DataBindingContext();
 			final IObservableValue timeObservable;
 			final IObservableValue dateObservable;
@@ -166,6 +147,11 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 		return true;
 	}
 
+	@Override
+	public boolean isEnabled() {
+		return super.isEnabled() && !isOutputOnly();
+	}
+
 	public boolean revalidate() {
 		final Date date = getDate();
 		final IStatus onUpdate = checkOnUpdateRules(date, new ValidationCallback(false));
@@ -242,13 +228,6 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 
 	private boolean isTimeControl(final DateTime control) {
 		return (control.getStyle() & SWT.TIME) != 0;
-	}
-
-	private void updateEditable() {
-		final DateTime control = getUIControl();
-		if (control != null && !control.isDisposed()) {
-			control.setEnabled(isOutputOnly() || !isEnabled() ? false : true);
-		}
 	}
 
 	// helping classes

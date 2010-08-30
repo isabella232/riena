@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 
 import org.eclipse.riena.beans.common.TypedBean;
+import org.eclipse.riena.core.marker.AbstractMarker;
 import org.eclipse.riena.internal.ui.swt.test.TestUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
@@ -399,6 +400,26 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 
 		assertTrue(count < validator.count);
 		assertTrue(ridget.isErrorMarked());
+	}
+
+	/**
+	 * As per Bug 323899
+	 */
+	public void testSetOutputOnly() {
+		final IDateTimeRidget ridget = (IDateTimeRidget) createRidget();
+		final DateTime control = (DateTime) createWidget(getShell());
+
+		ridget.setOutputOnly(true);
+
+		assertTrue(ridget.isOutputOnly());
+		assertTrue(control.isEnabled());
+
+		ridget.setUIControl(control);
+		ridget.addMarker(new AbstractMarker() {
+		});
+
+		assertTrue(ridget.isOutputOnly());
+		assertFalse(control.isEnabled());
 	}
 
 	// helping classes
