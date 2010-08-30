@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.core.marker.AbstractMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
@@ -809,6 +810,23 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(ridget.isDisableMandatoryMarker());
 		assertTrue(radio.getSelection());
 		assertTrue(toggle.getSelection());
+	}
+
+	public void testSetOutputOnly() {
+		final IToggleButtonRidget ridget = createRidget();
+		final Button control = createWidget(getShell());
+
+		ridget.setOutputOnly(true);
+
+		assertTrue(ridget.isOutputOnly());
+		assertTrue(control.isEnabled());
+
+		ridget.setUIControl(control);
+		ridget.addMarker(new AbstractMarker() {
+		});
+
+		assertTrue(ridget.isOutputOnly());
+		assertFalse(control.isEnabled());
 	}
 
 	// helping methods

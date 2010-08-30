@@ -35,6 +35,7 @@ import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonManager;
 import org.eclipse.riena.beans.common.StringManager;
 import org.eclipse.riena.beans.common.StringPojo;
+import org.eclipse.riena.core.marker.AbstractMarker;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
@@ -1138,6 +1139,29 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		ridget.updateFromModel();
 
 		assertMandatory(ridget, 1, false);
+	}
+
+	public void testSetOutputOnly() {
+		final IMarkableRidget ridget = (IMarkableRidget) createRidget();
+		final Control control = (Control) createWidget(getShell());
+
+		ridget.setOutputOnly(true);
+
+		assertTrue(ridget.isOutputOnly());
+		assertTrue(control.isEnabled());
+
+		ridget.setUIControl(control);
+		ridget.addMarker(new AbstractMarker() {
+		});
+
+		assertTrue(ridget.isOutputOnly());
+		if (control instanceof CompletionCombo) {
+			final CompletionCombo completionCombo = (CompletionCombo) control;
+			assertTrue(completionCombo.isEnabled());
+			assertFalse(completionCombo.getEditable());
+		} else {
+			assertFalse(control.isEnabled());
+		}
 	}
 
 	// helping methods
