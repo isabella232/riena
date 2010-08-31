@@ -67,7 +67,7 @@ public class WirePuller implements IStoppable {
 	 * up - which might not the case in unit tests. However, in such a case no
 	 * wiring will be done and this method returns {@code null}.
 	 * 
-	 * @return the {@code WirePuller} or null if wiring was no possible
+	 * @return the {@code WirePuller} or null if wiring was not possible
 	 * @since 3.0
 	 */
 	public synchronized WirePuller andStart() {
