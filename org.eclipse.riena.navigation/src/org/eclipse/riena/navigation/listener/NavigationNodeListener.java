@@ -174,6 +174,8 @@ public class NavigationNodeListener<S extends INavigationNode<C>, C extends INav
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 3.0
 	 */
 	public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
 	}

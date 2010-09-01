@@ -247,6 +247,8 @@ public class SimpleNavigationNodeAdapter implements ISimpleNavigationNodeListene
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @since 3.0
 	 */
 	public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
 	}
