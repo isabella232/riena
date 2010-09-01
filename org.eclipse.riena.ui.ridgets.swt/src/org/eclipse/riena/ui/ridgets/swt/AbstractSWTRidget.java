@@ -18,8 +18,13 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.swt.ChoiceComposite;
+import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -252,7 +257,9 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	 * <li>in any other case, accept focus</li>
 	 * </ul>
 	 * Implementation note: SWT will invoke the focusGained, focusLost methods
-	 * berfore the mouseDown method.
+	 * before the mouseDown method.
+	 * 
+	 * TODO [ev] update javadoc
 	 * 
 	 * @see AbstractSWTRidget#setFocusable(boolean).
 	 */
@@ -262,21 +269,15 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 
 		public void focusGained(final FocusEvent e) {
 			if (isFocusable()) {
+				trace("## focus gained: %s %d", e.widget, e.widget.hashCode());
 				fireFocusGained(new org.eclipse.riena.ui.ridgets.listener.FocusEvent(null, AbstractSWTRidget.this));
 			} else {
-				final Control control = (Control) e.widget;
-				final Composite parent = control.getParent();
-				Control target = findFocusTarget(control, parent.getTabList());
+				final Control target = findFocusTarget((Control) e.widget);
 				if (target != null) {
+					trace("## %s %d -> %s %d", e.widget, e.widget.hashCode(), target, target.hashCode());
 					target.setFocus();
 				} else { // no suitable control found, try one level up
-					final Composite pParent = parent.getParent();
-					if (pParent != null) {
-						target = findFocusTarget(parent, pParent.getTabList());
-						if (target != null) {
-							target.setFocus();
-						}
-					}
+					trace("!! %s %d -> NO TARGET", e.widget, e.widget.hashCode());
 				}
 			}
 		}
@@ -291,40 +292,14 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 		@Override
 		public void mouseDown(final MouseEvent e) {
 			if (focusable && isOutputOnly()) {
+				trace("## mouse DOWN: %s %d", e.widget, e.widget.hashCode());
 				clickToFocus = true;
 				((Control) e.widget).setFocus();
 			}
 		}
 
-		private boolean isFocusable() {
-			return (focusable && !isOutputOnly()) || clickToFocus;
-		}
-
-		private Control findFocusTarget(final Control control, final Control[] controls) {
-			int myIndex = -1;
-			// find index for control
-			for (int i = 0; myIndex == -1 && i < controls.length; i++) {
-				if (controls[i] == control) {
-					myIndex = i;
-				}
-			}
-			// find next possible control
-			int result = -1;
-			for (int i = myIndex + 1; result == -1 && i < controls.length; i++) {
-				final Control candidate = controls[i];
-				if (canGetFocus(candidate)) {
-					result = i;
-				}
-			}
-			// find previous possible control
-			for (int i = 0; result == -1 && i < myIndex; i++) {
-				final Control candidate = controls[i];
-				if (canGetFocus(candidate)) {
-					result = i;
-				}
-			}
-			return result != -1 ? controls[result] : null;
-		}
+		// helping methods
+		//////////////////
 
 		/**
 		 * Tests whether the given control can get the focus or cannot.
@@ -335,21 +310,86 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 		 *         {@code false}.
 		 */
 		private boolean canGetFocus(final Control control) {
-
-			if (!control.isEnabled()) {
+			// skip disabled or hidden
+			if (!control.isEnabled() || !control.isVisible()) {
 				return false;
 			}
-			if (!control.isVisible()) {
+			// skip read-only
+			if (SwtUtilities.hasStyle(control, SWT.READ_ONLY)) {
 				return false;
 			}
-			if ((control.getStyle() & SWT.READ_ONLY) != 0) {
+			if (control instanceof Text && !((Text) control).getEditable()) {
 				return false;
 			}
-
+			if (control instanceof ChoiceComposite && !((ChoiceComposite) control).getEditable()) {
+				return false;
+			}
+			if (control instanceof CompletionCombo && !((CompletionCombo) control).getEditable()) {
+				return false;
+			}
+			// skip IMarkableRidgets that are not focusable  or output only
+			final Object data = control.getData("ridget");
+			if (data instanceof IMarkableRidget) {
+				final IMarkableRidget markableRidget = (IMarkableRidget) data;
+				return markableRidget.isFocusable() && !markableRidget.isOutputOnly();
+			}
+			// skip IRidgets that are not focusable
+			if (data instanceof IRidget) {
+				final IRidget ridget = (IRidget) data;
+				return ridget.isFocusable();
+			}
+			// skip Composites that have no children that can get focus
+			if (control instanceof Composite) {
+				return findFocusTarget(null, (Composite) control) != null;
+			}
 			return true;
-
 		}
 
-	};
+		private Control findFocusTarget(final Control control) {
+			Control result = null;
+			Control start = control;
+			while (start.getParent() != null && result == null) {
+				final Composite parent = start.getParent();
+				result = findFocusTarget(start, parent);
+				start = parent;
+			}
+			return result;
+		}
+
+		private Control findFocusTarget(final Control start, final Composite parent) {
+			Control result = null;
+			final Control[] siblings = parent.getTabList();
+			int myIndex = -1;
+			// find index for control
+			for (int i = 0; myIndex == -1 && i < siblings.length; i++) {
+				if (siblings[i] == start) {
+					myIndex = i;
+				}
+			}
+			// find next possible control
+			for (int i = myIndex + 1; result == null && i < siblings.length; i++) {
+				final Control candidate = siblings[i];
+				if (canGetFocus(candidate)) {
+					result = candidate;
+				}
+			}
+			// find previous possible control
+			for (int i = 0; result == null && i < myIndex; i++) {
+				final Control candidate = siblings[i];
+				if (canGetFocus(candidate)) {
+					result = candidate;
+				}
+			}
+			return result;
+		}
+
+		private boolean isFocusable() {
+			return (focusable && !isOutputOnly()) || clickToFocus;
+		}
+
+		private void trace(final String format, final Object... args) {
+			// System.out.println(String.format(format, args));
+		}
+	}
 
 }
