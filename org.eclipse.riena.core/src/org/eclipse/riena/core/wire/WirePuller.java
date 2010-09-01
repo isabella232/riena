@@ -91,7 +91,9 @@ public class WirePuller implements IStoppable {
 		Assert.isLegal(context != null, "context must be given."); //$NON-NLS-1$
 		Assert.isLegal(state == State.PENDING, "state must be pending."); //$NON-NLS-1$
 		this.context = context;
-		wire(bean.getClass());
+		if (!wire(bean.getClass())) {
+			return this;
+		}
 		state = State.STARTED;
 		bundleStoppingListener = new BundleStoppingListener();
 		context.addBundleListener(bundleStoppingListener);
@@ -119,27 +121,32 @@ public class WirePuller implements IStoppable {
 		state = State.STOPPED;
 	}
 
-	private void wire(final Class<?> beanClass) {
+	private boolean wire(final Class<?> beanClass) {
 		if (beanClass == null || beanClass == Object.class) {
-			return;
+			return false;
 		}
 		final IWiring wiring = getWiring(getWiringClass(beanClass));
 		add(wiring);
-		wire(beanClass.getSuperclass());
+		boolean hasWirings = wire(beanClass.getSuperclass());
 		if (wiring != null) {
 			wiring.wire(bean, context);
+			hasWirings = true;
 		}
-		injectIntoAnnotatedMethods(bean, beanClass);
+		return injectIntoAnnotatedMethods(bean, beanClass) | hasWirings;
 	}
 
-	private void injectIntoAnnotatedMethods(final Object bean, final Class<?> beanClass) {
+	private boolean injectIntoAnnotatedMethods(final Object bean, final Class<?> beanClass) {
+		boolean hasWirings = false;
 		for (final Method method : beanClass.getDeclaredMethods()) {
 			if (method.isAnnotationPresent(InjectService.class)) {
 				injectServiceInto(bean, method);
+				hasWirings = true;
 			} else if (method.isAnnotationPresent(InjectExtension.class)) {
 				injectExtensionInto(bean, method);
+				hasWirings = true;
 			}
 		}
+		return hasWirings;
 	}
 
 	private void injectServiceInto(final Object bean, final Method method) {
