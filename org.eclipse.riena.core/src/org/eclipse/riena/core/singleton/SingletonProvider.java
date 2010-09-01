@@ -39,6 +39,8 @@ import org.eclipse.riena.core.wire.Wire;
  * However, in both cases it wires the singletons.
  * 
  * @param <S>
+ * 
+ * @since 3.0
  */
 public class SingletonProvider<S> {
 
