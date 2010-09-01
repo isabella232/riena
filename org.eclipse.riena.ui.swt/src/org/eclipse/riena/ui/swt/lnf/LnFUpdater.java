@@ -21,11 +21,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.osgi.service.log.LogService;
 
@@ -63,7 +61,6 @@ public class LnFUpdater {
 
 	private final static Map<Class<? extends Control>, List<PropertyDescriptor>> CONTROL_PROPERTIES = new HashMap<Class<? extends Control>, List<PropertyDescriptor>>();
 	private final static Map<Class<? extends Control>, Map<String, Object>> DEFAULT_PROPERTY_VALUES = new HashMap<Class<? extends Control>, Map<String, Object>>();
-	private final static Set<Class<? extends Control>> CONTROLS_AFTER_BIND = new HashSet<Class<? extends Control>>();
 
 	private final static List<PropertyDescriptor> EMPTY_DESCRIPTORS = Collections.emptyList();
 
@@ -80,9 +77,10 @@ public class LnFUpdater {
 
 	/**
 	 * @since 1.2
+	 * @deprecated
 	 */
+	@Deprecated
 	public static void addControlsAfterBind(final Class<? extends Control> controlClass) {
-		CONTROLS_AFTER_BIND.add(controlClass);
 	}
 
 	/**
