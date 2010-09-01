@@ -84,8 +84,8 @@ public class Activator extends RienaPlugin {
 	@IgnoreFindBugs(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "that is the eclipse way")
 	public void stop(final BundleContext context) throws Exception {
 		active = false;
-		Activator.plugin = null;
 		LoggerProvider.instance().stop();
+		Activator.plugin = null;
 		super.stop(context);
 	}
 
