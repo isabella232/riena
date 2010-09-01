@@ -62,6 +62,9 @@ public final class UISynchronizer {
 				"There is NO IUISynchronizer defined, but it must. Use extension point 'uiSynchronizer' to do this."); //$NON-NLS-1$
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	@InjectExtension(min = 1, max = 1)
 	public void update(final IUISynchronizerExtension synchronizerExtension) {
 		this.synchronizerExtension = synchronizerExtension;
