@@ -39,7 +39,7 @@ public final class UISynchronizer {
 		Wire.instance(singelton).andStart(Activator.getDefault().getContext());
 	}
 
-	private IUISynchronizerExtension[] synchronizerExtension;
+	private IUISynchronizerExtension synchronizerExtension;
 
 	private UISynchronizer() {
 		// utility
@@ -55,15 +55,15 @@ public final class UISynchronizer {
 	}
 
 	private IUISynchronizer create() {
-		if (synchronizerExtension != null && synchronizerExtension.length > 0) {
-			return synchronizerExtension[0].createUISynchronizer();
+		if (synchronizerExtension != null) {
+			return synchronizerExtension.createUISynchronizer();
 		}
 		throw new IllegalStateException(
 				"There is NO IUISynchronizer defined, but it must. Use extension point 'uiSynchronizer' to do this."); //$NON-NLS-1$
 	}
 
-	@InjectExtension()
-	public void update(final IUISynchronizerExtension[] synchronizerExtension) {
+	@InjectExtension(min = 1, max = 1)
+	public void update(final IUISynchronizerExtension synchronizerExtension) {
 		this.synchronizerExtension = synchronizerExtension;
 	}
 
