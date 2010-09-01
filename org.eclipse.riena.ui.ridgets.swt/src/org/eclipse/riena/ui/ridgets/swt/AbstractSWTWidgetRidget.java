@@ -121,11 +121,11 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		checkUIControl(uiControl);
 		uninstallListeners();
 		unbindUIControl();
-		if (this.uiControl != null) {
+		if (this.uiControl instanceof Control) {
 			this.uiControl.setData("ridget", null);
 		}
 		this.uiControl = (Widget) uiControl;
-		if (this.uiControl != null) {
+		if (this.uiControl instanceof Control) {
 			this.uiControl.setData("ridget", this);
 		}
 		updateEnabled();
