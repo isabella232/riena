@@ -102,6 +102,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 		result.setForeground(getForeground());
 		result.setBackground(getBackground());
 		result.addSelectionListener(this);
+		new EventForwarder(result, this);
 		updateEnabled(result, isEnabled());
 		return result;
 	}

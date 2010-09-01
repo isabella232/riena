@@ -64,11 +64,12 @@ public class DatePickerComposite extends Composite {
 
 	public DatePickerComposite(final Composite parent, final int textStyles) {
 		super(parent, SWT.BORDER);
-
 		GridLayoutFactory.fillDefaults().numColumns(2).spacing(0, 0).applyTo(this);
+
 		textfield = new Text(this, checkStyle(textStyles));
 		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(textfield);
+		new EventForwarder(textfield, this);
 
 		pickerButton = new Button(this, SWT.ARROW | SWT.DOWN);
 		GridDataFactory.fillDefaults().grab(false, false).align(SWT.RIGHT, SWT.FILL).hint(BUTTON_WIDTH, BUTTON_HEIGHT)
