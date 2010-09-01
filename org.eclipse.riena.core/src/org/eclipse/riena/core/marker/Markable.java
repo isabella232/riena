@@ -77,6 +77,7 @@ public class Markable implements IMarkable {
 
 	/**
 	 * @see org.eclipse.riena.core.marker.IMarkable#removeMarker(org.eclipse.riena.core.marker.IMarker)
+	 * @since 3.0
 	 */
 	public boolean removeMarker(final IMarker marker) {
 		return markers.remove(marker);
