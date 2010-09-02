@@ -108,6 +108,9 @@ public class NavigationViewFactory implements IViewFactory {
 	 */
 	public ModuleController createModuleController(final IModuleNode moduleNode) {
 		ModuleController controller = null;
+		if (moduleNode.getNavigationNodeController() != null) {
+			return (ModuleController) moduleNode.getNavigationNodeController();
+		}
 		if (moduleDescriptionExtension != null) {
 			final Class<ModuleController> moduleViewClazz = moduleDescriptionExtension.getController();
 			if (moduleViewClazz != null) {

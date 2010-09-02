@@ -40,6 +40,7 @@ public class SWTModuleController extends ModuleController {
 	private final static String PROPERTY_EXPANDED = "expanded"; //$NON-NLS-1$
 
 	private final boolean showOneSubTree;
+	private NavigationTreeObserver navigationTreeObserver;
 
 	/**
 	 * @param navigationNode
@@ -80,7 +81,7 @@ public class SWTModuleController extends ModuleController {
 	 * Adds listeners for sub-module and module nodes.
 	 */
 	private void addListeners() {
-		final NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
+		navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(new ModuleListener());
 		navigationTreeObserver.addListener(new SubModuleListener());
 		navigationTreeObserver.addListenerTo(getNavigationNode());
@@ -136,7 +137,6 @@ public class SWTModuleController extends ModuleController {
 		if (isShowOneSubTree()) {
 			collapseSibling(activeNode);
 			getNavigationNode().getNavigationProcessor().markNodesToCollapse(activeNode);
-			// TODO: WHY?
 			//			if (!activeNode.isExpanded()) {
 			//				activeNode.setExpanded(true);
 			//			}
@@ -169,7 +169,9 @@ public class SWTModuleController extends ModuleController {
 				}
 				if (parent instanceof ISubModuleNode) {
 					collapseSibling((ISubModuleNode) parent);
-					collapseChildren(node);
+					if (node != siblingSubModuleNode) {
+						collapseChildren(siblingSubModuleNode);
+					}
 				}
 			}
 		}
@@ -292,6 +294,19 @@ public class SWTModuleController extends ModuleController {
 				return;
 			}
 			updateTree(childAdded);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @seeorg.eclipse.riena.navigation.listener.NavigationNodeListener#
+		 * presentationChanged(org.eclipse.riena.navigation.INavigationNode)
+		 */
+		@Override
+		public void presentationChanged(final IModuleNode source) {
+			if (!getNavigationNode().getNavigationNodeController().equals(SWTModuleController.this)) {
+				navigationTreeObserver.removeListenerFrom(getNavigationNode());
+			}
 		}
 
 	}
