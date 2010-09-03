@@ -19,6 +19,7 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchPage;
@@ -28,14 +29,18 @@ import org.eclipse.ui.presentations.IStackPresentationSite;
 import org.eclipse.ui.presentations.StackDropResult;
 import org.eclipse.ui.presentations.StackPresentation;
 
+import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -73,9 +78,14 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 public class TitlelessStackPresentation extends StackPresentation {
 
 	/**
+	 * 
+	 */
+	public static final String DATA_KEY_CONTENT_COMPOSITE = "contentComposite"; //$NON-NLS-1$
+	/**
 	 * Property to distinguish the view of the navigation.
 	 */
 	public static final String PROPERTY_NAVIGATION = "navigation"; //$NON-NLS-1$
+	public static final String PROPERTY_SUBAPPLICATION_NODE = "subapplication.node"; //$NON-NLS-1$
 
 	/**
 	 * Property to distinguish the view of the status line.
@@ -115,13 +125,22 @@ public class TitlelessStackPresentation extends StackPresentation {
 	private IPresentablePart current;
 	private IPresentablePart navigation;
 	private final Composite parent;
+	private Composite placeHolder;
 	private SubModuleViewRenderer renderer;
 	private boolean hasListener;
 
 	public TitlelessStackPresentation(final Composite parent, final IStackPresentationSite stackSite) {
 		super(stackSite);
 		this.parent = new Composite(parent, SWT.DOUBLE_BUFFERED);
+		createPlaceHolder(parent);
 		createSubModuleViewArea();
+	}
+
+	private void createPlaceHolder(final Composite parent) {
+		placeHolder = new Composite(parent, SWT.NONE);
+		placeHolder.setLayout(new FormLayout());
+		placeHolder.setBounds(0, 0, 0, 0);
+		placeHolder.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 	}
 
 	@Override
@@ -133,27 +152,110 @@ public class TitlelessStackPresentation extends StackPresentation {
 		knownParts.add(newPart);
 	}
 
+	private void observeNavigation() {
+		final NavigationTreeObserver observer = new NavigationTreeObserver();
+		observer.addListener(new StackPresentationSubModuleListener());
+		observer.addListenerTo(getSubApplicationNode());
+	}
+
+	/**
+	 * Pre- and after- hooking of {@link SubModuleView} - layouting
+	 */
+	private class StackPresentationSubModuleListener extends SubModuleNodeListener {
+
+		@Override
+		public void beforeActivated(final ISubModuleNode source) {
+			placeHolder.setBounds(calcPlaceHolderBounds());
+			placeHolder.setVisible(true);
+			placeHolder.moveAbove(current != null ? current.getControl() : null);
+			placeHolder.update();
+		}
+
+		@Override
+		public void afterActivated(final ISubModuleNode source) {
+			current.setBounds(calcSubModuleInnerBounds());
+			current.setVisible(true);
+			locateControl(current.getControl(), StackPresentationControlFilter.CONTENT_COMPOSITE_FILTER).setVisible(
+					true);
+			hideComposite(placeHolder);
+			redrawSubModuleTitle();
+			current.getControl().moveAbove(placeHolder != null ? placeHolder : null);
+		}
+
+	}
+
+	private void hideComposite(final Control control) {
+		if (control == null || control.isDisposed()) {
+			return;
+		}
+		control.setBounds(new Rectangle(0, 0, 0, 0));
+		control.setVisible(false);
+	}
+
+	private Rectangle calcPlaceHolderBounds() {
+		final Rectangle tmp = calcSubModuleInnerBounds();
+		Rectangle placeHolderBounds = null;
+		final EmbeddedTitleBar tb = (EmbeddedTitleBar) locateControl(current.getControl(),
+				StackPresentationControlFilter.TITLE_BAR_FILTER);
+		if (tb != null) {
+			placeHolderBounds = new Rectangle(tmp.x, tmp.y + tb.getBounds().height, tmp.width, tmp.height);
+		} else {
+			placeHolderBounds = new Rectangle(tmp.x, tmp.y + 10, tmp.width, tmp.height);
+		}
+		return placeHolderBounds;
+	}
+
+	private Control locateControl(final Control ctrl, final StackPresentationControlFilter filter) {
+		if (ctrl == null) {
+			return null;
+		}
+		if (filter.accept(ctrl)) {
+			return ctrl;
+		}
+		if (ctrl instanceof Composite) {
+			final Control[] children = ((Composite) ctrl).getChildren();
+			for (final Control child : children) {
+				final Control result = locateControl(child, filter);
+				if (result != null) {
+					return result;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	private ISubApplicationNode getSubApplicationNode() {
+		final String sSubAppNodeId = navigation.getPartProperty(PROPERTY_SUBAPPLICATION_NODE);
+		final String[] tmp = sSubAppNodeId.split("-"); //$NON-NLS-1$
+		return (ISubApplicationNode) ApplicationNodeManager.getApplicationNode().findNode(new NavigationNodeId(tmp[0]));
+	}
+
 	@Override
 	public void selectPart(final IPresentablePart toSelect) {
 		if (current == toSelect) {
 			return;
 		}
 		if (isNavigation(toSelect)) {
-			final Rectangle navi = calcNavigationBounds(parent);
-			toSelect.setBounds(navi);
-			redrawSubModuleTitle();
+			selectNavigation(toSelect);
 		} else if (toSelect != null) {
-			final Rectangle newInnerBounds = calcSubModuleInnerBounds();
-			if (hasOldBounds(toSelect, newInnerBounds)) {
-				toSelect.setBounds(newInnerBounds);
+			if (current != null) {
+				locateControl(current.getControl(), StackPresentationControlFilter.CONTENT_COMPOSITE_FILTER)
+						.setVisible(false);
 			}
-			toSelect.getControl().moveAbove(current != null ? current.getControl() : null);
-			redrawSubModuleTitle();
 			current = toSelect;
 		}
-		if (toSelect != null) {
-			toSelect.setVisible(true);
-		}
+	}
+
+	/**
+	 * @param toSelect
+	 */
+	private void selectNavigation(final IPresentablePart toSelect) {
+		observeNavigation();
+		final Rectangle navi = calcNavigationBounds(parent);
+		toSelect.setBounds(navi);
+		redrawSubModuleTitle();
+		toSelect.setVisible(true);
 	}
 
 	/**
