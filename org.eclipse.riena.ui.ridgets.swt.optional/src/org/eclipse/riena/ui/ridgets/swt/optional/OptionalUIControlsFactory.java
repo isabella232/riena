@@ -48,7 +48,6 @@ public final class OptionalUIControlsFactory extends UIControlsFactory {
 	 */
 	public static CompositeTable createCompositeTable(final Composite parent, final int style) {
 		final CompositeTable result = new CompositeTable(parent, style);
-		result.setBackground(SHARED_BG_COLOR);
 		return result;
 	}
 
