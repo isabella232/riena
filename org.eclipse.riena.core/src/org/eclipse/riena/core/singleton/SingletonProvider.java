@@ -11,88 +11,36 @@
 package org.eclipse.riena.core.singleton;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
 
-import org.osgi.framework.Bundle;
-import org.osgi.service.packageadmin.ExportedPackage;
-import org.osgi.service.packageadmin.PackageAdmin;
-
-import org.eclipse.core.runtime.Platform;
-
-import org.eclipse.riena.core.exception.Failure;
-import org.eclipse.riena.core.service.Service;
-import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.wire.Wire;
 
 /**
- * A generic (RCP/RAP) singleton provider.
+ * A singleton provider that creates <i>true</i> singletons.
  * <p>
  * The {@code SingletonProvider} creates singletons based on their type
- * {@code S}. It <i>automagically</i> detects whether it runs in a RAP/RWT
- * environment. In this case it delegates singleton creation/management to the
- * RAP {@code SessionSingletonBase} which takes care of session managed
- * singletons.<br>
- * In a <i>standard RCP</i> environment it handles the singleton
- * creation/management itself.<br>
- * However, in both cases it wires the singletons.
+ * {@code S}. A <i>true</i> singleton is a singleton that exists only once.<br>
+ * The {@code SingletonProvider} also wires the singletons.
  * 
  * @param <S>
+ *            the type of the singleton
  * 
  * @since 3.0
  */
 public class SingletonProvider<S> {
 
-	private final Class<S> singletonClass;
+	protected final Class<S> singletonClass;
 	private volatile S rcpSingleton;
 
-	private static Class<?> sessionSingletonBase;
-	private static Method getInstance;
-	private static final boolean IS_RAP;
-	private static final Set<Object> RAP_SINGLETONS = new HashSet<Object>();
-
-	private static final String RWT_PACKAGE = "org.eclipse.rwt"; //$NON-NLS-1$
-	private static final String SESSION_SINGLETON_BASE = RWT_PACKAGE + ".SessionSingletonBase"; //$NON-NLS-1$
-	private static final String GET_INSTANCE = "getInstance"; //$NON-NLS-1$
-	private static final String RWT_BUNDLE = "org.eclipse.rap.rwt"; //$NON-NLS-1$
-
-	static {
-		IS_RAP = isRAP();
-	}
-
+	/**
+	 * Create {@code SingletonProvider} that creates a singleton for the
+	 * specified {@code singletonClass}. This constructor creates a <i>true</i>
+	 * singleton, i.e. it will occur only once.
+	 * 
+	 * @param singletonClass
+	 *            the class of the requested singleton
+	 */
 	public SingletonProvider(final Class<S> singletonClass) {
 		this.singletonClass = singletonClass;
-	}
-
-	/**
-	 * Is RAP available and if if so set a few class fields as a side effect.
-	 * 
-	 * @return {@code true} if RAP available; otherwise false
-	 */
-	private static boolean isRAP() {
-		final PackageAdmin packageAdmin = Service.get(PackageAdmin.class);
-		Bundle rapBundle = null;
-		if (packageAdmin != null) {
-			final ExportedPackage rwtPackage = packageAdmin.getExportedPackage(RWT_PACKAGE);
-			if (rwtPackage != null) {
-				rapBundle = rwtPackage.getExportingBundle();
-			}
-		}
-		if (rapBundle == null) {
-			rapBundle = Platform.getBundle(RWT_BUNDLE);
-		}
-		if (rapBundle == null) {
-			return false;
-		}
-		try {
-			sessionSingletonBase = rapBundle.loadClass(SESSION_SINGLETON_BASE);
-			getInstance = sessionSingletonBase.getMethod(GET_INSTANCE, Class.class);
-			return true;
-		} catch (final Exception e) {
-			Nop.reason("There seems to be no RAP available."); //$NON-NLS-1$
-			return false;
-		}
 	}
 
 	/**
@@ -101,27 +49,7 @@ public class SingletonProvider<S> {
 	 * @return the singleton
 	 */
 	public S getInstance() {
-		return IS_RAP ? getRAPInstance() : getRCPInstance();
-	}
-
-	@SuppressWarnings("unchecked")
-	private S getRAPInstance() {
-		try {
-			final S rapSingleton = (S) getInstance.invoke(sessionSingletonBase, singletonClass);
-			synchronized (RAP_SINGLETONS) {
-				if (!RAP_SINGLETONS.contains(rapSingleton)) {
-					RAP_SINGLETONS.add(rapSingleton);
-					Wire.instance(rapSingleton).andStart();
-				}
-			}
-			return rapSingleton;
-		} catch (final Exception e) {
-			throw new SingletonFailure("Could not instantiate RAP controlled singleton.", e); //$NON-NLS-1$
-		}
-	}
-
-	// Double-check idiom for lazy initialization of instance fields (Joshua Bloch, Effective Java, Item 71)
-	private S getRCPInstance() {
+		// Double-check idiom for lazy initialization of instance fields (Joshua Bloch, Effective Java, Item 71)
 		S result = rcpSingleton;
 		if (result == null) { // First check (no locking)
 			synchronized (this) {
@@ -153,15 +81,5 @@ public class SingletonProvider<S> {
 				constructor.setAccessible(false);
 			}
 		}
-	}
-
-	public static class SingletonFailure extends Failure {
-
-		private static final long serialVersionUID = 1L;
-
-		public SingletonFailure(final String msg, final Throwable cause) {
-			super(msg, cause);
-		}
-
 	}
 }
