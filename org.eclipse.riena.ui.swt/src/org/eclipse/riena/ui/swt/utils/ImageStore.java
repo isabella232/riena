@@ -20,9 +20,9 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.core.wire.InjectExtension;
-import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.ui.swt.Activator;
 import org.eclipse.riena.ui.core.resource.IIconManager;
 import org.eclipse.riena.ui.core.resource.IconManagerProvider;
@@ -37,11 +37,12 @@ import org.eclipse.riena.ui.core.resource.IconState;
  */
 public final class ImageStore {
 
-	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ImageStore.class);
-
-	private static ImageStore store;
-	private static Image missingImage;
+	private Image missingImage;
 	private IImagePathExtension[] iconPathes;
+
+	private final static SingletonProvider<ImageStore> IS = new SingletonProvider<ImageStore>(ImageStore.class);
+
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ImageStore.class);
 
 	private ImageStore() {
 		// utility class
@@ -52,14 +53,8 @@ public final class ImageStore {
 	 * 
 	 * @return instance of {@code ImageStore}
 	 */
-	public static synchronized ImageStore getInstance() {
-		if (store == null) {
-			store = new ImageStore();
-			if (Activator.getDefault() != null) {
-				Wire.instance(store).andStart(Activator.getDefault().getContext());
-			}
-		}
-		return store;
+	public static ImageStore getInstance() {
+		return IS.getInstance();
 	}
 
 	/**
