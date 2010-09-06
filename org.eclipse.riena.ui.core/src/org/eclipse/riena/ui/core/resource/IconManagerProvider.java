@@ -13,9 +13,8 @@ package org.eclipse.riena.ui.core.resource;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.core.wire.InjectExtension;
-import org.eclipse.riena.core.wire.Wire;
-import org.eclipse.riena.internal.ui.core.Activator;
 
 /**
  * This class provides an {@link IIconManager}. The icon manager with the
@@ -23,7 +22,9 @@ import org.eclipse.riena.internal.ui.core.Activator;
  */
 public final class IconManagerProvider {
 
-	private static IconManagerProvider iconManagerProvider = new IconManagerProvider();
+	private final static SingletonProvider<IconManagerProvider> IMP = new SingletonProvider<IconManagerProvider>(
+			IconManagerProvider.class);
+
 	private IIconManager iconManager;
 	private IIconManager defaultIconManager;
 
@@ -31,12 +32,8 @@ public final class IconManagerProvider {
 	 * Creates a new instance of this provider and wires the extensions.
 	 */
 	private IconManagerProvider() {
-		if (Activator.getDefault() != null) {
-			Wire.instance(this).andStart(Activator.getDefault().getContext());
-		} else {
-			defaultIconManager = new IconManager();
-			iconManager = defaultIconManager;
-		}
+		defaultIconManager = new IconManager();
+		iconManager = defaultIconManager;
 	}
 
 	/**
@@ -45,7 +42,7 @@ public final class IconManagerProvider {
 	 * @return instance of icon manger.
 	 */
 	public static IconManagerProvider getInstance() {
-		return iconManagerProvider;
+		return IMP.getInstance();
 	}
 
 	/**

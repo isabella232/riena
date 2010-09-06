@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.internal.ui.ridgets.swt.ActionRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.BrowserRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.CComboRidget;
@@ -59,13 +60,13 @@ import org.eclipse.riena.internal.ui.ridgets.swt.MessageBoxRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ModuleTitleBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.MultipleChoiceRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.NumericTextRidget;
-import org.eclipse.riena.internal.ui.ridgets.swt.StatusMeterRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ProgressBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ScaleRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ShellRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.SingleChoiceRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.SliderRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.SpinnerRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.StatusMeterRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.StatuslineNumberRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.StatuslineRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TableRidget;
@@ -101,17 +102,12 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object> {
 
+	private static final SingletonProvider<SwtControlRidgetMapper> SCRM = new SingletonProvider<SwtControlRidgetMapper>(
+			SwtControlRidgetMapper.class);
+
 	private static final int IGNORE_SWT_STYLE = -99;
-	// remove final here so that a SwtControlRidgetMapperTest can reinstantiate a new SwtControlRidgetMapper in tearDown
-	// dont add final again, maybe add a better fix later (i.e. protected removeMapping or initSingleton method) TODO
-	private static SwtControlRidgetMapper instance = new SwtControlRidgetMapper();
 
-	private final List<Mapping> mappings;
-
-	private SwtControlRidgetMapper() {
-		mappings = new ArrayList<Mapping>();
-		initDefaultMappings();
-	}
+	private final List<Mapping> mappings = new ArrayList<Mapping>();
 
 	/**
 	 * Answer the singleton <code>SwtControlRidgetMapper</code>
@@ -119,7 +115,11 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 	 * @return the SwtControlRidgetMapper singleton
 	 */
 	public static SwtControlRidgetMapper getInstance() {
-		return instance;
+		return SCRM.getInstance();
+	}
+
+	private SwtControlRidgetMapper() {
+		initDefaultMappings();
 	}
 
 	/**

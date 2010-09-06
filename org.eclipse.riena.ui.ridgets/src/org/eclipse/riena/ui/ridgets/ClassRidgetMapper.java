@@ -20,6 +20,7 @@ import org.eclipse.core.databinding.BindingException;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
 
 /**
@@ -29,23 +30,23 @@ import org.eclipse.riena.internal.ui.ridgets.Activator;
  */
 public final class ClassRidgetMapper {
 
-	private static ClassRidgetMapper instance = new ClassRidgetMapper();
+	private static final SingletonProvider<ClassRidgetMapper> CRM = new SingletonProvider<ClassRidgetMapper>(
+			ClassRidgetMapper.class);
 
-	private final Map<Class<? extends IRidget>, Class<? extends IRidget>> mappings;
+	private final Map<Class<? extends IRidget>, Class<? extends IRidget>> mappings = new HashMap<Class<? extends IRidget>, Class<? extends IRidget>>();
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ClassRidgetMapper.class);
 
 	/**
-	 * Answer the singleton <code>SwtControlRidgetMapper</code>
+	 * Answer the singleton <code>ClassRidgetMapper</code>
 	 * 
-	 * @return the SwtControlRidgetMapper singleton
+	 * @return the ClassRidgetMapper singleton
 	 */
 	public static ClassRidgetMapper getInstance() {
-		return instance;
+		return CRM.getInstance();
 	}
 
 	private ClassRidgetMapper() {
-		mappings = new HashMap<Class<? extends IRidget>, Class<? extends IRidget>>();
 	}
 
 	/**
