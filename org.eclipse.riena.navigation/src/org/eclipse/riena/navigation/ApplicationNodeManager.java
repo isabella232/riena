@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.eclipse.riena.navigation.model.NavigationProcessor;
+import org.eclipse.riena.core.singleton.SessionSingletonProvider;
 
 /**
  * This class holds the ApplicationNode(s) of a Riena application in a static
@@ -22,9 +19,8 @@ import org.eclipse.riena.navigation.model.NavigationProcessor;
  */
 public final class ApplicationNodeManager {
 
-	private static Map<String, IApplicationNode> nodeMap = new HashMap<String, IApplicationNode>();
-	private static INavigationProcessor defaultNavigationProcessor;
-	private final static String DEFAULT_NODE_NAME = "default"; //$NON-NLS-1$
+	private static final SessionSingletonProvider<ApplicationNodeManagerInternal> ANMI = new SessionSingletonProvider<ApplicationNodeManagerInternal>(
+			ApplicationNodeManagerInternal.class);
 
 	private ApplicationNodeManager() {
 		super();
@@ -34,16 +30,11 @@ public final class ApplicationNodeManager {
 	 * Answer the default applicationModel
 	 * 
 	 * @see org.eclipse.riena.navigation.IApplicationNode
-	 * @return the default application model or null if no defaultmodel is
+	 * @return the default application model or null if no default model is
 	 *         present. Usually only one (the default model) model is used.
 	 */
 	public static IApplicationNode getApplicationNode() {
-		final IApplicationNode model = getApplicationNode(DEFAULT_NODE_NAME);
-		if (model == null && nodeMap.size() == 1) {
-			// fallback strategy
-			return nodeMap.values().iterator().next();
-		}
-		return model;
+		return ANMI.getInstance().getApplicationNode();
 	}
 
 	/**
@@ -57,11 +48,7 @@ public final class ApplicationNodeManager {
 	 *         model is present.
 	 */
 	public static IApplicationNode getApplicationNode(final String name) {
-		String modelName = name;
-		if (modelName == null) {
-			modelName = DEFAULT_NODE_NAME;
-		}
-		return nodeMap.get(modelName);
+		return ANMI.getInstance().getApplicationNode(name);
 	}
 
 	/**
@@ -70,7 +57,7 @@ public final class ApplicationNodeManager {
 	 * @see org.eclipse.riena.navigation.IApplicationNode
 	 */
 	public static synchronized void clear() {
-		nodeMap = new HashMap<String, IApplicationNode>();
+		ANMI.getInstance().clear();
 	}
 
 	/**
@@ -83,15 +70,7 @@ public final class ApplicationNodeManager {
 	 *            the model to register
 	 */
 	public static synchronized void registerApplicationNode(final IApplicationNode node) {
-		String nodeName = node.getLabel();
-		if (nodeName == null) {
-			nodeName = DEFAULT_NODE_NAME;
-		}
-		if (nodeMap.containsKey(nodeName)) {
-			throw new ApplicationModelFailure("ApplicationNode '" + nodeName + "' already registered"); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		nodeMap.put(nodeName, node);
-		return;
+		ANMI.getInstance().registerApplicationNode(node);
 	}
 
 	/**
@@ -101,10 +80,7 @@ public final class ApplicationNodeManager {
 	 * @since 1.2
 	 */
 	public static INavigationProcessor getDefaultNavigationProcessor() {
-		if (defaultNavigationProcessor == null) {
-			defaultNavigationProcessor = new NavigationProcessor();
-		}
-		return defaultNavigationProcessor;
+		return ANMI.getInstance().getDefaultNavigationProcessor();
 	}
 
 	/**
@@ -113,16 +89,7 @@ public final class ApplicationNodeManager {
 	 * @since 1.2
 	 */
 	public static ISubApplicationNode locateActiveSubApplicationNode() {
-		final IApplicationNode applicationNode = ApplicationNodeManager.getApplicationNode();
-		if (applicationNode == null) {
-			return null;
-		}
-		for (final ISubApplicationNode child : applicationNode.getChildren()) {
-			if (child.isActivated()) {
-				return child;
-			}
-		}
-		return null;
+		return ANMI.getInstance().locateActiveSubApplicationNode();
 	}
 
 	/**
@@ -131,16 +98,7 @@ public final class ApplicationNodeManager {
 	 * @since 1.2
 	 */
 	public static IModuleGroupNode locateActiveModuleGroupNode() {
-		final ISubApplicationNode subApplicationNode = locateActiveSubApplicationNode();
-		if (subApplicationNode == null) {
-			return null;
-		}
-		for (final IModuleGroupNode child : subApplicationNode.getChildren()) {
-			if (child.isActivated()) {
-				return child;
-			}
-		}
-		return null;
+		return ANMI.getInstance().locateActiveModuleGroupNode();
 	}
 
 	/**
@@ -149,16 +107,7 @@ public final class ApplicationNodeManager {
 	 * @since 1.2
 	 */
 	public static IModuleNode locateActiveModuleNode() {
-		final IModuleGroupNode moduleGroupNode = locateActiveModuleGroupNode();
-		if (moduleGroupNode == null) {
-			return null;
-		}
-		for (final IModuleNode child : moduleGroupNode.getChildren()) {
-			if (child.isActivated()) {
-				return child;
-			}
-		}
-		return null;
+		return ANMI.getInstance().locateActiveModuleNode();
 	}
 
 	/**
@@ -167,33 +116,7 @@ public final class ApplicationNodeManager {
 	 * @since 1.2
 	 */
 	public static ISubModuleNode locateActiveSubModuleNode() {
-		final IModuleNode moduleNode = locateActiveModuleNode();
-		if (moduleNode == null) {
-			return null;
-		}
-		for (final ISubModuleNode child : moduleNode.getChildren()) {
-			final ISubModuleNode subModuleNode = getActiveSubModule(child);
-			if (subModuleNode != null) {
-				return getActiveSubModule(child);
-			}
-		}
-		return null;
-	}
-
-	private static ISubModuleNode getActiveSubModule(final ISubModuleNode node) {
-
-		if (node.isActivated()) {
-			return node;
-		}
-		for (final ISubModuleNode child : node.getChildren()) {
-			final ISubModuleNode subModuleNode = getActiveSubModule(child);
-			if (subModuleNode != null) {
-				return getActiveSubModule(child);
-			}
-		}
-
-		return null;
-
+		return ANMI.getInstance().locateActiveSubModuleNode();
 	}
 
 }

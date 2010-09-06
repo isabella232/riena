@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.riena.core.singleton.SessionSingletonProvider;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -31,7 +32,8 @@ public class SwtViewProvider {
 	private final Map<String, Integer> viewCounter;
 	private final HashMap<String, Boolean> viewShared;
 
-	private static final SwtViewProvider SWT_VIEW_PROVIDER = new SwtViewProvider();
+	private static final SessionSingletonProvider<SwtViewProvider> SVP = new SessionSingletonProvider<SwtViewProvider>(
+			SwtViewProvider.class);
 
 	/**
 	 * Gets the singleton SwtViewProvider.
@@ -40,7 +42,7 @@ public class SwtViewProvider {
 	 * @since 1.2
 	 */
 	public static SwtViewProvider getInstance() {
-		return SWT_VIEW_PROVIDER;
+		return SVP.getInstance();
 	}
 
 	/**
@@ -54,7 +56,7 @@ public class SwtViewProvider {
 	}
 
 	public SwtViewId getSwtViewId(final INavigationNode<?> node) {
-		
+
 		SwtViewId swtViewId = views.get(node);
 		if (swtViewId == null) {
 			final ISubModuleNode submodule = node.getTypecastedAdapter(ISubModuleNode.class);

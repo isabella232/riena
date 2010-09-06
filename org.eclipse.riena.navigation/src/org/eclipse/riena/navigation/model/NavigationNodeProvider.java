@@ -11,9 +11,8 @@
 package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
+import org.eclipse.riena.core.singleton.SessionSingletonProvider;
 import org.eclipse.riena.core.wire.InjectExtension;
-import org.eclipse.riena.core.wire.Wire;
-import org.eclipse.riena.internal.navigation.Activator;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
 
 /**
@@ -23,21 +22,10 @@ import org.eclipse.riena.navigation.INavigationNodeProvider;
  */
 public final class NavigationNodeProvider {
 
-	private static NavigationNodeProvider navigationNodeProvider;
-
-	static {
-		navigationNodeProvider = new NavigationNodeProvider();
-		Wire.instance(navigationNodeProvider).andStart(Activator.getDefault().getContext());
-	}
+	private static final SessionSingletonProvider<NavigationNodeProvider> NNP = new SessionSingletonProvider<NavigationNodeProvider>(
+			NavigationNodeProvider.class);
 
 	private INavigationNodeProvider provider;
-
-	/**
-	 * Default Constructor
-	 */
-	private NavigationNodeProvider() {
-		//	utility
-	}
 
 	/**
 	 * Provide the single instance of the object configured for
@@ -46,7 +34,10 @@ public final class NavigationNodeProvider {
 	 * @since 1.2
 	 */
 	public static INavigationNodeProvider getInstance() {
-		return navigationNodeProvider.getProvider();
+		return NNP.getInstance().getProvider();
+	}
+
+	private NavigationNodeProvider() {
 	}
 
 	private INavigationNodeProvider getProvider() {
