@@ -29,7 +29,7 @@ import org.eclipse.riena.core.wire.Wire;
 public class SingletonProvider<S> {
 
 	protected final Class<S> singletonClass;
-	private volatile S rcpSingleton;
+	private volatile S singleton;
 
 	/**
 	 * Create {@code SingletonProvider} that creates a singleton for the
@@ -50,12 +50,12 @@ public class SingletonProvider<S> {
 	 */
 	public S getInstance() {
 		// Double-check idiom for lazy initialization of instance fields (Joshua Bloch, Effective Java, Item 71)
-		S result = rcpSingleton;
+		S result = singleton;
 		if (result == null) { // First check (no locking)
 			synchronized (this) {
-				result = rcpSingleton;
+				result = singleton;
 				if (result == null) {
-					rcpSingleton = result = newWiredInstance();
+					singleton = result = newWiredInstance();
 				}
 			}
 		}
