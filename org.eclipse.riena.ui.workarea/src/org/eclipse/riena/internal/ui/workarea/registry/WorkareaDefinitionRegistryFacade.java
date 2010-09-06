@@ -19,6 +19,8 @@ import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
+import org.eclipse.riena.core.singleton.SessionSingletonProvider;
+import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.internal.ui.workarea.Activator;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.ridgets.controller.IController;
@@ -28,12 +30,13 @@ import org.eclipse.riena.ui.workarea.spi.IWorkareaDefinitionRegistry;
 
 public final class WorkareaDefinitionRegistryFacade implements IWorkareaDefinitionRegistry, ServiceTrackerCustomizer {
 
-	private static final WorkareaDefinitionRegistryFacade INSTANCE = new WorkareaDefinitionRegistryFacade();
+	private final static SingletonProvider<WorkareaDefinitionRegistryFacade> WDRF = new SessionSingletonProvider<WorkareaDefinitionRegistryFacade>(
+			WorkareaDefinitionRegistryFacade.class);
 
 	private final SortedSet<WorkareaDefinitionRegistryWithRank> contributedRegistries;
 
 	public static WorkareaDefinitionRegistryFacade getInstance() {
-		return INSTANCE;
+		return WDRF.getInstance();
 	}
 
 	private WorkareaDefinitionRegistryFacade() {
