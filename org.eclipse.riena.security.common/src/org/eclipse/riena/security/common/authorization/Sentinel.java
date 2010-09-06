@@ -12,8 +12,8 @@ package org.eclipse.riena.security.common.authorization;
 
 import java.security.Permission;
 
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.internal.security.common.Activator;
+import org.eclipse.riena.core.singleton.SingletonProvider;
+import org.eclipse.riena.core.wire.InjectService;
 
 /**
  * This class can be used as an alternative to the Java SecurityManager if you
@@ -23,24 +23,22 @@ import org.eclipse.riena.internal.security.common.Activator;
  */
 public final class Sentinel {
 
+	private static final SingletonProvider<Sentinel> SENTINEL = new SingletonProvider<Sentinel>(Sentinel.class);
+
 	private ISentinelService sentinelService;
-	// this private instance is only held in the class so that it does not get garbage collected
-	// because it holds the injected reference to the SentinelService
-	private static final Sentinel SENTINEL = new Sentinel();
 
 	private Sentinel() {
-		super();
-		Inject.service(ISentinelService.class).useRanking().into(this).andStart(Activator.getDefault().getContext());
 	}
 
 	private static Sentinel getInstance() {
-		return SENTINEL;
+		return SENTINEL.getInstance();
 	}
 
 	private ISentinelService getSentinelService() {
 		return sentinelService;
 	}
 
+	@InjectService(useRanking = true)
 	public void bind(final ISentinelService sentinelServiceParm) {
 		sentinelService = sentinelServiceParm;
 	}
@@ -59,7 +57,7 @@ public final class Sentinel {
 	 * @return
 	 */
 	public static boolean checkAccess(final Permission permission) {
-		if (getInstance().getSentinelService() == null) {
+		if (SENTINEL.getInstance().getSentinelService() == null) {
 			return false;
 		}
 		return getInstance().getSentinelService().checkAccess(permission);
