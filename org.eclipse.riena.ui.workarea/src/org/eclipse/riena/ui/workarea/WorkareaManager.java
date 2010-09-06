@@ -10,18 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.workarea;
 
+import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.internal.ui.workarea.registry.WorkareaDefinitionRegistryFacade;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 
 public final class WorkareaManager {
 
-	static private WorkareaManager instance = new WorkareaManager();
+	private final static SingletonProvider<WorkareaManager> WM = new SingletonProvider<WorkareaManager>(
+			WorkareaManager.class);
 
 	private final WorkareaDefinitionRegistryFacade registry;
 
 	static public WorkareaManager getInstance() {
-		return instance;
+		return WM.getInstance();
 	}
 
 	private WorkareaManager() {
