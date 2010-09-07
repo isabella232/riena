@@ -31,24 +31,17 @@ public class ClassRidgetMapperTest extends RienaTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		// Create new instance of ClassRidgetMapper to start with initial mappings only (not additional mappings added in previous test cases)
+		final Object crm = ReflectionUtils.getHidden(ClassRidgetMapper.class, "CRM");
+		ReflectionUtils.setHidden(crm, "singleton", null);
 
 		// only used to get the initial mappings
 		// Create new instance of SwtControlRidgetMapper to start with initial mappings only (not additional mappings added in previous test cases)
-		ReflectionUtils.setHidden(SwtControlRidgetMapper.class, "instance",
-				ReflectionUtils.newInstanceHidden(SwtControlRidgetMapper.class, new Object[0]));
+		final Object scrm = ReflectionUtils.getHidden(SwtControlRidgetMapper.class, "SCRM");
+		ReflectionUtils.setHidden(scrm, "singleton", null);
+		SwtControlRidgetMapper.getInstance();
 
 		mapper = ClassRidgetMapper.getInstance();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-
-		// Create new instance of ClassRidgetMapper to start with initial mappings only (not additional mappings added in previous test cases)
-		ReflectionUtils.setHidden(ClassRidgetMapper.class, "instance",
-				ReflectionUtils.newInstanceHidden(ClassRidgetMapper.class, new Object[0]));
-		mapper = null;
-
-		super.tearDown();
 	}
 
 	public void testAddMapping() throws Exception {
