@@ -19,7 +19,7 @@ import org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer;
  */
 public class UIProcessFinishedFlasher extends Thread {
 
-	private static IUISynchronizer uiSynchronizer;
+	private final static IUISynchronizer UI_SYNCHRONIZER = new SwtUISynchronizer();
 
 	private final UIProcessFinishedMarker processMarker;
 	private final Runnable updater;
@@ -36,9 +36,6 @@ public class UIProcessFinishedFlasher extends Thread {
 	public UIProcessFinishedFlasher(final UIProcessFinishedMarker processMarker, final Runnable updater) {
 		this.processMarker = processMarker;
 		this.updater = updater;
-		if (uiSynchronizer == null) {
-			uiSynchronizer = new SwtUISynchronizer();
-		}
 	}
 
 	/**
@@ -51,7 +48,7 @@ public class UIProcessFinishedFlasher extends Thread {
 
 		while (processMarker.isFlashing()) {
 
-			uiSynchronizer.syncExec(updater);
+			UI_SYNCHRONIZER.syncExec(updater);
 			processMarker.increase();
 			processMarker.setOn(!processMarker.isOn());
 			try {
@@ -72,7 +69,7 @@ public class UIProcessFinishedFlasher extends Thread {
 			}
 		}
 
-		uiSynchronizer.syncExec(updater);
+		UI_SYNCHRONIZER.syncExec(updater);
 
 	}
 
