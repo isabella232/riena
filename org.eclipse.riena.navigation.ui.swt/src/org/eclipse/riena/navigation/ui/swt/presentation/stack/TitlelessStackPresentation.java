@@ -165,10 +165,12 @@ public class TitlelessStackPresentation extends StackPresentation {
 
 		@Override
 		public void beforeActivated(final ISubModuleNode source) {
-			placeHolder.setBounds(calcPlaceHolderBounds());
-			placeHolder.setVisible(true);
-			placeHolder.moveAbove(current != null ? current.getControl() : null);
-			placeHolder.update();
+			if (current != null) {
+				placeHolder.setBounds(calcPlaceHolderBounds());
+				placeHolder.setVisible(true);
+				placeHolder.moveAbove(current != null ? current.getControl() : null);
+				placeHolder.update();
+			}
 		}
 
 		@Override
