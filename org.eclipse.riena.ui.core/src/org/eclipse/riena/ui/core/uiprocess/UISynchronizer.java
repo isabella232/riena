@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.uiprocess;
 
+import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.core.wire.InjectExtension;
-import org.eclipse.riena.core.wire.Wire;
-import org.eclipse.riena.internal.ui.core.Activator;
 
 /**
  * The {@code UISynchronizer} creates {@code IUISynchronizer} instances which
@@ -32,12 +31,8 @@ import org.eclipse.riena.internal.ui.core.Activator;
  */
 public final class UISynchronizer {
 
-	private static UISynchronizer singelton;
-
-	static {
-		singelton = new UISynchronizer();
-		Wire.instance(singelton).andStart(Activator.getDefault().getContext());
-	}
+	private static final SingletonProvider<UISynchronizer> UIS = new SingletonProvider<UISynchronizer>(
+			UISynchronizer.class);
 
 	private IUISynchronizerExtension synchronizerExtension;
 
@@ -51,7 +46,7 @@ public final class UISynchronizer {
 	 * @return a {@code IUISynchronizer}
 	 */
 	public static IUISynchronizer createSynchronizer() {
-		return singelton.create();
+		return UIS.getInstance().create();
 	}
 
 	private IUISynchronizer create() {

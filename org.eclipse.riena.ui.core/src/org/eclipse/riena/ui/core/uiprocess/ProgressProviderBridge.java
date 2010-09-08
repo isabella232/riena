@@ -18,13 +18,17 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.ProgressProvider;
 
+import org.eclipse.riena.core.singleton.SingletonProvider;
+
 /**
  * A job can be presented by several instances of {@link ProgressProvider}. This
  * one delegates to those providers.
  */
 public class ProgressProviderBridge extends ProgressProvider {
 
-	private static ProgressProviderBridge instance;
+	private static final SingletonProvider<ProgressProviderBridge> PPB = new SingletonProvider<ProgressProviderBridge>(
+			ProgressProviderBridge.class);
+
 	private IProgressVisualizerLocator visualizerLocator;
 	private final Map<Job, UIProcess> jobUiProcess;
 
@@ -33,10 +37,7 @@ public class ProgressProviderBridge extends ProgressProvider {
 	}
 
 	public static ProgressProviderBridge instance() {
-		if (instance == null) {
-			instance = new ProgressProviderBridge();
-		}
-		return instance;
+		return PPB.getInstance();
 	}
 
 	public void setVisualizerFactory(final IProgressVisualizerLocator visualizerLocator) {
