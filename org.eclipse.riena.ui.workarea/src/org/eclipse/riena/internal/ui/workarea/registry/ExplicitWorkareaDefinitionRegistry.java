@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.workarea.registry;
 
-import org.eclipse.riena.core.singleton.SessionSingletonProvider;
 import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
@@ -18,7 +17,7 @@ import org.eclipse.riena.ui.workarea.spi.AbstractWorkareaDefinitionRegistry;
 
 final class ExplicitWorkareaDefinitionRegistry extends AbstractWorkareaDefinitionRegistry {
 
-	private final static SingletonProvider<ExplicitWorkareaDefinitionRegistry> EWDR = new SessionSingletonProvider<ExplicitWorkareaDefinitionRegistry>(
+	private final static SingletonProvider<ExplicitWorkareaDefinitionRegistry> EWDR = new SingletonProvider<ExplicitWorkareaDefinitionRegistry>(
 			ExplicitWorkareaDefinitionRegistry.class);
 
 	static ExplicitWorkareaDefinitionRegistry getInstance() {
