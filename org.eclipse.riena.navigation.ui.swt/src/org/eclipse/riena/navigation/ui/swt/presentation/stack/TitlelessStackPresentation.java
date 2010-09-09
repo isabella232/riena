@@ -177,8 +177,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 		public void afterActivated(final ISubModuleNode source) {
 			current.setBounds(calcSubModuleInnerBounds());
 			current.setVisible(true);
-			locateControl(current.getControl(), StackPresentationControlFilter.CONTENT_COMPOSITE_FILTER).setVisible(
-					true);
 			hideComposite(placeHolder);
 			redrawSubModuleTitle();
 			current.getControl().moveAbove(placeHolder != null ? placeHolder : null);
@@ -241,10 +239,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 		if (isNavigation(toSelect)) {
 			selectNavigation(toSelect);
 		} else if (toSelect != null) {
-			if (current != null) {
-				locateControl(current.getControl(), StackPresentationControlFilter.CONTENT_COMPOSITE_FILTER)
-						.setVisible(false);
-			}
 			current = toSelect;
 		}
 	}
