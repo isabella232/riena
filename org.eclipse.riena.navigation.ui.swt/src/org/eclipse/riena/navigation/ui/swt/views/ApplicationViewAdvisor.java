@@ -176,6 +176,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		final Composite grabCorner = createGrabCorner(shell);
 		createStatusLine(shell, grabCorner);
 		titleComposite = createTitleComposite(shell);
+
 		final Composite menuBarComposite = createMenuBarComposite(shell, titleComposite);
 		final Composite coolBarComposite = createCoolBarComposite(shell, menuBarComposite);
 		final Composite mainComposite = createMainComposite(shell, coolBarComposite);
@@ -363,9 +364,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		// prepare shell for binding
 		addUIControl(shell, SHELL_RIDGET_PROPERTY);
 
-		if (getShellRenderer() != null) {
-			getShellRenderer().setShell(shell);
-		}
 		// TODO check if this is the main window. maybe support more then one workbench window.
 		WidgetIdentificationSupport.setIdentification(shell);
 	}

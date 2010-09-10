@@ -35,7 +35,9 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.ui.ISourceProvider;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.services.ISourceProviderService;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.InvocationTargetFailure;
@@ -113,6 +115,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	private NavigationTreeObserver navigationTreeObserver;
 
+	private NavigationSourceProvider navigationSourceProvider;
+
 	/**
 	 * Creates a new instance of {@code SubModuleView}.
 	 */
@@ -147,7 +151,35 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			LNF_UPDATER.updateUIControlsAfterBind(getContentComposite());
 		}
 
-		NavigationSourceProvider.activeNodeChanged(getNavigationNode());
+		activeNodeChanged(getNavigationNode());
+	}
+
+	private void activeNodeChanged(final INavigationNode<?> node) {
+		if (navigationSourceProvider == null) {
+			navigationSourceProvider = getNavigationSourceProvider();
+		}
+		if (navigationSourceProvider != null) {
+			if (!navigationSourceProvider.isDisposed()) {
+				navigationSourceProvider.activeNodeChanged(node);
+			} else {
+				navigationSourceProvider = null;
+			}
+		}
+	}
+
+	private NavigationSourceProvider getNavigationSourceProvider() {
+		final ISourceProviderService sourceProviderService = (ISourceProviderService) getSite().getService(
+				ISourceProviderService.class);
+		if (sourceProviderService == null) {
+			return null;
+		}
+		final ISourceProvider[] sourceProviders = sourceProviderService.getSourceProviders();
+		for (final ISourceProvider sourceProvider : sourceProviders) {
+			if (sourceProvider instanceof NavigationSourceProvider) {
+				return (NavigationSourceProvider) sourceProvider;
+			}
+		}
+		return null;
 	}
 
 	@Override
