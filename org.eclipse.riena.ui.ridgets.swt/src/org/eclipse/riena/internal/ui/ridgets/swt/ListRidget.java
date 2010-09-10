@@ -116,9 +116,9 @@ public class ListRidget extends AbstractListRidget {
 					list.deselectAll();
 				}
 				list.setData(savedBackgroundKey, list.getBackground());
-				list.setBackground(list.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
 			}
 		}
+		updateMarkers();
 	}
 
 	// helping classes

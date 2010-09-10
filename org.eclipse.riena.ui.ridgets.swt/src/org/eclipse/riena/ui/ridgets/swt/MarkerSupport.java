@@ -158,16 +158,16 @@ public class MarkerSupport extends BasicMarkerSupport {
 	protected void addMandatory(final Control control) {
 		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) == null) {
 			control.setData(PRE_MANDATORY_BACKGROUND_KEY, control.getBackground());
-			final RienaDefaultLnf lnf = LnfManager.getLnf();
-			Color color = lnf.getColor(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND);
-			if (color == null) {
-				color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY);
-			}
-			if (control instanceof CompletionCombo) {
-				((CompletionCombo) control).setTextBackground(color);
-			} else {
-				control.setBackground(color);
-			}
+		}
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
+		Color color = lnf.getColor(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND);
+		if (color == null) {
+			color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY);
+		}
+		if (control instanceof CompletionCombo) {
+			((CompletionCombo) control).setTextBackground(color);
+		} else {
+			control.setBackground(color);
 		}
 	}
 
