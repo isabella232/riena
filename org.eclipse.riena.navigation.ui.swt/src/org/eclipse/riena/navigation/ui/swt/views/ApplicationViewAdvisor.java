@@ -364,6 +364,10 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		// prepare shell for binding
 		addUIControl(shell, SHELL_RIDGET_PROPERTY);
 
+		if (getShellRenderer() != null) {
+			getShellRenderer().setShell(shell);
+		}
+
 		// TODO check if this is the main window. maybe support more then one workbench window.
 		WidgetIdentificationSupport.setIdentification(shell);
 	}
