@@ -30,8 +30,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.ui.swt.CompletionCombo;
+import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.InfoFlyout;
-import org.eclipse.riena.ui.swt.ModuleTitleBar;
 import org.eclipse.riena.ui.swt.facades.internal.CompletionComboRCP;
 import org.eclipse.riena.ui.swt.facades.internal.CompletionComboWithImageRCP;
 import org.eclipse.riena.ui.swt.facades.internal.DisabledPainter;
@@ -141,7 +141,7 @@ public final class SWTFacadeRCP extends SWTFacade {
 	}
 
 	@Override
-	public void createModuleToolTip(final ModuleTitleBar parent) {
+	public void createEmbeddedTitleBarToolTip(final EmbeddedTitleBar parent) {
 		new ModuleToolTip(parent);
 	}
 

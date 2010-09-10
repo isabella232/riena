@@ -483,7 +483,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		title = new ModuleTitleBar(getParent(), SWT.NONE);
 		binding.addUIControl(title, WINDOW_RIDGET);
 		//		layoutTitle();
-		SWTFacade.getDefault().createModuleToolTip(title);
+		SWTFacade.getDefault().createEmbeddedTitleBarToolTip(title);
 
 		body = new Composite(getParent(), SWT.DOUBLE_BUFFERED);
 		//		updateModuleView();

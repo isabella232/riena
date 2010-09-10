@@ -20,6 +20,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 
+import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -32,7 +33,7 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
  */
 public class ModuleToolTip extends DefaultToolTip {
 
-	private final ModuleTitleBar moduleTitleBar;
+	private final EmbeddedTitleBar moduleTitleBar;
 
 	/**
 	 * Creates a tooltip on a {@link ModuleTitleBar}. The ToolTip is only
@@ -41,7 +42,7 @@ public class ModuleToolTip extends DefaultToolTip {
 	 * @param parent
 	 *            the title bar of a module
 	 */
-	public ModuleToolTip(final ModuleTitleBar parent) {
+	public ModuleToolTip(final EmbeddedTitleBar parent) {
 		super(parent);
 		this.moduleTitleBar = parent;
 		setShift(new Point(0, 0));
@@ -65,7 +66,6 @@ public class ModuleToolTip extends DefaultToolTip {
 	@Override
 	protected Composite createToolTipContentArea(final Event event, final Composite parent) {
 		final CLabel label = new CLabel(parent, getStyle(event));
-
 		final Color fgColor = getForegroundColor(event);
 		final Color bgColor = getBackgroundColor(event);
 		final Font font = getFont(event);

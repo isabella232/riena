@@ -59,6 +59,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -511,6 +512,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			// don't show the right border of the title => 1
 			formData.right = new FormAttachment(100, 1);
 			title.setLayoutData(formData);
+			SWTFacade.getDefault().createEmbeddedTitleBarToolTip(title);
 		}
 
 		final Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);

@@ -28,8 +28,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.ui.swt.CompletionCombo;
+import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.InfoFlyout;
-import org.eclipse.riena.ui.swt.ModuleTitleBar;
 
 /**
  * Single-sourced access to SWT methods that are not available in RAP.
@@ -400,14 +400,13 @@ public abstract class SWTFacade {
 	public abstract InfoFlyout createInfoFlyout(Composite parent);
 
 	/**
-	 * Create a custom tooltip on a Module navigation control (i.e. on the title
-	 * bar of a module).
+	 * Create a custom tooltip on an {@link EmbeddedTitleBar} control
 	 * 
 	 * @param parent
-	 *            the parent {@link ModuleTitleBar} instance; never null
+	 *            the parent {@link EmbeddedTitleBar} instance; never null
 	 * @since 3.0
 	 */
-	public abstract void createModuleToolTip(ModuleTitleBar parent);
+	public abstract void createEmbeddedTitleBarToolTip(EmbeddedTitleBar parent);
 
 	/**
 	 * Create a custom tooltip on a SubModule navigation control (i.e. in
