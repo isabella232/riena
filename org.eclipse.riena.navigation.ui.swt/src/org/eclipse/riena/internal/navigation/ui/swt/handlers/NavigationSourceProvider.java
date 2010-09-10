@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.ui.AbstractSourceProvider;
-import org.eclipse.ui.services.IServiceLocator;
 
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -31,6 +30,8 @@ import org.eclipse.riena.navigation.model.NavigationModelFailure;
  */
 public class NavigationSourceProvider extends AbstractSourceProvider {
 
+	private boolean isDisposed;
+
 	private static final String ACTIVE_SUB_APPLICATION_NODE_ID = "activeSubApplicationNodeId"; //$NON-NLS-1$
 	private static final String ACTIVE_MODULE_GROUP_NODE_ID = "activeModuleGroupNodeId"; //$NON-NLS-1$
 	private static final String ACTIVE_MODULE_NODE_ID = "activeModuleNodeId"; //$NON-NLS-1$
@@ -40,16 +41,12 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 	private static final String[] PROVIDED_SOURCE_NAMES = new String[] { ACTIVE_SUB_APPLICATION_NODE_ID,
 			ACTIVE_MODULE_GROUP_NODE_ID, ACTIVE_MODULE_NODE_ID, ACTIVE_SUB_MODULE_NODE_ID };
 
-	private static NavigationSourceProvider sourceProvider;
-
-	@Override
-	public void initialize(final IServiceLocator locator) {
-		super.initialize(locator);
-		sourceProvider = this;
+	public void dispose() {
+		isDisposed = true;
 	}
 
-	public void dispose() {
-		sourceProvider = null;
+	public boolean isDisposed() {
+		return isDisposed;
 	}
 
 	public final Map<String, String> getCurrentState() {
@@ -129,12 +126,10 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 	 * @param node
 	 *            node that was activated right now
 	 */
-	public static void activeNodeChanged(final INavigationNode<?> node) {
-		if (sourceProvider != null) {
-			sourceProvider.fireSourceChange(node);
-			if (node.getParent() != null && !(node.getParent() instanceof IApplicationNode)) {
-				activeNodeChanged(node.getParent());
-			}
+	public void activeNodeChanged(final INavigationNode<?> node) {
+		fireSourceChange(node);
+		if (node.getParent() != null && !(node.getParent() instanceof IApplicationNode)) {
+			activeNodeChanged(node.getParent());
 		}
 	}
 
