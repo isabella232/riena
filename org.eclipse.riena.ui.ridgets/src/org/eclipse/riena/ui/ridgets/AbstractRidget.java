@@ -102,14 +102,14 @@ public abstract class AbstractRidget implements IRidget {
 	////////////////////
 
 	/**
-	 * Notifies all listeners that the ridget has lost the focus.
+	 * Notifies all listeners that the ridget has gained the focus.
 	 * 
-	 * @param event
-	 *            the FocusEvent
+	 * @since 3.0
 	 */
-	protected final void fireFocusLost(final FocusEvent event) {
+	public final void fireFocusGained() {
+		final FocusEvent event = new FocusEvent(null, this);
 		for (final IFocusListener focusListener : focusListeners.getListeners()) {
-			focusListener.focusLost(event);
+			focusListener.focusGained(event);
 		}
 	}
 
@@ -118,10 +118,38 @@ public abstract class AbstractRidget implements IRidget {
 	 * 
 	 * @param event
 	 *            the FocusEvent
+	 * @deprecated use {@link #fireFocusGained()}
 	 */
+	@Deprecated
 	protected final void fireFocusGained(final FocusEvent event) {
 		for (final IFocusListener focusListener : focusListeners.getListeners()) {
 			focusListener.focusGained(event);
+		}
+	}
+
+	/**
+	 * Notifies all listeners that the ridget has lost the focus.
+	 * 
+	 * @since 3.0
+	 */
+	public final void fireFocusLost() {
+		final FocusEvent event = new FocusEvent(this, null);
+		for (final IFocusListener focusListener : focusListeners.getListeners()) {
+			focusListener.focusLost(event);
+		}
+	}
+
+	/**
+	 * Notifies all listeners that the ridget has lost the focus.
+	 * 
+	 * @param event
+	 *            the FocusEvent
+	 * @deprecated use {@link #fireFocusLost()}
+	 */
+	@Deprecated
+	protected final void fireFocusLost(final FocusEvent event) {
+		for (final IFocusListener focusListener : focusListeners.getListeners()) {
+			focusListener.focusLost(event);
 		}
 	}
 
