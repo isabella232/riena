@@ -28,6 +28,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.ToggleButtonRidget;
 import org.eclipse.riena.navigation.IAction;
 import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper.Mapping;
@@ -404,6 +405,13 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		public String getID() {
 			return null;
 		}
+
+		public IRidgetContainer getController() {
+			return null;
+		}
+
+		public void setController(final IRidgetContainer controller) {
+		}
 	}
 
 	/**
@@ -485,6 +493,13 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 
 		public String getID() {
 			return null;
+		}
+
+		public IRidgetContainer getController() {
+			return null;
+		}
+
+		public void setController(final IRidgetContainer controller) {
 		}
 	}
 
@@ -580,6 +595,13 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 
 		public String getID() {
 			return null;
+		}
+
+		public IRidgetContainer getController() {
+			return null;
+		}
+
+		public void setController(final IRidgetContainer controller) {
 		}
 	}
 
@@ -680,6 +702,12 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		public void run() {
 		}
 
+		public IRidgetContainer getController() {
+			return null;
+		}
+
+		public void setController(final IRidgetContainer controller) {
+		}
 	}
 
 }

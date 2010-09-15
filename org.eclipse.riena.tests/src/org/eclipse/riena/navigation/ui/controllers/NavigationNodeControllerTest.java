@@ -42,6 +42,7 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
@@ -373,6 +374,13 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 
 		public String getID() {
 			return null;
+		}
+
+		public IRidgetContainer getController() {
+			return null;
+		}
+
+		public void setController(final IRidgetContainer controller) {
 		}
 	}
 

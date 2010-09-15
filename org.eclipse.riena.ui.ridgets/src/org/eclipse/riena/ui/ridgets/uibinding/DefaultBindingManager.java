@@ -114,6 +114,7 @@ public class DefaultBindingManager implements IBindingManager {
 	protected void injectRidget(final IRidgetContainer ridgetContainer, final String bindingProperty,
 			final IRidget ridget) {
 		ridgetContainer.addRidget(bindingProperty, ridget);
+		ridget.setController(ridgetContainer);
 	}
 
 	/**

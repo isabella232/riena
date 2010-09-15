@@ -14,6 +14,7 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.CompletionCombo;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -65,15 +66,15 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 
 	public void focusGained(final FocusEvent e) {
 		if (isFocusable()) {
-			trace("## focus gained: %s %d", e.widget, e.widget.hashCode());
+			// trace("## focus gained: %s %d", e.widget, e.widget.hashCode());
 			ridget.fireFocusGained();
 		} else {
 			final Control target = findFocusTarget((Control) e.widget);
 			if (target != null) {
-				trace("## %s %d -> %s %d", e.widget, e.widget.hashCode(), target, target.hashCode());
+				// trace("## %s %d -> %s %d", e.widget, e.widget.hashCode(), target, target.hashCode());
 				target.setFocus();
 			} else { // no suitable control found
-				trace("!! %s %d -> NO TARGET", e.widget, e.widget.hashCode());
+				// trace("!! %s %d -> NO TARGET", e.widget, e.widget.hashCode());
 			}
 		}
 	}
@@ -88,7 +89,7 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 	@Override
 	public void mouseDown(final MouseEvent e) {
 		if (ridget.isFocusable() && ridget.isOutputOnly()) {
-			trace("## mouse DOWN: %s %d", e.widget, e.widget.hashCode());
+			// trace("## mouse DOWN: %s %d", e.widget, e.widget.hashCode());
 			clickToFocus = true;
 			((Control) e.widget).setFocus();
 		}
@@ -136,15 +137,17 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 			return false;
 		}
 		// skip IMarkableRidgets that are not focusable  or output only
-		final Object data = control.getData("ridget");
-		if (data instanceof IMarkableRidget) {
-			final IMarkableRidget markableRidget = (IMarkableRidget) data;
-			return markableRidget.isFocusable() && !markableRidget.isOutputOnly();
-		}
-		// skip IRidgets that are not focusable
-		if (data instanceof IRidget) {
-			final IRidget ridget = (IRidget) data;
-			return ridget.isFocusable();
+		final String bindingId = SWTBindingPropertyLocator.getInstance().locateBindingProperty(control);
+		if (bindingId != null) {
+			final Object controlsRidget = ridget.getController().getRidget(bindingId);
+			if (controlsRidget instanceof IMarkableRidget) {
+				final IMarkableRidget markableRidget = (IMarkableRidget) controlsRidget;
+				return markableRidget.isFocusable() && !markableRidget.isOutputOnly();
+			}
+			// skip IRidgets that are not focusable
+			if (controlsRidget instanceof IRidget) {
+				return ((IRidget) controlsRidget).isFocusable();
+			}
 		}
 		// skip Composites that have no children that can get focus
 		if (control instanceof Composite) {
@@ -195,7 +198,8 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 		return (ridget.isFocusable() && !ridget.isOutputOnly()) || clickToFocus;
 	}
 
+	@SuppressWarnings("unused")
 	private void trace(final String format, final Object... args) {
-		// System.out.println(String.format(format, args));
+		System.out.println(String.format(format, args));
 	}
 }

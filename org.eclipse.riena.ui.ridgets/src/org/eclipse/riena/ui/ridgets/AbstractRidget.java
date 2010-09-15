@@ -27,8 +27,10 @@ public abstract class AbstractRidget implements IRidget {
 	public final static String PROPERTY_RIDGET = "ridget"; //$NON-NLS-1$
 
 	protected PropertyChangeSupport propertyChangeSupport;
-	private final ListenerList<IFocusListener> focusListeners;
 	protected boolean savedVisibleState = true;
+
+	private final ListenerList<IFocusListener> focusListeners;
+	private IRidgetContainer controller;
 
 	/**
 	 * Constructor.
@@ -36,6 +38,10 @@ public abstract class AbstractRidget implements IRidget {
 	public AbstractRidget() {
 		propertyChangeSupport = new PropertyChangeSupport(this);
 		focusListeners = new ListenerList<IFocusListener>(IFocusListener.class);
+	}
+
+	public void addFocusListener(final IFocusListener listener) {
+		focusListeners.add(listener);
 	}
 
 	public void addPropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
@@ -53,54 +59,6 @@ public abstract class AbstractRidget implements IRidget {
 		}
 	}
 
-	public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
-		removePropertyChangeListener(null, propertyChangeListener);
-	}
-
-	public void removePropertyChangeListener(final String propertyName,
-			final PropertyChangeListener propertyChangeListener) {
-		Assert.isNotNull(propertyChangeListener);
-		if (propertyName == null) {
-			propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
-		} else {
-			propertyChangeSupport.removePropertyChangeListener(propertyName, propertyChangeListener);
-		}
-	}
-
-	public void addFocusListener(final IFocusListener listener) {
-		focusListeners.add(listener);
-	}
-
-	public void removeFocusListener(final IFocusListener listener) {
-		focusListeners.remove(listener);
-	}
-
-	public void updateFromModel() {
-		// Do nothing by default
-	}
-
-	/**
-	 * This was never implemented.
-	 * 
-	 * @return false always
-	 * 
-	 * @deprecated - this was never implemented - do not call
-	 */
-	@Deprecated
-	public final boolean isBlocked() {
-		return false;
-	}
-
-	/**
-	 * @deprecated - this was never implemented - do not call
-	 */
-	@Deprecated
-	public final void setBlocked(final boolean blocked) {
-	}
-
-	// protected methods
-	////////////////////
-
 	/**
 	 * Notifies all listeners that the ridget has gained the focus.
 	 * 
@@ -108,20 +66,6 @@ public abstract class AbstractRidget implements IRidget {
 	 */
 	public final void fireFocusGained() {
 		final FocusEvent event = new FocusEvent(null, this);
-		for (final IFocusListener focusListener : focusListeners.getListeners()) {
-			focusListener.focusGained(event);
-		}
-	}
-
-	/**
-	 * Notifies all listeners that the ridget has gained the focus.
-	 * 
-	 * @param event
-	 *            the FocusEvent
-	 * @deprecated use {@link #fireFocusGained()}
-	 */
-	@Deprecated
-	protected final void fireFocusGained(final FocusEvent event) {
 		for (final IFocusListener focusListener : focusListeners.getListeners()) {
 			focusListener.focusGained(event);
 		}
@@ -136,6 +80,73 @@ public abstract class AbstractRidget implements IRidget {
 		final FocusEvent event = new FocusEvent(this, null);
 		for (final IFocusListener focusListener : focusListeners.getListeners()) {
 			focusListener.focusLost(event);
+		}
+	}
+
+	public IRidgetContainer getController() {
+		return controller;
+	}
+
+	/**
+	 * This was never implemented.
+	 * 
+	 * @return false always
+	 * 
+	 * @deprecated - this was never implemented - do not call
+	 */
+	@Deprecated
+	public final boolean isBlocked() {
+		return false;
+	}
+
+	public void removeFocusListener(final IFocusListener listener) {
+		focusListeners.remove(listener);
+	}
+
+	public void removePropertyChangeListener(final PropertyChangeListener propertyChangeListener) {
+		removePropertyChangeListener(null, propertyChangeListener);
+	}
+
+	public void removePropertyChangeListener(final String propertyName,
+			final PropertyChangeListener propertyChangeListener) {
+		Assert.isNotNull(propertyChangeListener);
+		if (propertyName == null) {
+			propertyChangeSupport.removePropertyChangeListener(propertyChangeListener);
+		} else {
+			propertyChangeSupport.removePropertyChangeListener(propertyName, propertyChangeListener);
+		}
+	}
+
+	/**
+	 * @deprecated - this was never implemented - do not call
+	 */
+	@Deprecated
+	public final void setBlocked(final boolean blocked) {
+	}
+
+	public void setController(final IRidgetContainer controller) {
+		Assert.isNotNull(controller);
+		this.controller = controller;
+	}
+
+	public void updateFromModel() {
+		// Do nothing by default
+	}
+
+	// protected methods
+	////////////////////
+
+	/**
+	 * Notifies all listeners that the ridget has gained the focus.
+	 * 
+	 * @param event
+	 *            the FocusEvent
+	 * @deprecated use {@link #fireFocusGained()}
+	 */
+	@Deprecated
+	protected final void fireFocusGained(final FocusEvent event) {
+		for (final IFocusListener focusListener : focusListeners.getListeners()) {
+			focusListener.focusGained(event);
 		}
 	}
 

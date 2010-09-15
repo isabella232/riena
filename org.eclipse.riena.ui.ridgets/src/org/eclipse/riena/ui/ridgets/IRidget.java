@@ -54,51 +54,17 @@ public interface IRidget {
 	String PROPERTY_SHOWING = "showing"; //$NON-NLS-1$
 
 	/**
-	 * Returns whether the ridget is visible or invisible.
+	 * Adds a {@link IFocusListener} for receiving focus events from this
+	 * ridget.
+	 * <p>
+	 * Adding the same listener several times has to effect.
 	 * 
-	 * @return Indicates whether the ridget is visible.
+	 * @param listener
+	 *            the listener to be added (non-null)
+	 * @throws RuntimeException
+	 *             if listener is null
 	 */
-	boolean isVisible();
-
-	/**
-	 * Sets whether the ridget is visible.
-	 * 
-	 * @param visible
-	 *            The new visibility state.
-	 */
-	void setVisible(boolean visible);
-
-	/**
-	 * Returns whether the ridget is enabled or disabled.
-	 * 
-	 * @return Indicates whether the ridget is enabled.
-	 */
-	boolean isEnabled();
-
-	/**
-	 * Sets whether the ridget is enabled.
-	 * 
-	 * @param enabled
-	 *            The new enabled state.
-	 */
-	void setEnabled(boolean enabled);
-
-	/**
-	 * Getter to access the UI-toolkit specific UI-control. Allows modifications
-	 * of the UI-control that are not supported by the Ridgets API.
-	 * 
-	 * @return The bound UI-control or null, if no control is bound.
-	 */
-	Object getUIControl();
-
-	/**
-	 * Setter to be internally used by the view to bind and unbind the Ridgets.
-	 * 
-	 * @param uiControl
-	 *            The wrapped UI-control to which the Ridget is bound or null to
-	 *            unbind the Ridget.
-	 */
-	void setUIControl(Object uiControl);
+	void addFocusListener(IFocusListener listener);
 
 	/**
 	 * Adds a PropertyChangeListener for all properties of the Ridget. Through
@@ -133,6 +99,85 @@ public interface IRidget {
 	void addPropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener);
 
 	/**
+	 * Returns the IController for this ridget.
+	 * 
+	 * @return an IController instance; never null.
+	 */
+	IRidgetContainer getController();
+
+	/**
+	 * Returns the ID of the ridget.
+	 * 
+	 * @return ID of this ridget
+	 */
+	String getID();
+
+	/**
+	 * Returns the text that is shown in the tool tip of this Ridget.
+	 * 
+	 * @return the text of tool tip for this ridget.
+	 */
+	String getToolTipText();
+
+	/**
+	 * Getter to access the UI-toolkit specific UI-control. Allows modifications
+	 * of the UI-control that are not supported by the Ridgets API.
+	 * 
+	 * @return The bound UI-control or null, if no control is bound.
+	 */
+	Object getUIControl();
+
+	/**
+	 * Returns if this ridget is the focus owner.
+	 * 
+	 * @return <code>true</code> if this ridget is the focus owner;
+	 *         <code>false</code> otherwise
+	 */
+	boolean hasFocus();
+
+	/**
+	 * This was never implemented.
+	 * 
+	 * @return false always
+	 * 
+	 * @deprecated - this was never implemented - do not call
+	 */
+	@Deprecated
+	boolean isBlocked();
+
+	/**
+	 * Returns whether the ridget is enabled or disabled.
+	 * 
+	 * @return Indicates whether the ridget is enabled.
+	 */
+	boolean isEnabled();
+
+	/**
+	 * Returns if the ridget can gain the focus or not.
+	 * 
+	 * @return true if the ridget can gain the focus; otherwise false
+	 */
+	boolean isFocusable();
+
+	/**
+	 * Returns whether the ridget is visible or invisible.
+	 * 
+	 * @return Indicates whether the ridget is visible.
+	 */
+	boolean isVisible();
+
+	/**
+	 * Removes the specified focus listener so that it no longer receives focus
+	 * events from this ridget.
+	 * 
+	 * @param listener
+	 *            the focus listener to be removed
+	 * @throws RuntimeException
+	 *             if listener is null
+	 */
+	void removeFocusListener(IFocusListener listener);
+
+	/**
 	 * Removes a PropertyChangeListener for all properties of the Ridget.
 	 * 
 	 * @param propertyChangeListener
@@ -156,30 +201,6 @@ public interface IRidget {
 	void removePropertyChangeListener(String propertyName, PropertyChangeListener propertyChangeListener);
 
 	/**
-	 * Adds a {@link IFocusListener} for receiving focus events from this
-	 * ridget.
-	 * <p>
-	 * Adding the same listener several times has to effect.
-	 * 
-	 * @param listener
-	 *            the listener to be added (non-null)
-	 * @throws RuntimeException
-	 *             if listener is null
-	 */
-	void addFocusListener(IFocusListener listener);
-
-	/**
-	 * Removes the specified focus listener so that it no longer receives focus
-	 * events from this ridget.
-	 * 
-	 * @param listener
-	 *            the focus listener to be removed
-	 * @throws RuntimeException
-	 *             if listener is null
-	 */
-	void removeFocusListener(IFocusListener listener);
-
-	/**
 	 * Requests that this ridget get the input focus.<br>
 	 * Precondition is, that the ridget, which should receive the focus is
 	 * visible.
@@ -187,12 +208,62 @@ public interface IRidget {
 	void requestFocus();
 
 	/**
-	 * Returns if this ridget is the focus owner.
+	 * This was never implemented.
 	 * 
-	 * @return <code>true</code> if this ridget is the focus owner;
-	 *         <code>false</code> otherwise
+	 * @deprecated - this was never implemented - do not call
 	 */
-	boolean hasFocus();
+	@Deprecated
+	void setBlocked(boolean blocked);
+
+	/**
+	 * Set the controller instance holding this ridget.
+	 * 
+	 * @param controller
+	 *            a {@link IRidgetContainer} instance.
+	 */
+	void setController(IRidgetContainer controller);
+
+	/**
+	 * Sets whether the ridget is enabled.
+	 * 
+	 * @param enabled
+	 *            The new enabled state.
+	 */
+	void setEnabled(boolean enabled);
+
+	/**
+	 * Sets if the ridget can gain the focus or not.
+	 * 
+	 * @param focusable
+	 *            true if the ridgetS can gain the focus; otherwise false
+	 */
+	void setFocusable(boolean focusable);
+
+	/**
+	 * Sets the text that is shown in the tool tip of this Ridget.
+	 * 
+	 * @param toolTipText
+	 *            The text of tool tip to set. May be {@code null} to turn off
+	 *            the tool tip.
+	 */
+	void setToolTipText(String toolTipText);
+
+	/**
+	 * Setter to be internally used by the view to bind and unbind the Ridgets.
+	 * 
+	 * @param uiControl
+	 *            The wrapped UI-control to which the Ridget is bound or null to
+	 *            unbind the Ridget.
+	 */
+	void setUIControl(Object uiControl);
+
+	/**
+	 * Sets whether the ridget is visible.
+	 * 
+	 * @param visible
+	 *            The new visibility state.
+	 */
+	void setVisible(boolean visible);
 
 	/**
 	 * For value based ridgets triggers an update from the model value to the
@@ -215,61 +286,5 @@ public interface IRidget {
 	 * </ul>
 	 */
 	void updateFromModel();
-
-	/**
-	 * Returns if the ridget can gain the focus or not.
-	 * 
-	 * @return true if the ridget can gain the focus; otherwise false
-	 */
-	boolean isFocusable();
-
-	/**
-	 * Sets if the ridget can gain the focus or not.
-	 * 
-	 * @param focusable
-	 *            true if the ridgetS can gain the focus; otherwise false
-	 */
-	void setFocusable(boolean focusable);
-
-	/**
-	 * Returns the text that is shown in the tool tip of this Ridget.
-	 * 
-	 * @return the text of tool tip for this ridget.
-	 */
-	String getToolTipText();
-
-	/**
-	 * Sets the text that is shown in the tool tip of this Ridget.
-	 * 
-	 * @param toolTipText
-	 *            The text of tool tip to set. May be {@code null} to turn off
-	 *            the tool tip.
-	 */
-	void setToolTipText(String toolTipText);
-
-	/**
-	 * This was never implemented.
-	 * 
-	 * @deprecated - this was never implemented - do not call
-	 */
-	@Deprecated
-	void setBlocked(boolean blocked);
-
-	/**
-	 * This was never implemented.
-	 * 
-	 * @return false always
-	 * 
-	 * @deprecated - this was never implemented - do not call
-	 */
-	@Deprecated
-	boolean isBlocked();
-
-	/**
-	 * Returns the ID of the ridget.
-	 * 
-	 * @return ID of this ridget
-	 */
-	String getID();
 
 }
