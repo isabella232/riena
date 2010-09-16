@@ -21,39 +21,38 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
-import org.eclipse.riena.ui.swt.ModuleTitleBar;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
- * ToolTip for the modules (views). The ToolTip is only displayed if the title
- * of the module is clipped.
+ * ToolTip for {@link EmbeddedTitleBar}s. The ToolTip is only displayed if the
+ * title of the {@link EmbeddedTitleBar} is clipped.
  */
-public class ModuleToolTip extends DefaultToolTip {
+public class EmbeddedTitleBarToolTip extends DefaultToolTip {
 
-	private final EmbeddedTitleBar moduleTitleBar;
+	private final EmbeddedTitleBar embeddedTitleBar;
 
 	/**
-	 * Creates a tooltip on a {@link ModuleTitleBar}. The ToolTip is only
-	 * displayed if the title of the module is clipped.
+	 * Creates a tooltip on a {@link EmbeddedTitleBar}. The ToolTip is only
+	 * displayed if the title of the {@link EmbeddedTitleBar} is clipped.
 	 * 
 	 * @param parent
-	 *            the title bar of a module
+	 *            the {@link EmbeddedTitleBar} instance
 	 */
-	public ModuleToolTip(final EmbeddedTitleBar parent) {
+	public EmbeddedTitleBarToolTip(final EmbeddedTitleBar parent) {
 		super(parent);
-		this.moduleTitleBar = parent;
+		this.embeddedTitleBar = parent;
 		setShift(new Point(0, 0));
 	}
 
 	@Override
 	public Point getLocation(final Point tipSize, final Event event) {
-		final GC gc = new GC(moduleTitleBar);
+		final GC gc = new GC(embeddedTitleBar);
 		try {
 			final Rectangle bounds = getLnfTitlebarRenderer().computeTextBounds(gc);
-			final Point location = moduleTitleBar.toDisplay(bounds.x, 0);
+			final Point location = embeddedTitleBar.toDisplay(bounds.x, 0);
 			return location;
 		} finally {
 			gc.dispose();
@@ -82,7 +81,7 @@ public class ModuleToolTip extends DefaultToolTip {
 			label.setFont(font);
 		}
 
-		label.setText(moduleTitleBar.getTitle());
+		label.setText(embeddedTitleBar.getTitle());
 
 		return label;
 	}
@@ -93,7 +92,7 @@ public class ModuleToolTip extends DefaultToolTip {
 
 		if (should) {
 			initLookAndFeel();
-			should = moduleTitleBar.isTextClipped();
+			should = embeddedTitleBar.isTextClipped();
 		}
 
 		return should;

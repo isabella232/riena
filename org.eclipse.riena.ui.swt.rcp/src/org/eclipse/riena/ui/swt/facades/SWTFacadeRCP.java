@@ -37,7 +37,7 @@ import org.eclipse.riena.ui.swt.facades.internal.CompletionComboWithImageRCP;
 import org.eclipse.riena.ui.swt.facades.internal.DisabledPainter;
 import org.eclipse.riena.ui.swt.facades.internal.GrabCornerListenerWithTracker;
 import org.eclipse.riena.ui.swt.facades.internal.InfoFlyoutRCP;
-import org.eclipse.riena.ui.swt.facades.internal.ModuleToolTip;
+import org.eclipse.riena.ui.swt.facades.internal.EmbeddedTitleBarToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.SubModuleToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.TreeItemEraserAndPainter;
 
@@ -142,7 +142,7 @@ public final class SWTFacadeRCP extends SWTFacade {
 
 	@Override
 	public void createEmbeddedTitleBarToolTip(final EmbeddedTitleBar parent) {
-		new ModuleToolTip(parent);
+		new EmbeddedTitleBarToolTip(parent);
 	}
 
 	@Override
