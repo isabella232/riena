@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.beans.Beans;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -348,12 +349,28 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	protected void blockView(final boolean block) {
 		if (!parentComposite.isDisposed()) {
+			final Collection<? extends IRidget> ridgets = getController().getRidgets();
+			for (final IRidget ridget : ridgets) {
+				if (block) {
+					if (ridget.hasFocus()) {
+						final Object uiControl = ridget.getUIControl();
+						if (uiControl instanceof Control) {
+							saveFocus((Control) uiControl);
+						}
+					}
+				}
+			}
+
 			parentComposite.setCursor(block ? getWaitCursor() : getArrowCursor());
 			contentComposite.setEnabled(!block);
 			if (!block) {
 				contentComposite.setRedraw(false);
 				contentComposite.setRedraw(true);
+				if (canRestoreFocus()) {
+					setFocus();
+				}
 			}
+
 		}
 	}
 
@@ -632,10 +649,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			if (contentComposite.isVisible() && event.widget instanceof Control) {
 				final Control control = (Control) event.widget;
 				if (contains(contentComposite, control)) {
-					final int id = getControllerId();
-					if (id != 0) {
-						focusControlMap.put(Integer.valueOf(id), control);
-					}
+					saveFocus(control);
 				}
 			}
 		}
@@ -648,6 +662,13 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 				parent = parent.getParent();
 			}
 			return result;
+		}
+	}
+
+	private void saveFocus(final Control control) {
+		final int id = getControllerId();
+		if (id != 0) {
+			focusControlMap.put(Integer.valueOf(id), control);
 		}
 	}
 
