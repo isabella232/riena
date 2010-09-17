@@ -10,8 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.swt;
 
-import org.osgi.framework.BundleContext;
+import java.util.Hashtable;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+
+import org.eclipse.osgi.framework.console.CommandProvider;
+
+import org.eclipse.riena.internal.ui.swt.console.UIControlsStatisticConsole;
 import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
@@ -26,6 +32,8 @@ public class Activator extends AbstractRienaUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 
+	private ServiceRegistration controlsStatisticReg;
+
 	/**
 	 * @see org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
 	 */
@@ -33,6 +41,9 @@ public class Activator extends AbstractRienaUIPlugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		final UIControlsStatisticConsole statisticCommand = new UIControlsStatisticConsole();
+		controlsStatisticReg = context.registerService(CommandProvider.class.getName(), statisticCommand,
+				new Hashtable<String, String>());
 	}
 
 	/**
@@ -41,6 +52,8 @@ public class Activator extends AbstractRienaUIPlugin {
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		plugin = null;
+		controlsStatisticReg.unregister();
+		controlsStatisticReg = null;
 		super.stop(context);
 		LnfManager.dispose();
 	}

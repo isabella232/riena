@@ -112,6 +112,10 @@ public class UIControlsFactory {
 		Assert.isNotNull(SHARED_BG_COLOR, "You must define a color for LnfKeyConstants.SUB_MODULE_BACKGROUND"); //$NON-NLS-1$
 	}
 
+	private static void registerConstruction(final Object control) {
+		UIControlsCounter.getUIControlsCounterSingleton().registerConstruction(control);
+	}
+
 	/**
 	 * Creates a {@link Browser} control.
 	 * 
@@ -125,6 +129,7 @@ public class UIControlsFactory {
 	 */
 	public static Browser createBrowser(final Composite parent, final int style) {
 		final Browser result = new Browser(parent, style);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -158,6 +163,7 @@ public class UIControlsFactory {
 	 */
 	public static Button createButton(final Composite parent) {
 		final Button button = new Button(parent, SWT.PUSH);
+		registerConstruction(button);
 		return button;
 	}
 
@@ -206,6 +212,7 @@ public class UIControlsFactory {
 	 */
 	public static Button createButtonCheck(final Composite parent) {
 		final Button result = new Button(parent, SWT.CHECK);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -247,6 +254,7 @@ public class UIControlsFactory {
 	 */
 	public static Button createButtonRadio(final Composite parent) {
 		final Button result = new Button(parent, SWT.RADIO);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -289,6 +297,7 @@ public class UIControlsFactory {
 	 */
 	public static Button createButtonToggle(final Composite parent) {
 		final Button result = new Button(parent, SWT.TOGGLE);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -332,6 +341,7 @@ public class UIControlsFactory {
 	 */
 	public static DateTime createCalendar(final Composite parent) {
 		final DateTime result = new DateTime(parent, SWT.CALENDAR);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -366,6 +376,7 @@ public class UIControlsFactory {
 	 */
 	public static CCombo createCCombo(final Composite parent) {
 		final CCombo result = new CCombo(parent, SWT.BORDER | SWT.READ_ONLY);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -418,6 +429,7 @@ public class UIControlsFactory {
 	 */
 	public static CompletionCombo createCompletionCombo(final Composite parent, final int style) {
 		final CompletionCombo result = SWTFacade.getDefault().createCompletionCombo(parent, style);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -470,6 +482,7 @@ public class UIControlsFactory {
 	 */
 	public static CompletionCombo createCompletionComboWithImage(final Composite parent, final int style) {
 		final CompletionCombo result = SWTFacade.getDefault().createCompletionComboWithImage(parent, style);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -509,7 +522,9 @@ public class UIControlsFactory {
 	 */
 	public static ChoiceComposite createChoiceComposite(final Composite parent, final int style,
 			final boolean multipleSelection) {
-		return new ChoiceComposite(parent, style, multipleSelection);
+		final ChoiceComposite result = new ChoiceComposite(parent, style, multipleSelection);
+		registerConstruction(result);
+		return result;
 	}
 
 	/**
@@ -549,6 +564,7 @@ public class UIControlsFactory {
 	 */
 	public static Combo createCombo(final Composite parent) {
 		final Combo result = new Combo(parent, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -596,6 +612,7 @@ public class UIControlsFactory {
 	 */
 	public static Composite createComposite(final Composite parent, final int style) {
 		final Composite composite = new Composite(parent, style);
+		registerConstruction(composite);
 		return composite;
 	}
 
@@ -636,6 +653,7 @@ public class UIControlsFactory {
 	 */
 	public static DateTime createDate(final Composite parent, final int style) {
 		final DateTime result = new DateTime(parent, SWT.DATE | SWT.DROP_DOWN | style);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -672,6 +690,7 @@ public class UIControlsFactory {
 	 */
 	public static DatePickerComposite createDatePickerComposite(final Composite parent) {
 		final DatePickerComposite result = new DatePickerComposite(parent, SWT.SINGLE | SWT.RIGHT);
+		registerConstruction(result);
 		result.setData(KEY_TYPE, TYPE_DATE);
 		return result;
 	}
@@ -708,6 +727,7 @@ public class UIControlsFactory {
 	 */
 	public static Group createGroup(final Composite parent, final String text) {
 		final Group result = new Group(parent, SWT.NONE);
+		registerConstruction(result);
 		result.setText(text);
 		return result;
 	}
@@ -772,6 +792,7 @@ public class UIControlsFactory {
 	 */
 	public static ImageButton createImageButton(final Composite parent, final int style) {
 		final ImageButton btn = new ImageButton(parent, style);
+		registerConstruction(btn);
 		return btn;
 	}
 
@@ -805,7 +826,9 @@ public class UIControlsFactory {
 	 * @since 3.0
 	 */
 	public static InfoFlyout createInfoFlyout(final Composite parent) {
-		return SWTFacade.getDefault().createInfoFlyout(parent);
+		final InfoFlyout result = SWTFacade.getDefault().createInfoFlyout(parent);
+		registerConstruction(result);
+		return result;
 	}
 
 	/**
@@ -837,6 +860,7 @@ public class UIControlsFactory {
 	 */
 	public static Label createLabel(final Composite parent, final String text, final int style) {
 		final Label label = new Label(parent, style);
+		registerConstruction(label);
 		label.setText(text);
 		return label;
 	}
@@ -910,6 +934,7 @@ public class UIControlsFactory {
 	 */
 	public static Link createLink(final Composite parent, final int style) {
 		final Link result = new Link(parent, style);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -956,6 +981,7 @@ public class UIControlsFactory {
 			style |= SWT.V_SCROLL;
 		}
 		final List result = new List(parent, style);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -991,7 +1017,9 @@ public class UIControlsFactory {
 	 *            the parent composite; never null
 	 */
 	public static MasterDetailsComposite createMasterDetails(final Composite parent) {
-		return new MasterDetailsComposite(parent, SWT.NONE);
+		final MasterDetailsComposite result = new MasterDetailsComposite(parent, SWT.NONE);
+		registerConstruction(result);
+		return result;
 	}
 
 	/**
@@ -1008,6 +1036,7 @@ public class UIControlsFactory {
 	 */
 	public static MasterDetailsComposite createMasterDetails(final Composite parent, final String bindingId) {
 		final MasterDetailsComposite masterDetails = new MasterDetailsComposite(parent, SWT.NONE);
+		registerConstruction(masterDetails);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(masterDetails, bindingId);
 		return masterDetails;
 	}
@@ -1026,6 +1055,7 @@ public class UIControlsFactory {
 	 */
 	public static Menu createMenu(final Control parent) {
 		final Menu item = new Menu(parent);
+		registerConstruction(item);
 		return item;
 	}
 
@@ -1042,6 +1072,7 @@ public class UIControlsFactory {
 	 */
 	public static Menu createMenu(final MenuItem parent) {
 		final Menu item = new Menu(parent);
+		registerConstruction(item);
 		return item;
 	}
 
@@ -1058,6 +1089,7 @@ public class UIControlsFactory {
 	 */
 	public static MenuItem createMenuItem(final Menu parent, final String text) {
 		final MenuItem item = new MenuItem(parent, SWT.None);
+		registerConstruction(item);
 		item.setText(text);
 		return item;
 	}
@@ -1078,6 +1110,7 @@ public class UIControlsFactory {
 	 */
 	public static MenuItem createMenuItem(final Menu parent, final String text, final int style) {
 		final MenuItem item = new MenuItem(parent, style);
+		registerConstruction(item);
 		item.setText(text);
 		return item;
 	}
@@ -1100,6 +1133,7 @@ public class UIControlsFactory {
 	 */
 	public static MenuItem createMenuItem(final Menu parent, final String text, final String bindingId) {
 		final MenuItem item = new MenuItem(parent, SWT.None);
+		registerConstruction(item);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, bindingId);
 		item.setText(text);
 		return item;
@@ -1112,7 +1146,9 @@ public class UIControlsFactory {
 	 *            the parent composite; never null
 	 */
 	public static MessageBox createMessageBox(final Composite parent) {
-		return new MessageBox(parent);
+		final MessageBox result = new MessageBox(parent);
+		registerConstruction(result);
+		return result;
 	}
 
 	/**
@@ -1124,6 +1160,7 @@ public class UIControlsFactory {
 	public static Shell createShell(final Display display) {
 		Assert.isNotNull(display);
 		final Shell shell = new Shell(display);
+		registerConstruction(shell);
 		return shell;
 	}
 
@@ -1139,6 +1176,7 @@ public class UIControlsFactory {
 	 */
 	public static Table createTable(final Composite parent, final int style) {
 		final Table result = new Table(parent, style);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -1171,6 +1209,7 @@ public class UIControlsFactory {
 	 */
 	public static Text createText(final Composite parent) {
 		final Text result = new Text(parent, SWT.SINGLE | SWT.BORDER);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -1187,6 +1226,7 @@ public class UIControlsFactory {
 	 */
 	public static Text createText(final Composite parent, final int style) {
 		final Text result = new Text(parent, style | SWT.BORDER);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -1221,6 +1261,7 @@ public class UIControlsFactory {
 	 */
 	public static Text createTextDate(final Composite parent) {
 		final Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
+		registerConstruction(result);
 		result.setData(KEY_TYPE, TYPE_DATE);
 		return result;
 	}
@@ -1253,6 +1294,7 @@ public class UIControlsFactory {
 	 */
 	public static Text createTextDecimal(final Composite parent) {
 		final Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
+		registerConstruction(result);
 		result.setData(KEY_TYPE, TYPE_DECIMAL);
 		return result;
 	}
@@ -1346,6 +1388,7 @@ public class UIControlsFactory {
 			txStyle |= SWT.V_SCROLL;
 		}
 		final Text result = new Text(parent, txStyle);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -1376,6 +1419,7 @@ public class UIControlsFactory {
 	 */
 	public static Text createTextNumeric(final Composite parent) {
 		final Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
+		registerConstruction(result);
 		result.setData(KEY_TYPE, TYPE_NUMERIC);
 		return result;
 	}
@@ -1413,6 +1457,7 @@ public class UIControlsFactory {
 	 */
 	public static DateTime createTime(final Composite parent, final int style) {
 		final DateTime result = new DateTime(parent, SWT.TIME | style);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -1435,6 +1480,7 @@ public class UIControlsFactory {
 	 */
 	public static DateTime createTime(final Composite parent, final int style, final String bindingId) {
 		final DateTime result = createTime(parent, style);
+		registerConstruction(result);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
 		return result;
 	}
@@ -1451,6 +1497,7 @@ public class UIControlsFactory {
 	 */
 	public static Tree createTree(final Composite parent, final int style) {
 		final Tree result = new Tree(parent, style);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -1508,6 +1555,7 @@ public class UIControlsFactory {
 	 */
 	public static Spinner createSpinner(final Composite parent, final int style) {
 		final Spinner result = new Spinner(parent, style);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -1554,6 +1602,7 @@ public class UIControlsFactory {
 	 */
 	public static Scale createScale(final Composite parent, final int style) {
 		final Scale result = new Scale(parent, style);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -1600,6 +1649,7 @@ public class UIControlsFactory {
 	 */
 	public static ProgressBar createProgressBar(final Composite parent, final int style) {
 		final ProgressBar result = new ProgressBar(parent, style);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -1622,6 +1672,7 @@ public class UIControlsFactory {
 	 */
 	public static StatusMeterWidget createStatusMeter(final Composite parent) {
 		final StatusMeterWidget result = new StatusMeterWidget(parent);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -1677,6 +1728,7 @@ public class UIControlsFactory {
 	 */
 	public static Slider createSlider(final Composite parent, final int style) {
 		final Slider result = new Slider(parent, style);
+		registerConstruction(result);
 		return result;
 	}
 
@@ -1714,11 +1766,15 @@ public class UIControlsFactory {
 		if (Beans.isDesignTime()) {
 			// design time fallback
 			final Display display = parent.getDisplay();
-			return new Separator(parent, style, display.getSystemColor(SWT.COLOR_BLACK),
+			final Separator result = new Separator(parent, style, display.getSystemColor(SWT.COLOR_BLACK),
 					display.getSystemColor(SWT.COLOR_WHITE));
+			registerConstruction(result);
+			return result;
 		}
-		return new Separator(parent, style, LnfManager.getLnf().getColor(firstLineColor), LnfManager.getLnf().getColor(
-				secondLineColor));
+		final Separator result = new Separator(parent, style, LnfManager.getLnf().getColor(firstLineColor), LnfManager
+				.getLnf().getColor(secondLineColor));
+		registerConstruction(result);
+		return result;
 	}
 
 	/**
