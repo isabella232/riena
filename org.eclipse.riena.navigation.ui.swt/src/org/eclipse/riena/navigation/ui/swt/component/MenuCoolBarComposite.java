@@ -136,14 +136,12 @@ public class MenuCoolBarComposite extends Composite {
 	 * Returns the top-level menu entries.
 	 */
 	private IContributionItem[] getTopLevelMenuEntries() {
-		IContributionItem[] result = new IContributionItem[0];
 		if (window instanceof WorkbenchWindow) {
 			final MenuManager menuManager = ((WorkbenchWindow) window).getMenuManager();
-			result = menuManager.getItems();
+			return menuManager.getItems();
 		} else {
-			result = new IContributionItem[0];
+			return new IContributionItem[0];
 		}
-		return result;
 	}
 
 	// helping classes
