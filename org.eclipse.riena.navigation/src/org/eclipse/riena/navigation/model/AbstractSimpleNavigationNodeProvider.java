@@ -156,18 +156,9 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 				prepareNavigationAssembler(targetId, assembler, parentNode);
 				final INavigationNode<?>[] targetNodes = assembler.buildNode(targetId, argument);
 				if ((targetNodes != null) && (targetNodes.length > 0)) {
-					final NodePositioner nodePositioner = argument != null ? argument.getNodePositioner()
-							: NodePositioner.ADD_END;
-					for (final INavigationNode<?> node : targetNodes) {
-						storeNavigationArgument(node, argument);
-						nodePositioner.addChildToParent(parentNode, node);
-						if (node.getNodeId() == null && assembler.getId().equals(targetId.getTypeId())) {
-							node.setNodeId(targetId);
-						}
-					}
+					prepareNodesAfterBuild(targetNodes, argument, parentNode, assembler, targetId);
 					targetNode = targetNodes[0];
 				}
-
 			} else {
 				throw new ExtensionPointFailure("No assembler found for ID=" + targetId.getTypeId()); //$NON-NLS-1$
 			}
@@ -180,7 +171,26 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 			}
 		}
 
+		// TODO: all targetNodes have to be returned, because overriding subclass may need it.
 		return targetNode;
+	}
+
+	protected void prepareNodesAfterBuild(final INavigationNode<?>[] targetNodes, final NavigationArgument argument,
+			final INavigationNode<?> parentNode, final INavigationAssembler assembler, final NavigationNodeId targetId) {
+		final NodePositioner nodePositioner = argument != null ? argument.getNodePositioner() : NodePositioner.ADD_END;
+		for (final INavigationNode<?> node : targetNodes) {
+			prepareNodeAfterBuild(node, argument, parentNode, assembler, targetId, nodePositioner);
+		}
+	}
+
+	protected void prepareNodeAfterBuild(final INavigationNode<?> node, final NavigationArgument argument,
+			final INavigationNode<?> parentNode, final INavigationAssembler assembler, final NavigationNodeId targetId,
+			final NodePositioner nodePositioner) {
+		storeNavigationArgument(node, argument);
+		nodePositioner.addChildToParent(parentNode, node);
+		if (node.getNodeId() == null && assembler.getId().equals(targetId.getTypeId())) {
+			node.setNodeId(targetId);
+		}
 	}
 
 	/**
