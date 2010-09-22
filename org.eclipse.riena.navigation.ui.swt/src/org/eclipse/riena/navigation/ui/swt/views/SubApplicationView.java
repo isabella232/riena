@@ -518,7 +518,10 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			checkBaseStructure();
 
 			final SwtViewId id = getViewId(source);
+			final SwtViewProvider viewProvider = SwtViewProvider.getInstance();
+			viewProvider.setCurrentPrepared(source);
 			prepareView(id);
+			viewProvider.setCurrentPrepared(null);
 		}
 
 		@Override

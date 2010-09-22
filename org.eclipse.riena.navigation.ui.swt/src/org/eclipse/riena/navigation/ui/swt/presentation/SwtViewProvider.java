@@ -31,6 +31,7 @@ public class SwtViewProvider {
 	private final Map<INavigationNode<?>, SwtViewId> views;
 	private final Map<String, Integer> viewCounter;
 	private final HashMap<String, Boolean> viewShared;
+	private INavigationNode<?> currentPrepared = null;
 
 	private static final SessionSingletonProvider<SwtViewProvider> SVP = new SessionSingletonProvider<SwtViewProvider>(
 			SwtViewProvider.class);
@@ -178,11 +179,25 @@ public class SwtViewProvider {
 			}
 			if (entry.getValue().getId().equals(pId) && //
 					(secondary == null || secondary.equals(entry.getValue().getSecondary()))) {
+
 				if (ignoreSharedState || !isViewShared(pId) || entry.getKey().isActivated()) {
+
 					return entry.getKey().getTypecastedAdapter(pClass);
+				} else if (isViewShared(pId)) {
+					if (entry.getKey().getTypecastedAdapter(pClass).equals(currentPrepared)) {
+						return (N) currentPrepared;
+					}
 				}
 			}
 		}
 		return null;
+	}
+
+	public void setCurrentPrepared(final INavigationNode<?> node) {
+		this.currentPrepared = node;
+	}
+
+	public INavigationNode<?> getCurrentPrepared() {
+		return currentPrepared;
 	}
 }

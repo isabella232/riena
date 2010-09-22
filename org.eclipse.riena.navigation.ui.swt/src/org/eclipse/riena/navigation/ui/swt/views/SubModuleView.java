@@ -148,6 +148,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			}
 			binding.bind(currentController);
 			currentController.afterBind();
+
 			LNF_UPDATER.updateUIControls(getParentComposite(), true);
 		} else {
 			LNF_UPDATER.updateUIControlsAfterBind(getContentComposite());
@@ -462,7 +463,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * @return the subModule node if found
 	 */
 	protected ISubModuleNode getSubModuleNode(final String nodeId, final String secondaryId) {
-		return SwtViewProvider.getInstance().getNavigationNode(nodeId, secondaryId, ISubModuleNode.class);
+		return SwtViewProvider.getInstance().getNavigationNode(nodeId, secondaryId, ISubModuleNode.class,
+				!"shared".equals(secondaryId)); //$NON-NLS-1$
 	}
 
 	// helping methods
@@ -698,4 +700,5 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			}
 		}
 	}
+
 }

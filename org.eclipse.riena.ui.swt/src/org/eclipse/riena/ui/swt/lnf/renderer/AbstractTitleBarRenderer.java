@@ -15,6 +15,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
@@ -94,7 +95,10 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 	@Override
 	public void paint(final GC gc, final Object value) {
 
-		Assert.isNotNull(shell);
+		//		Assert.isNotNull(shell);
+		if (shell == null) {
+			shell = Display.getDefault().getActiveShell();
+		}
 
 		setActive(true);
 		setMaximized(shell.getMaximized());

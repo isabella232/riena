@@ -98,7 +98,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		updateIcon();
 		updateCloseable();
 		updateActive();
-
+		updateAllRidgetsFromModel();
 		if (getWindowRidget() != null) {
 			getWindowRidget().addWindowRidgetListener(windowListener);
 		}

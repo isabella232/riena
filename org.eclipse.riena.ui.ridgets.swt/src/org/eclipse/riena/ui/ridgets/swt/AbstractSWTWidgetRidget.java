@@ -13,6 +13,8 @@ package org.eclipse.riena.ui.ridgets.swt;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.runtime.Assert;
@@ -25,6 +27,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
@@ -45,6 +48,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements IBasicMarkableRidget {
 
+	private static final String DATA_DEFAULT_KEY = "defaultKey"; //$NON-NLS-1$
 	private Widget uiControl;
 	private String toolTip = null;
 	private ErrorMessageMarker errorMarker;
@@ -54,6 +58,8 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	private HiddenMarker hiddenMarker;
 	private AbstractMarkerSupport markerSupport;
 	private Listener visibilityListener;
+
+	private final Map<String, Object> data = new HashMap<String, Object>();
 
 	/**
 	 * Checks that the given uiControl is assignable to the the given type.
@@ -120,13 +126,52 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	public final void setUIControl(final Object uiControl) {
 		checkUIControl(uiControl);
 		uninstallListeners();
+		saveData();
 		unbindUIControl();
 		this.uiControl = (Widget) uiControl;
 		updateEnabled();
 		updateMarkers();
 		updateToolTip();
 		bindUIControl();
+		deployData();
 		installListeners();
+	}
+
+	private void deployData() {
+		if (getUIControl() == null) {
+			return;
+		}
+		for (final String key : data.keySet()) {
+			if (!key.equals(DATA_DEFAULT_KEY)) {
+				getUIControl().setData(key, data.get(key));
+			} else {
+				getUIControl().setData(data.get(key));
+			}
+		}
+
+	}
+
+	private void saveData() {
+		if (getUIControl() == null) {
+			return;
+		}
+		final Object[] data = ReflectionUtils.getHidden(getUIControl(), "data"); //$NON-NLS-1$
+		this.data.clear();
+		if (data.length > 1) {
+			int startIndex = 0;
+			if (data.length % 2 == 1) {
+				this.data.put(DATA_DEFAULT_KEY, data[0]);
+				startIndex++;
+			}
+
+			for (int i = startIndex; i < data.length - 1; i += 2) {
+				final String key = (String) data[i];
+				final Object value = data[i + 1];
+				this.data.put(key, value);
+			}
+		} else if (data.length == 1) {
+			this.data.put(DATA_DEFAULT_KEY, data[0]);
+		}
 	}
 
 	public Widget getUIControl() {

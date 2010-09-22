@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IControlDecoration;
 import org.eclipse.riena.ui.swt.BorderControlDecoration;
+import org.eclipse.riena.ui.swt.IDecorationActivationStrategy;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
@@ -63,7 +64,12 @@ public class BorderMarkerSupport extends MarkerSupport {
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		final int width = lnf.getIntegerSetting(LnfKeyConstants.ERROR_MARKER_BORDER_WIDTH, 1);
 		final Color borderColor = lnf.getColor(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR);
-		return new BorderControlDecoration(control, width, borderColor);
+		return new BorderControlDecoration(control, width, borderColor, new IDecorationActivationStrategy() {
+
+			public boolean isActive() {
+				return getRidget().getUIControl() != null;
+			}
+		});
 	}
 
 }

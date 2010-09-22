@@ -60,10 +60,19 @@ public class BorderControlDecoration implements IControlDecoration {
 	private int borderWidth = DEFAULT_BORDER_WIDTH;
 
 	private boolean visible;
+	private final IDecorationActivationStrategy activationStrategy;
 
 	private static void logWarning(final String message) {
 		final Logger logger = Log4r.getLogger(Activator.getDefault(), BorderControlDecoration.class);
 		logger.log(LogService.LOG_WARNING, message);
+	}
+
+	private static class DefaultActivationStrategy implements IDecorationActivationStrategy {
+
+		public boolean isActive() {
+			return true;
+		}
+
 	}
 
 	/**
@@ -94,8 +103,32 @@ public class BorderControlDecoration implements IControlDecoration {
 	 * 
 	 * @param control
 	 *            the control to be decorated
+	 * @param borderWidth
+	 *            the width of the border
+	 * @param borderColor
+	 *            the color of the border
+	 * 
 	 */
 	public BorderControlDecoration(final Control control, final int borderWidth, final Color borderColor) {
+		this(control, borderWidth, borderColor, new DefaultActivationStrategy());
+	}
+
+	/**
+	 * Creates a new instance of {@code ControlDecoration} for decorating the
+	 * specified control.
+	 * 
+	 * @param control
+	 *            the control to be decorated
+	 * @param borderWidth
+	 *            the width of the border
+	 * @param borderColor
+	 *            the color of the border
+	 * @param activationStrategy
+	 *            the activationStrategy of the decoration
+	 */
+	public BorderControlDecoration(final Control control, final int borderWidth, final Color borderColor,
+			final IDecorationActivationStrategy activationStrategy) {
+		this.activationStrategy = activationStrategy;
 		this.control = getBorderControl(control);
 		this.borderWidth = checkBorderWidth(borderWidth);
 		this.borderColor = borderColor;
@@ -388,6 +421,9 @@ public class BorderControlDecoration implements IControlDecoration {
 	 *         it should not.
 	 */
 	private boolean shouldShowDecoration() {
+		if (activationStrategy != null && !activationStrategy.isActive()) {
+			return false;
+		}
 		if (!visible) {
 			return false;
 		}
