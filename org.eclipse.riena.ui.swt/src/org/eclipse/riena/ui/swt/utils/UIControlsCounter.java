@@ -17,11 +17,12 @@ import java.util.Set;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.core.singleton.SessionSingletonProvider;
-import org.eclipse.riena.internal.ui.swt.console.UIControlsStatisticConsole;
 
 /**
  * Statistic Counter of {@link Control}s created by {@link UIControlsFactory}.
  * Used by {@link UIControlsStatisticConsole} to get statistics.
+ * 
+ * @since 3.0
  */
 public class UIControlsCounter {
 

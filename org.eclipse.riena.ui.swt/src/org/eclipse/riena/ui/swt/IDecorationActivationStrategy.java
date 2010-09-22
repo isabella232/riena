@@ -15,6 +15,8 @@ import org.eclipse.riena.ui.ridgets.IControlDecoration;
 /**
  * Strategy which decides if an instance of {@link IControlDecoration} is
  * active.
+ * 
+ * @since 3.0
  */
 public interface IDecorationActivationStrategy {
 
