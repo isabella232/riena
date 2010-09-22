@@ -189,6 +189,7 @@ public class TitleComposite extends Composite {
 				maximizable = maximizable && lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_RESIZEABLE, true);
 				shellRenderer.setMaximizable(maximizable);
 				shellRenderer.setMinimizable(lnf.getBooleanSetting(LnfKeyConstants.TITLELESS_SHELL_SHOW_MIN, true));
+				shellRenderer.setShell(getShell());
 				shellRenderer.paint(e.gc, shell);
 
 				// idea: set background image here !?!
