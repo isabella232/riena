@@ -239,9 +239,15 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
 		final ISubModuleNode markerSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.marker"), "Marker"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(markerSubModule, MarkerSubModuleController.class, MarkerSubModuleView.ID, false);
+		workarea.registerDefinition(markerSubModule, MarkerSubModuleController.class, MarkerSubModuleView.ID, true);
 		playgroundModule.addChild(markerSubModule);
 		markerSubModule.addMarker(new AttentionMarker());
+
+		final ISubModuleNode markerSubModule2 = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.marker2"), "Marker2"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(markerSubModule2, MarkerSubModuleController.class, MarkerSubModuleView.ID, true);
+		playgroundModule.addChild(markerSubModule2);
+		markerSubModule2.addMarker(new AttentionMarker());
 
 		final ISubModuleNode masterDetailsFolderSubModule = buildMasterDetailsNodes();
 		playgroundModule.addChild(masterDetailsFolderSubModule);
