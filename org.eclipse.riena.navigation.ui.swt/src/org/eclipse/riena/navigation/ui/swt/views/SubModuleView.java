@@ -350,13 +350,15 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	protected void blockView(final boolean block) {
 		if (!parentComposite.isDisposed()) {
-			final Collection<? extends IRidget> ridgets = getController().getRidgets();
-			for (final IRidget ridget : ridgets) {
-				if (block) {
-					if (ridget.hasFocus()) {
-						final Object uiControl = ridget.getUIControl();
-						if (uiControl instanceof Control) {
-							saveFocus((Control) uiControl);
+			if (getController() != null) {
+				final Collection<? extends IRidget> ridgets = getController().getRidgets();
+				for (final IRidget ridget : ridgets) {
+					if (block) {
+						if (ridget.hasFocus()) {
+							final Object uiControl = ridget.getUIControl();
+							if (uiControl instanceof Control) {
+								saveFocus((Control) uiControl);
+							}
 						}
 					}
 				}
