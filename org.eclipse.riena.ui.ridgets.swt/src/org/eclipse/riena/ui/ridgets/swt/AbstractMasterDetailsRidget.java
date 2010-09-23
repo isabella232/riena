@@ -59,6 +59,11 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	private IMasterDetailsDelegate delegate;
 	private DataBindingContext dbc;
 	private boolean isDirectWriting;
+	/**
+	 * True when the editable was suggested via #suggestNewEntry. Suggested
+	 * editables are always considered modified.
+	 */
+	private boolean isSuggestedEditable;
 	private boolean applyRequiresNoErrors;
 	private boolean applyRequiresNoMandatories;
 	private boolean applyTriggersNew;
@@ -267,13 +272,14 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	public void suggestNewEntry(final Object entry) {
 		ignoreChanges = true;
 		try {
-			// make editable != details: editable := new, details := suggestion
-			editable = delegate.createWorkingCopy();
-			delegate.prepareItemSelected(entry);
+			clearTableSelection();
+			editable = entry;
+			delegate.prepareItemSelected(editable);
 			setEnabled(true, true);
-			updateDetails(entry);
+			isSuggestedEditable = true;
+			updateDetails(editable);
 			ignoreChanges = true;
-			delegate.itemSelected(entry);
+			delegate.itemSelected(editable);
 		} finally {
 			ignoreChanges = false;
 		}
@@ -325,7 +331,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	protected final boolean areDetailsChanged() {
 		if (detailsEnabled) {
-			return editable != null && delegate.isChanged(editable, delegate.getWorkingCopy());
+			if (editable != null) {
+				return isSuggestedEditable || delegate.isChanged(editable, delegate.getWorkingCopy());
+			}
 		}
 		return false;
 	}
@@ -551,6 +559,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		try {
 			if (hasApplyButton()) {
 				getApplyButtonRidget().setEnabled(applyEnabled);
+			}
+			if (!applyEnabled) {
+				isSuggestedEditable = false;
 			}
 			this.detailsEnabled = detailsEnabled;
 			for (final IRidget ridget : detailRidgets.getRidgets()) {

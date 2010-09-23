@@ -263,7 +263,11 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * the details area. The apply button will enable.
 	 * 
 	 * @param entry
-	 *            a non-null object
+	 *            a non-null object. Note that when the user invokes the 'Apply'
+	 *            operation, the {@code entry} will be updated with the contents
+	 *            from the details area and then added into the master table of
+	 *            objects. For this reason you should use a <b>new</b>
+	 *            {@code entry} instance for each call to this method.
 	 * @since 2.0
 	 */
 	void suggestNewEntry(Object entry);

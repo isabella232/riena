@@ -793,14 +793,15 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(first, delegate.lastItem);
 	}
 
-	public void testSuggestNewEntryObj() {
+	public void testSuggestNewEntryWithParameter() {
 		bindToModel(true);
-		final IMasterDetailsRidget ridget = getRidget();
+		final MasterDetailsRidget ridget = getRidget();
 		final MDWidget widget = getWidget();
 
 		assertEquals("", widget.txtColumn1.getText());
 		assertEquals("", widget.txtColumn2.getText());
 		assertFalse(widget.getButtonApply().isEnabled());
+		assertFalse(areDetailsChanged(ridget));
 
 		final MDBean newEntry = new MDBean("col1", "col2");
 		ridget.suggestNewEntry(newEntry);
@@ -809,19 +810,42 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("col2", widget.txtColumn2.getText());
 		assertTrue(widget.getButtonApply().isEnabled());
 		assertFalse(input.contains(newEntry));
+		assertTrue(areDetailsChanged(ridget));
+	}
 
-		final Object editable = ReflectionUtils.getHidden(ridget, "editable");
-		assertTrue(delegate.isChanged(editable, newEntry));
+	/**
+	 * As per Bug 326020
+	 */
+	public void testSuggestNewEntryAddsSameInstance() {
+		bindToModel(true);
+		final MasterDetailsRidget ridget = getRidget();
+		final int size = input.size();
+
+		assertFalse(areDetailsChanged(ridget));
+
+		final MDBean newEntry = new MDBean("col1", "col2");
+		ridget.suggestNewEntry(newEntry);
+
+		assertTrue(areDetailsChanged(ridget));
+
+		ridget.handleApply();
+
+		assertFalse(areDetailsChanged(ridget));
+
+		assertEquals(size + 1, input.size());
+		final int last = input.size() - 1;
+		assertSame(newEntry, input.get(last));
 	}
 
 	public void testSuggestNewEntry() {
 		bindToModel(true);
-		final IMasterDetailsRidget ridget = getRidget();
+		final MasterDetailsRidget ridget = getRidget();
 		final MDWidget widget = getWidget();
 
 		assertFalse(widget.txtColumn1.isEnabled());
 		assertFalse(widget.txtColumn2.isEnabled());
 		assertFalse(widget.getButtonApply().isEnabled());
+		assertFalse(areDetailsChanged(ridget));
 
 		ridget.suggestNewEntry();
 
@@ -830,6 +854,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.txtColumn2.isEnabled());
 		assertTrue(widget.getButtonApply().isEnabled());
+		assertTrue(areDetailsChanged(ridget));
 	}
 
 	public void testUpdateApplyButton() {
@@ -1213,6 +1238,11 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 	// helping methods
 	//////////////////
+
+	private boolean areDetailsChanged(final MasterDetailsRidget ridget) {
+		final Boolean result = ReflectionUtils.invokeHidden(ridget, "areDetailsChanged", (Object[]) null);
+		return result.booleanValue();
+	}
 
 	private void assertContent(final Table table, final int items) {
 		for (int i = 0; i < items; i++) {
