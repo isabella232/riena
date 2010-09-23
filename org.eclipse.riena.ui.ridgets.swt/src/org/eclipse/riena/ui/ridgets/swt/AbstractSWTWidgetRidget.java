@@ -432,6 +432,8 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * 
 	 * Note: this is designed to be delegated to {@link AbstractMarkerSupport}
 	 * and may vary depending on the concrete implementation.
+	 * 
+	 * @since 3.0
 	 */
 	protected synchronized final void flash() {
 		if (getUIControl() != null) {
@@ -526,6 +528,9 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void updateMarkers() {
 		if (markerSupport != null) {
 			markerSupport.updateMarkers();
