@@ -57,7 +57,6 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * @since 3.0
 	 */
 	public Object createMasterEntry() {
-		System.out.println("## create Master Entry !!");
 		return createWorkingCopy();
 	}
 

@@ -54,6 +54,16 @@ public interface IMasterDetailsDelegate {
 	void configureRidgets(IRidgetContainer container);
 
 	/**
+	 * TODO [ev] docs
+	 * 
+	 * @return
+	 * @since 3.0
+	 */
+	Object createMasterEntry();
+
+	/**
+	 * TODO [ev] docs
+	 * 
 	 * Creates a 'working copy'. The object represents the model driving the
 	 * details area.
 	 * <p>
@@ -70,6 +80,8 @@ public interface IMasterDetailsDelegate {
 	Object createWorkingCopy();
 
 	/**
+	 * TODO [ev] docs
+	 * 
 	 * Copies the content of the source object into the target object.
 	 * Implementors only need to copy attributes that can be modified in the
 	 * details area.
@@ -83,6 +95,16 @@ public interface IMasterDetailsDelegate {
 	 * @return the target object; never null.
 	 */
 	Object copyBean(Object source, Object target);
+
+	/**
+	 * TODO [ev] docs
+	 */
+	Object copyMasterEntry(Object masterEntry, Object workingCopy);
+
+	/**
+	 * TODO [ev] docs
+	 */
+	Object copyWorkingCopy(Object workingCopy, Object masterEntry);
 
 	/**
 	 * Returns the 'working copy' object. This object represents the model
