@@ -11,6 +11,7 @@
 package org.eclipse.riena.core.util;
 
 import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.packageadmin.ExportedPackage;
 import org.osgi.service.packageadmin.PackageAdmin;
 
@@ -63,6 +64,9 @@ public final class RAPDetector {
 	 * @return the rwt bundle or {@code null} if RAP is not available
 	 */
 	private static Bundle findRWTBundle() {
+		if (FrameworkUtil.getBundle(RAPDetector.class) == null) {
+			return null;
+		}
 		final PackageAdmin packageAdmin = Service.get(PackageAdmin.class);
 		if (packageAdmin != null) {
 			final ExportedPackage rwtPackage = packageAdmin.getExportedPackage(RWT_PACKAGE_NAME);
