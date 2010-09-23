@@ -112,7 +112,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 			}
 		}
 		if (isZipClientRequest()) {
-			connection.addRequestProperty("Content-Encoding", "gzip"); //$NON-NLS-1$//$NON-NLS-2$
+			connection.addRequestProperty("Content-Encoding", "x-hessian-gzip"); //$NON-NLS-1$//$NON-NLS-2$
 		}
 
 		CONNECTIONS.set((HttpURLConnection) connection);

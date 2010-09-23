@@ -124,7 +124,7 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 		}
 
 		final String gzip = httpReq.getHeader("Content-Encoding"); //$NON-NLS-1$
-		final boolean gzipFlag = "gzip".equals(gzip); //$NON-NLS-1$
+		final boolean gzipFlag = "x-hessian-gzip".equals(gzip); //$NON-NLS-1$
 		boolean inputWasGZIP = false;
 
 		InputStream requestInputStream = httpReq.getInputStream();
@@ -151,7 +151,7 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 		inp.read(); // read/skip the minor version - not used currently
 
 		if (inputWasGZIP) {
-			httpRes.setHeader("Content-Encoding", "gzip"); //$NON-NLS-1$//$NON-NLS-2$
+			httpRes.setHeader("Content-Encoding", "x-hessian-gzip"); //$NON-NLS-1$//$NON-NLS-2$
 		}
 
 		OutputStream outputStream = httpRes.getOutputStream();
