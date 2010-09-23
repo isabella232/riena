@@ -506,6 +506,23 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 		assertEquals(rowObservables.size(), ridget.getOptionCount());
 	}
 
+	public void testChildRidgetsHaveController() {
+		final ICompositeTableRidget ridget = getRidget();
+		final CompositeTable control = getWidget();
+		ridget.updateFromModel();
+
+		assertTrue(ridget.getOptionCount() > 0);
+
+		final Control aRow = control.getRowControls()[0];
+		final IRowRidget rowRidget = (IRowRidget) aRow.getData("rowRidget");
+
+		final ITextRidget txtFirst = rowRidget.getRidget(ITextRidget.class, "first");
+		assertEquals(rowRidget, txtFirst.getController());
+
+		final ITextRidget txtLast = (ITextRidget) rowRidget.getRidget("last");
+		assertEquals(rowRidget, txtLast.getController());
+	}
+
 	public void testAddSelectionListener() {
 		final ICompositeTableRidget ridget = getRidget();
 
@@ -748,7 +765,6 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 			txtLast.bindToModel(rowData, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
 		}
-
 	}
 
 	/**

@@ -575,6 +575,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 				if (bindingProperty != null) {
 					final IRidget ridget = createRidget(control);
 					ridget.setUIControl(control);
+					ridget.setController(rowRidget);
 					rowRidget.addRidget(bindingProperty, ridget);
 				} else {
 					final String message = String.format(
