@@ -34,6 +34,34 @@ package org.eclipse.riena.ui.ridgets;
 public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDelegate {
 
 	/**
+	 * TODO [ev] javadoc
+	 * 
+	 * @since 3.0
+	 */
+	public Object copyMasterEntry(final Object masterEntry, final Object workingCopy) {
+		return copyBean(masterEntry, workingCopy);
+	}
+
+	/**
+	 * TODO [ev] javadoc
+	 * 
+	 * @since 3.0
+	 */
+	public Object copyWorkingCopy(final Object workingCopy, final Object masterEntry) {
+		return copyBean(workingCopy, masterEntry);
+	}
+
+	/**
+	 * TODO [ev] javadoc
+	 * 
+	 * @since 3.0
+	 */
+	public Object createMasterEntry() {
+		System.out.println("## create Master Entry !!");
+		return createWorkingCopy();
+	}
+
+	/**
 	 * {@inheritDoc}
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
@@ -68,15 +96,6 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
 	 */
-	public void itemCreated(final Object newItem) {
-		// empty
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Default implementation for this method. Subclasses may override.
-	 */
 	public void itemApplied(final Object changedItem) {
 		// empty
 	}
@@ -86,7 +105,25 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
 	 */
+	public void itemCreated(final Object newItem) {
+		// empty
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Default implementation for this method. Subclasses may override.
+	 */
 	public void itemRemoved(final Object oldItem) {
+		// empty
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Default implementation for this method. Subclasses may override.
+	 */
+	public void itemSelected(final Object newSelection) {
 		// empty
 	}
 
@@ -107,15 +144,6 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * Default implementation for this method. Subclasses may override.
 	 */
 	public void prepareItemSelected(final Object newSelection) {
-		// empty
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * <p>
-	 * Default implementation for this method. Subclasses may override.
-	 */
-	public void itemSelected(final Object newSelection) {
 		// empty
 	}
 

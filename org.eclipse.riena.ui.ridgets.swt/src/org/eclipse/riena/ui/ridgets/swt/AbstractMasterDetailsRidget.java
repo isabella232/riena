@@ -71,6 +71,12 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	private boolean ignoreChanges;
 
 	/*
+	 * A blank model entry for clearing the details area. Will be initialized
+	 * lazily.
+	 */
+	private Object blankEntry;
+
+	/*
 	 * The object we are currently editing; null if not editing
 	 */
 	private Object editable;
@@ -265,7 +271,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	public void suggestNewEntry() {
-		final Object entry = delegate.createWorkingCopy();
+		final Object entry = delegate.createMasterEntry();
 		suggestNewEntry(entry);
 	}
 
@@ -456,8 +462,15 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	private void clearSelection() {
-		updateDetails(delegate.createWorkingCopy());
+		updateDetails(getBlankEntry());
 		editable = null;
+	}
+
+	private Object getBlankEntry() {
+		if (blankEntry == null) {
+			blankEntry = delegate.createMasterEntry();
+		}
+		return blankEntry;
 	}
 
 	private Control getDetailsControl() {
@@ -609,11 +622,11 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		System.out.println(String.format("prop: %s %s", evt.getPropertyName(), className)); //$NON-NLS-1$
 	}
 
-	private void updateDetails(final Object bean) {
-		Assert.isNotNull(bean);
+	private void updateDetails(final Object masterEntry) {
+		Assert.isNotNull(masterEntry);
 		ignoreChanges = true;
 		try {
-			delegate.copyBean(bean, delegate.getWorkingCopy());
+			delegate.copyMasterEntry(masterEntry, delegate.getWorkingCopy());
 			delegate.updateDetails(detailRidgets);
 		} finally {
 			ignoreChanges = false;
@@ -626,7 +639,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	public void handleAdd() {
 		if (!isDirectWriting) {
 			// create the editable and update the details
-			editable = delegate.createWorkingCopy();
+			editable = delegate.createMasterEntry();
 			delegate.itemCreated(editable);
 			setEnabled(false, true);
 			updateDetails(editable);
@@ -634,7 +647,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			getUIControl().getDetails().setFocus();
 		} else {
 			// create the editable, add it to the table, update the details
-			editable = delegate.createWorkingCopy();
+			editable = delegate.createMasterEntry();
 			delegate.itemCreated(editable);
 			rowObservables.add(editable);
 			getTableRidget().updateFromModel();
@@ -667,7 +680,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		assertIsBoundToModel();
 		Assert.isNotNull(editable);
 		delegate.prepareItemApplied(editable);
-		delegate.copyBean(delegate.getWorkingCopy(), editable);
+		delegate.copyWorkingCopy(delegate.getWorkingCopy(), editable);
 		if (!rowObservables.contains(editable)) { // add to table
 			rowObservables.add(editable);
 			getTableRidget().updateFromModel();
@@ -750,7 +763,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			if (canApplyDirectly()) {
 				delegate.prepareItemApplied(editable);
 				// this is only reached when direct writing is on and one of 'interesting' events happens
-				delegate.copyBean(delegate.getWorkingCopy(), editable);
+				delegate.copyWorkingCopy(delegate.getWorkingCopy(), editable);
 				delegate.itemApplied(editable);
 				getTableRidget().updateFromModel();
 				// we are already editing, so we want to invoke getTR().setSelection(editable) instead

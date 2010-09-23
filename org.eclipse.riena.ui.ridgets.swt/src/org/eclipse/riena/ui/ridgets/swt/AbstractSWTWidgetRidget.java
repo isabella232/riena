@@ -156,6 +156,9 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 			return;
 		}
 		final Object[] data = ReflectionUtils.getHidden(getUIControl(), "data"); //$NON-NLS-1$
+		if (data == null) {
+			return;
+		}
 		this.data.clear();
 		if (data.length > 1) {
 			int startIndex = 0;
