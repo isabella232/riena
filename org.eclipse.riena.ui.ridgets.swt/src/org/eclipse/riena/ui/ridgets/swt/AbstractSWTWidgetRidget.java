@@ -62,6 +62,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	private boolean widgetIsKeyedData;
 	private static final Field WIDGET_DATA_FIELD;
 	private static final Field WIDGET_STATE_FIELD;
+	// this is a copy of the Widget.KEYED_DATA flag (not accessible)
 	static final int KEYED_DATA = 1 << 2;
 	static {
 		WIDGET_DATA_FIELD = getWidgetField("data"); //$NON-NLS-1$
@@ -182,6 +183,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		try {
 			WIDGET_DATA_FIELD.set(getUIControl(), widgetData);
 			final int currentState = (Integer) WIDGET_STATE_FIELD.get(getUIControl());
+			// restore only the KEYED_DATA bit inside the state 'flag' field
 			final int newState = widgetIsKeyedData ? currentState | KEYED_DATA : currentState & ~KEYED_DATA;
 			WIDGET_STATE_FIELD.set(getUIControl(), newState);
 		} catch (final Exception e) {
