@@ -11,10 +11,9 @@
 package org.eclipse.riena.ui.ridgets.swt;
 
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.runtime.Assert;
@@ -27,7 +26,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
@@ -48,7 +47,6 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements IBasicMarkableRidget {
 
-	private static final String DATA_DEFAULT_KEY = "defaultKey"; //$NON-NLS-1$
 	private Widget uiControl;
 	private String toolTip = null;
 	private ErrorMessageMarker errorMarker;
@@ -59,7 +57,26 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	private AbstractMarkerSupport markerSupport;
 	private Listener visibilityListener;
 
-	private final Map<String, Object> data = new HashMap<String, Object>();
+	private boolean widgetDataHasBeenSaved;
+	private Object widgetData;
+	private boolean widgetIsKeyedData;
+	private static final Field WIDGET_DATA_FIELD;
+	private static final Field WIDGET_STATE_FIELD;
+	static final int KEYED_DATA = 1 << 2;
+	static {
+		WIDGET_DATA_FIELD = getWidgetField("data"); //$NON-NLS-1$
+		WIDGET_STATE_FIELD = getWidgetField("state"); //$NON-NLS-1$
+	}
+
+	private static Field getWidgetField(final String fieldName) {
+		try {
+			final Field field = Widget.class.getDeclaredField(fieldName);
+			field.setAccessible(true);
+			return field;
+		} catch (final Exception e) {
+			throw new ReflectionFailure("Could not access field " + fieldName + " in Widget class.", e); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
 
 	/**
 	 * Checks that the given uiControl is assignable to the the given type.
@@ -133,48 +150,44 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		updateMarkers();
 		updateToolTip();
 		bindUIControl();
-		deployData();
+		restoreData();
 		installListeners();
 	}
 
-	private void deployData() {
+	private void saveData() {
+		widgetDataHasBeenSaved = false;
 		if (getUIControl() == null) {
 			return;
 		}
-		for (final String key : data.keySet()) {
-			if (!key.equals(DATA_DEFAULT_KEY)) {
-				getUIControl().setData(key, data.get(key));
+		try {
+			final Object data = WIDGET_DATA_FIELD.get(getUIControl());
+			widgetIsKeyedData = ((Integer) WIDGET_STATE_FIELD.get(getUIControl()) & KEYED_DATA) != 0;
+			if (widgetIsKeyedData && data != null) {
+				final int length = ((Object[]) data).length;
+				widgetData = new Object[length];
+				System.arraycopy(data, 0, widgetData, 0, length);
 			} else {
-				getUIControl().setData(data.get(key));
+				widgetData = data;
 			}
+			widgetDataHasBeenSaved = true;
+		} catch (final Exception e) {
+			throw new ReflectionFailure("Could not access data/state fields in Widget class.", e); //$NON-NLS-1$
 		}
-
 	}
 
-	private void saveData() {
-		if (getUIControl() == null) {
+	private void restoreData() {
+		if (getUIControl() == null || !widgetDataHasBeenSaved) {
 			return;
 		}
-		final Object[] data = ReflectionUtils.getHidden(getUIControl(), "data"); //$NON-NLS-1$
-		if (data == null) {
-			return;
+		try {
+			WIDGET_DATA_FIELD.set(getUIControl(), widgetData);
+			final int currentState = (Integer) WIDGET_STATE_FIELD.get(getUIControl());
+			final int newState = widgetIsKeyedData ? currentState | KEYED_DATA : currentState & ~KEYED_DATA;
+			WIDGET_STATE_FIELD.set(getUIControl(), newState);
+		} catch (final Exception e) {
+			throw new ReflectionFailure("Could not access data/state fields in Widget class.", e); //$NON-NLS-1$
 		}
-		this.data.clear();
-		if (data.length > 1) {
-			int startIndex = 0;
-			if (data.length % 2 == 1) {
-				this.data.put(DATA_DEFAULT_KEY, data[0]);
-				startIndex++;
-			}
 
-			for (int i = startIndex; i < data.length - 1; i += 2) {
-				final String key = (String) data[i];
-				final Object value = data[i + 1];
-				this.data.put(key, value);
-			}
-		} else if (data.length == 1) {
-			this.data.put(DATA_DEFAULT_KEY, data[0]);
-		}
 	}
 
 	public Widget getUIControl() {
