@@ -102,6 +102,7 @@ public interface IRidget {
 	 * Returns the IController for this ridget.
 	 * 
 	 * @return an IController instance; never null.
+	 * @since 3.0
 	 */
 	IRidgetContainer getController();
 
@@ -220,6 +221,7 @@ public interface IRidget {
 	 * 
 	 * @param controller
 	 *            a {@link IRidgetContainer} instance.
+	 * @since 3.0
 	 */
 	void setController(IRidgetContainer controller);
 

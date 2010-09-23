@@ -125,6 +125,7 @@ public class BorderControlDecoration implements IControlDecoration {
 	 *            the color of the border
 	 * @param activationStrategy
 	 *            the activationStrategy of the decoration
+	 * @since 3.0
 	 */
 	public BorderControlDecoration(final Control control, final int borderWidth, final Color borderColor,
 			final IDecorationActivationStrategy activationStrategy) {

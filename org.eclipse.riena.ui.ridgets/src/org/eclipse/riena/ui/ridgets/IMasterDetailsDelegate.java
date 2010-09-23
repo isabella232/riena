@@ -98,11 +98,15 @@ public interface IMasterDetailsDelegate {
 
 	/**
 	 * TODO [ev] docs
+	 * 
+	 * @since 3.0
 	 */
 	Object copyMasterEntry(Object masterEntry, Object workingCopy);
 
 	/**
 	 * TODO [ev] docs
+	 * 
+	 * @since 3.0
 	 */
 	Object copyWorkingCopy(Object workingCopy, Object masterEntry);
 

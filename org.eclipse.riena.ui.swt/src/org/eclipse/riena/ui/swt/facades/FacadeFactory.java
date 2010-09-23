@@ -17,6 +17,8 @@ import org.eclipse.swt.SWT;
  * Returns an RCP or RAP specific instance of a given type.
  * <p>
  * This class is not API. Do not invoke.
+ * 
+ * @since 3.0
  */
 public final class FacadeFactory {
 

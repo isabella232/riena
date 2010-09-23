@@ -47,6 +47,8 @@ public abstract class SWTFacade {
 	/**
 	 * Draw constant indicating whether the string drawing operation should
 	 * handle mnemonics (value is 1&lt;&lt;3).
+	 * 
+	 * @since 3.0
 	 */
 	public static final int DRAW_MNEMONIC = 1 << 3;
 
@@ -277,6 +279,7 @@ public abstract class SWTFacade {
 	 * @param listener
 	 *            an Object that implements the MouseMoveListener interface, or
 	 *            null
+	 * @since 3.0
 	 */
 	public abstract void addMouseMoveListener(Control control, MouseMoveListener listener);
 

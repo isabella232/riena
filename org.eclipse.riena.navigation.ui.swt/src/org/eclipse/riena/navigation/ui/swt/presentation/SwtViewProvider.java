@@ -76,6 +76,9 @@ public class SwtViewProvider {
 		views.remove(node);
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void replaceNavigationNodeId(final INavigationNode<?> node, final NavigationNodeId newId) {
 		final SwtViewId swtViewId = views.get(node);
 		if (swtViewId != null) {
@@ -193,10 +196,16 @@ public class SwtViewProvider {
 		return null;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void setCurrentPrepared(final INavigationNode<?> node) {
 		this.currentPrepared = node;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public INavigationNode<?> getCurrentPrepared() {
 		return currentPrepared;
 	}

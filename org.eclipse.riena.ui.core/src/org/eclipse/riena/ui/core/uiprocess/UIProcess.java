@@ -36,8 +36,8 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * Creates a new UIProcess.
 	 * <p>
-	 * For executing processes the {@code UIProcess) uses the
-	 * {@code UISynchronizer} to create {@code IUISynchronizer} instances which
+	 * For executing processes the {@code UIProcess) uses the {
+	 * @code UISynchronizer} to create {@code IUISynchronizer} instances which
 	 * perform the actual execution of the process.
 	 * 
 	 * @param name
@@ -56,8 +56,8 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * Creates a new UIProcess.
 	 * <p>
-	 * For executing processes the {@code UIProcess) uses the
-	 * {@code UISynchronizer} to create {@code IUISynchronizer} instances which
+	 * For executing processes the {@code UIProcess) uses the {
+	 * @code UISynchronizer} to create {@code IUISynchronizer} instances which
 	 * perform the actual execution of the process.
 	 * 
 	 * @param name
@@ -80,8 +80,8 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * Creates a new UIProcess.
 	 * <p>
-	 * For executing processes the {@code UIProcess) uses the
-	 * {@code UISynchronizer} to create {@code IUISynchronizer} instances which
+	 * For executing processes the {@code UIProcess) uses the {
+	 * @code UISynchronizer} to create {@code IUISynchronizer} instances which
 	 * perform the actual execution of the process.
 	 * 
 	 * @param name
@@ -106,8 +106,8 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * Creates a new UIProcess.
 	 * <p>
-	 * For executing processes the {@code UIProcess) uses the
-	 * {@code UISynchronizer} to create {@code IUISynchronizer} instances which
+	 * For executing processes the {@code UIProcess) uses the {
+	 * @code UISynchronizer} to create {@code IUISynchronizer} instances which
 	 * perform the actual execution of the process.
 	 * 
 	 * @param name
@@ -136,8 +136,8 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * Creates a new UIProcess.
 	 * <p>
-	 * For executing processes the {@code UIProcess) uses the
-	 * {@code UISynchronizer} to create {@code IUISynchronizer} instances which
+	 * For executing processes the {@code UIProcess) uses the {
+	 * @code UISynchronizer} to create {@code IUISynchronizer} instances which
 	 * perform the actual execution of the process.
 	 * 
 	 * @param name
@@ -169,8 +169,8 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * Creates a new UIProcess.
 	 * <p>
-	 * For executing processes the {@code UIProcess) uses the
-	 * {@code UISynchronizer} to create {@code IUISynchronizer} instances which
+	 * For executing processes the {@code UIProcess) uses the {
+	 * @code UISynchronizer} to create {@code IUISynchronizer} instances which
 	 * perform the actual execution of the process.
 	 * 
 	 * @param job
@@ -366,6 +366,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * Sets the enabled state of the cancel button of the uiprocess window
 	 * 
 	 * @param enabled
+	 * @since 3.0
 	 */
 	public void setCancelEnabled(final boolean enabled) {
 		getProcessInfo().setCancelEnabled(enabled);
@@ -375,6 +376,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * Sets the visible state of the cancel button of the uiprocess window
 	 * 
 	 * @param visible
+	 * @since 3.0
 	 */
 	public void setCancelVisible(final boolean visible) {
 		getProcessInfo().setCancelVisible(visible);

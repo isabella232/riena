@@ -83,6 +83,9 @@ public abstract class AbstractRidget implements IRidget {
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public IRidgetContainer getController() {
 		return controller;
 	}
@@ -124,6 +127,9 @@ public abstract class AbstractRidget implements IRidget {
 	public final void setBlocked(final boolean blocked) {
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void setController(final IRidgetContainer controller) {
 		Assert.isNotNull(controller);
 		this.controller = controller;

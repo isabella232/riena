@@ -626,11 +626,15 @@ public final class LnfKeyConstants {
 
 	/**
 	 * Tree open icon for trees in the workarea
+	 * 
+	 * @since 3.0
 	 */
 	public static final String WORKAREA_TREE_FOLDER_OPEN_ICON = "workareaTreeFolderOpen.icon"; //$NON-NLS-1$
 
 	/**
 	 * Tree closed icon for trees in the workarea
+	 * 
+	 * @since 3.0
 	 */
 	public static final String WORKAREA_TREE_FOLDER_CLOSED_ICON = "workareaTreeFolderClosed.icon"; //$NON-NLS-1$
 	/**

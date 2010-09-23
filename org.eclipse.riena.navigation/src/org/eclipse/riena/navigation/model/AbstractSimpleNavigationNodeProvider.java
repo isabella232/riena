@@ -175,6 +175,9 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 		return targetNode;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void prepareNodesAfterBuild(final INavigationNode<?>[] targetNodes, final NavigationArgument argument,
 			final INavigationNode<?> parentNode, final INavigationAssembler assembler, final NavigationNodeId targetId) {
 		final NodePositioner nodePositioner = argument != null ? argument.getNodePositioner() : NodePositioner.ADD_END;
@@ -183,6 +186,9 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void prepareNodeAfterBuild(final INavigationNode<?> node, final NavigationArgument argument,
 			final INavigationNode<?> parentNode, final INavigationAssembler assembler, final NavigationNodeId targetId,
 			final NodePositioner nodePositioner) {
