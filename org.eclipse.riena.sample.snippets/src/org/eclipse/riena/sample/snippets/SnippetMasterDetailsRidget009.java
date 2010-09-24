@@ -34,7 +34,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * A master details ridget using two separate types &ndash; {@code Person} for
- * the master table and the type {@code SimplePerson} for the details ara. area.
+ * the master table and the type {@code SimplePerson} for the details area.
  */
 public final class SnippetMasterDetailsRidget009 {
 
