@@ -12,10 +12,11 @@ package org.eclipse.riena.internal.communication.core.registry;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
@@ -72,7 +73,7 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 			final IRemoteServiceRegistration foundRemoteServiceReg = registeredServices.get(url);
 			if (foundRemoteServiceReg == null) {
 				// it is a new entry, set properties
-				final Properties props = new Properties();
+				final Dictionary<String, Object> props = new Hashtable<String, Object>();
 				props.put("service.url", url); //$NON-NLS-1$
 				props.put("service.protocol", reference.getDescription().getProtocol()); //$NON-NLS-1$
 				final ServiceRegistration serviceRegistration = context.registerService(
@@ -90,7 +91,7 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 						}
 					}, "(service.id=" + serviceRegistration.getReference().getProperty("service.id") + ")"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 				} catch (final InvalidSyntaxException e) {
-					// to nothing......
+					// do nothing......
 					e.printStackTrace();
 				}
 				reference.setContext(context);

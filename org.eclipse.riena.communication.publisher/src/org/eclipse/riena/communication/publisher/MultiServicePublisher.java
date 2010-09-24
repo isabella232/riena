@@ -32,7 +32,6 @@ import org.eclipse.riena.internal.communication.publisher.Activator;
 public class MultiServicePublisher {
 
 	private String filter;
-	private BundleContext context;
 	private String protocol;
 
 	private IServicePublishBinder binder;
@@ -61,10 +60,9 @@ public class MultiServicePublisher {
 
 	public void andStart(final BundleContext context) {
 		Assert.isNotNull(filter);
-		this.context = context;
 
 		try {
-			final ServiceReference[] refs = this.context.getServiceReferences(null, filter);
+			final ServiceReference[] refs = context.getServiceReferences((String) null, filter);
 			if (refs != null) {
 				for (final ServiceReference ref : refs) {
 					publish(ref);
