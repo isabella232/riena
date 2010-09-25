@@ -15,12 +15,13 @@ package org.eclipse.riena.ui.ridgets;
  * details area by:
  * <ul>
  * <li>configuring the ridgets for the details area</li>
- * <li>creating the model driving the details area</li>
- * <li>updating the details area from a model value</li>
- * <li>updating a model value from the details area</li>
+ * <li>creating object instances for the master table</li>
+ * <li>creating object instances for the details area</li>
+ * <li>updating the details area from a value from the master table</li>
+ * <li>updating a value in the master table from the details area</li>
  * <li>deciding if data in the details area has been changed</li>
  * <li>deciding if data in the details area is valid</li>
- * <li>optionally &ndash; participating at lifecycle events, such as selection,
+ * <li>optionally &ndash; participating at life-cycle events, such as selection,
  * creation, apply and removal</li>
  * </ul>
  * <p>
@@ -54,22 +55,32 @@ public interface IMasterDetailsDelegate {
 	void configureRidgets(IRidgetContainer container);
 
 	/**
-	 * TODO [ev] docs
+	 * Create a 'master entry' instance. The object represents the model driving
+	 * the master area (i.e. a row entry in the table).
+	 * <p>
+	 * The 'master entry' is always an instance of the '{@code rowClass'}
+	 * specified in the {@code bindToModel(...)} method of the corresponding
+	 * {@link IMasterDetailsRidget}. Note that the copyXXX() methods in this
+	 * interface must be able to work with the type returned by this method.
 	 * 
-	 * @return
+	 * @return an Object; never null.
+	 * @see IMasterDetailsRidget#bindToModel(org.eclipse.core.databinding.observable.list.IObservableList,
+	 *      Class, String[], String[])
+	 * @see IMasterDetailsRidget#bindToModel(Object, String, Class, String[],
+	 *      String[])
 	 * @since 3.0
 	 */
 	Object createMasterEntry();
 
 	/**
-	 * TODO [ev] docs
-	 * 
-	 * Creates a 'working copy'. The object represents the model driving the
-	 * details area.
+	 * Creates a 'working copy' instance. The object represents the model
+	 * driving the details area.
 	 * <p>
-	 * The 'working copy' is always an instance of the 'rowClass' specified in
-	 * the {@code bindToModel(...) } method of the corresponding
-	 * {@link IMasterDetailsRidget}.
+	 * The 'working copy' any type but is typically an instance of the
+	 * 'rowClass' specified in the {@code bindToModel(...) } method of the
+	 * corresponding {@link IMasterDetailsRidget}. Note that the copyXXX()
+	 * methods in this interface must be able to work with the type returned by
+	 * this method.
 	 * 
 	 * @return an Object; never null.
 	 * @see IMasterDetailsRidget#bindToModel(org.eclipse.core.databinding.observable.list.IObservableList,
@@ -80,32 +91,86 @@ public interface IMasterDetailsDelegate {
 	Object createWorkingCopy();
 
 	/**
-	 * TODO [ev] docs
-	 * 
 	 * Copies the content of the source object into the target object.
 	 * Implementors only need to copy attributes that can be modified in the
 	 * details area.
+	 * <p>
+	 * Notes:
+	 * <ul>
+	 * <li>if the same type is returned by {@link #createMasterEntry()} and
+	 * {@link #createWorkingCopy()}: implement {@link #copyBean(Object, Object)}
+	 * and ignore the other copy-methods</li>
+	 * <li>if different types are returned by {@link #createMasterEntry()} and
+	 * {@link #createWorkingCopy()}: implement
+	 * {@link #copyMasterEntry(Object, Object)} and
+	 * {@link #copyWorkingCopy(Object, Object)} and ignore
+	 * {@link #copyBean(Object, Object)}</li>
+	 * </ul>
 	 * 
 	 * @param source
-	 *            The source object. If null, a new instance, obtained from
-	 *            {@link #createWorkingCopy()}, will be used as the source.
+	 *            The source object; never null
 	 * @param target
-	 *            The target object. If null, a new instance, obtained from
-	 *            {@link #createWorkingCopy()}, will be used as the target.
+	 *            The target object; never null
 	 * @return the target object; never null.
 	 */
 	Object copyBean(Object source, Object target);
 
 	/**
-	 * TODO [ev] docs
+	 * Copies the content of a 'master entry' into a 'working copy'.
+	 * <p>
+	 * The 'master entry' is an instance of the '{@code rowClass'} specified in
+	 * {@code bindToModel(...)} method of the corresponding
+	 * {@link IMasterDetailsRidget}. The 'working copy' is the type used to
+	 * store the content of the details area.
+	 * <p>
+	 * Notes:
+	 * <ul>
+	 * <li>if the same type is returned by {@link #createMasterEntry()} and
+	 * {@link #createWorkingCopy()}: implement {@link #copyBean(Object, Object)}
+	 * and ignore the other copy-methods</li>
+	 * <li>if different types are returned by {@link #createMasterEntry()} and
+	 * {@link #createWorkingCopy()}: implement
+	 * {@link #copyMasterEntry(Object, Object)} and
+	 * {@link #copyWorkingCopy(Object, Object)} and ignore
+	 * {@link #copyBean(Object, Object)}</li>
+	 * </ul>
 	 * 
+	 * @param masterEntry
+	 *            a source object of the type created by
+	 *            {@link #createMasterEntry()}; never null.
+	 * @param workingCopy
+	 *            a target object of the type created by
+	 *            {@link #createWorkingCopy()}; never null.
 	 * @since 3.0
 	 */
 	Object copyMasterEntry(Object masterEntry, Object workingCopy);
 
 	/**
-	 * TODO [ev] docs
+	 * Copies the content of a 'working copy' into a 'master entry'.
+	 * <p>
+	 * The 'master entry' is an instance of the '{@code rowClass'} specified in
+	 * {@code bindToModel(...)} method of the corresponding
+	 * {@link IMasterDetailsRidget}. The 'working copy' is the type used to
+	 * store the content of the details area.
+	 * <p>
+	 * Notes:
+	 * <ul>
+	 * <li>if the same type is returned by {@link #createMasterEntry()} and
+	 * {@link #createWorkingCopy()}: implement {@link #copyBean(Object, Object)}
+	 * and ignore the other copy-methods</li>
+	 * <li>if different types are returned by {@link #createMasterEntry()} and
+	 * {@link #createWorkingCopy()}: implement
+	 * {@link #copyMasterEntry(Object, Object)} and
+	 * {@link #copyWorkingCopy(Object, Object)} and ignore
+	 * {@link #copyBean(Object, Object)}</li>
+	 * </ul>
 	 * 
+	 * @param workingCopy
+	 *            a source object of the type created by
+	 *            {@link #createWorkingCopy()}; never null.
+	 * @param masterEntry
+	 *            a target object of the type created by
+	 *            {@link #createMasterEntry()}; never null.
 	 * @since 3.0
 	 */
 	Object copyWorkingCopy(Object workingCopy, Object masterEntry);
@@ -113,10 +178,6 @@ public interface IMasterDetailsDelegate {
 	/**
 	 * Returns the 'working copy' object. This object represents the model
 	 * driving the details area.
-	 * <p>
-	 * The 'working copy' is always an instance of the 'rowClass' specified in
-	 * the {@code bindToModel(...) } method of the corresponding
-	 * {@link IMasterDetailsRidget}.
 	 * <p>
 	 * It is recommended that the instance returned by this method stays the
 	 * same over the lifetime of the delegate (i.e. always return the same

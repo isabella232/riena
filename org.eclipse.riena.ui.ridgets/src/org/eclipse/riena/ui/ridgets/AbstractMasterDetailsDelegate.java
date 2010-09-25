@@ -34,7 +34,12 @@ package org.eclipse.riena.ui.ridgets;
 public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDelegate {
 
 	/**
-	 * TODO [ev] javadoc
+	 * {@inheritDoc}
+	 * <p>
+	 * The default implementation for this method uses
+	 * {@link #copyBean(Object, Object)}. Subclasses should override this method
+	 * and {@link #copyWorkingCopy(Object, Object)}, if they need to use
+	 * separate types in the master table and the details area.
 	 * 
 	 * @since 3.0
 	 */
@@ -43,7 +48,12 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	}
 
 	/**
-	 * TODO [ev] javadoc
+	 * {@inheritDoc}
+	 * <p>
+	 * The default implementation for this method uses
+	 * {@link #copyBean(Object, Object)}. Subclasses should override this method
+	 * and {@link #copyMasterEntry(Object, Object)}, if they need to use
+	 * separate types in the master table and the details area.
 	 * 
 	 * @since 3.0
 	 */
@@ -52,7 +62,11 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	}
 
 	/**
-	 * TODO [ev] javadoc
+	 * {@inheritDoc}
+	 * <p>
+	 * The default implementation uses {@link #createWorkingCopy()}. Subclasses
+	 * may override this method, if they need to use separate types in the
+	 * master table and the details area.
 	 * 
 	 * @since 3.0
 	 */

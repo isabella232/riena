@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
@@ -20,7 +21,23 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 
 /**
- * TODO [ev] docs
+ * Forwards events from the source control to the target control. Listeners on
+ * the target control will receive events from the source control, as if the
+ * events had occurred on the target.
+ * <p>
+ * This class helps custom widgets handle events from child-widgets in a manner
+ * that does not expose implementation details.
+ * <p>
+ * A custom widget that is implemented as a subclass of Composite (for example
+ * ChoiceComposite or DatePickerComposite) containing other child-widgets (such
+ * as Text or Button widgets), may use an instance of this class to forward
+ * events from the child-widgets to the main-widget. Events occurring on the
+ * child-widgets will be refired on the main-widget. This allows client code to
+ * register listeners with the main-widget (which is exposed) without having to
+ * add listeners to the child-widgets (which may be considered internal and thus
+ * might not be exposed).
+ * 
+ * @since 3.0
  */
 class EventForwarder implements Listener {
 
@@ -29,7 +46,19 @@ class EventForwarder implements Listener {
 	private final Control source;
 	private final Control target;
 
+	/**
+	 * Creates a class that automatically forwards events from the source
+	 * control to the target control.
+	 * <p>
+	 * Attachment and detachment of the forwarder is handled automatically.
+	 * 
+	 * @param source
+	 *            the source Control; never null
+	 * @param target
+	 *            the target Control; never null
+	 */
 	EventForwarder(final Control source, final Control target) {
+		Assert.isNotNull(target);
 		final int[] eventTypes = { SWT.FocusIn, SWT.FocusOut, SWT.MenuDetect, SWT.DragDetect, SWT.MouseDoubleClick,
 				SWTFacade.MouseMove, SWTFacade.MouseEnter, SWTFacade.MouseExit, SWTFacade.MouseHover,
 				SWTFacade.MouseWheel, SWT.MouseDown, SWT.Traverse, };
@@ -75,6 +104,9 @@ class EventForwarder implements Listener {
 		}
 	}
 
+	// helping methods
+	//////////////////
+
 	private Event createEvent(final Event event) {
 		final Event result = new Event();
 		result.display = event.display;
@@ -95,9 +127,6 @@ class EventForwarder implements Listener {
 		result.data = event.data;
 		return result;
 	}
-
-	// helping methods
-	//////////////////
 
 	private Display getDisplay() {
 		return source.getDisplay();
