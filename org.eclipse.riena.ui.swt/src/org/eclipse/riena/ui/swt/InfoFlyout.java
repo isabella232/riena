@@ -16,8 +16,9 @@ import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Widget class for a message the turns up on top of the SubModuleView. No user
- * interaction is possible and it closes after a few seconds. <br>
+ * This widget implements a message that pops-up on top of the SubModuleView. No
+ * user interaction is possible and it closes after a few seconds.
+ * <p>
  * It is possible to set a message and an icon.
  * 
  * @since 2.0

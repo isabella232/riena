@@ -41,7 +41,9 @@ import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * TODO [ev] docs
+ * Platform specific {@link InfoFlyout} for RCP.
+ * 
+ * @see InfoFlyout
  */
 public class InfoFlyoutRCP extends InfoFlyout {
 

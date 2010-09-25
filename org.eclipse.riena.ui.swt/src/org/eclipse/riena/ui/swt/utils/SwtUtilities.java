@@ -211,8 +211,19 @@ public final class SwtUtilities {
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Returns true if the given {@code styleBit} is turned on, on the given
+	 * {@code widget} instance. Returns false otherwise.
+	 * <p>
+	 * Example:
 	 * 
+	 * <pre>
+	 * SwtUtilities.hasStyle(button, SWT.CHECK);
+	 * </pre>
+	 * 
+	 * @param widget
+	 *            a Widget instance; may be null.
+	 * @param styleBit
+	 *            an SWT style bit value
 	 * @since 3.0
 	 */
 	public static boolean hasStyle(final Widget widget, final int styleBit) {
@@ -248,13 +259,11 @@ public final class SwtUtilities {
 	 * of the given color.
 	 * 
 	 * @param color
-	 *            the color to make brighter.
+	 *            the color to make brighter; never null
 	 * @param f
 	 *            the factor.
 	 * @return a new <code>Color</code> object that is a brighter version of
 	 *         this given color.
-	 * 
-	 * @pre color != null;
 	 */
 	public static Color makeBrighter(final Color color, final float f) {
 
