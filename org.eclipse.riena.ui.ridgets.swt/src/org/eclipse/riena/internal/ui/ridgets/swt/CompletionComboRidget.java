@@ -22,6 +22,7 @@ import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.CompletionCombo;
+import org.eclipse.riena.ui.swt.IFlashDelegate;
 
 /**
  * Ridget for {@link CompletionCombo} widgets.
@@ -32,6 +33,21 @@ public class CompletionComboRidget extends AbstractComboRidget {
 		public void modifyText(final ModifyEvent e) {
 			setText(getUIControlText());
 		}
+	};
+
+	private final IFlashDelegate flashDelegate = new IFlashDelegate() {
+		public void flash() {
+			CompletionComboRidget.this.flash();
+		}
+	};
+
+	@Override
+	protected void bindUIControl() {
+		CompletionCombo control = getUIControl();
+		if (control != null) {
+			control.setFlashDelegate(flashDelegate);
+		}
+		super.bindUIControl();
 	};
 
 	@Override

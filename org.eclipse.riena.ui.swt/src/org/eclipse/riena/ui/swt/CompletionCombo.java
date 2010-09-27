@@ -89,6 +89,7 @@ public abstract class CompletionCombo extends Composite {
 	private Shell _shell;
 	private boolean autoCompletion;
 	private AutoCompletionMode autoCompletionMode;
+	private IFlashDelegate flashDelegate;
 
 	/**
 	 * This enumeration is used to configure the the way the autocompletion
@@ -1543,6 +1544,10 @@ public abstract class CompletionCombo extends Composite {
 		arrow.setEnabled(isEnabled() && editable);
 	}
 
+	public void setFlashDelegate(final IFlashDelegate delegate) {
+		this.flashDelegate = delegate;
+	}
+
 	@Override
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
@@ -2132,9 +2137,15 @@ public abstract class CompletionCombo extends Composite {
 			}
 
 			final boolean matched = matchPrefixWithList(newPrefix);
-			if (!matched && isAllowMissmatch()) { // TODO [ev] ridget sel
-				clearImage();
-				event.doit = true;
+			if (!matched) {
+				if (isAllowMissmatch()) { // TODO [ev] ridget sel
+					clearImage();
+					event.doit = true;
+				} else {
+					if (flashDelegate != null) {
+						flashDelegate.flash();
+					}
+				}
 			}
 		}
 	}
