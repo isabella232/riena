@@ -11,6 +11,7 @@
 package org.eclipse.riena.navigation;
 
 import org.eclipse.riena.core.singleton.SessionSingletonProvider;
+import org.eclipse.riena.core.singleton.SingletonProvider;
 
 /**
  * This class holds the ApplicationNode(s) of a Riena application in a static
@@ -19,7 +20,7 @@ import org.eclipse.riena.core.singleton.SessionSingletonProvider;
  */
 public final class ApplicationNodeManager {
 
-	private static final SessionSingletonProvider<ApplicationNodeManagerInternal> ANMI = new SessionSingletonProvider<ApplicationNodeManagerInternal>(
+	private static final SingletonProvider<ApplicationNodeManagerInternal> ANMI = new SessionSingletonProvider<ApplicationNodeManagerInternal>(
 			ApplicationNodeManagerInternal.class);
 
 	private ApplicationNodeManager() {

@@ -17,6 +17,8 @@ import java.util.Set;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.core.singleton.SessionSingletonProvider;
+import org.eclipse.riena.core.singleton.SingletonProvider;
+import org.eclipse.riena.internal.ui.swt.console.UIControlsStatisticConsole;
 
 /**
  * Statistic Counter of {@link Control}s created by {@link UIControlsFactory}.
@@ -30,7 +32,7 @@ public class UIControlsCounter {
 	private static final String HEADER = " Control Usage Statistics "; //$NON-NLS-1$
 	private static final int NOS = 10;
 
-	private static final SessionSingletonProvider<UIControlsCounter> UICC = new SessionSingletonProvider<UIControlsCounter>(
+	private static final SingletonProvider<UIControlsCounter> UICC = new SessionSingletonProvider<UIControlsCounter>(
 			UIControlsCounter.class);
 
 	private final Map<Class<?>, Integer> counter = new HashMap<Class<?>, Integer>();

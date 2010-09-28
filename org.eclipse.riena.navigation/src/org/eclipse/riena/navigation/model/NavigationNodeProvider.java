@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.singleton.SessionSingletonProvider;
+import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
 
@@ -22,7 +23,7 @@ import org.eclipse.riena.navigation.INavigationNodeProvider;
  */
 public final class NavigationNodeProvider {
 
-	private static final SessionSingletonProvider<NavigationNodeProvider> NNP = new SessionSingletonProvider<NavigationNodeProvider>(
+	private static final SingletonProvider<NavigationNodeProvider> NNP = new SessionSingletonProvider<NavigationNodeProvider>(
 			NavigationNodeProvider.class);
 
 	private INavigationNodeProvider provider;
