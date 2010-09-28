@@ -22,7 +22,7 @@ import org.eclipse.riena.navigation.model.NavigationProcessor;
  * 
  * @since 3.0
  */
-public final class ApplicationNodeManagerInternal {
+final class ApplicationNodeManagerInternal {
 
 	private Map<String, IApplicationNode> nodeMap = new HashMap<String, IApplicationNode>();
 	private INavigationProcessor defaultNavigationProcessor;
