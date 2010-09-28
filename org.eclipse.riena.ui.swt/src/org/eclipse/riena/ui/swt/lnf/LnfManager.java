@@ -10,17 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
-import org.osgi.framework.Bundle;
-
-import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.Platform;
-
-import org.eclipse.riena.core.exception.Failure;
-import org.eclipse.riena.core.wire.Wire;
-import org.eclipse.riena.internal.core.ignore.IgnoreCheckStyle;
-import org.eclipse.riena.internal.ui.swt.Activator;
+import org.eclipse.riena.core.singleton.SessionSingletonProvider;
+import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
-import org.eclipse.riena.ui.swt.utils.BundleUtil;
 
 /**
  * The {@code LnfManager} manages the current look and feel of the riena
@@ -59,8 +51,8 @@ public final class LnfManager {
 	 */
 	public static final String RIENA_LNF_SYSTEM_PROPERTY = "riena.lnf"; //$NON-NLS-1$
 
-	private static RienaDefaultLnf defaultLnf = new RienaDefaultLnf();
-	private static volatile RienaDefaultLnf currentLnf;
+	private final static SingletonProvider<LnfManagerInternal> LMI = new SessionSingletonProvider<LnfManagerInternal>(
+			LnfManagerInternal.class);
 
 	private LnfManager() {
 		// cannot instantiated, because all methods are static
@@ -74,9 +66,7 @@ public final class LnfManager {
 	 * @since 1.2
 	 */
 	public static void setDefaultLnf(final RienaDefaultLnf defaultLnf) {
-		Assert.isNotNull(defaultLnf, "defaultLnf must not be null."); //$NON-NLS-1$
-		LnfManager.defaultLnf = defaultLnf;
-		setLnf((RienaDefaultLnf) null);
+		LMI.getInstance().setDefaultLnf(defaultLnf);
 	}
 
 	/**
@@ -92,7 +82,7 @@ public final class LnfManager {
 	 *            look and feel
 	 */
 	public static void setLnf(final String currentLnfClassName) {
-		setLnf(createLnf(currentLnfClassName));
+		LMI.getInstance().setLnf(currentLnfClassName);
 	}
 
 	/**
@@ -109,19 +99,7 @@ public final class LnfManager {
 	 *            new look and feel to install.
 	 */
 	public static synchronized void setLnf(final RienaDefaultLnf currentLnf) {
-		if (LnfManager.currentLnf == currentLnf) {
-			return;
-		}
-		if (LnfManager.currentLnf != null) {
-			LnfManager.currentLnf.uninitialize();
-		}
-		LnfManager.currentLnf = currentLnf;
-		if (LnfManager.currentLnf != null) {
-			if (Activator.getDefault() != null) {
-				Wire.instance(LnfManager.currentLnf).andStart(Activator.getDefault().getContext());
-			}
-			LnfManager.currentLnf.initialize();
-		}
+		LMI.getInstance().setLnf(currentLnf);
 	}
 
 	/**
@@ -130,21 +108,8 @@ public final class LnfManager {
 	 * 
 	 * @return current look and feel
 	 */
-	@IgnoreCheckStyle("http://www.angelikalanger.com/Articles/EffectiveJava/41.JMM-DoubleCheck/41.JMM-DoubleCheck.html")
 	public static RienaDefaultLnf getLnf() {
-		if (currentLnf == null) {
-			synchronized (LnfManager.class) {
-				if (currentLnf == null) {
-					final String className = System.getProperty(RIENA_LNF_SYSTEM_PROPERTY);
-					if (className != null) {
-						setLnf(className);
-					} else {
-						setLnf(defaultLnf);
-					}
-				}
-			}
-		}
-		return currentLnf;
+		return LMI.getInstance().getLnf();
 	}
 
 	/**
@@ -156,86 +121,14 @@ public final class LnfManager {
 	 */
 	@Deprecated
 	public static String getLnfClassName() {
-		return getLnf().getClass().getName();
+		return LMI.getInstance().getLnfClassName();
 	}
 
 	/**
 	 * Disposes (uninitializes) the current look and feel.
 	 */
 	public static void dispose() {
-		if (currentLnf != null) {
-			currentLnf.uninitialize();
-			currentLnf = null;
-		}
+		LMI.getInstance().dispose();
 	}
 
-	private static final String BUNDLE_CLASS_NAME_SEPARATOR = ":"; //$NON-NLS-1$
-
-	private static RienaDefaultLnf createLnf(final String lnfClassName) {
-		if (lnfClassName == null) {
-			return null;
-		}
-		Class<?> lnfClass = null;
-		if (lnfClassName.contains(BUNDLE_CLASS_NAME_SEPARATOR)) {
-			final String[] parts = lnfClassName.split(BUNDLE_CLASS_NAME_SEPARATOR);
-			final String bundleSymbolicName = parts[0];
-			final String className = parts[1];
-			final Bundle bundle = Platform.getBundle(bundleSymbolicName);
-			if (!BundleUtil.isReady(bundle)) {
-				throw new LnfManagerFailure(
-						"can't load LnfClass '" + className + "' from bundle " + bundleSymbolicName + " because bundle is not ready."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			}
-			try {
-				lnfClass = bundle.loadClass(className);
-			} catch (final ClassNotFoundException e) {
-				throw new LnfManagerFailure(
-						"can't load LnfClass '" + className + "' from bundle " + bundleSymbolicName + ".", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			}
-		} else {
-			lnfClass = loadClass(lnfClassName);
-		}
-		try {
-			return (RienaDefaultLnf) lnfClass.newInstance();
-		} catch (final Exception e) {
-			throw new LnfManagerFailure("can't create instance for LnfClass '" + lnfClass.getName() + ".", e); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-	}
-
-	private static Class<?> loadClass(final String className) {
-		try {
-			return LnfManager.class.getClassLoader().loadClass(className);
-		} catch (final ClassNotFoundException e) {
-			throw new LnfManagerFailure("Can't load LnfClass '" + className //$NON-NLS-1$
-					+ "'. Please use the class format specified in the LnfManager or change your bundle dependencies.", //$NON-NLS-1$
-					e);
-		}
-		//
-		// This code has been ´removed´ because it is likely the cause for sporadic errors - which is not good!
-		// 
-		//		try {
-		//			return Thread.currentThread().getContextClassLoader().loadClass(className);
-		//		} catch (Exception e) {
-		//			Nop.reason("try next"); //$NON-NLS-1$
-		//		}
-		//
-		//		throw new LnfManagerFailure("can't load LnfClass '" + className + "."); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@SuppressWarnings("serial")
-	private static class LnfManagerFailure extends Failure {
-
-		/**
-		 * @param msg
-		 */
-		public LnfManagerFailure(final String msg) {
-			super(msg);
-		}
-
-		/**
-		 * @param msg
-		 */
-		public LnfManagerFailure(final String msg, final Throwable thrown) {
-			super(msg, thrown);
-		}
-	};
 }
