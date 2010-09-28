@@ -27,6 +27,11 @@ import org.eclipse.riena.core.util.StringUtils;
  */
 public final class RienaLocations {
 
+	/**
+	 * @deprecated {@code RienaLocations} does no longer postfix the location
+	 *             with "riena"!
+	 */
+	@Deprecated
 	public static final String RIENA_NAME = "riena"; //$NON-NLS-1$
 
 	private final static Logger LOGGER = Log4r.getLogger(RienaLocations.class);
@@ -46,17 +51,29 @@ public final class RienaLocations {
 	 * @return the area on the file system where data files shall be written to.
 	 */
 	public static File getDataArea() {
-		File dataArea;
-
 		final Location instanceAreaLocation = Platform.getInstanceLocation();
 		if (instanceAreaLocation != null && instanceAreaLocation.getURL() != null) {
 			LOGGER.log(LogService.LOG_DEBUG, "Platform Instance Location: " + instanceAreaLocation.getURL().toString()); //$NON-NLS-1$
-			dataArea = new File(instanceAreaLocation.getURL().getFile(), RIENA_NAME);
+			return existingOrNewDirectory(new File(instanceAreaLocation.getURL().getFile()));
 		} else {
 			throw new RuntimeException("No instance area could be found! Only set " //$NON-NLS-1$
 					+ "osgi.instance.area to @noDefault if you specify one explicitly!"); //$NON-NLS-1$
 		}
-		return existingOrNewDirectory(dataArea);
+	}
+
+	/**
+	 * Return the data area for the specified bundle.<br>
+	 * <b>Note:</b> This version creates a special folder within the Eclipse
+	 * install location.
+	 * 
+	 * @param bundle
+	 * @return
+	 */
+	public static File getDataArea(final Bundle bundle) {
+		Assert.isLegal(bundle != null, "bundle must not be null."); //$NON-NLS-1$
+		final String symbolicName = bundle.getSymbolicName();
+		Assert.isLegal(StringUtils.isGiven(symbolicName), "no symbolic name for bundle."); //$NON-NLS-1$
+		return existingOrNewDirectory(new File(getDataArea(), symbolicName));
 	}
 
 	private static File existingOrNewDirectory(File location) {
@@ -101,19 +118,4 @@ public final class RienaLocations {
 		}
 	}
 
-	/**
-	 * Return the data area for the specified bundle.<br>
-	 * <b>Note:</b> This version creates a special folder within the Eclipse
-	 * install location.
-	 * 
-	 * @param bundle
-	 * @return
-	 */
-	public static File getDataArea(final Bundle bundle) {
-		Assert.isLegal(bundle != null, "bundle must not be null."); //$NON-NLS-1$
-		final String symbolicName = bundle.getSymbolicName();
-		Assert.isLegal(StringUtils.isGiven(symbolicName), "no symbolic name for bundle."); //$NON-NLS-1$
-		final File dataArea = new File(getDataArea(), symbolicName);
-		return existingOrNewDirectory(dataArea);
-	}
 }
