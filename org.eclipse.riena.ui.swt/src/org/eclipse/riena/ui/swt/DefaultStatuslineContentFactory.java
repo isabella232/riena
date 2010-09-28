@@ -16,6 +16,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.core.util.RAPDetector;
 import org.eclipse.riena.core.util.ReflectionUtils;
 
 /**
@@ -35,40 +36,46 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 	public void createContent(final Statusline statusline) {
 		statusline.setLayout(new FormLayout());
 
-		final StatuslineTime time = new StatuslineTime(statusline, SWT.NONE);
-		FormData formData = new FormData();
-		formData.top = new FormAttachment(0, 0);
-		formData.bottom = new FormAttachment(100, 0);
-		formData.right = new FormAttachment(100, 0);
-		time.setLayoutData(formData);
-		Control lastControl = time;
+		FormData formData = null;
+		Control lastControl = null;
+		Control spacerControl = null;
 
-		Control spacerControl = createSpacer(statusline);
-		if (spacerControl != null) {
+		if (!RAPDetector.isRAPavailable()) {
+			final StatuslineTime time = new StatuslineTime(statusline, SWT.NONE);
+			formData = new FormData();
+			formData.top = new FormAttachment(0, 0);
+			formData.bottom = new FormAttachment(100, 0);
+			formData.right = new FormAttachment(100, 0);
+			time.setLayoutData(formData);
+			lastControl = time;
+
+			spacerControl = createSpacer(statusline);
+			if (spacerControl != null) {
+				formData = new FormData();
+				formData.top = new FormAttachment(0, 0);
+				formData.bottom = new FormAttachment(100, 0);
+				formData.right = new FormAttachment(lastControl, 0);
+				spacerControl.setLayoutData(formData);
+				lastControl = spacerControl;
+			}
+
+			final StatuslineDate date = new StatuslineDate(statusline, SWT.NONE);
 			formData = new FormData();
 			formData.top = new FormAttachment(0, 0);
 			formData.bottom = new FormAttachment(100, 0);
 			formData.right = new FormAttachment(lastControl, 0);
-			spacerControl.setLayoutData(formData);
-			lastControl = spacerControl;
-		}
+			date.setLayoutData(formData);
+			lastControl = date;
 
-		final StatuslineDate date = new StatuslineDate(statusline, SWT.NONE);
-		formData = new FormData();
-		formData.top = new FormAttachment(0, 0);
-		formData.bottom = new FormAttachment(100, 0);
-		formData.right = new FormAttachment(lastControl, 0);
-		date.setLayoutData(formData);
-		lastControl = date;
-
-		spacerControl = createSpacer(statusline);
-		if (spacerControl != null) {
-			formData = new FormData();
-			formData.top = new FormAttachment(0, 0);
-			formData.bottom = new FormAttachment(100, 0);
-			formData.right = new FormAttachment(lastControl, 0);
-			spacerControl.setLayoutData(formData);
-			lastControl = spacerControl;
+			spacerControl = createSpacer(statusline);
+			if (spacerControl != null) {
+				formData = new FormData();
+				formData.top = new FormAttachment(0, 0);
+				formData.bottom = new FormAttachment(100, 0);
+				formData.right = new FormAttachment(lastControl, 0);
+				spacerControl.setLayoutData(formData);
+				lastControl = spacerControl;
+			}
 		}
 
 		final StatuslineNumber number = createStatuslineNumber(statusline);
@@ -77,7 +84,11 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 		formData1 = new FormData();
 		formData1.top = new FormAttachment(0, 0);
 		formData1.bottom = new FormAttachment(100, 0);
-		formData1.right = new FormAttachment(lastControl, 0);
+		if (RAPDetector.isRAPavailable()) {
+			formData1.right = new FormAttachment(100, 0);
+		} else {
+			formData1.right = new FormAttachment(lastControl, 0);
+		}
 		number.setLayoutData(formData1);
 
 		lastControl = number;

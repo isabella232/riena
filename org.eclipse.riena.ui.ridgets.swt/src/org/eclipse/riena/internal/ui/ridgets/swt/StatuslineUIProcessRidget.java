@@ -56,6 +56,8 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 	private IVisualContextManager contextLocator;
 
+	Display display = Display.getCurrent();
+
 	public StatuslineUIProcessRidget() {
 		Wire.instance(processManager).andStart(Activator.getDefault().getContext());
 		buildTrigger();
@@ -351,14 +353,14 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	 * updates the user interface taking care of thread serialization
 	 */
 	private void updateUserInterface() {
-		if (Display.getDefault().getThread().equals(Thread.currentThread())) {
+		if (display.getThread().equals(Thread.currentThread())) {
 			// update on the current thread = user interface thread
 			updateBaseAndList();
 			return;
 		}
 
 		// we are not on the user interface thread
-		Display.getDefault().asyncExec(new Runnable() {
+		display.asyncExec(new Runnable() {
 
 			public void run() {
 				updateBaseAndList();

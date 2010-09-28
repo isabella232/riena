@@ -15,7 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.core.runtime.jobs.ProgressProvider;
 
 import org.eclipse.riena.core.singleton.SingletonProvider;
@@ -34,6 +36,7 @@ public class ProgressProviderBridge extends ProgressProvider {
 
 	public ProgressProviderBridge() {
 		jobUiProcess = Collections.synchronizedMap(new HashMap<Job, UIProcess>());
+		Job.getJobManager().addJobChangeListener(new JobObserver());
 	}
 
 	public static ProgressProviderBridge instance() {
@@ -75,5 +78,19 @@ public class ProgressProviderBridge extends ProgressProvider {
 
 	public void unregisterMapping(final Job job) {
 		jobUiProcess.remove(job);
+	}
+
+	private final class JobObserver extends JobChangeAdapter {
+
+		@Override
+		public void scheduled(final IJobChangeEvent event) {
+			registerMapping(event.getJob(), createDefaultUIProcess(event.getJob()));
+		}
+
+		@Override
+		public void done(final IJobChangeEvent event) {
+			unregisterMapping(event.getJob());
+		}
+
 	}
 }

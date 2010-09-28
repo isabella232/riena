@@ -37,6 +37,12 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	private static List<Runnable> asyncJobs = Collections.synchronizedList(new ArrayList<Runnable>());
 	private static Thread displayObserver;
 	private static AtomicBoolean workbenchShutdown = new AtomicBoolean(false);
+	private final Display display;
+
+	public SwtUISynchronizer() {
+		// we try to remember the display. This is a hack for Riena on RAP.
+		this.display = Display.getCurrent();
+	}
 
 	/**
 	 * @see IUISynchronizer#syncExec(Runnable)
@@ -102,9 +108,10 @@ public class SwtUISynchronizer implements IUISynchronizer {
 
 			// TODO [ev] I think there are two problems with this code:
 			//   (a) getDisplay().isDisposed() will NPE when getDisplay() == null
-			//   (b) if the display is disposed, we won't get another one. What happens with 
+			//   (b) if the display is disposed, we won't get another one. What happens with
 			//       the things that need to run?
-			while (PlatformUI.isWorkbenchRunning() && getDisplay() == null || getDisplay().isDisposed()) {
+			while (PlatformUI.isWorkbenchRunning() && getDisplay() == null
+					|| (getDisplay() != null && getDisplay().isDisposed())) {
 				try {
 					Thread.sleep(50);
 				} catch (final InterruptedException e) {
@@ -120,6 +127,10 @@ public class SwtUISynchronizer implements IUISynchronizer {
 					final SwtUISynchronizer.FutureSyncLatch futureSyncLatch = syncIter.next();
 					futureSyncLatch.countDown();
 					syncIter.remove();
+				}
+
+				if (getDisplay() == null) {
+					return;
 				}
 
 				// execute jobs (asyncExec)
@@ -184,10 +195,11 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	}
 
 	public Display getDisplay() {
-		if (hasDisplay()) {
-			return PlatformUI.getWorkbench().getDisplay();
+		if (display != null) {
+			return display;
 		}
-		return null;
+
+		return PlatformUI.getWorkbench().getDisplay();
 	}
 
 	private Logger getLogger() {
@@ -195,7 +207,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	}
 
 	protected boolean hasDisplay() {
-		return PlatformUI.isWorkbenchRunning() && PlatformUI.getWorkbench().getDisplay() != null;
+		return display != null || PlatformUI.isWorkbenchRunning() && PlatformUI.getWorkbench().getDisplay() != null;
 	}
 
 	/**
