@@ -175,6 +175,7 @@ public class SwtViewProvider {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public <N extends INavigationNode<?>> N getNavigationNode(final String pId, final String secondary,
 			final Class<N> pClass, final boolean ignoreSharedState) {
 		for (final Entry<INavigationNode<?>, SwtViewId> entry : views.entrySet()) {
