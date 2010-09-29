@@ -29,7 +29,7 @@ import org.eclipse.core.variables.IDynamicVariableResolver;
  * The usage is as follows:
  * 
  * <pre>
- * ${fn:<funtionName>[ , argument ]* }
+ * ${fn:&lt;funtionName&gt;[ , argument ]* }
  * </pre>
  * 
  * For example - it is possible to write nested calls such as:
