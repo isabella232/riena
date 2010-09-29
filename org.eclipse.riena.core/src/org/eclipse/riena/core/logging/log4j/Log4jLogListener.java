@@ -63,7 +63,7 @@ import org.eclipse.riena.internal.core.logging.log4j.ILog4jLogListenerConfigurat
  * possible to pass a ´log4j.xml´ as a resource to configure Log4j, e.g.
  * 
  * <pre>
- * &lt;extension point=&quot;org.eclipse.riena.core.logging.listeners&quot;&gt;
+ * &lt;extension point=&quot;org.eclipse.riena.core.logListeners&quot;&gt;
  *     &lt;logListener name=&quot;Log4j&quot; listener-class=&quot;org.eclipse.riena.core.logging.log4j.Log4jLogListener:/log4j.xml&quot; sync=&quot;true&quot;/&gt;
  * &lt;/extension&gt;
  * </pre>
