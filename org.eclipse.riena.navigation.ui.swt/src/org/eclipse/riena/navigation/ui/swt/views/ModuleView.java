@@ -762,9 +762,9 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		}
 
 		@Override
-		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
+		public void nodeIdChange(final IModuleNode source, final NavigationNodeId oldId, final NavigationNodeId newId) {
 			if (source.equals(getNavigationNode())) {
-				SwtViewProvider.getInstance().replaceNavigationNodeId(source, newId);
+				SwtViewProvider.getInstance().replaceNavigationNodeId(source, oldId, newId);
 			}
 		}
 	}

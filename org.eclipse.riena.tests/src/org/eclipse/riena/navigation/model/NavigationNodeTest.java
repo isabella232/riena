@@ -369,6 +369,27 @@ public class NavigationNodeTest extends RienaTestCase {
 	}
 
 	/**
+	 * Test setNodeId().
+	 * 
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+	public void testSetNodeId() throws InstantiationException, IllegalAccessException {
+
+		final NavigationNodeId id = new NavigationNodeId("4711", "0815");
+		final NaviNode node = new NaviNode(id);
+		node.reset();
+		assertFalse(node.isNodeIdChangeCalled());
+		assertEquals(id, node.getNodeId());
+
+		final NavigationNodeId newId = new NavigationNodeId("1174", "5180");
+		node.setNodeId(newId);
+
+		assertTrue(node.isNodeIdChangeCalled());
+		assertEquals(newId, node.getNodeId());
+	}
+
+	/**
 	 * Tests the method {@code addNode}.
 	 * 
 	 * @throws IllegalAccessException
@@ -766,6 +787,7 @@ public class NavigationNodeTest extends RienaTestCase {
 		private boolean filterAddedCalled;
 		private boolean parentChangedCalled;
 		private boolean parentChangedCalledAfterChildAddedCalled;
+		private boolean nodeIdChangeCalled;
 
 		public NaviNode(final NavigationNodeId nodeId) {
 			super(nodeId);
@@ -781,6 +803,7 @@ public class NavigationNodeTest extends RienaTestCase {
 			filterAddedCalled = false;
 			parentChangedCalled = false;
 			parentChangedCalledAfterChildAddedCalled = false;
+			nodeIdChangeCalled = false;
 		}
 
 		public void activated(final INavigationNode<?> source) {
@@ -905,8 +928,13 @@ public class NavigationNodeTest extends RienaTestCase {
 			return parentChangedCalledAfterChildAddedCalled;
 		}
 
-		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
-			// TODO: ruv234
+		public boolean isNodeIdChangeCalled() {
+			return nodeIdChangeCalled;
+		}
+
+		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId oldId,
+				final NavigationNodeId newId) {
+			nodeIdChangeCalled = true;
 		}
 	}
 }

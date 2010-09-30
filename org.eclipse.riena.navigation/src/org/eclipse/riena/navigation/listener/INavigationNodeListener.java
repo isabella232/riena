@@ -240,5 +240,5 @@ public interface INavigationNodeListener<S extends INavigationNode<C>, C extends
 	 *            the new node id
 	 * @since 3.0
 	 */
-	void nodeIdChange(INavigationNode<?> source, NavigationNodeId newId);
+	void nodeIdChange(S source, NavigationNodeId oldId, NavigationNodeId newId);
 }

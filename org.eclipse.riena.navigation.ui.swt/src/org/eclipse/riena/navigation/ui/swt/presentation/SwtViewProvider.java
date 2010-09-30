@@ -80,10 +80,11 @@ public class SwtViewProvider {
 	/**
 	 * @since 3.0
 	 */
-	public void replaceNavigationNodeId(final INavigationNode<?> node, final NavigationNodeId newId) {
-		final SwtViewId swtViewId = views.get(node);
+	public void replaceNavigationNodeId(final INavigationNode<?> node, final NavigationNodeId oldId,
+			final NavigationNodeId newId) {
+		node.setNodeId(oldId);
+		final SwtViewId swtViewId = views.remove(node);
 		if (swtViewId != null) {
-			views.remove(node);
 			node.setNodeId(newId);
 			views.put(node, swtViewId);
 		}

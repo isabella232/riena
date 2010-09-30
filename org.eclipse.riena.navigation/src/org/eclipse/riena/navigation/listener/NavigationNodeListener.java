@@ -177,6 +177,6 @@ public class NavigationNodeListener<S extends INavigationNode<C>, C extends INav
 	 * 
 	 * @since 3.0
 	 */
-	public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
+	public void nodeIdChange(final S source, final NavigationNodeId oldId, final NavigationNodeId newId) {
 	}
 }

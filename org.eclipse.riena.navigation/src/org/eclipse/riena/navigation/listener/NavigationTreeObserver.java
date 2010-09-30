@@ -17,7 +17,6 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNode.State;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -496,10 +495,11 @@ public class NavigationTreeObserver {
 		}
 
 		@Override
-		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
-			super.nodeIdChange(source, newId);
+		public void nodeIdChange(final IApplicationNode source, final NavigationNodeId oldId,
+				final NavigationNodeId newId) {
+			super.nodeIdChange(source, oldId, newId);
 			for (final IApplicationNodeListener next : getApplicationNodeListeners()) {
-				next.nodeIdChange(source, newId);
+				next.nodeIdChange(source, oldId, newId);
 			}
 		}
 	}
@@ -736,10 +736,11 @@ public class NavigationTreeObserver {
 		}
 
 		@Override
-		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
-			super.nodeIdChange(source, newId);
+		public void nodeIdChange(final ISubApplicationNode source, final NavigationNodeId oldId,
+				final NavigationNodeId newId) {
+			super.nodeIdChange(source, oldId, newId);
 			for (final ISubApplicationNodeListener next : getSubApplicationListeners()) {
-				next.nodeIdChange(source, newId);
+				next.nodeIdChange(source, oldId, newId);
 			}
 		}
 	}
@@ -976,10 +977,11 @@ public class NavigationTreeObserver {
 		}
 
 		@Override
-		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
-			super.nodeIdChange(source, newId);
+		public void nodeIdChange(final IModuleGroupNode source, final NavigationNodeId oldId,
+				final NavigationNodeId newId) {
+			super.nodeIdChange(source, oldId, newId);
 			for (final IModuleGroupNodeListener next : getModuleGroupNodeListeners()) {
-				next.nodeIdChange(source, newId);
+				next.nodeIdChange(source, oldId, newId);
 			}
 		}
 	}
@@ -1216,10 +1218,10 @@ public class NavigationTreeObserver {
 		}
 
 		@Override
-		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
-			super.nodeIdChange(source, newId);
+		public void nodeIdChange(final IModuleNode source, final NavigationNodeId oldId, final NavigationNodeId newId) {
+			super.nodeIdChange(source, oldId, newId);
 			for (final IModuleNodeListener next : getModuleNodeListeners()) {
-				next.nodeIdChange(source, newId);
+				next.nodeIdChange(source, oldId, newId);
 			}
 		}
 	}
@@ -1470,10 +1472,10 @@ public class NavigationTreeObserver {
 		}
 
 		@Override
-		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
-			super.nodeIdChange(source, newId);
+		public void nodeIdChange(final ISubModuleNode source, final NavigationNodeId oldId, final NavigationNodeId newId) {
+			super.nodeIdChange(source, oldId, newId);
 			for (final ISubModuleNodeListener next : getSubModuleNodeListeners()) {
-				next.nodeIdChange(source, newId);
+				next.nodeIdChange(source, oldId, newId);
 			}
 		}
 	}

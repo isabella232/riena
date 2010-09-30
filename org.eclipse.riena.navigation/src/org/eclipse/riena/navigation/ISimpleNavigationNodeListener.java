@@ -239,5 +239,5 @@ public interface ISimpleNavigationNodeListener {
 	 *            the new node id
 	 * @since 3.0
 	 */
-	void nodeIdChange(INavigationNode<?> source, NavigationNodeId newId);
+	void nodeIdChange(INavigationNode<?> source, NavigationNodeId oldId, NavigationNodeId newId);
 }

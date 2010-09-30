@@ -46,7 +46,6 @@ import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -500,9 +499,10 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		}
 
 		@Override
-		public void nodeIdChange(final INavigationNode<?> source, final NavigationNodeId newId) {
+		public void nodeIdChange(final ISubApplicationNode source, final NavigationNodeId oldId,
+				final NavigationNodeId newId) {
 			if (source.equals(getNavigationNode())) {
-				SwtViewProvider.getInstance().replaceNavigationNodeId(source, newId);
+				SwtViewProvider.getInstance().replaceNavigationNodeId(source, oldId, newId);
 			}
 		}
 	}

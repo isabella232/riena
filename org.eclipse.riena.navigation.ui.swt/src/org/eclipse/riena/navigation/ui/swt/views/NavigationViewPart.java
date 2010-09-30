@@ -35,7 +35,9 @@ import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.ModuleGroupNodeListener;
+import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
@@ -154,6 +156,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		navigationTreeObserver = new NavigationTreeObserver();
 		navigationTreeObserver.addListener(new SubApplicationListener());
 		navigationTreeObserver.addListener(new ModuleGroupListener());
+		navigationTreeObserver.addListener(new ModuleListener());
 		navigationTreeObserver.addListener(new SubModuleListener());
 		navigationTreeObserver.addListenerTo(getSubApplicationNode());
 	}
@@ -263,6 +266,12 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 			}
 		}
 
+		@Override
+		public void nodeIdChange(final IModuleGroupNode source, final NavigationNodeId oldId,
+				final NavigationNodeId newId) {
+			super.nodeIdChange(source, oldId, newId);
+			replaceNavigationNodeId(source, oldId, newId);
+		}
 	}
 
 	private class SubModuleListener extends SubModuleNodeListener {
@@ -272,6 +281,14 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 			if (marker instanceof HiddenMarker) {
 				updateNavigationSize();
 			}
+		}
+	}
+
+	private class ModuleListener extends ModuleNodeListener {
+		@Override
+		public void nodeIdChange(final IModuleNode source, final NavigationNodeId oldId, final NavigationNodeId newId) {
+			super.nodeIdChange(source, oldId, newId);
+			replaceNavigationNodeId(source, oldId, newId);
 		}
 	}
 
@@ -376,6 +393,26 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	private void unregisterModuleGroupView(final ModuleGroupView moduleGroupView, final IModuleGroupNode node) {
 		moduleGroupNodesToViews.remove(node);
 		moduleGroupViews.remove(moduleGroupView);
+	}
+
+	private void replaceNavigationNodeId(final IModuleGroupNode node, final NavigationNodeId oldId,
+			final NavigationNodeId newId) {
+		node.setNodeId(oldId);
+		final ModuleGroupView view = moduleGroupNodesToViews.remove(node);
+		if (view != null) {
+			node.setNodeId(newId);
+			moduleGroupNodesToViews.put(node, view);
+		}
+	}
+
+	private void replaceNavigationNodeId(final IModuleNode node, final NavigationNodeId oldId,
+			final NavigationNodeId newId) {
+		node.setNodeId(oldId);
+		final ModuleView view = moduleNodesToViews.remove(node);
+		if (view != null) {
+			node.setNodeId(newId);
+			moduleNodesToViews.put(node, view);
+		}
 	}
 
 	private void createModuleView(final IModuleNode moduleNode, final ModuleGroupView moduleGroupView) {

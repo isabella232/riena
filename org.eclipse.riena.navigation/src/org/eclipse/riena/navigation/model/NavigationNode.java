@@ -1332,9 +1332,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		if (!isNodeIdChange) {
 			isNodeIdChange = true;
 			notifyNodeIdChange(nodeId);
+			isNodeIdChange = false;
 		}
 		this.nodeId = nodeId;
-		isNodeIdChange = false;
 	}
 
 	/**
@@ -1430,12 +1430,14 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void notifyNodeIdChange(final NavigationNodeId newId) {
+		final NavigationNodeId oldId = getNodeId();
 		for (final L next : getListeners()) {
-			next.nodeIdChange(this, newId);
+			next.nodeIdChange((S) this, oldId, newId);
 		}
 		for (final ISimpleNavigationNodeListener next : getSimpleListeners()) {
-			next.nodeIdChange(this, newId);
+			next.nodeIdChange(this, oldId, newId);
 		}
 	}
 
