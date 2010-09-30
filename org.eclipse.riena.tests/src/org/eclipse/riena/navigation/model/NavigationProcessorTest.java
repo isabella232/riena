@@ -833,6 +833,40 @@ public class NavigationProcessorTest extends RienaTestCase {
 	}
 
 	/**
+	 * Tests the method {@code getHistory()}.
+	 */
+	public void testGetHistory() {
+
+		TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
+		module.addChild(node);
+		subModule1.activate();
+		node.activate();
+		assertFalse(subModule1.isActivated());
+		assertTrue(node.isActivated());
+		assertEquals(0, navigationProcessor.getHistoryForwardSize());
+		assertEquals(1, navigationProcessor.getHistoryBackSize());
+		assertEquals(2, navigationProcessor.getHistory().size());
+		assertEquals(subModule1, navigationProcessor.getHistory().get(0));
+		assertEquals(node, navigationProcessor.getHistory().get(1));
+
+		node = new TestSubModuleNode(new NavigationNodeId("0815"));
+		try {
+			navigationProcessor.getHistory().add(node);
+			fail();
+		} catch (final UnsupportedOperationException e) {
+			// getHistory().add() must provide an UnmodifiableCollection.
+			assertTrue(e instanceof UnsupportedOperationException);
+		}
+		try {
+			navigationProcessor.getHistory().remove(subModule1);
+			fail();
+		} catch (final UnsupportedOperationException e) {
+			// getHistory().remove() must provide an UnmodifiableCollection.
+			assertTrue(e instanceof UnsupportedOperationException);
+		}
+	}
+
+	/**
 	 * Tests the <i>private</i> method
 	 * {@code findSelectableChildNode(ISubModuleNode)}
 	 */

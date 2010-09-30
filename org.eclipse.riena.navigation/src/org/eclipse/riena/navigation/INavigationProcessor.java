@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import java.util.List;
+
 import org.eclipse.riena.core.marker.IMarker;
 
 /**
@@ -219,4 +221,10 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 */
 	void markNodesToCollapse(final INavigationNode<?> toActivate);
 
+	/**
+	 * Returns the history of navigation nodes.
+	 * 
+	 * @return the history of navigation nodes.
+	 */
+	List<INavigationNode<?>> getHistory();
 }

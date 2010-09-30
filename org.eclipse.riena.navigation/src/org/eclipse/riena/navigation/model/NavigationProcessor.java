@@ -325,14 +325,10 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @param toDispose
 	 */
 	private void cleanupHistory(final INavigationNode<?> toDispose) {
-		boolean bhc = false;
 		while (histBack.contains(toDispose)) {
 			histBack.remove(toDispose);
-			bhc = true;
 		}
-		//		if (bhc) {
 		fireBackHistoryChangedEvent();
-		//		}
 		boolean fhc = false;
 		while (histForward.contains(toDispose)) {
 			histForward.remove(toDispose);
@@ -1447,5 +1443,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	public synchronized void removeNavigationHistoryListener(final INavigationHistoryListener listener) {
 		navigationListener.remove(listener);
+	}
+
+	public List<INavigationNode<?>> getHistory() {
+		return Collections.unmodifiableList(histBack);
 	}
 }
