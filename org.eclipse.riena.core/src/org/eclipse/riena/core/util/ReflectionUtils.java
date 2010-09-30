@@ -623,8 +623,8 @@ public final class ReflectionUtils {
 							"Could not load class " + className + " because it exists in at least two bundles."); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				cnfe = null;
-				foundClass = bundle.loadClass(className);
-				return bundle.loadClass(className);
+				foundClass = (Class<T>) bundle.loadClass(className);
+				return (Class<T>) bundle.loadClass(className);
 			} catch (final ClassNotFoundException e) {
 				cnfe = e;
 			}
