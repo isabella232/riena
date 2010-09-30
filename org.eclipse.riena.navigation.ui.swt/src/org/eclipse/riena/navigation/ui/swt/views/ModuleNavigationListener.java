@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import org.eclipse.riena.core.util.Nop;
+import org.eclipse.riena.core.util.RAPDetector;
 import org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchModule;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
@@ -268,7 +269,7 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 		/**
 		 * Wait this long (ms) before activating a node.
 		 */
-		private static final int TIMEOUT_MS = 300;
+		private static final int TIMEOUT_MS = RAPDetector.isRAPavailable() ? 50 : 300;
 
 		private final INavigationNode<?> node;
 		private final Display display;
