@@ -381,6 +381,20 @@
             name="allowsDispose"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.PartnerSubModuleView"
+            id="org.eclipse.riena.example.client.views.PartnerSubModuleView"
+            name="Partner"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.PoliceSubModuleView"
+            id="org.eclipse.riena.example.client.views.PoliceSubModuleView"
+            name="Police"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -1170,6 +1184,48 @@
                      controller="org.eclipse.riena.example.client.controllers.RemoteServiceProgressSubModuleController"/>
             </module>
          </moduleGroup>
+       </assembly2>
+       <assembly2
+             id="org.eclipse.riena.example.client.setnodeidsample"
+             parentNodeId="playground"
+             startOrder="1">
+          <moduleGroup
+                nodeId="org.eclipse.riena.example.client.mgkundennummer">
+             <module
+                   closable="true"
+                   name="Customer nr."
+                   nodeId="org.eclipse.riena.example.client.mkundennummer">
+                <subModule
+                      controller="org.eclipse.riena.example.client.controllers.PartnerSubModuleController"
+                      expanded="false"
+                      name="Customer number"
+                      nodeId="org.eclipse.riena.example.client.smkundennummer"
+                      selectable="true"
+                      sharedView="false"
+                      viewId="org.eclipse.riena.example.client.views.PartnerSubModuleView"
+                      visible="true">
+                </subModule>
+             </module>
+          </moduleGroup>
+          <moduleGroup
+                nodeId="org.eclipse.riena.example.client.mgpolice">
+             <module
+                   closable="true"
+                   name="Police"
+                   nodeId="org.eclipse.riena.example.client.mpolice">
+                <subModule
+                      closable="false"
+                      controller="org.eclipse.riena.example.client.controllers.PoliceSubModuleController"
+                      expanded="false"
+                      name="Police"
+                      nodeId="org.eclipse.riena.example.client.smpolice"
+                      selectable="true"
+                      sharedView="false"
+                      viewId="org.eclipse.riena.example.client.views.PoliceSubModuleView"
+                      visible="true">
+                </subModule>
+             </module>
+          </moduleGroup>
        </assembly2>
     </extension>
     
