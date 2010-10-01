@@ -37,7 +37,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	private static boolean alwaysSkipRedraw = false;
 	private static boolean osChecked = false;
 
-	private DisabledMarkerVisualizer disabledMarkerVisualizer;
+	protected DisabledMarkerVisualizer disabledMarkerVisualizer;
 
 	public BasicMarkerSupport() {
 		super();

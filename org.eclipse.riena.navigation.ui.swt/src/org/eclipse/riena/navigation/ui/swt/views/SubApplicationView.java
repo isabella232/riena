@@ -542,7 +542,18 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		public void disposed(final ISubModuleNode source) {
 			try {
 				final SwtViewId id = getViewId(source);
-				hideView(id);
+				/*
+				 * hideView internally disposes(RCP) a view if ref count is 0.
+				 * For shared views this behavior is critical as RCP doesn´t
+				 * know if a View is reused the Riena way. We just hide it if
+				 * Riena has no more references. For a list of references we use
+				 * the SwtViewProvider#getViewUsers API. We cannot set parts
+				 * invisible as this collides with the marker concept.
+				 */
+				if (/* Allways hide "unshared" views */!SubModuleView.SHARED_ID.equals(id.getSecondary())
+						|| /* no more instances needed of the given shared view */getSharedCount(id) < 1) {
+					hideView(id);
+				}
 				final SwtViewProvider viewProvider = SwtViewProvider.getInstance();
 				viewProvider.unregisterSwtViewId(source);
 			} catch (final ApplicationModelFailure amf) {
@@ -551,6 +562,14 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 					LOGGER.log(LogService.LOG_ERROR, "Error disposing node " + source + ": " + amf.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
+		}
+
+		/*
+		 * Delegates to the SwtViewProvider to locate all View users for the
+		 * given SetViewId
+		 */
+		private int getSharedCount(final SwtViewId id) {
+			return SwtViewProvider.getInstance().getViewUsers(id).size();
 		}
 
 		protected String createNextId() {

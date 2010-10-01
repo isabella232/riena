@@ -65,6 +65,13 @@ public class CustomerSearchController extends SubModuleController {
 						return ((Customer) element).getBirthDate();
 					}
 				});
+		kunden.addDoubleClickListener(new IActionListener() {
+
+			public void callback() {
+				openSelectedCustomer(kunden);
+
+			}
+		});
 
 		((IActionRidget) getRidget("search")).addListener(new IActionListener() { //$NON-NLS-1$
 					public void callback() {
@@ -87,15 +94,20 @@ public class CustomerSearchController extends SubModuleController {
 
 		((IActionRidget) getRidget("open")).addListener(new IActionListener() { //$NON-NLS-1$
 					public void callback() {
-						final int selectionIndex = kunden.getSelectionIndex();
-						if (selectionIndex >= 0) {
-							getNavigationNode()
-									.navigate(
-											new NavigationNodeId(
-													"riena.demo.client.CustomerRecord", result.getCustomers().get(selectionIndex).getEmailAddress()), //$NON-NLS-1$
-											new NavigationArgument(result.getCustomers().get(selectionIndex)));
-						}
+						openSelectedCustomer(kunden);
 					}
+
 				});
+	}
+
+	protected void openSelectedCustomer(final ITableRidget kunden) {
+		final int selectionIndex = kunden.getSelectionIndex();
+		if (selectionIndex >= 0) {
+			getNavigationNode()
+					.navigate(
+							new NavigationNodeId(
+									"riena.demo.client.CustomerRecord", result.getCustomers().get(selectionIndex).getEmailAddress()), //$NON-NLS-1$
+							new NavigationArgument(result.getCustomers().get(selectionIndex)));
+		}
 	}
 }

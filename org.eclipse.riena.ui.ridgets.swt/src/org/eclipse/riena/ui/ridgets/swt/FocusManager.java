@@ -103,8 +103,10 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 	 *            a control instance; never null
 	 */
 	public void removeListeners(final Control control) {
-		control.removeFocusListener(this);
-		control.removeMouseListener(this);
+		if (!control.isDisposed()) {
+			control.removeFocusListener(this);
+			control.removeMouseListener(this);
+		}
 	}
 
 	// helping methods

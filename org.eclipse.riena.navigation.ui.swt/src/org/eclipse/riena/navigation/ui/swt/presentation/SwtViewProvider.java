@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.presentation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.riena.core.singleton.SessionSingletonProvider;
 import org.eclipse.riena.core.singleton.SingletonProvider;
@@ -197,6 +200,29 @@ public class SwtViewProvider {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Locates all {@link INavigationNode} instances in the application
+	 * navigation model which reference the given {@link SwtViewId}. Disposed
+	 * nodes are not considered.
+	 * 
+	 * @param id
+	 *            the {@link SwtViewId}
+	 * @return a list of {@link INavigationNode}s as "users" of the given
+	 *         {@link SwtViewId}
+	 */
+	public List<INavigationNode<?>> getViewUsers(final SwtViewId id) {
+		final List<INavigationNode<?>> result = new ArrayList<INavigationNode<?>>();
+		final Set<INavigationNode<?>> nodes = views.keySet();
+		for (final INavigationNode<?> regNode : nodes) {
+			final SwtViewId swtViewId = views.get(regNode);
+			if (!regNode.isDisposed() && swtViewId.getCompoundId().equals(id.getCompoundId())) {
+				result.add(regNode);
+			}
+		}
+		return result;
+
 	}
 
 	/**

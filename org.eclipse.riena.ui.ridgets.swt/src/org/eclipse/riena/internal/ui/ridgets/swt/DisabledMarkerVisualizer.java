@@ -42,6 +42,9 @@ public class DisabledMarkerVisualizer {
 	 */
 	public void updateDisabled() {
 		final Control control = getControl();
+		if (control == null) {
+			return;
+		}
 		final boolean enabled = getRidget().isEnabled();
 		updateDisabled(control, enabled);
 	}
@@ -70,7 +73,7 @@ public class DisabledMarkerVisualizer {
 		return ridget;
 	}
 
-	private void updateDisabled(final Control control, final boolean enabled) {
+	public void updateDisabled(final Control control, final boolean enabled) {
 		// Bug 322030: only change the enablement of the control bound to the 
 		// ridget. The enabled state of the controls within this control (if  
 		// a composite) can depend on internal state not available here.

@@ -11,7 +11,9 @@
 package org.eclipse.riena.ui.ridgets.swt;
 
 import java.beans.PropertyChangeSupport;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.osgi.service.log.LogService;
 
@@ -74,6 +76,9 @@ public class MarkerSupport extends BasicMarkerSupport {
 	private IControlDecoration errorDecoration;
 	private boolean isFlashInProgress;
 
+	// internal data of the control
+	private final Map<String, Object> internalData;
+
 	/**
 	 * Returns whether the content of a disabled ridget should be visible (
 	 * {@code false}) or hidden {@code true}.
@@ -91,10 +96,12 @@ public class MarkerSupport extends BasicMarkerSupport {
 
 	public MarkerSupport() {
 		super();
+		internalData = new HashMap<String, Object>();
 	}
 
 	public MarkerSupport(final IBasicMarkableRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
+		internalData = new HashMap<String, Object>();
 	}
 
 	// protected methods
@@ -156,8 +163,8 @@ public class MarkerSupport extends BasicMarkerSupport {
 	//////////////////
 
 	protected void addMandatory(final Control control) {
-		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) == null) {
-			control.setData(PRE_MANDATORY_BACKGROUND_KEY, control.getBackground());
+		if (getData(PRE_MANDATORY_BACKGROUND_KEY) == null) {
+			setData(PRE_MANDATORY_BACKGROUND_KEY, control.getBackground());
 		}
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		Color color = lnf.getColor(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND);
@@ -175,8 +182,8 @@ public class MarkerSupport extends BasicMarkerSupport {
 	//////////////////
 
 	protected void addOutput(final Control control, final Color color) {
-		if (control.getData(PRE_OUTPUT_BACKGROUND_KEY) == null) {
-			control.setData(PRE_OUTPUT_BACKGROUND_KEY, control.getBackground());
+		if (getData(PRE_OUTPUT_BACKGROUND_KEY) == null) {
+			setData(PRE_OUTPUT_BACKGROUND_KEY, control.getBackground());
 			control.setBackground(color);
 		}
 	}
@@ -184,10 +191,23 @@ public class MarkerSupport extends BasicMarkerSupport {
 	@Override
 	protected void clearAllMarkers(final Control control) {
 		super.clearAllMarkers(control);
+		clearVisible(control);
+		clearDisabled(control);
 		clearError(control);
 		clearMandatory(control);
 		clearNegative(control);
 		clearOutput(control);
+	}
+
+	protected boolean initialVisible = true;
+	protected boolean initialEnabled = true;
+
+	private void clearVisible(final Control control) {
+		control.setVisible(initialVisible);
+	}
+
+	private void clearDisabled(final Control control) {
+		disabledMarkerVisualizer.updateDisabled(control, initialEnabled);
 	}
 
 	protected void clearError(final Control control) {
@@ -197,16 +217,16 @@ public class MarkerSupport extends BasicMarkerSupport {
 	}
 
 	protected void clearMandatory(final Control control) {
-		if (control.getData(PRE_MANDATORY_BACKGROUND_KEY) != null) {
-			control.setBackground((Color) control.getData(PRE_MANDATORY_BACKGROUND_KEY));
-			control.setData(PRE_MANDATORY_BACKGROUND_KEY, null);
+		if (getData(PRE_MANDATORY_BACKGROUND_KEY) != null) {
+			control.setBackground((Color) getData(PRE_MANDATORY_BACKGROUND_KEY));
+			setData(PRE_MANDATORY_BACKGROUND_KEY, null);
 		}
 	}
 
 	protected void clearOutput(final Control control) {
-		if (control.getData(PRE_OUTPUT_BACKGROUND_KEY) != null) {
-			control.setBackground((Color) control.getData(PRE_OUTPUT_BACKGROUND_KEY));
-			control.setData(PRE_OUTPUT_BACKGROUND_KEY, null);
+		if (getData(PRE_OUTPUT_BACKGROUND_KEY) != null) {
+			control.setBackground((Color) getData(PRE_OUTPUT_BACKGROUND_KEY));
+			setData(PRE_OUTPUT_BACKGROUND_KEY, null);
 		}
 	}
 
@@ -236,8 +256,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	 */
 	@Override
 	protected void updateUIControl(final Control control) {
-		updateVisible(control);
-		updateDisabled(control);
+		super.updateUIControl(control);
 		updateOutput(control);
 		updateMandatory(control);
 		updateError(control);
@@ -248,16 +267,16 @@ public class MarkerSupport extends BasicMarkerSupport {
 	//////////////////
 
 	private void addNegative(final Control control) {
-		if (control.getData(PRE_NEGATIVE_FOREGROUND_KEY) == null) {
-			control.setData(PRE_NEGATIVE_FOREGROUND_KEY, control.getForeground());
+		if (getData(PRE_NEGATIVE_FOREGROUND_KEY) == null) {
+			setData(PRE_NEGATIVE_FOREGROUND_KEY, control.getForeground());
 			control.setForeground(control.getDisplay().getSystemColor(SWT.COLOR_RED));
 		}
 	}
 
 	private void clearNegative(final Control control) {
-		if (control.getData(PRE_NEGATIVE_FOREGROUND_KEY) != null) {
-			control.setForeground((Color) control.getData(PRE_NEGATIVE_FOREGROUND_KEY));
-			control.setData(PRE_NEGATIVE_FOREGROUND_KEY, null);
+		if (getData(PRE_NEGATIVE_FOREGROUND_KEY) != null) {
+			control.setForeground((Color) getData(PRE_NEGATIVE_FOREGROUND_KEY));
+			setData(PRE_NEGATIVE_FOREGROUND_KEY, null);
 		}
 	}
 
@@ -319,6 +338,23 @@ public class MarkerSupport extends BasicMarkerSupport {
 			}
 		} else {
 			clearOutput(control);
+		}
+	}
+
+	@Override
+	public void bind() {
+		if (getUIControl() != null) {
+			//save initial state of control
+			this.initialVisible = getUIControl().isVisible();
+			this.initialEnabled = getUIControl().isEnabled();
+		}
+	}
+
+	@Override
+	public void unbind() {
+		if (getUIControl() != null) {
+			//restore initial state of control
+			clearAllMarkers(getUIControl());
 		}
 	}
 
@@ -395,6 +431,15 @@ public class MarkerSupport extends BasicMarkerSupport {
 			}
 		}
 
+	}
+
+	/// Control data
+	private void setData(final String key, final Object value) {
+		internalData.put(key, value);
+	}
+
+	private Object getData(final String key) {
+		return internalData.get(key);
 	}
 
 }

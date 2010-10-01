@@ -45,6 +45,7 @@ import org.eclipse.riena.core.util.InvocationTargetFailure;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.navigation.ui.swt.handlers.NavigationSourceProvider;
+import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -75,7 +76,7 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
  * Abstract implementation for a sub module view
  */
 public abstract class SubModuleView extends ViewPart implements INavigationNodeView<SubModuleNode> {
-
+	public static final String SHARED_ID = "shared"; //$NON-NLS-1$
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubModuleView.class);
 	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
 	private final static Map<SubModuleView, SubModuleNode> FALLBACK_NODES = new HashMap<SubModuleView, SubModuleNode>();
@@ -118,6 +119,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	private NavigationTreeObserver navigationTreeObserver;
 
 	private NavigationSourceProvider navigationSourceProvider;
+	private SubModuleNodesListener subModuleNodeListener;
 
 	/**
 	 * Creates a new instance of {@code SubModuleView}.
@@ -132,21 +134,36 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	public void bind(final SubModuleNode node) {
+		/*
+		 * Shared Views implementation
+		 */
 
+		// Different node?
 		if (currentController != getController()) {
+
+			//"old" node bound?
 			if (currentController != null) {
+				// old node disposed?
 				if (currentController.getNavigationNode().isDisposed()) {
 					return;
 				}
+				// unbind "old" node
 				binding.unbind(currentController);
 			}
+			// create new controller if not existent for new node
 			if ((getNavigationNode() != null) && (getController() == null)) {
 				createViewFacade();
 			}
+
+			// should allways return true ...
 			if (getController() != null) {
 				currentController = getController();
 			}
+
+			//bind the new controller
 			binding.bind(currentController);
+
+			//callback
 			currentController.afterBind();
 
 			LNF_UPDATER.updateUIControls(getParentComposite(), true);
@@ -466,7 +483,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 */
 	protected ISubModuleNode getSubModuleNode(final String nodeId, final String secondaryId) {
 		return SwtViewProvider.getInstance().getNavigationNode(nodeId, secondaryId, ISubModuleNode.class,
-				!"shared".equals(secondaryId)); //$NON-NLS-1$
+				!SHARED_ID.equals(secondaryId));
 	}
 
 	// helping methods
@@ -521,6 +538,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		if (!isRCP()) {
 			title = new EmbeddedTitleBar(parent, SWT.NONE);
 			addUIControl(title, SubModuleController.WINDOW_RIDGET);
+			// as the view is only shown if the node is active we should never have to change the "window active" state of the titlebar
 			title.setWindowActive(true);
 			final FormData formData = new FormData();
 			// don't show the top border of the title => -1
@@ -554,18 +572,11 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	private void doBinding() {
 		bind(getNavigationNode());
-		if (title != null) {
-			title.setWindowActive(getNavigationNode().isActivated());
-		}
 	}
 
 	private IApplicationNode getAppNode() {
-		INavigationNode<?> node = getNavigationNode();
-		while (node.getParent() != null) {
-			node = node.getParent();
-		}
-		final IApplicationNode appNode = node.getTypecastedAdapter(IApplicationNode.class);
-		return appNode;
+		//use the ApplicationNodeManager API
+		return ApplicationNodeManager.getApplicationNode();
 	}
 
 	private Cursor getArrowCursor() {
@@ -628,6 +639,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * Returns true if we are running without the navigation tree
 	 */
 	private boolean isRCP() {
+		//TODO: refactor testing for RCP
 		getNavigationNode();
 		return rcpSubModuleNode != null;
 	}
@@ -637,7 +649,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		if (appNode != null) {
 			Assert.isLegal(navigationTreeObserver == null);
 			navigationTreeObserver = new NavigationTreeObserver();
-			navigationTreeObserver.addListener(new SubModuleNodesListener());
+			subModuleNodeListener = new SubModuleNodesListener();
+			navigationTreeObserver.addListener(subModuleNodeListener);
 			navigationTreeObserver.addListenerTo(appNode);
 		}
 	}
@@ -681,11 +694,40 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * support shared views. When adding a method be sure to check the node.
 	 */
 	private final class SubModuleNodesListener extends SubModuleNodeListener {
+
 		@Override
 		public void activated(final ISubModuleNode source) {
 			if (source.equals(getNavigationNode())) {
 				doBinding();
 			}
+		}
+
+		@Override
+		public void beforeDisposed(final ISubModuleNode source) {
+			/*
+			 * If source is the current bound node then unbind the controller.
+			 * If the node is not bound (not the current) we do not have to
+			 * unbind anything.
+			 */
+			if (disposingBoundNode(source)) {
+				unbindActiveController();
+			}
+		}
+
+		protected boolean disposingBoundNode(final ISubModuleNode source) {
+			/*
+			 * First check if typeId fits. Then check if source is the current
+			 * node.
+			 */
+			return getViewSite().getSecondaryId().equals(SHARED_ID) && currentController != null
+					&& source.equals(currentController.getNavigationNode());
+		}
+
+		protected void unbindActiveController() {
+			//unbind
+			binding.unbind(currentController);
+			//reset controller
+			currentController = null;
 		}
 
 		@Override

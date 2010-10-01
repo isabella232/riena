@@ -11,7 +11,6 @@
 package org.eclipse.riena.ui.ridgets.swt;
 
 import java.beans.PropertyChangeListener;
-import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -26,7 +25,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.marker.IMarker;
-import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
@@ -56,28 +54,6 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	private HiddenMarker hiddenMarker;
 	private AbstractMarkerSupport markerSupport;
 	private Listener visibilityListener;
-
-	private boolean widgetDataHasBeenSaved;
-	private Object widgetData;
-	private boolean widgetIsKeyedData;
-	private static final Field WIDGET_DATA_FIELD;
-	private static final Field WIDGET_STATE_FIELD;
-	// this is a copy of the Widget.KEYED_DATA flag (not accessible)
-	static final int KEYED_DATA = 1 << 2;
-	static {
-		WIDGET_DATA_FIELD = getWidgetField("data"); //$NON-NLS-1$
-		WIDGET_STATE_FIELD = getWidgetField("state"); //$NON-NLS-1$
-	}
-
-	private static Field getWidgetField(final String fieldName) {
-		try {
-			final Field field = Widget.class.getDeclaredField(fieldName);
-			field.setAccessible(true);
-			return field;
-		} catch (final Exception e) {
-			throw new ReflectionFailure("Could not access field " + fieldName + " in Widget class.", e); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-	}
 
 	/**
 	 * Checks that the given uiControl is assignable to the the given type.
@@ -128,6 +104,8 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	public synchronized final void addMarker(final IMarker marker) {
 		if (markerSupport == null) {
 			markerSupport = createMarkerSupport();
+			markerSupport.setRidget(this);
+			bindMarkerSupport();
 		}
 		if (marker instanceof MandatoryMarker) {
 			((MandatoryMarker) marker).setDisabled(isDisableMandatoryMarker());
@@ -144,52 +122,27 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	public final void setUIControl(final Object uiControl) {
 		checkUIControl(uiControl);
 		uninstallListeners();
-		saveData();
+		bindMarkerSupport();
 		unbindUIControl();
 		this.uiControl = (Widget) uiControl;
+		unbindMarkerSupport();
 		updateEnabled();
 		updateMarkers();
 		updateToolTip();
 		bindUIControl();
-		restoreData();
 		installListeners();
 	}
 
-	private void saveData() {
-		widgetDataHasBeenSaved = false;
-		if (getUIControl() == null) {
-			return;
-		}
-		try {
-			final Object data = WIDGET_DATA_FIELD.get(getUIControl());
-			widgetIsKeyedData = ((Integer) WIDGET_STATE_FIELD.get(getUIControl()) & KEYED_DATA) != 0;
-			if (widgetIsKeyedData && data != null) {
-				final int length = ((Object[]) data).length;
-				widgetData = new Object[length];
-				System.arraycopy(data, 0, widgetData, 0, length);
-			} else {
-				widgetData = data;
-			}
-			widgetDataHasBeenSaved = true;
-		} catch (final Exception e) {
-			throw new ReflectionFailure("Could not access data/state fields in Widget class.", e); //$NON-NLS-1$
+	private void unbindMarkerSupport() {
+		if (markerSupport != null) {
+			markerSupport.bind();
 		}
 	}
 
-	private void restoreData() {
-		if (getUIControl() == null || !widgetDataHasBeenSaved) {
-			return;
+	private void bindMarkerSupport() {
+		if (markerSupport != null) {
+			markerSupport.unbind();
 		}
-		try {
-			WIDGET_DATA_FIELD.set(getUIControl(), widgetData);
-			final int currentState = (Integer) WIDGET_STATE_FIELD.get(getUIControl());
-			// restore only the KEYED_DATA bit inside the state 'flag' field
-			final int newState = widgetIsKeyedData ? currentState | KEYED_DATA : currentState & ~KEYED_DATA;
-			WIDGET_STATE_FIELD.set(getUIControl(), newState);
-		} catch (final Exception e) {
-			throw new ReflectionFailure("Could not access data/state fields in Widget class.", e); //$NON-NLS-1$
-		}
-
 	}
 
 	public Widget getUIControl() {

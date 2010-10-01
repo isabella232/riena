@@ -49,6 +49,14 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
+	 * @param ridget
+	 *            the ridget to set
+	 */
+	public void setRidget(final IBasicMarkableRidget ridget) {
+		this.ridget = ridget;
+	}
+
+	/**
 	 * Initializes this marker support with the Ridget and the property change
 	 * support.
 	 * 
@@ -290,4 +298,16 @@ public abstract class AbstractMarkerSupport {
 		}
 	}
 
+	/**
+	 * Callback method triggered when a control is bound to the {@link IRidget}
+	 */
+	public void bind() {
+	}
+
+	/**
+	 * Callback method triggered when a control is unbound from the
+	 * {@link IRidget}
+	 */
+	public void unbind() {
+	}
 }
