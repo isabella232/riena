@@ -74,22 +74,23 @@ public final class ContainerModel {
 	}
 
 	private static void initialize() {
+		containerType = retrieveContainerType();
+		Log4r.getLogger(Activator.getDefault(), ContainerModel.class).log(LogService.LOG_INFO,
+				"!!! Riena is running in " + containerType + " mode !!!"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	private static Type retrieveContainerType() {
 		final String s = System.getProperty(RIENA_CONTAINER_TYPE);
-		containerType = Type.CLIENT;
 		if (s != null) {
-			if (s.equals("server")) { //$NON-NLS-1$
-				containerType = Type.SERVER;
-			}
+			return s.equals("server") ? Type.SERVER : Type.CLIENT; //$NON-NLS-1$
 		} else {
 			final Bundle[] bundles = Activator.getDefault().getContext().getBundles();
 			for (final Bundle bundle : bundles) {
 				if (bundle.getSymbolicName().startsWith(ORG_ECLIPSE_EQUINOX_HTTP)) {
-					containerType = Type.SERVER;
-					break;
+					return Type.SERVER;
 				}
 			}
+			return Type.CLIENT;
 		}
-		Log4r.getLogger(Activator.getDefault(), ContainerModel.class).log(LogService.LOG_INFO,
-				"!!! Riena is running in " + containerType + " mode !!!"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }
