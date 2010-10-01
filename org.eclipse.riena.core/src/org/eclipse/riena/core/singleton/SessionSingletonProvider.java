@@ -39,16 +39,16 @@ import org.eclipse.riena.core.wire.Wire;
  */
 public class SessionSingletonProvider<S> extends SingletonProvider<S> {
 
-	private static Class<?> sessionSingletonBase;
-	private static Method getInstance;
-	private static final boolean IS_RAP;
+	private static final boolean IS_RAP_AVAILABLE;
+	private static Class<?> sessionSingletonBaseClass;
+	private static Method getInstanceMethod;
 	private static final Set<Object> RAP_SINGLETONS = new HashSet<Object>();
 
 	private static final String SESSION_SINGLETON_BASE = "org.eclipse.rwt.SessionSingletonBase"; //$NON-NLS-1$
 	private static final String GET_INSTANCE = "getInstance"; //$NON-NLS-1$
 
 	static {
-		IS_RAP = RAPDetector.isRAPavailable() && loadSessionSingletonBase();
+		IS_RAP_AVAILABLE = RAPDetector.isRAPavailable() && loadSessionSingletonBase();
 	}
 
 	/**
@@ -72,8 +72,8 @@ public class SessionSingletonProvider<S> extends SingletonProvider<S> {
 	private static boolean loadSessionSingletonBase() {
 		final Bundle rapBundle = RAPDetector.getRWTBundle();
 		try {
-			sessionSingletonBase = rapBundle.loadClass(SESSION_SINGLETON_BASE);
-			getInstance = sessionSingletonBase.getMethod(GET_INSTANCE, Class.class);
+			sessionSingletonBaseClass = rapBundle.loadClass(SESSION_SINGLETON_BASE);
+			getInstanceMethod = sessionSingletonBaseClass.getMethod(GET_INSTANCE, Class.class);
 			return true;
 		} catch (final Exception e) {
 			Nop.reason("There seems to be no RAP available."); //$NON-NLS-1$
@@ -88,13 +88,13 @@ public class SessionSingletonProvider<S> extends SingletonProvider<S> {
 	 */
 	@Override
 	public S getInstance() {
-		return IS_RAP ? getRAPInstance() : super.getInstance();
+		return IS_RAP_AVAILABLE ? getRAPInstance() : super.getInstance();
 	}
 
 	@SuppressWarnings("unchecked")
 	private S getRAPInstance() {
 		try {
-			final S rapSingleton = (S) getInstance.invoke(sessionSingletonBase, singletonClass);
+			final S rapSingleton = (S) getInstanceMethod.invoke(sessionSingletonBaseClass, singletonClass);
 			synchronized (RAP_SINGLETONS) {
 				if (!RAP_SINGLETONS.contains(rapSingleton)) {
 					RAP_SINGLETONS.add(rapSingleton);
