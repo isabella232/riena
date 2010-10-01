@@ -84,13 +84,10 @@ public class ProgressProviderBridge extends ProgressProvider {
 
 		@Override
 		public void scheduled(final IJobChangeEvent event) {
-			registerMapping(event.getJob(), createDefaultUIProcess(event.getJob()));
+			final Job job = event.getJob();
+			if (jobUiProcess.get(job) == null) {
+				createDefaultUIProcess(job);
+			}
 		}
-
-		@Override
-		public void done(final IJobChangeEvent event) {
-			unregisterMapping(event.getJob());
-		}
-
 	}
 }
