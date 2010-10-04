@@ -102,7 +102,6 @@ public class InfoFlyoutRCP extends InfoFlyout {
 			initializeTimelines();
 
 			shell.setVisible(true);
-			shell.open();
 			tShow.play();
 		}
 	}
