@@ -71,7 +71,7 @@ public abstract class CompletionCombo extends Composite {
 	private static final SWTFacade SWT_FACADE = SWTFacade.getDefault();
 	/**
 	 * Stores all allowed input characters that are not letters or digits. This
-	 * date is computed as items are added to the CompletionCombo and used in
+	 * data is computed as items are added to the CompletionCombo and used in
 	 * {@link #isInputChar(char)}.
 	 */
 	private final Set<Character> inputChars = new HashSet<Character>();
@@ -2280,21 +2280,65 @@ public abstract class CompletionCombo extends Composite {
 		boolean result = false;
 		if (prefix != null) {
 			if (prefix.length() == 0) {
+
 				clearImage();
 				text.setText(""); //$NON-NLS-1$
 				result = true;
 			} else {
-				final int prefixLength = prefix.length();
+
+				int prefixLength = prefix.length();
 				for (final String item : getItems(list)) {
+
+					if (item.equals(text.getText())) {
+						continue;
+					}
 					if (matchesWord(prefix, item)) {
 						setMatchingTextAndSelection(prefixLength, item);
 						result = true;
 						break;
 					}
 				}
+
+				// when nothing was found and the prefix consists of more than 1 character of the same type e.g. "aa"
+				// jump to the next match of "a"
+				if (!result && !isAllowMissmatch() && isMultipleInputOfSameChar(prefix)) {
+
+					final String singleCharPrefix = prefix.substring(0, 1);
+					prefixLength = singleCharPrefix.length();
+
+					final String[] items = getItems();
+
+					for (int i = getSelectionIndex() + 1; i < items.length; i++) {
+
+						final String item = items[i];
+
+						if (matchesWord(singleCharPrefix, item)) {
+							setMatchingTextAndSelection(prefixLength, item);
+							result = true;
+							break;
+						}
+					}
+				}
 			}
 		}
 		return result;
+	}
+
+	private boolean isMultipleInputOfSameChar(final String prefix) {
+		if (prefix.length() < 2) {
+			return false;
+		}
+
+		final String lowerPrefix = prefix.toLowerCase();
+
+		final char first = lowerPrefix.charAt(0);
+		for (int i = 1; i < lowerPrefix.length(); i++) {
+			final char current = lowerPrefix.charAt(i);
+			if (current != first) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private void setMatchingTextAndSelection(final int selectionStart, final String item) {
