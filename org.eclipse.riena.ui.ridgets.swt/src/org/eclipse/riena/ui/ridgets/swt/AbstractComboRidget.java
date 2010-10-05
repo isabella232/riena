@@ -35,6 +35,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
+import org.eclipse.swt.events.SelectionAdapter;
 
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -701,4 +702,29 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
+	/**
+	 * TwoAdapter that saves the current selection, when outputOnly changes and
+	 * applies it again after the user tries to select an entry in the combo.
+	 */
+	protected final static class SelectionTypeEnforcer extends SelectionAdapter implements PropertyChangeListener {
+
+		private final AbstractComboRidget ridget;
+		private Object savedSelection;
+
+		public SelectionTypeEnforcer(final AbstractComboRidget ridget) {
+			this.ridget = ridget;
+		}
+
+		@Override
+		public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
+			super.widgetSelected(e);
+			if (ridget.isOutputOnly()) {
+				ridget.setSelection(savedSelection);
+			}
+		}
+
+		public void propertyChange(final PropertyChangeEvent evt) {
+			savedSelection = ridget.getSelection();
+		}
+	}
 }

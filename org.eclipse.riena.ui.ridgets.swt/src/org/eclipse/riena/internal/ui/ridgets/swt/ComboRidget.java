@@ -19,6 +19,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Combo;
 
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
@@ -27,9 +28,18 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
  */
 public class ComboRidget extends AbstractComboRidget {
 
+	private final SelectionTypeEnforcer selectionTypeEnforcer;
+
+	public ComboRidget() {
+		selectionTypeEnforcer = new SelectionTypeEnforcer(this);
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, selectionTypeEnforcer);
+	}
+
 	private final ModifyListener modifyListener = new ModifyListener() {
 		public void modifyText(final ModifyEvent e) {
-			setText(getUIControlText());
+			if (!isOutputOnly()) {
+				setText(getUIControlText());
+			}
 		}
 	};
 
@@ -41,6 +51,8 @@ public class ComboRidget extends AbstractComboRidget {
 			if ((style & SWT.READ_ONLY) == 0) {
 				throw new BindingException("Combo must be READ_ONLY"); //$NON-NLS-1$
 			}
+
+			((Combo) uiControl).addSelectionListener(selectionTypeEnforcer);
 		}
 	}
 

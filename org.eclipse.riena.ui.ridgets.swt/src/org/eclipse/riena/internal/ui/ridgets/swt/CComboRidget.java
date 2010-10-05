@@ -23,6 +23,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Color;
 
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
@@ -36,6 +37,8 @@ public class CComboRidget extends AbstractComboRidget {
 
 	private final ModifyListener modifyListener;
 
+	private final SelectionTypeEnforcer selectionTypeEnforcer;
+
 	public CComboRidget() {
 		modifyListener = new CComboModifyListener();
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
@@ -46,6 +49,9 @@ public class CComboRidget extends AbstractComboRidget {
 				}
 			}
 		});
+
+		selectionTypeEnforcer = new SelectionTypeEnforcer(this);
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, selectionTypeEnforcer);
 	}
 
 	@Override
@@ -53,6 +59,7 @@ public class CComboRidget extends AbstractComboRidget {
 		super.bindUIControl();
 		if (getUIControl() != null) {
 			updateBgColor(isEnabled());
+			getUIControl().addSelectionListener(selectionTypeEnforcer);
 		}
 	}
 
@@ -182,7 +189,9 @@ public class CComboRidget extends AbstractComboRidget {
 	 */
 	private final class CComboModifyListener implements ModifyListener {
 		public void modifyText(final ModifyEvent e) {
-			setText(getUIControlText());
+			if (!isOutputOnly()) {
+				setText(getUIControlText());
+			}
 		}
 	}
 }
