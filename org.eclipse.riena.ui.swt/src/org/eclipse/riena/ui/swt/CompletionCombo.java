@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.ui.swt.facades.ClipboardFacade;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * TODO [ev] docs
@@ -1126,7 +1127,7 @@ public abstract class CompletionCombo extends Composite {
 	 * @since 3.0
 	 */
 	protected boolean isDropped() {
-		return popup.getVisible();
+		return !SwtUtilities.isDisposed(popup) && popup.getVisible();
 	}
 
 	@Override
@@ -1315,7 +1316,8 @@ public abstract class CompletionCombo extends Composite {
 		super.redraw();
 		text.redraw();
 		arrow.redraw();
-		if (popup.isVisible()) {
+
+		if (!SwtUtilities.isDisposed(popup) && popup.isVisible()) {
 			list.redraw();
 		}
 	}
@@ -1554,7 +1556,7 @@ public abstract class CompletionCombo extends Composite {
 		text.setEnabled(enabled);
 		final boolean editable = enabled && text.getEditable();
 		arrow.setEnabled(editable);
-		if (!editable) {
+		if (!editable && !SwtUtilities.isDisposed(popup)) {
 			popup.setVisible(editable);
 		}
 	}
