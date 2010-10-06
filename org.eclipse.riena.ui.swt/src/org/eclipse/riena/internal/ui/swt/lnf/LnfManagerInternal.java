@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.swt.lnf;
+package org.eclipse.riena.internal.ui.swt.lnf;
 
 import org.osgi.framework.Bundle;
 
@@ -16,9 +16,11 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.Platform;
 
 import org.eclipse.riena.core.exception.Failure;
+import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.ignore.IgnoreCheckStyle;
 import org.eclipse.riena.internal.ui.swt.Activator;
+import org.eclipse.riena.ui.swt.lnf.IDefaultLnfExtension;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.BundleUtil;
 
@@ -50,7 +52,7 @@ import org.eclipse.riena.ui.swt.utils.BundleUtil;
  * If the Bundle-Symbolic-Name is omitted the {@code LnfManager} tries to load
  * the Lnf class with the {LnfMangager}'s class loader.
  */
-final class LnfManagerInternal {
+public final class LnfManagerInternal {
 
 	/**
 	 * Allows setting of an application L&F.
@@ -61,6 +63,8 @@ final class LnfManagerInternal {
 
 	private RienaDefaultLnf defaultLnf = new RienaDefaultLnf();
 	private volatile RienaDefaultLnf currentLnf;
+
+	private RienaDefaultLnf extensionLnf;
 
 	private LnfManagerInternal() {
 		// cannot instantiated, because all methods are static
@@ -124,6 +128,13 @@ final class LnfManagerInternal {
 		}
 	}
 
+	@InjectExtension(min = 1, max = 1)
+	public void update(final IDefaultLnfExtension lnfExtension) {
+		if (lnfExtension != null) {
+			this.extensionLnf = lnfExtension.createDefaultLnf();
+		}
+	}
+
 	/**
 	 * Returns the current look and feel. If no look and feel is set, the
 	 * default look and feel is returned.
@@ -138,6 +149,8 @@ final class LnfManagerInternal {
 					final String className = System.getProperty(RIENA_LNF_SYSTEM_PROPERTY);
 					if (className != null) {
 						setLnf(className);
+					} else if (extensionLnf != null) {
+						setLnf(extensionLnf);
 					} else {
 						setLnf(defaultLnf);
 					}
@@ -237,5 +250,6 @@ final class LnfManagerInternal {
 		public LnfManagerFailure(final String msg, final Throwable thrown) {
 			super(msg, thrown);
 		}
-	};
+	}
+
 }

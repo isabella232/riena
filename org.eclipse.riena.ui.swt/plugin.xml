@@ -6,6 +6,7 @@
    <extension-point id="imagepath" name="Image Path" schema="schema/imagepath-deprecated.exsd"/>
    <extension-point id="imagePaths" name="Image Path" schema="schema/imagePaths.exsd"/>
    <extension-point id="lnfMarkerSupport" name="Marker Support" schema="schema/lnfMarkerSupport.exsd"/>
+   <extension-point id="defaultlnf" name="Default LnF" schema="schema/defaultlnf.exsd"/>
    <extension
          point="org.eclipse.riena.ui.core.uiSynchronizer">
 		<uiSynchronizer class="org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer"/>         

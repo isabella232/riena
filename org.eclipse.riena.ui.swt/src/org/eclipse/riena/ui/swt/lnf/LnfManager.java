@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.core.singleton.SessionSingletonProvider;
 import org.eclipse.riena.core.singleton.SingletonProvider;
+import org.eclipse.riena.internal.ui.swt.lnf.LnfManagerInternal;
 import org.eclipse.riena.ui.swt.lnf.renderer.EmbeddedTitlebarRenderer;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
@@ -56,8 +57,6 @@ public final class LnfManager {
 	 */
 	public static final String RIENA_LNF_SYSTEM_PROPERTY = "riena.lnf"; //$NON-NLS-1$
 
-	
-	
 	/**
 	 * The LnFManager has to be an SessionSingleton, because it he LnF that
 	 * holds a Map of {@link Renderer}. The Renderer get passed a UIControl that
