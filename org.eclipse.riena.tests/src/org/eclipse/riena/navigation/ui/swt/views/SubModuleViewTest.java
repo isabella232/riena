@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ApplicationNode;
@@ -41,6 +42,7 @@ public class SubModuleViewTest extends RienaTestCase {
 	private SubModuleNode anotherNode;
 	private SubModuleNode anotherNodeSameView;
 	private List<SubModuleNode> nodesBoundToView;
+	private ApplicationNode appNode;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -48,7 +50,7 @@ public class SubModuleViewTest extends RienaTestCase {
 
 		addPluginXml(SubModuleViewTest.class, "SubModuleViewTest.xml");
 
-		final ApplicationNode appNode = new ApplicationNode();
+		appNode = new ApplicationNode();
 		final SubApplicationNode subAppNode = new SubApplicationNode();
 		appNode.addChild(subAppNode);
 		final ModuleGroupNode mgNode = new ModuleGroupNode(null);
@@ -128,6 +130,17 @@ public class SubModuleViewTest extends RienaTestCase {
 
 		@Override
 		protected void basicCreatePartControl(final Composite parent) {
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.riena.navigation.ui.swt.views.SubModuleView#getAppNode()
+		 */
+		@Override
+		protected IApplicationNode getAppNode() {
+			return appNode;
 		}
 	}
 

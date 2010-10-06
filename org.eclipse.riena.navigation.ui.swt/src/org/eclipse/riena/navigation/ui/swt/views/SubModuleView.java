@@ -574,7 +574,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		bind(getNavigationNode());
 	}
 
-	private IApplicationNode getAppNode() {
+	protected IApplicationNode getAppNode() {
 		//use the ApplicationNodeManager API
 		return ApplicationNodeManager.getApplicationNode();
 	}
