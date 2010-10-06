@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.lnf;
 
-import org.eclipse.riena.core.singleton.SessionSingletonProvider;
 import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
@@ -51,7 +50,7 @@ public final class LnfManager {
 	 */
 	public static final String RIENA_LNF_SYSTEM_PROPERTY = "riena.lnf"; //$NON-NLS-1$
 
-	private final static SingletonProvider<LnfManagerInternal> LMI = new SessionSingletonProvider<LnfManagerInternal>(
+	private final static SingletonProvider<LnfManagerInternal> LMI = new SingletonProvider<LnfManagerInternal>(
 			LnfManagerInternal.class);
 
 	private LnfManager() {
