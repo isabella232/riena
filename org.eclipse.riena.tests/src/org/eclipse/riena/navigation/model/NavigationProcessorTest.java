@@ -43,6 +43,10 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 @ManualTestCase
 public class NavigationProcessorTest extends RienaTestCase {
 
+	/**
+	 * 
+	 */
+	private static final String TARGET_MODULE_GROUP = "org.eclipse.riena.navigation.model.test.moduleGroup.2";
 	private NavigationProcessor navigationProcessor;
 	private IApplicationNode applicationNode;
 	private ISubApplicationNode subApplication;
@@ -73,8 +77,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		applicationNode.addChild(subApplication);
 		moduleGroup = new ModuleGroupNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.moduleGroup"));
 		subApplication.addChild(moduleGroup);
-		moduleGroup2 = new ModuleGroupNode(
-				new NavigationNodeId("org.eclipse.riena.navigation.model.test.moduleGroup.2"));
+		moduleGroup2 = new ModuleGroupNode(new NavigationNodeId(TARGET_MODULE_GROUP));
 		subApplication.addChild(moduleGroup2);
 
 		module = new ModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.module"));
@@ -737,20 +740,51 @@ public class NavigationProcessorTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the method {@code create}.
+	 * Tests the method {@code move}.
 	 */
 	public void testMove() throws Exception {
-
-		final INavigationNode<?> targetModuleGroup = navigationProcessor.create(subApplication, new NavigationNodeId(
-				"org.eclipse.riena.navigation.model.test.moduleGroup.2"), null);
+		final INavigationNode<?> targetModuleGroup = createTargetModuleGroup();
 		assertEquals(module2, moduleGroup.getChild(1));
 		assertEquals(2, moduleGroup.getChildren().size());
 		assertEquals(0, moduleGroup2.getChildren().size());
-		module2.moveTo(new NavigationNodeId("org.eclipse.riena.navigation.model.test.moduleGroup.2"));
+		module2.moveTo(new NavigationNodeId(TARGET_MODULE_GROUP));
 		assertEquals(1, moduleGroup.getChildren().size());
 		assertEquals(1, moduleGroup2.getChildren().size());
 		assertEquals(module2, targetModuleGroup.getChild(0));
 
+	}
+
+	/**
+	 * Tests the method {@code move} with the attribute blocked set.
+	 */
+	public void testMoveBlocked() throws Exception {
+		final INavigationNode<?> targetModuleGroup = createTargetModuleGroup();
+		module2.setBlocked(true);
+		module2.moveTo(new NavigationNodeId(TARGET_MODULE_GROUP));
+		assertEquals(module2, targetModuleGroup.getChild(0));
+		assertTrue(module2.isBlocked());
+	}
+
+	/**
+	 * Tests the method {@code move} with the attribute enabled set.
+	 */
+	public void testMoveEnabled() throws Exception {
+		final INavigationNode<?> targetModuleGroup = createTargetModuleGroup();
+		module2.setEnabled(true);
+		module2.moveTo(new NavigationNodeId(TARGET_MODULE_GROUP));
+		assertEquals(module2, targetModuleGroup.getChild(0));
+		assertTrue(module2.isEnabled());
+	}
+
+	/**
+	 * Tests the method {@code move} with the attribute visible set.
+	 */
+	public void testMoveVisible() throws Exception {
+		final INavigationNode<?> targetModuleGroup = createTargetModuleGroup();
+		module2.setVisible(true);
+		module2.moveTo(new NavigationNodeId(TARGET_MODULE_GROUP));
+		assertEquals(module2, targetModuleGroup.getChild(0));
+		assertTrue(module2.isVisible());
 	}
 
 	/**
@@ -885,6 +919,15 @@ public class NavigationProcessorTest extends RienaTestCase {
 		selectableChild = ReflectionUtils.invokeHidden(navigationProcessor, "findSelectableChildNode", subModule1);
 		assertSame(node, selectableChild);
 
+	}
+
+	/**
+	 * @return
+	 */
+	private INavigationNode<?> createTargetModuleGroup() {
+		final INavigationNode<?> targetModuleGroup = navigationProcessor.create(subApplication, new NavigationNodeId(
+				TARGET_MODULE_GROUP), null);
+		return targetModuleGroup;
 	}
 
 	private static class TestSubModuleNode extends SubModuleNode {

@@ -371,13 +371,24 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			return;
 		}
 		final boolean isActivated = moduleNode.isActivated();
+		final boolean isBlocked = moduleNode.isBlocked();
+		final boolean isEnabled = moduleNode.isEnabled();
+		final boolean isVisible = moduleNode.isVisible();
+
 		moduleNode.dispose(null);
 		moduleNode.deactivate(null);
 		oldParentModuleGroup.removeChild(moduleNode);
 		targetModuleGroup.addChild(moduleNode);
+		targetModuleGroup.setBlocked(moduleNode.isBlocked());
+
+		moduleNode.setBlocked(isBlocked);
+		moduleNode.setEnabled(isEnabled);
+		moduleNode.setVisible(isVisible);
+
 		if (isActivated) {
 			moduleNode.activate();
 		}
+
 		if (oldParentModuleGroup.getChildren().size() == 0) {
 			oldParentModuleGroup.dispose();
 		} else {
