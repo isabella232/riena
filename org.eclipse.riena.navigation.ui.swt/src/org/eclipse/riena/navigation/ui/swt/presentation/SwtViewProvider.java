@@ -217,7 +217,7 @@ public class SwtViewProvider {
 		final Set<INavigationNode<?>> nodes = views.keySet();
 		for (final INavigationNode<?> regNode : nodes) {
 			final SwtViewId swtViewId = views.get(regNode);
-			if (!regNode.isDisposed() && swtViewId.getCompoundId().equals(id.getCompoundId())) {
+			if (!regNode.isDisposed() && swtViewId != null && swtViewId.getCompoundId().equals(id.getCompoundId())) {
 				result.add(regNode);
 			}
 		}
