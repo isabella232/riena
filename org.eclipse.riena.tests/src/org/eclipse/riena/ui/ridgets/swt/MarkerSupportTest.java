@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt;
 
+import java.beans.PropertyChangeSupport;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -150,12 +151,22 @@ public class MarkerSupportTest extends RienaTestCase {
 			final Color background = control.getBackground();
 			final Color foreground = control.getForeground();
 
-			final ITextRidget ridget = new TextRidget();
-			ridget.setUIControl(control);
 			final MyMarkerSupport markerSupport = new MyMarkerSupport();
-			markerSupport.init(ridget, null);
+
+			// the LNF creates a MarkerSupport for every Ridget, so we have to provide our custom MarkerSupport at this point
+			final ITextRidget ridget = new TextRidget() {
+				@Override
+				protected org.eclipse.riena.ui.ridgets.AbstractMarkerSupport createMarkerSupport() {
+					return markerSupport;
+				}
+			};
+			ridget.setUIControl(control);
+			markerSupport.init(ridget, new PropertyChangeSupport(new Object()));
+
+			assertTrue(background.equals(control.getBackground()));
 
 			ridget.addMarker(new MandatoryMarker());
+
 			markerSupport.updateMarkers();
 			assertFalse(background.equals(control.getBackground()));
 
@@ -258,6 +269,11 @@ public class MarkerSupportTest extends RienaTestCase {
 		@Override
 		public void clearAllMarkers(final Control control) {
 			super.clearAllMarkers(control);
+		}
+
+		@Override
+		public void clearMandatory(final Control control) {
+			super.clearMandatory(control);
 		}
 
 	}
