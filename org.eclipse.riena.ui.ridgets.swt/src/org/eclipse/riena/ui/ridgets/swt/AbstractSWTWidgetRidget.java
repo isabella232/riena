@@ -105,7 +105,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		if (markerSupport == null) {
 			markerSupport = createMarkerSupport();
 			markerSupport.setRidget(this);
-			bindMarkerSupport();
+			unbindMarkerSupport();
 		}
 		if (marker instanceof MandatoryMarker) {
 			((MandatoryMarker) marker).setDisabled(isDisableMandatoryMarker());
@@ -122,10 +122,10 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	public final void setUIControl(final Object uiControl) {
 		checkUIControl(uiControl);
 		uninstallListeners();
-		bindMarkerSupport();
 		unbindUIControl();
-		this.uiControl = (Widget) uiControl;
 		unbindMarkerSupport();
+		this.uiControl = (Widget) uiControl;
+		bindMarkerSupport();
 		updateEnabled();
 		updateMarkers();
 		updateToolTip();
@@ -133,13 +133,13 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		installListeners();
 	}
 
-	private void unbindMarkerSupport() {
+	private void bindMarkerSupport() {
 		if (markerSupport != null) {
 			markerSupport.bind();
 		}
 	}
 
-	private void bindMarkerSupport() {
+	private void unbindMarkerSupport() {
 		if (markerSupport != null) {
 			markerSupport.unbind();
 		}
