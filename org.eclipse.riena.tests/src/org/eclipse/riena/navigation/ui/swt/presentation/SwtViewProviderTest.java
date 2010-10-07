@@ -40,6 +40,18 @@ public class SwtViewProviderTest extends RienaTestCase {
 		super.tearDown();
 	}
 
+	public void testGetViewUsers() {
+		final ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId1"));
+		final ISubModuleNode node2 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId2"));
+		final SwtViewId swtViewId1 = swtPresentationManager.getSwtViewId(node1);
+		swtPresentationManager.getSwtViewId(node2);
+		assertSame(swtPresentationManager.getViewUsers(swtViewId1).size(), 2);
+		node1.dispose();
+		assertSame(swtPresentationManager.getViewUsers(swtViewId1).size(), 1);
+		node2.dispose();
+		assertSame(swtPresentationManager.getViewUsers(swtViewId1).size(), 0);
+	}
+
 	public void testGetSwtViewIdSharedView() throws Exception {
 
 		final ISubModuleNode node1 = new SubModuleNode(new NavigationNodeId("testSharedViewId", "testInstanceId1"));
