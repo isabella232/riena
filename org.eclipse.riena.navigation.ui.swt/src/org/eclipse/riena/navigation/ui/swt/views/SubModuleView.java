@@ -443,10 +443,13 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	protected void createViewFacade() {
+		// add controls of parent
 		addUIControls(getParentComposite());
 		if (getController() == null) {
 			createController(getNavigationNode());
 		}
+
+		//only bind if controller is available
 		if (getController() != null) {
 			binding.injectRidgets(getController());
 		}
@@ -469,6 +472,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	protected Composite getParentComposite() {
+		// the composite created by the Workbench given to the ViewPart
 		return parentComposite;
 	}
 
