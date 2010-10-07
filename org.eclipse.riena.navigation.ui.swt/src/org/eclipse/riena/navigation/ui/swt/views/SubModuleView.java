@@ -170,11 +170,12 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		} else {
 			LNF_UPDATER.updateUIControlsAfterBind(getContentComposite());
 		}
-
+		//TODO is this really part of the the binding of the SubModuleView? NavigationSourceProvider is Menu-specific and should be handled in a context of Menus
 		activeNodeChanged(getNavigationNode());
 	}
 
 	private void activeNodeChanged(final INavigationNode<?> node) {
+		//TODO move logic to Menu 
 		if (navigationSourceProvider == null) {
 			navigationSourceProvider = getNavigationSourceProvider();
 		}
@@ -205,17 +206,22 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	@Override
 	public void createPartControl(final Composite parent) {
 		this.parentComposite = parent;
+
+		//markup for SubModuleViews. The StackPresentation uses this information for layouting
 		parent.setData(IS_SUB_MODULE_VIEW_COMPOSITE, Boolean.TRUE);
 		if (!Beans.isDesignTime()) {
+			//observe the navigation model to get activity change events
 			observeRoot();
 			final SubModuleController controller = createController(getNavigationNode());
 			if (controller != null) {
 				setPartName(controller.getNavigationNode().getLabel());
 			}
+			// the content composite is where all controls of the view are placed
 			contentComposite = createContentComposite(parent);
 		} else {
 			contentComposite = parent;
 		}
+
 		contentComposite.setData(TitlelessStackPresentation.DATA_KEY_CONTENT_COMPOSITE, true);
 		createWorkarea(contentComposite);
 
@@ -678,6 +684,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		private boolean contains(final Composite container, final Control control) {
 			boolean result = false;
 			Composite parent = control.getParent();
+			// what if the contentComposite fires the event itself?
 			while (!result && parent != null) {
 				result = container == parent;
 				parent = parent.getParent();
@@ -748,6 +755,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		@Override
 		public void nodeIdChange(final ISubModuleNode source, final NavigationNodeId oldId, final NavigationNodeId newId) {
 			if (source.equals(getNavigationNode())) {
+				//TODO: is this the right place for changing nodeId? There is no view-specific logic
 				SwtViewProvider.getInstance().replaceNavigationNodeId(source, oldId, newId);
 			}
 		}
