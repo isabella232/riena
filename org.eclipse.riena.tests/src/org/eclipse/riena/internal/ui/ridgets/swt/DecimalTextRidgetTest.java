@@ -428,12 +428,12 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 		try {
 			ridget.setMaxLength(-1);
-			fail();
-		} catch (final RuntimeException rex) {
 			ok();
+		} catch (final RuntimeException rex) {
+			fail();
 		}
 
-		expectPropertyChangeEvent(IDecimalTextRidget.PROPERTY_MAXLENGTH, Integer.valueOf(10), Integer.valueOf(5));
+		expectPropertyChangeEvent(IDecimalTextRidget.PROPERTY_MAXLENGTH, Integer.valueOf(-1), Integer.valueOf(5));
 		ridget.setMaxLength(5);
 
 		verifyPropertyChangeEvents();
