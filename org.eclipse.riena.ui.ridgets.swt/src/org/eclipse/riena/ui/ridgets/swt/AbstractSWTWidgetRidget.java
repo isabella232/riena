@@ -192,6 +192,8 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		return false;
 	}
 
+	// FIXME: this method does not check whether the MandatoryMarkers that it finds might have a disabled flag set (in the marker)
+	// we also couldnt find code that calls this method.
 	public final boolean isMandatory() {
 		return !getMarkersOfType(MandatoryMarker.class).isEmpty();
 	}
