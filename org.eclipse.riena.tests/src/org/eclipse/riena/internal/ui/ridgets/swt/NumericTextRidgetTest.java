@@ -1159,13 +1159,6 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 			ok();
 		}
 
-		try {
-			ridget.setMaxLength(-1);
-			fail();
-		} catch (final RuntimeException rex) {
-			ok();
-		}
-
 		final Integer oldValue = Integer.valueOf(ridget.getMaxLength());
 		expectPropertyChangeEvent(INumericTextRidget.PROPERTY_MAXLENGTH, oldValue, Integer.valueOf(5));
 		ridget.setMaxLength(5);
@@ -1175,6 +1168,24 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 
 		expectNoPropertyChangeEvent();
 		ridget.setMaxLength(5);
+
+		verifyPropertyChangeEvents();
+	}
+
+	public void testResetMaxLengthToUnlimited() {
+		final INumericTextRidget ridget = getRidget();
+
+		Integer oldValue = Integer.valueOf(ridget.getMaxLength());
+		expectPropertyChangeEvent(INumericTextRidget.PROPERTY_MAXLENGTH, oldValue, Integer.valueOf(5));
+		ridget.setMaxLength(5);
+		verifyPropertyChangeEvents();
+		assertEquals(5, ridget.getMaxLength());
+
+		oldValue = Integer.valueOf(ridget.getMaxLength());
+		expectPropertyChangeEvent(INumericTextRidget.PROPERTY_MAXLENGTH, oldValue, Integer.valueOf(-1));
+
+		ridget.setMaxLength(-1);
+		assertEquals(-1, ridget.getMaxLength());
 
 		verifyPropertyChangeEvents();
 	}

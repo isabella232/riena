@@ -359,7 +359,8 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	public final synchronized void setMaxLength(final int maxLength) {
-		Assert.isLegal(maxLength > 0, "maxLength must be greater than zero: " + maxLength); //$NON-NLS-1$
+		Assert.isLegal(maxLength == -1 || maxLength > 0,
+				"maxLength must be greater than zero or -1 (unlimited): " + maxLength); //$NON-NLS-1$
 		final int oldValue = this.maxLength;
 		if (oldValue != maxLength) {
 			this.maxLength = maxLength;
