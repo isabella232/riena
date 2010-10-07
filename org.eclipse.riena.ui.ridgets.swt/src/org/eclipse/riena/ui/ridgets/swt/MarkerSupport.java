@@ -192,7 +192,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 	protected void clearAllMarkers(final Control control) {
 		super.clearAllMarkers(control);
 		clearVisible(control);
-		clearDisabled(control);
 		clearError(control);
 		clearMandatory(control);
 		clearNegative(control);
@@ -200,14 +199,9 @@ public class MarkerSupport extends BasicMarkerSupport {
 	}
 
 	protected boolean initialVisible = true;
-	protected boolean initialEnabled = true;
 
 	private void clearVisible(final Control control) {
 		control.setVisible(initialVisible);
-	}
-
-	private void clearDisabled(final Control control) {
-		disabledMarkerVisualizer.updateDisabled(control, initialEnabled);
 	}
 
 	protected void clearError(final Control control) {
@@ -342,20 +336,8 @@ public class MarkerSupport extends BasicMarkerSupport {
 	}
 
 	@Override
-	public void bind() {
-		if (getUIControl() != null) {
-			//save initial state of control
-			this.initialVisible = getUIControl().isVisible();
-			this.initialEnabled = getUIControl().isEnabled();
-		}
-	}
-
-	@Override
-	public void unbind() {
-		if (getUIControl() != null) {
-			//restore initial state of control
-			clearAllMarkers(getUIControl());
-		}
+	protected void saveState() {
+		this.initialVisible = getUIControl().isVisible();
 	}
 
 	// helping classes
