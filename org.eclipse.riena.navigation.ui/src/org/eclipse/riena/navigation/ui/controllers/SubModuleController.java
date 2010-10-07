@@ -88,6 +88,12 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 */
 	public void addDefaultAction(final IRidget focusRidget, final IActionRidget action) {
 		actionManager = getWindowRidget().addDefaultAction(focusRidget, action);
+
+		// activate() can only be called, if the shell is present
+		if (actionManager != null && getWindowRidget().getUIControl() != null) {
+			actionManager.deactivate();
+			actionManager.activate();
+		}
 	}
 
 	@Override
