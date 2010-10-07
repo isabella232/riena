@@ -88,7 +88,7 @@ public interface INumericTextRidget extends ITextRidget {
 	 * throw a RuntimeException when the number of decimal digits is exceeded.
 	 * 
 	 * @param maxLength
-	 *            a value greater than 0
+	 *            a value greater than 0 or -1 if no limit is should be set
 	 * @since 2.0
 	 */
 	void setMaxLength(int maxLength);
