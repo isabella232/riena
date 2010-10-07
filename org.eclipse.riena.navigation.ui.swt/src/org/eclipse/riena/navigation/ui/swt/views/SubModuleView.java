@@ -446,7 +446,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		addUIControls(getParentComposite());
 		if (getController() == null) {
 			createController(getNavigationNode());
-		} else {
+		}
+		if (getController() != null) {
 			binding.injectRidgets(getController());
 		}
 	}
@@ -688,17 +689,6 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		}
 	}
 
-	protected String getSecondaryId() {
-		return getViewSite().getSecondaryId();
-	}
-
-	protected void unbindActiveController() {
-		//unbind
-		binding.unbind(currentController);
-		//reset controller
-		currentController = null;
-	}
-
 	/**
 	 * A listener for all submodules in the navigation tree! Needed i.e. to
 	 * support shared views. When adding a method be sure to check the node.
@@ -729,8 +719,15 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			 * First check if typeId fits. Then check if source is the current
 			 * node.
 			 */
-			return getSecondaryId().equals(SHARED_ID) && currentController != null
+			return getViewSite().getSecondaryId().equals(SHARED_ID) && currentController != null
 					&& source.equals(currentController.getNavigationNode());
+		}
+
+		protected void unbindActiveController() {
+			//unbind
+			binding.unbind(currentController);
+			//reset controller
+			currentController = null;
 		}
 
 		@Override
