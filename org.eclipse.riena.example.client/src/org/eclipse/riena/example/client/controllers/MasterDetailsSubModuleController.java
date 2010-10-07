@@ -18,8 +18,6 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
-import org.eclipse.riena.navigation.INavigationNode;
-import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
@@ -131,20 +129,6 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 			final IActionRidget actionApply = master.getRidget(IActionRidget.class,
 					MasterDetailsComposite.BIND_ID_APPLY);
 			addDefaultAction(master, actionApply);
-
-			// On first activation suggest a blank new entry
-			getNavigationNode().addSimpleListener(new SimpleNavigationNodeAdapter() {
-				private boolean firstRun = true;
-
-				@Override
-				public void afterActivated(final INavigationNode<?> source) {
-					if (firstRun) {
-						firstRun = false;
-						master.suggestNewEntry();
-					}
-				}
-			});
-			setInitialFocus(master.getRidget("first")); //$NON-NLS-1$
 		}
 
 		final IMasterDetailsRidget master3 = (IMasterDetailsRidget) getRidget("master3"); //$NON-NLS-1$
