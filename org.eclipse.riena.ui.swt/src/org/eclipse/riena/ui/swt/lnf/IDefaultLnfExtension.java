@@ -17,7 +17,7 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 /**
  * Extension interface for a LnF.
  */
-@ExtensionInterface(id = "defaultlnf")
+@ExtensionInterface(id = "defaultLnf")
 public interface IDefaultLnfExtension {
 
 	/**

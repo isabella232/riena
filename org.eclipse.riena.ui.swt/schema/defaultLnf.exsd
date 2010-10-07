@@ -3,7 +3,7 @@
 <schema targetNamespace="org.eclipse.riena.ui.swt" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.eclipse.riena.ui.swt" id="org.eclipse.riena.ui.swt.defaultlnf" name="org.eclipse.riena.ui.swt.defaultlnf"/>
+         <meta.schema plugin="org.eclipse.riena.ui.swt" id="org.eclipse.riena.ui.swt.defaultLnf" name="org.eclipse.riena.ui.swt.defaultLnf"/>
       </appInfo>
       <documentation>
          Extension to define the LnF used in the Application. This will be overruled if another LnF is set as a system property.
