@@ -127,7 +127,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 
 	public void createInitialLayout(final IPageLayout layout) {
 		addUIControls();
-		subApplicationNode = (SubApplicationNode) locateSubApplication(layout.getDescriptor().getId());
+		subApplicationNode = (SubApplicationNode) locateSubApplication(layout);
 		subApplicationController = createController(subApplicationNode);
 		initializeListener(subApplicationController);
 		bind(subApplicationNode);
@@ -475,8 +475,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		return (item.getStyle() & SWT.SEPARATOR) == SWT.SEPARATOR;
 	}
 
-	private ISubApplicationNode locateSubApplication(final String id) {
-		return SwtViewProvider.getInstance().getNavigationNode(id, ISubApplicationNode.class);
+	protected ISubApplicationNode locateSubApplication(final IPageLayout layout) {
+		return SwtViewProvider.getInstance().getNavigationNode(layout.getDescriptor().getId(),
+				ISubApplicationNode.class);
 	}
 
 	// helping classes
@@ -507,10 +508,18 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		}
 	}
 
+	/*
+	 * Delegates to the SwtViewProvider to locate all View users for the given
+	 * SetViewId
+	 */
+	protected int getViewUserCount(final SwtViewId id) {
+		return SwtViewProvider.getInstance().getViewUsers(id).size();
+	}
+
 	/**
 	 * After a sub-module node was activated, the corresponding view is shown.
 	 */
-	private static class MySubModuleNodeListener extends SubModuleNodeListener {
+	private class MySubModuleNodeListener extends SubModuleNodeListener {
 		private boolean navigationUp = false;
 
 		@Override
@@ -551,7 +560,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 				 * invisible as this collides with the marker concept.
 				 */
 				if (/* Allways hide "unshared" views */!SubModuleView.SHARED_ID.equals(id.getSecondary())
-						|| /* no more instances needed of the given shared view */getSharedCount(id) < 1) {
+						|| /* no more instances needed of the given shared view */getViewUserCount(id) < 1) {
 					hideView(id);
 				}
 				final SwtViewProvider viewProvider = SwtViewProvider.getInstance();
@@ -562,14 +571,6 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 					LOGGER.log(LogService.LOG_ERROR, "Error disposing node " + source + ": " + amf.getMessage()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			}
-		}
-
-		/*
-		 * Delegates to the SwtViewProvider to locate all View users for the
-		 * given SetViewId
-		 */
-		private int getSharedCount(final SwtViewId id) {
-			return SwtViewProvider.getInstance().getViewUsers(id).size();
 		}
 
 		protected String createNextId() {
@@ -593,98 +594,6 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			showView(NavigationViewPart.ID, secId);
 		}
 
-		/**
-		 * Returns the currently active page.
-		 * 
-		 * @return active page
-		 */
-		private IWorkbenchPage getActivePage() {
-			return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		}
-
-		/**
-		 * Returns the view ID of the given sub-module node.
-		 * 
-		 * @param source
-		 *            sub-module node
-		 * @return view ID
-		 */
-		private SwtViewId getViewId(final ISubModuleNode node) {
-			return SwtViewProvider.getInstance().getSwtViewId(node);
-		}
-
-		/**
-		 * Hides the view in the active page.
-		 * 
-		 * @param id
-		 *            the id of the view extension to use
-		 * @param secondaryId
-		 *            the secondary id to use
-		 */
-		private void hideView(final String id, final String secondary) {
-			final IViewReference viewRef = getActivePage().findViewReference(id, secondary);
-			if (viewRef != null) {
-				final IViewPart view = viewRef.getView(false);
-				if (view instanceof INavigationNodeView<?>) {
-					((INavigationNodeView<?>) view).unbind();
-				}
-				getActivePage().hideView(view);
-			}
-		}
-
-		private void hideView(final SwtViewId id) {
-			hideView(id.getId(), id.getSecondary());
-		}
-
-		private void showView(final SwtViewId id) {
-			showView(id.getId(), id.getSecondary());
-		}
-
-		/**
-		 * Shows a view in the active page.
-		 * 
-		 * @param id
-		 *            the id of the view extension to use
-		 * @param secondaryId
-		 *            the secondary id to use
-		 */
-		private void showView(final String id, final String secondary) {
-			final IWorkbenchPage page = getActivePage();
-			final IViewReference viewRef = page.findViewReference(id, secondary);
-			if (viewRef != null) {
-				((WorkbenchPage) page).getActivePerspective().bringToTop(viewRef);
-			}
-		}
-
-		private IViewReference prepareView(final SwtViewId id) {
-			return prepareView(id.getId(), id.getSecondary());
-		}
-
-		/**
-		 * Prepares a view so that is can be shown.
-		 * 
-		 * @param id
-		 *            the id of the view extension to use
-		 * @param secondary
-		 *            the secondary id to use
-		 * @return the view reference, or <code>null</code> if none is found
-		 */
-		private IViewReference prepareView(final String id, final String secondary) {
-
-			try {
-				final IWorkbenchPage page = getActivePage();
-				// open view but don't activate it and don't bring it to top
-				page.showView(id, secondary, IWorkbenchPage.VIEW_VISIBLE);
-				return page.findViewReference(id, secondary);
-			} catch (final PartInitException exc) {
-				final String msg = String.format("Failed to prepare/show view: %s, %s", id, secondary); //$NON-NLS-1$
-				LOGGER.log(0, msg, exc);
-			}
-
-			return null;
-
-		}
-
 		//		private boolean isViewOfActiveNode(IViewReference viewRef) {
 		//			IViewPart view = viewRef.getView(false);
 		//
@@ -696,6 +605,98 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		//			}
 		//
 		//		}
+
+	}
+
+	/**
+	 * Returns the view ID of the given sub-module node.
+	 * 
+	 * @param source
+	 *            sub-module node
+	 * @return view ID
+	 */
+	protected SwtViewId getViewId(final ISubModuleNode node) {
+		return SwtViewProvider.getInstance().getSwtViewId(node);
+	}
+
+	/**
+	 * Returns the currently active page.
+	 * 
+	 * @return active page
+	 */
+	private IWorkbenchPage getActivePage() {
+		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+	}
+
+	/**
+	 * Hides the view in the active page.
+	 * 
+	 * @param id
+	 *            the id of the view extension to use
+	 * @param secondaryId
+	 *            the secondary id to use
+	 */
+	private void hideView(final String id, final String secondary) {
+		final IViewReference viewRef = getActivePage().findViewReference(id, secondary);
+		if (viewRef != null) {
+			final IViewPart view = viewRef.getView(false);
+			if (view instanceof INavigationNodeView<?>) {
+				((INavigationNodeView<?>) view).unbind();
+			}
+			getActivePage().hideView(view);
+		}
+	}
+
+	protected void hideView(final SwtViewId id) {
+		hideView(id.getId(), id.getSecondary());
+	}
+
+	private void showView(final SwtViewId id) {
+		showView(id.getId(), id.getSecondary());
+	}
+
+	/**
+	 * Shows a view in the active page.
+	 * 
+	 * @param id
+	 *            the id of the view extension to use
+	 * @param secondaryId
+	 *            the secondary id to use
+	 */
+	private void showView(final String id, final String secondary) {
+		final IWorkbenchPage page = getActivePage();
+		final IViewReference viewRef = page.findViewReference(id, secondary);
+		if (viewRef != null) {
+			((WorkbenchPage) page).getActivePerspective().bringToTop(viewRef);
+		}
+	}
+
+	private IViewReference prepareView(final SwtViewId id) {
+		return prepareView(id.getId(), id.getSecondary());
+	}
+
+	/**
+	 * Prepares a view so that is can be shown.
+	 * 
+	 * @param id
+	 *            the id of the view extension to use
+	 * @param secondary
+	 *            the secondary id to use
+	 * @return the view reference, or <code>null</code> if none is found
+	 */
+	private IViewReference prepareView(final String id, final String secondary) {
+
+		try {
+			final IWorkbenchPage page = getActivePage();
+			// open view but don't activate it and don't bring it to top
+			page.showView(id, secondary, IWorkbenchPage.VIEW_VISIBLE);
+			return page.findViewReference(id, secondary);
+		} catch (final PartInitException exc) {
+			final String msg = String.format("Failed to prepare/show view: %s, %s", id, secondary); //$NON-NLS-1$
+			LOGGER.log(0, msg, exc);
+		}
+
+		return null;
 
 	}
 

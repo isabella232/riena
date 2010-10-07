@@ -23,15 +23,24 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.IPageLayout;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.MenuItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.ToolItemRidget;
+import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.ModuleGroupNodeListener;
+import org.eclipse.riena.navigation.model.ModuleGroupNode;
+import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
+import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.component.MenuCoolBarComposite;
+import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractRidgetController;
@@ -45,7 +54,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public class SubApplicationViewTest extends TestCase {
 
 	private Shell shell;
-	private SubApplicationView view;
+	private TestSubApplicationView view;
 	private SubApplicationNode node;
 
 	@Override
@@ -281,11 +290,106 @@ public class SubApplicationViewTest extends TestCase {
 
 	}
 
+	public void testDisposeHandling() throws Exception {
+		node.setNavigationNodeController(new SubApplicationController(node));
+		final ModuleGroupNode mg = new ModuleGroupNode();
+		node.addChild(mg);
+		final ModuleNode m = new ModuleNode();
+		mg.addChild(m);
+		view.createInitialLayout(null);
+		final SubModuleNode sm1 = new SubModuleNode(new NavigationNodeId("x"));
+		m.addChild(sm1);
+		final SubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("y"));
+		m.addChild(sm2);
+		final SubModuleNode sm3 = new SubModuleNode(new NavigationNodeId("z"));
+		m.addChild(sm3);
+		view.viewUserCount = 1;
+		view.providedId = new SwtViewId("test:test");
+		view.hiddenId = null;
+		sm1.dispose();
+		assertSame(view.providedId, view.hiddenId);
+
+		view.viewUserCount = 0;
+		view.providedId = new SwtViewId("test:SHARED");
+		view.hiddenId = null;
+		sm2.dispose();
+		assertSame(view.providedId, view.hiddenId);
+
+		view.viewUserCount = 1;
+		view.providedId = new SwtViewId("test:SHARED");
+		view.hiddenId = null;
+		sm2.dispose();
+		assertSame(null, view.hiddenId);
+
+	}
+
 	private class TestSubApplicationView extends SubApplicationView {
+
+		int viewUserCount = 0;
+		SwtViewId hiddenId = null;
+		SwtViewId providedId = null;
 
 		@Override
 		public SubApplicationNode getNavigationNode() {
 			return node;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.riena.navigation.ui.swt.views.SubApplicationView#
+		 * getSharedCount
+		 * (org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId)
+		 */
+		@Override
+		protected int getViewUserCount(final SwtViewId id) {
+			return viewUserCount;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.riena.navigation.ui.swt.views.SubApplicationView#hideView
+		 * (org.eclipse.riena.navigation.ui.swt.presentation.SwtViewId)
+		 */
+		@Override
+		protected void hideView(final SwtViewId id) {
+			hiddenId = id;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.riena.navigation.ui.swt.views.SubApplicationView#doBaseLayout
+		 * (org.eclipse.ui.IPageLayout)
+		 */
+		@Override
+		protected void doBaseLayout(final IPageLayout layout) {
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.riena.navigation.ui.swt.views.SubApplicationView#
+		 * locateSubApplication(org.eclipse.ui.IPageLayout)
+		 */
+		@Override
+		protected ISubApplicationNode locateSubApplication(final IPageLayout layout) {
+			return node;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.riena.navigation.ui.swt.views.SubApplicationView#getViewId
+		 * (org.eclipse.riena.navigation.ISubModuleNode)
+		 */
+		@Override
+		protected SwtViewId getViewId(final ISubModuleNode node) {
+			return providedId;
 		}
 
 	}
