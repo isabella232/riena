@@ -325,25 +325,22 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
+	/**
+	 * @deprecated use {@code this.suggestNewEntry(true)}
+	 */
+	@Deprecated
 	public void suggestNewEntry() {
 		final Object entry = delegate.createMasterEntry();
-		suggestNewEntry(entry);
+		suggestNewEntry(entry, true);
+	}
+
+	public void suggestNewEntry(final boolean treatAsDirty) {
+		final Object entry = delegate.createMasterEntry();
+		suggestNewEntry(entry, treatAsDirty);
 	}
 
 	public void suggestNewEntry(final Object entry) {
-		ignoreChanges = true;
-		try {
-			clearTableSelection();
-			editable = entry;
-			delegate.prepareItemSelected(editable);
-			setEnabled(true, true);
-			isSuggestedEditable = true;
-			updateDetails(editable);
-			ignoreChanges = true;
-			delegate.itemSelected(editable);
-		} finally {
-			ignoreChanges = false;
-		}
+		suggestNewEntry(entry, true);
 	}
 
 	public final void updateApplyButton() {
@@ -699,6 +696,22 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		clearTableSelection();
 		if (hasRemoveButton()) {
 			getRemoveButtonRidget().setEnabled(true);
+		}
+	}
+
+	private void suggestNewEntry(final Object entry, final boolean treatAsDirty) {
+		ignoreChanges = true;
+		try {
+			clearTableSelection();
+			editable = entry;
+			delegate.prepareItemSelected(editable);
+			setEnabled(true, true);
+			isSuggestedEditable = treatAsDirty;
+			updateDetails(editable);
+			ignoreChanges = true;
+			delegate.itemSelected(editable);
+		} finally {
+			ignoreChanges = false;
 		}
 	}
 

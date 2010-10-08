@@ -312,8 +312,24 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * will be disabled until the user edits the contents.
 	 * 
 	 * @since 3.0
+	 * @deprecated use {@code this.suggestNewEntry(true)}
 	 */
+	@Deprecated
 	void suggestNewEntry();
+
+	/**
+	 * Suggest a blank object &ndash; obtained from
+	 * {@link IMasterDetailsDelegate#createWorkingCopy()}) &ndash; as a 'new'
+	 * entry. It will be made editable in the details area. The apply action
+	 * will be disabled until the user edits the contents.
+	 * 
+	 * @param treatAsDirty
+	 *            true, if the details area should be considered dirty (i.e.
+	 *            edited), false otherwise.
+	 * 
+	 * @since 3.0
+	 */
+	void suggestNewEntry(boolean treatAsDirty);
 
 	/**
 	 * Suggest the given object as a 'new' entry. It will be made editable in
