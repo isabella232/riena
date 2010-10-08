@@ -22,8 +22,12 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
 /**
- * Get ciphers for simple symmetric encryption/decryption. Based on code from:<br>
+ * Get ciphers for simple symmetric encryption/decryption.
+ * <p>
+ * Based on code from:
  * http://www.informit.com/guides/content.asp?g=java&seqNum=31&rl=1
+ * 
+ * @since 3.0
  */
 public final class CipherUtils {
 

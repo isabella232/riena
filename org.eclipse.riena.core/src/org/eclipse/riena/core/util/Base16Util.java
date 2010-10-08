@@ -14,6 +14,7 @@ package org.eclipse.riena.core.util;
  * Base 16 conversions between strings and bytes.
  * 
  * @author Stefan Liebig
+ * @since 3.0
  */
 public final class Base16Util {
 
