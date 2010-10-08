@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleController;
+import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleController3;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
@@ -27,10 +27,11 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Demonstrates use of a master/details ridget.
+ * A master/details ridget with 'direct writing' - edited details are applied
+ * automatically to the model.
  * 
  * @see IMasterDetailsRidget
- * @see MasterDetailsSubModuleController
+ * @see MasterDetailsSubModuleController3
  */
 public class MasterDetailsSubModuleView3 extends SubModuleView {
 

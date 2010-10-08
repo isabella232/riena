@@ -17,7 +17,7 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
-import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
+import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView3;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
@@ -29,10 +29,11 @@ import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
 
 /**
- * Demonstrates use of a master/details ridget.
+ * A master/details ridget with 'direct writing' - edited details are applied
+ * automatically to the model.
  * 
  * @see IMasterDetailsRidget
- * @see MasterDetailsSubModuleView
+ * @see MasterDetailsSubModuleView3
  */
 public class MasterDetailsSubModuleController3 extends SubModuleController {
 
