@@ -56,10 +56,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 	private IVisualContextManager contextLocator;
 
-	/*
-	 * TODO locate the display using the uiControl
-	 */
-	Display display = Display.getCurrent();
+	private Display display;
 
 	public StatuslineUIProcessRidget() {
 		Wire.instance(processManager).andStart(Activator.getDefault().getContext());
@@ -278,12 +275,15 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		AbstractSWTRidget.assertType(uiControl, StatuslineUIProcess.class);
 	}
 
-	protected void bindUIControl() {
-		//nop
+	protected synchronized void bindUIControl() {
+		final StatuslineUIProcess control = getUIControl();
+		if (control != null) {
+			display = control.getDisplay();
+		}
 	}
 
-	protected void unbindUIControl() {
-		//nop
+	protected synchronized void unbindUIControl() {
+		display = null;
 	}
 
 	public String getToolTipText() {
@@ -355,12 +355,12 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	/**
 	 * updates the user interface taking care of thread serialization
 	 */
-	private void updateUserInterface() {
+	private synchronized void updateUserInterface() {
 		/*
 		 * Consider the client closing while executing this method. The display
 		 * may be disposed!
 		 */
-		if (display.isDisposed()) {
+		if (display == null || display.isDisposed()) {
 			return;
 		}
 		if (display.getThread().equals(Thread.currentThread())) {
@@ -368,14 +368,11 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 			updateBaseAndList();
 			return;
 		}
-
 		// we are not on the user interface thread
 		display.asyncExec(new Runnable() {
-
 			public void run() {
 				updateBaseAndList();
 			}
-
 		});
 	}
 
