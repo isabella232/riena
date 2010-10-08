@@ -104,12 +104,12 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	Object getSelection();
 
 	/**
-	 * Return true if the 'Apply' button enables on the condition that all
+	 * Return true if the 'Apply' action enables on the condition that all
 	 * ridgets in the Details are have <b>no</b> error markers.
 	 * <p>
 	 * The default setting for this option is false.
 	 * 
-	 * @return true if the 'Apply' button enables on the condition that all
+	 * @return true if the 'Apply' action enables on the condition that all
 	 *         ridgets in the Details are have <b>no</b> error markers;
 	 *         otherwise false
 	 * 
@@ -118,12 +118,12 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	boolean isApplyRequiresNoErrors();
 
 	/**
-	 * Return true if the 'Apply' button enables on the condition that all
+	 * Return true if the 'Apply' action enables on the condition that all
 	 * ridgets in the Details are have <b>no</b> mandatory markers.
 	 * <p>
 	 * The default setting for this option is false.
 	 * 
-	 * @return true if the 'Apply' button enables on the condition that all
+	 * @return true if the 'Apply' action enables on the condition that all
 	 *         ridgets in the Details are have <b>no</b> mandatory markers;
 	 *         otherwise false
 	 * 
@@ -158,13 +158,14 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	boolean isDirectWriting();
 
 	/**
-	 * When set to true, the Remove button can be used to abort editing of a new
-	 * entry. When aborting, the entry selected before pressing New will be
-	 * selected.
+	 * When set to true, the 'Remove' action can be used to abort editing of a
+	 * new entry. When aborting, the entry selected before pressing New will be
+	 * selected. If the 'Remove' action is unavailable, the method returns false
+	 * regardless of the setting.
 	 * <p>
 	 * The default setting for this option is false.
 	 * 
-	 * @return true if the Remove button can be used to aborting editing of a
+	 * @return true if the Remove action can be used to aborting editing of a
 	 *         new entry, false otherwise.
 	 * 
 	 * @since 3.0
@@ -172,7 +173,22 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	boolean isRemoveCancelsNew();
 
 	/**
-	 * When set to true, the 'Apply' button will only enable when all ridgets in
+	 * Return true, if a sucessfull 'Remove' triggers the 'New' action. If the
+	 * 'Remove' action is unavailable, the method returns false regardless of
+	 * the setting.
+	 * <p>
+	 * The default setting for this option is false.
+	 * 
+	 * @return Return true, if a sucessfull 'Remove' triggers the 'New' action.
+	 *         * If the 'Remove' action is unavailable, the method returns false
+	 *         regardless of the setting.
+	 * 
+	 * @since 3.0
+	 */
+	boolean isRemoveTriggersNew();
+
+	/**
+	 * When set to true, the 'Apply' action will only enable when all ridgets in
 	 * the Details area have <b>no</b> error markers.
 	 * <p>
 	 * The default setting for this option is false.
@@ -185,7 +201,7 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	void setApplyRequiresNoErrors(boolean requiresNoErrors);
 
 	/**
-	 * When set to true, the 'Apply' button will only enable when all ridgets in
+	 * When set to true, the 'Apply' action will only enable when all ridgets in
 	 * the Details area have <b>no</b> mandatory markers.
 	 * <p>
 	 * The default setting for this option is false.
@@ -241,7 +257,7 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * When direct writing is enabled, changes in the details area will be
 	 * immediately and automatically applied back to the model. When adding new
 	 * rows, these will be immediately added to the table. Since there is no
-	 * need to apply, the 'Apply' button will not be shown.
+	 * need to apply, the 'Apply' action will not be shown.
 	 * <p>
 	 * The default setting for direct writing is false.
 	 * 
@@ -253,8 +269,8 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	void setDirectWriting(boolean directWriting);
 
 	/**
-	 * When set to true, the Remove button can be used to abort editing of a new
-	 * entry. When aborting, the entry selected before pressing New will be
+	 * When set to true, the 'Remove' action can be used to abort editing of a
+	 * new entry. When aborting, the entry selected before pressing New will be
 	 * selected.
 	 * <p>
 	 * The default setting for this option is false.
@@ -265,6 +281,19 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * @since 3.0
 	 */
 	void setRemoveCancelsNew(boolean cancelsNew);
+
+	/**
+	 * When set to true, a sucessfull 'Remove' will trigger a 'New'. This will
+	 * only happen if the 'Remove' action is available.
+	 * <p>
+	 * The default setting for this option is false.
+	 * 
+	 * @param triggersNew
+	 *            The new settings for this option.
+	 * 
+	 * @since 3.0
+	 */
+	void setRemoveTriggersNew(boolean triggersNew);
 
 	/**
 	 * Set the new selection. This behaves exactly like an interactive selection
@@ -279,7 +308,7 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	/**
 	 * Suggest a blank object &ndash; obtained from
 	 * {@link IMasterDetailsDelegate#createWorkingCopy()}) &ndash; as a 'new'
-	 * entry. It will be made editable in the details area. The apply button
+	 * entry. It will be made editable in the details area. The apply action
 	 * will be disabled until the user edits the contents.
 	 * 
 	 * @since 3.0
@@ -288,7 +317,7 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 
 	/**
 	 * Suggest the given object as a 'new' entry. It will be made editable in
-	 * the details area. The apply button will enable.
+	 * the details area. The apply action will enable.
 	 * 
 	 * @param entry
 	 *            a non-null object. Note that when the user invokes the 'Apply'
@@ -301,9 +330,9 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	void suggestNewEntry(Object entry);
 
 	/**
-	 * Toggles the 'Apply' button state, according to the presence of changes in
+	 * Toggles the 'Apply' action state, according to the presence of changes in
 	 * the details area. It will use delegate.isChanged(...) to compare the data
-	 * in the details area with the original and enable the 'Apply' button if it
+	 * in the details area with the original and enable the 'Apply' action if it
 	 * differs.
 	 * <p>
 	 * Use this method when the data in the details has been modified without

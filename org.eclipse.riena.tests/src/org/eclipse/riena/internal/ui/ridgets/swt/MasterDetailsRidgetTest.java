@@ -1240,7 +1240,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	/**
 	 * As per Bug 327286.
 	 */
-	public void testRemoveCancelsNew() {
+	public void testSetRemoveCancelsNew() {
 		final MasterDetailsRidget ridget = getRidget();
 
 		assertFalse(ridget.isRemoveCancelsNew());
@@ -1367,6 +1367,153 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		assertFalse(ridget.isRemoveCancelsNew());
 		assertFalse(widget.getButtonRemove().isEnabled());
+	}
+
+	/**
+	 * As per Bug 327286.
+	 */
+	public void testRemoveCancelsNewWhenRemoveButtonDoesNotExist() {
+		final boolean isTesting = RienaStatus.isTest();
+		// disable the ridget "auto-creation" for this test
+		System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false");
+		try {
+			final IMasterDetailsRidget ridget = (IMasterDetailsRidget) createRidget();
+			ridget.setUIControl(new MDWidget(getShell(), SWT.NONE) {
+				@Override
+				public Button createButtonRemove(final Composite parent) {
+					return null;
+				}
+			});
+			ridget.setRemoveCancelsNew(true);
+
+			assertFalse(ridget.isRemoveCancelsNew());
+		} finally {
+			System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, String.valueOf(isTesting));
+		}
+	}
+
+	public void testSetRemoveTriggersNew() {
+		final MasterDetailsRidget ridget = getRidget();
+
+		assertFalse(ridget.isRemoveTriggersNew());
+
+		ridget.setRemoveTriggersNew(true);
+
+		assertTrue(ridget.isRemoveTriggersNew());
+
+		ridget.setRemoveTriggersNew(false);
+
+		assertFalse(ridget.isRemoveTriggersNew());
+	}
+
+	public void testRemoveTriggersNew() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		bindToModel(true);
+		ridget.setRemoveTriggersNew(true);
+
+		final MDBean first = input.get(0);
+		ridget.setSelection(first);
+
+		assertSame(first, ridget.getSelection());
+		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.getButtonRemove().isEnabled());
+
+		final int oldSize = input.size();
+		clickRemove(ridget);
+
+		assertEquals(oldSize, input.size() + 1);
+		assertNull(ridget.getSelection());
+		assertEquals("", widget.txtColumn1.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertFalse(widget.getButtonRemove().isEnabled());
+	}
+
+	public void testRemoveCancelsNewAndThenTriggersNewWithPreviousSelection() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		bindToModel(true);
+		ridget.setRemoveCancelsNew(true);
+		ridget.setRemoveTriggersNew(true);
+
+		final MDBean first = input.get(0);
+		ridget.setSelection(first);
+
+		assertSame(first, ridget.getSelection());
+		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.getButtonRemove().isEnabled());
+
+		ridget.handleAdd();
+
+		assertNull(ridget.getSelection());
+		assertEquals("", widget.txtColumn1.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.getButtonRemove().isEnabled());
+
+		clickRemove(ridget);
+
+		assertSame(first, ridget.getSelection());
+		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.getButtonRemove().isEnabled());
+
+		final int oldSize = input.size();
+		clickRemove(ridget);
+
+		assertEquals(oldSize, input.size() + 1);
+
+		// TODO [ev] DRY
+	}
+
+	public void testRemoveCancelsNewAndThenTriggersNewWithNoPreviousSelection() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		bindToModel(true);
+		ridget.setRemoveCancelsNew(true);
+		ridget.setRemoveTriggersNew(true);
+
+		ridget.setSelection(null);
+
+		assertNull(ridget.getSelection());
+		assertEquals("", widget.txtColumn1.getText());
+		assertFalse(widget.txtColumn1.isEnabled());
+		assertFalse(widget.getButtonRemove().isEnabled());
+
+		ridget.handleAdd();
+
+		assertNull(ridget.getSelection());
+		assertEquals("", widget.txtColumn1.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.getButtonRemove().isEnabled());
+
+		clickRemove(ridget);
+
+		assertNull(ridget.getSelection());
+		assertEquals("", widget.txtColumn1.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.getButtonRemove().isEnabled());
+	}
+
+	public void testRemoveTriggersNewWhenRemoveButtonDoesNotExist() {
+		final boolean isTesting = RienaStatus.isTest();
+		// disable the ridget "auto-creation" for this test
+		System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false");
+		try {
+			final IMasterDetailsRidget ridget = (IMasterDetailsRidget) createRidget();
+			ridget.setUIControl(new MDWidget(getShell(), SWT.NONE) {
+				@Override
+				public Button createButtonRemove(final Composite parent) {
+					return null;
+				}
+			});
+			ridget.setRemoveTriggersNew(true);
+
+			assertFalse(ridget.isRemoveTriggersNew());
+		} finally {
+			System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, String.valueOf(isTesting));
+		}
 	}
 
 	// helping methods

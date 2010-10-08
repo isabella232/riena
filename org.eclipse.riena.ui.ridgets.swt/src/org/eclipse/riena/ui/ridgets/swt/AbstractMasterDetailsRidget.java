@@ -82,8 +82,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	 */
 	private boolean applyRequiresNoMandatories;
 	/**
-	 * If true, successful completion of an 'apply' operation will trigger
-	 * creating a new entry.
+	 * If true, successful completion of an 'Apply' action will trigger creating
+	 * a new entry.
 	 */
 	private boolean applyTriggersNew;
 	/**
@@ -105,11 +105,16 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	 */
 	private boolean isDirectWriting;
 	/**
-	 * If true, the Remove button will be enabled while editing a new entry.
-	 * Hittuing Remove will abort editing the new entry and restore the last
+	 * If true, the 'Remove' action will be enabled while editing a new entry.
+	 * Hitting Remove will abort editing the new entry and restore the last
 	 * selection.
 	 */
 	private boolean removeCancelsNew;
+	/**
+	 * If true, successful completion of an 'Remove' action will trigger
+	 * creating a new entry.
+	 */
+	private boolean removeTriggersNew;
 	/**
 	 * If removeCancelsNew is enabled, this variable stores the element that was
 	 * selected before pressing 'New'. Null if no selection is stored.
@@ -258,7 +263,11 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	public boolean isRemoveCancelsNew() {
-		return removeCancelsNew;
+		return removeCancelsNew && hasRemoveButton();
+	}
+
+	public boolean isRemoveTriggersNew() {
+		return removeTriggersNew && hasRemoveButton();
 	}
 
 	public void setApplyRequiresNoErrors(final boolean requiresNoErrors) {
@@ -292,6 +301,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	public void setRemoveCancelsNew(final boolean cancelsNew) {
 		removeCancelsNew = cancelsNew;
+	}
+
+	public void setRemoveTriggersNew(final boolean triggersNew) {
+		removeTriggersNew = triggersNew;
 	}
 
 	public void setDirectWriting(final boolean directWriting) {
@@ -679,7 +692,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		Assert.isTrue(removeCancelsNew);
 		final Object tableSelection = getTableSelection();
 		if (preNewSelection == null || tableSelection != null) {
-			// the clause above ensures the last selection is kept, if New button
+			// the clause above ensures the last selection is kept, if 'New' button
 			// is pressed several times.
 			preNewSelection = new StoredSelection(tableSelection);
 		}
@@ -716,7 +729,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			delegate.itemCreated(editable);
 			setEnabled(false, true);
 			updateDetails(editable);
-			if (removeCancelsNew) {
+			if (isRemoveCancelsNew()) {
 				storePreNewSelection();
 			} else {
 				clearTableSelection();
@@ -768,8 +781,14 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			getRemoveButtonRidget().setEnabled(false);
 		}
 		final Object oldSelection = preNewSelection.getSelection();
-		setSelection(oldSelection);
-		clearPreNewSelection();
+		if (oldSelection == null && !isDirectWriting() && isRemoveTriggersNew()) {
+			clearPreNewSelection();
+			handleAdd(); // automatically hit the 'new/add' button
+			setFocusToDetails();
+		} else {
+			setSelection(oldSelection);
+			clearPreNewSelection();
+		}
 	}
 
 	/**
@@ -785,6 +804,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		getTableRidget().updateFromModel();
 		setEnabled(false, false);
 		delegate.itemRemoved(selection);
+		if (!isDirectWriting && isRemoveTriggersNew()) {
+			handleAdd(); // automatically hit the 'new/add' button
+			setFocusToDetails();
+		}
 	}
 
 	// helping classes
