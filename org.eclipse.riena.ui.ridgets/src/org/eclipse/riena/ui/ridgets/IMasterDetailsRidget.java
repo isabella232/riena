@@ -104,17 +104,6 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	Object getSelection();
 
 	/**
-	 * Returns the directWriting setting. The default is false.
-	 * <p>
-	 * See {@link #setDirectWriting(boolean)} for details.
-	 * 
-	 * @return true if 'directWriting' is enabled; otherwise false
-	 * 
-	 * @since 1.2
-	 */
-	boolean isDirectWriting();
-
-	/**
 	 * Return true if the 'Apply' button enables on the condition that all
 	 * ridgets in the Details are have <b>no</b> error markers.
 	 * <p>
@@ -156,6 +145,31 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * @since 2.0
 	 */
 	boolean isApplyTriggersNew();
+
+	/**
+	 * Returns the directWriting setting. The default is false.
+	 * <p>
+	 * The default setting for direct writing is false.
+	 * 
+	 * @return true if 'directWriting' is enabled; otherwise false
+	 * 
+	 * @since 1.2
+	 */
+	boolean isDirectWriting();
+
+	/**
+	 * When set to true, the Remove button can be used to abort editing of a new
+	 * entry. When aborting, the entry selected before pressing New will be
+	 * selected.
+	 * <p>
+	 * The default setting for this option is false.
+	 * 
+	 * @return true if the Remove button can be used to aborting editing of a
+	 *         new entry, false otherwise.
+	 * 
+	 * @since 3.0
+	 */
+	boolean isRemoveCancelsNew();
 
 	/**
 	 * When set to true, the 'Apply' button will only enable when all ridgets in
@@ -237,6 +251,20 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * @since 1.2
 	 */
 	void setDirectWriting(boolean directWriting);
+
+	/**
+	 * When set to true, the Remove button can be used to abort editing of a new
+	 * entry. When aborting, the entry selected before pressing New will be
+	 * selected.
+	 * <p>
+	 * The default setting for this option is false.
+	 * 
+	 * @param cancelsNew
+	 *            the new setting for this option
+	 * 
+	 * @since 3.0
+	 */
+	void setRemoveCancelsNew(boolean cancelsNew);
 
 	/**
 	 * Set the new selection. This behaves exactly like an interactive selection

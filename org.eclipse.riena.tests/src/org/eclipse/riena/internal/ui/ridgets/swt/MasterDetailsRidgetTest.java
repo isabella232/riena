@@ -37,6 +37,7 @@ import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ICompositeRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -1236,6 +1237,138 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
 	}
 
+	/**
+	 * As per Bug 327286.
+	 */
+	public void testRemoveCancelsNew() {
+		final MasterDetailsRidget ridget = getRidget();
+
+		assertFalse(ridget.isRemoveCancelsNew());
+
+		ridget.setRemoveCancelsNew(true);
+
+		assertTrue(ridget.isRemoveCancelsNew());
+
+		ridget.setRemoveCancelsNew(false);
+
+		assertFalse(ridget.isRemoveCancelsNew());
+	}
+
+	/**
+	 * As per Bug 327286.
+	 */
+	public void testRemoveCancelsNewWithPreviousSelection() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		bindToModel(true);
+		ridget.setRemoveCancelsNew(true);
+
+		final MDBean first = input.get(0);
+		ridget.setSelection(first);
+
+		assertSame(first, ridget.getSelection());
+		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.getButtonRemove().isEnabled());
+
+		ridget.handleAdd();
+
+		assertNull(ridget.getSelection());
+		assertEquals("", widget.txtColumn1.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.getButtonRemove().isEnabled());
+
+		clickRemove(ridget);
+
+		assertSame(first, ridget.getSelection());
+		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.getButtonRemove().isEnabled());
+
+		final int oldSize = input.size();
+		clickRemove(ridget);
+
+		assertEquals(oldSize, input.size() + 1);
+	}
+
+	/**
+	 * As per Bug 327286.
+	 */
+	public void testRemoveCancelsNewWithNoPreviousSelection() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		bindToModel(true);
+		ridget.setRemoveCancelsNew(true);
+
+		ridget.setSelection(null);
+
+		assertNull(ridget.getSelection());
+		assertEquals("", widget.txtColumn1.getText());
+		assertFalse(widget.txtColumn1.isEnabled());
+		assertFalse(widget.getButtonRemove().isEnabled());
+
+		ridget.handleAdd();
+
+		assertNull(ridget.getSelection());
+		assertEquals("", widget.txtColumn1.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.getButtonRemove().isEnabled());
+
+		clickRemove(ridget);
+
+		assertNull(ridget.getSelection());
+		assertEquals("", widget.txtColumn1.getText());
+		assertFalse(widget.txtColumn1.isEnabled());
+		assertFalse(widget.getButtonRemove().isEnabled());
+	}
+
+	/**
+	 * As per Bug 327286.
+	 */
+	public void testRemoveCancelsSecondNew() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		bindToModel(true);
+		ridget.setRemoveCancelsNew(true);
+
+		final MDBean first = input.get(0);
+		ridget.setSelection(first);
+
+		assertSame(first, ridget.getSelection());
+		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.getButtonRemove().isEnabled());
+
+		ridget.handleAdd();
+		ridget.handleAdd();
+
+		assertNull(ridget.getSelection());
+		assertEquals("", widget.txtColumn1.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.getButtonRemove().isEnabled());
+
+		clickRemove(ridget);
+
+		assertSame(first, ridget.getSelection());
+		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.getButtonRemove().isEnabled());
+	}
+
+	/**
+	 * As per Bug 327286.
+	 */
+	public void testRemoveCancelsNewIsOffByDefault() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		bindToModel(true);
+
+		ridget.handleAdd();
+
+		assertFalse(ridget.isRemoveCancelsNew());
+		assertFalse(widget.getButtonRemove().isEnabled());
+	}
+
 	// helping methods
 	//////////////////
 
@@ -1273,6 +1406,10 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	private void bindUIControl(final IMasterDetailsRidget ridget, final MasterDetailsComposite control) {
 		ridget.setUIControl(control);
 		BINDING_MAN.bind(ridget, control.getUIControls());
+	}
+
+	private void clickRemove(final MasterDetailsRidget ridget) {
+		ridget.getRidget(IActionRidget.class, MDWidget.BIND_ID_REMOVE).fireAction();
 	}
 
 	private List<MDBean> createInput(final int numItems) {

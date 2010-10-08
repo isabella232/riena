@@ -55,36 +55,66 @@ import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidget implements IMasterDetailsRidget {
 
 	private IObservableList rowObservables;
-
 	private IMasterDetailsDelegate delegate;
 	private DataBindingContext dbc;
-	private boolean isDirectWriting;
+
+	/**
+	 * A blank model entry for clearing the details area. Will be initialized
+	 * lazily.
+	 */
+	private Object blankEntry;
+	/**
+	 * The object we are currently editing; null if not editing
+	 */
+	private Object editable;
+	/**
+	 * All ridgets from the details area.
+	 */
+	private IRidgetContainer detailRidgets;
+
+	/**
+	 * If true, Apply can only complete when there are no errors in the details.
+	 */
+	private boolean applyRequiresNoErrors;
+	/**
+	 * If true, Apply can only complete when there are no enabled mandatory
+	 * markers in the details.
+	 */
+	private boolean applyRequiresNoMandatories;
+	/**
+	 * If true, successful completion of an 'apply' operation will trigger
+	 * creating a new entry.
+	 */
+	private boolean applyTriggersNew;
+	/**
+	 * True when the details area is enabled, false otherwise.
+	 */
+	private boolean detailsEnabled;
+	/**
+	 * If true, change events will not be processed.
+	 */
+	private boolean ignoreChanges;
 	/**
 	 * True when the editable was suggested via #suggestNewEntry. Suggested
 	 * editables are always considered modified.
 	 */
 	private boolean isSuggestedEditable;
-	private boolean applyRequiresNoErrors;
-	private boolean applyRequiresNoMandatories;
-	private boolean applyTriggersNew;
-	private boolean detailsEnabled;
-	private boolean ignoreChanges;
-
-	/*
-	 * A blank model entry for clearing the details area. Will be initialized
-	 * lazily.
+	/**
+	 * True when direct writing is on. In that case any value change will be
+	 * immediately be applied back to the (master) editable.
 	 */
-	private Object blankEntry;
-
-	/*
-	 * The object we are currently editing; null if not editing
+	private boolean isDirectWriting;
+	/**
+	 * If true, the Remove button will be enabled while editing a new entry.
+	 * Hittuing Remove will abort editing the new entry and restore the last
+	 * selection.
 	 */
-	private Object editable;
-
-	/*
-	 * All ridgets from the details area.
+	private boolean removeCancelsNew;
+	/**
+	 * If removeCancelsNew is enabled, this variable stores the element that was
+	 * selected before pressing 'New'. Null if no selection is stored.
 	 */
-	private IRidgetContainer detailRidgets;
+	private StoredSelection preNewSelection;
 
 	public AbstractMasterDetailsRidget() {
 		addPropertyChangeListener(null, new PropertyChangeListener() {
@@ -155,7 +185,11 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		if (hasRemoveButton()) {
 			getRemoveButtonRidget().addListener(new IActionListener() {
 				public void callback() {
-					if (canRemove()) {
+					if (hasPreNewSelection()) {
+						if (canCancel()) {
+							handleCancel();
+						}
+					} else if (canRemove()) {
 						handleRemove();
 					}
 				}
@@ -223,6 +257,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return isDirectWriting;
 	}
 
+	public boolean isRemoveCancelsNew() {
+		return removeCancelsNew;
+	}
+
 	public void setApplyRequiresNoErrors(final boolean requiresNoErrors) {
 		if (applyRequiresNoErrors != requiresNoErrors) {
 			applyRequiresNoErrors = requiresNoErrors;
@@ -250,6 +288,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		Assert.isLegal(delegate != null, "delegate cannot be null"); //$NON-NLS-1$
 		this.delegate = delegate;
 		delegate.configureRidgets(detailRidgets);
+	}
+
+	public void setRemoveCancelsNew(final boolean cancelsNew) {
+		removeCancelsNew = cancelsNew;
 	}
 
 	public void setDirectWriting(final boolean directWriting) {
@@ -358,6 +400,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			}
 			ignoreChanges = true;
 			delegate.itemSelected(newSelection);
+			clearPreNewSelection();
 		} finally {
 			ignoreChanges = false;
 		}
@@ -444,6 +487,14 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return noErrors && noMandatories && (delegate.isValid(detailRidgets) == null);
 	}
 
+	private boolean canCancel() {
+		boolean result = true;
+		if (areDetailsChanged()) {
+			result = getUIControl().confirmDiscardChanges();
+		}
+		return result;
+	}
+
 	private boolean canRemove() {
 		final Object selection = getSelection();
 		Assert.isNotNull(selection);
@@ -459,6 +510,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		if (delegate == null) {
 			throw new IllegalStateException("no delegate: call setDelegate(...)"); //$NON-NLS-1$
 		}
+	}
+
+	private void clearPreNewSelection() {
+		preNewSelection = null;
 	}
 
 	private void clearSelection() {
@@ -559,6 +614,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return getNewButtonRidget() != null;
 	}
 
+	private boolean hasPreNewSelection() {
+		return preNewSelection != null;
+	}
+
 	private boolean hasRemoveButton() {
 		return getRemoveButtonRidget() != null;
 	}
@@ -616,6 +675,20 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
+	private void storePreNewSelection() {
+		Assert.isTrue(removeCancelsNew);
+		final Object tableSelection = getTableSelection();
+		if (preNewSelection == null || tableSelection != null) {
+			// the clause above ensures the last selection is kept, if New button
+			// is pressed several times.
+			preNewSelection = new StoredSelection(tableSelection);
+		}
+		clearTableSelection();
+		if (hasRemoveButton()) {
+			getRemoveButtonRidget().setEnabled(true);
+		}
+	}
+
 	@SuppressWarnings("unused")
 	private void traceEvent(final PropertyChangeEvent evt) {
 		final String className = evt.getSource().getClass().getSimpleName();
@@ -643,7 +716,11 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			delegate.itemCreated(editable);
 			setEnabled(false, true);
 			updateDetails(editable);
-			clearTableSelection();
+			if (removeCancelsNew) {
+				storePreNewSelection();
+			} else {
+				clearTableSelection();
+			}
 			getUIControl().getDetails().setFocus();
 		} else {
 			// create the editable, add it to the table, update the details
@@ -656,21 +733,6 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			updateDetails(editable);
 			getUIControl().getDetails().setFocus();
 		}
-	}
-
-	/**
-	 * Non API; public for testing only.
-	 */
-	public void handleRemove() {
-		assertIsBoundToModel();
-		final Object selection = getSelection();
-		Assert.isNotNull(selection);
-		rowObservables.remove(selection);
-		clearSelection();
-		clearTableSelection();
-		getTableRidget().updateFromModel();
-		setEnabled(false, false);
-		delegate.itemRemoved(selection);
 	}
 
 	/**
@@ -690,6 +752,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 		revealTableSelection();
 		delegate.itemApplied(editable);
+		clearPreNewSelection();
 		if (!isDirectWriting && isApplyTriggersNew()) {
 			handleAdd(); // automatically hit the 'new/add' button
 			setFocusToDetails();
@@ -697,6 +760,31 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			setEnabled(false, false);
 			setFocusToTable();
 		}
+	}
+
+	private void handleCancel() {
+		assertIsBoundToModel();
+		if (hasRemoveButton()) {
+			getRemoveButtonRidget().setEnabled(false);
+		}
+		final Object oldSelection = preNewSelection.getSelection();
+		setSelection(oldSelection);
+		clearPreNewSelection();
+	}
+
+	/**
+	 * Non API; public for testing only.
+	 */
+	public void handleRemove() {
+		assertIsBoundToModel();
+		final Object selection = getSelection();
+		Assert.isNotNull(selection);
+		rowObservables.remove(selection);
+		clearSelection();
+		clearTableSelection();
+		getTableRidget().updateFromModel();
+		setEnabled(false, false);
+		delegate.itemRemoved(selection);
 	}
 
 	// helping classes
@@ -770,6 +858,22 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				// of setSelection(editable). This will just select the editable in the table.
 				setTableSelection(editable);
 			}
+		}
+	}
+
+	/**
+	 * A stored selection.
+	 */
+	private static final class StoredSelection {
+
+		private final Object selection;
+
+		StoredSelection(final Object selection) {
+			this.selection = selection;
+		}
+
+		private Object getSelection() {
+			return selection;
 		}
 	}
 }

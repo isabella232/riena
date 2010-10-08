@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.List;
+
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -81,7 +83,8 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 
 	@Override
 	protected final Object getTableSelection() {
-		return getTableRidget().getSelection();
+		final List<Object> selection = getTableRidget().getSelection();
+		return selection.isEmpty() ? null : selection.get(0);
 	}
 
 	@Override
