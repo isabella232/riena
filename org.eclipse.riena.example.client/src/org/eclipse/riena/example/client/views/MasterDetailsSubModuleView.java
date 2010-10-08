@@ -37,9 +37,6 @@ public class MasterDetailsSubModuleView extends SubModuleView {
 
 	public static final String ID = MasterDetailsSubModuleView.class.getName();
 
-	public MasterDetailsSubModuleView() {
-	}
-
 	@Override
 	protected void basicCreatePartControl(final Composite parent) {
 

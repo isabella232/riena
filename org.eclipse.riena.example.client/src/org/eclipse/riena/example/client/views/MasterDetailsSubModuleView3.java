@@ -37,9 +37,6 @@ public class MasterDetailsSubModuleView3 extends SubModuleView {
 
 	public static final String ID = MasterDetailsSubModuleView3.class.getName();
 
-	public MasterDetailsSubModuleView3() {
-	}
-
 	@Override
 	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
