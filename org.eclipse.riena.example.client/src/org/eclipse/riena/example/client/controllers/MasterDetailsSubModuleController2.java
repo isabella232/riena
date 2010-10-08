@@ -82,8 +82,8 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 		}
 
 		public Person copyBean(final Object source, final Object target) {
-			final Person from = source != null ? (Person) source : createWorkingCopy();
-			final Person to = target != null ? (Person) target : createWorkingCopy();
+			final Person from = (Person) source;
+			final Person to = (Person) target;
 			to.setFirstname(from.getFirstname());
 			to.setLastname(from.getLastname());
 			to.setGender(from.getGender());
@@ -107,7 +107,7 @@ public class MasterDetailsSubModuleController2 extends SubModuleController {
 
 		@Override
 		public String isValid(final IRidgetContainer container) {
-			final ITextRidget txtLast = (ITextRidget) container.getRidget("last"); //$NON-NLS-1$
+			final ITextRidget txtLast = container.getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
 			if (txtLast.isErrorMarked()) {
 				return "'Last Name' is not valid."; //$NON-NLS-1$
 			}

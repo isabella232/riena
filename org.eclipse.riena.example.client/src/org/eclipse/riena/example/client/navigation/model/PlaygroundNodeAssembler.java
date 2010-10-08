@@ -35,6 +35,7 @@ import org.eclipse.riena.example.client.controllers.ListSubModuleController;
 import org.eclipse.riena.example.client.controllers.MarkerSubModuleController;
 import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleController;
 import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleController2;
+import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleController3;
 import org.eclipse.riena.example.client.controllers.MessageBoxSubModuleController;
 import org.eclipse.riena.example.client.controllers.MessageMarkerSubModuleController;
 import org.eclipse.riena.example.client.controllers.RidgetsSubModuleController;
@@ -415,7 +416,7 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
 		final ISubModuleNode mdSubModule3 = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.masterdetails3"), "Master/Details III"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(mdSubModule3, MasterDetailsSubModuleController.class,
+		workarea.registerDefinition(mdSubModule3, MasterDetailsSubModuleController3.class,
 				MasterDetailsSubModuleView3.ID, false);
 		result.addChild(mdSubModule3);
 

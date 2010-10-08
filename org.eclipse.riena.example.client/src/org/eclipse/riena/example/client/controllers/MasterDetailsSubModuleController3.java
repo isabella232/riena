@@ -21,15 +21,12 @@ import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
-import org.eclipse.riena.ui.ridgets.IActionListener;
-import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
-import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
  * Demonstrates use of a master/details ridget.
@@ -37,7 +34,7 @@ import org.eclipse.riena.ui.swt.MasterDetailsComposite;
  * @see IMasterDetailsRidget
  * @see MasterDetailsSubModuleView
  */
-public class MasterDetailsSubModuleController extends SubModuleController {
+public class MasterDetailsSubModuleController3 extends SubModuleController {
 
 	/**
 	 * Setup the ridgets for editing a person (text ridgets for name, single
@@ -52,11 +49,13 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 		public void configureRidgets(final IRidgetContainer container) {
 			final ITextRidget txtFirst = container.getRidget(ITextRidget.class, "first"); //$NON-NLS-1$
 			txtFirst.setMandatory(true);
+			txtFirst.setDirectWriting(true);
 			txtFirst.bindToModel(workingCopy, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 
 			final ITextRidget txtLast = container.getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
 			txtLast.setMandatory(true);
+			txtLast.setDirectWriting(true);
 			txtLast.addValidationRule(new NotEmpty(), ValidationTime.ON_UI_CONTROL_EDIT);
 			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
@@ -120,19 +119,11 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 		final String[] properties = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
 		final String[] headers = new String[] { "First Name", "Last Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 
-		final IMasterDetailsRidget master = getRidget(IMasterDetailsRidget.class, "master"); //$NON-NLS-1$
-		master.setDelegate(new PersonDelegate());
-		master.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
-		master.updateFromModel();
+		final IMasterDetailsRidget master3 = getRidget(IMasterDetailsRidget.class, "master3"); //$NON-NLS-1$
+		master3.setDelegate(new PersonDelegate());
+		master3.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
+		master3.updateFromModel();
 
-		final IActionRidget actionApply = master.getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
-		addDefaultAction(master, actionApply);
-
-		final IActionRidget enableDisableButton = getRidget(IActionRidget.class, "enableDisable"); //$NON-NLS-1$
-		enableDisableButton.addListener(new IActionListener() {
-			public void callback() {
-				master.setEnabled(!master.isEnabled());
-			}
-		});
+		master3.setDirectWriting(true); // enable auto apply
 	}
 }
