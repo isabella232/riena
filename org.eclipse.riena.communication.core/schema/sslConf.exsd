@@ -91,6 +91,13 @@ Otherwise, several attempts are made to interpret the the location as:
                </appInfo>
             </annotation>
          </attribute>
+         <attribute name="encrypt" type="string">
+            <annotation>
+               <documentation>
+                  An optional encryption information for the password
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

@@ -20,6 +20,7 @@ import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.util.Enumeration;
 
+import javax.crypto.Cipher;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -34,6 +35,8 @@ import org.osgi.service.log.LogService;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.Base16Util;
+import org.eclipse.riena.core.util.CipherUtils;
 import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.internal.communication.core.Activator;
@@ -47,6 +50,7 @@ public class SSLConfiguration {
 	private String protocol;
 	private String keystore;
 	private String password;
+	private String encrypt;
 	private HostnameVerifier hostnameVerifier;
 	private Bundle contributingBundle;
 
@@ -76,6 +80,7 @@ public class SSLConfiguration {
 		protocol = sslProperties.getProtocol();
 		keystore = sslProperties.getKeystore();
 		password = sslProperties.getPassword();
+		encrypt = sslProperties.getEncrypt();
 		contributingBundle = sslProperties.getContributingBundle();
 
 		LOGGER.log(LogService.LOG_INFO, "Configuring SSL protocol '" + protocol + "' with keystore '" + keystore //$NON-NLS-1$ //$NON-NLS-2$
@@ -117,7 +122,7 @@ public class SSLConfiguration {
 
 			LOGGER.log(LogService.LOG_DEBUG, "Keystore is '" + keystoreUrl + "'."); //$NON-NLS-1$ //$NON-NLS-2$
 
-			final char[] passwordChars = password == null ? null : password.toCharArray();
+			final char[] passwordChars = getPasswordChars(password, encrypt);
 
 			keyStore.load(keystoreUrl.openStream(), passwordChars);
 
@@ -177,6 +182,17 @@ public class SSLConfiguration {
 		} catch (final Exception ex) {
 			LOGGER.log(LogService.LOG_ERROR, "Configuration of SSL protocol failed. SSL will not work properly!", ex); //$NON-NLS-1$
 		}
+	}
+
+	private char[] getPasswordChars(final String password, final String encrypt) throws Exception {
+		if (password == null) {
+			return null;
+		}
+		if (!Boolean.parseBoolean(encrypt)) {
+			return password.toCharArray();
+		}
+		final Cipher decrypt = CipherUtils.getCipher(null, Cipher.DECRYPT_MODE);
+		return new String(decrypt.doFinal(Base16Util.toBytes(password))).toCharArray();
 	}
 
 	/**

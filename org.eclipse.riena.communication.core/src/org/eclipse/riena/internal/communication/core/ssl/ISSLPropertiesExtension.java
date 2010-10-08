@@ -14,6 +14,7 @@ import javax.net.ssl.HostnameVerifier;
 
 import org.osgi.framework.Bundle;
 
+import org.eclipse.riena.core.injector.extension.DefaultValue;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 /**
@@ -55,6 +56,14 @@ public interface ISSLPropertiesExtension {
 	 * @return the password
 	 */
 	String getPassword();
+
+	/**
+	 * Return an encryption information.
+	 * 
+	 * @return the information.
+	 */
+	@DefaultValue("false")
+	String getEncrypt();
 
 	/**
 	 * Create an optional host name verifier that can relax the strict host name
