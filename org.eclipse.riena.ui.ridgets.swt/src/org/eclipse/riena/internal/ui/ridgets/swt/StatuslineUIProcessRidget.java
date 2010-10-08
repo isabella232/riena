@@ -275,14 +275,14 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		AbstractSWTRidget.assertType(uiControl, StatuslineUIProcess.class);
 	}
 
-	protected synchronized void bindUIControl() {
+	protected void bindUIControl() {
 		final StatuslineUIProcess control = getUIControl();
 		if (control != null) {
 			display = control.getDisplay();
 		}
 	}
 
-	protected synchronized void unbindUIControl() {
+	protected void unbindUIControl() {
 		display = null;
 	}
 
@@ -334,7 +334,6 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	/**
 	 * {@link UIProcess} specific code
 	 */
-
 	public synchronized void updateProgress(final IProgressVisualizer visualizer, final int progress) {
 		// save progress
 		getProcessManager().saveProgress(visualizer, progress);
@@ -355,7 +354,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	/**
 	 * updates the user interface taking care of thread serialization
 	 */
-	private synchronized void updateUserInterface() {
+	private void updateUserInterface() {
 		/*
 		 * Consider the client closing while executing this method. The display
 		 * may be disposed!
