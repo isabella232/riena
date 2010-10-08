@@ -256,6 +256,13 @@ public interface IMasterDetailsDelegate {
 	String isValid(IRidgetContainer container);
 
 	/**
+	 * TODO [ev] javadoc
+	 * 
+	 * @since 3.0
+	 */
+	boolean isValidMaster(final IMasterDetailsRidget mdRidget);
+
+	/**
 	 * Updates all details from the model.
 	 * <p>
 	 * Typically this is called when the selection in the master/details ridget

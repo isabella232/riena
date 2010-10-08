@@ -108,6 +108,17 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * {@inheritDoc}
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
+	 * 
+	 * @since 3.0
+	 */
+	public boolean isValidMaster(final IMasterDetailsRidget mdRidget) {
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Default implementation for this method. Subclasses may override.
 	 */
 	public void itemApplied(final Object changedItem) {
 		// empty
