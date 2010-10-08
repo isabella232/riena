@@ -50,10 +50,12 @@ public class MasterDetailsSubModuleController4 extends SubModuleController {
 
 		public void configureRidgets(final IRidgetContainer container) {
 			final ITextRidget txtFirst = container.getRidget(ITextRidget.class, "first"); //$NON-NLS-1$
+			txtFirst.setDirectWriting(true);
 			txtFirst.bindToModel(workingCopy, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 
 			final ITextRidget txtLast = container.getRidget(ITextRidget.class, "last"); //$NON-NLS-1$
+			txtLast.setDirectWriting(true);
 			txtLast.setMandatory(true);
 			txtLast.addValidationRule(new NotEmpty(), ValidationTime.ON_UI_CONTROL_EDIT);
 			txtLast.bindToModel(workingCopy, Person.PROPERTY_LASTNAME);
@@ -131,10 +133,9 @@ public class MasterDetailsSubModuleController4 extends SubModuleController {
 		master.bindToModel(new WritableList(input, Person.class), Person.class, properties, headers);
 		master.updateFromModel();
 
-		// TODO [ev] implement
-		//master.setRemoveCancelsNew(true);
-		//master.setApplyTriggersNew(true);
-		//master.suggestNewEntry(false);
+		master.setApplyTriggersNew(true);
+		master.setRemoveTriggersNew(true);
+		master.suggestNewEntry(false);
 		setInitialFocus(master.getRidget("first")); //$NON-NLS-1$
 	}
 

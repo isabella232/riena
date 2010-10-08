@@ -27,6 +27,7 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
@@ -53,6 +54,8 @@ import org.eclipse.riena.ui.swt.MasterDetailsComposite;
  * @since 1.2
  */
 public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidget implements IMasterDetailsRidget {
+
+	private static final GlobalMandatoryMarker GLOBAL_MARKER = new GlobalMandatoryMarker();
 
 	private IObservableList rowObservables;
 	private IMasterDetailsDelegate delegate;
@@ -95,15 +98,21 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	 */
 	private boolean ignoreChanges;
 	/**
-	 * True when the editable was suggested via #suggestNewEntry. Suggested
-	 * editables are always considered modified.
-	 */
-	private boolean isSuggestedEditable;
-	/**
 	 * True when direct writing is on. In that case any value change will be
 	 * immediately be applied back to the (master) editable.
 	 */
 	private boolean isDirectWriting;
+	/**
+	 * True if the global mandatory marker should be visible, false otherwise.
+	 * 
+	 * @see GlobalMandatoryMarker
+	 */
+	private boolean isShowingGlobalMarker;
+	/**
+	 * True when the editable was suggested via #suggestNewEntry. Suggested
+	 * editables are always considered modified.
+	 */
+	private boolean isSuggestedEditable;
 	/**
 	 * If true, the 'Remove' action will be enabled while editing a new entry.
 	 * Hitting Remove will abort editing the new entry and restore the last
@@ -140,6 +149,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 					return;
 				}
 				// traceEvent(evt);
+				hideGlobalMarker(evt);
 				updateApplyButton();
 			}
 		});
@@ -403,10 +413,12 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			if (newSelection != null) { // selection changed
 				editable = newSelection;
 				setEnabled(false, true);
+				updateGlobalMarker();
 				updateDetails(editable);
 			} else { // nothing selected
 				clearSelection();
 				setEnabled(false, false);
+				updateGlobalMarker(false);
 			}
 			ignoreChanges = true;
 			delegate.itemSelected(newSelection);
@@ -705,6 +717,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			clearTableSelection();
 			editable = entry;
 			delegate.prepareItemSelected(editable);
+			updateGlobalMarker();
 			setEnabled(true, true);
 			isSuggestedEditable = treatAsDirty;
 			updateDetails(editable);
@@ -732,6 +745,36 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
+	private void updateGlobalMarker() {
+		final boolean show = !delegate.isValidMaster(this);
+		updateGlobalMarker(show);
+	}
+
+	private void updateGlobalMarker(final boolean showGlobalMarker) {
+		if (isShowingGlobalMarker != showGlobalMarker) {
+			isShowingGlobalMarker = showGlobalMarker;
+			for (final IRidget ridget : detailRidgets.getRidgets()) {
+				if (!(ridget instanceof IMarkable)) {
+					continue;
+				}
+				final IMarkable markable = (IMarkable) ridget;
+				if (isShowingGlobalMarker) {
+					markable.addMarker(GLOBAL_MARKER);
+				} else {
+					markable.removeMarker(GLOBAL_MARKER);
+				}
+			}
+		}
+	}
+
+	private void hideGlobalMarker(final PropertyChangeEvent evt) {
+		final String propertyName = evt.getPropertyName();
+		if (evt.getSource() == getTableRidget() || IRidget.PROPERTY_SHOWING.equals(propertyName)) {
+			return;
+		}
+		updateGlobalMarker(false);
+	}
+
 	/**
 	 * Non API; public for testing only.
 	 */
@@ -742,6 +785,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			delegate.itemCreated(editable);
 			setEnabled(false, true);
 			updateDetails(editable);
+			updateGlobalMarker();
 			if (isRemoveCancelsNew()) {
 				storePreNewSelection();
 			} else {
@@ -757,6 +801,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			setSelection(editable);
 			setEnabled(false, true);
 			updateDetails(editable);
+			updateGlobalMarker();
 			getUIControl().getDetails().setFocus();
 		}
 	}
@@ -784,6 +829,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			setFocusToDetails();
 		} else {
 			setEnabled(false, false);
+			updateGlobalMarker();
 			setFocusToTable();
 		}
 	}
@@ -894,6 +940,28 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				// of setSelection(editable). This will just select the editable in the table.
 				setTableSelection(editable);
 			}
+		}
+	}
+
+	/**
+	 * This {@link MandatoryMarker} is always enabled and is shared with all
+	 * ridgets in the details area. It is added to the ridgets in the details
+	 * when the result of
+	 * {@link IMasterDetailsDelegate#isValidMaster(IMasterDetailsRidget)} is
+	 * false.
+	 */
+	private static final class GlobalMandatoryMarker extends MandatoryMarker {
+
+		GlobalMandatoryMarker() {
+			super(false);
+		}
+
+		/**
+		 * Returns false always.
+		 */
+		@Override
+		public boolean isDisabled() {
+			return false;
 		}
 	}
 
