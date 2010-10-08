@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,6 +33,7 @@ import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.core.RienaStatus;
+import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
@@ -1505,8 +1507,6 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		clickRemove(ridget);
 
 		assertEquals(oldSize, input.size() + 1);
-
-		// TODO [ev] DRY
 	}
 
 	public void testRemoveCancelsNewAndThenTriggersNewWithNoPreviousSelection() {
@@ -1556,6 +1556,99 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		} finally {
 			System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, String.valueOf(isTesting));
 		}
+	}
+
+	/**
+	 * As per Bug 327287.
+	 */
+	public void testShowGlobalMandatoryMarkerOnNew() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
+		txtColumn2.setMandatory(true);
+		delegate.setValidMaster(false);
+		bindToModel(true);
+
+		ridget.handleAdd();
+
+		assertTrue(hasMandatory(txtColumn1));
+		assertTrue(hasMandatory(txtColumn2));
+
+		widget.txtColumn1.setFocus();
+		UITestHelper.sendString(widget.getDisplay(), "abc\t");
+
+		assertFalse(hasMandatory(txtColumn1));
+		assertTrue(hasMandatory(txtColumn2));
+	}
+
+	/**
+	 * As per Bug 327287.
+	 */
+	public void testShowGlobalMandatoryMarkerOnSuggestNewEntry() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
+		txtColumn2.setMandatory(true);
+		delegate.setValidMaster(false);
+		bindToModel(true);
+
+		ridget.setDirectWriting(false);
+		ridget.suggestNewEntry();
+
+		assertTrue(hasMandatory(txtColumn1));
+		assertTrue(hasMandatory(txtColumn2));
+
+		widget.txtColumn1.setFocus();
+		UITestHelper.sendString(widget.getDisplay(), "abc\t");
+
+		assertFalse(hasMandatory(txtColumn1));
+		assertTrue(hasMandatory(txtColumn2));
+	}
+
+	/**
+	 * As per Bug 327287.
+	 */
+	public void testShowGlobalMandatoryMarkerOnSuggestNewEntryWithDirectWriting() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
+		txtColumn2.setMandatory(true);
+		delegate.setValidMaster(false);
+		bindToModel(true);
+
+		ridget.setDirectWriting(true);
+		ridget.suggestNewEntry();
+
+		assertTrue(hasMandatory(txtColumn1));
+		assertTrue(hasMandatory(txtColumn2));
+
+		widget.txtColumn1.setFocus();
+		UITestHelper.sendString(widget.getDisplay(), "abc\t");
+
+		assertFalse(hasMandatory(txtColumn1));
+		assertTrue(hasMandatory(txtColumn2));
+	}
+
+	/**
+	 * As per Bug 327287.
+	 */
+	public void testHideGlobalMandatoryMarkerOnSelect() {
+		final MasterDetailsRidget ridget = getRidget();
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
+		delegate.setValidMaster(false);
+		bindToModel(true);
+
+		final MDBean first = input.get(0);
+		ridget.setSelection(first);
+
+		assertTrue(txtColumn1.isEnabled());
+		assertTrue(txtColumn2.isEnabled());
+		assertFalse(hasMandatory(txtColumn1));
+		assertFalse(hasMandatory(txtColumn2));
 	}
 
 	// helping methods
@@ -1617,6 +1710,18 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		// hack; we only care about w.getData() so we use this here instead of the TableItem
 		widget.setData(first);
 		result.item = widget;
+		return result;
+	}
+
+	private boolean hasMandatory(final IMarkable ridget) {
+		boolean result = false;
+		final Collection<MandatoryMarker> markers = ridget.getMarkersOfType(MandatoryMarker.class);
+		for (final MandatoryMarker marker : markers) {
+			if (!marker.isDisabled()) {
+				result = true;
+				break;
+			}
+		}
 		return result;
 	}
 
@@ -1718,6 +1823,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		private final MDBean workingCopy = createWorkingCopy();
 		private boolean isTxtColumn1IsEnabled = true;
+		private boolean isValidMaster = true;
 
 		private int createCount;
 		private int removeCount;
@@ -1762,6 +1868,11 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		public String isValid(final IRidgetContainer container) {
 			checkContainer(container);
 			return validationResult;
+		}
+
+		@Override
+		public boolean isValidMaster(final IMasterDetailsRidget mdRidget) {
+			return isValidMaster;
 		}
 
 		@Override
@@ -1816,6 +1927,10 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			final MDBean sBean = (MDBean) source;
 			final MDBean tBean = (MDBean) target;
 			return !sBean.equals(tBean);
+		}
+
+		void setValidMaster(final boolean validMaster) {
+			isValidMaster = validMaster;
 		}
 
 		private void checkContainer(final IRidgetContainer container) {
