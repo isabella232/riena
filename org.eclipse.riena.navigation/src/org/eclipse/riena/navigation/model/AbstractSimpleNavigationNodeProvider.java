@@ -156,7 +156,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 				prepareNavigationAssembler(targetId, assembler, parentNode);
 				final INavigationNode<?>[] targetNodes = assembler.buildNode(targetId, argument);
 				if ((targetNodes != null) && (targetNodes.length > 0)) {
-					prepareNodesAfterBuild(targetNodes, argument, parentNode, assembler, targetId);
+					prepareNodesAfterBuild(targetNodes, argument, parentNode, assembler, targetId, sourceNode);
 					targetNode = targetNodes[0];
 				}
 			} else {
@@ -179,7 +179,8 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 * @since 3.0
 	 */
 	protected void prepareNodesAfterBuild(final INavigationNode<?>[] targetNodes, final NavigationArgument argument,
-			final INavigationNode<?> parentNode, final INavigationAssembler assembler, final NavigationNodeId targetId) {
+			final INavigationNode<?> parentNode, final INavigationAssembler assembler, final NavigationNodeId targetId,
+			final INavigationNode<?> sourceNode) {
 		final NodePositioner nodePositioner = argument != null ? argument.getNodePositioner() : NodePositioner.ADD_END;
 		for (final INavigationNode<?> node : targetNodes) {
 			prepareNodeAfterBuild(node, argument, parentNode, assembler, targetId, nodePositioner);
