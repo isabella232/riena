@@ -831,7 +831,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			setFocusToDetails();
 		} else {
 			setEnabled(false, false);
-			updateGlobalMarker();
+			updateGlobalMarker(false);
 			setFocusToTable();
 		}
 	}

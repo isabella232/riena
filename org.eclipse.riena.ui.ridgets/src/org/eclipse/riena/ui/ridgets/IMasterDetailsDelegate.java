@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+
 /**
  * Delegate for {@link IMasterDetailsRidget}, responsible for driving the
  * details area by:
@@ -256,8 +258,20 @@ public interface IMasterDetailsDelegate {
 	String isValid(IRidgetContainer container);
 
 	/**
-	 * TODO [ev] javadoc
+	 * When this method returns true, an enabled mandatory marker is added to
+	 * all markable ridgets in the details area. The marker is removed
+	 * automatically when an entry is changed or the 'Apply' action is invoked.
+	 * <p>
+	 * The method is evaluated before a new entry is made editable. This happens
+	 * when the user invoked the 'New' action or when an entry is suggested via
+	 * API.
 	 * 
+	 * @param mdRidget
+	 *            the {@link IMasterDetailsRidget} associated with this
+	 *            delegate; never null.
+	 * @return true to hide the global mandatory marker, false to show it
+	 * 
+	 * @see MandatoryMarker
 	 * @since 3.0
 	 */
 	boolean isValidMaster(final IMasterDetailsRidget mdRidget);
