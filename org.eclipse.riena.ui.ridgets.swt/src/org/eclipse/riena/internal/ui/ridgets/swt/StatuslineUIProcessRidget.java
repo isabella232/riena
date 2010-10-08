@@ -56,6 +56,9 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 	private IVisualContextManager contextLocator;
 
+	/*
+	 * TODO locate the display using the uiControl
+	 */
 	Display display = Display.getCurrent();
 
 	public StatuslineUIProcessRidget() {
@@ -353,6 +356,13 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	 * updates the user interface taking care of thread serialization
 	 */
 	private void updateUserInterface() {
+		/*
+		 * Consider the client closing while executing this method. The display
+		 * may be disposed!
+		 */
+		if (display.isDisposed()) {
+			return;
+		}
 		if (display.getThread().equals(Thread.currentThread())) {
 			// update on the current thread = user interface thread
 			updateBaseAndList();
