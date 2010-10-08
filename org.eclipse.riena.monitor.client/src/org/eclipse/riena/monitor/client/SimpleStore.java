@@ -493,11 +493,11 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	}
 
 	/**
-	 * Get a cypher.
+	 * Get a cipher.
 	 * 
 	 * @param mode
 	 *            the cipher mode, e.g. Cipher.ENCRYPT_MODE
-	 * @return the cypher or null, if not possible
+	 * @return the cipher or null, if not possible
 	 * @throws GeneralSecurityException
 	 */
 	private static Cipher getCipher(final int mode) throws GeneralSecurityException {
