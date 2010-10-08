@@ -365,6 +365,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				setSelection(editable);
 				setEnabled(false, true); // directy writing -> disable apply
 				isSuggestedEditable = false; // direct writing -> not dirty
+				updateGlobalMarker();
 				updateDetails(editable);
 			}
 		} finally {
@@ -432,16 +433,15 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			if (newSelection != null) { // selection changed
 				editable = newSelection;
 				setEnabled(false, true);
-				updateGlobalMarker();
 				updateDetails(editable);
 			} else { // nothing selected
 				clearSelection();
 				setEnabled(false, false);
-				updateGlobalMarker(false);
 			}
 			ignoreChanges = true;
 			delegate.itemSelected(newSelection);
 			clearPreNewSelection();
+			updateGlobalMarker(false);
 		} finally {
 			ignoreChanges = false;
 		}
