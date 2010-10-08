@@ -30,6 +30,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * A master/details ridget that requires at least 5 entries.
  * 
+ * 
  * @see IMasterDetailsRidget
  * @see MasterDetailsSubModuleController4
  */
