@@ -92,6 +92,34 @@ public class SSLConfigurationTest extends RienaTestCase {
 				SSLConfiguration.StrictHostnameVerifier.class);
 	}
 
+	public void testLocateKeystoreJreCacertsEncryptedPassword() {
+		printTestName();
+		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "#jre-cacerts#",
+				"cae3c55508eaa369d5c8870398c90a64", "true");
+		final SSLConfiguration config = new SSLConfiguration();
+		config.configure(properties);
+		assertTrue(config.isConfigured());
+		assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1");
+		assertEquals(ReflectionUtils.getHidden(config, "keystore"), "#jre-cacerts#");
+		assertEquals(ReflectionUtils.getHidden(config, "password"), "cae3c55508eaa369d5c8870398c90a64"); // not encrypted yet!!
+		assertNotNull(ReflectionUtils.getHidden(config, "hostnameVerifier"));
+		assertEquals(ReflectionUtils.getHidden(config, "hostnameVerifier").getClass(),
+				SSLConfiguration.StrictHostnameVerifier.class);
+	}
+
+	public void testGetPasswordCharsNotEncrypted() {
+		final SSLConfiguration config = new SSLConfiguration();
+		final char[] password = ReflectionUtils.invokeHidden(config, "getPasswordChars", "changeit", "false");
+		assertEquals("changeit", new String(password));
+	}
+
+	public void testGetPasswordCharsEncrypted() {
+		final SSLConfiguration config = new SSLConfiguration();
+		final char[] password = ReflectionUtils.invokeHidden(config, "getPasswordChars",
+				"cae3c55508eaa369d5c8870398c90a64", "true");
+		assertEquals("changeit", new String(password));
+	}
+
 	public void testLocateKeystoreJreCacertsAndCustomHostnameVerifier() {
 		printTestName();
 		final HostnameVerifier hostnameVerifier = new TestHostnameVerifier();
@@ -153,17 +181,28 @@ public class SSLConfigurationTest extends RienaTestCase {
 		private final String protocol;
 		private final String keystore;
 		private final String password;
+		private final String encrypt;
 		private final HostnameVerifier hostnameVerifier;
 
 		public SSLProperties(final String protocol, final String keystore, final String password) {
-			this(protocol, keystore, password, null);
+			this(protocol, keystore, password, null, null);
 		}
 
 		public SSLProperties(final String protocol, final String keystore, final String password,
 				final HostnameVerifier hostnameVerifier) {
+			this(protocol, keystore, password, null, hostnameVerifier);
+		}
+
+		public SSLProperties(final String protocol, final String keystore, final String password, final String encrypt) {
+			this(protocol, keystore, password, encrypt, null);
+		}
+
+		public SSLProperties(final String protocol, final String keystore, final String password, final String encrypt,
+				final HostnameVerifier hostnameVerifier) {
 			this.protocol = protocol;
 			this.keystore = keystore;
 			this.password = password;
+			this.encrypt = encrypt;
 			this.hostnameVerifier = hostnameVerifier;
 		}
 
@@ -185,6 +224,10 @@ public class SSLConfigurationTest extends RienaTestCase {
 
 		public Bundle getContributingBundle() {
 			return Activator.getDefault().getBundle();
+		}
+
+		public String getEncrypt() {
+			return encrypt;
 		}
 
 	}
