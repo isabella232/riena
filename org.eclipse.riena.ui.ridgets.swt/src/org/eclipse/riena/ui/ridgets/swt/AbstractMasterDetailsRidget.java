@@ -335,22 +335,41 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
-	/**
-	 * @deprecated use {@code this.suggestNewEntry(true)}
-	 */
-	@Deprecated
 	public void suggestNewEntry() {
 		final Object entry = delegate.createMasterEntry();
-		suggestNewEntry(entry, true);
-	}
-
-	public void suggestNewEntry(final boolean treatAsDirty) {
-		final Object entry = delegate.createMasterEntry();
-		suggestNewEntry(entry, treatAsDirty);
+		suggestNewEntry(entry, false);
 	}
 
 	public void suggestNewEntry(final Object entry) {
 		suggestNewEntry(entry, true);
+	}
+
+	public void suggestNewEntry(final Object entry, final boolean treatAsDirty) {
+		ignoreChanges = true;
+		try {
+			if (!isDirectWriting) {
+				clearTableSelection();
+				editable = entry;
+				delegate.prepareItemSelected(editable);
+				updateGlobalMarker();
+				setEnabled(treatAsDirty, true);
+				isSuggestedEditable = treatAsDirty;
+				updateDetails(editable);
+				ignoreChanges = true;
+				delegate.itemSelected(editable);
+			} else {
+				editable = entry;
+				delegate.itemCreated(editable);
+				rowObservables.add(editable);
+				getTableRidget().updateFromModel();
+				setSelection(editable);
+				setEnabled(false, true); // directy writing -> disable apply
+				isSuggestedEditable = false; // direct writing -> not dirty
+				updateDetails(editable);
+			}
+		} finally {
+			ignoreChanges = false;
+		}
 	}
 
 	public final void updateApplyButton() {
@@ -711,23 +730,6 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
-	private void suggestNewEntry(final Object entry, final boolean treatAsDirty) {
-		ignoreChanges = true;
-		try {
-			clearTableSelection();
-			editable = entry;
-			delegate.prepareItemSelected(editable);
-			updateGlobalMarker();
-			setEnabled(true, true);
-			isSuggestedEditable = treatAsDirty;
-			updateDetails(editable);
-			ignoreChanges = true;
-			delegate.itemSelected(editable);
-		} finally {
-			ignoreChanges = false;
-		}
-	}
-
 	@SuppressWarnings("unused")
 	private void traceEvent(final PropertyChangeEvent evt) {
 		final String className = evt.getSource().getClass().getSimpleName();
@@ -930,6 +932,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				return;
 			}
 			// traceEvent(evt);
+			hideGlobalMarker(evt);
 			if (canApplyDirectly()) {
 				delegate.prepareItemApplied(editable);
 				// this is only reached when direct writing is on and one of 'interesting' events happens

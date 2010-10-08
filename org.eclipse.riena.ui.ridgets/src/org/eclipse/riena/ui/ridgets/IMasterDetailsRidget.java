@@ -308,32 +308,18 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	/**
 	 * Suggest a blank object &ndash; obtained from
 	 * {@link IMasterDetailsDelegate#createWorkingCopy()}) &ndash; as a 'new'
-	 * entry. It will be made editable in the details area. The apply action
-	 * will be disabled until the user edits the contents.
+	 * entry. It will be made editable in the details area. The details area
+	 * will <b>not</b> be considered dirty. The apply action will be
+	 * <b>disabled</b>, until the user edits the contents.
 	 * 
 	 * @since 3.0
-	 * @deprecated use {@code this.suggestNewEntry(true)}
 	 */
-	@Deprecated
 	void suggestNewEntry();
 
 	/**
-	 * Suggest a blank object &ndash; obtained from
-	 * {@link IMasterDetailsDelegate#createWorkingCopy()}) &ndash; as a 'new'
-	 * entry. It will be made editable in the details area. The apply action
-	 * will be disabled until the user edits the contents.
-	 * 
-	 * @param treatAsDirty
-	 *            true, if the details area should be considered dirty (i.e.
-	 *            edited), false otherwise.
-	 * 
-	 * @since 3.0
-	 */
-	void suggestNewEntry(boolean treatAsDirty);
-
-	/**
 	 * Suggest the given object as a 'new' entry. It will be made editable in
-	 * the details area. The apply action will enable.
+	 * the details area. The details area will be considered dirty and the apply
+	 * action will be enabled (unless direct writing is enabled).
 	 * 
 	 * @param entry
 	 *            a non-null object. Note that when the user invokes the 'Apply'
@@ -344,6 +330,32 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * @since 2.0
 	 */
 	void suggestNewEntry(Object entry);
+
+	/**
+	 * Suggest the given object as a 'new' entry. It will be made editable in
+	 * the details area. The details area may or not be considered dirty,
+	 * depending on the {@code treatAsDirty} argument. Likewise, the apply
+	 * action may or may not be enabled depending on the {@code treatAsDirty}
+	 * argument.
+	 * <p>
+	 * Note: if direct writing is enabled, the details area / apply button will
+	 * be considered as not dirty regardless of the {@code treatAsDirty} value.
+	 * 
+	 * @param entry
+	 *            a non-null object. Note that when the user invokes the 'Apply'
+	 *            operation, the {@code entry} will be updated with the contents
+	 *            from the details area and then added into the master table of
+	 *            objects. For this reason you should use a <b>new</b>
+	 *            {@code entry} instance for each call to this method.
+	 * @param treatAsDirty
+	 *            true, to treat the details area as dirty and enable the apply
+	 *            button. False to treat the details area as initially
+	 *            unmodified and disable the apply button (until the content is
+	 *            modified).
+	 * 
+	 * @since 3.0
+	 */
+	void suggestNewEntry(Object entry, boolean treatAsDirty);
 
 	/**
 	 * Toggles the 'Apply' action state, according to the presence of changes in

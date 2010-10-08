@@ -838,7 +838,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertSame(newEntry, input.get(last));
 	}
 
-	public void testSuggestNewEntryTrue() {
+	public void testSuggestNewEntry() {
 		bindToModel(true);
 		final MasterDetailsRidget ridget = getRidget();
 		final MDWidget widget = getWidget();
@@ -848,34 +848,56 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(widget.getButtonApply().isEnabled());
 		assertFalse(areDetailsChanged(ridget));
 
-		ridget.suggestNewEntry(true);
+		ridget.suggestNewEntry();
 
 		assertEquals("", widget.txtColumn1.getText());
 		assertEquals("", widget.txtColumn2.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.txtColumn2.isEnabled());
+		assertFalse(widget.getButtonApply().isEnabled());
+		assertFalse(areDetailsChanged(ridget));
+	}
+
+	public void testSuggestNewEntryObjectFalse() {
+		bindToModel(true);
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+
+		assertFalse(widget.txtColumn1.isEnabled());
+		assertFalse(widget.txtColumn2.isEnabled());
+		assertFalse(widget.getButtonApply().isEnabled());
+		assertFalse(areDetailsChanged(ridget));
+
+		final MDBean newEntry = new MDBean("col1", "col2");
+		ridget.suggestNewEntry(newEntry, false);
+
+		assertEquals("col1", widget.txtColumn1.getText());
+		assertEquals("col2", widget.txtColumn2.getText());
+		assertTrue(widget.txtColumn1.isEnabled());
+		assertTrue(widget.txtColumn2.isEnabled());
+		assertFalse(widget.getButtonApply().isEnabled());
+		assertFalse(areDetailsChanged(ridget));
+	}
+
+	public void testSuggestNewEntryObjectTrue() {
+		bindToModel(true);
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+
+		assertFalse(widget.txtColumn1.isEnabled());
+		assertFalse(widget.txtColumn2.isEnabled());
+		assertFalse(widget.getButtonApply().isEnabled());
+		assertFalse(areDetailsChanged(ridget));
+
+		final MDBean newEntry = new MDBean("col1", "col2");
+		ridget.suggestNewEntry(newEntry, true);
+
+		assertEquals("col1", widget.txtColumn1.getText());
+		assertEquals("col2", widget.txtColumn2.getText());
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.txtColumn2.isEnabled());
 		assertTrue(widget.getButtonApply().isEnabled());
 		assertTrue(areDetailsChanged(ridget));
-	}
-
-	public void testSuggestNewEntryFalse() {
-		bindToModel(true);
-		final MasterDetailsRidget ridget = getRidget();
-		final MDWidget widget = getWidget();
-
-		assertFalse(widget.txtColumn1.isEnabled());
-		assertFalse(widget.txtColumn2.isEnabled());
-		assertFalse(widget.getButtonApply().isEnabled());
-		assertFalse(areDetailsChanged(ridget));
-
-		ridget.suggestNewEntry(false);
-
-		assertEquals("", widget.txtColumn1.getText());
-		assertEquals("", widget.txtColumn2.getText());
-		assertTrue(widget.txtColumn1.isEnabled());
-		assertTrue(widget.txtColumn2.isEnabled());
-		assertTrue(widget.getButtonApply().isEnabled());
-		assertFalse(areDetailsChanged(ridget));
 	}
 
 	public void testUpdateApplyButton() {

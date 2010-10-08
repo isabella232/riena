@@ -135,7 +135,7 @@ public class MasterDetailsSubModuleController4 extends SubModuleController {
 
 		master.setApplyTriggersNew(true);
 		master.setRemoveTriggersNew(true);
-		master.suggestNewEntry(false);
+		master.suggestNewEntry();
 		setInitialFocus(master.getRidget("first")); //$NON-NLS-1$
 	}
 
