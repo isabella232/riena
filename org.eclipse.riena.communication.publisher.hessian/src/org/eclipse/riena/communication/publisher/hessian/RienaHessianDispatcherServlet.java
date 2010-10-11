@@ -58,6 +58,7 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RienaHessianDispatcherServlet.class);
 
+	@SuppressWarnings("restriction")
 	@Override
 	public void init(final ServletConfig config) throws ServletException {
 		super.init(config);
