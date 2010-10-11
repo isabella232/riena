@@ -19,6 +19,10 @@ import javax.security.auth.Subject;
 import com.caucho.hessian.client.HessianRuntimeException;
 import com.caucho.hessian.io.HessianProtocolException;
 
+import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.communication.core.hooks.AbstractHooksProxy;
@@ -26,6 +30,7 @@ import org.eclipse.riena.communication.core.hooks.CallContext;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.communication.core.Activator;
@@ -35,6 +40,7 @@ public class CallHooksProxy extends AbstractHooksProxy {
 	private final HashSet<ICallHook> callHooks = new HashSet<ICallHook>();
 	private RemoteServiceDescription rsd;
 	private ICallMessageContextAccessor mca;
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), CallHooksProxy.class);
 
 	public CallHooksProxy(final Object proxiedInstance) {
 		super(proxiedInstance);
@@ -52,7 +58,11 @@ public class CallHooksProxy extends AbstractHooksProxy {
 		if (callHooks.size() > 0) {
 			// call before service hook
 			for (final ICallHook sHook : callHooks) {
-				sHook.beforeCall(context);
+				try {
+					sHook.beforeCall(context);
+				} catch (final Throwable e) {
+					LOGGER.log(LogService.LOG_ERROR, "exception in beforeCall", e); //$NON-NLS-1$
+				}
 			}
 		}
 
@@ -91,7 +101,11 @@ public class CallHooksProxy extends AbstractHooksProxy {
 			// call hooks after the call
 			if (callHooks.size() > 0) {
 				for (final ICallHook sHook : callHooks) {
-					sHook.afterCall(context);
+					try {
+						sHook.afterCall(context);
+					} catch (final Throwable e) {
+						LOGGER.log(LogService.LOG_ERROR, "exception in afterCall", e); //$NON-NLS-1$
+					}
 				}
 			}
 		}
