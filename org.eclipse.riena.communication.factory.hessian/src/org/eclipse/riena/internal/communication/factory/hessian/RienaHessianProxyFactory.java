@@ -149,16 +149,15 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 		final ICallMessageContext messageContext = mca.getMessageContext();
 
 		if (messageContext.getProgressMonitorList() == null) {
-			return getHessianOutputImpl(os);
+			return getHessianOutputImpl(os, os);
 		} else {
-			return getHessianOutputImpl(new OutputStream() {
+			return getHessianOutputImpl(os, new OutputStream() {
 
 				@Override
 				public void write(final int b) throws IOException {
 					os.write(b);
 					messageContext.fireWriteEvent(1);
 				}
-
 			});
 		}
 	}
@@ -171,20 +170,29 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 		return CONNECTIONS.get();
 	}
 
-	private AbstractHessianOutput getHessianOutputImpl(final OutputStream outputStreamParameter) {
+	/**
+	 * @param originalOutputStream
+	 *            stream where the acual data is written into (needed for finish
+	 *            call on GZIP)
+	 * @param outputStreamData
+	 *            stream into which all data is written into....
+	 * @return
+	 */
+	private AbstractHessianOutput getHessianOutputImpl(final OutputStream originalOutputStream,
+			final OutputStream outputStreamData) {
 		AbstractHessianOutput out;
 
 		if (/* _isHessian2Request */true) {
-			out = new Hessian2Output(outputStreamParameter) {
+			out = new Hessian2Output(outputStreamData) {
 
 				@Override
 				public void completeCall() throws IOException {
 					super.completeCall();
 					this.flush();
-					if (outputStreamParameter instanceof GZIPOutputStream) {
-						((GZIPOutputStream) outputStreamParameter).finish();
+					if (originalOutputStream instanceof GZIPOutputStream) {
+						((GZIPOutputStream) originalOutputStream).finish();
 					}
-					outputStreamParameter.flush();
+					outputStreamData.flush();
 				}
 			};
 			//		else {
