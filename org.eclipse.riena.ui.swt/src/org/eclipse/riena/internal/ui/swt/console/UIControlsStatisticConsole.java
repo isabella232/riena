@@ -23,11 +23,6 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class UIControlsStatisticConsole implements CommandProvider {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.osgi.framework.console.CommandProvider#getHelp()
-	 */
 	public String getHelp() {
 		return "---Control Usage Statistics Of UIControlsFactory---\n\tcontrolstats - show usage of control types\n"; //$NON-NLS-1$ 
 	}
