@@ -11,6 +11,7 @@
 package org.eclipse.riena.monitor.client;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.core.runtime.CoreException;
 
@@ -20,7 +21,7 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.monitor.common.Collectible;
 
 /**
- *
+ * Test the {@code SimpleStore}.
  */
 @NonUITestCase
 public class SimpleStoreTest extends RienaTestCase {
@@ -29,15 +30,27 @@ public class SimpleStoreTest extends RienaTestCase {
 	private static final String CATEGORY = "test";
 	private static final String CLIENT_INFO = "unit-test";
 
-	public void testPutCollectibleAndGetCollectible() throws CoreException {
+	public void testPutCollectibleAndGetCollectible() throws CoreException, IOException {
 		final SimpleStore store = new SimpleStore();
-		final File file = new File("file");
-		final Collectible<String> collectible = new Collectible<String>(CLIENT_INFO, CATEGORY, PAYLOAD);
-		ReflectionUtils.invokeHidden(store, "putCollectible", collectible, file);
+		final File file = File.createTempFile("SimpleStore", ".test");
+		try {
+			final Collectible<String> collectible = new Collectible<String>(CLIENT_INFO, CATEGORY, PAYLOAD);
+			ReflectionUtils.invokeHidden(store, "putCollectible", collectible, file);
+			final Collectible<String> outCollectible = ReflectionUtils.invokeHidden(store, "getCollectible", file);
+			assertEquals(CLIENT_INFO, outCollectible.getClientInfo());
+			assertEquals(CATEGORY, outCollectible.getCategory());
+			assertEquals(PAYLOAD, outCollectible.getPayload());
+		} finally {
+			file.delete();
+		}
+	}
+
+	public void testGetCollectibleFromExistingStoreFileForRegression() throws CoreException {
+		final SimpleStore store = new SimpleStore();
+		final File file = getFile("regression.store");
 		final Collectible<String> outCollectible = ReflectionUtils.invokeHidden(store, "getCollectible", file);
 		assertEquals(CLIENT_INFO, outCollectible.getClientInfo());
 		assertEquals(CATEGORY, outCollectible.getCategory());
 		assertEquals(PAYLOAD, outCollectible.getPayload());
-		file.delete();
 	}
 }
