@@ -20,7 +20,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.security.GeneralSecurityException;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,9 +33,6 @@ import java.util.zip.GZIPOutputStream;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESKeySpec;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleEvent;
@@ -57,6 +53,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaLocations;
 import org.eclipse.riena.core.RienaStatus;
+import org.eclipse.riena.core.util.CipherUtils;
 import org.eclipse.riena.core.util.IOUtils;
 import org.eclipse.riena.core.util.Literal;
 import org.eclipse.riena.core.util.Millis;
@@ -103,6 +100,13 @@ public class SimpleStore implements IStore, IExecutableExtension {
 
 	private static final String CLEANUP_DELAY = "cleanupDelay"; //$NON-NLS-1$
 	private static final String CLEANUP_DELAY_DEFAULT = "1 h"; //$NON-NLS-1$
+	private static final byte[] KEY = new byte[8];
+
+	static {
+		final long first = "This is not very clever :-)".hashCode(); //$NON-NLS-1$
+		final long second = "And this neither!".hashCode(); //$NON-NLS-1$
+		new Random(first * second).nextBytes(KEY);
+	}
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleStore.class);
 
@@ -123,8 +127,8 @@ public class SimpleStore implements IStore, IExecutableExtension {
 			Assert.isTrue(directoryCreated);
 		}
 		try {
-			encrypt = getCipher(Cipher.ENCRYPT_MODE);
-			decrypt = getCipher(Cipher.DECRYPT_MODE);
+			encrypt = CipherUtils.getCipher(KEY, Cipher.ENCRYPT_MODE);
+			decrypt = CipherUtils.getCipher(KEY, Cipher.DECRYPT_MODE);
 		} catch (final GeneralSecurityException e) {
 			throw new IllegalArgumentException("Could not generate keys for encryption.", e); //$NON-NLS-1$
 		}
@@ -490,39 +494,6 @@ public class SimpleStore implements IStore, IExecutableExtension {
 			}
 		}
 
-	}
-
-	/**
-	 * Get a cipher.
-	 * 
-	 * @param mode
-	 *            the cipher mode, e.g. Cipher.ENCRYPT_MODE
-	 * @return the cipher or null, if not possible
-	 * @throws GeneralSecurityException
-	 */
-	private static Cipher getCipher(final int mode) throws GeneralSecurityException {
-		// Create the cipher 
-		final Cipher desCipher = Cipher.getInstance("DES"); //$NON-NLS-1$
-
-		// Initialize the cipher
-		desCipher.init(mode, getKey());
-
-		return desCipher;
-	}
-
-	private static final byte[] KEY = new byte[8];
-
-	static {
-		final long first = "This is not very clever :-)".hashCode(); //$NON-NLS-1$
-		final long second = "And this neither!".hashCode(); //$NON-NLS-1$
-		new Random(first * second).nextBytes(KEY);
-	}
-
-	private static Key getKey() throws GeneralSecurityException {
-		final DESKeySpec pass = new DESKeySpec(KEY);
-		final SecretKeyFactory skf = SecretKeyFactory.getInstance("DES"); //$NON-NLS-1$
-		final SecretKey s = skf.generateSecret(pass);
-		return s;
 	}
 
 }
