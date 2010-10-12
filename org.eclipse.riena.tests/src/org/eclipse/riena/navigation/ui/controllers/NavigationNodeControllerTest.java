@@ -95,7 +95,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 
 		final PropertyChangeSupport support = ReflectionUtils.getHidden(ridget, "propertyChangeSupport");
 		assertNotNull(support.getPropertyChangeListeners());
-		assertEquals(2, support.getPropertyChangeListeners().length);
+		assertEquals(3, support.getPropertyChangeListeners().length);
 
 	}
 
