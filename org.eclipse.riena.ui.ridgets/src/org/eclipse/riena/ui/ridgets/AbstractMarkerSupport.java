@@ -32,6 +32,7 @@ import org.eclipse.riena.ui.core.marker.OutputMarker;
 public abstract class AbstractMarkerSupport {
 
 	private Set<IMarker> markers;
+	private Set<Class<? extends IMarker>> hiddenMarkerTypes;
 	private IBasicMarkableRidget ridget;
 	private PropertyChangeSupport propertyChangeSupport;
 	private IMarkerAttributeChangeListener markerAttributeChangeListener;
@@ -46,28 +47,6 @@ public abstract class AbstractMarkerSupport {
 	public AbstractMarkerSupport(final IBasicMarkableRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
 		super();
 		init(ridget, propertyChangeSupport);
-	}
-
-	/**
-	 * @param ridget
-	 *            the ridget to set
-	 */
-	public void setRidget(final IBasicMarkableRidget ridget) {
-		this.ridget = ridget;
-	}
-
-	/**
-	 * Initializes this marker support with the Ridget and the property change
-	 * support.
-	 * 
-	 * @param ridget
-	 *            the Ridget that needs the marker support.
-	 * @param propertyChangeSupport
-	 * @since 2.0
-	 */
-	public void init(final IBasicMarkableRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
-		this.ridget = ridget;
-		this.propertyChangeSupport = propertyChangeSupport;
 	}
 
 	/**
@@ -88,6 +67,31 @@ public abstract class AbstractMarkerSupport {
 			fireEnabledPropertyChangeEvent(oldValue, newValue);
 			marker.addAttributeChangeListener(markerAttributeChangeListener);
 		}
+	}
+
+	/**
+	 * Callback method triggered when a control is bound to the {@link IRidget}.
+	 * <p>
+	 * The default implementation is empty. Subclasses may override.
+	 * 
+	 * @since 3.0
+	 */
+	public void bind() {
+		// nop
+	}
+
+	/**
+	 * Initializes this marker support with the Ridget and the property change
+	 * support.
+	 * 
+	 * @param ridget
+	 *            the Ridget that needs the marker support.
+	 * @param propertyChangeSupport
+	 * @since 2.0
+	 */
+	public void init(final IBasicMarkableRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
+		this.ridget = ridget;
+		this.propertyChangeSupport = propertyChangeSupport;
 	}
 
 	public void fireShowingPropertyChangeEvent() {
@@ -113,6 +117,25 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
+	 * TODO [ev] javadoc
+	 * 
+	 * @return
+	 * 
+	 * @since 3.0
+	 */
+	@SuppressWarnings("unchecked")
+	public final Set<Class<IMarker>> getHiddenMarkerTypes() {
+		if (hiddenMarkerTypes == null) {
+			return Collections.EMPTY_SET;
+		}
+		final Set<Class<IMarker>> result = new HashSet<Class<IMarker>>();
+		for (final Class<? extends IMarker> markerType : hiddenMarkerTypes) {
+			result.add((Class<IMarker>) markerType);
+		}
+		return result;
+	}
+
+	/**
 	 * @see org.eclipse.riena.ui.internal.ridgets.IBasicMarkableRidget#getMarkers()
 	 */
 	public Collection<IMarker> getMarkers() {
@@ -129,6 +152,24 @@ public abstract class AbstractMarkerSupport {
 	 */
 	public <T extends IMarker> Collection<T> getMarkersOfType(final Class<T> type) {
 		return Markable.getMarkersOfType(getMarkers(), type);
+	}
+
+	/**
+	 * TODO [ev] javadoc
+	 * 
+	 * @param type
+	 * @return
+	 * 
+	 * @since 3.0
+	 */
+	public final Set<Class<IMarker>> hideMarkersOfType(final Class<? extends IMarker> type) {
+		if (hiddenMarkerTypes == null) {
+			hiddenMarkerTypes = new HashSet<Class<? extends IMarker>>();
+		}
+		if (hiddenMarkerTypes.add(type)) {
+			updateMarkers();
+		}
+		return getHiddenMarkerTypes();
 	}
 
 	/**
@@ -167,6 +208,47 @@ public abstract class AbstractMarkerSupport {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * TODO javadoc?
+	 * 
+	 * @param ridget
+	 *            the ridget to set
+	 * @since 3.0
+	 */
+	public void setRidget(final IBasicMarkableRidget ridget) {
+		this.ridget = ridget;
+	}
+
+	/**
+	 * TODO [ev] javadoc
+	 * 
+	 * @param type
+	 * @return
+	 * 
+	 * @since 3.0
+	 */
+	public final Set<Class<IMarker>> showMarkersOfType(final Class<? extends IMarker> type) {
+		if (hiddenMarkerTypes == null) {
+			return new HashSet<Class<IMarker>>();
+		}
+		if (hiddenMarkerTypes.remove(type)) {
+			updateMarkers();
+		}
+		return getHiddenMarkerTypes();
+	}
+
+	/**
+	 * Callback method triggered when a control is unbound from the
+	 * {@link IRidget}.
+	 * <p>
+	 * The default implementation is empty. Subclasses may override.
+	 * 
+	 * @since 3.0
+	 */
+	public void unbind() {
+		// nop
 	}
 
 	// abstract methods
@@ -296,18 +378,5 @@ public abstract class AbstractMarkerSupport {
 		public void attributesChanged() {
 			handleMarkerAttributesChanged();
 		}
-	}
-
-	/**
-	 * Callback method triggered when a control is bound to the {@link IRidget}
-	 */
-	public void bind() {
-	}
-
-	/**
-	 * Callback method triggered when a control is unbound from the
-	 * {@link IRidget}
-	 */
-	public void unbind() {
 	}
 }

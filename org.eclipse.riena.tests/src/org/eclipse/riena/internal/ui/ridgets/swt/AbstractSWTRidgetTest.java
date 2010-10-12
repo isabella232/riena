@@ -11,13 +11,18 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
@@ -42,7 +47,6 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 	// /////////////
 
 	public void testGetToolTip() {
-
 		if (!isWidgetControl()) {
 			// only Control supports tool tips
 			return;
@@ -65,7 +69,6 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 	}
 
 	public void testGetFocusable() {
-
 		if (!isWidgetControl()) {
 			// only Control supports focus
 			return;
@@ -85,7 +88,6 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 	}
 
 	public void testSetFocusable() {
-
 		if (!isWidgetControl()) {
 			// only Control supports focus
 			return;
@@ -97,7 +99,6 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 
 		aControl.setFocus();
 		if (aControl.isFocusControl()) { // skip if control cannot receive focus
-
 			aRidget.setFocusable(false);
 			getOtherControl().setFocus();
 
@@ -116,7 +117,6 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 	}
 
 	public void testRequestFocus() throws Exception {
-
 		if (!isWidgetControl()) {
 			// only Control supports focus
 			return;
@@ -219,7 +219,47 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 			parent.setVisible(true);
 			assertFalse("Fails for " + theRidget, theRidget.isVisible());
 		}
-
 	}
 
+	/**
+	 * As per Bug 327496.
+	 * 
+	 * @see TextRidgetTest2#testToggleMandatoryMarkerWithMarkerHidingOn()
+	 * @see TextRidgetTest2#testToggleMarkerHidingWithMandatoryMarkerOn()
+	 */
+	public void testHideAndUnhideMarkers() {
+		if (!(getRidget() instanceof IBasicMarkableRidget)) {
+			return;
+		}
+		final IBasicMarkableRidget ridget = (IBasicMarkableRidget) getRidget();
+
+		assertEquals(0, ridget.getHiddenMarkerTypes().size());
+
+		ridget.hideMarkersOfType(ErrorMarker.class);
+
+		assertEquals(1, ridget.getHiddenMarkerTypes().size());
+
+		ridget.hideMarkersOfType(ErrorMarker.class);
+
+		Collection<Class<IMarker>> hiddenMarkers;
+
+		hiddenMarkers = ridget.getHiddenMarkerTypes();
+		assertEquals(1, hiddenMarkers.size());
+		assertTrue(hiddenMarkers.contains(ErrorMarker.class));
+
+		hiddenMarkers = ridget.hideMarkersOfType(MandatoryMarker.class);
+
+		assertEquals(2, ridget.getHiddenMarkerTypes().size());
+		assertTrue(hiddenMarkers.contains(ErrorMarker.class));
+		assertTrue(hiddenMarkers.contains(MandatoryMarker.class));
+
+		hiddenMarkers = ridget.showMarkersOfType(ErrorMarker.class);
+
+		assertEquals(1, ridget.getHiddenMarkerTypes().size());
+		assertTrue(hiddenMarkers.contains(MandatoryMarker.class));
+
+		ridget.showMarkersOfType(MandatoryMarker.class);
+
+		assertEquals(0, ridget.getHiddenMarkerTypes().size());
+	}
 }

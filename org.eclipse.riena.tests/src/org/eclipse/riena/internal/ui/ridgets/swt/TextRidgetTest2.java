@@ -21,6 +21,7 @@ import org.eclipse.core.databinding.conversion.Converter;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -1700,6 +1701,61 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("abcd", control.getText());
 		assertEquals("abcd", ridget.getText());
 		assertEquals("abcd", bean.getProperty());
+	}
+
+	/**
+	 * As per Bug 327496.
+	 */
+	public void testToggleMarkerHidingWithMandatoryMarkerOn() {
+		final ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+
+		final Color mandatoryMarkerBg = new Color(control.getDisplay(), 255, 255, 175);
+		final Color whiteBg = control.getDisplay().getSystemColor(SWT.COLOR_WHITE);
+
+		try {
+			ridget.setMandatory(true);
+			ridget.setText("");
+
+			assertEquals(mandatoryMarkerBg, control.getBackground());
+
+			ridget.hideMarkersOfType(MandatoryMarker.class);
+
+			assertEquals(whiteBg, control.getBackground());
+
+			ridget.showMarkersOfType(MandatoryMarker.class);
+
+			assertEquals(mandatoryMarkerBg, control.getBackground());
+		} finally {
+			mandatoryMarkerBg.dispose();
+		}
+	}
+
+	/**
+	 * As per Bug 327496.
+	 */
+	public void testToggleMandatoryMarkerWithMarkerHidingOn() {
+		final ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+
+		final Color whiteBg = control.getDisplay().getSystemColor(SWT.COLOR_WHITE);
+
+		ridget.setText("");
+		ridget.hideMarkersOfType(MandatoryMarker.class);
+
+		assertEquals(whiteBg, control.getBackground());
+
+		ridget.setMandatory(true);
+
+		assertEquals(whiteBg, control.getBackground());
+
+		ridget.setMandatory(false);
+
+		assertEquals(whiteBg, control.getBackground());
+
+		ridget.showMarkersOfType(MandatoryMarker.class);
+
+		assertEquals(whiteBg, control.getBackground());
 	}
 
 	// helping methods

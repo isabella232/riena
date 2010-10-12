@@ -147,7 +147,10 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	boolean isApplyTriggersNew();
 
 	/**
-	 * Returns the directWriting setting. The default is false.
+	 * When direct writing is enabled, changes in the details area will be
+	 * immediately and automatically applied back to the model. When adding new
+	 * rows, these will be immediately added to the table. Since there is no
+	 * need to apply, the 'Apply' action will not be shown.
 	 * <p>
 	 * The default setting for direct writing is false.
 	 * 
@@ -156,6 +159,20 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 * @since 1.2
 	 */
 	boolean isDirectWriting();
+
+	/**
+	 * When set to true, mandatory and error markers in the details area will
+	 * <b>initially</b> not be shown on new and suggested entries (i.e. when the
+	 * user invokes the 'New' action or the entry is suggested via the
+	 * {@link #suggestNewEntry()} methods). These markers will be displayed once
+	 * the user modifies at least one value in the details area.
+	 * <p>
+	 * The default setting for this option is false.
+	 * 
+	 * @return true if this option is enabled, false otherwise
+	 * @since 3.0
+	 */
+	boolean isHideMandatoryAndErrorMarkersOnNewEntries();
 
 	/**
 	 * When set to true, the 'Remove' action can be used to abort editing of a
@@ -269,11 +286,39 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	void setDirectWriting(boolean directWriting);
 
 	/**
+	 * When set to true, mandatory and error markers in the details area will
+	 * <b>initially</b> not be shown on new and suggested entries (i.e. when the
+	 * user invokes the 'New' action or the entry is suggested via the
+	 * {@link #suggestNewEntry()} methods). These markers will be displayed once
+	 * the user modifies at least one value in the details area.
+	 * <p>
+	 * The default setting for this option is false.
+	 * <p>
+	 * Notes:
+	 * <ul>
+	 * <li>when
+	 * {@link IMasterDetailsDelegate#isValidMaster(IMasterDetailsRidget)} fails
+	 * a special marker is added to all ridgets. This marker is always shown
+	 * regardless of the value of this option</li>
+	 * <li>consider enabling {@link ITextRidget}
+	 * {@link #setDirectWriting(boolean)} for text ridgets in the details area,
+	 * so that the markers are re-displayed after the first keystroke</li>
+	 * <li>when this options is enabled, the visual feedback for some markers
+	 * will be disabled. However the markers are never removed or readded from
+	 * the ridgets in the details area (to avoid ambiguity about the marker
+	 * state of those ridgets)</li>
+	 * </ul>
+	 * 
+	 * @since 3.0
+	 */
+	void setHideMandatoryAndErrorMarkersOnNewEntries(boolean hideMarkers);
+
+	/**
 	 * When set to true, the 'Remove' action can be used to abort editing of a
 	 * new entry. When aborting, the entry selected before pressing New will be
 	 * selected.
 	 * <p>
-	 * The default setting for this option is false.
+	 * 
 	 * 
 	 * @param cancelsNew
 	 *            the new setting for this option

@@ -13,6 +13,8 @@ package org.eclipse.riena.ui.ridgets.swt;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.runtime.Assert;
@@ -118,6 +120,18 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		return locator.locateBindingProperty(getUIControl());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 3.0
+	 */
+	public Set<Class<IMarker>> getHiddenMarkerTypes() {
+		if (markerSupport != null) {
+			return markerSupport.getHiddenMarkerTypes();
+		}
+		return new HashSet<Class<IMarker>>();
+	}
+
 	public final Collection<IMarker> getMarkers() {
 		if (markerSupport != null) {
 			return markerSupport.getMarkers();
@@ -138,6 +152,19 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 
 	public Widget getUIControl() {
 		return uiControl;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 3.0
+	 */
+	public Set<Class<IMarker>> hideMarkersOfType(final Class<? extends IMarker> type) {
+		if (markerSupport == null) {
+			markerSupport = createMarkerSupport();
+			markerSupport.setRidget(this);
+		}
+		return markerSupport.hideMarkersOfType(type);
 	}
 
 	public boolean hasFocus() {
@@ -272,6 +299,18 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 3.0
+	 */
+	public Set<Class<IMarker>> showMarkersOfType(final Class<? extends IMarker> type) {
+		if (markerSupport == null) {
+			return new HashSet<Class<IMarker>>();
+		}
+		return markerSupport.showMarkersOfType(type);
+	}
+
 	// abstract methods - subclasses must implement
 	/////////////////////////////////////////////////////////
 
@@ -383,6 +422,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		if (getUIControl() != null) {
 			if (markerSupport == null) {
 				markerSupport = createMarkerSupport();
+				markerSupport.setRidget(this);
 			}
 			markerSupport.flash();
 		}

@@ -31,11 +31,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.SharedColors;
 import org.eclipse.riena.internal.ui.ridgets.swt.SharedImages;
+import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
@@ -74,6 +76,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	private static Boolean hideDisabledRidgetContent;
 
 	private IControlDecoration errorDecoration;
+	private boolean initialVisible;
 	private boolean isFlashInProgress;
 
 	// internal data of the control
@@ -97,15 +100,14 @@ public class MarkerSupport extends BasicMarkerSupport {
 	public MarkerSupport() {
 		super();
 		internalData = new HashMap<String, Object>();
+		initialVisible = true;
 	}
 
 	public MarkerSupport(final IBasicMarkableRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
 		internalData = new HashMap<String, Object>();
+		initialVisible = true;
 	}
-
-	// protected methods
-	////////////////////
 
 	@Override
 	public synchronized final void flash() {
@@ -147,10 +149,8 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
-	@Override
-	protected IMarkableRidget getRidget() {
-		return (IMarkableRidget) super.getRidget();
-	}
+	// protected methods
+	////////////////////
 
 	protected void addError(final Control control) {
 		if (errorDecoration == null) {
@@ -158,9 +158,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 		errorDecoration.show();
 	}
-
-	// helping methods
-	//////////////////
 
 	protected void addMandatory(final Control control) {
 		if (getData(PRE_MANDATORY_BACKGROUND_KEY) == null) {
@@ -178,9 +175,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
-	// helping methods
-	//////////////////
-
 	protected void addOutput(final Control control, final Color color) {
 		if (getData(PRE_OUTPUT_BACKGROUND_KEY) == null) {
 			setData(PRE_OUTPUT_BACKGROUND_KEY, control.getBackground());
@@ -196,12 +190,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 		clearMandatory(control);
 		clearNegative(control);
 		clearOutput(control);
-	}
-
-	protected boolean initialVisible = true;
-
-	private void clearVisible(final Control control) {
-		control.setVisible(initialVisible);
 	}
 
 	protected void clearError(final Control control) {
@@ -235,6 +223,16 @@ public class MarkerSupport extends BasicMarkerSupport {
 	 */
 	protected IControlDecoration createErrorDecoration(final Control control) {
 		return new MarkerControlDecoration(control);
+	}
+
+	@Override
+	protected IMarkableRidget getRidget() {
+		return (IMarkableRidget) super.getRidget();
+	}
+
+	@Override
+	protected void saveState() {
+		this.initialVisible = getUIControl().isVisible();
 	}
 
 	/**
@@ -274,8 +272,25 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
+	private void clearVisible(final Control control) {
+		control.setVisible(initialVisible);
+	}
+
+	private Object getData(final String key) {
+		return internalData.get(key);
+	}
+
 	private boolean isButton(final Control control) {
 		return control instanceof Button || getRidget() instanceof AbstractActionRidget;
+	}
+
+	private boolean isHidden(final Class<? extends IMarker> type) {
+		for (final Class<IMarker> marker : getHiddenMarkerTypes()) {
+			if (marker.isAssignableFrom(type)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean isMandatory(final IMarkableRidget ridget) {
@@ -287,8 +302,14 @@ public class MarkerSupport extends BasicMarkerSupport {
 		return result;
 	}
 
+	/// Control data
+	private void setData(final String key, final Object value) {
+		internalData.put(key, value);
+	}
+
 	private void updateError(final Control control) {
-		if (getRidget().isErrorMarked() && getRidget().isEnabled() && getRidget().isVisible()) {
+		if (getRidget().isErrorMarked() && getRidget().isEnabled() && getRidget().isVisible()
+				&& !isHidden(ErrorMarker.class)) {
 			if (!(isButton(control) && getRidget().isOutputOnly())) {
 				addError(control);
 			} else {
@@ -300,7 +321,8 @@ public class MarkerSupport extends BasicMarkerSupport {
 	}
 
 	private void updateMandatory(final Control control) {
-		if (isMandatory(getRidget()) && !getRidget().isOutputOnly() && getRidget().isEnabled()) {
+		if (isMandatory(getRidget()) && !getRidget().isOutputOnly() && getRidget().isEnabled()
+				&& !isHidden(MandatoryMarker.class)) {
 			addMandatory(control);
 		} else {
 			clearMandatory(control);
@@ -334,14 +356,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 			clearOutput(control);
 		}
 	}
-
-	@Override
-	protected void saveState() {
-		this.initialVisible = getUIControl().isVisible();
-	}
-
-	// helping classes
-	//////////////////
 
 	/**
 	 * {@inheritDoc}
@@ -413,15 +427,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 			}
 		}
 
-	}
-
-	/// Control data
-	private void setData(final String key, final Object value) {
-		internalData.put(key, value);
-	}
-
-	private Object getData(final String key) {
-		return internalData.get(key);
 	}
 
 }

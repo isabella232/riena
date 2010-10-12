@@ -103,6 +103,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	 */
 	private boolean isDirectWriting;
 	/**
+	 * TODO [ev] docs
+	 */
+	private boolean isHideMarkers;
+	/**
 	 * True if the global mandatory marker should be visible, false otherwise.
 	 * 
 	 * @see GlobalMandatoryMarker
@@ -272,6 +276,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return isDirectWriting;
 	}
 
+	public boolean isHideMandatoryAndErrorMarkersOnNewEntries() {
+		return isHideMarkers;
+	}
+
 	public boolean isRemoveCancelsNew() {
 		return removeCancelsNew && hasRemoveButton();
 	}
@@ -309,14 +317,6 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		delegate.configureRidgets(detailRidgets);
 	}
 
-	public void setRemoveCancelsNew(final boolean cancelsNew) {
-		removeCancelsNew = cancelsNew;
-	}
-
-	public void setRemoveTriggersNew(final boolean triggersNew) {
-		removeTriggersNew = triggersNew;
-	}
-
 	public void setDirectWriting(final boolean directWriting) {
 		if (directWriting != isDirectWriting) {
 			isDirectWriting = directWriting;
@@ -324,6 +324,18 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				getApplyButtonRidget().setVisible(!directWriting);
 			}
 		}
+	}
+
+	public void setHideMandatoryAndErrorMarkersOnNewEntries(final boolean hideMarkers) {
+		// TODO [ev] implement
+	}
+
+	public void setRemoveCancelsNew(final boolean cancelsNew) {
+		removeCancelsNew = cancelsNew;
+	}
+
+	public void setRemoveTriggersNew(final boolean triggersNew) {
+		removeTriggersNew = triggersNew;
 	}
 
 	public void setSelection(final Object newSelection) {

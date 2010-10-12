@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
 
+import java.util.Set;
+
 import org.eclipse.riena.core.marker.IMarkable;
+import org.eclipse.riena.core.marker.IMarker;
 
 /**
  * A Ridget with a basic support for markers.
@@ -22,5 +25,48 @@ public interface IBasicMarkableRidget extends IRidget, IMarkable {
 	 * added or removed ("marker").
 	 */
 	String PROPERTY_MARKER = "marker"; //$NON-NLS-1$
+
+	/**
+	 * Returns all hidden marker types.
+	 * 
+	 * @return the set of currently hidden marker types; never null; may be
+	 *         empty
+	 * 
+	 * @since 3.0
+	 */
+	Set<Class<IMarker>> getHiddenMarkerTypes();
+
+	/**
+	 * Hide markers of the given type. Hidden markers of a matching type shall
+	 * be ignored in the UI (i.e. no feedback is shown by the ridget), but are
+	 * not removed from the ridget.
+	 * <p>
+	 * Initially the set of hidden markers is empty. When calling this method
+	 * the {@code type}-argument is added to the set.
+	 * 
+	 * @param type
+	 *            the type of markers to hide. The matching includes sublasses
+	 * @return the set of currently hidden marker types (including type)
+	 * 
+	 * @since 3.0
+	 */
+	Set<Class<IMarker>> hideMarkersOfType(Class<? extends IMarker> type);
+
+	/**
+	 * Show markers of the given type. Hidden markers of a matching type shall
+	 * be ignored in the UI (i.e. not feedback is shown by the ridget), but are
+	 * not removed from the ridget.
+	 * <p>
+	 * Initially the set of hidden markers is empty. When calling this method
+	 * the {@code type}-argument is removed from the set.
+	 * 
+	 * @param type
+	 *            the type of markers to show (unhide). The matching includes
+	 *            subclasses
+	 * @return the set of currently hidden marker types (including type).
+	 * 
+	 * @since 3.0
+	 */
+	Set<Class<IMarker>> showMarkersOfType(Class<? extends IMarker> type);
 
 }
