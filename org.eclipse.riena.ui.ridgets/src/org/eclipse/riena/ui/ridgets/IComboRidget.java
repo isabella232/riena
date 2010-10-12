@@ -230,5 +230,5 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	 *            formatter from the selected column
 	 * @since 3.0
 	 */
-	public void setColumnFormatter(final IColumnFormatter formatter);
+	void setColumnFormatter(final IColumnFormatter formatter);
 }
