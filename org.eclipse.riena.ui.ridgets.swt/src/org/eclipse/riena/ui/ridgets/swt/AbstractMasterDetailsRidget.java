@@ -33,6 +33,7 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
@@ -74,7 +75,6 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	 * All ridgets from the details area.
 	 */
 	private IRidgetContainer detailRidgets;
-
 	/**
 	 * If true, Apply can only complete when there are no errors in the details.
 	 */
@@ -103,9 +103,18 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	 */
 	private boolean isDirectWriting;
 	/**
-	 * TODO [ev] docs
+	 * True when mandatory and error markers should be hidden when the user
+	 * invokes the 'New' action or an entry is suggested programmatically. The
+	 * global mandatory marker is excluded from hiding. The markers will
+	 * re-enable as soon as the user changes a value in the details area.
+	 * <p>
+	 * This is the user preference for this ridget not the current state.
 	 */
-	private boolean isHideMarkers;
+	private boolean isHideMarkersOnNew;
+	/**
+	 * The ridget state of hiding (true) or not hiding markers.
+	 */
+	private boolean isHidingMarkersOnNew;
 	/**
 	 * True if the global mandatory marker should be visible, false otherwise.
 	 * 
@@ -153,6 +162,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 					return;
 				}
 				// traceEvent(evt);
+				showHiddenMarkers(evt);
 				hideGlobalMarker(evt);
 				updateApplyButton();
 			}
@@ -277,7 +287,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	public boolean isHideMandatoryAndErrorMarkersOnNewEntries() {
-		return isHideMarkers;
+		return isHideMarkersOnNew;
 	}
 
 	public boolean isRemoveCancelsNew() {
@@ -327,7 +337,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	public void setHideMandatoryAndErrorMarkersOnNewEntries(final boolean hideMarkers) {
-		// TODO [ev] implement
+		isHideMarkersOnNew = hideMarkers;
 	}
 
 	public void setRemoveCancelsNew(final boolean cancelsNew) {
@@ -363,6 +373,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				clearTableSelection();
 				editable = entry;
 				delegate.prepareItemSelected(editable);
+				updateHiddenMarkers(isHideMarkersOnNew);
 				updateGlobalMarker();
 				setEnabled(treatAsDirty, true);
 				isSuggestedEditable = treatAsDirty;
@@ -377,6 +388,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				setSelection(editable);
 				setEnabled(false, true); // directy writing -> disable apply
 				isSuggestedEditable = false; // direct writing -> not dirty
+				updateHiddenMarkers(isHideMarkersOnNew);
 				updateGlobalMarker();
 				updateDetails(editable);
 			}
@@ -453,6 +465,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			ignoreChanges = true;
 			delegate.itemSelected(newSelection);
 			clearPreNewSelection();
+			updateHiddenMarkers(false);
 			updateGlobalMarker(false);
 		} finally {
 			ignoreChanges = false;
@@ -774,11 +787,40 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				final IMarkable markable = (IMarkable) ridget;
 				if (isShowingGlobalMarker) {
 					markable.addMarker(GLOBAL_MARKER);
+					if (isHidingMarkersOnNew && ridget instanceof IBasicMarkableRidget) {
+						((IBasicMarkableRidget) ridget).showMarkersOfType(MandatoryMarker.class);
+					}
 				} else {
 					markable.removeMarker(GLOBAL_MARKER);
 				}
 			}
 		}
+	}
+
+	private synchronized void updateHiddenMarkers(final boolean hideMarkers) {
+		if (isHidingMarkersOnNew != hideMarkers) {
+			isHidingMarkersOnNew = hideMarkers;
+			for (final IRidget ridget : detailRidgets.getRidgets()) {
+				if (ridget instanceof IBasicMarkableRidget) {
+					final IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) ridget;
+					if (hideMarkers) {
+						markableRidget.hideMarkersOfType(ErrorMarker.class);
+						markableRidget.hideMarkersOfType(MandatoryMarker.class);
+					} else {
+						markableRidget.showMarkersOfType(ErrorMarker.class);
+						markableRidget.showMarkersOfType(MandatoryMarker.class);
+					}
+				}
+			}
+		}
+	}
+
+	private void showHiddenMarkers(final PropertyChangeEvent evt) {
+		final String propertyName = evt.getPropertyName();
+		if (evt.getSource() == getTableRidget() || IRidget.PROPERTY_SHOWING.equals(propertyName)) {
+			return;
+		}
+		updateHiddenMarkers(false);
 	}
 
 	private void hideGlobalMarker(final PropertyChangeEvent evt) {
@@ -799,6 +841,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			delegate.itemCreated(editable);
 			setEnabled(false, true);
 			updateDetails(editable);
+			updateHiddenMarkers(isHideMarkersOnNew);
 			updateGlobalMarker();
 			if (isRemoveCancelsNew()) {
 				storePreNewSelection();
@@ -815,6 +858,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			setSelection(editable);
 			setEnabled(false, true);
 			updateDetails(editable);
+			updateHiddenMarkers(isHideMarkersOnNew);
 			updateGlobalMarker();
 			getUIControl().getDetails().setFocus();
 		}
@@ -843,12 +887,16 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			setFocusToDetails();
 		} else {
 			setEnabled(false, false);
+			updateHiddenMarkers(false);
 			updateGlobalMarker(false);
 			setFocusToTable();
 		}
 	}
 
-	private void handleCancel() {
+	/**
+	 * Non API; public for testing only.
+	 */
+	public void handleCancel() {
 		assertIsBoundToModel();
 		if (hasRemoveButton()) {
 			getRemoveButtonRidget().setEnabled(false);

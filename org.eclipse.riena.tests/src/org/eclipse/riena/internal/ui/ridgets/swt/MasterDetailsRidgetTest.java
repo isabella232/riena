@@ -23,6 +23,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -1649,6 +1650,234 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(txtColumn2.isEnabled());
 		assertFalse(hasMandatory(txtColumn1));
 		assertFalse(hasMandatory(txtColumn2));
+	}
+
+	/**
+	 * As per Bug 327496.
+	 */
+	public void testSetHideMandatoryAndErrorMarkers() {
+		final MasterDetailsRidget ridget = getRidget();
+
+		assertFalse(ridget.isHideMandatoryAndErrorMarkersOnNewEntries());
+
+		ridget.setHideMandatoryAndErrorMarkersOnNewEntries(true);
+
+		assertTrue(ridget.isHideMandatoryAndErrorMarkersOnNewEntries());
+
+		ridget.setHideMandatoryAndErrorMarkersOnNewEntries(false);
+
+		assertFalse(ridget.isHideMandatoryAndErrorMarkersOnNewEntries());
+	}
+
+	/**
+	 * As per Bug 327496.
+	 */
+	public void testSetHideMandatoryAndErrorMarkersOnNew() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		bindToModel(true);
+
+		ridget.setHideMandatoryAndErrorMarkersOnNewEntries(true);
+		delegate.txtColumn1.setMandatory(true);
+		delegate.txtColumn2.setMandatory(true);
+		ridget.handleAdd();
+
+		final Color mandatoryMarkerBg = new Color(widget.getDisplay(), 255, 255, 175);
+		final Color whiteBg = widget.getDisplay().getSystemColor(SWT.COLOR_WHITE);
+
+		try {
+			assertEquals("", widget.txtColumn1.getText());
+			assertEquals(whiteBg, widget.txtColumn1.getBackground());
+			assertEquals("", widget.txtColumn2.getText());
+			assertEquals(whiteBg, widget.txtColumn2.getBackground());
+
+			widget.txtColumn1.setFocus();
+			UITestHelper.sendString(widget.getDisplay(), "a\t");
+
+			assertEquals(whiteBg, widget.txtColumn1.getBackground());
+			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
+		} finally {
+			mandatoryMarkerBg.dispose();
+		}
+	}
+
+	/**
+	 * As per Bug 327496.
+	 */
+	public void testSetHideMandatoryAndErrorMarkersOnSuggestNewEntry() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		bindToModel(true);
+
+		ridget.setHideMandatoryAndErrorMarkersOnNewEntries(true);
+		delegate.txtColumn1.setMandatory(true);
+		delegate.txtColumn2.setMandatory(true);
+		ridget.suggestNewEntry(new MDBean("", ""));
+
+		final Color mandatoryMarkerBg = new Color(widget.getDisplay(), 255, 255, 175);
+		final Color whiteBg = widget.getDisplay().getSystemColor(SWT.COLOR_WHITE);
+
+		try {
+			assertEquals("", widget.txtColumn1.getText());
+			assertEquals(whiteBg, widget.txtColumn1.getBackground());
+			assertEquals("", widget.txtColumn2.getText());
+			assertEquals(whiteBg, widget.txtColumn2.getBackground());
+
+			widget.txtColumn1.setFocus();
+			UITestHelper.sendString(widget.getDisplay(), "b\t");
+
+			assertEquals(whiteBg, widget.txtColumn1.getBackground());
+			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
+		} finally {
+			mandatoryMarkerBg.dispose();
+		}
+	}
+
+	/**
+	 * As per Bug 327496.
+	 */
+	public void testSetResetHiddenMarkersOnSelectionChange() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		bindToModel(true);
+
+		ridget.setHideMandatoryAndErrorMarkersOnNewEntries(true);
+		delegate.txtColumn1.setMandatory(true);
+		delegate.txtColumn2.setMandatory(true);
+		final MDBean first = new MDBean("first", "");
+		input.add(0, first);
+		ridget.updateFromModel();
+
+		final Color mandatoryMarkerBg = new Color(widget.getDisplay(), 255, 255, 175);
+		final Color whiteBg = widget.getDisplay().getSystemColor(SWT.COLOR_WHITE);
+
+		try {
+			ridget.suggestNewEntry(new MDBean("", ""));
+
+			assertEquals("", widget.txtColumn1.getText());
+			assertEquals(whiteBg, widget.txtColumn1.getBackground());
+			assertEquals("", widget.txtColumn2.getText());
+			assertEquals(whiteBg, widget.txtColumn2.getBackground());
+
+			ridget.setSelection(first);
+
+			assertEquals("first", widget.txtColumn1.getText());
+			assertEquals(whiteBg, widget.txtColumn1.getBackground());
+			assertEquals("", widget.txtColumn2.getText());
+			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
+		} finally {
+			mandatoryMarkerBg.dispose();
+		}
+	}
+
+	/**
+	 * As per Bug 327496.
+	 */
+	public void testSetResetHiddenMarkersOnApply() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		bindToModel(true);
+
+		ridget.setHideMandatoryAndErrorMarkersOnNewEntries(true);
+		delegate.txtColumn1.setMandatory(true);
+		delegate.txtColumn2.setMandatory(true);
+
+		final Color mandatoryMarkerBg = new Color(widget.getDisplay(), 255, 255, 175);
+		final Color whiteBg = widget.getDisplay().getSystemColor(SWT.COLOR_WHITE);
+
+		try {
+			final MDBean value = new MDBean("", "");
+			ridget.suggestNewEntry(value);
+
+			assertTrue(ridget.isHideMandatoryAndErrorMarkersOnNewEntries());
+			assertEquals("", widget.txtColumn1.getText());
+			assertEquals(whiteBg, widget.txtColumn1.getBackground());
+			assertEquals("", widget.txtColumn2.getText());
+			assertEquals(whiteBg, widget.txtColumn2.getBackground());
+
+			ridget.handleApply();
+			ridget.setSelection(value);
+
+			assertTrue(ridget.isHideMandatoryAndErrorMarkersOnNewEntries());
+			assertEquals("", widget.txtColumn1.getText());
+			assertEquals(mandatoryMarkerBg, widget.txtColumn1.getBackground());
+			assertEquals("", widget.txtColumn2.getText());
+			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
+
+			ridget.suggestNewEntry(value);
+		} finally {
+			mandatoryMarkerBg.dispose();
+		}
+	}
+
+	/**
+	 * As per Bug 327496.
+	 */
+	public void testSetResetHiddenMarkersOnRemoveCancelsNew() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		bindToModel(true);
+
+		ridget.setRemoveCancelsNew(true);
+		ridget.setHideMandatoryAndErrorMarkersOnNewEntries(true);
+		delegate.txtColumn1.setMandatory(true);
+		delegate.txtColumn2.setMandatory(true);
+		final MDBean first = new MDBean("first", "");
+		input.add(0, first);
+		ridget.updateFromModel();
+
+		final Color mandatoryMarkerBg = new Color(widget.getDisplay(), 255, 255, 175);
+		final Color whiteBg = widget.getDisplay().getSystemColor(SWT.COLOR_WHITE);
+
+		try {
+			ridget.setSelection(first);
+			ridget.handleAdd();
+
+			assertEquals("", widget.txtColumn1.getText());
+			assertEquals(whiteBg, widget.txtColumn1.getBackground());
+			assertEquals("", widget.txtColumn2.getText());
+			assertEquals(whiteBg, widget.txtColumn2.getBackground());
+
+			ridget.handleCancel();
+
+			assertEquals("first", widget.txtColumn1.getText());
+			assertEquals(whiteBg, widget.txtColumn1.getBackground());
+			assertEquals("", widget.txtColumn2.getText());
+			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
+		} finally {
+			mandatoryMarkerBg.dispose();
+		}
+	}
+
+	/**
+	 * As per Bug 327496.
+	 */
+	public void testShowGlobalMandatoryMarkerEvenWhenSetHideMandatoryAndErrorMarkersIsOn() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		bindToModel(true);
+
+		ridget.setHideMandatoryAndErrorMarkersOnNewEntries(true);
+		delegate.setValidMaster(false);
+		ridget.handleAdd();
+
+		final Color mandatoryMarkerBg = new Color(widget.getDisplay(), 255, 255, 175);
+		final Color whiteBg = widget.getDisplay().getSystemColor(SWT.COLOR_WHITE);
+
+		try {
+			assertEquals("", widget.txtColumn1.getText());
+			assertEquals(mandatoryMarkerBg, widget.txtColumn1.getBackground());
+			assertEquals("", widget.txtColumn2.getText());
+			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
+
+			widget.txtColumn1.setFocus();
+			UITestHelper.sendString(widget.getDisplay(), "a\t");
+
+			assertEquals(whiteBg, widget.txtColumn1.getBackground());
+			assertEquals(whiteBg, widget.txtColumn2.getBackground());
+		} finally {
+			mandatoryMarkerBg.dispose();
+		}
 	}
 
 	// helping methods
