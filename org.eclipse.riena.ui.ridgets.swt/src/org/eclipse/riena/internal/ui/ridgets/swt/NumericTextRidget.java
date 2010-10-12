@@ -32,10 +32,12 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.core.util.RAPDetector;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.INumericTextRidget;
@@ -615,31 +617,47 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			if (!e.doit || !isEnabled) {
 				return;
 			}
-			// System.out.println(e);
 			final Text control = (Text) e.widget;
 			final String oldText = control.getText();
 			String newText = null;
 			int newCursorPos = -1;
 			boolean applyText = false;
-			if (Character.isDigit(e.character) || MINUS_SIGN == e.character) { // insert / replace
-				final boolean preserveDecSep = oldText.substring(e.start, e.end).indexOf(DECIMAL_SEPARATOR) != -1;
+			int start = e.start;
+			int end = e.end;
+			char character = e.character;
+
+			// this is a workaround for RAP bug #327439
+			if (character == 0 && RAPDetector.isRAPavailable()) {
+				// try to get the char from the selection and update start/end positions
+				final Point sel = control.getSelection();
+				if (oldText.length() > e.text.length()) { // delete
+					character = '\b';
+					start = findChangePos(oldText, e.text);
+					end = start + Math.max(sel.y - sel.x, 1);
+				} else { // insert / replace
+					character = e.text.charAt(sel.x);
+					start = sel.x;
+					end = sel.y;
+				}
+			}
+
+			if (Character.isDigit(character) || MINUS_SIGN == character) { // insert / replace
+				final boolean preserveDecSep = oldText.substring(start, end).indexOf(DECIMAL_SEPARATOR) != -1;
 				if (preserveDecSep) {
-					if (oldText.charAt(e.start) == DECIMAL_SEPARATOR && oldText.length() > e.end - e.start) {
+					if (oldText.charAt(start) == DECIMAL_SEPARATOR && oldText.length() > end - start) {
 						// #(.#)# -> #.C# or (.#)# -> .C#
-						newText = oldText.substring(0, e.start) + DECIMAL_SEPARATOR + e.character
-								+ oldText.substring(e.end);
+						newText = oldText.substring(0, start) + DECIMAL_SEPARATOR + character + oldText.substring(end);
 					} else {
 						// (#.#) -> C. or #(#.#)# -> #C.# or #(#.)# -> #C.#
-						newText = oldText.substring(0, e.start) + e.character + DECIMAL_SEPARATOR
-								+ oldText.substring(e.end);
+						newText = oldText.substring(0, start) + character + DECIMAL_SEPARATOR + oldText.substring(end);
 					}
 					applyText = true;
 				} else {
-					newText = oldText.substring(0, e.start) + e.character + oldText.substring(e.end);
+					newText = oldText.substring(0, start) + character + oldText.substring(end);
 				}
-			} else if ('\b' == e.character || 127 == e.keyCode) { // delete
+			} else if ('\b' == character || 127 == e.keyCode) { // delete
 				final NumericString ns = new NumericString(oldText, isGrouping());
-				newCursorPos = ns.delete(e.start, e.end, e.character);
+				newCursorPos = ns.delete(start, end, character);
 				newText = ns.toString();
 				applyText = true;
 			}
@@ -648,12 +666,11 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 				final String newTextNoGroup = ungroup(newText);
 				final String regex = createPattern(newTextNoGroup);
 				e.doit = Pattern.matches(regex, newTextNoGroup);
-				// System.out.println("nt:" + newTextNoGroup + " p: " + regex);
 				doFlash = !e.doit;
 				if (e.doit && applyText) {
 					e.doit = false;
 					stopVerifyListener();
-					setTextAndCursor(control, newTextNoGroup, newCursorPos, e);
+					setTextAndCursor(control, newTextNoGroup, newCursorPos, e, end);
 					startVerifyListener();
 				}
 			} else {
@@ -664,7 +681,23 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			}
 		}
 
-		private void setTextAndCursor(final Text control, final String text, final int cursorPos, final VerifyEvent e) {
+		/**
+		 * @param oldText
+		 * @param text
+		 * @return
+		 */
+		private int findChangePos(final String oldText, final String newText) {
+			final int length = newText.length();
+			for (int i = 0; i < length; i++) {
+				if (oldText.charAt(i) != newText.charAt(i)) {
+					return i;
+				}
+			}
+			return length;
+		}
+
+		private void setTextAndCursor(final Text control, final String text, final int cursorPos, final VerifyEvent e,
+				final int end) {
 			final String oldText = control.getText();
 			final int oldCursorPos = control.getCaretPosition();
 			control.setText(text);
@@ -678,7 +711,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			} else if (cursorPos > -1) {
 				control.setSelection(cursorPos);
 			} else {
-				final int posFromRight = oldText.length() - e.end;
+				final int posFromRight = oldText.length() - end;
 				control.setSelection(control.getText().length() - posFromRight);
 			}
 		}
