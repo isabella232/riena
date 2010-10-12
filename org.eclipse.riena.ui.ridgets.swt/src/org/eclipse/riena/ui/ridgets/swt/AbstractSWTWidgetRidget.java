@@ -113,53 +113,9 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		markerSupport.addMarker(marker);
 	}
 
-	/*
-	 * Do not override. Template Method Pattern: Subclasses may implement {@code
-	 * unbindUIControl()} and {@code bindUIControl}, if they need to manipulate
-	 * the control when it is bound/unbound, for example to add/remove
-	 * listeners.
-	 */
-	public final void setUIControl(final Object uiControl) {
-		checkUIControl(uiControl);
-		uninstallListeners();
-		unbindUIControl();
-		unbindMarkerSupport();
-		this.uiControl = (Widget) uiControl;
-		bindMarkerSupport();
-		updateEnabled();
-		updateMarkers();
-		updateToolTip();
-		bindUIControl();
-		installListeners();
-	}
-
-	private void bindMarkerSupport() {
-		if (markerSupport != null) {
-			markerSupport.bind();
-		}
-	}
-
-	private void unbindMarkerSupport() {
-		if (markerSupport != null) {
-			markerSupport.unbind();
-		}
-	}
-
-	public Widget getUIControl() {
-		return uiControl;
-	}
-
 	public String getID() {
 		final IBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		return locator.locateBindingProperty(getUIControl());
-	}
-
-	public void requestFocus() {
-		// not supported
-	}
-
-	public boolean hasFocus() {
-		return false;
 	}
 
 	public final Collection<IMarker> getMarkers() {
@@ -178,6 +134,14 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 
 	public final String getToolTipText() {
 		return toolTip;
+	}
+
+	public Widget getUIControl() {
+		return uiControl;
+	}
+
+	public boolean hasFocus() {
+		return false;
 	}
 
 	public boolean isEnabled() {
@@ -216,6 +180,10 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 			return markerSupport.removeMarker(marker);
 		}
 		return false;
+	}
+
+	public void requestFocus() {
+		// not supported
 	}
 
 	public synchronized void setEnabled(final boolean enabled) {
@@ -265,6 +233,33 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
+	public final void setToolTipText(final String toolTipText) {
+		final String oldValue = this.toolTip;
+		this.toolTip = toolTipText;
+		updateToolTip();
+		firePropertyChange(PROPERTY_TOOLTIP, oldValue, this.toolTip);
+	}
+
+	/*
+	 * Do not override. Template Method Pattern: Subclasses may implement {@code
+	 * unbindUIControl()} and {@code bindUIControl}, if they need to manipulate
+	 * the control when it is bound/unbound, for example to add/remove
+	 * listeners.
+	 */
+	public final void setUIControl(final Object uiControl) {
+		checkUIControl(uiControl);
+		uninstallListeners();
+		unbindUIControl();
+		unbindMarkerSupport();
+		this.uiControl = (Widget) uiControl;
+		bindMarkerSupport();
+		updateEnabled();
+		updateMarkers();
+		updateToolTip();
+		bindUIControl();
+		installListeners();
+	}
+
 	public final void setVisible(final boolean visible) {
 		if (hiddenMarker == null) {
 			hiddenMarker = new HiddenMarker();
@@ -276,16 +271,6 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 			addMarker(hiddenMarker);
 		}
 	}
-
-	public final void setToolTipText(final String toolTipText) {
-		final String oldValue = this.toolTip;
-		this.toolTip = toolTipText;
-		updateToolTip();
-		firePropertyChange(PROPERTY_TOOLTIP, oldValue, this.toolTip);
-	}
-
-	// abstract methods - subclasses must implement
-	/////////////////////////////////////////////////////////
 
 	/**
 	 * Performs checks on the control about to be bound by this ridget.
@@ -321,6 +306,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * Returns true if mandatory markers should be disabled (i.e. if the ridget
 	 * has non empty input).
 	 */
+	// TODO [ev] why is this public?
 	abstract public boolean isDisableMandatoryMarker();
 
 	/**
@@ -442,16 +428,6 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
-	/**
-	 * Removes listeners from the <tt>uiControl</tt> when it is about to be
-	 * unbound from the ridget.
-	 */
-	protected void uninstallListeners() {
-		if (getUIControl() instanceof Control && visibilityListener != null) {
-			removeHierarchyVisibilityListener(((Control) getUIControl()).getParent(), visibilityListener);
-		}
-	}
-
 	protected final void setErrorMarked(final boolean errorMarked, final String message) {
 		if (!errorMarked) {
 			if (errorMarker != null) {
@@ -467,11 +443,39 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
+	/**
+	 * Removes listeners from the <tt>uiControl</tt> when it is about to be
+	 * unbound from the ridget.
+	 */
+	protected void uninstallListeners() {
+		if (getUIControl() instanceof Control && visibilityListener != null) {
+			removeHierarchyVisibilityListener(((Control) getUIControl()).getParent(), visibilityListener);
+		}
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	protected void updateMarkers() {
+		if (markerSupport != null) {
+			markerSupport.updateMarkers();
+		}
+	}
+
+	// helping methods
+	//////////////////
+
 	private void addHierarchyVisibilityListener(final Composite parent, final Listener listener) {
 		if (parent != null && !parent.isDisposed()) {
 			parent.addListener(SWT.Show, listener);
 			parent.addListener(SWT.Hide, listener);
 			addHierarchyVisibilityListener(parent.getParent(), listener);
+		}
+	}
+
+	private void bindMarkerSupport() {
+		if (markerSupport != null) {
+			markerSupport.bind();
 		}
 	}
 
@@ -483,12 +487,9 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
-	/**
-	 * @since 3.0
-	 */
-	protected void updateMarkers() {
+	private void unbindMarkerSupport() {
 		if (markerSupport != null) {
-			markerSupport.updateMarkers();
+			markerSupport.unbind();
 		}
 	}
 
