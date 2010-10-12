@@ -272,6 +272,9 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		}
 	}
 
+	// abstract methods - subclasses must implement
+	/////////////////////////////////////////////////////////
+
 	/**
 	 * Performs checks on the control about to be bound by this ridget.
 	 * <p>
