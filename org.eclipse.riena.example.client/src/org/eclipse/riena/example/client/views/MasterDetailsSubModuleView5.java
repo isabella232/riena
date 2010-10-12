@@ -10,12 +10,14 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.views;
 
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleController4;
@@ -92,6 +94,10 @@ public class MasterDetailsSubModuleView5 extends SubModuleView {
 		ccPets.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		ccPets.setOrientation(SWT.HORIZONTAL);
 		mdComposite.addUIControl(ccPets, "pets"); //$NON-NLS-1$
+
+		final Label lblNote = UIControlsFactory.createLabel(details,
+				"Note: a global marker is still shown if there are less than 5 entries!", SWT.CENTER); //$NON-NLS-1$
+		GridDataFactory.fillDefaults().span(2, 1).applyTo(lblNote);
 
 		this.addUIControl(mdComposite, "master"); //$NON-NLS-1$
 

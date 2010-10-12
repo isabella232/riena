@@ -25,8 +25,10 @@ import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
+import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
 
 /**
  * A master/details ridget that requires at least 5 entries.
@@ -108,6 +110,14 @@ public class MasterDetailsSubModuleController5 extends SubModuleController {
 				return "'Last Name' is not valid."; //$NON-NLS-1$
 			}
 			return null;
+		}
+
+		@Override
+		public boolean isValidMaster(final IMasterDetailsRidget mdRidget) {
+			final ITableRidget table = mdRidget.getRidget(ITableRidget.class,
+					AbstractMasterDetailsComposite.BIND_ID_TABLE);
+			// alternative: access the model...
+			return table.getOptionCount() > 4;
 		}
 	}
 
