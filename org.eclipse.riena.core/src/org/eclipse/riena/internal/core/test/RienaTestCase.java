@@ -11,6 +11,8 @@
 package org.eclipse.riena.internal.core.test;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
@@ -36,6 +38,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
 
+import org.eclipse.riena.core.util.IOUtils;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.Trace;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
@@ -48,16 +51,16 @@ import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 @SuppressWarnings("restriction")
 public abstract class RienaTestCase extends TestCase {
 
-	// private static final String ORG_ECLIPSE_RIENA_BUNDLE_PREFIX = null;//"org.eclipse.riena"; 
+	//	private static final String ORG_ECLIPSE_RIENA_BUNDLE_PREFIX = null;//"org.eclipse.riena"; 
 	// Keep track of services and corresponding service references.
 	private final Map<Object, ServiceReference> services = new HashMap<Object, ServiceReference>();
 	// Do not access this field directly! Use the getter getContext() because this does a lazy initialization.
 	private BundleContext context;
 
-	private final boolean trace = Trace.isOn(RienaTestCase.class, getClass(), "debug"); //$NON-NLS-1$
+	private final boolean trace = Trace.isOn(RienaTestCase.class, getClass(), "debug");
 
-	//private Set<String> before;
-	//private Set<String> after;
+	//	private Set<String> before;
+	//	private Set<String> after;
 
 	/**
 	 * 
@@ -104,6 +107,7 @@ public abstract class RienaTestCase extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		//		System.out.println("setUp");
 		services.clear();
 		// before = ExtensionRegistryAnalyzer.getRegistryPaths(ORG_ECLIPSE_RIENA_BUNDLE_PREFIX);
 	}
@@ -113,6 +117,7 @@ public abstract class RienaTestCase extends TestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
+		//		System.out.println("tearDown");
 		for (final ServiceReference reference : services.values()) {
 			getContext().ungetService(reference);
 		}
@@ -152,20 +157,26 @@ public abstract class RienaTestCase extends TestCase {
 	}
 
 	/**
-	 * Get the file (from src-folder) for the resource within the same directory
-	 * this unit test is in.
+	 * Get the resource located in the folder along with the test case.
+	 * <p>
+	 * <b>Note:</b> The resource will be copied into a temporary file and this
+	 * file will be returned. This file will be deleted on JVM exit.
 	 * 
 	 * @param resource
-	 * @return
+	 * @return a file to the content of the resource
 	 */
+	@IgnoreFindBugs(value = { "UI_INHERITANCE_UNSAFE_GETRESOURCE" }, justification = "getClass().getResource() shall return the resource relative to the sub-class, because this is the unit test which needs the 'local' resource.")
 	protected File getFile(final String resource) {
-		// TODO warning suppression. Ignoring FindBugs problem that
-		// getResource(..) will return a resource relative to a
-		// subclass rather than relative to this class. This is the
-		// intended behavior.
 		final URL url = getClass().getResource(resource);
-		// nested File constructors for OS independence...
-		return new File(new File(new File("").getAbsolutePath(), "src"), url.getFile()); //$NON-NLS-1$ //$NON-NLS-2$
+		try {
+			final File tempFile = File.createTempFile(resource.replace('.', '-'), ".tmp"); //$NON-NLS-1$
+			tempFile.deleteOnExit();
+			IOUtils.copy(url.openStream(), new FileOutputStream(tempFile));
+			return tempFile;
+		} catch (final IOException e) {
+			fail("IOException when trying to make a copy of " + resource + ": " + e); //$NON-NLS-1$ //$NON-NLS-2$
+			return null; // make compiler happy
+		}
 	}
 
 	/**
