@@ -588,7 +588,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	 * Initialize databinding for tree viewer.
 	 */
 	private void bindToViewer(final Tree control) {
-		viewer = new TreeViewer(control);
+		viewer = new SharedControlTreeViewer(control);
 
 		// how to create the content/structure for the tree
 		final TreeStructureAdvisor structureAdvisor = createStructureAdvisor();
@@ -874,6 +874,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 						throw new IllegalStateException(errorMsg);
 					}
 				}
+
 			} finally {
 				viewer.getControl().setRedraw(true);
 			}
@@ -882,6 +883,30 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	// helping classes
 	// ////////////////
+
+	/**
+	 * A {@link TreeViewer} that honors the current binding state of the Ridget
+	 */
+	private final class SharedControlTreeViewer extends TreeViewer {
+
+		private SharedControlTreeViewer(final Tree tree) {
+			super(tree);
+		}
+
+		@Override
+		protected void handleTreeExpand(final org.eclipse.swt.events.TreeEvent event) {
+			if (getUIControl() != null) {
+				super.handleTreeExpand(event);
+			}
+		}
+
+		@Override
+		protected void handleTreeCollapse(final org.eclipse.swt.events.TreeEvent event) {
+			if (getUIControl() != null) {
+				super.handleTreeCollapse(event);
+			}
+		}
+	}
 
 	/**
 	 * Enumeration with the expansion states of this ridget.
