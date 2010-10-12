@@ -61,6 +61,25 @@ public class SSLConfigurationTest extends RienaTestCase {
 		}
 	}
 
+	public void testOneConfigurationWithEncryptedPassword() {
+		printTestName();
+		addPluginXml(SSLConfigurationTest.class, "pluginWithEncryptedPassword.xml");
+
+		try {
+			final SSLConfiguration config = new SSLConfiguration();
+			Wire.instance(config).andStart(getContext());
+
+			assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1");
+			assertEquals(ReflectionUtils.getHidden(config, "keystore"), "#jre-cacerts#");
+			assertEquals(ReflectionUtils.getHidden(config, "password"), "cae3c55508eaa369d5c8870398c90a64"); // not encrypted yet!!
+			assertNotNull(ReflectionUtils.getHidden(config, "hostnameVerifier"));
+			assertEquals(ReflectionUtils.getHidden(config, "hostnameVerifier").getClass(),
+					SSLConfiguration.StrictHostnameVerifier.class);
+		} finally {
+			removeExtension("org.eclipse.riena.communication.core.ssl.test");
+		}
+	}
+
 	public void testOneConfigurationWithHostnameVerifier() {
 		printTestName();
 		addPluginXml(SSLConfigurationTest.class, "pluginWithHostnameVerifier.xml");
