@@ -28,6 +28,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.ITreeImageProvider;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
@@ -94,6 +96,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	private final IObservableMap enablementAttribute;
 	private final IObservableMap imageAttribute;
 	private final IObservableMap openImageAttribute;
+	private final String[] valueAccessors;
 
 	/**
 	 * Creates a new instance.
@@ -148,8 +151,8 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		final IObservableMap[] map = createAttributeMap(treeElementClass, knownElements, valueAccessors,
 				enablementAccessor, imageAccessor, openNodeImageAccessor);
 		final int numColumns = valueAccessors.length;
-		return new TreeRidgetLabelProvider(viewer, map, enablementAccessor, imageAccessor, openNodeImageAccessor,
-				formatters, numColumns);
+		return new TreeRidgetLabelProvider(viewer, map, valueAccessors, enablementAccessor, imageAccessor,
+				openNodeImageAccessor, formatters, numColumns);
 	}
 
 	/**
@@ -169,6 +172,28 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 			result = PojoObservables.observeMaps(knownElements, treeElementClass, attributes);
 		}
 		return result;
+	}
+
+	@Override
+	public String getColumnText(final Object element, final int columnIndex) {
+		//FIXME the current attributeMap does not hold the element and cannot provide a value 
+		String columnText = super.getColumnText(element, columnIndex);
+		if (!StringUtils.isGiven(columnText)) {
+			columnText = String.valueOf(element);
+			if (columnIndex <= valueAccessors.length - 1) {
+				final String str = valueAccessors[columnIndex];
+				if (str.length() > 1) {
+					String s = str.substring(0, 1).toUpperCase();
+					s = s + str.substring(1);
+					try {
+						return ReflectionUtils.invoke(element, "get" + s); //$NON-NLS-1$
+					} catch (final RuntimeException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		}
+		return columnText;
 	}
 
 	private static String[] computeAttributes(final String[] valueAccessors, final String enablementAccessor,
@@ -204,9 +229,10 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	}
 
 	private TreeRidgetLabelProvider(final TreeViewer viewer, final IObservableMap[] attributeMap,
-			final String enablementAccessor, final String imageAccessor, final String openNodeImageAccessor,
-			final IColumnFormatter[] formatters, final int numColumns) {
+			final String[] valueAccessors, final String enablementAccessor, final String imageAccessor,
+			final String openNodeImageAccessor, final IColumnFormatter[] formatters, final int numColumns) {
 		super(attributeMap, formatters, numColumns);
+		this.valueAccessors = valueAccessors;
 		final Tree tree = viewer.getTree();
 		tree.removeTreeListener(LISTENER);
 		tree.addTreeListener(LISTENER);
