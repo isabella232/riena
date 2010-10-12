@@ -431,7 +431,7 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		result.addChild(mdSubModule4);
 
 		final ISubModuleNode mdSubModule5 = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.masterdetails5"), "Master/Details IV"); //$NON-NLS-1$ //$NON-NLS-2$
+				"org.eclipse.riena.example.masterdetails5"), "Master/Details V"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(mdSubModule5, MasterDetailsSubModuleController5.class,
 				MasterDetailsSubModuleView5.ID, false);
 		result.addChild(mdSubModule5);
