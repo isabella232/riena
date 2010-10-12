@@ -29,15 +29,16 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
+import org.eclipse.riena.navigation.ui.swt.views.ModuleNavigationListener;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.InfoFlyout;
 import org.eclipse.riena.ui.swt.facades.internal.CompletionComboRCP;
 import org.eclipse.riena.ui.swt.facades.internal.CompletionComboWithImageRCP;
 import org.eclipse.riena.ui.swt.facades.internal.DisabledPainter;
+import org.eclipse.riena.ui.swt.facades.internal.EmbeddedTitleBarToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.GrabCornerListenerWithTracker;
 import org.eclipse.riena.ui.swt.facades.internal.InfoFlyoutRCP;
-import org.eclipse.riena.ui.swt.facades.internal.EmbeddedTitleBarToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.SubModuleToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.TreeItemEraserAndPainter;
 
@@ -93,6 +94,11 @@ public final class SWTFacadeRCP extends SWTFacade {
 		if (listener != null) {
 			control.addPaintListener((PaintListener) listener);
 		}
+	}
+
+	@Override
+	public void attachModuleNavigationListener(final Tree tree) {
+		new ModuleNavigationListener(tree);
 	}
 
 	@Override

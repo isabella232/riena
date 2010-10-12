@@ -315,6 +315,15 @@ public abstract class SWTFacade {
 	public abstract void addPaintListener(Control control, EventListener listener);
 
 	/**
+	 * Attaches a platform specific {@link ModuleNavigationListener} instance to
+	 * the given tree
+	 * 
+	 * @param tree
+	 *            a {@link Tree} instance; never null
+	 */
+	public abstract void attachModuleNavigationListener(Tree tree);
+
+	/**
 	 * Copies the value of the {@code keyLocation} field from the source Event
 	 * to the target Event.
 	 * 

@@ -462,7 +462,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		};
 		SWTFacade.getDefault().addPaintItemListener(getTree(), paintItemListener);
 
-		new ModuleNavigationListener(getTree());
+		SWTFacade.getDefault().attachModuleNavigationListener(getTree());
 	}
 
 	private void blockView(final boolean block) {

@@ -52,7 +52,7 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
  * {@link NavigationProcessor}. Moving over such a node is not problem anymore,
  * since the activation is only triggered after a delay - not instantly.
  */
-class ModuleNavigationListener extends SelectionAdapter implements KeyListener, FocusListener {
+public class ModuleNavigationListener extends SelectionAdapter implements KeyListener, FocusListener {
 
 	/** Keycode for 'arrow down' (16777218) */
 	private static final int KC_ARROW_DOWN = 16777218;
@@ -66,7 +66,7 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 	private boolean isFirst;
 	private boolean isLast;
 
-	ModuleNavigationListener(final Tree moduleTree) {
+	public ModuleNavigationListener(final Tree moduleTree) {
 		moduleTree.addKeyListener(this);
 		moduleTree.addSelectionListener(this);
 		moduleTree.addFocusListener(this);
@@ -253,9 +253,13 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 	private void startSwitch(final TreeItem item) {
 		cancelSwitch();
 		if (item != null) {
-			nodeSwitcher = new NodeSwitcher(item.getDisplay(), (INavigationNode<?>) item.getData());
+			nodeSwitcher = createNodeSwitcher(item);
 			nodeSwitcher.start();
 		}
+	}
+
+	protected NodeSwitcher createNodeSwitcher(final TreeItem item) {
+		return new NodeSwitcher(item.getDisplay(), (INavigationNode<?>) item.getData());
 	}
 
 	// helping classes
@@ -264,7 +268,7 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 	/**
 	 * Activates a navigation node after a timeout. Can be cancelled.
 	 */
-	private final static class NodeSwitcher extends Thread {
+	protected static class NodeSwitcher extends Thread {
 
 		/**
 		 * Wait this long (ms) before activating a node.
@@ -272,11 +276,11 @@ class ModuleNavigationListener extends SelectionAdapter implements KeyListener, 
 		private static final int TIMEOUT_MS = RAPDetector.isRAPavailable() ? 50 : 300;
 
 		private final INavigationNode<?> node;
-		private final Display display;
+		protected final Display display;
 
 		private volatile boolean isCancelled;
 
-		NodeSwitcher(final Display display, final INavigationNode<?> node) {
+		protected NodeSwitcher(final Display display, final INavigationNode<?> node) {
 			this.display = display;
 			this.node = node;
 		}

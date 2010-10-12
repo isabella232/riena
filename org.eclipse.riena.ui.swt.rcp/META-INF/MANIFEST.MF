@@ -6,6 +6,7 @@ Bundle-Version: 3.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.riena.ui.swt,
+ org.eclipse.riena.navigation.ui.swt,
  org.pushingpixels.trident
 Eclipse-RegisterBuddy: org.eclipse.riena.ui.swt
 Export-Package: org.eclipse.riena.ui.swt.facades.internal;x-friends:="org.eclipse.riena.tests"
