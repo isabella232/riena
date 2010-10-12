@@ -992,6 +992,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				return;
 			}
 			// traceEvent(evt);
+			showHiddenMarkers(evt);
 			hideGlobalMarker(evt);
 			if (canApplyDirectly()) {
 				delegate.prepareItemApplied(editable);

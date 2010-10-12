@@ -163,6 +163,11 @@
             name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView4">
       </view>
       <view allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView5"
+            id="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView5"
+            name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView5">
+      </view>
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView"
             id="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView"
             name="org.eclipse.riena.example.client.views.MessageMarkerSubModuleView">

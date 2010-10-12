@@ -1736,7 +1736,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	/**
 	 * As per Bug 327496.
 	 */
-	public void testSetResetHiddenMarkersOnSelectionChange() {
+	public void testResetHiddenMarkersOnSelectionChange() {
 		final MasterDetailsRidget ridget = getRidget();
 		final MDWidget widget = getWidget();
 		bindToModel(true);
@@ -1773,7 +1773,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	/**
 	 * As per Bug 327496.
 	 */
-	public void testSetResetHiddenMarkersOnApply() {
+	public void testResetHiddenMarkersOnApply() {
 		final MasterDetailsRidget ridget = getRidget();
 		final MDWidget widget = getWidget();
 		bindToModel(true);
@@ -1813,7 +1813,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	/**
 	 * As per Bug 327496.
 	 */
-	public void testSetResetHiddenMarkersOnRemoveCancelsNew() {
+	public void testResetHiddenMarkersOnRemoveCancelsNew() {
 		final MasterDetailsRidget ridget = getRidget();
 		final MDWidget widget = getWidget();
 		bindToModel(true);
@@ -1841,6 +1841,42 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			ridget.handleCancel();
 
 			assertEquals("first", widget.txtColumn1.getText());
+			assertEquals(whiteBg, widget.txtColumn1.getBackground());
+			assertEquals("", widget.txtColumn2.getText());
+			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
+		} finally {
+			mandatoryMarkerBg.dispose();
+		}
+	}
+
+	/**
+	 * As per Bug 327496.
+	 */
+	public void testResetHiddenMarkersOnDirectWritingEvent() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDWidget widget = getWidget();
+		bindToModel(true);
+
+		ridget.setDirectWriting(true);
+		delegate.txtColumn1.setMandatory(true);
+		delegate.txtColumn2.setMandatory(true);
+		ridget.setHideMandatoryAndErrorMarkersOnNewEntries(true);
+
+		final Color mandatoryMarkerBg = new Color(widget.getDisplay(), 255, 255, 175);
+		final Color whiteBg = widget.getDisplay().getSystemColor(SWT.COLOR_WHITE);
+
+		try {
+			ridget.handleAdd();
+
+			assertEquals("", widget.txtColumn1.getText());
+			assertEquals(whiteBg, widget.txtColumn1.getBackground());
+			assertEquals("", widget.txtColumn2.getText());
+			assertEquals(whiteBg, widget.txtColumn2.getBackground());
+
+			widget.txtColumn1.setFocus();
+			UITestHelper.sendString(widget.getDisplay(), "b\t");
+
+			assertEquals("b", widget.txtColumn1.getText());
 			assertEquals(whiteBg, widget.txtColumn1.getBackground());
 			assertEquals("", widget.txtColumn2.getText());
 			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
