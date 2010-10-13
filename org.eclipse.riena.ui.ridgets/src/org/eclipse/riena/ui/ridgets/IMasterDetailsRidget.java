@@ -83,7 +83,7 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 	 *         {@link #suggestNewEntry(Object)}, false otherwise
 	 * @since 3.0
 	 */
-	public boolean canSuggest();
+	boolean canSuggest();
 
 	/**
 	 * Return the current {@link IMasterDetailsDelegate} or null, if none has
