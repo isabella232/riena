@@ -68,6 +68,8 @@ public class CComboRidgetTest extends AbstractComboRidgetTest {
 		control.setBackground(bgColor);
 		ridget.setEnabled(false);
 
+		// TODO [ev] investigate
+
 		//		assertEquals(disabledBg, control.getBackground());
 		//		assertEquals(disabledBg, getText(control).getBackground());
 		//
