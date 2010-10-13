@@ -124,6 +124,10 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		this.initialEnabled = getUIControl().isEnabled();
 	}
 
+	public boolean isInitialEnabled() {
+		return initialEnabled;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
