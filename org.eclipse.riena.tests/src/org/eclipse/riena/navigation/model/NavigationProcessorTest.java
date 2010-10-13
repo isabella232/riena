@@ -751,7 +751,6 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertEquals(1, moduleGroup.getChildren().size());
 		assertEquals(1, moduleGroup2.getChildren().size());
 		assertEquals(module2, targetModuleGroup.getChild(0));
-
 	}
 
 	/**
@@ -763,6 +762,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		module2.moveTo(new NavigationNodeId(TARGET_MODULE_GROUP));
 		assertEquals(module2, targetModuleGroup.getChild(0));
 		assertTrue(module2.isBlocked());
+		assertFalse(moduleGroup2.isBlocked());
 	}
 
 	/**
