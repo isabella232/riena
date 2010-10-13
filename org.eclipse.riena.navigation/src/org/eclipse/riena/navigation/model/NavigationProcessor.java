@@ -379,11 +379,10 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		moduleNode.deactivate(null);
 		oldParentModuleGroup.removeChild(moduleNode);
 		targetModuleGroup.addChild(moduleNode);
-		targetModuleGroup.setBlocked(moduleNode.isBlocked());
 
-		moduleNode.setBlocked(isBlocked);
-		moduleNode.setEnabled(isEnabled);
-		moduleNode.setVisible(isVisible);
+		moduleNode.setBlocked(isBlocked || targetModuleGroup.isBlocked());
+		moduleNode.setEnabled(isEnabled && targetModuleGroup.isEnabled());
+		moduleNode.setVisible(isVisible && targetModuleGroup.isVisible());
 
 		if (isActivated) {
 			moduleNode.activate();
