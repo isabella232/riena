@@ -105,13 +105,13 @@ public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
 
 	/**
 	 * Return true if the 'Apply' action enables on the condition that all
-	 * ridgets in the Details are have <b>no</b> error markers.
+	 * ridgets in the Details have <b>no</b> error markers.
 	 * <p>
 	 * The default setting for this option is false.
 	 * 
 	 * @return true if the 'Apply' action enables on the condition that all
-	 *         ridgets in the Details are have <b>no</b> error markers;
-	 *         otherwise false
+	 *         ridgets in the Details have <b>no</b> error markers; otherwise
+	 *         false
 	 * 
 	 * @since 2.0
 	 */
