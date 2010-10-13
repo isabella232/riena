@@ -162,11 +162,15 @@ public abstract class AbstractMarkerSupport {
 	 * 
 	 * @since 3.0
 	 */
-	public final Set<Class<IMarker>> hideMarkersOfType(final Class<? extends IMarker> type) {
+	public final Set<Class<IMarker>> hideMarkersOfType(final Class<? extends IMarker>... types) {
 		if (hiddenMarkerTypes == null) {
 			hiddenMarkerTypes = new HashSet<Class<? extends IMarker>>();
 		}
-		if (hiddenMarkerTypes.add(type)) {
+		boolean changed = false;
+		for (final Class<? extends IMarker> clazz : types) {
+			changed |= hiddenMarkerTypes.add(clazz);
+		}
+		if (changed) {
 			updateMarkers();
 		}
 		return getHiddenMarkerTypes();
@@ -229,11 +233,15 @@ public abstract class AbstractMarkerSupport {
 	 * 
 	 * @since 3.0
 	 */
-	public final Set<Class<IMarker>> showMarkersOfType(final Class<? extends IMarker> type) {
+	public final Set<Class<IMarker>> showMarkersOfType(final Class<? extends IMarker>... types) {
 		if (hiddenMarkerTypes == null) {
 			return new HashSet<Class<IMarker>>();
 		}
-		if (hiddenMarkerTypes.remove(type)) {
+		boolean changed = false;
+		for (final Class<? extends IMarker> clazz : types) {
+			changed |= hiddenMarkerTypes.remove(clazz);
+		}
+		if (changed) {
 			updateMarkers();
 		}
 		return getHiddenMarkerTypes();

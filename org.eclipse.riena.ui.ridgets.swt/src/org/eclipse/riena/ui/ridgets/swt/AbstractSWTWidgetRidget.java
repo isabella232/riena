@@ -159,12 +159,12 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * 
 	 * @since 3.0
 	 */
-	public Set<Class<IMarker>> hideMarkersOfType(final Class<? extends IMarker> type) {
+	public Set<Class<IMarker>> hideMarkersOfType(final Class<? extends IMarker>... types) {
 		if (markerSupport == null) {
 			markerSupport = createMarkerSupport();
 			markerSupport.setRidget(this);
 		}
-		return markerSupport.hideMarkersOfType(type);
+		return markerSupport.hideMarkersOfType(types);
 	}
 
 	public boolean hasFocus() {
@@ -304,11 +304,11 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * 
 	 * @since 3.0
 	 */
-	public Set<Class<IMarker>> showMarkersOfType(final Class<? extends IMarker> type) {
+	public Set<Class<IMarker>> showMarkersOfType(final Class<? extends IMarker>... types) {
 		if (markerSupport == null) {
 			return new HashSet<Class<IMarker>>();
 		}
-		return markerSupport.showMarkersOfType(type);
+		return markerSupport.showMarkersOfType(types);
 	}
 
 	// abstract methods - subclasses must implement

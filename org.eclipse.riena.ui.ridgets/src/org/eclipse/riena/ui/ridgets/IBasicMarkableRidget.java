@@ -44,13 +44,13 @@ public interface IBasicMarkableRidget extends IRidget, IMarkable {
 	 * Initially the set of hidden markers is empty. When calling this method
 	 * the {@code type}-argument is added to the set.
 	 * 
-	 * @param type
+	 * @param types
 	 *            the type of markers to hide. The matching includes sublasses
 	 * @return the set of currently hidden marker types (including type)
 	 * 
 	 * @since 3.0
 	 */
-	Set<Class<IMarker>> hideMarkersOfType(Class<? extends IMarker> type);
+	Set<Class<IMarker>> hideMarkersOfType(Class<? extends IMarker>... types);
 
 	/**
 	 * Show markers of the given type. Hidden markers of a matching type shall
@@ -60,13 +60,13 @@ public interface IBasicMarkableRidget extends IRidget, IMarkable {
 	 * Initially the set of hidden markers is empty. When calling this method
 	 * the {@code type}-argument is removed from the set.
 	 * 
-	 * @param type
+	 * @param types
 	 *            the type of markers to show (unhide). The matching includes
 	 *            subclasses
 	 * @return the set of currently hidden marker types (including type).
 	 * 
 	 * @since 3.0
 	 */
-	Set<Class<IMarker>> showMarkersOfType(Class<? extends IMarker> type);
+	Set<Class<IMarker>> showMarkersOfType(Class<? extends IMarker>... types);
 
 }

@@ -162,8 +162,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 					return;
 				}
 				// traceEvent(evt);
-				showHiddenMarkers(evt);
-				hideGlobalMarker(evt);
+				updateMarkers(evt);
 				updateApplyButton();
 			}
 		});
@@ -373,8 +372,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				clearTableSelection();
 				editable = entry;
 				delegate.prepareItemSelected(editable);
-				updateHiddenMarkers(isHideMarkersOnNew);
-				updateGlobalMarker();
+				updateMarkers(isHideMarkersOnNew, isShowGlobalMarker());
 				setEnabled(treatAsDirty, true);
 				isSuggestedEditable = treatAsDirty;
 				updateDetails(editable);
@@ -388,8 +386,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				setSelection(editable);
 				setEnabled(false, true); // directy writing -> disable apply
 				isSuggestedEditable = false; // direct writing -> not dirty
-				updateHiddenMarkers(isHideMarkersOnNew);
-				updateGlobalMarker();
+				updateMarkers(isHideMarkersOnNew, isShowGlobalMarker());
 				updateDetails(editable);
 			}
 		} finally {
@@ -465,8 +462,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			ignoreChanges = true;
 			delegate.itemSelected(newSelection);
 			clearPreNewSelection();
-			updateHiddenMarkers(false);
-			updateGlobalMarker(false);
+			updateMarkers(false, false);
 		} finally {
 			ignoreChanges = false;
 		}
@@ -692,6 +688,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return getApplyButtonRidget() != null;
 	}
 
+	private boolean isShowGlobalMarker() {
+		return !delegate.isValidMaster(this);
+	}
+
 	private void setEnabled(final boolean applyEnabled, final boolean detailsEnabled) {
 		ignoreChanges = true;
 		try {
@@ -772,12 +772,25 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
-	private void updateGlobalMarker() {
-		final boolean show = !delegate.isValidMaster(this);
-		updateGlobalMarker(show);
-	}
-
-	private void updateGlobalMarker(final boolean showGlobalMarker) {
+	@SuppressWarnings("unchecked")
+	private synchronized void updateMarkers(final boolean hideMarkers, final boolean showGlobalMarker) {
+		if (isHidingMarkersOnNew != hideMarkers) {
+			isHidingMarkersOnNew = hideMarkers;
+			for (final IRidget ridget : detailRidgets.getRidgets()) {
+				if (ridget instanceof IBasicMarkableRidget) {
+					final IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) ridget;
+					if (isHidingMarkersOnNew) {
+						if (showGlobalMarker) {
+							markableRidget.hideMarkersOfType(ErrorMarker.class);
+						} else {
+							markableRidget.hideMarkersOfType(ErrorMarker.class, MandatoryMarker.class);
+						}
+					} else {
+						markableRidget.showMarkersOfType(ErrorMarker.class, MandatoryMarker.class);
+					}
+				}
+			}
+		}
 		if (isShowingGlobalMarker != showGlobalMarker) {
 			isShowingGlobalMarker = showGlobalMarker;
 			for (final IRidget ridget : detailRidgets.getRidgets()) {
@@ -787,9 +800,6 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				final IMarkable markable = (IMarkable) ridget;
 				if (isShowingGlobalMarker) {
 					markable.addMarker(GLOBAL_MARKER);
-					if (isHidingMarkersOnNew && ridget instanceof IBasicMarkableRidget) {
-						((IBasicMarkableRidget) ridget).showMarkersOfType(MandatoryMarker.class);
-					}
 				} else {
 					markable.removeMarker(GLOBAL_MARKER);
 				}
@@ -797,38 +807,12 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
-	private synchronized void updateHiddenMarkers(final boolean hideMarkers) {
-		if (isHidingMarkersOnNew != hideMarkers) {
-			isHidingMarkersOnNew = hideMarkers;
-			for (final IRidget ridget : detailRidgets.getRidgets()) {
-				if (ridget instanceof IBasicMarkableRidget) {
-					final IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) ridget;
-					if (hideMarkers) {
-						markableRidget.hideMarkersOfType(ErrorMarker.class);
-						markableRidget.hideMarkersOfType(MandatoryMarker.class);
-					} else {
-						markableRidget.showMarkersOfType(ErrorMarker.class);
-						markableRidget.showMarkersOfType(MandatoryMarker.class);
-					}
-				}
-			}
-		}
-	}
-
-	private void showHiddenMarkers(final PropertyChangeEvent evt) {
+	private void updateMarkers(final PropertyChangeEvent evt) {
 		final String propertyName = evt.getPropertyName();
 		if (evt.getSource() == getTableRidget() || IRidget.PROPERTY_SHOWING.equals(propertyName)) {
 			return;
 		}
-		updateHiddenMarkers(false);
-	}
-
-	private void hideGlobalMarker(final PropertyChangeEvent evt) {
-		final String propertyName = evt.getPropertyName();
-		if (evt.getSource() == getTableRidget() || IRidget.PROPERTY_SHOWING.equals(propertyName)) {
-			return;
-		}
-		updateGlobalMarker(false);
+		updateMarkers(false, false);
 	}
 
 	/**
@@ -841,8 +825,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			delegate.itemCreated(editable);
 			setEnabled(false, true);
 			updateDetails(editable);
-			updateHiddenMarkers(isHideMarkersOnNew);
-			updateGlobalMarker();
+			updateMarkers(isHideMarkersOnNew, isShowGlobalMarker());
 			if (isRemoveCancelsNew()) {
 				storePreNewSelection();
 			} else {
@@ -858,8 +841,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			setSelection(editable);
 			setEnabled(false, true);
 			updateDetails(editable);
-			updateHiddenMarkers(isHideMarkersOnNew);
-			updateGlobalMarker();
+			updateMarkers(isHideMarkersOnNew, isShowGlobalMarker());
 			getUIControl().getDetails().setFocus();
 		}
 	}
@@ -887,8 +869,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			setFocusToDetails();
 		} else {
 			setEnabled(false, false);
-			updateHiddenMarkers(false);
-			updateGlobalMarker(false);
+			updateMarkers(false, false);
 			setFocusToTable();
 		}
 	}
@@ -992,8 +973,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				return;
 			}
 			// traceEvent(evt);
-			showHiddenMarkers(evt);
-			hideGlobalMarker(evt);
+			updateMarkers(evt);
 			if (canApplyDirectly()) {
 				delegate.prepareItemApplied(editable);
 				// this is only reached when direct writing is on and one of 'interesting' events happens
