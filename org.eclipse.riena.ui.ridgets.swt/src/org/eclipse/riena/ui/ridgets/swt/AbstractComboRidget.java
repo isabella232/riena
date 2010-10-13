@@ -299,6 +299,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		return markSelectionMismatch;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void setColumnFormatter(final IColumnFormatter formatter) {
 		this.formatter = formatter;
 	}
@@ -309,7 +312,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 
 	public void setMarkSelectionMismatch(final boolean mark) {
 		if (mark != markSelectionMismatch) {
-			if (mark == true && selectionMismatchMarker == null) {
+			if (mark && selectionMismatchMarker == null) {
 				selectionMismatchMarker = new ErrorMessageMarker(
 						Messages.AbstractComboRidget_markerMessage_selectionMismatch);
 			}
@@ -707,6 +710,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	/**
 	 * TwoAdapter that saves the current selection, when outputOnly changes and
 	 * applies it again after the user tries to select an entry in the combo.
+	 * 
+	 * @since 3.0
 	 */
 	protected final static class SelectionTypeEnforcer extends SelectionAdapter implements PropertyChangeListener {
 
