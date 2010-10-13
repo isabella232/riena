@@ -52,8 +52,6 @@ public abstract class AbstractRidgetSharedTestCase extends RienaTestCase {
 
 		widget = createWidget(shell);
 
-		createRidget();
-
 		shell.setSize(130, 100);
 		shell.setLocation(0, 0);
 		shell.open();
