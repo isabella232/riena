@@ -177,9 +177,8 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	@Override
 	public String getColumnText(final Object element, final int columnIndex) {
 		//FIXME the current attributeMap does not hold the element and cannot provide a value 
-		String columnText = super.getColumnText(element, columnIndex);
+		final String columnText = super.getColumnText(element, columnIndex);
 		if (!StringUtils.isGiven(columnText)) {
-			columnText = String.valueOf(element);
 			if (columnIndex <= valueAccessors.length - 1) {
 				final String str = valueAccessors[columnIndex];
 				if (str.length() > 1) {
