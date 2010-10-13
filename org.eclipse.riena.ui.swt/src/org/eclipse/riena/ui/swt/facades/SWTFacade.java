@@ -320,6 +320,7 @@ public abstract class SWTFacade {
 	 * 
 	 * @param tree
 	 *            a {@link Tree} instance; never null
+	 * @since 3.0
 	 */
 	public abstract void attachModuleNavigationListener(Tree tree);
 
