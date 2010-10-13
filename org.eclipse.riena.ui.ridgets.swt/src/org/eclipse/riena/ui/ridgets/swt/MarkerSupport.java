@@ -51,6 +51,9 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
  * Helper class for SWT Ridgets to delegate their marker issues to.
+ * <p>
+ * The class can hide these marker types (including subclasses):
+ * {@link MandatoryMarker}, {@link ErrorMarker}
  */
 public class MarkerSupport extends BasicMarkerSupport {
 

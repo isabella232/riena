@@ -117,9 +117,10 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * TODO [ev] javadoc
+	 * Returns all hidden marker types.
 	 * 
-	 * @return
+	 * @return the set of currently hidden marker types; never null; may be
+	 *         empty
 	 * 
 	 * @since 3.0
 	 */
@@ -155,10 +156,19 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * TODO [ev] javadoc
+	 * Hide markers of the given type. Hidden markers of a matching type shall
+	 * be ignored in the UI (i.e. no feedback is shown by the ridget), but are
+	 * not removed from the ridget.
+	 * <p>
+	 * Initially the set of hidden markers is empty. When calling this method
+	 * the {@code type}-argument is added to the set.
+	 * <p>
+	 * <b>Note:</b> the set of marker types that can be successfully ignored is
+	 * implementation detail of concrete implementations of this class.
 	 * 
-	 * @param type
-	 * @return
+	 * @param types
+	 *            the type of markers to hide. The matching includes sublasses
+	 * @return the set of currently hidden marker types (including type)
 	 * 
 	 * @since 3.0
 	 */
@@ -226,10 +236,20 @@ public abstract class AbstractMarkerSupport {
 	}
 
 	/**
-	 * TODO [ev] javadoc
+	 * Show markers of the given type. Hidden markers of a matching type shall
+	 * be ignored in the UI (i.e. not feedback is shown by the ridget), but are
+	 * not removed from the ridget.
+	 * <p>
+	 * Initially the set of hidden markers is empty. When calling this method
+	 * the {@code type}-argument is removed from the set.
+	 * <p>
+	 * <b>Note:</b> the set of marker types that can be successfully ignored is
+	 * implementation detail of concrete implementations of this class.
 	 * 
-	 * @param type
-	 * @return
+	 * @param types
+	 *            the type of markers to show (unhide). The matching includes
+	 *            subclasses
+	 * @return the set of currently hidden marker types (including type).
 	 * 
 	 * @since 3.0
 	 */
