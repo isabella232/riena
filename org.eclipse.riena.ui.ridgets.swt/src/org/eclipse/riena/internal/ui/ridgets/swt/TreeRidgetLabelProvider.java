@@ -185,7 +185,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 					String s = str.substring(0, 1).toUpperCase();
 					s = s + str.substring(1);
 					try {
-						return ReflectionUtils.invoke(element, "get" + s); //$NON-NLS-1$
+						return String.valueOf(ReflectionUtils.invoke(element, "get" + s)); //$NON-NLS-1$
 					} catch (final RuntimeException ex) {
 						ex.printStackTrace();
 					}
