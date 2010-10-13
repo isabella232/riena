@@ -51,6 +51,8 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
  * activated, then the first selectable child will be selected. This is done by
  * {@link NavigationProcessor}. Moving over such a node is not problem anymore,
  * since the activation is only triggered after a delay - not instantly.
+ * 
+ * @since 3.0
  */
 public class ModuleNavigationListener extends SelectionAdapter implements KeyListener, FocusListener {
 

@@ -250,45 +250,98 @@ public abstract class CompletionCombo extends Composite {
 
 	/**
 	 * TODO [ev] docs
+	 * 
+	 * @since 3.0
 	 */
 	protected abstract Label createLabel(final Composite parent);
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract Control createList(final Composite parent);
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract void deselectAll(Control list);
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract Image getImage(Control list, int index);
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract String getItem(Control list, int index);
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract int getItemHeight(Control list);
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract Image[] getImages(Control list);
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract String[] getItems(Control list);
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract int getItemCount(Control list);
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract int getSelectionIndex(Control list);
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract int indexOf(Control list, String string, int start);
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract void removeAll(final Control list);
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract void setItems(Control list, String[] items, Image[] images);
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract void setSelection(Control list, int index);
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract void setTopIndex(Control list, int index);
 
+	/**
+	 * @since 3.0
+	 */
 	protected Button getButtonControl() {
 		return arrow;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected Control getListControl() {
 		return list;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected Text getTextControl() {
 		return text;
 	}
@@ -1546,6 +1599,9 @@ public abstract class CompletionCombo extends Composite {
 		arrow.setEnabled(isEnabled() && editable);
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void setFlashDelegate(final IFlashDelegate delegate) {
 		this.flashDelegate = delegate;
 	}

@@ -17,6 +17,8 @@ import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 
 /**
  * Instances of this class define a filter strategy for {@link Control}s
+ * 
+ * @since 3.0
  */
 public abstract class StackPresentationControlFilter {
 

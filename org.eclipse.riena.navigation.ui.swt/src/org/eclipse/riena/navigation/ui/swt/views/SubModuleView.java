@@ -76,6 +76,9 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
  * Abstract implementation for a sub module view
  */
 public abstract class SubModuleView extends ViewPart implements INavigationNodeView<SubModuleNode> {
+	/**
+	 * @since 3.0
+	 */
 	public static final String SHARED_ID = "shared"; //$NON-NLS-1$
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubModuleView.class);
 	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
@@ -584,6 +587,9 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		bind(getNavigationNode());
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected IApplicationNode getAppNode() {
 		//use the ApplicationNodeManager API
 		return ApplicationNodeManager.getApplicationNode();
@@ -700,10 +706,16 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected String getSecondaryId() {
 		return getViewSite().getSecondaryId();
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void unbindActiveController() {
 		//unbind
 		binding.unbind(currentController);

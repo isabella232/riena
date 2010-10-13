@@ -73,6 +73,8 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * View of a sub-application.
+ * 
+ * @since 3.0
  */
 public class SubApplicationView implements INavigationNodeView<SubApplicationNode>, IPerspectiveFactory {
 
@@ -475,6 +477,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		return (item.getStyle() & SWT.SEPARATOR) == SWT.SEPARATOR;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected ISubApplicationNode locateSubApplication(final IPageLayout layout) {
 		return SwtViewProvider.getInstance().getNavigationNode(layout.getDescriptor().getId(),
 				ISubApplicationNode.class);
@@ -511,6 +516,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	/*
 	 * Delegates to the SwtViewProvider to locate all View users for the given
 	 * SetViewId
+	 */
+	/**
+	 * @since 3.0
 	 */
 	protected int getViewUserCount(final SwtViewId id) {
 		return SwtViewProvider.getInstance().getViewUsers(id).size();
@@ -614,6 +622,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * @param source
 	 *            sub-module node
 	 * @return view ID
+	 * @since 3.0
 	 */
 	protected SwtViewId getViewId(final ISubModuleNode node) {
 		return SwtViewProvider.getInstance().getSwtViewId(node);
@@ -635,6 +644,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 *            the id of the view extension to use
 	 * @param secondaryId
 	 *            the secondary id to use
+	 * @since 3.0
 	 */
 	private void hideView(final String id, final String secondary) {
 		final IViewReference viewRef = getActivePage().findViewReference(id, secondary);
@@ -647,6 +657,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void hideView(final SwtViewId id) {
 		hideView(id.getId(), id.getSecondary());
 	}

@@ -24,6 +24,9 @@ import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
  */
 public abstract class AbstractRidget implements IRidget {
 
+	/**
+	 * @since 3.0
+	 */
 	public static final String COMMAND_UPDATE = "update"; //$NON-NLS-1$
 
 	public final static String PROPERTY_RIDGET = "ridget"; //$NON-NLS-1$
@@ -229,6 +232,9 @@ public abstract class AbstractRidget implements IRidget {
 		return result;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void forceMarkerUpdate() {
 		firePropertyChange(COMMAND_UPDATE, false, true);
 	}
