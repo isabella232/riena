@@ -127,7 +127,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * The text value shown in the combo. Note: this is not necessarily a valid
 	 * selection. Use {@link #getSelection()} to get the current selection.
 	 */
-	String text;
+	private String text;
 
 	public AbstractComboRidget() {
 		super();
