@@ -552,15 +552,15 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		control.setFocus();
 		selectA(control);
 
-		//		assertNull(ridget.getSelection());
-		//		assertEquals(-1, getSelectionIndex(control));
-		//
-		//		ridget.setOutputOnly(false);
-		//		control.setFocus();
-		//		selectA(control);
-		//
-		//		assertEquals("A", ridget.getSelection());
-		//		assertEquals(0, getSelectionIndex(control));
+		assertNull(ridget.getSelection());
+		assertEquals(-1, getSelectionIndex(control));
+
+		ridget.setOutputOnly(false);
+		control.setFocus();
+		selectA(control);
+
+		assertEquals("A", ridget.getSelection());
+		assertEquals(0, getSelectionIndex(control));
 	}
 
 	public void testOutputControlIsNotEditableAndHasText() {
@@ -576,14 +576,14 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setOutputOnly(true);
 
-		//		assertControlEditable(control, false);
+		assertControlEditable(control, false);
 		assertEquals(selection1.toString(), getText(control));
 		assertEquals(selection1, ridget.getSelection());
 
 		ridget.setEnabled(false);
 		ridget.setEnabled(true);
 
-		//		assertControlEditable(control, false);
+		assertControlEditable(control, false);
 		assertEquals(selection1.toString(), getText(control));
 		assertEquals(selection1, ridget.getSelection());
 
@@ -602,22 +602,22 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setOutputOnly(true);
 
-		//		assertControlEditable(control, false);
+		assertControlEditable(control, false);
 
 		ridget.setMandatory(true);
 
-		//		assertControlEditable(control, false);
+		assertControlEditable(control, false);
 
 		ridget.setMandatory(false);
 
-		//		assertControlEditable(control, false);
+		assertControlEditable(control, false);
 
 		ridget.setOutputOnly(false);
 
 		assertControlEditable(control, true);
 	}
 
-	public void testOuputControlIsUpdatedOnBind() {
+	public void testOutputControlIsUpdatedOnBind() {
 		final AbstractComboRidget ridget = getRidget();
 		final Control control = getWidget();
 
@@ -635,7 +635,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(selection1, ridget.getSelection());
 		assertEquals(selection1.toString(), getText(control));
-		//		assertControlEditable(control, false);
+		assertControlEditable(control, false);
 	}
 
 	/**
@@ -747,6 +747,171 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(2, pcl.getCount());
 	}
+
+	/**
+	 * As per Bug 327628: Tests that an output-only Combo does not fire
+	 * selection events when modified from the UI (because the combo is modified
+	 * internally).
+	 */
+	public void testOutputOnlyDoesNotFireSelectionFromUI() {
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final StringManager stringManager = new StringManager("A", "B", "C", "D", "E");
+		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
+		ridget.updateFromModel();
+		ridget.setUIControl(control);
+
+		final FTPropertyChangeListener pcl = new FTPropertyChangeListener();
+		ridget.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, pcl);
+
+		assertEquals(0, pcl.getCount());
+		assertEquals(null, ridget.getSelection());
+		assertEquals(null, getSelectedString(control));
+
+		ridget.setSelection("B");
+
+		assertEquals(1, pcl.getCount());
+		assertEquals("B", ridget.getSelection());
+		assertEquals("B", getSelectedString(control));
+
+		ridget.setOutputOnly(true);
+		control.setFocus();
+		selectA(control);
+
+		// A was not selected, B still selected.
+		assertEquals(1, pcl.getCount());
+		assertEquals("B", ridget.getSelection());
+		assertEquals("B", getSelectedString(control));
+	}
+
+	// TODO [ev] discuss
+	//	/**
+	//	 * As per Bug 327628: if the selection is changed via API (=method call) the
+	//	 * ridget should still fire an event, even when output-only is on.
+	//	 */
+	//	public void testOutputOnlyDoesFireSelectionWhenChangedViaSetSelection() {
+	//		final AbstractComboRidget ridget = getRidget();
+	//		final Control control = getWidget();
+	//		final StringManager stringManager = new StringManager("A", "B", "C", "D", "E");
+	//		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
+	//		ridget.updateFromModel();
+	//		ridget.setUIControl(control);
+	//
+	//		final FTPropertyChangeListener pcl = new FTPropertyChangeListener();
+	//		ridget.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, pcl);
+	//
+	//		assertEquals(0, pcl.getCount());
+	//		assertEquals(null, ridget.getSelection());
+	//		assertEquals(null, getSelectedString(control));
+	//
+	//		ridget.setOutputOnly(true);
+	//		ridget.setSelection("A");
+	//
+	//		assertEquals(1, pcl.getCount());
+	//		assertEquals("A", ridget.getSelection());
+	//		assertEquals("A", getSelectedString(control));
+	//
+	//		ridget.setSelection(1);
+	//
+	//		assertEquals(2, pcl.getCount());
+	//		assertEquals("B", ridget.getSelection());
+	//		assertEquals("B", getSelectedString(control));
+	//
+	//		ridget.setSelection(1);
+	//
+	//		assertEquals(2, pcl.getCount());
+	//		assertEquals("B", ridget.getSelection());
+	//		assertEquals("B", getSelectedString(control));
+	//	}
+
+	// TODO [ev]
+	//	public void testSetSelectionIntFiresEvents() {
+	//		final AbstractComboRidget ridget = getRidget();
+	//		final Control control = getWidget();
+	//		final StringManager stringManager = new StringManager("A", "B", "C", "D", "E");
+	//		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
+	//		ridget.updateFromModel();
+	//		ridget.setUIControl(control);
+	//
+	//		final FTPropertyChangeListener pcl = new FTPropertyChangeListener();
+	//		ridget.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, pcl);
+	//
+	//		assertEquals(0, pcl.getCount());
+	//		assertEquals(null, ridget.getSelection());
+	//		assertEquals(null, getSelectedString(control));
+	//
+	//		ridget.setSelection(0);
+	//
+	//		assertEquals(1, pcl.getCount());
+	//		assertEquals("A", ridget.getSelection());
+	//		assertEquals("A", getSelectedString(control));
+	//
+	//		ridget.setSelection(1);
+	//
+	//		assertEquals(2, pcl.getCount());
+	//		assertEquals("B", ridget.getSelection());
+	//		assertEquals("B", getSelectedString(control));
+	//
+	//		ridget.setSelection(1);
+	//
+	//		assertEquals(2, pcl.getCount());
+	//		assertEquals("B", ridget.getSelection());
+	//		assertEquals("B", getSelectedString(control));
+	//
+	//		ridget.setSelection(-1);
+	//
+	//		assertEquals(3, pcl.getCount());
+	//		assertEquals(null, ridget.getSelection());
+	//		assertEquals(null, getSelectedString(control));
+	//
+	//		try {
+	//			ridget.setSelection(99);
+	//			fail();
+	//		} catch (final IndexOutOfBoundsException ioobe) {
+	//			// expected
+	//		}
+	//	}
+
+	// TODO [ev]
+	//	public void testSetSelectionObjFiresEvents() {
+	//		final AbstractComboRidget ridget = getRidget();
+	//		final Control control = getWidget();
+	//		final StringManager stringManager = new StringManager("A", "B", "C", "D", "E");
+	//		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
+	//		ridget.updateFromModel();
+	//		ridget.setUIControl(control);
+	//
+	//		final FTPropertyChangeListener pcl = new FTPropertyChangeListener();
+	//		ridget.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, pcl);
+	//
+	//		assertEquals(0, pcl.getCount());
+	//		assertEquals(null, ridget.getSelection());
+	//		assertEquals(null, getSelectedString(control));
+	//
+	//		ridget.setSelection("A");
+	//
+	//		assertEquals(1, pcl.getCount());
+	//		assertEquals("A", ridget.getSelection());
+	//		assertEquals("A", getSelectedString(control));
+	//
+	//		ridget.setSelection("B");
+	//
+	//		assertEquals(2, pcl.getCount());
+	//		assertEquals("B", ridget.getSelection());
+	//		assertEquals("B", getSelectedString(control));
+	//
+	//		ridget.setSelection("B");
+	//
+	//		assertEquals(2, pcl.getCount());
+	//		assertEquals("B", ridget.getSelection());
+	//		assertEquals("B", getSelectedString(control));
+	//
+	//		ridget.setSelection("this does not exist");
+	//
+	//		assertEquals(3, pcl.getCount());
+	//		assertEquals(null, ridget.getSelection());
+	//		assertEquals(null, getSelectedString(control));
+	//	}
 
 	/**
 	 * Check that disabling / enabling works when we don't have a bound model.
@@ -1180,7 +1345,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 			assertEquals(editable, ((CompletionCombo) control).getEditable());
 			assertTrue(control.isEnabled());
 		} else {
-			assertEquals(editable, control.isEnabled());
+			assertTrue(control.isEnabled());
 		}
 	}
 

@@ -694,7 +694,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			final Object oldValue = event.diff.getOldValue();
 			final Object newValue = event.diff.getNewValue();
 			try {
-				firePropertyChange(IComboRidget.PROPERTY_SELECTION, oldValue, newValue);
+				if (!isOutputOnly()) {
+					firePropertyChange(IComboRidget.PROPERTY_SELECTION, oldValue, newValue);
+				}
 			} finally {
 				disableMandatoryMarkers(hasInput());
 				applyMarkSelectionMismatch();
