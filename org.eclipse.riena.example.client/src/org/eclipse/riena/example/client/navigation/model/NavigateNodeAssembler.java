@@ -48,7 +48,7 @@ public class NavigateNodeAssembler extends AbstractNavigationAssembler {
 		moduleGroup.setPresentWithSingleModule(false);
 
 		final IModuleNode module = new ModuleNode(
-				new NavigationNodeId("org.eclipse.riena.example.navigate.module"), "Navigate"); //$NON-NLS-1$
+				new NavigationNodeId("org.eclipse.riena.example.navigate.module"), "Navigate"); //$NON-NLS-1$ //$NON-NLS-2$
 		module.setIcon(ExampleIcons.ICON_GREEN_LED);
 		moduleGroup.addChild(module);
 
