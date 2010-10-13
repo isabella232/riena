@@ -384,9 +384,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				rowObservables.add(editable);
 				getTableRidget().updateFromModel();
 				setSelection(editable);
-				setEnabled(false, true); // directy writing -> disable apply
 				isSuggestedEditable = false; // direct writing -> not dirty
 				updateMarkers(isHideMarkersOnNew, isShowGlobalMarker());
+				setEnabled(false, true); // directy writing -> disable apply
 				updateDetails(editable);
 			}
 		} finally {
@@ -452,17 +452,22 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		try {
 			delegate.prepareItemSelected(newSelection);
 			if (newSelection != null) { // selection changed
+				if (editable == null) {
+					updateMarkers(true, false); // workaround for 327177
+				}
 				editable = newSelection;
 				setEnabled(false, true);
 				updateDetails(editable);
+				updateMarkers(false, false);
 			} else { // nothing selected
+				setEnabled(false, false); // workaround for 327177
 				clearSelection();
 				setEnabled(false, false);
+				updateMarkers(false, false);
 			}
 			ignoreChanges = true;
 			delegate.itemSelected(newSelection);
 			clearPreNewSelection();
-			updateMarkers(false, false);
 		} finally {
 			ignoreChanges = false;
 		}
@@ -823,9 +828,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			// create the editable and update the details
 			editable = delegate.createMasterEntry();
 			delegate.itemCreated(editable);
+			updateMarkers(isHideMarkersOnNew, isShowGlobalMarker());
 			setEnabled(false, true);
 			updateDetails(editable);
-			updateMarkers(isHideMarkersOnNew, isShowGlobalMarker());
 			if (isRemoveCancelsNew()) {
 				storePreNewSelection();
 			} else {
@@ -839,9 +844,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			rowObservables.add(editable);
 			getTableRidget().updateFromModel();
 			setSelection(editable);
+			updateMarkers(isHideMarkersOnNew, isShowGlobalMarker());
 			setEnabled(false, true);
 			updateDetails(editable);
-			updateMarkers(isHideMarkersOnNew, isShowGlobalMarker());
 			getUIControl().getDetails().setFocus();
 		}
 	}
@@ -901,6 +906,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		final Object selection = getSelection();
 		Assert.isNotNull(selection);
 		rowObservables.remove(selection);
+		setEnabled(false, false); // workaround for 327177
 		clearSelection();
 		clearTableSelection();
 		getTableRidget().updateFromModel();
