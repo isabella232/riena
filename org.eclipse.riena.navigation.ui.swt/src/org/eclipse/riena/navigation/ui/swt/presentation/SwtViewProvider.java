@@ -211,6 +211,7 @@ public class SwtViewProvider {
 	 *            the {@link SwtViewId}
 	 * @return a list of {@link INavigationNode}s as "users" of the given
 	 *         {@link SwtViewId}
+	 * @since 3.0
 	 */
 	public List<INavigationNode<?>> getViewUsers(final SwtViewId id) {
 		final List<INavigationNode<?>> result = new ArrayList<INavigationNode<?>>();

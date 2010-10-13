@@ -195,6 +195,7 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 
 	/**
 	 * @return the cancelButton of the window
+	 * @since 3.0
 	 */
 	protected Button getCancelButton() {
 		return cancelButton;

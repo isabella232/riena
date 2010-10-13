@@ -79,6 +79,7 @@ public final class IOUtils {
 	 * @param outputStream
 	 * @throws IOException
 	 * @pre inputStream!=null && outputStream!=null
+	 * @since 3.0
 	 */
 	public static void copy(final InputStream inputStream, final OutputStream outputStream) throws IOException {
 		Assert.isNotNull(inputStream, "inputStream"); //$NON-NLS-1$

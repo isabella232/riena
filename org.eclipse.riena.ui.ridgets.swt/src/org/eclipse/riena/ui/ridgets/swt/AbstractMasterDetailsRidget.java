@@ -285,14 +285,23 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		return isDirectWriting;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public boolean isHideMandatoryAndErrorMarkersOnNewEntries() {
 		return isHideMarkersOnNew;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public boolean isRemoveCancelsNew() {
 		return removeCancelsNew && hasRemoveButton();
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public boolean isRemoveTriggersNew() {
 		return removeTriggersNew && hasRemoveButton();
 	}
@@ -335,14 +344,23 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void setHideMandatoryAndErrorMarkersOnNewEntries(final boolean hideMarkers) {
 		isHideMarkersOnNew = hideMarkers;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void setRemoveCancelsNew(final boolean cancelsNew) {
 		removeCancelsNew = cancelsNew;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void setRemoveTriggersNew(final boolean triggersNew) {
 		removeTriggersNew = triggersNew;
 	}
@@ -356,6 +374,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void suggestNewEntry() {
 		final Object entry = delegate.createMasterEntry();
 		suggestNewEntry(entry, false);
@@ -365,6 +386,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		suggestNewEntry(entry, true);
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void suggestNewEntry(final Object entry, final boolean treatAsDirty) {
 		ignoreChanges = true;
 		try {
@@ -881,6 +905,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	/**
 	 * Non API; public for testing only.
+	 * 
+	 * @since 3.0
 	 */
 	public void handleCancel() {
 		assertIsBoundToModel();

@@ -225,6 +225,7 @@ public interface INavigationProcessor extends INavigationHistory, INavigationHis
 	 * Returns the history of navigation nodes.
 	 * 
 	 * @return the history of navigation nodes.
+	 * @since 3.0
 	 */
 	List<INavigationNode<?>> getHistory();
 }

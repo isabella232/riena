@@ -1455,6 +1455,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		navigationListener.remove(listener);
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public List<INavigationNode<?>> getHistory() {
 		return Collections.unmodifiableList(histBack);
 	}

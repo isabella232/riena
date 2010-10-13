@@ -29,6 +29,8 @@ public abstract class InfoFlyout implements IPropertyNameProvider {
 
 	/**
 	 * See {@link UIControlsFactory#createInfoFlyout(Composite)}.
+	 * 
+	 * @since 3.0
 	 */
 	protected InfoFlyout() {
 		// instantiate via UIControlsFactory

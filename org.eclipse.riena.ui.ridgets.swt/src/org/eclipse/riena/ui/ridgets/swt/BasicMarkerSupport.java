@@ -36,8 +36,14 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 
 	private static boolean alwaysSkipRedraw = false;
 	private static boolean osChecked = false;
+	/**
+	 * @since 3.0
+	 */
 	protected boolean initialEnabled = true;
 
+	/**
+	 * @since 3.0
+	 */
 	protected DisabledMarkerVisualizer disabledMarkerVisualizer;
 
 	public BasicMarkerSupport() {
@@ -120,10 +126,16 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void saveState() {
 		this.initialEnabled = getUIControl().isEnabled();
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public boolean isInitialEnabled() {
 		return initialEnabled;
 	}

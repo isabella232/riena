@@ -11,7 +11,8 @@
 package org.eclipse.riena.ui.swt;
 
 /**
- *
+ * @since 3.0
+ * 
  */
 public interface IFlashDelegate {
 
