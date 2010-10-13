@@ -13,10 +13,13 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 
 import junit.framework.TestCase;
 
 import org.eclipse.core.databinding.observable.Realm;
+import org.eclipse.core.databinding.observable.map.IObservableMap;
+import org.eclipse.core.databinding.observable.map.ObservableMap;
 import org.eclipse.core.databinding.observable.set.IObservableSet;
 import org.eclipse.core.databinding.observable.set.WritableSet;
 import org.eclipse.jface.databinding.swt.SWTObservables;
@@ -97,6 +100,7 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		assertEquals("LEAF", labelProvider.getText(leaf));
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void testGetColumnText() {
 		assertEquals("Node", labelProvider.getColumnText(node, 0));
 		assertEquals("LEAF", labelProvider.getColumnText(leaf, 0));
@@ -105,6 +109,14 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		assertEquals("true", labelProvider.getColumnText(leaf, 1));
 
 		assertNull(labelProvider.getColumnText(node, 99));
+
+		ReflectionUtils.invokeHidden(labelProvider, "setFormatters", (Object) new IColumnFormatter[] { null, null });
+		ReflectionUtils.setHidden(labelProvider, "attributeMaps", new IObservableMap[] {
+				new ObservableMap(new HashMap()), new ObservableMap(new HashMap()) });
+		final String[] valuesAccessors = new String[] { "aCount" };
+		ReflectionUtils.setHidden(labelProvider, "valueAccessors", valuesAccessors);
+		node = new WordNode("AAAaaaa");
+		assertEquals("7", labelProvider.getColumnText(node, 0));
 	}
 
 	public void testGetImage() {
