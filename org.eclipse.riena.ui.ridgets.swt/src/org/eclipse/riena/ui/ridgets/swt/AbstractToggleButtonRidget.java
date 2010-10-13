@@ -204,6 +204,9 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	// protected abstract methods
 	/////////////////////////////
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract IObservableValue getUIControlSelectionObservable();
 
 	protected abstract String getUIControlText();
@@ -215,8 +218,8 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	protected abstract void setUIControlText(String text);
 
 	/**
-	 * Updates the mandatory marker state in this ridget and it's siblings
-	 * (i.e. other ToggleButtonRidgets for Buttons in the same composite).
+	 * Updates the mandatory marker state in this ridget and it's siblings (i.e.
+	 * other ToggleButtonRidgets for Buttons in the same composite).
 	 * 
 	 * @since 3.0
 	 */

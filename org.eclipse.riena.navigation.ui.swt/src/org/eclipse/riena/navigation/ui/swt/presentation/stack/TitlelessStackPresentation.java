@@ -78,6 +78,7 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 public class TitlelessStackPresentation extends StackPresentation {
 
 	/**
+	 * @since 3.0
 	 * 
 	 */
 	public static final String DATA_KEY_CONTENT_COMPOSITE = "contentComposite"; //$NON-NLS-1$
@@ -85,6 +86,9 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * Property to distinguish the view of the navigation.
 	 */
 	public static final String PROPERTY_NAVIGATION = "navigation"; //$NON-NLS-1$
+	/**
+	 * @since 3.0
+	 */
 	public static final String PROPERTY_SUBAPPLICATION_NODE = "subapplication.node"; //$NON-NLS-1$
 
 	/**
