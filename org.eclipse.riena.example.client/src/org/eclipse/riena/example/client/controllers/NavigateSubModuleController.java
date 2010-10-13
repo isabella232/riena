@@ -104,9 +104,6 @@ public class NavigateSubModuleController extends SubModuleController {
 
 	private class ComboAndListListener implements IActionListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public void callback() {
 			final NavigationArgument naviAgr = new NavigationArgument(new Integer(2));
 			getNavigationNode().navigate(
@@ -117,9 +114,6 @@ public class NavigateSubModuleController extends SubModuleController {
 
 	private class TableTextAndTreeListener implements IActionListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public void callback() {
 			final NavigationArgument naviAgr = new NavigationArgument();
 			naviAgr.setNodePositioner(NodePositioner.ADD_BEGINNING);
@@ -131,9 +125,6 @@ public class NavigateSubModuleController extends SubModuleController {
 
 	private class OpenModuleAsFirstListener implements IActionListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public void callback() {
 			final NavigationArgument naviAgr = new NavigationArgument();
 			naviAgr.setNodePositioner(NodePositioner.ADD_BEGINNING);
@@ -146,9 +137,6 @@ public class NavigateSubModuleController extends SubModuleController {
 
 	private class OpenSubModuleAsFirstListener implements IActionListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public void callback() {
 			final NavigationArgument naviAgr = new NavigationArgument();
 			naviAgr.setNodePositioner(NodePositioner.ADD_BEGINNING);
@@ -161,9 +149,6 @@ public class NavigateSubModuleController extends SubModuleController {
 
 	private class OpenSubModuleAsThirdListener implements IActionListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public void callback() {
 			final NavigationArgument naviAgr = new NavigationArgument();
 			naviAgr.setNodePositioner(NodePositioner.indexed(2));
@@ -176,9 +161,6 @@ public class NavigateSubModuleController extends SubModuleController {
 
 	private class OpenSubModuleOrdinal10Listener implements IActionListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public void callback() {
 			final NavigationArgument naviAgr = new NavigationArgument();
 			naviAgr.setNodePositioner(NodePositioner.ordinal(10));
@@ -191,9 +173,6 @@ public class NavigateSubModuleController extends SubModuleController {
 
 	private class OpenSubModuleOrdinal5Listener implements IActionListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public void callback() {
 			final NavigationArgument naviAgr = new NavigationArgument();
 			naviAgr.setNodePositioner(NodePositioner.ordinal(5));
@@ -208,9 +187,6 @@ public class NavigateSubModuleController extends SubModuleController {
 
 		private int instanceId = 1;
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public void callback() {
 			final NavigationArgument naviAgr = new NavigationArgument();
 			naviAgr.setNodePositioner(NodePositioner.indexed(2));
@@ -224,9 +200,6 @@ public class NavigateSubModuleController extends SubModuleController {
 
 	private class MoveActiveModule implements IActionListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public void callback() {
 			getNavigationNode().getParentOfType(ModuleNode.class).moveTo(
 					new NavigationNodeId("org.eclipse.riena.example.moduleGroup1.1.1")); //$NON-NLS-1$
@@ -236,22 +209,15 @@ public class NavigateSubModuleController extends SubModuleController {
 
 	private class MoveInActiveModule implements IActionListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public void callback() {
 			final ModuleNode moduleNode = (ModuleNode) getNavigationNode().getParentOfType(SubApplicationNode.class)
 					.findNode(new NavigationNodeId("org.eclipse.riena.example.module.1.1.1")); //$NON-NLS-1$
 			moduleNode.moveTo(getNavigationNode().getParentOfType(ModuleGroupNode.class).getNodeId());
-
 		}
 	}
 
 	private class JumpToTarget implements IActionListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public void callback() {
 			getNavigationNode().jump(new NavigationNodeId(DemoTargetNodeAssembler.ID));
 
@@ -260,9 +226,6 @@ public class NavigateSubModuleController extends SubModuleController {
 
 	private class TextAssemblyListener implements IActionListener {
 
-		/**
-		 * {@inheritDoc}
-		 */
 		public void callback() {
 			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.client.textExamplesGroup")); //$NON-NLS-1$
 		}
