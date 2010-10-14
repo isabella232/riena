@@ -41,6 +41,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
+import org.eclipse.riena.ui.swt.UIConstants;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -81,7 +82,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * @since 3.0
 	 * 
 	 */
-	public static final String DATA_KEY_CONTENT_COMPOSITE = "contentComposite"; //$NON-NLS-1$
+	public static final String DATA_KEY_CONTENT_COMPOSITE = UIConstants.DATA_KEY_CONTENT_COMPOSITE;
 	/**
 	 * Property to distinguish the view of the navigation.
 	 */
