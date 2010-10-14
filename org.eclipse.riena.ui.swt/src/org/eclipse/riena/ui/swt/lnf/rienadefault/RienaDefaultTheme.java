@@ -267,6 +267,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource("magenta", new ColorLnfResource(255, 0, 255)); //$NON-NLS-1$
 		lnf.putLnfResource("cyan", new ColorLnfResource(0, 255, 255)); //$NON-NLS-1$
 		lnf.putLnfResource("blue", new ColorLnfResource(0, 0, 255)); //$NON-NLS-1$
+
+		lnf.putLnfResource("Link.background", getPrimaryBackground()); //$NON-NLS-1$
 	}
 
 	private void customizeFonts(final ILnfCustomizer lnf) {
@@ -313,6 +315,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource("Text.font", getPrimaryFont()); //$NON-NLS-1$
 
 		lnf.putLnfResource("Tree.font", getPrimaryFont()); //$NON-NLS-1$
+
+		lnf.putLnfResource("Link.font", getPrimaryFont()); //$NON-NLS-1$
 	}
 
 	private void customizeImages(final ILnfCustomizer lnf) {
