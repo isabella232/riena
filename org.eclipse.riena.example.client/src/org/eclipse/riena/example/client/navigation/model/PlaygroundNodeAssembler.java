@@ -32,6 +32,7 @@ import org.eclipse.riena.example.client.controllers.InfoFlyoutSubModuleControlle
 import org.eclipse.riena.example.client.controllers.LayoutSubModuleController;
 import org.eclipse.riena.example.client.controllers.LinkSubModuleController;
 import org.eclipse.riena.example.client.controllers.ListSubModuleController;
+import org.eclipse.riena.example.client.controllers.MarkerHidingSubModuleController;
 import org.eclipse.riena.example.client.controllers.MarkerSubModuleController;
 import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleController;
 import org.eclipse.riena.example.client.controllers.MasterDetailsSubModuleController2;
@@ -69,6 +70,7 @@ import org.eclipse.riena.example.client.views.LayoutSubModuleView;
 import org.eclipse.riena.example.client.views.LinkSubModuleView;
 import org.eclipse.riena.example.client.views.ListSubModuleView;
 import org.eclipse.riena.example.client.views.ListUsingTableSubModuleView;
+import org.eclipse.riena.example.client.views.MarkerHidingSubModuleView;
 import org.eclipse.riena.example.client.views.MarkerSubModuleView;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView2;
@@ -253,6 +255,12 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(markerSubModule2, MarkerSubModuleController.class, MarkerSubModuleView.ID, true);
 		playgroundModule.addChild(markerSubModule2);
 		markerSubModule2.addMarker(new AttentionMarker());
+
+		final ISubModuleNode markerHidingSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.markerhiding"), "Marker Hiding"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(markerHidingSubModule, MarkerHidingSubModuleController.class,
+				MarkerHidingSubModuleView.ID, false);
+		playgroundModule.addChild(markerHidingSubModule);
 
 		final ISubModuleNode masterDetailsFolderSubModule = buildMasterDetailsNodes();
 		playgroundModule.addChild(masterDetailsFolderSubModule);
