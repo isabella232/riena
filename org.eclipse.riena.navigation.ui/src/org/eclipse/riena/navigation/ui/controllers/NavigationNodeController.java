@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
 
@@ -174,6 +175,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 	public void addRidget(final String id, final IRidget ridget) {
 		ridget.addPropertyChangeListener(IBasicMarkableRidget.PROPERTY_MARKER, propertyChangeListener);
+		ridget.addPropertyChangeListener(IBasicMarkableRidget.PROPERTY_MARKER_HIDING, propertyChangeListener);
 		ridget.addPropertyChangeListener(IRidget.PROPERTY_SHOWING, propertyChangeListener);
 		ridget.addPropertyChangeListener(AbstractRidget.COMMAND_UPDATE, propertyChangeListener);
 		ridgets.put(id, ridget);
@@ -245,7 +247,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	private void addRidgetMarkers(final IRidget ridget, final List<IMarker> combinedMarkers) {
-
 		if (ridget instanceof IBasicMarkableRidget && ((IBasicMarkableRidget) ridget).isVisible()
 				&& ((IBasicMarkableRidget) ridget).isEnabled()) {
 			addRidgetMarkers((IBasicMarkableRidget) ridget, combinedMarkers);
@@ -255,7 +256,21 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	private void addRidgetMarkers(final IBasicMarkableRidget ridget, final List<IMarker> combinedMarkers) {
-		combinedMarkers.addAll(ridget.getMarkers());
+		combinedMarkers.addAll(getNotHiddenMarkers(ridget));
+	}
+
+	private List<? extends IMarker> getNotHiddenMarkers(final IBasicMarkableRidget ridget) {
+		final Collection<? extends IMarker> markers = ridget.getMarkers();
+		final List<? extends IMarker> notHiddenMarkers = new ArrayList<IMarker>(markers);
+		final Set<Class<IMarker>> hiddenTypes = ridget.getHiddenMarkerTypes();
+		for (final Class<IMarker> hiddenType : hiddenTypes) {
+			for (final IMarker marker : markers) {
+				if (hiddenType.isAssignableFrom(marker.getClass())) {
+					notHiddenMarkers.remove(marker);
+				}
+			}
+		}
+		return notHiddenMarkers;
 	}
 
 	private void addRidgetMarkers(final IRidgetContainer ridgetContainer, final List<IMarker> combinedMarkers) {

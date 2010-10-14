@@ -182,6 +182,7 @@ public abstract class AbstractMarkerSupport {
 		}
 		if (changed) {
 			updateMarkers();
+			fireMarkerHidingPropertyChangeEvent(null, null);
 		}
 		return getHiddenMarkerTypes();
 	}
@@ -263,6 +264,7 @@ public abstract class AbstractMarkerSupport {
 		}
 		if (changed) {
 			updateMarkers();
+			fireMarkerHidingPropertyChangeEvent(null, null);
 		}
 		return getHiddenMarkerTypes();
 	}
@@ -363,6 +365,11 @@ public abstract class AbstractMarkerSupport {
 	private void fireMarkerPropertyChangeEvent(final Collection<IMarker> oldMarkers,
 			final Collection<IMarker> newMarkers) {
 		propertyChangeSupport.firePropertyChange(new MarkerPropertyChangeEvent(oldMarkers, getRidget(), newMarkers));
+	}
+
+	private void fireMarkerHidingPropertyChangeEvent(final Collection<IMarker> oldMarkers,
+			final Collection<IMarker> newMarkers) {
+		propertyChangeSupport.firePropertyChange(IBasicMarkableRidget.PROPERTY_MARKER_HIDING, null, null);
 	}
 
 	private void fireOutputPropertyChangeEvent(final Collection<IMarker> oldMarkers,

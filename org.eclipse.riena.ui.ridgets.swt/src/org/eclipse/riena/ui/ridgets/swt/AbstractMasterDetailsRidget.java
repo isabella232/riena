@@ -154,11 +154,13 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 						|| editable == null
 						// ignore these events:
 						|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER
-								.equals(propertyName)) || IRidget.PROPERTY_ENABLED.equals(propertyName)
+								.equals(propertyName))
+						|| IRidget.PROPERTY_ENABLED.equals(propertyName)
 						|| ITextRidget.PROPERTY_TEXT.equals(propertyName)
 						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)
-						|| IMarkableRidget.PROPERTY_MARKER.equals(propertyName)
-						&& getApplyButtonRidget() == evt.getSource()) {
+						|| IMarkableRidget.PROPERTY_MARKER_HIDING.equals(propertyName)
+						|| (IMarkableRidget.PROPERTY_MARKER.equals(propertyName) && getApplyButtonRidget() == evt
+								.getSource())) {
 					return;
 				}
 				// traceEvent(evt);
@@ -1001,7 +1003,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 					|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER
 							.equals(propertyName)) || IRidget.PROPERTY_ENABLED.equals(propertyName)
 					|| ITextRidget.PROPERTY_TEXT.equals(propertyName)
-					|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)) {
+					|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)
+					|| IMarkableRidget.PROPERTY_MARKER_HIDING.equals(propertyName)) {
 				return;
 			}
 			// traceEvent(evt);

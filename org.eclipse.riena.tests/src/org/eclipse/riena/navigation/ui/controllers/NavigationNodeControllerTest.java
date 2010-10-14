@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Collection;
@@ -41,8 +42,10 @@ import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
+import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
@@ -95,8 +98,7 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 
 		final PropertyChangeSupport support = ReflectionUtils.getHidden(ridget, "propertyChangeSupport");
 		assertNotNull(support.getPropertyChangeListeners());
-		assertEquals(3, support.getPropertyChangeListeners().length);
-
+		assertEquals(4, support.getPropertyChangeListeners().length);
 	}
 
 	/**
@@ -265,11 +267,41 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		node2.navigate(new NavigationNodeId(subModule1TypeId), arg);
 		assertTrue(node.isActivated());
 		assertSame(arg, controller.lastArgument);
-
 	}
 
-	public static class MyNavigationNodeController extends SubModuleController {
+	@SuppressWarnings("unchecked")
+	public void testHideShowMarkerFiresEvent() {
+		final ITextRidget ridget = new TextRidget();
+		final FTPropertyChangeListener listener = new FTPropertyChangeListener();
+		ridget.addPropertyChangeListener(IBasicMarkableRidget.PROPERTY_MARKER_HIDING, listener);
 
+		assertEquals(0, listener.count);
+
+		ridget.hideMarkersOfType(ErrorMarker.class);
+
+		assertEquals(1, listener.count);
+
+		ridget.hideMarkersOfType(ErrorMarker.class);
+
+		assertEquals(1, listener.count);
+
+		ridget.showMarkersOfType(MandatoryMarker.class);
+
+		assertEquals(1, listener.count);
+
+		ridget.showMarkersOfType(ErrorMarker.class);
+
+		assertEquals(2, listener.count);
+
+		ridget.showMarkersOfType(ErrorMarker.class);
+
+		assertEquals(2, listener.count);
+	}
+
+	// helping classes
+	//////////////////
+
+	public static class MyNavigationNodeController extends SubModuleController {
 		NavigationArgument lastArgument = null;
 
 		public MyNavigationNodeController(final ISubModuleNode navigationNode) {
@@ -292,7 +324,6 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 	}
 
 	private interface IMockRidget extends IRidget {
-
 	}
 
 	/**
@@ -381,6 +412,15 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 		}
 
 		public void setController(final IRidgetContainer controller) {
+		}
+	}
+
+	private static final class FTPropertyChangeListener implements PropertyChangeListener {
+
+		private int count;
+
+		public void propertyChange(final PropertyChangeEvent evt) {
+			count++;
 		}
 	}
 

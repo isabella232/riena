@@ -27,6 +27,14 @@ public interface IBasicMarkableRidget extends IRidget, IMarkable {
 	String PROPERTY_MARKER = "marker"; //$NON-NLS-1$
 
 	/**
+	 * The name of the PropertyChangeEvent that will be fired if a marker is
+	 * hidden or shown ("markerHiding").
+	 * 
+	 * @since 3.0
+	 */
+	String PROPERTY_MARKER_HIDING = "markerHiding"; //$NON-NLS-1$
+
+	/**
 	 * Returns all hidden marker types.
 	 * 
 	 * @return the set of currently hidden marker types; never null; may be
