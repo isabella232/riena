@@ -77,6 +77,8 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
+		EasyMock.reset(statuslineRidget);
+		statuslineRidget = null;
 		ridget1 = null;
 		ridget2 = null;
 		text1.dispose();
