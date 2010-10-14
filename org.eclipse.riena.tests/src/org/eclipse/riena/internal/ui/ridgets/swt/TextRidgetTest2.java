@@ -1706,6 +1706,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	/**
 	 * As per Bug 327496.
 	 */
+	@SuppressWarnings("unchecked")
 	public void testToggleMarkerHidingWithMandatoryMarkerOn() {
 		final ITextRidget ridget = getRidget();
 		final Text control = getWidget();
@@ -1734,6 +1735,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 	/**
 	 * As per Bug 327496.
 	 */
+	@SuppressWarnings("unchecked")
 	public void testToggleMandatoryMarkerWithMarkerHidingOn() {
 		final ITextRidget ridget = getRidget();
 		final Text control = getWidget();

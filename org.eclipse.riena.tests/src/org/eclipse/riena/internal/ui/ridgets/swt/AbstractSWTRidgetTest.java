@@ -227,6 +227,7 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 	 * @see TextRidgetTest2#testToggleMandatoryMarkerWithMarkerHidingOn()
 	 * @see TextRidgetTest2#testToggleMarkerHidingWithMandatoryMarkerOn()
 	 */
+	@SuppressWarnings("unchecked")
 	public void testHideAndUnhideMarkers() {
 		if (!(getRidget() instanceof IBasicMarkableRidget)) {
 			return;
