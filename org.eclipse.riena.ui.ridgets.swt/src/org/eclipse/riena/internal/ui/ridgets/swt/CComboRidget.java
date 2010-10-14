@@ -55,6 +55,12 @@ public class CComboRidget extends AbstractComboRidget {
 	}
 
 	@Override
+	public void updateFromModel() {
+		super.updateFromModel();
+		selectionTypeEnforcer.setSavedSelection(getSelection());
+	}
+
+	@Override
 	protected void bindUIControl() {
 		super.bindUIControl();
 		if (getUIControl() != null) {

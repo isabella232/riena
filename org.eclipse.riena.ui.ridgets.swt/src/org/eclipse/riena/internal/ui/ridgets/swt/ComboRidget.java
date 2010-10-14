@@ -44,6 +44,12 @@ public class ComboRidget extends AbstractComboRidget {
 	};
 
 	@Override
+	public void updateFromModel() {
+		super.updateFromModel();
+		selectionTypeEnforcer.setSavedSelection(getSelection());
+	}
+
+	@Override
 	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, Combo.class);
 		if (uiControl != null) {

@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -164,7 +165,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 
 	protected void addMandatory(final Control control) {
 		if (getData(PRE_MANDATORY_BACKGROUND_KEY) == null) {
-			setData(PRE_MANDATORY_BACKGROUND_KEY, control.getBackground());
+			setData(PRE_MANDATORY_BACKGROUND_KEY, getControlBackground(control));
 		}
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		Color color = lnf.getColor(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND);
@@ -180,9 +181,23 @@ public class MarkerSupport extends BasicMarkerSupport {
 
 	protected void addOutput(final Control control, final Color color) {
 		if (getData(PRE_OUTPUT_BACKGROUND_KEY) == null) {
-			setData(PRE_OUTPUT_BACKGROUND_KEY, control.getBackground());
+			final Color background = getControlBackground(control);
+			setData(PRE_OUTPUT_BACKGROUND_KEY, background);
 			control.setBackground(color);
 		}
+	}
+
+	private Color getControlBackground(final Control control) {
+		// a CCombo does return the background of the composite instead of the list we use
+		if (control instanceof CCombo) {
+			try {
+				final Control txt = ReflectionUtils.getHidden(control, "list"); //$NON-NLS-1$
+				return txt.getBackground();
+			} catch (final RuntimeException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return control.getBackground();
 	}
 
 	@Override
@@ -210,7 +225,8 @@ public class MarkerSupport extends BasicMarkerSupport {
 
 	protected void clearOutput(final Control control) {
 		if (getData(PRE_OUTPUT_BACKGROUND_KEY) != null) {
-			control.setBackground((Color) getData(PRE_OUTPUT_BACKGROUND_KEY));
+			final Color data = (Color) getData(PRE_OUTPUT_BACKGROUND_KEY);
+			control.setBackground(data);
 			setData(PRE_OUTPUT_BACKGROUND_KEY, null);
 		}
 	}

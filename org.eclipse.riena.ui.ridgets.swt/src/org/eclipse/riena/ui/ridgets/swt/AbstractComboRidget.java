@@ -708,8 +708,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	}
 
 	/**
-	 * TwoAdapter that saves the current selection, when outputOnly changes and
-	 * applies it again after the user tries to select an entry in the combo.
+	 * TwoWayAdapter that saves the current selection, when outputOnly changes
+	 * and applies it again after the user tries to select an entry in the
+	 * combo.
 	 * 
 	 * @since 3.0
 	 */
@@ -720,18 +721,32 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 
 		public SelectionTypeEnforcer(final AbstractComboRidget ridget) {
 			this.ridget = ridget;
+			this.savedSelection = ridget.getSelection();
 		}
 
 		@Override
 		public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 			super.widgetSelected(e);
 			if (ridget.isOutputOnly()) {
-				ridget.setSelection(savedSelection);
+				if (null == savedSelection) {
+					ridget.setSelection(-1);
+				} else {
+					ridget.setSelection(savedSelection);
+				}
 			}
 		}
 
 		public void propertyChange(final PropertyChangeEvent evt) {
 			savedSelection = ridget.getSelection();
 		}
+
+		/**
+		 * @param savedSelection
+		 *            the savedSelection to set
+		 */
+		public void setSavedSelection(final Object savedSelection) {
+			this.savedSelection = savedSelection;
+		}
+
 	}
 }
