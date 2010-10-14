@@ -361,7 +361,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 			clearMandatory(control);
 			clearOutput(control);
 			final RienaDefaultLnf lnf = LnfManager.getLnf();
-			if (isMandatory(getRidget())) {
+			if (isMandatory(getRidget()) && !isHidden(MandatoryMarker.class)) {
 				Color color = lnf.getColor(LnfKeyConstants.MANDATORY_OUTPUT_MARKER_BACKGROUND);
 				if (color == null) {
 					color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY_OUTPUT);
