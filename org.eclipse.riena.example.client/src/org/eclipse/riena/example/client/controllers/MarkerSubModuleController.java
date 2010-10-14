@@ -30,7 +30,7 @@ import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.beans.common.TestBean;
 import org.eclipse.riena.beans.common.WordNode;
-import org.eclipse.riena.example.client.views.TextSubModuleView;
+import org.eclipse.riena.example.client.views.MarkerSubModuleView;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
@@ -62,7 +62,7 @@ import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 
 /**
- * Controller for the {@link TextSubModuleView} example.
+ * Controller for the {@link MarkerSubModuleView} example.
  */
 public class MarkerSubModuleController extends SubModuleController {
 
