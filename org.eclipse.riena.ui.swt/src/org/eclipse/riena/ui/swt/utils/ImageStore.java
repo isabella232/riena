@@ -38,7 +38,7 @@ import org.eclipse.riena.ui.core.resource.IconState;
 public final class ImageStore {
 
 	private Image missingImage;
-	private IImagePathExtension[] iconPathes;
+	private IImagePathExtension[] iconPaths;
 
 	private final static SingletonProvider<ImageStore> IS = new SingletonProvider<ImageStore>(ImageStore.class);
 
@@ -189,7 +189,7 @@ public final class ImageStore {
 	 */
 	private ImageDescriptor getImageDescriptor(final String fullName) {
 
-		for (final IImagePathExtension iconPath : iconPathes) {
+		for (final IImagePathExtension iconPath : iconPaths) {
 			final String fullPath = iconPath.getPath() + '/' + fullName;
 			final URL url = iconPath.getContributingBundle().getEntry(fullPath);
 			if (url != null) {
@@ -202,7 +202,7 @@ public final class ImageStore {
 		sb.append(fullName);
 		sb.append("\" not found in:"); //$NON-NLS-1$
 
-		for (final IImagePathExtension iconPath : iconPathes) {
+		for (final IImagePathExtension iconPath : iconPaths) {
 			sb.append("\n  "); //$NON-NLS-1$
 			sb.append(iconPath.getContributingBundle().getLocation());
 			sb.append(iconPath.getPath());
@@ -226,8 +226,8 @@ public final class ImageStore {
 	}
 
 	@InjectExtension
-	public void update(final IImagePathExtension[] iconPathes) {
-		this.iconPathes = iconPathes;
+	public void update(final IImagePathExtension[] iconPaths) {
+		this.iconPaths = iconPaths;
 	}
 
 }
