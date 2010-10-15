@@ -10,9 +10,16 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.application;
 
+import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.Logger;
+
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.navigation.ui.marker.UIProcessFinishedObserver;
+import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationNodeController;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
@@ -24,18 +31,17 @@ import org.eclipse.riena.ui.ridgets.IStatuslineUIProcessRidget;
 
 public class ProgressVisualizerLocator implements IProgressVisualizerLocator {
 
-	@SuppressWarnings("unchecked")
+	private final static Logger LOGGER = Log4r.getLogger(ProgressVisualizerLocator.class);
+
 	public IProgressVisualizer getProgressVisualizer(final Object context) {
 		final IProgressVisualizer aVisualizer = new ProgressVisualizer();
 		if (context != null && INavigationNode.class.isAssignableFrom(context.getClass())) {
-			final INavigationNode node = INavigationNode.class.cast(context);
-			final IStatuslineUIProcessRidget statuslineUIProcessRidget = ((ApplicationController) node.getParentOfType(
-					IApplicationNode.class).getNavigationNodeController()).getStatusline()
-					.getStatuslineUIProcessRidget();
+			final INavigationNode<?> node = INavigationNode.class.cast(context);
+			final IStatuslineUIProcessRidget statuslineUIProcessRidget = getStatuslineUIProcessRidget();
 			if (statuslineUIProcessRidget != null) {
 				aVisualizer.addObserver(statuslineUIProcessRidget);
 			}
-			ISubApplicationNode subApp = (ISubApplicationNode) node.getParentOfType(ISubApplicationNode.class);
+			ISubApplicationNode subApp = node.getParentOfType(ISubApplicationNode.class);
 			if (subApp == null && context instanceof ISubApplicationNode) {
 				subApp = (ISubApplicationNode) context;
 			}
@@ -45,6 +51,22 @@ public class ProgressVisualizerLocator implements IProgressVisualizerLocator {
 			}
 		}
 		return aVisualizer;
+	}
+
+	private IStatuslineUIProcessRidget getStatuslineUIProcessRidget() {
+		final IApplicationNode appNode = ApplicationNodeManager.getApplicationNode();
+		if (appNode != null) {
+			final INavigationNodeController navigationNodeController = appNode.getNavigationNodeController();
+			if (navigationNodeController != null && navigationNodeController instanceof ApplicationController) {
+				return ((ApplicationController) navigationNodeController).getStatusline()
+						.getStatuslineUIProcessRidget();
+			} else {
+				LOGGER.log(LogService.LOG_ERROR, "Unexpected: navigation node controller == null"); //$NON-NLS-1$
+			}
+		} else {
+			LOGGER.log(LogService.LOG_ERROR, "Unexpected: appNode == null"); //$NON-NLS-1$
+		}
+		return null;
 	}
 
 	private UIProcessFinishedObserver createObserver(final INavigationNode<?> node) {
