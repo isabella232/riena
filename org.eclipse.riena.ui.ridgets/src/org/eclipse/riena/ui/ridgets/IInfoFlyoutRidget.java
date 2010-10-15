@@ -20,7 +20,7 @@ package org.eclipse.riena.ui.ridgets;
  */
 public interface IInfoFlyoutRidget extends IRidget {
 
-	static final int PROPERTY_FYLOUT_FINISHED = 0;
+	int PROPERTY_FYLOUT_FINISHED = 0;
 
 	void addInfo(InfoFlyoutData info);
 
