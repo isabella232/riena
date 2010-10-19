@@ -441,6 +441,14 @@
             id="org.eclipse.riena.example.client.histForCommand"
             name="History Forward">
       </command>
+      <command
+            id="org.eclipse.riena.example.client.openPlayground"
+            name="Open Playground">
+      </command>
+      <command
+            id="org.eclipse.riena.example.client.navigateToMarkers"
+            name="Navigate To Markers">
+      </command>
     </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -466,10 +474,19 @@
                      mnemonic="O"
                      style="push">
                </command>
+               <visibleWhen
+                     checkEnabled="false">
+                  <not>
+                     <reference
+                           definitionId="org.eclipse.riena.example.client.navigationSubAppVisible">
+                     </reference>
+                  </not>
+               </visibleWhen>
             </menu>
             <command
                   commandId="org.eclipse.riena.example.client.exitCommand"
                   id="org.eclipse.riena.example.client.exitMenuItem"
+                  label="Exit"
                   mnemonic="x">
             </command>
          </menu>
@@ -531,6 +548,36 @@
                   style="push">
             </command>
          </menu>
+         <menu
+               id="playgroundMenu"
+               label="Playground Menu"
+               mnemonic="P">
+            <command
+                  commandId="org.eclipse.riena.example.client.openPlayground"
+                  label="Open Playground"
+                  style="push">
+            </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="org.eclipse.riena.example.client.playgroundSubAppVisible">
+               </reference>
+            </visibleWhen>
+         </menu>
+         <menu
+               id="playgroundNavigation"
+               label="Playground Navigation">
+            <command
+                  commandId="org.eclipse.riena.example.client.navigateToMarkers"
+                  style="push">
+            </command>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="org.eclipse.riena.example.client.playgroundModuleVisible">
+               </reference>
+            </visibleWhen>
+         </menu>
       </menuContribution>
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
@@ -550,6 +597,14 @@
                   label="Sub-Module"
                   mnemonic="M"
                   style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <not>
+                     <reference
+                           definitionId="org.eclipse.riena.example.client.navigationSubAppVisible">
+                     </reference>
+                  </not>
+               </visibleWhen>
             </command>
             <command
                   commandId="org.eclipse.riena.example.client.activeSubApplicationCommand"
@@ -590,7 +645,7 @@
             <with
                   variable="activeSubModuleNodeId">
                <equals
-                     value="org.eclipse.riena.example.combo">
+                     value="org.eclipse.riena.example.choice">
                </equals>
             </with>
          </enabledWhen>
@@ -622,6 +677,21 @@
       <handler
             class="org.eclipse.riena.example.client.handler.HistoryForwardHandler"
             commandId="org.eclipse.riena.example.client.histForCommand">
+      </handler>
+      <handler
+            class="org.eclipse.riena.example.client.handler.OpenPlaygroundHandler"
+            commandId="org.eclipse.riena.example.client.openPlayground">
+         <enabledWhen>
+            <not>
+               <reference
+                     definitionId="org.eclipse.riena.example.client.playgroundModuleVisible">
+               </reference>
+            </not>
+         </enabledWhen>
+      </handler>
+      <handler
+            class="org.eclipse.riena.example.client.handler.NavigateToMarkersHandler"
+            commandId="org.eclipse.riena.example.client.navigateToMarkers">
       </handler>
    </extension>
    <extension
@@ -1322,4 +1392,32 @@
              factory="org.eclipse.riena.example.client.statusline.ExampleStatuslineContentFactory">
        </contentFactory>
     </extension>
+   <extension point="org.eclipse.core.expressions.definitions">
+    	<definition id="org.eclipse.riena.example.client.playgroundModuleVisible">
+        <with
+              variable="activeModuleNodeId">
+           <equals
+                 value="playgroundModule">
+           </equals>
+        </with>
+    	</definition>
+     <definition
+           id="org.eclipse.riena.example.client.playgroundSubAppVisible">
+        <with
+              variable="activeSubApplicationNodeId">
+           <equals
+                 value="playground">
+           </equals>
+        </with>
+     </definition>
+     <definition
+           id="org.eclipse.riena.example.client.navigationSubAppVisible">
+        <with
+              variable="activeSubApplicationNodeId">
+           <equals
+                 value="org.eclipse.riena.example.navigation.subapplication">
+           </equals>
+        </with>
+     </definition>
+	</extension>>
 </plugin>

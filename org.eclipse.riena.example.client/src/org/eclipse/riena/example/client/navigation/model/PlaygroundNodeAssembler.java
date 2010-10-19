@@ -105,7 +105,7 @@ import org.eclipse.riena.ui.core.marker.AttentionMarker;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
- * Configures the contents ofthe 'Playground' module.
+ * Configures the contents of the 'Playground' module.
  * <p>
  * This class is contributed via the plugin.xml (assembly extension).
  */
@@ -151,7 +151,7 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		final WorkareaManager workarea = WorkareaManager.getInstance();
 		final IModuleGroupNode moduleGroup = new ModuleGroupNode(navigationNodeId);
 
-		final IModuleNode playgroundModule = new ModuleNode(null, "Playground"); //$NON-NLS-1$
+		final IModuleNode playgroundModule = new ModuleNode(new NavigationNodeId("playgroundModule"), "Playground"); //$NON-NLS-1$ //$NON-NLS-2$
 		moduleGroup.addChild(playgroundModule);
 
 		final ISubModuleNode blockingSubModule = new SubModuleNode(new NavigationNodeId(

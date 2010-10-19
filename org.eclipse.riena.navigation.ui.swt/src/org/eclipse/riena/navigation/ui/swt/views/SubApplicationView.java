@@ -44,6 +44,7 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
+import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -526,6 +527,14 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		return SwtViewProvider.getInstance().getViewUsers(id).size();
 	}
 
+	private void rebind() {
+		final IController controller = (IController) ApplicationNodeManager.locateActiveSubApplicationNode()
+				.getNavigationNodeController();
+		menuItemBindingManager.unbind(controller, getUIControls());
+		getUIControls().clear();
+		bindMenuAndToolItems(controller);
+	}
+
 	/**
 	 * After a sub-module node was activated, the corresponding view is shown.
 	 */
@@ -544,9 +553,20 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		}
 
 		@Override
+		public void afterActivated(final ISubModuleNode source) {
+			final List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites(getShell());
+			boolean rebind = false;
+			for (final MenuCoolBarComposite menuBarComp : menuCoolBarComposites) {
+				rebind |= menuBarComp.updateMenuItems();
+			}
+			if (rebind) {
+				rebind();
+			}
+		}
+
+		@Override
 		public void activated(final ISubModuleNode source) {
 			checkBaseStructure();
-
 			if (null != source && !source.isSelectable()) {
 				return;
 			}

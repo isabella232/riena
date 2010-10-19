@@ -55,7 +55,6 @@ public class MenuManagerHelper {
 
 		menu.addMenuListener(new TopMenuListener(menu, toolItem));
 		toolItem.addSelectionListener(new TopItemListener(menu, toolItem));
-
 	}
 
 	public void removeListeners(final ToolItem toolItem, final Menu menu) {
@@ -91,18 +90,12 @@ public class MenuManagerHelper {
 			this.toolItem = toolItem;
 		}
 
-		/**
-		 * @see org.eclipse.swt.events.MenuListener#menuHidden(org.eclipse.swt.events.MenuEvent)
-		 */
 		public void menuHidden(final MenuEvent e) {
-			if (e.getSource() == menu) {
+			if (e.getSource() == menu && !toolItem.isDisposed()) {
 				toolItem.setSelection(false);
 			}
 		}
 
-		/**
-		 * @see org.eclipse.swt.events.MenuListener#menuShown(org.eclipse.swt.events.MenuEvent)
-		 */
 		public void menuShown(final MenuEvent e) {
 		}
 

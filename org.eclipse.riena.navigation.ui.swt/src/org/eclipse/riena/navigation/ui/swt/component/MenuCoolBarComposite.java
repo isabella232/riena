@@ -11,7 +11,9 @@
 package org.eclipse.riena.navigation.ui.swt.component;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
@@ -47,6 +49,8 @@ public class MenuCoolBarComposite extends Composite {
 
 	private CoolItem menuCoolItem;
 	private ToolBar menuToolBar;
+	private CoolBar menuCoolBar;
+	private final Map<MenuManager, Boolean> menuManagerVisibilityMap;
 
 	/**
 	 * Creates an new instance of {@code MenuCoolBarComposite} given its parent
@@ -66,6 +70,7 @@ public class MenuCoolBarComposite extends Composite {
 		super(parent, style);
 		setLayout(new FillLayout());
 		this.window = window;
+		menuManagerVisibilityMap = new HashMap<MenuManager, Boolean>();
 		create();
 	}
 
@@ -96,13 +101,17 @@ public class MenuCoolBarComposite extends Composite {
 	 * @param menuManager
 	 */
 	private ToolItem createAndAddMenu(final MenuManager menuManager) {
-		final ToolItem toolItem = new ToolItem(menuToolBar, SWT.CHECK);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(toolItem, menuManager.getId());
-		toolItem.setText(menuManager.getMenuText());
-		final MenuManagerHelper helper = new MenuManagerHelper();
-		helper.createMenu(menuToolBar, toolItem, menuManager);
-		calcSize(menuCoolItem);
-		return toolItem;
+		if (menuManager.isVisible()) {
+			final ToolItem toolItem = new ToolItem(menuToolBar, SWT.CHECK);
+			SWTBindingPropertyLocator.getInstance().setBindingProperty(toolItem, menuManager.getId());
+			toolItem.setText(menuManager.getMenuText());
+			final MenuManagerHelper helper = new MenuManagerHelper();
+			helper.createMenu(menuToolBar, toolItem, menuManager);
+			calcSize(menuCoolItem);
+			return toolItem;
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -110,12 +119,10 @@ public class MenuCoolBarComposite extends Composite {
 	 * sub-application.
 	 */
 	private void create() {
-		final CoolBar menuCoolBar = new CoolBar(this, SWT.FLAT);
+		menuCoolBar = new CoolBar(this, SWT.FLAT);
 		menuCoolItem = CoolbarUtils.initCoolBar(menuCoolBar, getMenuBarFont());
-
 		menuToolBar = (ToolBar) menuCoolItem.getControl();
 		SWTFacade.getDefault().addMouseMoveListener(menuToolBar, new ToolBarMouseListener());
-
 		fillMenuBar();
 	}
 
@@ -123,6 +130,7 @@ public class MenuCoolBarComposite extends Composite {
 		for (final IContributionItem contribItem : getTopLevelMenuEntries()) {
 			if (contribItem instanceof MenuManager) {
 				final MenuManager topMenuManager = (MenuManager) contribItem;
+				menuManagerVisibilityMap.put(topMenuManager, topMenuManager.isVisible());
 				createAndAddMenu(topMenuManager);
 			}
 		}
@@ -175,6 +183,31 @@ public class MenuCoolBarComposite extends Composite {
 				}
 			}
 		}
+	}
+
+	public boolean updateMenuItems() {
+		if (isMenuVisibilityChanged()) {
+			if (menuCoolBar != null) {
+				menuCoolBar.dispose();
+			}
+			create();
+			layout();
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isMenuVisibilityChanged() {
+		for (final IContributionItem contribItem : getTopLevelMenuEntries()) {
+			if (contribItem instanceof MenuManager) {
+				final MenuManager topMenuManager = (MenuManager) contribItem;
+				final Boolean isVisible = menuManagerVisibilityMap.get(topMenuManager);
+				if (isVisible == null || !isVisible.equals(topMenuManager.isVisible())) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }
