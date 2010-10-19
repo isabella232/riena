@@ -24,9 +24,11 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.core.util.RAPDetector;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
@@ -306,25 +308,48 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 			final Text control = (Text) e.widget;
 			final String oldText = control.getText();
 
+			int start = e.start;
+			int end = e.end;
+			char character = e.character;
+
+			// this is a workaround for RAP bug #327439
+			if (character == 0 && RAPDetector.isRAPavailable()) {
+				// try to get the char from the selection and update start/end positions
+				final Point sel = control.getSelection();
+				if (oldText.length() > e.text.length()) { // delete
+					character = '\b';
+					start = findChangePos(oldText, e.text);
+					end = start + Math.max(sel.y - sel.x, 1);
+				} else { // insert / replace
+					int pos = sel.x;
+					if (pos >= e.text.length()) {
+						pos = e.text.length() - 1;
+					}
+					character = e.text.charAt(pos);
+					start = sel.x;
+					end = sel.y;
+				}
+			}
+
 			final int oldPos = control.getCaretPosition();
 			int newPos = -1;
 			final SegmentedString ss = new SegmentedString(pattern, oldText);
-			if (e.character == '\b' || e.keyCode == 127) {// backspace, del
-				newPos = ss.delete(e.start, e.end - 1);
+			if (character == '\b' || e.keyCode == 127) {// backspace, del
+				newPos = ss.delete(start, end - 1);
 				if (newPos == -1) {
-					newPos = e.character == '\b' ? e.start : e.end;
+					newPos = character == '\b' ? start : end;
 				}
-			} else if (SegmentedString.isDigit(e.character)) {
-				if (e.end - e.start > 0) {
-					newPos = ss.replace(e.start, e.end - 1, e.text);
+			} else if (SegmentedString.isDigit(character)) {
+				if (end - start > 0) {
+					newPos = ss.replace(start, end - 1, e.text);
 				} else {
-					newPos = ss.insert(e.start, String.valueOf(e.character));
+					newPos = ss.insert(start, String.valueOf(character));
 				}
-			} else if (SegmentedString.isSeparator(e.character)) {
-				if (e.end - e.start > 0) {
-					newPos = ss.replace(e.start, e.end - 1, String.valueOf(e.character));
+			} else if (SegmentedString.isSeparator(character)) {
+				if (end - start > 0) {
+					newPos = ss.replace(start, end - 1, String.valueOf(character));
 				} else {
-					newPos = ss.insert(e.start, String.valueOf(e.character));
+					newPos = ss.insert(start, String.valueOf(character));
 				}
 			}
 			e.doit = false;
@@ -339,6 +364,17 @@ public class DateTextRidget extends TextRidget implements IDateTextRidget {
 				flash();
 			}
 		}
+
+		private int findChangePos(final String oldText, final String newText) {
+			final int length = newText.length();
+			for (int i = 0; i < length; i++) {
+				if (oldText.charAt(i) != newText.charAt(i)) {
+					return i;
+				}
+			}
+			return length;
+		}
+
 	}
 
 	/**
