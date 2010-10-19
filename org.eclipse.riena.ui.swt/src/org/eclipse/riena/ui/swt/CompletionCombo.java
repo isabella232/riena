@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.core.util.RAPDetector;
 import org.eclipse.riena.ui.swt.facades.ClipboardFacade;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -520,7 +521,13 @@ public abstract class CompletionCombo extends Composite {
 		switch (event.type) {
 		case SWT.Dispose:
 			removeListener(SWT.Dispose, listener);
-			notifyListeners(SWT.Dispose, event);
+
+			// FIXME: Workaround for RAP bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=328043
+			// RAP throws a ClassCastException, when notifyListeners is called
+			if (!RAPDetector.isRAPavailable()) {
+				notifyListeners(SWT.Dispose, event);
+			}
+
 			event.type = SWT.None;
 
 			if (popup != null && !popup.isDisposed()) {
