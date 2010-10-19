@@ -46,6 +46,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
+import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -53,6 +54,7 @@ import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
+import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.DelegatingRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
@@ -702,7 +704,21 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		try {
 			final IWorkbenchPage page = getActivePage();
 			// open view but don't activate it and don't bring it to top
-			page.showView(id, secondary, IWorkbenchPage.VIEW_VISIBLE);
+			final IViewPart viewPart = page.showView(id, secondary, IWorkbenchPage.VIEW_VISIBLE);
+			final INavigationNode<?> currentPrepared = SwtViewProvider.getInstance().getCurrentPrepared();
+
+			/*
+			 * Shared views are only created once. All binding logic is done in
+			 * createPartControl of the view. Prepared Nodes initially need a
+			 * controller with all ridgets injected. If showView did not
+			 * instantiate a new instance we need to trigger node preparation
+			 * for controller/ridget binding manually.
+			 */
+			if (currentPrepared != null && currentPrepared.getNavigationNodeController() == null) {
+				if (viewPart instanceof SubModuleView) {
+					((SubModuleView) viewPart).prepareNode((SubModuleNode) currentPrepared);
+				}
+			}
 			return page.findViewReference(id, secondary);
 		} catch (final PartInitException exc) {
 			final String msg = String.format("Failed to prepare/show view: %s, %s", id, secondary); //$NON-NLS-1$

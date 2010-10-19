@@ -179,7 +179,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	private void activeNodeChanged(final INavigationNode<?> node) {
 		//TODO move logic to Menu 
-		if (navigationSourceProvider == null) {
+		if (navigationSourceProvider == null && getSite() != null) {
 			navigationSourceProvider = getNavigationSourceProvider();
 		}
 		if (navigationSourceProvider != null) {
@@ -771,5 +771,13 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 				SwtViewProvider.getInstance().replaceNavigationNodeId(source, oldId, newId);
 			}
 		}
+	}
+
+	/**
+	 * Triggered by "prepareNode" for nodes to be prepared which already have an
+	 * instantiated view. In those cases createPartControl is not called.
+	 */
+	public void prepareNode(final SubModuleNode node) {
+		binding.injectRidgets(createController(node));
 	}
 }
