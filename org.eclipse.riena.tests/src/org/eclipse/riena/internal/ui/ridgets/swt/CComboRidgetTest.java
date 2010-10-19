@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.beans.common.StringManager;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
@@ -51,6 +52,49 @@ public class CComboRidgetTest extends AbstractComboRidgetTest {
 		final SwtControlRidgetMapper mapper = SwtControlRidgetMapper.getInstance();
 		assertTrue(getWidget() instanceof CCombo);
 		assertSame(CComboRidget.class, mapper.getRidgetClass(getWidget()));
+	}
+
+	@Override
+	public void testSetSelectionString() {
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = ridget.getUIControl();
+		final StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
+		ridget.updateFromModel();
+
+		assertEquals(null, ridget.getSelection());
+
+		ridget.setSelection("A");
+
+		assertEquals("A", ridget.getSelection());
+		assertEquals("A", getItem(control, getSelectionIndex(control)));
+
+		ridget.setSelection("B");
+
+		assertEquals("B", ridget.getSelection());
+		assertEquals("B", getItem(control, getSelectionIndex(control)));
+
+		ridget.setUIControl(null);
+		ridget.setSelection("C");
+
+		assertEquals("C", ridget.getSelection());
+		assertEquals("B", getItem(control, getSelectionIndex(control)));
+
+		ridget.setUIControl(control);
+
+		assertEquals("C", ridget.getSelection());
+		assertEquals("C", getItem(control, getSelectionIndex(control)));
+
+		ridget.setSelection("X");
+
+		assertEquals("X", ridget.getSelection());
+		assertEquals(-1, getSelectionIndex(control));
+
+		ridget.setSelection("A");
+		ridget.setSelection(null);
+
+		assertEquals(null, ridget.getSelection());
+		assertEquals(-1, getSelectionIndex(control));
 	}
 
 	/**

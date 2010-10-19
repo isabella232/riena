@@ -517,7 +517,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setSelection("X");
 
-		assertEquals("X", ridget.getSelection());
+		assertEquals(null, ridget.getSelection());
 		assertEquals(-1, getSelectionIndex(control));
 
 		ridget.setSelection("A");
@@ -1424,7 +1424,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		return f + l;
 	}
 
-	private String getItem(final Control control, final int index) {
+	protected String getItem(final Control control, final int index) {
 		if (control instanceof Combo) {
 			return ((Combo) control).getItem(index);
 		}
@@ -1450,7 +1450,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		throw new IllegalArgumentException("unknown widget type: " + control);
 	}
 
-	private int getSelectionIndex(final Control control) {
+	protected int getSelectionIndex(final Control control) {
 		if (control instanceof Combo) {
 			return ((Combo) control).getSelectionIndex();
 		}
