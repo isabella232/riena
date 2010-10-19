@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.Nop;
+import org.eclipse.riena.core.util.RAPDetector;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.SharedColors;
@@ -189,7 +190,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 
 	private Color getControlBackground(final Control control) {
 		// a CCombo does return the background of the composite instead of the list we use
-		if (control instanceof CCombo) {
+		if (control instanceof CCombo && !RAPDetector.isRAPavailable()) {
 			try {
 				final Control txt = ReflectionUtils.getHidden(control, "list"); //$NON-NLS-1$
 				return txt.getBackground();
