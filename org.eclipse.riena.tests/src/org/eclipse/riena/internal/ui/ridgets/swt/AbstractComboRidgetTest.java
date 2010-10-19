@@ -517,7 +517,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setSelection("X");
 
-		assertEquals(null, ridget.getSelection());
+		assertEquals("X", ridget.getSelection());
 		assertEquals(-1, getSelectionIndex(control));
 
 		ridget.setSelection("A");

@@ -49,9 +49,24 @@ public class CComboRidget extends AbstractComboRidget {
 				}
 			}
 		});
-
 		selectionTypeEnforcer = new SelectionTypeEnforcer(this);
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, selectionTypeEnforcer);
+	}
+
+	@Override
+	public void setSelection(final Object newSelection) {
+		assertIsBoundToModel();
+		final Object oldSelection = selectionObservable.getValue();
+		if (oldSelection != newSelection) {
+			if (newSelection == null) {
+				if (getUIControl() != null) {
+					clearUIControlListSelection();
+				}
+				selectionObservable.setValue(null);
+			} else {
+				selectionObservable.setValue(newSelection);
+			}
+		}
 	}
 
 	@Override
