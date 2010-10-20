@@ -46,8 +46,4 @@ public class TestSecondModuleGroupNodeAssembler extends AbstractNavigationAssemb
 				|| nodeId.getTypeId().equals("org.eclipse.riena.navigation.model.test.secondSubModule");
 	}
 
-	@Override
-	public String getParentNodeId() {
-		return "application";
-	}
 }

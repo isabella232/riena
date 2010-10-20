@@ -11,7 +11,7 @@
 package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -24,12 +24,9 @@ import org.eclipse.riena.navigation.model.NavigationProcessorTest.TestSubModuleN
 /**
  * Manual Tests for the NavigationProcessor that use addPluginXml.
  */
-@ManualTestCase
-public class NavigationProcessorManualTest extends RienaTestCase {
+@NonUITestCase
+public class NavigationProcessorTest2 extends RienaTestCase {
 
-	/**
-	 * 
-	 */
 	private static final String TARGET_MODULE_GROUP = "org.eclipse.riena.navigation.model.test.moduleGroup.2";
 	private NavigationProcessor navigationProcessor;
 	private IApplicationNode applicationNode;
@@ -93,7 +90,7 @@ public class NavigationProcessorManualTest extends RienaTestCase {
 		assertEquals(1, applicationNode.getChildren().size());
 		assertTrue(subApplication.isActivated());
 
-		addPluginXml(NavigationProcessorManualTest.class, "NavigationProcessorTest.xml", 500);
+		addPluginXml(NavigationProcessorTest2.class, "NavigationProcessorTest.xml", 500);
 
 		try {
 			subModule1.navigate(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModuleGroup"));
@@ -140,15 +137,13 @@ public class NavigationProcessorManualTest extends RienaTestCase {
 	 * Tests the method {@code create}.
 	 */
 	public void testCreate() throws Exception {
-
 		INavigationNode<?> targetNode = navigationProcessor.create(module, new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.subModule"), null);
 		assertEquals(subModule1, targetNode);
 
-		addPluginXml(NavigationProcessorManualTest.class, "NavigationProcessorTest.xml", 1000);
-
+		addPluginXml(NavigationProcessorTest2.class, "NavigationProcessorTest.xml", 1000);
 		try {
-			targetNode = navigationProcessor.create(module, new NavigationNodeId(
+			targetNode = navigationProcessor.create(applicationNode, new NavigationNodeId(
 					"org.eclipse.riena.navigation.model.test.secondModuleGroup"), null);
 			assertEquals("org.eclipse.riena.navigation.model.test.secondModuleGroup", targetNode.getNodeId()
 					.getTypeId());

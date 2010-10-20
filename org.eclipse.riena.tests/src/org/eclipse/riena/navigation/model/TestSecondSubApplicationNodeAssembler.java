@@ -38,6 +38,6 @@ public class TestSecondSubApplicationNodeAssembler extends AbstractNavigationAss
 
 	@Override
 	public String getParentNodeId() {
-		return "application";
+		return "org.eclipse.riena.navigation.model.test.application";
 	}
 }
