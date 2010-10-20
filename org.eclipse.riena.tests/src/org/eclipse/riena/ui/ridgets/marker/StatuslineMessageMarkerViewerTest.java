@@ -23,9 +23,7 @@ import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.MessageMarker;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 
 /**
@@ -40,8 +38,9 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 	private Shell shell;
 	private StatuslineMessageMarkerViewer statuslineMessageMarkerViewer;
 	private IStatuslineRidget statuslineRidget;
+	private Text text1;
 	private Text text2;
-	private MockRidget ridget1;
+	private TextRidget ridget1;
 	private TextRidget ridget2;
 
 	/**
@@ -54,9 +53,9 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		shell = new Shell();
 		shell.setLayout(new RowLayout(SWT.VERTICAL));
 
-		final Text text1 = new Text(shell, SWT.SINGLE);
+		text1 = new Text(shell, SWT.SINGLE);
 		text2 = new Text(shell, SWT.SINGLE);
-		ridget1 = new MockRidget();
+		ridget1 = new TextRidget();
 		ridget2 = new TextRidget();
 		ridget1.setUIControl(text1);
 		ridget2.setUIControl(text2);
@@ -70,50 +69,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		shell.setSize(100, 100);
 		shell.setLocation(0, 0);
 		shell.open();
-		ridget1.setFocus(true);
-	}
-
-	private class MockRidget extends AbstractSWTWidgetRidget implements IMarkableRidget {
-
-		private boolean focus;
-
-		public void setFocus(final boolean focus) {
-			this.focus = focus;
-		}
-
-		@Override
-		public boolean hasFocus() {
-			return focus;
-		}
-
-		public boolean isVisible() {
-			return true;
-		}
-
-		@Override
-		protected void checkUIControl(final Object uiControl) {
-		}
-
-		@Override
-		protected void bindUIControl() {
-		}
-
-		@Override
-		protected void unbindUIControl() {
-		}
-
-		@Override
-		public boolean isDisableMandatoryMarker() {
-			return false;
-		}
-
-		@Override
-		protected void updateEnabled() {
-		}
-
-		@Override
-		protected void updateToolTip() {
-		}
+		text1.setFocus();
 	}
 
 	/**
@@ -125,8 +81,8 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		statuslineRidget = null;
 		ridget1 = null;
 		ridget2 = null;
-		//		text1.dispose();
-		//		text1 = null;
+		text1.dispose();
+		text1 = null;
 		text2.dispose();
 		text2 = null;
 		shell.dispose();
@@ -179,7 +135,6 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		EasyMock.expect(statuslineRidget.getMessage()).andReturn(testMessageBySomebodyElse);
 		EasyMock.replay(statuslineRidget);
 
-		ridget1.setFocus(false);
 		text2.setFocus();
 
 		EasyMock.verify(statuslineRidget);
@@ -189,7 +144,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		statuslineRidget.error(testErrorMessage);
 		EasyMock.replay(statuslineRidget);
 
-		ridget1.setFocus(true);
+		text1.setFocus();
 
 		EasyMock.verify(statuslineRidget);
 		EasyMock.reset(statuslineRidget);
@@ -232,7 +187,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		statuslineRidget.error(testErrorMessage);
 		EasyMock.replay(statuslineRidget);
 		ridget1.addMarker(errorMessageMarker1);
-		ridget1.setFocus(true);
+		text1.setFocus();
 
 		EasyMock.reset(statuslineRidget);
 		EasyMock.replay(statuslineRidget);
@@ -323,7 +278,7 @@ public class StatuslineMessageMarkerViewerTest extends TestCase {
 		EasyMock.replay(statuslineRidget);
 
 		text2.setFocus();
-		ridget1.setFocus(true);
+		text1.setFocus();
 
 		EasyMock.verify(statuslineRidget);
 	}
