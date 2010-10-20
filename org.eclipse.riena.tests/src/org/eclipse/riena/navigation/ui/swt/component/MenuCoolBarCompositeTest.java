@@ -15,6 +15,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.ToolBarContributionItem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
@@ -70,14 +71,19 @@ public class MenuCoolBarCompositeTest extends TestCase {
 	 */
 	public void testCreateAndAddMenu() {
 
+		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, null);
 
-		final MenuManager manager = new MenuManager("TestMenu", "0815");
+		final MenuManager manager = getMenuManager("TestMenu", "0815");
 		final ToolItem topItem = ReflectionUtils.invokeHidden(composite, "createAndAddMenu", manager);
-		final SWTBindingPropertyLocator locator = SWTBindingPropertyLocator.getInstance();
 		assertEquals("0815", locator.locateBindingProperty(topItem));
 		assertEquals("TestMenu", topItem.getText());
 
+		final MenuManager invisibleMenuManager = getMenuManager("TestMenu2", "4711");
+		invisibleMenuManager.setVisible(false);
+		final ToolItem topItem2 = ReflectionUtils.invokeHidden(composite, "createAndAddMenu", invisibleMenuManager);
+		assertNull(locator.locateBindingProperty(topItem2));
+		assertNull(topItem2);
 	}
 
 	/**
@@ -87,12 +93,18 @@ public class MenuCoolBarCompositeTest extends TestCase {
 
 		final MenuCoolBarComposite composite = new MenuCoolBarComposite(shell, SWT.NONE, null);
 
-		final MenuManager manager = new MenuManager("TestMenu", "0815");
+		final MenuManager manager = getMenuManager("TestMenu", "0815");
 		final ToolItem topItem = ReflectionUtils.invokeHidden(composite, "createAndAddMenu", manager);
 		final List<ToolItem> items = composite.getTopLevelItems();
 		assertEquals(1, items.size());
 		assertTrue(items.contains(topItem));
+	}
 
+	private MenuManager getMenuManager(final String text, final String id) {
+		final MenuManager manager = new MenuManager("TestMenu", "0815");
+		// a MenuManager is only visible if also all of his children are visible
+		manager.add(new ToolBarContributionItem());
+		return manager;
 	}
 
 }
