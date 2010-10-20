@@ -235,7 +235,7 @@ public class DetachedViewsManager {
 	/**
 	 * Determines the style bits for new shell instances created by this class.
 	 * <p>
-	 * Default value is: {@code SWT.TITLE | SWT.RESIZE}
+	 * Default value is: {@code SWT.NONE}
 	 * <p>
 	 * Implementors may override to use different style bits. Note that the
 	 * close button will be disabled even if you use {@link SWT#CLOSE}.
@@ -243,7 +243,7 @@ public class DetachedViewsManager {
 	 * @see http://dev.eclipse.org/newslists/news.eclipse.tools/msg07666.html
 	 */
 	protected int getShellStyle() {
-		return SWT.TITLE | SWT.RESIZE;
+		return SWT.NONE;
 	}
 
 	// helping methods
