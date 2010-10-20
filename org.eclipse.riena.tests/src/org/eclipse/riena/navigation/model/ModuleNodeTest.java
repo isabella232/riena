@@ -49,6 +49,13 @@ public class ModuleNodeTest extends TestCase {
 		sm21.setVisible(false);
 		assertEquals(2, m.calcDepth());
 
+		/*
+		 * If there are 2 children of Module and Child 1 is not visible then the
+		 * tree shell not be rendered
+		 */
+		sm.setVisible(false);
+		assertEquals(0, m.calcDepth());
+
 	}
 
 }

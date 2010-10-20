@@ -1158,7 +1158,13 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			} else {
 				if (moduleNode.getChildren().size() > 0) {
 					// find the first selectable node in the list of childs
-					return findSelectableChildNode(moduleNode.getChild(0));
+					ISubModuleNode subModule = null;
+					final Iterator<ISubModuleNode> subIter = moduleNode.getChildren().iterator();
+					while (subModule == null && subIter.hasNext()) {
+						subModule = findSelectableChildNode(subIter.next());
+					}
+
+					return subModule;
 				} else {
 					return null;
 				}

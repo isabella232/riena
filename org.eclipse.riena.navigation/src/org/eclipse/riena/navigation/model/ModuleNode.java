@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import java.util.Iterator;
+
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -111,7 +113,25 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	}
 
 	public boolean isPresentSubModules() {
-		return isPresentSingleSubModule() || !(getChildren().size() == 1 && getChild(0).getChildren().isEmpty());
+		// consider number of visible children only
+		return isPresentSingleSubModule()
+				|| !(getVisibleChildCount(this) == 1 && getVisibleChildCount(getChild(0)) == 0);
+	}
+
+	/*
+	 * Counts the number of visible children for the given node
+	 */
+	private int getVisibleChildCount(final INavigationNode<?> node) {
+		int result = 0;
+		@SuppressWarnings("unchecked")
+		final Iterator<INavigationNode<?>> childIter = (Iterator<INavigationNode<?>>) node.getChildren().iterator();
+		while (childIter.hasNext()) {
+			final INavigationNode<?> child = childIter.next();
+			if (child.isVisible()) {
+				result++;
+			}
+		}
+		return result;
 	}
 
 	public int calcDepth() {
