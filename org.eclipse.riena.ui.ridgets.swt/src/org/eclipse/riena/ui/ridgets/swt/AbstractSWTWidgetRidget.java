@@ -499,7 +499,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	/**
 	 * @since 3.0
 	 */
-	protected void updateMarkers() {
+	public void updateMarkers() {
 		if (markerSupport != null) {
 			markerSupport.updateMarkers();
 		}

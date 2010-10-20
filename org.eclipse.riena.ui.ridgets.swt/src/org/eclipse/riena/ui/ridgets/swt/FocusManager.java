@@ -78,6 +78,10 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 		}
 	}
 
+	public boolean isClickToFocus() {
+		return clickToFocus;
+	}
+
 	public void focusLost(final FocusEvent e) {
 		if (isFocusable()) {
 			clickToFocus = false;
@@ -200,7 +204,7 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 	}
 
 	private boolean isFocusable(final AbstractSWTRidget ridget) {
-		return (ridget.isFocusable() && !ridget.isOutputOnly()) || clickToFocus;
+		return (ridget.isFocusable() && !ridget.isOutputOnly()) || ridget.getFocusManager().isClickToFocus();
 	}
 
 	@SuppressWarnings("unused")

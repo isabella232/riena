@@ -50,6 +50,10 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 		}
 	}
 
+	public FocusManager getFocusManager() {
+		return focusManager;
+	}
+
 	public AbstractSWTRidget() {
 		focusManager = new FocusManager(this);
 		focusable = true;
