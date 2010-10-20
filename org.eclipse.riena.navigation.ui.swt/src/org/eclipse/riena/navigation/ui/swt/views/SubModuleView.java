@@ -741,9 +741,10 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			/*
 			 * If source is the current bound node then unbind the controller.
 			 * If the node is not bound (not the current) we do not have to
-			 * unbind anything.
+			 * unbind anything. In the case of detached views there´s no
+			 * viewSite available!
 			 */
-			if (disposingBoundNode(source)) {
+			if (getViewSite() != null && disposingBoundNode(source)) {
 				unbindActiveController();
 			}
 		}
