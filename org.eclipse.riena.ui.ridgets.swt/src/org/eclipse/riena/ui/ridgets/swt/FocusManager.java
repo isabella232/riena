@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -147,8 +146,8 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 				return markableRidget.isFocusable() && !markableRidget.isOutputOnly();
 			}
 			// skip IRidgets that are not focusable
-			if (controlsRidget instanceof IRidget) {
-				return ((IRidget) controlsRidget).isFocusable();
+			if (controlsRidget instanceof AbstractSWTWidgetRidget) {
+				return isFocusable((AbstractSWTRidget) controlsRidget);
 			}
 		}
 		// skip Composites that have no children that can get focus
@@ -197,6 +196,10 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 	}
 
 	private boolean isFocusable() {
+		return isFocusable(ridget);
+	}
+
+	private boolean isFocusable(final AbstractSWTRidget ridget) {
 		return (ridget.isFocusable() && !ridget.isOutputOnly()) || clickToFocus;
 	}
 
