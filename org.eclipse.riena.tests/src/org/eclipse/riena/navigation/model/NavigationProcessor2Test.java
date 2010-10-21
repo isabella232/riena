@@ -57,25 +57,12 @@ public class NavigationProcessor2Test extends RienaTestCase {
 
 		private void initAssemblers() {
 			registerNavigationAssembler("1", new TestSecondSubApplicationNodeAssembler() {
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see org.eclipse.riena.navigation.model.
-				 * TestSecondSubApplicationNodeAssembler#getParentNodeId()
-				 */
 				@Override
 				public String getParentNodeId() {
 					return "org.eclipse.riena.navigation.model.test.application";
 				}
 			});
 			registerNavigationAssembler("2", new TestSecondModuleGroupNodeAssembler() {
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see
-				 * org.eclipse.riena.navigation.AbstractNavigationAssembler#
-				 * getParentNodeId()
-				 */
 				@Override
 				public String getParentNodeId() {
 					return "org.eclipse.riena.navigation.model.test.secondSubApplication";
