@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import junit.framework.TestCase;
 
+import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
@@ -97,5 +101,25 @@ public class StringUtilsTest extends TestCase {
 		assertEquals("A", StringUtils.capitalize("A"));
 		assertEquals("A", StringUtils.capitalize("a"));
 		assertEquals("Veritas", StringUtils.capitalize("veritas"));
+	}
+
+	public void testJoin() throws Exception {
+		final int numberOfPersons = 4;
+		final String separator = "%";
+		final List<Person> persons = new LinkedList<Person>();
+		final List<String> pToString = new LinkedList<String>();
+		for (int i = 0; i < numberOfPersons; i++) {
+			final String pref = String.valueOf(i);
+			final Person person = new Person(pref + "last", pref + "firstname");
+			persons.add(person);
+			pToString.add(person.toString());
+		}
+		final String joined = StringUtils.join(persons, separator);
+		assertFalse(joined.startsWith(separator));
+		final String[] split = joined.split(separator);
+		assertEquals(4, split.length);
+		assertEquals(joined.length() - 1 - persons.get(numberOfPersons - 1).toString().length(),
+				joined.lastIndexOf(separator));
+		assertEquals("", StringUtils.join(null, separator));
 	}
 }
