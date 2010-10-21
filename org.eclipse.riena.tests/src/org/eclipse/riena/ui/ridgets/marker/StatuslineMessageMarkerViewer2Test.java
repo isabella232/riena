@@ -17,7 +17,7 @@ import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
  * swt-controls for testing.
  */
 @NonUITestCase
-public class StatuslineMessageMarkerViewerTest2 extends RienaTestCase {
+public class StatuslineMessageMarkerViewer2Test extends RienaTestCase {
 
 	private static final String MESSAGE = "message";
 	private StatuslineMessageMarkerViewerUnderTest viewer;

@@ -25,7 +25,7 @@ import org.eclipse.riena.navigation.model.NavigationProcessorTest.TestSubModuleN
  * Manual Tests for the NavigationProcessor that use addPluginXml.
  */
 @NonUITestCase
-public class NavigationProcessorTest2 extends RienaTestCase {
+public class NavigationProcessor2Test extends RienaTestCase {
 
 	private static final String TARGET_MODULE_GROUP = "org.eclipse.riena.navigation.model.test.moduleGroup.2";
 	private NavigationProcessor navigationProcessor;
@@ -90,7 +90,7 @@ public class NavigationProcessorTest2 extends RienaTestCase {
 		assertEquals(1, applicationNode.getChildren().size());
 		assertTrue(subApplication.isActivated());
 
-		addPluginXml(NavigationProcessorTest2.class, "NavigationProcessorTest.xml", 500);
+		addPluginXml(NavigationProcessor2Test.class, "NavigationProcessorTest.xml", 500);
 
 		try {
 			subModule1.navigate(new NavigationNodeId("org.eclipse.riena.navigation.model.test.secondModuleGroup"));
@@ -141,7 +141,7 @@ public class NavigationProcessorTest2 extends RienaTestCase {
 				"org.eclipse.riena.navigation.model.test.subModule"), null);
 		assertEquals(subModule1, targetNode);
 
-		addPluginXml(NavigationProcessorTest2.class, "NavigationProcessorTest.xml", 1000);
+		addPluginXml(NavigationProcessor2Test.class, "NavigationProcessorTest.xml", 1000);
 		try {
 			targetNode = navigationProcessor.create(applicationNode, new NavigationNodeId(
 					"org.eclipse.riena.navigation.model.test.secondModuleGroup"), null);

@@ -36,8 +36,6 @@ public class CheckTestConstraintsTest extends TestCase {
 		assertEquals(unmarked.size() + " unmarked test(s) found: " + unmarked, 0, unmarked.size());
 	}
 
-	// FIXME: There are currently two test cases that violate this constraint.
-	// We should fix that and set the expected count to zero!
 	public void testBadlyNamedTests() {
 		final List<Class<? extends TestCase>> badlyNamed = TestCollector.collectBadlyNamed(Activator.getDefault()
 				.getBundle(), null);
@@ -47,7 +45,7 @@ public class CheckTestConstraintsTest extends TestCase {
 				System.err.println("  badly named: " + testCase.getName());
 			}
 		}
-		assertEquals(badlyNamed.size() + " badly named test(s) found: " + badlyNamed, 2, badlyNamed.size());
+		assertEquals(badlyNamed.size() + " badly named test(s) found: " + badlyNamed, 0, badlyNamed.size());
 	}
 
 }

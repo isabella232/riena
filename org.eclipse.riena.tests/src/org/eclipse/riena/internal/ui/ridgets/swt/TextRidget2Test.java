@@ -65,7 +65,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * 
  * @see TextRidgetTest
  */
-public class TextRidgetTest2 extends AbstractSWTRidgetTest {
+public class TextRidget2Test extends AbstractSWTRidgetTest {
 
 	private final static String TEXT_ONE = "TestText1";
 	private final static String TEXT_TWO = "TestText2";

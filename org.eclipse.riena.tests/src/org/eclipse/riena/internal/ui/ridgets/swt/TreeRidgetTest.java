@@ -33,7 +33,7 @@ import org.eclipse.riena.ui.ridgets.tree2.TreeNode;
  * These tests use a TreeNode that wraps a String and focus on methods from the
  * {@link ITreeRidget}.
  * 
- * @see TreeRidgetTest2
+ * @see TreeRidget2Test
  */
 public class TreeRidgetTest extends AbstractSWTRidgetTest {
 

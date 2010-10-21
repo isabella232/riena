@@ -26,7 +26,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 /**
  * Tests for the class {@link TextRidget}.
  * 
- * @see TextRidgetTest2
+ * @see TextRidget2Test
  */
 public class TextRidgetTest extends AbstractSWTRidgetTest {
 
