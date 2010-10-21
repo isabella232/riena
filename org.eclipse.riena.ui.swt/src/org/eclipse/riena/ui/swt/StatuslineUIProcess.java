@@ -72,7 +72,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	private final Map<Integer, ProgressInfoDataObject> valueCache = new HashMap<Integer, ProgressInfoDataObject>();
 	private Label statusLabel;
 	private Label openLabel;
-	private Label noProcessActiveLable;
+	private Label noProcessActiveLabel;
 
 	/**
 	 * @param parent
@@ -210,9 +210,9 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		progressBar.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
 		formData.left = new FormAttachment(statusLabel, 5);
 
-		// minimum value is allways 0
+		// minimum value is always 0
 		progressBar.setMinimum(PROGRESS_MIN_VALUE);
-		//maximum is allayway 100
+		//maximum is always 100
 		progressBar.setMaximum(PROGRESS_MAX_VALUE);
 
 		progressBar.setSelection(0);
@@ -513,10 +513,10 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		for (final ProgressInfoDataObject pido : pidos) {
 			if (!pidoComplete(pido)) {
 				keys.add(pido.getKey());
-				if (noProcessActiveLable != null) {
-					if (!noProcessActiveLable.isDisposed()) {
-						noProcessActiveLable.setVisible(false);
-						noProcessActiveLable.dispose();
+				if (noProcessActiveLabel != null) {
+					if (!noProcessActiveLabel.isDisposed()) {
+						noProcessActiveLabel.setVisible(false);
+						noProcessActiveLabel.dispose();
 					}
 					popupContent.layout(true);
 				}
@@ -528,17 +528,20 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 				label = holder.label;
 
 				//do layout stuff
+				final Integer progressBarWidth = 60;
 				FormData formData = new FormData();
 				formData.top = lastControl != null ? new FormAttachment(lastControl, 2) : new FormAttachment(5, 0);
 				formData.height = 14;
-				formData.width = 100;
+				formData.width = LnfManager.getLnf().getIntegerSetting(
+						LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_WIDTH, 160)
+						- progressBarWidth;
 				label.setLayoutData(formData);
 
 				formData = new FormData();
 				formData.top = lastControl != null ? new FormAttachment(lastControl, 2) : new FormAttachment(5, 0);
 				formData.left = new FormAttachment(label, 3);
 				formData.height = 14;
-				formData.width = 60;
+				formData.width = progressBarWidth;
 				bar.setLayoutData(formData);
 
 				lastControl = bar;
@@ -556,8 +559,8 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		if (complete(pidos)) {
 			cleanInactiveProcessPresentation();
 		} else {
-			if (noProcessActiveLable != null) {
-				noProcessActiveLable.dispose();
+			if (noProcessActiveLabel != null) {
+				noProcessActiveLabel.dispose();
 			}
 		}
 	}
@@ -566,13 +569,13 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		final FormData formData = new FormData();
 		formData.top = new FormAttachment(5, 0);
 		formData.height = 14;
-		formData.width = 160;
-		if (noProcessActiveLable == null || noProcessActiveLable.isDisposed()) {
-			noProcessActiveLable = new Label(popupContent, SWT.NONE);
-			noProcessActiveLable.setBackground(LnfManager.getLnf().getColor(
+		formData.width = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_WIDTH, 160);
+		if (noProcessActiveLabel == null || noProcessActiveLabel.isDisposed()) {
+			noProcessActiveLabel = new Label(popupContent, SWT.NONE);
+			noProcessActiveLabel.setBackground(LnfManager.getLnf().getColor(
 					LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND));
-			noProcessActiveLable.setText(Messages.StatuslineUIProcess_noActiveProcess);
-			noProcessActiveLable.setLayoutData(formData);
+			noProcessActiveLabel.setText(Messages.StatuslineUIProcess_noActiveProcess);
+			noProcessActiveLabel.setLayoutData(formData);
 		}
 	}
 

@@ -407,6 +407,10 @@ public final class LnfKeyConstants {
 
 	public static final String STATUSLINE_BACKGROUND = "statusline.background"; //$NON-NLS-1$
 	public static final String STATUSLINE_UI_PROCESS_LIST_BACKGROUND = "statusline.uiProcessListBackground"; //$NON-NLS-1$
+	/**
+	 * @since 3.0
+	 */
+	public static final String STATUSLINE_UI_PROCESS_LIST_WIDTH = "statusline.uiProcessListWidth"; //$NON-NLS-1$
 
 	public static final String GRAB_CORNER_BACKGROUND = "grabCorner.background"; //$NON-NLS-1$
 	/**
