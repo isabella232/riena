@@ -179,7 +179,18 @@ public class SimpleNavigationNodeProviderTest extends RienaTestCase {
 
 		final SimpleNavigationNodeProvider provider = new SimpleNavigationNodeProvider();
 		NavigationArgument naviArg = new NavigationArgument(null, new NavigationNodeId("one"));
-		final INavigationAssembler naviAssembler = new TestSecondModuleGroupNodeAssembler();
+		final INavigationAssembler naviAssembler = new TestSecondModuleGroupNodeAssembler() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.riena.navigation.AbstractNavigationAssembler#
+			 * getParentNodeId()
+			 */
+			@Override
+			public String getParentNodeId() {
+				return "application";
+			}
+		};
 		NavigationNodeId parentId = ReflectionUtils.invokeHidden(provider, "getParentTypeId", naviArg, naviAssembler);
 		assertEquals("one", parentId.getTypeId());
 
