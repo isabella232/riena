@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.model;
 
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -51,6 +52,10 @@ public class NavigationProcessor2Test extends RienaTestCase {
 		applicationNode = new ApplicationNode(new NavigationNodeId(
 				"org.eclipse.riena.navigation.model.test.application"));
 		navigationProcessor = new NavigationProcessor();
+		final SimpleNavigationNodeProvider provider = (SimpleNavigationNodeProvider) NavigationNodeProvider
+				.getInstance();
+		provider.cleanUp();
+		Wire.instance(provider).andStart();
 		applicationNode.setNavigationProcessor(navigationProcessor);
 
 		subApplication = new SubApplicationNode(new NavigationNodeId(
