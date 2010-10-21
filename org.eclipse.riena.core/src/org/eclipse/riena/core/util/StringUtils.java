@@ -114,9 +114,9 @@ public final class StringUtils {
 	}
 
 	/**
-	 * Joins the string representations of an {@link Iterable} number of objects
-	 * to one continues string while separating the entities with the provided
-	 * separator.
+	 * Joins the string representations of an {@link Iterable} collection of
+	 * objects to one continues string while separating the entities with the
+	 * provided separator.
 	 * <p>
 	 * The string representation will be retrieved by String.valueOf()
 	 * 
