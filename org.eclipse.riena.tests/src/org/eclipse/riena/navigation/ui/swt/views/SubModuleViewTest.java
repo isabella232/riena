@@ -13,11 +13,14 @@ package org.eclipse.riena.navigation.ui.swt.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easymock.EasyMock;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IViewSite;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
@@ -169,6 +172,16 @@ public class SubModuleViewTest extends RienaTestCase {
 		protected void basicCreatePartControl(final Composite parent) {
 			button = new Button(parent, SWT.NONE);
 			addUIControl(button, "button");
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.ui.part.ViewPart#getViewSite()
+		 */
+		@Override
+		public IViewSite getViewSite() {
+			return EasyMock.createNiceMock(IViewSite.class);
 		}
 
 		/*
