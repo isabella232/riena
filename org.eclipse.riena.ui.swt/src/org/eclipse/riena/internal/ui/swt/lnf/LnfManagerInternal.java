@@ -128,10 +128,10 @@ public final class LnfManagerInternal {
 		}
 	}
 
-	@InjectExtension(min = 1, max = 1)
-	public void update(final IDefaultLnfExtension lnfExtension) {
-		if (lnfExtension != null) {
-			this.extensionLnf = lnfExtension.createDefaultLnf();
+	@InjectExtension
+	public void update(final IDefaultLnfExtension[] lnfExtension) {
+		if (lnfExtension != null && lnfExtension.length > 0) {
+			this.extensionLnf = lnfExtension[0].createDefaultLnf();
 		}
 	}
 
