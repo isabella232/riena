@@ -124,6 +124,7 @@ public final class StringUtils {
 	 *            The {@link Iterable} number of objects
 	 * @param separator
 	 * @return The joined String separated by the given separator
+	 * @since 3.0
 	 */
 	public static String join(final Iterable<? extends Object> iterable, final CharSequence separator) {
 		Iterator<? extends Object> oIt;
