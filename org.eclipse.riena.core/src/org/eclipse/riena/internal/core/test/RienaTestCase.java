@@ -15,7 +15,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -30,6 +32,7 @@ import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 
 import org.eclipse.core.internal.registry.ExtensionRegistry;
+import org.eclipse.core.internal.registry.osgi.ExtensionEventDispatcherJob;
 import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.IContributor;
 import org.eclipse.core.runtime.IExtension;
@@ -37,6 +40,9 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 
 import org.eclipse.riena.core.util.IOUtils;
 import org.eclipse.riena.core.util.Nop;
@@ -58,6 +64,8 @@ public abstract class RienaTestCase extends TestCase {
 	private BundleContext context;
 
 	private final boolean trace = Trace.isOn(RienaTestCase.class, getClass(), "debug");
+
+	private final JobCollector jobCollector = new JobCollector();
 
 	//	private Set<String> before;
 	//	private Set<String> after;
@@ -266,8 +274,11 @@ public abstract class RienaTestCase extends TestCase {
 		final IContributor contributor = ContributorFactoryOSGi.createContributor(getContext().getBundle());
 		final RegistryEventListener listener = new RegistryEventListener(forLoad.getName() + " - " + pluginResource); //$NON-NLS-1$
 		registry.addListener(listener);
+
+		startJobCollector();
 		final boolean success = registry.addContribution(inputStream, contributor, false, pluginResource, null,
 				((ExtensionRegistry) registry).getTemporaryUserToken());
+		stopJobCollector();
 		listener.waitAdded();
 		registry.removeListener(listener);
 		assertTrue(success);
@@ -276,6 +287,51 @@ public abstract class RienaTestCase extends TestCase {
 				Thread.sleep(sleepInMs);
 			} catch (final InterruptedException e) {
 				println("Sleeping in addPluginXml failed!"); //$NON-NLS-1$
+			}
+		}
+		waitForRegistryJobs();
+
+	}
+
+	protected void waitForRegistryJobs() {
+		for (final Job job : jobCollector.getCollected()) {
+			try {
+				job.join();
+			} catch (final InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private void startJobCollector() {
+		jobCollector.start();
+	}
+
+	private void stopJobCollector() {
+		jobCollector.stop();
+	}
+
+	private class JobCollector extends JobChangeAdapter {
+
+		private List<Job> collected;
+
+		protected void start() {
+			collected = new ArrayList<Job>();
+			Job.getJobManager().addJobChangeListener(this);
+		}
+
+		protected void stop() {
+			Job.getJobManager().removeJobChangeListener(this);
+		}
+
+		protected List<Job> getCollected() {
+			return collected;
+		}
+
+		@Override
+		public void scheduled(final IJobChangeEvent event) {
+			if (event.getJob() instanceof ExtensionEventDispatcherJob) {
+				collected.add(event.getJob());
 			}
 		}
 	}
