@@ -840,6 +840,14 @@ public final class LnfKeyConstants {
 	 */
 	public static final String SUB_MODULE_TREE_SHOW_ONE_SUB_TREE = "SubModuleTree.showOneSubTree"; //$NON-NLS-1$
 
+	/**
+	 * A switch to decide whether a SubModuleTree should have the standard SWT
+	 * disabled color or the same color as the enabled SubModuleTree.
+	 * 
+	 * @since 3.0
+	 */
+	public static final String SUB_MODULE_TREE_DISABLED_BACKGROUND_IS_SWT_DEFAULT = "SubModuleTree.disabledBackgroundIsSWTDefault"; //$NON-NLS-1$
+
 	public static final String SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY = "SubModuleItemToolTip.popupDelay"; //$NON-NLS-1$
 
 	/**

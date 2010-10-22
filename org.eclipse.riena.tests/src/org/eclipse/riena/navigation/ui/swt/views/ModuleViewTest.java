@@ -14,10 +14,13 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
@@ -27,6 +30,7 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
@@ -35,6 +39,7 @@ import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleTreeItemMarkerR
 import org.eclipse.riena.ui.core.marker.AttentionMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -55,17 +60,20 @@ public class ModuleViewTest extends RienaTestCase {
 	private SubModuleNode subSubSubNode;
 	private Shell shell;
 	private RienaDefaultLnf currentLnf;
+	private DisabledSubModuleTreeBackgroundPainterMock backgroundPainterMock;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-
+		new DefaultRealm();
+		backgroundPainterMock = new DisabledSubModuleTreeBackgroundPainterMock();
 		currentLnf = new RienaDefaultLnf();
 		LnfManager.setLnf(currentLnf);
 
 		shell = new Shell();
 		final NavigationProcessor navigationProcessor = new NavigationProcessor();
 		node = new ModuleNode();
+		node.setNavigationNodeController(new SWTModuleController(node));
 		view = new MyModuleView(shell);
 		final ModuleGroupNode moduleGroupNode = new ModuleGroupNode();
 		moduleGroupNode.addChild(node);
@@ -123,11 +131,17 @@ public class ModuleViewTest extends RienaTestCase {
 
 		node.setBlocked(true);
 
+		final Event event = new Event();
+		event.type = SWT.EraseItem;
+		event.widget = view.getTree();
+		view.getTree().notifyListeners(SWT.EraseItem, event);
+		assertTrue(backgroundPainterMock.handleEraseCalled);
+
 		assertSame(waitCursor, title.getCursor());
 		assertSame(waitCursor, body.getCursor());
 		assertFalse(title.isCloseable());
 		assertFalse(tree.getEnabled());
-
+		
 		node.setBlocked(false);
 
 		assertNotSame(waitCursor, title.getCursor());
@@ -255,6 +269,17 @@ public class ModuleViewTest extends RienaTestCase {
 
 	}
 
+	private class DisabledSubModuleTreeBackgroundPainterMock implements Listener {
+
+		boolean handleEraseCalled = false;
+
+		public void handleEvent(final Event event) {
+			if (SWT.EraseItem == event.type) {
+				handleEraseCalled = true;
+			}
+		}
+	}
+
 	/**
 	 * This ModuleView makes the visibility of the method {@code getTree()}
 	 * public for testing.
@@ -268,6 +293,11 @@ public class ModuleViewTest extends RienaTestCase {
 		@Override
 		public Tree getTree() {
 			return super.getTree();
+		}
+
+		@Override
+		protected Listener createDisabledSubModuleTreeBackgroundPainter(final Color disabledBackgroundColor) {
+			return backgroundPainterMock;
 		}
 
 	}

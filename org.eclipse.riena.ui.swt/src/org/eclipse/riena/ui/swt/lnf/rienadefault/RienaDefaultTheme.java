@@ -448,6 +448,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfSetting(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TAB_MIN_WIDTH, 0);
 
 		lnf.putLnfSetting(LnfKeyConstants.SUB_MODULE_TREE_SHOW_ONE_SUB_TREE, false);
+		lnf.putLnfSetting(LnfKeyConstants.SUB_MODULE_TREE_DISABLED_BACKGROUND_IS_SWT_DEFAULT, false);
 
 		lnf.putLnfSetting(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY, 0);
 		lnf.putLnfSetting(LnfKeyConstants.MODULE_ITEM_TOOLTIP_POPUP_DELAY, 500);

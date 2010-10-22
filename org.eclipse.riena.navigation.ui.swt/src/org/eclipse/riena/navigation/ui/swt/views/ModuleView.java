@@ -21,6 +21,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
@@ -87,6 +88,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	private final ListenerList<IComponentUpdateListener> updateListeners;
 	private ModuleGroupNode moduleGroupNode;
 	private Map<ISubModuleNode, Set<IMarker>> subModuleMarkerCache;
+	private Listener disabledSubModuleTreeBgPainter;
 
 	public ModuleView(final Composite parent) {
 		this.parent = parent;
@@ -299,6 +301,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			binding.unbind(controller);
 		}
 
+		subModuleTree.removeListener(SWT.EraseItem, disabledSubModuleTreeBgPainter);
 		navigationTreeObserver.removeListenerFrom(moduleNode);
 		moduleNode = null;
 
@@ -355,9 +358,8 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 *            body of the module
 	 */
 	protected void createBodyContent(final Composite parent) {
-
 		parent.setLayout(new FormLayout());
-
+		
 		subModuleTree = new Tree(parent, SWT.NO_SCROLL | SWT.DOUBLE_BUFFERED);
 		subModuleTree.setLinesVisible(false);
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
@@ -381,6 +383,13 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		});
 		setTreeBackGround();
 
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	protected Listener createDisabledSubModuleTreeBackgroundPainter(final Color disabledBackgroundColor) {
+		return new DisabledSubModuleTreeBackgroundPainter(disabledBackgroundColor);
 	}
 
 	protected void fireUpdated(final INavigationNode<?> node) {
@@ -463,6 +472,14 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		SWTFacade.getDefault().addPaintItemListener(getTree(), paintItemListener);
 
 		SWTFacade.getDefault().attachModuleNavigationListener(getTree());
+
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
+		Color disabledBackgroundColor = null;
+		if (!lnf.getBooleanSetting(LnfKeyConstants.SUB_MODULE_TREE_DISABLED_BACKGROUND_IS_SWT_DEFAULT)) {
+			disabledBackgroundColor = lnf.getColor(LnfKeyConstants.SUB_MODULE_TREE_BACKGROUND);
+		}
+		disabledSubModuleTreeBgPainter = createDisabledSubModuleTreeBackgroundPainter(disabledBackgroundColor);
+		subModuleTree.addListener(SWT.EraseItem, disabledSubModuleTreeBgPainter);
 	}
 
 	private void blockView(final boolean block) {
@@ -911,6 +928,29 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		private Cursor getWaitCursor() {
 			return parent.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
 		}
+	}
+
+	private class DisabledSubModuleTreeBackgroundPainter implements Listener {
+
+		private final Color disabledBackgroundColor;
+
+		public DisabledSubModuleTreeBackgroundPainter(final Color disabledBackgroundColor) {
+			this.disabledBackgroundColor = disabledBackgroundColor;
+		}
+
+		public void handleEvent(final Event event) {
+			if (!subModuleTree.isEnabled() && disabledBackgroundColor != null) {
+				final GC gc = event.gc;
+				final Rectangle area = subModuleTree.getClientArea();
+				final Color foreground = gc.getForeground();
+				final Color background = gc.getBackground();
+				gc.setBackground(disabledBackgroundColor);
+				gc.fillRectangle(0, area.y, area.width, area.height);
+				gc.setForeground(foreground);
+				gc.setBackground(background);
+			}
+		}
+
 	}
 
 }
