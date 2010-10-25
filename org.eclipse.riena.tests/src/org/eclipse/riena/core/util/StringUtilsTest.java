@@ -103,7 +103,23 @@ public class StringUtilsTest extends TestCase {
 		assertEquals("Veritas", StringUtils.capitalize("veritas"));
 	}
 
-	public void testJoin() throws Exception {
+	public void testJoinNull() {
+		assertEquals("", StringUtils.join(null, "-"));
+	}
+
+	public void testJoinEmpty() {
+		assertEquals("", StringUtils.join(Iter.able(new Object[0]), "-"));
+	}
+
+	public void testJoinOne() {
+		assertEquals("one", StringUtils.join(Iter.able(new Object[] { "one" }), "-"));
+	}
+
+	public void testJoinTwo() {
+		assertEquals("one-two", StringUtils.join(Iter.able(new Object[] { "one", "two" }), "-"));
+	}
+
+	public void testJoinFourMorePersons() {
 		final int numberOfPersons = 4;
 		final String separator = "%";
 		final List<Person> persons = new LinkedList<Person>();
@@ -120,6 +136,6 @@ public class StringUtilsTest extends TestCase {
 		assertEquals(4, split.length);
 		assertEquals(joined.length() - 1 - persons.get(numberOfPersons - 1).toString().length(),
 				joined.lastIndexOf(separator));
-		assertEquals("", StringUtils.join(null, separator));
 	}
+
 }
