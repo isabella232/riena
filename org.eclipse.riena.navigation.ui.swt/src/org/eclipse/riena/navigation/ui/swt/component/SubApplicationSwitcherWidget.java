@@ -340,9 +340,6 @@ public class SubApplicationSwitcherWidget extends Canvas {
 				LnfKeyConstants.SUB_APPLICATION_SWITCHER_RENDERER);
 	}
 
-	/**
-	 * @see org.eclipse.swt.widgets.Widget#dispose()
-	 */
 	@Override
 	public void dispose() {
 		removeListeners();
@@ -356,9 +353,6 @@ public class SubApplicationSwitcherWidget extends Canvas {
 			redraw();
 		}
 
-		/**
-		 * @see org.eclipse.riena.navigation.listener.NavigationNodeListener#disposed(org.eclipse.riena.navigation.INavigationNode)
-		 */
 		@Override
 		public void disposed(final ISubApplicationNode source) {
 			unregisterSubApplication(source);
