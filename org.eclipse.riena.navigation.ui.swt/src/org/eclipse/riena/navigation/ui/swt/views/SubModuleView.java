@@ -11,7 +11,6 @@
 package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.beans.Beans;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -123,6 +122,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	private NavigationSourceProvider navigationSourceProvider;
 	private SubModuleNodesListener subModuleNodeListener;
+	private Cursor oldCursor;
 
 	/**
 	 * Creates a new instance of {@code SubModuleView}.
@@ -376,31 +376,40 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	protected void blockView(final boolean block) {
 		if (!parentComposite.isDisposed()) {
-			if (getController() != null) {
-				final Collection<? extends IRidget> ridgets = getController().getRidgets();
-				for (final IRidget ridget : ridgets) {
-					if (block) {
-						if (ridget.hasFocus()) {
-							final Object uiControl = ridget.getUIControl();
-							if (uiControl instanceof Control) {
-								saveFocus((Control) uiControl);
-							}
-						}
+			if (block) {
+				blockView();
+			} else {
+				unBlockView();
+			}
+		}
+	}
+
+	private void unBlockView() {
+		parentComposite.setCursor(oldCursor);
+		contentComposite.setEnabled(true);
+
+		contentComposite.setRedraw(false);
+		contentComposite.setRedraw(true);
+		if (canRestoreFocus()) {
+			setFocus();
+		}
+		oldCursor = null;
+	}
+
+	private void blockView() {
+		oldCursor = parentComposite.getCursor();
+		if (getController() != null) {
+			for (final IRidget ridget : getController().getRidgets()) {
+				if (ridget.hasFocus()) {
+					final Object uiControl = ridget.getUIControl();
+					if (uiControl instanceof Control) {
+						saveFocus((Control) uiControl);
 					}
 				}
 			}
-
-			parentComposite.setCursor(block ? getWaitCursor() : getArrowCursor());
-			contentComposite.setEnabled(!block);
-			if (!block) {
-				contentComposite.setRedraw(false);
-				contentComposite.setRedraw(true);
-				if (canRestoreFocus()) {
-					setFocus();
-				}
-			}
-
 		}
+		parentComposite.setCursor(getWaitCursor());
+		contentComposite.setEnabled(false);
 	}
 
 	/**

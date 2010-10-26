@@ -89,16 +89,20 @@ public class SubModuleViewTest extends RienaTestCase {
 	}
 
 	public void testBlocking() {
-		node.setBlocked(true);
 		final Composite parentComposite = ReflectionUtils.invokeHidden(subModuleNodeView, "getParentComposite");
 		final Composite contentComposite = ReflectionUtils.invokeHidden(subModuleNodeView, "getContentComposite");
-		assertFalse(contentComposite.isEnabled());
+		final Cursor oldCursor = parentComposite.getCursor();
 		final Cursor waitCursor = parentComposite.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
+
+		node.setBlocked(true);
+
+		assertFalse(contentComposite.isEnabled());
 		assertSame(waitCursor, parentComposite.getCursor());
+
 		node.setBlocked(false);
+
 		assertTrue(contentComposite.isEnabled());
-		final Cursor arrowCursor = parentComposite.getDisplay().getSystemCursor(SWT.CURSOR_ARROW);
-		assertSame(arrowCursor, parentComposite.getCursor());
+		assertSame(oldCursor, parentComposite.getCursor());
 	}
 
 	// FIXME this fails when tested in the build, subModuleNodeView.getController() returns null
