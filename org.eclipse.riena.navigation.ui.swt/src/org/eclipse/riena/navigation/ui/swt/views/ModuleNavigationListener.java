@@ -32,6 +32,8 @@ import org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchModule;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * Navigation for the 'submodule' tree used in {@link ModuleView}. This includes
@@ -76,7 +78,6 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 
 	@Override
 	public void widgetSelected(final SelectionEvent event) {
-		// System.out.println("widgetSelected() " + getSelection(event));
 		cancelSwitch();
 		if (!keyPressed) {
 			// selected by mouse click
@@ -106,6 +107,7 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 
 	public void keyPressed(final KeyEvent event) {
 		cancelSwitch();
+		blockLetterOrDigit(event);
 		keyPressed = true;
 		keyCode = event.keyCode;
 		final TreeItem from = getSelection(event);
@@ -114,7 +116,7 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 	}
 
 	public void keyReleased(final KeyEvent event) {
-		// System.out.println("keyReleased() " + getSelection(event));
+		blockLetterOrDigit(event);
 		// plain arrow up
 		if (event.stateMask == 0 && KC_ARROW_UP == event.keyCode && isFirst) {
 			createSwitchModuleOp().doSwitch(false);
@@ -125,6 +127,17 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 			startSwitch(getSelection(event));
 		}
 		keyPressed = false;
+	}
+
+	private void blockLetterOrDigit(final KeyEvent e) {
+		//		if (Character.isLetterOrDigit(e.character) && !isCharacterNavigationEnabled()) {
+		//			e.doit = false;
+		//		}
+	}
+
+	private boolean isCharacterNavigationEnabled() {
+		return LnfManager.getLnf()
+				.getBooleanSetting(LnfKeyConstants.NAVIGATION_TREE_CHARACTER_SELECTION_ENABLED, false);
 	}
 
 	public void focusGained(final FocusEvent e) {
@@ -231,6 +244,7 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 		boolean result = true;
 		final INavigationNode<?> node = (INavigationNode<?>) item.getData();
 		if (node instanceof SubModuleNode) {
+			//			result = ((SubModuleNode) node).isSelectable() || !node.getChildren().isEmpty();
 			result = ((SubModuleNode) node).isSelectable();
 		}
 		return result;

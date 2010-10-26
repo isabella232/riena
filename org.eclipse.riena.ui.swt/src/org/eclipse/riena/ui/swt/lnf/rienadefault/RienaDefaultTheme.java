@@ -485,6 +485,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_RIGHT_INDENT, 12);
 
 		lnf.putLnfSetting(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_WIDTH, 160);
+
+		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_TREE_CHARACTER_SELECTION_ENABLED, false);
+
 	}
 
 	//

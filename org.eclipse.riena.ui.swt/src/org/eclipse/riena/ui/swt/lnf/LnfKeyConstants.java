@@ -739,6 +739,14 @@ public final class LnfKeyConstants {
 	public static final String NAVIGATION_SCROLL_UP_ICON = "navigation.scrollup"; //$NON-NLS-1$
 	public static final String NAVIGATION_SCROLL_DOWN_ICON = "navigation.scrollDown"; //$NON-NLS-1$
 
+	/**
+	 * Sets whether the nodes of the navigation tree are selectable through
+	 * typing characters on the keyboard.
+	 * 
+	 * @since 3.0
+	 */
+	public static final String NAVIGATION_TREE_CHARACTER_SELECTION_ENABLED = "navigation.charSelectionEnabled"; //$NON-NLS-1$
+
 	public static final String ERROR_MARKER_ICON = "ControlErrorMarker"; //$NON-NLS-1$
 
 	/**
