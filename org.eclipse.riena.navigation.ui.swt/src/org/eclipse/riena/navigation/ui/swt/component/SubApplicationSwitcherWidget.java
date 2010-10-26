@@ -121,10 +121,10 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	private class PaintDelegation implements PaintListener {
 
 		/**
+		 * {@inheritDoc}
+		 * <p>
 		 * Passes the bounds of the parent and the sub-application items to the
 		 * renderer and paints the widget.
-		 * 
-		 * @see org.eclipse.swt.events.PaintListener#paintControl(org.eclipse.swt.events.PaintEvent)
 		 */
 		public void paintControl(final PaintEvent e) {
 			final GC gc = e.gc;
@@ -141,9 +141,9 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	private class TabSelector extends MouseAdapter {
 
 		/**
+		 * {@inheritDoc}
+		 * <p>
 		 * Activates the selected sub-application
-		 * 
-		 * @see org.eclipse.swt.events.MouseAdapter#mouseDown(org.eclipse.swt.events.MouseEvent)
 		 */
 		@Override
 		public void mouseDown(final MouseEvent e) {
