@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
@@ -38,7 +36,6 @@ import org.eclipse.core.runtime.IContributor;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.IRegistryEventListener;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
@@ -57,18 +54,14 @@ import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 @SuppressWarnings("restriction")
 public abstract class RienaTestCase extends TestCase {
 
-	//	private static final String ORG_ECLIPSE_RIENA_BUNDLE_PREFIX = null;//"org.eclipse.riena"; 
 	// Keep track of services and corresponding service references.
 	private final Map<Object, ServiceReference> services = new HashMap<Object, ServiceReference>();
 	// Do not access this field directly! Use the getter getContext() because this does a lazy initialization.
 	private BundleContext context;
 
-	private final boolean trace = Trace.isOn(RienaTestCase.class, getClass(), "debug");
+	private final boolean trace = Trace.isOn(RienaTestCase.class, getClass(), "debug"); //$NON-NLS-1$
 
-	private final JobCollector jobCollector = new JobCollector();
-
-	//	private Set<String> before;
-	//	private Set<String> after;
+	private final ExtensionRegistryChangeJobTracker jobTracker = new ExtensionRegistryChangeJobTracker();
 
 	/**
 	 * 
@@ -109,39 +102,18 @@ public abstract class RienaTestCase extends TestCase {
 		ok();
 	}
 
-	/*
-	 * @see junit.framework.TestCase#setUp()
-	 */
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		//		System.out.println("setUp");
 		services.clear();
-		// before = ExtensionRegistryAnalyzer.getRegistryPaths(ORG_ECLIPSE_RIENA_BUNDLE_PREFIX);
 	}
 
-	/*
-	 * @see junit.framework.TestCase#tearDown()
-	 */
 	@Override
 	protected void tearDown() throws Exception {
-		//		System.out.println("tearDown");
 		for (final ServiceReference reference : services.values()) {
 			getContext().ungetService(reference);
 		}
 		services.clear();
-		//		try {
-		//			assertNotNull("Obviously the super.setUp() method has not been called!", before); //$NON-NLS-1$
-		//			after = ExtensionRegistryAnalyzer.getRegistryPaths(ORG_ECLIPSE_RIENA_BUNDLE_PREFIX);
-		//			if (!before.equals(after)) {
-		//				fail("ExtensionRegistry has changed while running the test " + getName() + ": " //$NON-NLS-1$ //$NON-NLS-2$
-		//						+ ExtensionRegistryAnalyzer.symmetricDiff(before, after).toString());
-		//			}
-		//		} finally {
-		//			after = null;
-		//			before = null;
-		//			super.tearDown();
-		//		}
 		super.tearDown();
 	}
 
@@ -245,6 +217,18 @@ public abstract class RienaTestCase extends TestCase {
 	}
 
 	/**
+	 * Add an extension/extension point defined within the ´plugin.xml´ (located
+	 * along side the test class) given with the <code>pluginResource</code> to
+	 * the extension registry.
+	 * 
+	 * @param pluginResource
+	 * @throws InterruptedException
+	 */
+	protected void addPluginXml(final String pluginResource) {
+		addPluginXml(getClass(), pluginResource);
+	}
+
+	/**
 	 * Add an extension/extension point defined within the ´plugin.xml´ given
 	 * with the <code>pluginResource</code> to the extension registry.
 	 * 
@@ -253,70 +237,37 @@ public abstract class RienaTestCase extends TestCase {
 	 * @throws InterruptedException
 	 */
 	protected void addPluginXml(final Class<?> forLoad, final String pluginResource) {
-		addPluginXml(forLoad, pluginResource, -1);
-	}
-
-	/**
-	 * Add an extension/extension point defined within the ´plugin.xml´ given
-	 * with the <code>pluginResource</code> to the extension registry.
-	 * Additionally it is possible to perform a sleep interval after the
-	 * ´plugin.xml´ has been added.
-	 * 
-	 * @param forLoad
-	 * @param pluginResource
-	 * @param sleepInMs
-	 * @throws InterruptedException
-	 */
-	protected void addPluginXml(final Class<?> forLoad, final String pluginResource, final int sleepInMs) {
 		final IExtensionRegistry registry = RegistryFactory.getRegistry();
 		@IgnoreFindBugs(value = "OBL_UNSATISFIED_OBLIGATION", justification = "stream will be closed by getResourceAsStream()")
 		final InputStream inputStream = forLoad.getResourceAsStream(pluginResource);
 		final IContributor contributor = ContributorFactoryOSGi.createContributor(getContext().getBundle());
-		final RegistryEventListener listener = new RegistryEventListener(forLoad.getName() + " - " + pluginResource); //$NON-NLS-1$
-		registry.addListener(listener);
 
-		startJobCollector();
+		startJobTracking();
 		final boolean success = registry.addContribution(inputStream, contributor, false, pluginResource, null,
 				((ExtensionRegistry) registry).getTemporaryUserToken());
-		stopJobCollector();
-		listener.waitAdded();
-		registry.removeListener(listener);
+		stopJobTracking();
 		assertTrue(success);
-		if (sleepInMs > 0) {
-			try {
-				Thread.sleep(sleepInMs);
-			} catch (final InterruptedException e) {
-				println("Sleeping in addPluginXml failed!"); //$NON-NLS-1$
-			}
-		}
-		waitForRegistryJobs();
-
+		joinTrackedJobs();
 	}
 
-	protected void waitForRegistryJobs() {
-		for (final Job job : jobCollector.getCollected()) {
-			try {
-				job.join();
-			} catch (final InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+	private void startJobTracking() {
+		jobTracker.start();
 	}
 
-	private void startJobCollector() {
-		jobCollector.start();
+	private void stopJobTracking() {
+		jobTracker.stop();
 	}
 
-	private void stopJobCollector() {
-		jobCollector.stop();
+	private void joinTrackedJobs() {
+		jobTracker.joinJobs();
 	}
 
-	private class JobCollector extends JobChangeAdapter {
+	private class ExtensionRegistryChangeJobTracker extends JobChangeAdapter {
 
-		private List<Job> collected;
+		private List<Job> jobs;
 
 		protected void start() {
-			collected = new ArrayList<Job>();
+			jobs = new ArrayList<Job>();
 			Job.getJobManager().addJobChangeListener(this);
 		}
 
@@ -324,14 +275,20 @@ public abstract class RienaTestCase extends TestCase {
 			Job.getJobManager().removeJobChangeListener(this);
 		}
 
-		protected List<Job> getCollected() {
-			return collected;
+		protected void joinJobs() {
+			for (final Job job : jobs) {
+				try {
+					job.join();
+				} catch (final InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 		@Override
 		public void scheduled(final IJobChangeEvent event) {
 			if (event.getJob() instanceof ExtensionEventDispatcherJob) {
-				collected.add(event.getJob());
+				jobs.add(event.getJob());
 			}
 		}
 	}
@@ -342,35 +299,15 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param extensionId
 	 */
 	protected void removeExtension(final String extensionId) {
-		removeExtension(extensionId, -1);
-	}
-
-	/**
-	 * Remove the given extension from the extension registry. Additionally it
-	 * is possible to perform a sleep interval after the extension has been
-	 * removed.
-	 * 
-	 * @param extensionId
-	 * @param sleepInMs
-	 */
-	protected void removeExtension(final String extensionId, final int sleepInMs) {
 		final IExtensionRegistry registry = RegistryFactory.getRegistry();
 		final IExtension extension = registry.getExtension(extensionId);
 		assertNotNull(extension);
-		final RegistryEventListener listener = new RegistryEventListener(extensionId);
-		registry.addListener(listener);
+		startJobTracking();
 		final boolean success = registry.removeExtension(extension,
 				((ExtensionRegistry) registry).getTemporaryUserToken());
-		listener.waitExtensionRemoved();
-		registry.removeListener(listener);
+		stopJobTracking();
 		assertTrue(success);
-		if (sleepInMs > 0) {
-			try {
-				Thread.sleep(sleepInMs);
-			} catch (final InterruptedException e) {
-				println("Sleeping in removeExtension failed!"); //$NON-NLS-1$
-			}
-		}
+		joinTrackedJobs();
 	}
 
 	/**
@@ -379,35 +316,15 @@ public abstract class RienaTestCase extends TestCase {
 	 * @param extensionPointId
 	 */
 	protected void removeExtensionPoint(final String extensionPointId) {
-		removeExtensionPoint(extensionPointId, -1);
-	}
-
-	/**
-	 * Remove the given extension from the extension registry.Additionally it is
-	 * possible to perform a sleep interval after the extension point has been
-	 * removed.
-	 * 
-	 * @param extensionPointId
-	 * @param sleepInMs
-	 */
-	protected void removeExtensionPoint(final String extensionPointId, final int sleepInMs) {
 		final IExtensionRegistry registry = RegistryFactory.getRegistry();
 		final IExtensionPoint extensionPoint = registry.getExtensionPoint(extensionPointId);
 		assertNotNull(extensionPoint);
-		final RegistryEventListener listener = new RegistryEventListener(extensionPointId);
-		registry.addListener(listener);
+		startJobTracking();
 		final boolean success = registry.removeExtensionPoint(extensionPoint,
 				((ExtensionRegistry) registry).getTemporaryUserToken());
-		listener.waitExtensionPointRemoved();
-		registry.removeListener(listener);
+		stopJobTracking();
 		assertTrue(success);
-		if (sleepInMs > 0) {
-			try {
-				Thread.sleep(sleepInMs);
-			} catch (final InterruptedException e) {
-				println("Sleeping in removeExtensionPoint failed!"); //$NON-NLS-1$
-			}
-		}
+		joinTrackedJobs();
 	}
 
 	/**
@@ -551,101 +468,4 @@ public abstract class RienaTestCase extends TestCase {
 	protected interface IClosure {
 		void execute(Bundle bundle) throws BundleException;
 	}
-
-	private final class RegistryEventListener implements IRegistryEventListener {
-
-		private final CountDownLatch added = new CountDownLatch(1);
-		private final CountDownLatch extensionRemoved = new CountDownLatch(1);
-		private final CountDownLatch extensionPointRemoved = new CountDownLatch(1);
-		private final String ident;
-		private final static int SECONDS_TO_WAIT = 1;
-
-		private RegistryEventListener(final String ident) {
-			this.ident = ident;
-		}
-
-		public void waitAdded() {
-			final String message = "Expected extension/point has not been ´added´ for " + ident + " because "; //$NON-NLS-1$ //$NON-NLS-2$
-			try {
-				added.await(SECONDS_TO_WAIT, TimeUnit.SECONDS);
-				if (added.getCount() == 1) {
-					if (isTrace()) {
-						System.err.println(message + " time-out has been reached. Which might be ok!"); //$NON-NLS-1$
-					}
-				}
-			} catch (final InterruptedException e) {
-				TestCase.fail(message + " the CountDownLatch failed with " + e); //$NON-NLS-1$ 
-			}
-		}
-
-		public void waitExtensionRemoved() {
-			final String message = "Expected extension id " + ident + " has not been ´removed´ because "; //$NON-NLS-1$ //$NON-NLS-2$
-			try {
-				extensionRemoved.await(SECONDS_TO_WAIT, TimeUnit.SECONDS);
-				if (extensionRemoved.getCount() == 1) {
-					if (isTrace()) {
-						System.err.println(message + " time-out has been reached. Which might be ok!"); //$NON-NLS-1$
-					}
-				}
-			} catch (final InterruptedException e) {
-				TestCase.fail(message + " the CountDownLatch failed with " + e); //$NON-NLS-1$ 
-			}
-		}
-
-		public void waitExtensionPointRemoved() {
-			final String message = "Expected extension point id " + ident + " has not been ´removed´ because "; //$NON-NLS-1$ //$NON-NLS-2$
-			try {
-				extensionPointRemoved.await(SECONDS_TO_WAIT, TimeUnit.SECONDS);
-				if (extensionPointRemoved.getCount() == 1) {
-					if (isTrace()) {
-						System.err.println(message + " time-out has been reached. Which might be ok!"); //$NON-NLS-1$
-					}
-				}
-			} catch (final InterruptedException e) {
-				TestCase.fail(message + " the CountDownLatch failed with " + e); //$NON-NLS-1$ 
-			}
-		}
-
-		public void added(final IExtension[] extensions) {
-			if (isTrace()) {
-				System.out.println("Extensions added: "); //$NON-NLS-1$
-				for (final IExtension extension : extensions) {
-					System.out.println(" - " + extension.getUniqueIdentifier() + ", " //$NON-NLS-1$ //$NON-NLS-2$
-							+ extension.getExtensionPointUniqueIdentifier());
-				}
-			}
-			added.countDown();
-		}
-
-		public void added(final IExtensionPoint[] extensionPoints) {
-			if (isTrace()) {
-				System.out.println("ExtensionPoints added: "); //$NON-NLS-1$
-				for (final IExtensionPoint extensionPoint : extensionPoints) {
-					System.out.println(" - " + extensionPoint.getUniqueIdentifier()); //$NON-NLS-1$
-				}
-			}
-			added.countDown();
-		}
-
-		public void removed(final IExtension[] extensions) {
-			if (isTrace()) {
-				System.out.println("Extensions removed: "); //$NON-NLS-1$
-				for (final IExtension extension : extensions) {
-					System.out.println(" - " + extension.getUniqueIdentifier() + ", " //$NON-NLS-1$ //$NON-NLS-2$
-							+ extension.getExtensionPointUniqueIdentifier());
-				}
-			}
-			extensionRemoved.countDown();
-		}
-
-		public void removed(final IExtensionPoint[] extensionPoints) {
-			if (isTrace()) {
-				System.out.println("ExtensionPoints removed: "); //$NON-NLS-1$
-				for (final IExtensionPoint extensionPoint : extensionPoints) {
-					System.out.println(" - " + extensionPoint.getUniqueIdentifier()); //$NON-NLS-1$
-				}
-			}
-			extensionPointRemoved.countDown();
-		}
-	};
 }
