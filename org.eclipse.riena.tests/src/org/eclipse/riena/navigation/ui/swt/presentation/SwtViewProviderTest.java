@@ -12,7 +12,7 @@ package org.eclipse.riena.navigation.ui.swt.presentation;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
-import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -21,8 +21,7 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 /**
  * Tests for the SwtViewProvider.
  */
-//NonUITestCase FIXME when addPluginXML is fixed
-@ManualTestCase
+@NonUITestCase
 public class SwtViewProviderTest extends RienaTestCase {
 
 	private SwtViewProvider swtPresentationManager;
