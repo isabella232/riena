@@ -49,7 +49,7 @@ public class NavigationProcessor2Test extends RienaTestCase {
 		initializeNavigationStructure();
 	}
 
-	class NodeProviderMock extends SimpleNavigationNodeProvider {
+	final class NodeProviderMock extends SimpleNavigationNodeProvider {
 
 		private NodeProviderMock() {
 			initAssemblers();
