@@ -138,10 +138,10 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 					browser.setText(text);
 				}
 			} else {
-				final String url = convertNullToEmpty(this.url);
-				if (!url.equals(browser.getUrl())) {
+				final String notNullUrl = convertNullToEmpty(url);
+				if (!notNullUrl.equals(browser.getUrl())) {
 					locationListener.unblock();
-					browser.setUrl(url);
+					browser.setUrl(notNullUrl);
 				}
 			}
 		}
