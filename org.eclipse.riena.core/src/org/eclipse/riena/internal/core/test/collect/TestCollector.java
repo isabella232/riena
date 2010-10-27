@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -159,9 +160,9 @@ public final class TestCollector {
 	 */
 	public static List<Class<? extends TestCase>> collectBadlyNamed(final Bundle bundle, final Package withinPackage) {
 		final List<Class<? extends TestCase>> testClasses = new ArrayList<Class<? extends TestCase>>();
-
+		final Pattern testClassPattern = Pattern.compile(".*Test\\d*$"); //$NON-NLS-1$
 		for (final Class<? extends TestCase> testClass : collect(bundle, withinPackage, true)) {
-			if (!testClass.getName().endsWith("Test")) { //$NON-NLS-1$
+			if (!testClassPattern.matcher(testClass.getName()).matches()) {
 				testClasses.add(testClass);
 			}
 		}
