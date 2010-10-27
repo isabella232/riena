@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.example.ping.client;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -27,6 +30,8 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
@@ -34,6 +39,27 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
  * {@link SonarController} in the current application.
  */
 public class SonarHandler extends AbstractHandler {
+
+	private final Map<ISubApplicationNode, Boolean> setupSubApplications = new WeakHashMap<ISubApplicationNode, Boolean>();
+	private static final String PROPERTY_SONAR_MENU_VISIBLE = "riena.sonar.menu.visible"; //$NON-NLS-1$
+
+	@Override
+	public boolean isEnabled() {
+		setupSonarMenu();
+		return super.isEnabled();
+	}
+
+	private void setupSonarMenu() {
+		final ISubApplicationNode subApplicationNode = ApplicationNodeManager.locateActiveSubApplicationNode();
+		if (setupSubApplications.get(subApplicationNode) == null) {
+			setupSubApplications.put(subApplicationNode, true);
+			final SubApplicationController subApplicationController = (SubApplicationController) subApplicationNode
+					.getNavigationNodeController();
+			final IActionRidget menu = subApplicationController
+					.getRidget(IActionRidget.class, "toolbarAction.pingMenu"); //$NON-NLS-1$
+			menu.setVisible(Boolean.getBoolean(PROPERTY_SONAR_MENU_VISIBLE));
+		}
+	}
 
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final ISubApplicationNode subApplicationNode = ApplicationNodeManager.locateActiveSubApplicationNode();
