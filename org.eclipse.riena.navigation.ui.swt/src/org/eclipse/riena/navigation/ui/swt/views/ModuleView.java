@@ -301,7 +301,6 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			binding.unbind(controller);
 		}
 
-		subModuleTree.removeListener(SWT.EraseItem, disabledSubModuleTreeBgPainter);
 		navigationTreeObserver.removeListenerFrom(moduleNode);
 		moduleNode = null;
 
@@ -359,7 +358,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 */
 	protected void createBodyContent(final Composite parent) {
 		parent.setLayout(new FormLayout());
-		
+
 		subModuleTree = new Tree(parent, SWT.NO_SCROLL | SWT.DOUBLE_BUFFERED);
 		subModuleTree.setLinesVisible(false);
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
@@ -479,7 +478,8 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			disabledBackgroundColor = lnf.getColor(LnfKeyConstants.SUB_MODULE_TREE_BACKGROUND);
 		}
 		disabledSubModuleTreeBgPainter = createDisabledSubModuleTreeBackgroundPainter(disabledBackgroundColor);
-		subModuleTree.addListener(SWT.EraseItem, disabledSubModuleTreeBgPainter);
+
+		SWTFacade.getDefault().addEraseItemListener(subModuleTree, disabledSubModuleTreeBgPainter);
 	}
 
 	private void blockView(final boolean block) {
