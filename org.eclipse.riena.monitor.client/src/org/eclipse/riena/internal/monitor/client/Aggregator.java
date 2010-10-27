@@ -25,9 +25,7 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.Iter;
-import org.eclipse.riena.core.wire.Wire;
-import org.eclipse.riena.core.wire.WirePuller;
-import org.eclipse.riena.core.wire.WireWith;
+import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.monitor.client.Category;
 import org.eclipse.riena.monitor.client.IAggregator;
 import org.eclipse.riena.monitor.client.IClientInfoProvider;
@@ -40,16 +38,12 @@ import org.eclipse.riena.monitor.common.Collectible;
  * The {@code Aggregator} aggregates all collectibles from the collectors. Each
  * collectible may trigger the transmission of the collectibles.
  */
-@WireWith(AggregatorWiring.class)
 public class Aggregator implements IAggregator {
 
 	private IClientInfoProvider clientInfoProvider;
 	private IStore store;
-	private WirePuller storeWiring;
 	private ISender sender;
-	private WirePuller senderWiring;
 	private ICollector[] collectors;
-	private List<WirePuller> collectorWirings;
 	private boolean workerStop;
 	private boolean started;
 	private final BlockingQueue<Runnable> workQueue;
@@ -69,6 +63,9 @@ public class Aggregator implements IAggregator {
 		new Thread(new Worker(), "Client Monitoring Aggregator Worker").start(); //$NON-NLS-1$
 	}
 
+	/*
+	 * {@inheritDoc}
+	 */
 	public synchronized void start() {
 		if (started) {
 			return;
@@ -95,6 +92,9 @@ public class Aggregator implements IAggregator {
 		workSignal.countDown();
 	}
 
+	/*
+	 * {@inheritDoc}
+	 */
 	public synchronized void stop() {
 		if (!started) {
 			return;
@@ -106,6 +106,7 @@ public class Aggregator implements IAggregator {
 		started = false;
 	}
 
+	@InjectExtension(min = 0, max = 1)
 	public synchronized void update(final IClientInfoProviderExtension clientInfoProviderExtension) {
 		stopSender();
 		if (clientInfoProviderExtension == null) {
@@ -114,12 +115,12 @@ public class Aggregator implements IAggregator {
 		clientInfoProvider = clientInfoProviderExtension.createClientInfoProvider();
 	}
 
+	@InjectExtension
 	public synchronized void update(final ICollectorExtension[] collectorExtensions) {
 		stopCollectors();
 		nameCategories.clear();
 		collectorCategories.clear();
 		final List<ICollector> list = new ArrayList<ICollector>(collectorExtensions.length);
-		collectorWirings = new ArrayList<WirePuller>(collectorExtensions.length);
 		for (final ICollectorExtension extension : collectorExtensions) {
 			Assert.isLegal(!nameCategories.containsKey(extension.getCategory()), "Category " + extension.getCategory() //$NON-NLS-1$
 					+ " is defined twice. Categories must be unique."); //$NON-NLS-1$
@@ -127,7 +128,6 @@ public class Aggregator implements IAggregator {
 			nameCategories.put(extension.getCategory(), category);
 			final ICollector collector = extension.createCollector();
 			collectorCategories.put(collector, category);
-			collectorWirings.add(Wire.instance(collector).andStart(Activator.getDefault().getContext()));
 			list.add(collector);
 		}
 		collectors = list.toArray(new ICollector[list.size()]);
@@ -139,22 +139,18 @@ public class Aggregator implements IAggregator {
 	}
 
 	private void stopCollectors() {
-
 		for (final ICollector collector : Iter.able(collectors)) {
 			collector.stop();
 		}
-		for (final WirePuller wirings : Iter.able(collectorWirings)) {
-			wirings.stop();
-		}
 	}
 
+	@InjectExtension(min = 0, max = 1)
 	public void update(final ISenderExtension senderExtension) {
 		stopSender();
 		if (senderExtension == null) {
 			return;
 		}
 		sender = senderExtension.createSender();
-		senderWiring = Wire.instance(sender).andStart(Activator.getDefault().getContext());
 		// TODO if we were really dynamic aware we should start it here
 	}
 
@@ -163,19 +159,15 @@ public class Aggregator implements IAggregator {
 			sender.stop();
 			sender = null;
 		}
-		if (senderWiring != null) {
-			senderWiring.stop();
-			senderWiring = null;
-		}
 	}
 
+	@InjectExtension(min = 0, max = 1)
 	public synchronized void update(final IStoreExtension storeExtension) {
 		stopStore();
 		if (storeExtension == null) {
 			return;
 		}
 		store = storeExtension.createStore();
-		storeWiring = Wire.instance(store).andStart(Activator.getDefault().getContext());
 	}
 
 	private void stopStore() {
@@ -183,17 +175,10 @@ public class Aggregator implements IAggregator {
 			store.flush();
 			store = null;
 		}
-		if (storeWiring != null) {
-			storeWiring.stop();
-		}
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.monitor.client.ICollectingAggregator#collect(org.eclipse
-	 * .riena.monitor.common.Collectible)
+	 * {@inheritDoc}
 	 */
 	public synchronized void collect(final Collectible<?> collectible) {
 		if (!started) {
@@ -204,11 +189,7 @@ public class Aggregator implements IAggregator {
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.monitor.client.IAggregator#triggerTransfer(java.lang
-	 * .String)
+	 * {@inheritDoc}
 	 */
 	public synchronized void triggerTransfer(final String category) {
 		if (store == null || sender == null) {
@@ -221,9 +202,7 @@ public class Aggregator implements IAggregator {
 	private class Worker implements Runnable {
 
 		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Runnable#run()
+		 * {@inheritDoc}
 		 */
 		public void run() {
 			try {

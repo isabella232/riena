@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.monitor.client;
 
-import org.eclipse.riena.core.injector.extension.DoNotWireExecutable;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 import org.eclipse.riena.monitor.client.ISender;
@@ -38,6 +37,5 @@ public interface ISenderExtension {
 	 * @return the sender
 	 */
 	@MapName("class")
-	@DoNotWireExecutable
 	ISender createSender();
 }

@@ -24,7 +24,7 @@ import org.eclipse.equinox.log.ExtendedLogEntry;
 import org.eclipse.equinox.log.ExtendedLogReaderService;
 
 import org.eclipse.riena.core.util.PropertiesUtils;
-import org.eclipse.riena.core.wire.WireWith;
+import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.riena.internal.monitor.client.Activator;
 import org.eclipse.riena.monitor.common.LogEntryTransferObject;
 
@@ -33,7 +33,6 @@ import org.eclipse.riena.monitor.common.LogEntryTransferObject;
  * {@code org.osgi.service.log.LogListener}.
  * <p>
  */
-@WireWith(LogServiceCollectorWiring.class)
 public class LogServiceCollector extends AbstractCollector implements IExecutableExtension {
 
 	private Range collectRange;
@@ -97,6 +96,7 @@ public class LogServiceCollector extends AbstractCollector implements IExecutabl
 		extendedLogReaderService.removeLogListener(logListener);
 	}
 
+	@InjectService(useRanking = true)
 	public void bind(final ExtendedLogReaderService extendedLogReaderService) {
 		this.extendedLogReaderService = extendedLogReaderService;
 	}

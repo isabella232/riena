@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.monitor.client;
 
-import org.eclipse.riena.core.injector.extension.DoNotWireExecutable;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 import org.eclipse.riena.monitor.client.ICollector;
@@ -36,7 +35,6 @@ public interface ICollectorExtension {
 	 * @return a collector
 	 */
 	@MapName("class")
-	@DoNotWireExecutable
 	ICollector createCollector();
 
 	/**

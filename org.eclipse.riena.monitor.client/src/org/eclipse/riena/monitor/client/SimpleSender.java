@@ -31,7 +31,7 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.Literal;
 import org.eclipse.riena.core.util.Millis;
 import org.eclipse.riena.core.util.PropertiesUtils;
-import org.eclipse.riena.core.wire.WireWith;
+import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.riena.internal.monitor.client.Activator;
 import org.eclipse.riena.monitor.common.Collectible;
 import org.eclipse.riena.monitor.common.IReceiver;
@@ -59,7 +59,6 @@ import org.eclipse.riena.monitor.common.IReceiver;
  * &lt;/extension&gt;
  * </pre>
  */
-@WireWith(SimpleSenderWiring.class)
 public class SimpleSender implements ISender, IExecutableExtension {
 
 	private IStore store;
@@ -98,6 +97,7 @@ public class SimpleSender implements ISender, IExecutableExtension {
 		return new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, e));
 	}
 
+	@InjectService(useRanking = true)
 	public void bind(final IReceiver receiver) {
 		this.receiver = receiver;
 	}
