@@ -105,8 +105,7 @@ public class SubModuleViewTest extends RienaTestCase {
 		assertSame(oldCursor, parentComposite.getCursor());
 	}
 
-	// FIXME this fails when tested in the build, subModuleNodeView.getController() returns null
-	public void xxx_testCreateController() throws Exception {
+	public void testCreateController() throws Exception {
 		assertNotNull(subModuleNodeView.getController());
 		assertEquals(node, subModuleNodeView.getController().getNavigationNode());
 	}
