@@ -50,7 +50,7 @@ import org.eclipse.riena.ui.tests.base.TestSingleSelectionBean;
  * 
  * @see TableRidgetTest
  */
-public class TreeRidget2Test extends AbstractSWTRidgetTest {
+public class TreeRidgetTest2 extends AbstractSWTRidgetTest {
 
 	protected ITreeNode root;
 	protected ITreeNode rootChild1;

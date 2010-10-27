@@ -25,7 +25,7 @@ import org.eclipse.riena.navigation.model.NavigationProcessorTest.TestSubModuleN
  * Manual Tests for the NavigationProcessor that use addPluginXml.
  */
 @NonUITestCase
-public class NavigationProcessor2Test extends RienaTestCase {
+public class NavigationProcessorTest2 extends RienaTestCase {
 
 	private static final String TARGET_MODULE_GROUP = "org.eclipse.riena.navigation.model.test.moduleGroup.2";
 	private NavigationProcessor navigationProcessor;

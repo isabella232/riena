@@ -41,7 +41,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
  * NavigationProcessor that don't use addPluginXml() and can be run on the
  * buildserver.
  * <p>
- * FIXME move all tests from {@link NavigationProcessor2Test} over here
+ * FIXME move all tests from {@link NavigationProcessorTest2} over here
  * again, when the addPluginXml() issue is fixed.
  */
 @NonUITestCase

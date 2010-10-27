@@ -224,8 +224,8 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 	/**
 	 * As per Bug 327496.
 	 * 
-	 * @see TextRidget2Test#testToggleMandatoryMarkerWithMarkerHidingOn()
-	 * @see TextRidget2Test#testToggleMarkerHidingWithMandatoryMarkerOn()
+	 * @see TextRidgetTest2#testToggleMandatoryMarkerWithMarkerHidingOn()
+	 * @see TextRidgetTest2#testToggleMarkerHidingWithMandatoryMarkerOn()
 	 */
 	@SuppressWarnings("unchecked")
 	public void testHideAndUnhideMarkers() {
