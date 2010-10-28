@@ -195,7 +195,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 				final Control txt = ReflectionUtils.getHidden(control, "list"); //$NON-NLS-1$
 				return txt.getBackground();
 			} catch (final RuntimeException ex) {
-				ex.printStackTrace();
+				LOGGER.log(LogService.LOG_WARNING, "Unexpected error when accessing field 'list' in CCombo.", ex); //$NON-NLS-1$
 			}
 		}
 		return control.getBackground();
