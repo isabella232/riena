@@ -12,11 +12,14 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyDescriptor;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.IBeanObservable;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.set.IObservableSet;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.databinding.viewers.ObservableListTreeContentProvider;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -28,6 +31,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
@@ -86,6 +90,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  */
 public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider implements IColorProvider {
 
+	private static final Logger LOGGER = Log4r.getLogger(TreeRidgetLabelProvider.class);
 	private static final UpdateIconsTreeListener LISTENER = new UpdateIconsTreeListener();
 	private static final String KEY_LABELPROVIDER = "K_TRLP"; //$NON-NLS-1$
 
@@ -187,7 +192,8 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 					try {
 						return String.valueOf(ReflectionUtils.invoke(element, "get" + s)); //$NON-NLS-1$
 					} catch (final RuntimeException ex) {
-						ex.printStackTrace();
+						LOGGER.log(LogService.LOG_WARNING,
+								"Unexpected error when accessing property " + str + " in " + element, ex); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}
