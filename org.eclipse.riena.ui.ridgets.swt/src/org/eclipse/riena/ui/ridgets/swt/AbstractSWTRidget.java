@@ -50,6 +50,9 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public FocusManager getFocusManager() {
 		return focusManager;
 	}

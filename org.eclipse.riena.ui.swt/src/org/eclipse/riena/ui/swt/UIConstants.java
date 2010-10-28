@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt;
 
+/**
+ * @since 3.0
+ */
 public final class UIConstants {
 
 	public final static String DATA_KEY_CONTENT_COMPOSITE = "contentComposite"; //$NON-NLS-1$
