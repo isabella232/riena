@@ -51,6 +51,14 @@ public class VariableManagerUtilTest extends RienaTestCase {
 		fgManager.set(null, null);
 	}
 
+	public void testReolveNullExpression() throws CoreException {
+		assertNull(VariableManagerUtil.substitute(null));
+	}
+
+	public void testReolveEmptyExpression() throws CoreException {
+		assertEquals("", VariableManagerUtil.substitute(""));
+	}
+
 	public void testUpdatedWrongKey() throws CoreException {
 		VariableManagerUtil.addVariable("host", "${host");
 		assertEquals("${host", VariableManagerUtil.substitute("${host}"));
