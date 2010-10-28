@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.eclipse.jface.fieldassist.ControlDecoration;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -200,6 +201,16 @@ public class MarkerSupportTest extends RienaTestCase {
 			realm.dispose();
 		}
 
+	}
+
+	/**
+	 * Test reflection usage which does not cause an exception in method
+	 * getControlBackground()
+	 */
+	public void testReflectionUtilsUsageInGetControlBackground() {
+		final CCombo combo = new CCombo(shell, SWT.NONE);
+		final Control text = ReflectionUtils.getHidden(combo, "list"); //$NON-NLS-1$
+		text.getBackground();
 	}
 
 	// helping classes
