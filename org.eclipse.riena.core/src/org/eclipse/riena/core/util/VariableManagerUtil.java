@@ -42,11 +42,16 @@ public final class VariableManagerUtil {
 	 * Perform a string substitution on the given expression.
 	 * 
 	 * @param expression
+	 *            to substitute in, if {@code null} or empty, {@code null} or
+	 *            empty will be returned
 	 * @return the substituted expression
 	 * @throws CoreException
 	 *             if unable to resolve the value of one or more variables
 	 */
 	public static String substitute(final String expression) throws CoreException {
+		if (StringUtils.isEmpty(expression)) {
+			return expression;
+		}
 		final IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
 		return variableManager.performStringSubstitution(expression);
 	}
