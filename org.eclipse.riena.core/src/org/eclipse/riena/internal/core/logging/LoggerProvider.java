@@ -10,11 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.core.logging;
 
-import org.osgi.framework.FrameworkUtil;
-
 import org.eclipse.equinox.log.Logger;
 
-import org.eclipse.riena.core.util.Nop;
+import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.wire.Wire;
 
 /**
@@ -23,15 +21,15 @@ import org.eclipse.riena.core.wire.Wire;
  */
 public final class LoggerProvider {
 
-	private boolean started;
+	private volatile boolean loggerMillWired;
 	private final LoggerMill loggerMill = new LoggerMill();
 
 	private static final LoggerProvider INSTANCE = new LoggerProvider();
 
 	/**
-	 * Get the {@code LoggerProvider} singelton.
+	 * Get the {@code LoggerProvider} singleton.
 	 * 
-	 * @return the one-and-only {@code LggerProvider}
+	 * @return the one-and-only {@code LoggerProvider}
 	 */
 	public static LoggerProvider instance() {
 		return INSTANCE;
@@ -39,26 +37,6 @@ public final class LoggerProvider {
 
 	private LoggerProvider() {
 		// Singleton
-	}
-
-	/**
-	 * Start the {@code LoggerProvider}.
-	 */
-	public synchronized void start() {
-		if (!started) {
-			started = true;
-			Wire.instance(loggerMill).andStart(FrameworkUtil.getBundle(LoggerProvider.class).getBundleContext());
-		}
-	}
-
-	/**
-	 * Stop the {@code LoggerProvider}.
-	 */
-	public synchronized void stop() {
-		if (started) {
-			started = false;
-			Nop.reason("Maybe we tear down the wire puller here"); //$NON-NLS-1$
-		}
 	}
 
 	/**
@@ -78,6 +56,7 @@ public final class LoggerProvider {
 	 * @return a logger
 	 */
 	public Logger getLogger(final String name) {
+		initLoggerMill();
 		if (loggerMill.isReady()) {
 			return loggerMill.getLogger(name);
 		}
@@ -99,6 +78,22 @@ public final class LoggerProvider {
 
 	boolean hasReadyLoggerMill() {
 		return loggerMill.isReady();
+	}
+
+	/**
+	 * This has to be delayed until riena is active!! Otherwise this would cause
+	 * initialization exceptions.
+	 */
+	private void initLoggerMill() {
+		if (loggerMillWired) {
+			return;
+		}
+		synchronized (loggerMill) {
+			if (!loggerMillWired && RienaStatus.isActive()) {
+				Wire.instance(loggerMill).andStart();
+				loggerMillWired = true;
+			}
+		}
 	}
 
 }

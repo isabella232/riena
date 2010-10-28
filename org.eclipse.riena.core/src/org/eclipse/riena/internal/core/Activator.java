@@ -28,7 +28,6 @@ import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
-import org.eclipse.riena.internal.core.logging.LoggerProvider;
 
 public class Activator extends RienaPlugin {
 
@@ -84,7 +83,6 @@ public class Activator extends RienaPlugin {
 	@IgnoreFindBugs(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "that is the eclipse way")
 	public void stop(final BundleContext context) throws Exception {
 		active = false;
-		LoggerProvider.instance().stop();
 		Activator.plugin = null;
 		super.stop(context);
 	}
@@ -119,7 +117,6 @@ public class Activator extends RienaPlugin {
 			if (event.getBundle() == getContext().getBundle() && event.getType() == BundleEvent.STARTED) {
 				getContext().removeBundleListener(this);
 				active = true;
-				LoggerProvider.instance().start();
 				logStage();
 
 				final ISafeRunnable safeRunnable = new StartupsSafeRunnable();
