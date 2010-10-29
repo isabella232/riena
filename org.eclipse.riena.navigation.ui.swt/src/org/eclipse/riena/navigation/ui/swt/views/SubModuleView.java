@@ -158,7 +158,6 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 				createViewFacade();
 			}
 
-			// should allways return true ...
 			if (getController() != null) {
 				currentController = getController();
 			}
@@ -175,6 +174,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		}
 		//TODO is this really part of the the binding of the SubModuleView? NavigationSourceProvider is Menu-specific and should be handled in a context of Menus
 		activeNodeChanged(getNavigationNode());
+		//set block state on bind
+		blockView(node.isBlocked());
 	}
 
 	private void activeNodeChanged(final INavigationNode<?> node) {
@@ -750,7 +751,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			/*
 			 * If source is the current bound node then unbind the controller.
 			 * If the node is not bound (not the current) we do not have to
-			 * unbind anything. In the case of detached views there´s no
+			 * unbind anything. In the case of detached views thereï¿½s no
 			 * viewSite available!
 			 */
 			if (getViewSite() != null && disposingBoundNode(source)) {

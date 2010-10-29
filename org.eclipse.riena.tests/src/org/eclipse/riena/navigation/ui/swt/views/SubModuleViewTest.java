@@ -149,6 +149,19 @@ public class SubModuleViewTest extends RienaTestCase {
 		assertSame(node, nodesBoundToView.get(0));
 	}
 
+	public void testBlockOnBind() throws Exception {
+		node.setBlocked(true);
+		TestView2 view2 = new TestView2();
+		view2.bind(node);
+		assertNotNull(view2.blockViewCalled[0]);
+		assertTrue(view2.blockViewCalled[0]);
+		node.setBlocked(false);
+		view2 = new TestView2();
+		view2.bind(node);
+		assertNotNull(view2.blockViewCalled[0]);
+		assertFalse(view2.blockViewCalled[0]);
+	}
+
 	private final class TestSharedView extends SubModuleView {
 
 		SubModuleNode s1;
@@ -232,6 +245,43 @@ public class SubModuleViewTest extends RienaTestCase {
 		protected IApplicationNode getAppNode() {
 			return appNode;
 		}
+	}
+
+	private final class TestView2 extends SubModuleView {
+
+		private final Composite cp;
+
+		TestView2() {
+			cp = new Composite(new Shell(), SWT.NONE);
+		}
+
+		boolean[] blockViewCalled = new boolean[1];
+
+		@Override
+		protected void basicCreatePartControl(final Composite parent) {
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleView#
+		 * getParentComposite()
+		 */
+		@Override
+		protected Composite getParentComposite() {
+			return cp;
+		}
+
+		@Override
+		protected Composite getContentComposite() {
+			return cp;
+		}
+
+		@Override
+		protected void blockView(final boolean block) {
+			blockViewCalled[0] = block;
+		}
+
 	}
 
 	// helping classes
