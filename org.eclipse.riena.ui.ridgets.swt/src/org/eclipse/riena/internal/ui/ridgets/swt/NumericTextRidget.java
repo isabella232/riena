@@ -603,7 +603,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	 * the new value and match it against a pattern. The pattern is computed
 	 * based on the maxLength, precision and signed settings of this ridget. If
 	 * the new value does not match against the pattern, e.doit is set to false
-	 * and the modification is cancelled.
+	 * and the modification is canceled.
 	 */
 	private final class NumericVerifyListener implements VerifyListener {
 

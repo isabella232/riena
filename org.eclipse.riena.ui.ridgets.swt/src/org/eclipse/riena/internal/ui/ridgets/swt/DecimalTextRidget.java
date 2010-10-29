@@ -27,7 +27,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * Ridget for a 'decimal' SWT <code>Text</code> widget.
  * <p>
- * Implementation note: all the logic is in NumericTextRidget. This class justs
+ * Implementation note: all the logic is in NumericTextRidget. This class just
  * adds the API mandated by IDecimalTextRidget.
  * 
  * @see UIControlsFactory#createTextDecimal(org.eclipse.swt.widgets.Composite)
