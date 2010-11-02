@@ -448,7 +448,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 	public void testPrecision() throws Exception {
 		final IDecimalTextRidget ridget = getRidget();
 		final Text control = getWidget();
-		ridget.setMaxLength(6);
+		ridget.setMaxLength(7);
 		ridget.setPrecision(3);
 		final StringBean bean = new StringBean();
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
@@ -475,9 +475,16 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setPrecision(0);
 
-		assertEquals(localize("123.456,"), control.getText());
+		assertEquals(localize("123.456"), control.getText());
 		assertEquals(localize("123.456"), ridget.getText());
 		assertEquals(localize("123.456"), bean.getValue());
+
+		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_END);
+		UITestHelper.sendString(control.getDisplay(), "9\r");
+
+		assertEquals(localize("1.234.569"), control.getText());
+		assertEquals(localize("1.234.569"), ridget.getText());
+		assertEquals(localize("1.234.569"), bean.getValue());
 	}
 
 	public void testGetSetPrecision() {

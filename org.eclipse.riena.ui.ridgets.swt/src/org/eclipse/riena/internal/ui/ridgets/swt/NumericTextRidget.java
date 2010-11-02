@@ -399,7 +399,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	public final synchronized void setText(final String text) {
 		final String value = text != null ? text : ""; //$NON-NLS-1$
 		checkNumber(value);
-		super.setText(group(ungroup(value), isGrouping, isDecimal()));
+		super.setText(treatDecimalSeparator(group(ungroup(value), isGrouping, isDecimal())));
 	}
 
 	/**
@@ -516,7 +516,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 
 	private synchronized String createPattern(final String input) {
 		String result;
-		if (isDecimal()) {
+		if (isDecimal() && getPrecision() > 0) {
 			final String decSep = DECIMAL_SEPARATOR == '.' ? "\\." : String.valueOf(DECIMAL_SEPARATOR); //$NON-NLS-1$
 			result = String.format("\\d{0,%d}%s\\d{0,%d}", getMaxLength(), decSep, getPrecision()); //$NON-NLS-1$
 			if (isSigned) {
@@ -552,8 +552,33 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 				final int diff = fractionDigits - prec;
 				result = text.substring(0, text.length() - diff);
 			}
+			result = treatDecimalSeparator(result);
 		}
+
 		return result;
+	}
+
+	/*
+	 * No decimal separator, if precision is 0 (i.e. no faction to show). If
+	 * precision > 0 and no decimal separator present, append decimal separator
+	 * to text.
+	 * 
+	 * @param text the original text string
+	 * 
+	 * @return the modified text string
+	 */
+	private String treatDecimalSeparator(final String text) {
+		if (isDecimal()) {
+			final int decimalSeparatorIndex = text.indexOf(DECIMAL_SEPARATOR);
+			if (getPrecision() == 0 && decimalSeparatorIndex != -1) {
+				return text.substring(0, decimalSeparatorIndex);
+			}
+			if (decimalSeparatorIndex == -1 && getPrecision() > 0) {
+				return text + DECIMAL_SEPARATOR;
+			}
+		}
+
+		return text;
 	}
 
 	private boolean isDecimal() {
@@ -739,7 +764,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			final Text control = (Text) e.widget;
 			final String oldText = control.getText();
 			final boolean isDecimal = isDecimal();
-			String newText = group(removeLeadingCruft(ungroup(oldText)), isGrouping(), isDecimal);
+			String newText = treatDecimalSeparator(group(removeLeadingCruft(ungroup(oldText)), isGrouping(), isDecimal));
 			if (isOutputOnly() && newText.equals(String.valueOf(DECIMAL_SEPARATOR))) {
 				newText = ""; //$NON-NLS-1$
 			}
