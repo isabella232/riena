@@ -16,15 +16,12 @@ import org.eclipse.equinox.log.LogFilter;
 
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
-import org.eclipse.riena.internal.core.Activator;
 
 /**
  * Define a {@code LogListener}.
  */
-@ExtensionInterface
+@ExtensionInterface(id = "logListeners,org.eclipse.riena.core.logging.listeners")
 public interface ILogListenerExtension {
-
-	String ID = Activator.PLUGIN_ID + ".logging.listeners,logListeners"; //$NON-NLS-1$
 
 	/**
 	 * The descriptive name of the {@code ILogListener}

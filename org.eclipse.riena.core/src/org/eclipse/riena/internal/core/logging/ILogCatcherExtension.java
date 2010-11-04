@@ -13,15 +13,12 @@ package org.eclipse.riena.internal.core.logging;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 import org.eclipse.riena.core.logging.ILogCatcher;
-import org.eclipse.riena.internal.core.Activator;
 
 /**
- * Defines an a {@code ILogCatcher}.
+ * Defines an {@code ILogCatcher}.
  */
-@ExtensionInterface
+@ExtensionInterface(id = "logCatchers,org.eclipse.riena.core.logging.catchers")
 public interface ILogCatcherExtension {
-
-	String ID = Activator.PLUGIN_ID + ".logging.catchers,logCatchers"; //$NON-NLS-1$
 
 	/**
 	 * The descriptive name of the {@code ILogCatcher}

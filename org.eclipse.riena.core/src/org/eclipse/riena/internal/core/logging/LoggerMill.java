@@ -26,7 +26,8 @@ import org.eclipse.riena.core.logging.ILogCatcher;
 import org.eclipse.riena.core.logging.LogServiceLogCatcher;
 import org.eclipse.riena.core.logging.PlatformLogCatcher;
 import org.eclipse.riena.core.logging.SysoLogListener;
-import org.eclipse.riena.core.wire.WireWith;
+import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 
 /**
@@ -35,7 +36,6 @@ import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
  * For the curious: There are so many LoggerFactories out there. So, not another
  * one!
  */
-@WireWith(LoggerMillWiring.class)
 public class LoggerMill {
 
 	private final List<LogListener> logListeners = new ArrayList<LogListener>();
@@ -43,7 +43,7 @@ public class LoggerMill {
 	private ILogListenerExtension[] listenerDefs;
 	private ILogCatcherExtension[] catcherDefs;
 
-	private ExtendedLogService logService = null;
+	private ExtendedLogService logService;
 
 	/**
 	 * Get the logger for the specified category.<br>
@@ -65,6 +65,7 @@ public class LoggerMill {
 	 * 
 	 * @param logService
 	 */
+	@InjectService(useRanking = true)
 	public void bind(final ExtendedLogService logService) {
 		synchronized (this) {
 			this.logService = logService;
@@ -87,6 +88,7 @@ public class LoggerMill {
 	 * 
 	 * @param logReaderService
 	 */
+	@InjectService(useRanking = true)
 	public void bind(final ExtendedLogReaderService logReaderService) {
 		// When isDevelopment() is explicitly set to {@code false} no default logging will be used. Otherwise if 
 		// no loggers have been defined than a default logging setup will be used.
@@ -138,11 +140,13 @@ public class LoggerMill {
 	}
 
 	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´listenerDefs´ is too expensive")
+	@InjectExtension
 	public void update(final ILogListenerExtension[] listenerDefs) {
 		this.listenerDefs = listenerDefs;
 	}
 
 	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´catcherDefs´ is too expensive")
+	@InjectExtension
 	public void update(final ILogCatcherExtension[] catcherDefs) {
 		this.catcherDefs = catcherDefs;
 	}
