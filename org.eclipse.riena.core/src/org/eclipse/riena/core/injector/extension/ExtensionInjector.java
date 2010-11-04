@@ -31,8 +31,8 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.IStoppable;
 import org.eclipse.riena.core.injector.InjectionFailure;
+import org.eclipse.riena.core.util.ObjectCounter;
 import org.eclipse.riena.core.util.WeakRef;
-import org.eclipse.riena.internal.core.injector.ObjectCounter;
 import org.eclipse.riena.internal.core.injector.extension.ExtensionMapper;
 
 /**

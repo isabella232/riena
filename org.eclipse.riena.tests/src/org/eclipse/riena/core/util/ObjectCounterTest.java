@@ -8,10 +8,11 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core.injector;
+package org.eclipse.riena.core.util;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.core.util.ObjectCounter;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
@@ -68,6 +69,25 @@ public class ObjectCounterTest extends TestCase {
 		// and again
 		assertEquals(0, strings.decrementAndGetCount("A"));
 		assertEquals(0, strings.getCount("A"));
+	}
+
+	public void testIterator() {
+		strings.incrementAndGetCount("A");
+		strings.incrementAndGetCount("B");
+		strings.incrementAndGetCount("C");
+		strings.incrementAndGetCount("B");
+		strings.incrementAndGetCount("C");
+		strings.incrementAndGetCount("C");
+		for (final String s : strings) {
+			if (s.equals("A")) {
+				assertEquals(1, strings.getCount(s));
+			} else if (s.equals("B")) {
+				assertEquals(2, strings.getCount(s));
+			} else if (s.equals("C")) {
+				assertEquals(3, strings.getCount(s));
+			}
+
+		}
 	}
 
 }

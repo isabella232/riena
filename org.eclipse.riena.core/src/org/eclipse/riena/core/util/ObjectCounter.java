@@ -8,9 +8,10 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core.injector;
+package org.eclipse.riena.core.util;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Map;
  * <p>
  * This implementation is thread safe.
  */
-public class ObjectCounter<T> {
+public class ObjectCounter<T> implements Iterable<T> {
 
 	private final Map<T, Integer> objects = new HashMap<T, Integer>();
 
@@ -76,5 +77,14 @@ public class ObjectCounter<T> {
 	public synchronized int getCount(final T object) {
 		final Integer count = objects.get(object);
 		return count == null ? 0 : count;
+	}
+
+	/**
+	 * Return an {@code Iterator} over the counted objects.
+	 * 
+	 * @return an iterator
+	 */
+	public Iterator<T> iterator() {
+		return objects.keySet().iterator();
 	}
 }
