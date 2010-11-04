@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.core.uiprocess;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -45,7 +46,7 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	 *            - the {@link IUISynchronizer} for the widget toolkit
 	 */
 	public UICallbackDispatcher(final IUISynchronizer syncher) {
-		this.uiMonitors = new ArrayList<IUIMonitor>();
+		this.uiMonitors = Collections.synchronizedList(new ArrayList<IUIMonitor>());
 		this.syncher = syncher;
 		this.pInfo = new ProcessInfo();
 	}
