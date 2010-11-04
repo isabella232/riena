@@ -21,7 +21,8 @@ import org.eclipse.riena.core.wire.Wire;
  */
 public final class LoggerProvider {
 
-	private volatile boolean loggerMillWired;
+	private volatile boolean loggerMillIsWired;
+	private volatile boolean loggerMillIsWiring;
 	private final LoggerMill loggerMill = new LoggerMill();
 
 	private static final LoggerProvider INSTANCE = new LoggerProvider();
@@ -85,13 +86,15 @@ public final class LoggerProvider {
 	 * initialization exceptions.
 	 */
 	private void initLoggerMill() {
-		if (loggerMillWired) {
+		if (loggerMillIsWired) {
 			return;
 		}
 		synchronized (loggerMill) {
-			if (!loggerMillWired && RienaStatus.isActive()) {
+			if (!loggerMillIsWired && !loggerMillIsWiring && RienaStatus.isActive()) {
+				loggerMillIsWiring = true;
 				Wire.instance(loggerMill).andStart();
-				loggerMillWired = true;
+				loggerMillIsWired = true;
+				loggerMillIsWiring = false;
 			}
 		}
 	}
