@@ -112,8 +112,14 @@ public class UIControlsFactory {
 		Assert.isNotNull(SHARED_BG_COLOR, "You must define a color for LnfKeyConstants.SUB_MODULE_BACKGROUND"); //$NON-NLS-1$
 	}
 
-	private static void registerConstruction(final Object control) {
-		UIControlsCounter.getUIControlsCounterSingleton().registerConstruction(control);
+	protected static <T> T registerConstruction(final T control) {
+		UIControlsCounter.getInstance().registerConstruction(control);
+		return control;
+	}
+
+	protected static <T> T bind(final T widget, final String bindingId) {
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(widget, bindingId);
+		return widget;
 	}
 
 	/**
@@ -128,9 +134,7 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	public static Browser createBrowser(final Composite parent, final int style) {
-		final Browser result = new Browser(parent, style);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new Browser(parent, style));
 	}
 
 	/**
@@ -150,9 +154,7 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	public static Browser createBrowser(final Composite parent, final int style, final String bindingId) {
-		final Browser result = createBrowser(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
+		return bind(createBrowser(parent, style), bindingId);
 	}
 
 	/**
@@ -162,9 +164,7 @@ public class UIControlsFactory {
 	 *            the parent composite; never null
 	 */
 	public static Button createButton(final Composite parent) {
-		final Button button = new Button(parent, SWT.PUSH);
-		registerConstruction(button);
-		return button;
+		return registerConstruction(new Button(parent, SWT.PUSH));
 	}
 
 	/**
@@ -199,9 +199,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myButtonId"
 	 */
 	public static Button createButton(final Composite parent, final String text, final String bindingId) {
-		final Button result = createButton(parent, text);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
+		return bind(createButton(parent, text), bindingId);
 	}
 
 	/**
@@ -211,16 +209,12 @@ public class UIControlsFactory {
 	 *            the parent composite; never null
 	 */
 	public static Button createButtonCheck(final Composite parent) {
-		final Button result = new Button(parent, SWT.CHECK);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new Button(parent, SWT.CHECK));
 	}
 
 	@Deprecated
 	public static Button createButtonCheck(final Composite parent, final String bindingId) {
-		final Button button = createButtonCheck(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, bindingId);
-		return button;
+		return bind(createButtonCheck(parent), bindingId);
 	}
 
 	/**
@@ -242,8 +236,7 @@ public class UIControlsFactory {
 	public static Button createButtonCheck(final Composite parent, final String text, final String bindingId) {
 		final Button result = createButtonCheck(parent);
 		result.setText(text);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
+		return bind(result, bindingId);
 	}
 
 	/**
@@ -253,16 +246,12 @@ public class UIControlsFactory {
 	 *            the parent composite; never null
 	 */
 	public static Button createButtonRadio(final Composite parent) {
-		final Button result = new Button(parent, SWT.RADIO);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new Button(parent, SWT.RADIO));
 	}
 
 	@Deprecated
 	public static Button createButtonRadio(final Composite parent, final String bindingId) {
-		final Button button = createButtonRadio(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, bindingId);
-		return button;
+		return bind(createButtonRadio(parent), bindingId);
 	}
 
 	/**
@@ -284,8 +273,7 @@ public class UIControlsFactory {
 	public static Button createButtonRadio(final Composite parent, final String text, final String bindingId) {
 		final Button result = createButtonRadio(parent);
 		result.setText(text);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
+		return bind(result, bindingId);
 	}
 
 	/**
@@ -296,16 +284,12 @@ public class UIControlsFactory {
 	 *            the parent composite; never null
 	 */
 	public static Button createButtonToggle(final Composite parent) {
-		final Button result = new Button(parent, SWT.TOGGLE);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new Button(parent, SWT.TOGGLE));
 	}
 
 	@Deprecated
 	public static Button createButtonToggle(final Composite parent, final String bindingId) {
-		final Button button = createButtonToggle(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, bindingId);
-		return button;
+		return bind(createButtonToggle(parent), bindingId);
 	}
 
 	/**
@@ -328,8 +312,7 @@ public class UIControlsFactory {
 	public static Button createButtonToggle(final Composite parent, final String text, final String bindingId) {
 		final Button result = createButtonToggle(parent);
 		result.setText(text);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
+		return bind(result, bindingId);
 	}
 
 	/**
@@ -359,9 +342,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myCalendarId"
 	 */
 	public static DateTime createCalendar(final Composite parent, final String bindingId) {
-		final DateTime result = createCalendar(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
+		return bind(createCalendar(parent), bindingId);
 	}
 
 	/**
@@ -375,9 +356,7 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	public static CCombo createCCombo(final Composite parent) {
-		final CCombo result = new CCombo(parent, SWT.BORDER | SWT.READ_ONLY);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new CCombo(parent, SWT.BORDER | SWT.READ_ONLY));
 	}
 
 	/**
@@ -396,9 +375,7 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	public static CCombo createCCombo(final Composite parent, final String bindingId) {
-		final CCombo combo = createCCombo(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(combo, bindingId);
-		return combo;
+		return bind(createCCombo(parent), bindingId);
 	}
 
 	/**
@@ -428,9 +405,7 @@ public class UIControlsFactory {
 	 * @since 3.0
 	 */
 	public static CompletionCombo createCompletionCombo(final Composite parent, final int style) {
-		final CompletionCombo result = SWTFacade.getDefault().createCompletionCombo(parent, style);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(SWTFacade.getDefault().createCompletionCombo(parent, style));
 	}
 
 	/**
@@ -448,9 +423,7 @@ public class UIControlsFactory {
 	 * @since 2.0
 	 */
 	public static CompletionCombo createCompletionCombo(final Composite parent, final String bindingId) {
-		final CompletionCombo combo = createCompletionCombo(parent, SWT.BORDER);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(combo, bindingId);
-		return combo;
+		return bind(createCompletionCombo(parent, SWT.BORDER), bindingId);
 	}
 
 	/**
@@ -481,9 +454,7 @@ public class UIControlsFactory {
 	 * @since 3.0
 	 */
 	public static CompletionCombo createCompletionComboWithImage(final Composite parent, final int style) {
-		final CompletionCombo result = SWTFacade.getDefault().createCompletionComboWithImage(parent, style);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(SWTFacade.getDefault().createCompletionComboWithImage(parent, style));
 	}
 
 	/**
@@ -501,9 +472,7 @@ public class UIControlsFactory {
 	 * @since 3.0
 	 */
 	public static CompletionCombo createCompletionComboWithImage(final Composite parent, final String bindingId) {
-		final CompletionCombo combo = createCompletionComboWithImage(parent, SWT.BORDER);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(combo, bindingId);
-		return combo;
+		return bind(createCompletionComboWithImage(parent, SWT.BORDER), bindingId);
 	}
 
 	/**
@@ -522,9 +491,7 @@ public class UIControlsFactory {
 	 */
 	public static ChoiceComposite createChoiceComposite(final Composite parent, final int style,
 			final boolean multipleSelection) {
-		final ChoiceComposite result = new ChoiceComposite(parent, style, multipleSelection);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new ChoiceComposite(parent, style, multipleSelection));
 	}
 
 	/**
@@ -548,9 +515,7 @@ public class UIControlsFactory {
 	 */
 	public static ChoiceComposite createChoiceComposite(final Composite parent, final int style,
 			final boolean multipleSelection, final String bindingId) {
-		final ChoiceComposite composite = createChoiceComposite(parent, style, multipleSelection);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(composite, bindingId);
-		return composite;
+		return bind(createChoiceComposite(parent, style, multipleSelection), bindingId);
 	}
 
 	/**
@@ -563,9 +528,7 @@ public class UIControlsFactory {
 	 *         styles
 	 */
 	public static Combo createCombo(final Composite parent) {
-		final Combo result = new Combo(parent, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new Combo(parent, SWT.BORDER | SWT.DROP_DOWN | SWT.READ_ONLY));
 	}
 
 	/**
@@ -583,9 +546,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myComboId"
 	 */
 	public static Combo createCombo(final Composite parent, final String bindingId) {
-		final Combo combo = createCombo(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(combo, bindingId);
-		return combo;
+		return bind(createCombo(parent), bindingId);
 	}
 
 	/**
@@ -611,9 +572,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
 	 */
 	public static Composite createComposite(final Composite parent, final int style) {
-		final Composite composite = new Composite(parent, style);
-		registerConstruction(composite);
-		return composite;
+		return registerConstruction(new Composite(parent, style));
 	}
 
 	/**
@@ -634,9 +593,7 @@ public class UIControlsFactory {
 	 * @since 2.0
 	 */
 	public static Composite createComposite(final Composite parent, final int style, final String bindingId) {
-		final Composite composite = createComposite(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(composite, bindingId);
-		return composite;
+		return bind(createComposite(parent, style), bindingId);
 	}
 
 	/**
@@ -652,9 +609,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.MEDIUM
 	 */
 	public static DateTime createDate(final Composite parent, final int style) {
-		final DateTime result = new DateTime(parent, SWT.DATE | SWT.DROP_DOWN | style);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new DateTime(parent, SWT.DATE | SWT.DROP_DOWN | style));
 	}
 
 	/**
@@ -675,9 +630,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myDateTimeId"
 	 */
 	public static DateTime createDate(final Composite parent, final int style, final String bindingId) {
-		final DateTime result = createDate(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
+		return bind(createDate(parent, style), bindingId);
 	}
 
 	/**
@@ -690,9 +643,8 @@ public class UIControlsFactory {
 	 */
 	public static DatePickerComposite createDatePickerComposite(final Composite parent) {
 		final DatePickerComposite result = new DatePickerComposite(parent, SWT.SINGLE | SWT.RIGHT);
-		registerConstruction(result);
 		result.setData(KEY_TYPE, TYPE_DATE);
-		return result;
+		return registerConstruction(result);
 	}
 
 	/**
@@ -709,9 +661,7 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	public static DatePickerComposite createDatePickerComposite(final Composite parent, final String bindingId) {
-		final DatePickerComposite result = createDatePickerComposite(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
+		return bind(createDatePickerComposite(parent), bindingId);
 	}
 
 	/**
@@ -727,9 +677,8 @@ public class UIControlsFactory {
 	 */
 	public static Group createGroup(final Composite parent, final String text) {
 		final Group result = new Group(parent, SWT.NONE);
-		registerConstruction(result);
 		result.setText(text);
-		return result;
+		return registerConstruction(result);
 	}
 
 	/**
@@ -750,9 +699,7 @@ public class UIControlsFactory {
 	 * @since 2.0
 	 */
 	public static Group createGroup(final Composite parent, final String text, final String bindingId) {
-		final Group result = createGroup(parent, text);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
+		return bind(createGroup(parent, text), bindingId);
 	}
 
 	/**
@@ -791,9 +738,7 @@ public class UIControlsFactory {
 	 * @since 2.0
 	 */
 	public static ImageButton createImageButton(final Composite parent, final int style) {
-		final ImageButton btn = new ImageButton(parent, style);
-		registerConstruction(btn);
-		return btn;
+		return registerConstruction(new ImageButton(parent, style));
 	}
 
 	/**
@@ -812,9 +757,7 @@ public class UIControlsFactory {
 	 * @since 2.0
 	 */
 	public static ImageButton createImageButton(final Composite parent, final int style, final String bindingId) {
-		final ImageButton btn = createImageButton(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(btn, bindingId);
-		return btn;
+		return bind(createImageButton(parent, style), bindingId);
 	}
 
 	/**
@@ -826,9 +769,7 @@ public class UIControlsFactory {
 	 * @since 3.0
 	 */
 	public static InfoFlyout createInfoFlyout(final Composite parent) {
-		final InfoFlyout result = SWTFacade.getDefault().createInfoFlyout(parent);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(SWTFacade.getDefault().createInfoFlyout(parent));
 	}
 
 	/**
@@ -860,9 +801,8 @@ public class UIControlsFactory {
 	 */
 	public static Label createLabel(final Composite parent, final String text, final int style) {
 		final Label label = new Label(parent, style);
-		registerConstruction(label);
 		label.setText(text);
-		return label;
+		return registerConstruction(label);
 	}
 
 	/**
@@ -884,9 +824,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myLabelId"
 	 */
 	public static Label createLabel(final Composite parent, final String text, final int style, final String bindingId) {
-		final Label label = createLabel(parent, text, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(label, bindingId);
-		return label;
+		return bind(createLabel(parent, text, style), bindingId);
 	}
 
 	/**
@@ -933,9 +871,7 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	public static Link createLink(final Composite parent, final int style) {
-		final Link result = new Link(parent, style);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new Link(parent, style));
 	}
 
 	/**
@@ -955,9 +891,7 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	public static Link createLink(final Composite parent, final int style, final String bindingId) {
-		final Link result = createLink(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
+		return bind(createLink(parent, style), bindingId);
 	}
 
 	/**
@@ -980,9 +914,7 @@ public class UIControlsFactory {
 		if (vScroll) {
 			style |= SWT.V_SCROLL;
 		}
-		final List result = new List(parent, style);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new List(parent, style));
 	}
 
 	/**
@@ -1005,9 +937,7 @@ public class UIControlsFactory {
 	 */
 	public static List createList(final Composite parent, final boolean hScroll, final boolean vScroll,
 			final String bindingId) {
-		final List list = createList(parent, hScroll, vScroll);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(list, bindingId);
-		return list;
+		return bind(createList(parent, hScroll, vScroll), bindingId);
 	}
 
 	/**
@@ -1017,9 +947,7 @@ public class UIControlsFactory {
 	 *            the parent composite; never null
 	 */
 	public static MasterDetailsComposite createMasterDetails(final Composite parent) {
-		final MasterDetailsComposite result = new MasterDetailsComposite(parent, SWT.NONE);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new MasterDetailsComposite(parent, SWT.NONE));
 	}
 
 	/**
@@ -1035,10 +963,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myMasterDetailId"
 	 */
 	public static MasterDetailsComposite createMasterDetails(final Composite parent, final String bindingId) {
-		final MasterDetailsComposite masterDetails = new MasterDetailsComposite(parent, SWT.NONE);
-		registerConstruction(masterDetails);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(masterDetails, bindingId);
-		return masterDetails;
+		return bind(registerConstruction(new MasterDetailsComposite(parent, SWT.NONE)), bindingId);
 	}
 
 	/**
@@ -1054,9 +979,7 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	public static Menu createMenu(final Control parent) {
-		final Menu item = new Menu(parent);
-		registerConstruction(item);
-		return item;
+		return registerConstruction(new Menu(parent));
 	}
 
 	/**
@@ -1071,9 +994,7 @@ public class UIControlsFactory {
 	 * @since 1.2
 	 */
 	public static Menu createMenu(final MenuItem parent) {
-		final Menu item = new Menu(parent);
-		registerConstruction(item);
-		return item;
+		return registerConstruction(new Menu(parent));
 	}
 
 	/**
@@ -1089,9 +1010,8 @@ public class UIControlsFactory {
 	 */
 	public static MenuItem createMenuItem(final Menu parent, final String text) {
 		final MenuItem item = new MenuItem(parent, SWT.None);
-		registerConstruction(item);
 		item.setText(text);
-		return item;
+		return registerConstruction(item);
 	}
 
 	/**
@@ -1110,9 +1030,8 @@ public class UIControlsFactory {
 	 */
 	public static MenuItem createMenuItem(final Menu parent, final String text, final int style) {
 		final MenuItem item = new MenuItem(parent, style);
-		registerConstruction(item);
 		item.setText(text);
-		return item;
+		return registerConstruction(item);
 	}
 
 	/**
@@ -1133,10 +1052,8 @@ public class UIControlsFactory {
 	 */
 	public static MenuItem createMenuItem(final Menu parent, final String text, final String bindingId) {
 		final MenuItem item = new MenuItem(parent, SWT.None);
-		registerConstruction(item);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, bindingId);
 		item.setText(text);
-		return item;
+		return bind(registerConstruction(item), bindingId);
 	}
 
 	/**
@@ -1146,9 +1063,7 @@ public class UIControlsFactory {
 	 *            the parent composite; never null
 	 */
 	public static MessageBox createMessageBox(final Composite parent) {
-		final MessageBox result = new MessageBox(parent);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new MessageBox(parent));
 	}
 
 	/**
@@ -1159,9 +1074,7 @@ public class UIControlsFactory {
 	 */
 	public static Shell createShell(final Display display) {
 		Assert.isNotNull(display);
-		final Shell shell = new Shell(display);
-		registerConstruction(shell);
-		return shell;
+		return registerConstruction(new Shell(display));
 	}
 
 	/**
@@ -1175,9 +1088,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
 	 */
 	public static Table createTable(final Composite parent, final int style) {
-		final Table result = new Table(parent, style);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new Table(parent, style));
 	}
 
 	/**
@@ -1196,9 +1107,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myTableId"
 	 */
 	public static Table createTable(final Composite parent, final int style, final String bindingId) {
-		final Table table = createTable(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(table, bindingId);
-		return table;
+		return bind(createTable(parent, style), bindingId);
 	}
 
 	/**
@@ -1208,9 +1117,7 @@ public class UIControlsFactory {
 	 *            the parent composite; never null
 	 */
 	public static Text createText(final Composite parent) {
-		final Text result = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new Text(parent, SWT.SINGLE | SWT.BORDER));
 	}
 
 	/**
@@ -1225,9 +1132,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.BORDER
 	 */
 	public static Text createText(final Composite parent, final int style) {
-		final Text result = new Text(parent, style | SWT.BORDER);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new Text(parent, style | SWT.BORDER));
 	}
 
 	/**
@@ -1247,9 +1152,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myTextId"
 	 */
 	public static Text createText(final Composite parent, final int style, final String bindingId) {
-		final Text text = createText(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(text, bindingId);
-		return text;
+		return bind(createText(parent, style), bindingId);
 	}
 
 	/**
@@ -1261,9 +1164,8 @@ public class UIControlsFactory {
 	 */
 	public static Text createTextDate(final Composite parent) {
 		final Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
-		registerConstruction(result);
 		result.setData(KEY_TYPE, TYPE_DATE);
-		return result;
+		return registerConstruction(result);
 	}
 
 	/**
@@ -1280,9 +1182,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myTextDateId"
 	 */
 	public static Text createTextDate(final Composite parent, final String bindingId) {
-		final Text result = createTextDate(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
+		return bind(createTextDate(parent), bindingId);
 	}
 
 	/**
@@ -1294,9 +1194,8 @@ public class UIControlsFactory {
 	 */
 	public static Text createTextDecimal(final Composite parent) {
 		final Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
-		registerConstruction(result);
 		result.setData(KEY_TYPE, TYPE_DECIMAL);
-		return result;
+		return registerConstruction(result);
 	}
 
 	/**
@@ -1313,9 +1212,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myTextDecimalId"
 	 */
 	public static Text createTextDecimal(final Composite parent, final String bindingId) {
-		final Text result = createTextDecimal(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
+		return bind(createTextDecimal(parent), bindingId);
 	}
 
 	/**
@@ -1356,9 +1253,7 @@ public class UIControlsFactory {
 	 */
 	public static Text createTextMulti(final Composite parent, final boolean hScroll, final boolean vScroll,
 			final String bindingId) {
-		final Text text = createTextMulti(parent, hScroll, vScroll);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(text, bindingId);
-		return text;
+		return bind(createTextMulti(parent, hScroll, vScroll), bindingId);
 	}
 
 	/**
@@ -1387,9 +1282,7 @@ public class UIControlsFactory {
 		if (vScroll) {
 			txStyle |= SWT.V_SCROLL;
 		}
-		final Text result = new Text(parent, txStyle);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new Text(parent, txStyle));
 	}
 
 	/**
@@ -1419,9 +1312,8 @@ public class UIControlsFactory {
 	 */
 	public static Text createTextNumeric(final Composite parent) {
 		final Text result = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.RIGHT);
-		registerConstruction(result);
 		result.setData(KEY_TYPE, TYPE_NUMERIC);
-		return result;
+		return registerConstruction(result);
 	}
 
 	/**
@@ -1438,9 +1330,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myTextNumericId"
 	 */
 	public static Text createTextNumeric(final Composite parent, final String bindingId) {
-		final Text result = createTextNumeric(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
+		return bind(createTextNumeric(parent), bindingId);
 	}
 
 	/**
@@ -1456,9 +1346,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.MEDIUM
 	 */
 	public static DateTime createTime(final Composite parent, final int style) {
-		final DateTime result = new DateTime(parent, SWT.TIME | style);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new DateTime(parent, SWT.TIME | style));
 	}
 
 	/**
@@ -1479,10 +1367,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myDateTimeId"
 	 */
 	public static DateTime createTime(final Composite parent, final int style, final String bindingId) {
-		final DateTime result = createTime(parent, style);
-		registerConstruction(result);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(result, bindingId);
-		return result;
+		return bind(createTime(parent, style), bindingId);
 	}
 
 	/**
@@ -1496,9 +1381,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
 	 */
 	public static Tree createTree(final Composite parent, final int style) {
-		final Tree result = new Tree(parent, style);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new Tree(parent, style));
 	}
 
 	/**
@@ -1517,9 +1400,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myTreeId"
 	 */
 	public static Tree createTree(final Composite parent, final int style, final String bindingId) {
-		final Tree tree = createTree(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(tree, bindingId);
-		return tree;
+		return bind(createTree(parent, style), bindingId);
 	}
 
 	/**
@@ -1538,9 +1419,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "mySpinnerId"
 	 */
 	public static Spinner createSpinner(final Composite parent, final int style, final String bindingId) {
-		final Spinner spinner = createSpinner(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(spinner, bindingId);
-		return spinner;
+		return bind(createSpinner(parent, style), bindingId);
 	}
 
 	/**
@@ -1554,9 +1433,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.BORDER
 	 */
 	public static Spinner createSpinner(final Composite parent, final int style) {
-		final Spinner result = new Spinner(parent, style);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new Spinner(parent, style));
 	}
 
 	/**
@@ -1585,9 +1462,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myScaleId"
 	 */
 	public static Scale createScale(final Composite parent, final int style, final String bindingId) {
-		final Scale scale = createScale(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(scale, bindingId);
-		return scale;
+		return bind(createScale(parent, style), bindingId);
 	}
 
 	/**
@@ -1601,9 +1476,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.NONE
 	 */
 	public static Scale createScale(final Composite parent, final int style) {
-		final Scale result = new Scale(parent, style);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new Scale(parent, style));
 	}
 
 	/**
@@ -1632,9 +1505,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myProgressBarId"
 	 */
 	public static ProgressBar createProgressBar(final Composite parent, final int style, final String bindingId) {
-		final ProgressBar progressBar = createProgressBar(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(progressBar, bindingId);
-		return progressBar;
+		return bind(createProgressBar(parent, style), bindingId);
 	}
 
 	/**
@@ -1648,9 +1519,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
 	 */
 	public static ProgressBar createProgressBar(final Composite parent, final int style) {
-		final ProgressBar result = new ProgressBar(parent, style);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new ProgressBar(parent, style));
 	}
 
 	/**
@@ -1671,9 +1540,7 @@ public class UIControlsFactory {
 	 * @since 3.0
 	 */
 	public static StatusMeterWidget createStatusMeter(final Composite parent) {
-		final StatusMeterWidget result = new StatusMeterWidget(parent);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new StatusMeterWidget(parent));
 	}
 
 	/**
@@ -1690,9 +1557,7 @@ public class UIControlsFactory {
 	 * @since 3.0
 	 */
 	public static StatusMeterWidget createStatusMeter(final Composite parent, final String bindingId) {
-		final StatusMeterWidget statusMeter = createStatusMeter(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(statusMeter, bindingId);
-		return statusMeter;
+		return bind(createStatusMeter(parent), bindingId);
 	}
 
 	/**
@@ -1711,9 +1576,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "mySliderId"
 	 */
 	public static Slider createSlider(final Composite parent, final int style, final String bindingId) {
-		final Slider slider = createSlider(parent, style);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(slider, bindingId);
-		return slider;
+		return bind(createSlider(parent, style), bindingId);
 	}
 
 	/**
@@ -1727,9 +1590,7 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source style org.eclipse.swt.SWT.HORIZONTAL
 	 */
 	public static Slider createSlider(final Composite parent, final int style) {
-		final Slider result = new Slider(parent, style);
-		registerConstruction(result);
-		return result;
+		return registerConstruction(new Slider(parent, style));
 	}
 
 	/**
@@ -1754,10 +1615,8 @@ public class UIControlsFactory {
 	 * @since 3.0
 	 */
 	public static Separator createSeparator(final Composite parent, final int style) {
-		final Separator separator = createSeparatorTwoLine(parent, SWT.HORIZONTAL,
-				LnfKeyConstants.TITLEBAR_SEPARATOR_FIRST_LINE_FOREGROUND,
+		return createSeparatorTwoLine(parent, SWT.HORIZONTAL, LnfKeyConstants.TITLEBAR_SEPARATOR_FIRST_LINE_FOREGROUND,
 				LnfKeyConstants.TITLEBAR_SEPARATOR_SECOND_LINE_FOREGROUND);
-		return separator;
 	}
 
 	private static Separator createSeparatorTwoLine(final Composite parent, final int style,
@@ -1768,13 +1627,11 @@ public class UIControlsFactory {
 			final Display display = parent.getDisplay();
 			final Separator result = new Separator(parent, style, display.getSystemColor(SWT.COLOR_BLACK),
 					display.getSystemColor(SWT.COLOR_WHITE));
-			registerConstruction(result);
-			return result;
+			return registerConstruction(result);
 		}
 		final Separator result = new Separator(parent, style, LnfManager.getLnf().getColor(firstLineColor), LnfManager
 				.getLnf().getColor(secondLineColor));
-		registerConstruction(result);
-		return result;
+		return registerConstruction(result);
 	}
 
 	/**
