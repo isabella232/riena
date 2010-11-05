@@ -19,7 +19,6 @@ import java.util.Map.Entry;
 import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.core.util.ReflectionFailure;
-import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
 import org.eclipse.riena.ui.common.IComplexComponent;
@@ -127,7 +126,12 @@ public class DefaultBindingManager implements IBindingManager {
 	 */
 	public IRidget createRidget(final Object control) throws ReflectionFailure {
 		final Class<? extends IRidget> ridgetClass = mapper.getRidgetClass(control);
-		return ReflectionUtils.newInstance(ridgetClass);
+		try {
+			return ridgetClass.newInstance();
+		} catch (final Exception e) {
+			throw new ReflectionFailure(String.format("Could not instantiate ridget '%s' for control '%s'", //$NON-NLS-1$
+					ridgetClass, control), e);
+		}
 	}
 
 	/**
