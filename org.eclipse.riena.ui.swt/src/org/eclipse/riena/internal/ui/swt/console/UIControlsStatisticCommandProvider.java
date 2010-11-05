@@ -21,7 +21,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * Provider implementation for the "controlstats" console command. Prints usage
  * statistic of {@link Control}s created by {@link UIControlsFactory}
  */
-public class UIControlsStatisticConsole implements CommandProvider {
+public class UIControlsStatisticCommandProvider implements CommandProvider {
 
 	public String getHelp() {
 		return "---Control Usage Statistics Of UIControlsFactory---\n\tcontrolstats - show usage of control types\n"; //$NON-NLS-1$ 
@@ -35,7 +35,12 @@ public class UIControlsStatisticConsole implements CommandProvider {
 	 * @throws Exception
 	 */
 	public void _controlstats(final CommandInterpreter ci) throws Exception {
-		System.out.println(UIControlsCounter.getUIControlsCounterSingleton().getControlUsageStatistics());
+		if (!UIControlsCounter.isRequested()) {
+			System.out.println("Usage statistics is deactivated. Please set the system property '" //$NON-NLS-1$
+					+ UIControlsCounter.CONTROL_STATS_PROPERTY_NAME + "' to 'true'."); //$NON-NLS-1$
+		} else {
+			System.out.println(UIControlsCounter.getInstance().getControlUsageStatistics());
+		}
 	}
 
 }

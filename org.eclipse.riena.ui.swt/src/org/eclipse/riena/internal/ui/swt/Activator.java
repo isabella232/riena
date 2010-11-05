@@ -17,7 +17,7 @@ import org.osgi.framework.ServiceRegistration;
 
 import org.eclipse.osgi.framework.console.CommandProvider;
 
-import org.eclipse.riena.internal.ui.swt.console.UIControlsStatisticConsole;
+import org.eclipse.riena.internal.ui.swt.console.UIControlsStatisticCommandProvider;
 import org.eclipse.riena.ui.swt.AbstractRienaUIPlugin;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
@@ -41,7 +41,7 @@ public class Activator extends AbstractRienaUIPlugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		final UIControlsStatisticConsole statisticCommand = new UIControlsStatisticConsole();
+		final UIControlsStatisticCommandProvider statisticCommand = new UIControlsStatisticCommandProvider();
 		controlsStatisticReg = context.registerService(CommandProvider.class.getName(), statisticCommand,
 				new Hashtable<String, String>());
 	}
