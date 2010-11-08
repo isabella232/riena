@@ -88,28 +88,28 @@ public class SonarController extends SubModuleController {
 
 		super.configureRidgets();
 
-		stackTraceTextRidget = (ITextRidget) getRidget(SonarView.BID_STACK_TRACE_TEXT);
+		stackTraceTextRidget = getRidget(SonarView.BID_STACK_TRACE_TEXT);
 
-		treeRidget = (ITreeRidget) getRidget(SonarView.BID_SONAR_TREE);
+		treeRidget = getRidget(SonarView.BID_SONAR_TREE);
 		treeRidget.addSelectionListener(new ISelectionListener() {
 			public void ridgetSelected(final SelectionEvent event) {
 				treeNodeSelected();
 			}
 		});
 
-		failureMessageIconRidget = (ILabelRidget) getRidget(SonarView.BID_FAILURE_MESSAGE_ICON_LABEL);
+		failureMessageIconRidget = getRidget(SonarView.BID_FAILURE_MESSAGE_ICON_LABEL);
 		failureMessageIconRidget.setIcon(STACKFRAME_ICON);
 		failureMessageIconRidget.setEnabled(false);
 
-		failureMessageTextRidget = (ILabelRidget) getRidget(SonarView.BID_FAILURE_MESSAGE_TEXT_LABEL);
+		failureMessageTextRidget = getRidget(SonarView.BID_FAILURE_MESSAGE_TEXT_LABEL);
 		failureMessageTextRidget.setEnabled(false);
 
-		progressRidget = (ProgressbarRidget) getRidget(SonarView.BID_PROGRESS_BAR);
+		progressRidget = getRidget(SonarView.BID_PROGRESS_BAR);
 		progressRidget.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
 		progressRidget.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
 		progressRidget.updateFromModel();
 
-		startAction = (IActionRidget) getRidget(SonarView.BID_START_BUTTON);
+		startAction = getRidget(SonarView.BID_START_BUTTON);
 		startAction.setIcon(START_ICON);
 		startAction.setToolTipText(Messages.start_tooltip);
 		startAction.addListener(new IActionListener() {
@@ -118,12 +118,12 @@ public class SonarController extends SubModuleController {
 			}
 		});
 
-		stopAction = (IActionRidget) getRidget(SonarView.BID_STOP_BUTTON);
+		stopAction = getRidget(SonarView.BID_STOP_BUTTON);
 		stopAction.setIcon(STOP_ICON);
 		stopAction.setToolTipText(Messages.stop_tooltip);
 		stopAction.setEnabled(false);
 
-		previousErrorAction = (IActionRidget) getRidget(SonarView.BID_PREVIOUS_ERROR_BUTTON);
+		previousErrorAction = getRidget(SonarView.BID_PREVIOUS_ERROR_BUTTON);
 		previousErrorAction.setIcon(PREVIOUS_ERROR_ICON);
 		previousErrorAction.setToolTipText(Messages.previous_error_tooltip);
 		previousErrorAction.setEnabled(false);
@@ -133,7 +133,7 @@ public class SonarController extends SubModuleController {
 			}
 		});
 
-		nextErrorAction = (IActionRidget) getRidget(SonarView.BID_NEXT_ERROR_BUTTON);
+		nextErrorAction = getRidget(SonarView.BID_NEXT_ERROR_BUTTON);
 		nextErrorAction.setIcon(NEXT_ERROR_ICON);
 		nextErrorAction.setToolTipText(Messages.next_error_tooltip);
 		nextErrorAction.setEnabled(false);
@@ -143,8 +143,8 @@ public class SonarController extends SubModuleController {
 			}
 		});
 
-		pingLabel = (ILabelRidget) getRidget(SonarView.BID_PING_LABEL);
-		failureLabel = (ILabelRidget) getRidget(SonarView.BID_FAILED_LABEL);
+		pingLabel = getRidget(SonarView.BID_PING_LABEL);
+		failureLabel = getRidget(SonarView.BID_FAILED_LABEL);
 	}
 
 	@Override
