@@ -73,8 +73,9 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		return null;
 	}
 
-	public IRidget getRidget(final String id) {
-		return ridgets.get(id);
+	@SuppressWarnings("unchecked")
+	public <R extends IRidget> R getRidget(final String id) {
+		return (R) ridgets.get(id);
 	}
 
 	/**
@@ -82,7 +83,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 */
 	@SuppressWarnings("unchecked")
 	public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
-		R ridget = (R) getRidget(id);
+		R ridget = getRidget(id);
 
 		if (ridget != null) {
 			return ridget;

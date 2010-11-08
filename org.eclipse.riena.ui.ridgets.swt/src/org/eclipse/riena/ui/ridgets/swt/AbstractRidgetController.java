@@ -74,13 +74,13 @@ public abstract class AbstractRidgetController implements IController {
 		// does nothing and is not called automatically
 	}
 
-	public final IRidget getRidget(final String id) {
-		return map.get(id);
+	@SuppressWarnings("unchecked")
+	public final <R extends IRidget> R getRidget(final String id) {
+		return (R) map.get(id);
 	}
 
-	@SuppressWarnings("unchecked")
 	public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
-		return (R) getRidget(id);
+		return getRidget(id);
 	}
 
 	public final Collection<? extends IRidget> getRidgets() {
