@@ -130,9 +130,9 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 	}
 
 	private void blockLetterOrDigit(final KeyEvent e) {
-		//		if (Character.isLetterOrDigit(e.character) && !isCharacterNavigationEnabled()) {
-		//			e.doit = false;
-		//		}
+		if (Character.isLetterOrDigit(e.character) && !isCharacterNavigationEnabled()) {
+			e.doit = false;
+		}
 	}
 
 	private boolean isCharacterNavigationEnabled() {
