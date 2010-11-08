@@ -19,6 +19,7 @@ import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.example.client.optional.views.CompositeTableSubModuleView;
@@ -50,19 +51,19 @@ public class CompositeTableSubModuleController extends SubModuleController {
 
 		@Override
 		public void configureRidgets() {
-			final ITextRidget txtFirst = (ITextRidget) getRidget("first"); //$NON-NLS-1$
+			final ITextRidget txtFirst = getRidget("first"); //$NON-NLS-1$
 			txtFirst.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 
-			final ITextRidget txtLast = (ITextRidget) getRidget("last"); //$NON-NLS-1$
+			final ITextRidget txtLast = getRidget("last"); //$NON-NLS-1$
 			txtLast.bindToModel(rowData, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
 
-			final ISingleChoiceRidget gender = (ISingleChoiceRidget) getRidget("gender"); //$NON-NLS-1$
+			final ISingleChoiceRidget gender = getRidget("gender"); //$NON-NLS-1$
 			gender.bindToModel(Arrays.asList(GENDER), (List<String>) null, rowData, Person.PROPERTY_GENDER);
 			gender.updateFromModel();
 
-			final IMultipleChoiceRidget pets = (IMultipleChoiceRidget) getRidget("pets"); //$NON-NLS-1$
+			final IMultipleChoiceRidget pets = getRidget("pets"); //$NON-NLS-1$
 			pets.bindToModel(Arrays.asList(Person.Pets.values()), (List<String>) null, rowData, Person.PROPERTY_PETS);
 			pets.updateFromModel();
 		}
@@ -80,10 +81,10 @@ public class CompositeTableSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		final ICompositeTableRidget table = (ICompositeTableRidget) getRidget("table"); //$NON-NLS-1$
-		final IActionRidget buttonAdd = (IActionRidget) getRidget("buttonAdd"); //$NON-NLS-1$
-		final IActionRidget buttonDelete = (IActionRidget) getRidget("buttonDelete"); //$NON-NLS-1$
-		final IActionRidget buttonDump = (IActionRidget) getRidget("buttonDump"); //$NON-NLS-1$
+		final ICompositeTableRidget table = getRidget("table"); //$NON-NLS-1$
+		final IActionRidget buttonAdd = getRidget("buttonAdd"); //$NON-NLS-1$
+		final IActionRidget buttonDelete = getRidget("buttonDelete"); //$NON-NLS-1$
+		final IActionRidget buttonDump = getRidget("buttonDump"); //$NON-NLS-1$
 
 		table.bindToModel(new WritableList(input, Person.class), Person.class, RowRidget.class);
 		table.updateFromModel();

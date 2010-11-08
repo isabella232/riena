@@ -57,27 +57,27 @@ public class ValidationSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		final ITextRidget txtNumbersOnly = (ITextRidget) getRidget("txtNumbersOnly"); //$NON-NLS-1$
-		final ITextRidget txtNumbersOnlyDW = (ITextRidget) getRidget("txtNumbersOnlyDW"); //$NON-NLS-1$
-		final ITextRidget txtCharactersOnly = (ITextRidget) getRidget("txtCharactersOnly"); //$NON-NLS-1$
-		final ITextRidget txtExpression = (ITextRidget) getRidget("txtExpression"); //$NON-NLS-1$
-		final ITextRidget txtLengthLessThan5 = (ITextRidget) getRidget("txtLengthLessThan5"); //$NON-NLS-1$
-		final ITextRidget txtRequiredLowercase = (ITextRidget) getRidget("txtRequiredLowercase"); //$NON-NLS-1$
-		final ITextRidget txtRange18to80 = (ITextRidget) getRidget("txtRange18to80"); //$NON-NLS-1$
-		final ITextRidget txtLength5to10 = (ITextRidget) getRidget("txtLength5to10"); //$NON-NLS-1$
-		final ITextRidget txtDate = (ITextRidget) getRidget("txtDate"); //$NON-NLS-1$
-		final ITextRidget txtEmail = (ITextRidget) getRidget("txtEmail"); //$NON-NLS-1$
+		final ITextRidget txtNumbersOnly = getRidget("txtNumbersOnly"); //$NON-NLS-1$
+		final ITextRidget txtNumbersOnlyDW = getRidget("txtNumbersOnlyDW"); //$NON-NLS-1$
+		final ITextRidget txtCharactersOnly = getRidget("txtCharactersOnly"); //$NON-NLS-1$
+		final ITextRidget txtExpression = getRidget("txtExpression"); //$NON-NLS-1$
+		final ITextRidget txtLengthLessThan5 = getRidget("txtLengthLessThan5"); //$NON-NLS-1$
+		final ITextRidget txtRequiredLowercase = getRidget("txtRequiredLowercase"); //$NON-NLS-1$
+		final ITextRidget txtRange18to80 = getRidget("txtRange18to80"); //$NON-NLS-1$
+		final ITextRidget txtLength5to10 = getRidget("txtLength5to10"); //$NON-NLS-1$
+		final ITextRidget txtDate = getRidget("txtDate"); //$NON-NLS-1$
+		final ITextRidget txtEmail = getRidget("txtEmail"); //$NON-NLS-1$
 
-		final ITextRidget lblNumbersOnly = (ITextRidget) getRidget("lblNumbersOnly"); //$NON-NLS-1$
-		final ITextRidget lblNumbersOnlyDW = (ITextRidget) getRidget("lblNumbersOnlyDW"); //$NON-NLS-1$
-		final ITextRidget lblCharactersOnly = (ITextRidget) getRidget("lblCharactersOnly"); //$NON-NLS-1$
-		final ITextRidget lblExpression = (ITextRidget) getRidget("lblExpression"); //$NON-NLS-1$
-		final ITextRidget lblLengthLessThan5 = (ITextRidget) getRidget("lblLengthLessThan5"); //$NON-NLS-1$
-		final ITextRidget lblRequiredLowercase = (ITextRidget) getRidget("lblRequiredLowercase"); //$NON-NLS-1$
-		final ITextRidget lblRange18to80 = (ITextRidget) getRidget("lblRange18to80"); //$NON-NLS-1$
-		final ITextRidget lblLength5to10 = (ITextRidget) getRidget("lblLength5to10"); //$NON-NLS-1$
-		final ITextRidget lblDate = (ITextRidget) getRidget("lblDate"); //$NON-NLS-1$
-		final ITextRidget lblEmail = (ITextRidget) getRidget("lblEmail"); //$NON-NLS-1$
+		final ITextRidget lblNumbersOnly = getRidget("lblNumbersOnly"); //$NON-NLS-1$
+		final ITextRidget lblNumbersOnlyDW = getRidget("lblNumbersOnlyDW"); //$NON-NLS-1$
+		final ITextRidget lblCharactersOnly = getRidget("lblCharactersOnly"); //$NON-NLS-1$
+		final ITextRidget lblExpression = getRidget("lblExpression"); //$NON-NLS-1$
+		final ITextRidget lblLengthLessThan5 = getRidget("lblLengthLessThan5"); //$NON-NLS-1$
+		final ITextRidget lblRequiredLowercase = getRidget("lblRequiredLowercase"); //$NON-NLS-1$
+		final ITextRidget lblRange18to80 = getRidget("lblRange18to80"); //$NON-NLS-1$
+		final ITextRidget lblLength5to10 = getRidget("lblLength5to10"); //$NON-NLS-1$
+		final ITextRidget lblDate = getRidget("lblDate"); //$NON-NLS-1$
+		final ITextRidget lblEmail = getRidget("lblEmail"); //$NON-NLS-1$
 
 		makeOutputOnly(lblNumbersOnly, lblNumbersOnlyDW, lblCharactersOnly, lblExpression, lblLengthLessThan5,
 				lblRequiredLowercase, lblRange18to80, lblLength5to10, lblDate, lblEmail);
