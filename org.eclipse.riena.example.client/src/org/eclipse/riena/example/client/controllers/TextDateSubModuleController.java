@@ -64,7 +64,7 @@ public class TextDateSubModuleController extends SubModuleController {
 		bindToModel("MM.yyyy", new StringBean("10.2008")); //$NON-NLS-1$ //$NON-NLS-2$
 		bindToModel("yyyy", new StringBean("2008")); //$NON-NLS-1$ //$NON-NLS-2$
 
-		final IDateTextRidget txtDatePicker = (IDateTextRidget) getRidget("indd.MM.yyyyPicker"); //$NON-NLS-1$
+		final IDateTextRidget txtDatePicker = getRidget("indd.MM.yyyyPicker"); //$NON-NLS-1$
 		txtDatePicker.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		txtDatePicker.setFocusable(true);
 		txtDatePicker.setMandatory(true);
@@ -77,13 +77,13 @@ public class TextDateSubModuleController extends SubModuleController {
 		bindToModel("HH:mm", new StringBean("23:55")); //$NON-NLS-1$ //$NON-NLS-2$
 		bindToModel("dd.MM.yyyy_HH:mm", new StringBean("01.10.2008 23:55")); //$NON-NLS-1$ //$NON-NLS-2$
 
-		justEights = (IDateTextRidget) getRidget("inJustEights"); //$NON-NLS-1$
+		justEights = getRidget("inJustEights"); //$NON-NLS-1$
 		justEights.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		justEights.setOutputOnly(true);
 		justEights.bindToModel(new StringBean("88.88.8888"), StringBean.PROP_VALUE); //$NON-NLS-1$
 		justEights.updateFromModel();
 
-		final IDateTextRidget justSpaces = (IDateTextRidget) getRidget("inJustSpaces"); //$NON-NLS-1$
+		final IDateTextRidget justSpaces = getRidget("inJustSpaces"); //$NON-NLS-1$
 		justSpaces.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		justSpaces.setOutputOnly(true);
 		justSpaces.bindToModel(new StringBean("  .  .    "), StringBean.PROP_VALUE); //$NON-NLS-1$
@@ -93,7 +93,7 @@ public class TextDateSubModuleController extends SubModuleController {
 		fontManager.addRidget(justEights);
 		fontManager.addRidget(justSpaces);
 
-		final IComboRidget comboFonts = (IComboRidget) getRidget("comboFonts"); //$NON-NLS-1$
+		final IComboRidget comboFonts = getRidget("comboFonts"); //$NON-NLS-1$
 		final SingleSelectionListBean fonts = new SingleSelectionListBean(new Object[] {
 				"Arial", "Courier New", "Verdana" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		fonts.setSelection("Arial"); //$NON-NLS-1$
@@ -110,7 +110,7 @@ public class TextDateSubModuleController extends SubModuleController {
 		final SingleSelectionListBean sizes = new SingleSelectionListBean(new Object[] {
 				"6", "7", "8", "9", "10", "11", "12" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		sizes.setSelection("9"); //$NON-NLS-1$
-		final IComboRidget comboSizes = (IComboRidget) getRidget("comboSizes"); //$NON-NLS-1$
+		final IComboRidget comboSizes = getRidget("comboSizes"); //$NON-NLS-1$
 		comboSizes.bindToModel(sizes, SingleSelectionListBean.PROPERTY_VALUES, String.class, null, sizes,
 				SingleSelectionListBean.PROPERTY_SELECTION);
 		comboSizes.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {

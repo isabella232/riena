@@ -46,38 +46,38 @@ public class HelloDialogController extends AbstractWindowController {
 
 		final CarConfig carConfig = new CarConfig();
 
-		final ISingleChoiceRidget compositeCarModel = (ISingleChoiceRidget) getRidget("compositeCarModel"); //$NON-NLS-1$
+		final ISingleChoiceRidget compositeCarModel = getRidget("compositeCarModel"); //$NON-NLS-1$
 		compositeCarModel.bindToModel(toList(CarModels.values()),
 				BeansObservables.observeValue(carConfig, CarConfig.PROP_MODEL));
 		compositeCarModel.addMarker(new MandatoryMarker());
 		compositeCarModel.updateFromModel();
 
-		final IMultipleChoiceRidget compositeCarExtras = (IMultipleChoiceRidget) getRidget("compositeCarExtras"); //$NON-NLS-1$
+		final IMultipleChoiceRidget compositeCarExtras = getRidget("compositeCarExtras"); //$NON-NLS-1$
 		final String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				"Park Distance Control System", }; //$NON-NLS-1$
 		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), carConfig,
 				CarConfig.PROP_OPTIONS);
 		compositeCarExtras.updateFromModel();
 
-		final ISingleChoiceRidget compositeCarWarranty = (ISingleChoiceRidget) getRidget("compositeCarWarranty"); //$NON-NLS-1$
+		final ISingleChoiceRidget compositeCarWarranty = getRidget("compositeCarWarranty"); //$NON-NLS-1$
 		compositeCarWarranty.bindToModel(toList(CarWarranties.values()),
 				BeansObservables.observeValue(carConfig, CarConfig.PROP_WARRANTY));
 		compositeCarWarranty.addMarker(new MandatoryMarker());
 		compositeCarWarranty.updateFromModel();
 
-		final IMultipleChoiceRidget compositeCarPlates = (IMultipleChoiceRidget) getRidget("compositeCarPlates"); //$NON-NLS-1$
+		final IMultipleChoiceRidget compositeCarPlates = getRidget("compositeCarPlates"); //$NON-NLS-1$
 		compositeCarPlates
 				.bindToModel(toList(carPlates), PojoObservables.observeList(carConfig, CarConfig.PROP_PLATES));
 		compositeCarPlates.addMarker(new MandatoryMarker());
 		compositeCarPlates.updateFromModel();
 
-		final ITextRidget txtPrice = (ITextRidget) getRidget("txtPrice"); //$NON-NLS-1$
+		final ITextRidget txtPrice = getRidget("txtPrice"); //$NON-NLS-1$
 		txtPrice.setOutputOnly(true);
 		final DataBindingContext dbc = new DataBindingContext();
 		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextRidget.PROPERTY_TEXT),
 				BeansObservables.observeValue(carConfig, CarConfig.PROP_PRICE), null, null);
 
-		final IActionRidget buttonPreset = (IActionRidget) getRidget("buttonPreset"); //$NON-NLS-1$
+		final IActionRidget buttonPreset = getRidget("buttonPreset"); //$NON-NLS-1$
 		buttonPreset.setText("&Quick Config"); //$NON-NLS-1$
 		buttonPreset.addListener(new IActionListener() {
 			public void callback() {
@@ -87,7 +87,7 @@ public class HelloDialogController extends AbstractWindowController {
 				compositeCarPlates.setSelection(Arrays.asList(new String[] { carPlates[0] }));
 			}
 		});
-		final IActionRidget buttonReset = (IActionRidget) getRidget("buttonReset"); //$NON-NLS-1$
+		final IActionRidget buttonReset = getRidget("buttonReset"); //$NON-NLS-1$
 
 		buttonReset.setText("&Reset"); //$NON-NLS-1$
 		buttonReset.addListener(new IActionListener() {

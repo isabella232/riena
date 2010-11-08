@@ -40,20 +40,20 @@ public class FocusableSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		final IToggleButtonRidget checkVisible = (IToggleButtonRidget) getRidget("checkVisible"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonA0 = (IToggleButtonRidget) getRidget("buttonA0"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonA1 = (IToggleButtonRidget) getRidget("buttonA1"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonA2 = (IToggleButtonRidget) getRidget("buttonA2"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonA3 = (IToggleButtonRidget) getRidget("buttonA3"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonA4 = (IToggleButtonRidget) getRidget("buttonA4"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonB0 = (IToggleButtonRidget) getRidget("buttonB0"); //$NON-NLS-1$
+		final IToggleButtonRidget checkVisible = getRidget("checkVisible"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonA0 = getRidget("buttonA0"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonA1 = getRidget("buttonA1"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonA2 = getRidget("buttonA2"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonA3 = getRidget("buttonA3"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonA4 = getRidget("buttonA4"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonB0 = getRidget("buttonB0"); //$NON-NLS-1$
 
-		final ITextRidget textA0 = (ITextRidget) getRidget("textA0"); //$NON-NLS-1$
-		final ITextRidget textA1 = (ITextRidget) getRidget("textA1"); //$NON-NLS-1$
-		final ITextRidget textA2 = (ITextRidget) getRidget("textA2"); //$NON-NLS-1$
-		final ITextRidget textA3 = (ITextRidget) getRidget("textA3"); //$NON-NLS-1$
-		final ITextRidget textA4 = (ITextRidget) getRidget("textA4"); //$NON-NLS-1$
-		final ITextRidget textB0 = (ITextRidget) getRidget("textB0"); //$NON-NLS-1$
+		final ITextRidget textA0 = getRidget("textA0"); //$NON-NLS-1$
+		final ITextRidget textA1 = getRidget("textA1"); //$NON-NLS-1$
+		final ITextRidget textA2 = getRidget("textA2"); //$NON-NLS-1$
+		final ITextRidget textA3 = getRidget("textA3"); //$NON-NLS-1$
+		final ITextRidget textA4 = getRidget("textA4"); //$NON-NLS-1$
+		final ITextRidget textB0 = getRidget("textB0"); //$NON-NLS-1$
 
 		final IToggleButtonRidget[] checkButtons = new IToggleButtonRidget[] { buttonA0, buttonA1, buttonA2, buttonA3,
 				buttonA4, buttonB0 };

@@ -36,17 +36,17 @@ public class TextSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		final ITextRidget textModel1 = (ITextRidget) getRidget("textModel1"); //$NON-NLS-1$
+		final ITextRidget textModel1 = getRidget("textModel1"); //$NON-NLS-1$
 		textModel1.setText("type something"); //$NON-NLS-1$
 		textModel1.setOutputOnly(true);
-		final ITextRidget textField = (ITextRidget) getRidget("textField"); //$NON-NLS-1$
+		final ITextRidget textField = getRidget("textField"); //$NON-NLS-1$
 		textField.bindToModel(textModel1, ITextRidget.PROPERTY_TEXT);
 		textField.updateFromModel();
 
-		final ITextRidget textModel2 = (ITextRidget) getRidget("textModel2"); //$NON-NLS-1$
+		final ITextRidget textModel2 = getRidget("textModel2"); //$NON-NLS-1$
 		textModel2.setText("type something"); //$NON-NLS-1$
 		textModel2.setOutputOnly(true);
-		final ITextRidget textDirectWrite = (ITextRidget) getRidget("textDirectWrite"); //$NON-NLS-1$
+		final ITextRidget textDirectWrite = getRidget("textDirectWrite"); //$NON-NLS-1$
 		textDirectWrite.setDirectWriting(true);
 		textDirectWrite.bindToModel(textModel2, ITextRidget.PROPERTY_TEXT);
 		textDirectWrite.updateFromModel();

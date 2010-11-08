@@ -57,12 +57,12 @@ public class LoginDialogController extends AbstractWindowController {
 		getWindowRidget().setTitle("Riena login"); //$NON-NLS-1$
 		getWindowRidget().setIcon(ExampleIcons.ICON_SAMPLE);
 
-		final ITextRidget user = (ITextRidget) getRidget(RIDGET_ID_USER);
+		final ITextRidget user = getRidget(RIDGET_ID_USER);
 		user.setMandatory(true);
-		final ITextRidget password = (ITextRidget) getRidget(RIDGET_ID_PASSWORD);
+		final ITextRidget password = getRidget(RIDGET_ID_PASSWORD);
 		password.setMandatory(true);
 
-		final IActionRidget okAction = (IActionRidget) getRidget(RIDGET_ID_OK);
+		final IActionRidget okAction = getRidget(RIDGET_ID_OK);
 		okAction.addListener(new IActionListener() {
 			public void callback() {
 				canLogin = checkLogin();
@@ -75,7 +75,7 @@ public class LoginDialogController extends AbstractWindowController {
 		});
 		addDefaultAction(getWindowRidget(), okAction);
 
-		final IActionRidget cancelAction = (IActionRidget) getRidget(RIDGET_ID_CANCEL);
+		final IActionRidget cancelAction = getRidget(RIDGET_ID_CANCEL);
 		cancelAction.addListener(new IActionListener() {
 			public void callback() {
 				dispose(EXIT_ABORT);
@@ -120,7 +120,7 @@ public class LoginDialogController extends AbstractWindowController {
 	}
 
 	private void showMessage(final LoginException e) {
-		final IMessageBoxRidget messageLoginException = (IMessageBoxRidget) getRidget(RIDGET_ID_MESSAGE_LOGIN_EXCEPTION);
+		final IMessageBoxRidget messageLoginException = getRidget(RIDGET_ID_MESSAGE_LOGIN_EXCEPTION);
 		messageLoginException.setType(IMessageBoxRidget.Type.ERROR);
 		messageLoginException.setTitle("Login exception"); //$NON-NLS-1$
 		messageLoginException.setText(e.getMessage()); //$NON-NLS-1

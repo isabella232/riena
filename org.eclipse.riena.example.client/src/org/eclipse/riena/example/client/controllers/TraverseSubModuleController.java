@@ -47,7 +47,7 @@ public class TraverseSubModuleController extends SubModuleController {
 
 		final TemperatureListener listener = new TemperatureListener();
 
-		final ISpinnerRidget fahrenheitSpinner = (ISpinnerRidget) getRidget("fahrenheitSpinner"); //$NON-NLS-1$
+		final ISpinnerRidget fahrenheitSpinner = getRidget("fahrenheitSpinner"); //$NON-NLS-1$
 		fahrenheitSpinner.setIncrement(1);
 		fahrenheitSpinner.setMaximum(122);
 		fahrenheitSpinner.setMinimum(32);
@@ -56,7 +56,7 @@ public class TraverseSubModuleController extends SubModuleController {
 		fahrenheitSpinner.updateFromModel();
 		fahrenheitSpinner.addListener(listener);
 
-		final ITraverseRidget celsiusScale = (ITraverseRidget) getRidget("celsiusScale"); //$NON-NLS-1$
+		final ITraverseRidget celsiusScale = getRidget("celsiusScale"); //$NON-NLS-1$
 		celsiusScale.setIncrement(1);
 		celsiusScale.setMaximum(50);
 		celsiusScale.setMinimum(0);
@@ -64,14 +64,14 @@ public class TraverseSubModuleController extends SubModuleController {
 		celsiusScale.updateFromModel();
 		celsiusScale.addListener(listener);
 
-		final ITraverseRidget kelvinProgressBar = (ITraverseRidget) getRidget("kelvinProgressBar"); //$NON-NLS-1$
+		final ITraverseRidget kelvinProgressBar = getRidget("kelvinProgressBar"); //$NON-NLS-1$
 		kelvinProgressBar.setIncrement(1);
 		kelvinProgressBar.setMaximum(323);
 		kelvinProgressBar.setMinimum(273);
 		kelvinProgressBar.bindToModel(BeansObservables.observeValue(temperature, Temperature.PROPERTY_KELVIN));
 		kelvinProgressBar.updateFromModel();
 
-		rankineStatusMeter = (IStatusMeterRidget) getRidget("rankineStatusMeter"); //$NON-NLS-1$
+		rankineStatusMeter = getRidget("rankineStatusMeter"); //$NON-NLS-1$
 		rankineStatusMeter.bindToModel(BeansObservables.observeValue(temperature, Temperature.PROPERTY_RANKINE));
 		rankineStatusMeter.setMaximum(RANKINE_MAX);
 		rankineStatusMeter.setMinimum(491);

@@ -97,12 +97,12 @@ public class SystemPropertiesSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		tableProperties = (ITableRidget) getRidget("tableProperties"); //$NON-NLS-1$
-		textKey = (ITextRidget) getRidget("textKey"); //$NON-NLS-1$
-		textValue = (ITextRidget) getRidget("textValue"); //$NON-NLS-1$
-		final IActionRidget buttonAdd = (IActionRidget) getRidget("buttonAdd"); //$NON-NLS-1$
-		final IToggleButtonRidget toggleDoubleClick = (IToggleButtonRidget) getRidget("toggleDoubleClick"); //$NON-NLS-1$
-		final IActionRidget buttonSave = (IActionRidget) getRidget("buttonSave"); //$NON-NLS-1$
+		tableProperties = getRidget("tableProperties"); //$NON-NLS-1$
+		textKey = getRidget("textKey"); //$NON-NLS-1$
+		textValue = getRidget("textValue"); //$NON-NLS-1$
+		final IActionRidget buttonAdd = getRidget("buttonAdd"); //$NON-NLS-1$
+		final IToggleButtonRidget toggleDoubleClick = getRidget("toggleDoubleClick"); //$NON-NLS-1$
+		final IActionRidget buttonSave = getRidget("buttonSave"); //$NON-NLS-1$
 
 		final Set<Object> keys = System.getProperties().keySet();
 		for (final Object key : keys) {

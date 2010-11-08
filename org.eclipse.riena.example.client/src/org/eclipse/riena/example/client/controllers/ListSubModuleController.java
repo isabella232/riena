@@ -65,7 +65,7 @@ public class ListSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		listPersons = (ITableRidget) getRidget("listPersons"); //$NON-NLS-1$
+		listPersons = getRidget("listPersons"); //$NON-NLS-1$
 		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		listPersons.setComparator(0, new TypedComparator<String>());
 		listPersons.setSortedColumn(0);
@@ -74,10 +74,10 @@ public class ListSubModuleController extends SubModuleController {
 
 		listPersons.bindSingleSelectionToModel(manager, PersonManager.PROPERTY_SELECTED_PERSON);
 
-		final ITextRidget textFirst = (ITextRidget) getRidget("textFirst"); //$NON-NLS-1$
+		final ITextRidget textFirst = getRidget("textFirst"); //$NON-NLS-1$
 		textFirst.bindToModel(value, "firstName"); //$NON-NLS-1$
 		textFirst.updateFromModel();
-		final ITextRidget textLast = (ITextRidget) getRidget("textLast"); //$NON-NLS-1$
+		final ITextRidget textLast = getRidget("textLast"); //$NON-NLS-1$
 		textLast.bindToModel(value, "lastName"); //$NON-NLS-1$
 		textLast.updateFromModel();
 
@@ -89,7 +89,7 @@ public class ListSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IToggleButtonRidget buttonSort = (IToggleButtonRidget) getRidget("buttonSort"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonSort = getRidget("buttonSort"); //$NON-NLS-1$
 		buttonSort.setText("Sort ascending"); //$NON-NLS-1$
 		buttonSort.setSelected(true);
 		listPersons.setSortedAscending(buttonSort.isSelected());
@@ -100,7 +100,7 @@ public class ListSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IActionRidget buttonAdd = (IActionRidget) getRidget("buttonAdd"); //$NON-NLS-1$
+		final IActionRidget buttonAdd = getRidget("buttonAdd"); //$NON-NLS-1$
 		buttonAdd.setText("&Add"); //$NON-NLS-1$
 		buttonAdd.addListener(new IActionListener() {
 			private int count = 0;
@@ -114,7 +114,7 @@ public class ListSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IActionRidget buttonRemove = (IActionRidget) getRidget("buttonRemove"); //$NON-NLS-1$
+		final IActionRidget buttonRemove = getRidget("buttonRemove"); //$NON-NLS-1$
 		buttonRemove.setText("&Remove"); //$NON-NLS-1$
 		buttonRemove.addListener(new IActionListener() {
 			public void callback() {
@@ -127,7 +127,7 @@ public class ListSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IActionRidget buttonSave = (IActionRidget) getRidget("buttonSave"); //$NON-NLS-1$
+		final IActionRidget buttonSave = getRidget("buttonSave"); //$NON-NLS-1$
 		buttonSave.setText("&Save"); //$NON-NLS-1$
 		buttonSave.addListener(new IActionListener() {
 			public void callback() {

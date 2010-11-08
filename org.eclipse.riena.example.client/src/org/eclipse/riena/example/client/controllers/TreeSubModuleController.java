@@ -74,17 +74,17 @@ public class TreeSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		tree = (ITreeRidget) getRidget("tree"); //$NON-NLS-1$
-		final IActionRidget buttonAddSibling = (IActionRidget) getRidget("buttonAddSibling"); //$NON-NLS-1$
-		final IActionRidget buttonAddChild = (IActionRidget) getRidget("buttonAddChild"); //$NON-NLS-1$
-		buttonRename = (IActionRidget) getRidget("buttonRename"); //$NON-NLS-1$
-		final IActionRidget buttonDelete = (IActionRidget) getRidget("buttonDelete"); //$NON-NLS-1$
-		final IActionRidget buttonExpand = (IActionRidget) getRidget("buttonExpand"); //$NON-NLS-1$
-		final IActionRidget buttonCollapse = (IActionRidget) getRidget("buttonCollapse"); //$NON-NLS-1$
-		final IActionRidget buttonDisable = (IActionRidget) getRidget("buttonDisable"); //$NON-NLS-1$
-		final IActionRidget buttonEnable = (IActionRidget) getRidget("buttonEnable"); //$NON-NLS-1$
-		final IActionRidget buttonHide = (IActionRidget) getRidget("buttonHide"); //$NON-NLS-1$
-		final IActionRidget buttonShow = (IActionRidget) getRidget("buttonShow"); //$NON-NLS-1$
+		tree = getRidget("tree"); //$NON-NLS-1$
+		final IActionRidget buttonAddSibling = getRidget("buttonAddSibling"); //$NON-NLS-1$
+		final IActionRidget buttonAddChild = getRidget("buttonAddChild"); //$NON-NLS-1$
+		buttonRename = getRidget("buttonRename"); //$NON-NLS-1$
+		final IActionRidget buttonDelete = getRidget("buttonDelete"); //$NON-NLS-1$
+		final IActionRidget buttonExpand = getRidget("buttonExpand"); //$NON-NLS-1$
+		final IActionRidget buttonCollapse = getRidget("buttonCollapse"); //$NON-NLS-1$
+		final IActionRidget buttonDisable = getRidget("buttonDisable"); //$NON-NLS-1$
+		final IActionRidget buttonEnable = getRidget("buttonEnable"); //$NON-NLS-1$
+		final IActionRidget buttonHide = getRidget("buttonHide"); //$NON-NLS-1$
+		final IActionRidget buttonShow = getRidget("buttonShow"); //$NON-NLS-1$
 
 		buttonAddSibling.setText("Add &Sibling"); //$NON-NLS-1$
 		buttonAddSibling.addListener(new IActionListener() {

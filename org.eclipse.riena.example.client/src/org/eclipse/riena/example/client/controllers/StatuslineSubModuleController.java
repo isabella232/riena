@@ -77,35 +77,35 @@ public class StatuslineSubModuleController extends SubModuleController {
 	 * @return the messageText
 	 */
 	private ITextRidget getMessageText() {
-		return (ITextRidget) getRidget("messageText"); //$NON-NLS-1$
+		return getRidget("messageText"); //$NON-NLS-1$
 	}
 
 	/**
 	 * @return the severity
 	 */
 	private IComboRidget getSeverity() {
-		return (IComboRidget) getRidget("severity"); //$NON-NLS-1$
+		return getRidget("severity"); //$NON-NLS-1$
 	}
 
 	/**
 	 * @return the showMessage
 	 */
 	private IActionRidget getShowMessage() {
-		return (IActionRidget) getRidget("showMessage"); //$NON-NLS-1$
+		return getRidget("showMessage"); //$NON-NLS-1$
 	}
 
 	/**
 	 * @return the numberText
 	 */
 	private ITextRidget getNumberText() {
-		return (ITextRidget) getRidget("numberText"); //$NON-NLS-1$
+		return getRidget("numberText"); //$NON-NLS-1$
 	}
 
 	/**
 	 * @return the showNumber
 	 */
 	private IActionRidget getShowNumber() {
-		return (IActionRidget) getRidget("showNumber"); //$NON-NLS-1$
+		return getRidget("showNumber"); //$NON-NLS-1$
 	}
 
 	private IStatuslineRidget getStatusLine() {

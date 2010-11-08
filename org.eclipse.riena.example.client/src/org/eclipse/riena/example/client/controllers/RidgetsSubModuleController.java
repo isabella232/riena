@@ -84,15 +84,15 @@ public class RidgetsSubModuleController extends SubModuleController {
 			}
 		};
 
-		final IActionRidget imageButton = (IActionRidget) getRidget("imageButton"); //$NON-NLS-1$
+		final IActionRidget imageButton = getRidget("imageButton"); //$NON-NLS-1$
 		imageButton.setIcon("imageBtn"); //$NON-NLS-1$
 		imageButton.addListener(actionListener);
 
-		final IActionRidget arrowButton = (IActionRidget) getRidget("arrowButton"); //$NON-NLS-1$
+		final IActionRidget arrowButton = getRidget("arrowButton"); //$NON-NLS-1$
 		arrowButton.setIcon("arrowRight"); //$NON-NLS-1$
 		arrowButton.addListener(actionListener);
 
-		final IActionRidget arrowHotButton = (IActionRidget) getRidget("arrowHotButton"); //$NON-NLS-1$
+		final IActionRidget arrowHotButton = getRidget("arrowHotButton"); //$NON-NLS-1$
 		arrowHotButton.setIcon("arrowRight"); //$NON-NLS-1$
 		arrowHotButton.addListener(actionListener);
 	}

@@ -405,10 +405,10 @@ public class MarkerSubModuleController extends SubModuleController {
 
 		@Override
 		public void configureRidgets() {
-			final ITextRidget txtLast = (ITextRidget) getRidget("txtLast"); //$NON-NLS-1$
+			final ITextRidget txtLast = getRidget("txtLast"); //$NON-NLS-1$
 			txtLast.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);
 			txtLast.updateFromModel();
-			final ITextRidget txtFirst = (ITextRidget) getRidget("txtFirst"); //$NON-NLS-1$
+			final ITextRidget txtFirst = getRidget("txtFirst"); //$NON-NLS-1$
 			txtFirst.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 		}

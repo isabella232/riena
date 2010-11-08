@@ -97,7 +97,7 @@ public class LayoutSubModuleController extends SubModuleController {
 	private void updateCaptions(final String[] ridgets, final String[] texts, final int length) {
 		Assert.isLegal(length > 0);
 		for (int i = 0; i < ridgets.length; i++) {
-			final ILabelRidget ridget = (ILabelRidget) getRidget(ridgets[i]);
+			final ILabelRidget ridget = getRidget(ridgets[i]);
 			final StringBuilder caption = new StringBuilder();
 			for (int j = 0; j < length; j++) {
 				caption.append(texts[i]);

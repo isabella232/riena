@@ -41,9 +41,9 @@ public class MessageBoxSubModuleController extends SubModuleController {
 
 		super.configureRidgets();
 
-		messageBoxRidget = (IMessageBoxRidget) getRidget("messageBox"); //$NON-NLS-1$
+		messageBoxRidget = getRidget("messageBox"); //$NON-NLS-1$
 
-		final ITextRidget messageTitle = (ITextRidget) getRidget("messageTitle"); //$NON-NLS-1$
+		final ITextRidget messageTitle = getRidget("messageTitle"); //$NON-NLS-1$
 		messageTitle.addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				messageBoxRidget.setTitle((String) evt.getNewValue());
@@ -51,7 +51,7 @@ public class MessageBoxSubModuleController extends SubModuleController {
 		});
 		messageTitle.setText("Bridgekeeper"); //$NON-NLS-1$
 
-		final ITextRidget messageText = (ITextRidget) getRidget("messageText"); //$NON-NLS-1$
+		final ITextRidget messageText = getRidget("messageText"); //$NON-NLS-1$
 		messageText.addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				messageBoxRidget.setText((String) evt.getNewValue());
@@ -61,15 +61,15 @@ public class MessageBoxSubModuleController extends SubModuleController {
 
 		final MessageBoxSettingsBean bean = new MessageBoxSettingsBean();
 
-		final IComboRidget messageTypes = (IComboRidget) getRidget("messageType"); //$NON-NLS-1$
+		final IComboRidget messageTypes = getRidget("messageType"); //$NON-NLS-1$
 		messageTypes.bindToModel(bean, "messageTypes", LabeledMessageType.class, null, bean, "selectedMessageType"); //$NON-NLS-1$ //$NON-NLS-2$
 		messageTypes.updateFromModel();
 
-		final IComboRidget messageOptions = (IComboRidget) getRidget("messageOptions"); //$NON-NLS-1$
+		final IComboRidget messageOptions = getRidget("messageOptions"); //$NON-NLS-1$
 		messageOptions.bindToModel(bean, "messageOptions", LabeledOptions.class, null, bean, "selectedMessageOptions"); //$NON-NLS-1$ //$NON-NLS-2$
 		messageOptions.updateFromModel();
 
-		final IActionRidget showMessage = (IActionRidget) getRidget("showMessage"); //$NON-NLS-1$
+		final IActionRidget showMessage = getRidget("showMessage"); //$NON-NLS-1$
 		showMessage.setText("Show Message Box"); //$NON-NLS-1$
 		showMessage.addListener(new ShowMessageActionListener());
 	}
@@ -80,7 +80,7 @@ public class MessageBoxSubModuleController extends SubModuleController {
 
 			// Filling a textfield based on the selected option. Just an
 			// example...
-			final ITextRidget selectedOptionTextField = (ITextRidget) getRidget("selectedOption"); //$NON-NLS-1$
+			final ITextRidget selectedOptionTextField = getRidget("selectedOption"); //$NON-NLS-1$
 			if (selectedOption.equals(IMessageBoxRidget.OK)) {
 				selectedOptionTextField.setText("You clicked 'OK'."); //$NON-NLS-1$
 			} else if (selectedOption.equals(IMessageBoxRidget.CANCEL)) {

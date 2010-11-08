@@ -130,26 +130,26 @@ public class OnePersonSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		customerNumber = (INumericTextRidget) getRidget("customerNumber"); //$NON-NLS-1$
+		customerNumber = getRidget("customerNumber"); //$NON-NLS-1$
 		customerNumber.addMarker(new OutputMarker());
 		customerNumber.setGrouping(false);
-		lastName = (ITextRidget) getRidget("lastName"); //$NON-NLS-1$
+		lastName = getRidget("lastName"); //$NON-NLS-1$
 		lastName.setMandatory(true);
-		firstName = (ITextRidget) getRidget("firstName"); //$NON-NLS-1$
+		firstName = getRidget("firstName"); //$NON-NLS-1$
 		firstName.setMandatory(true);
-		birthday = (IDateTextRidget) getRidget("birthday"); //$NON-NLS-1$
+		birthday = getRidget("birthday"); //$NON-NLS-1$
 		birthday.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
-		birthplace = (ITextRidget) getRidget("birthplace"); //$NON-NLS-1$
-		gender = (ISingleChoiceRidget) getRidget("gender"); //$NON-NLS-1$
-		street = (ITextRidget) getRidget("street"); //$NON-NLS-1$
-		country = (IComboRidget) getRidget("country"); //$NON-NLS-1$
-		postalcode = (INumericTextRidget) getRidget("postalCode"); //$NON-NLS-1$
+		birthplace = getRidget("birthplace"); //$NON-NLS-1$
+		gender = getRidget("gender"); //$NON-NLS-1$
+		street = getRidget("street"); //$NON-NLS-1$
+		country = getRidget("country"); //$NON-NLS-1$
+		postalcode = getRidget("postalCode"); //$NON-NLS-1$
 		postalcode.setGrouping(false);
 		postalcode.addValidationRule(new MaxLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
-		town = (ITextRidget) getRidget("town"); //$NON-NLS-1$
-		final IActionRidget show = (IActionRidget) getRidget("show"); //$NON-NLS-1$
-		final IActionRidget next = (IActionRidget) getRidget("next"); //$NON-NLS-1$
-		final IActionRidget jumpBack = (IActionRidget) getRidget("jumpBack"); //$NON-NLS-1$
+		town = getRidget("town"); //$NON-NLS-1$
+		final IActionRidget show = getRidget("show"); //$NON-NLS-1$
+		final IActionRidget next = getRidget("next"); //$NON-NLS-1$
+		final IActionRidget jumpBack = getRidget("jumpBack"); //$NON-NLS-1$
 
 		createPerson();
 		person.addPropertyChangeListener(new NameChangeListener());
