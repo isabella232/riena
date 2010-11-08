@@ -46,7 +46,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
  * <pre>
  * public class NavigationController extends AbstractRidgetController {
  * 	public void configureRidgets() {
- * 		ITreeRidget tree = (ITreeRidget) getRidget(&quot;tree&quot;);
+ * 		ITreeRidget tree = getRidget(&quot;tree&quot;);
  * 		// ...
  * 	}
  * }
