@@ -787,6 +787,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	/**
 	 * Triggered by "prepareNode" for nodes to be prepared which already have an
 	 * instantiated view. In those cases createPartControl is not called.
+	 * 
+	 * @since 3.0
 	 */
 	public void prepareNode(final SubModuleNode node) {
 		binding.injectRidgets(createController(node));

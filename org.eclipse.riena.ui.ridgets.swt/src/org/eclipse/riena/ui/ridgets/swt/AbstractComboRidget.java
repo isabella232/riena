@@ -55,9 +55,17 @@ import org.eclipse.riena.ui.ridgets.swt.nls.Messages;
  * be reused for custom Combo controls.
  */
 public abstract class AbstractComboRidget extends AbstractSWTRidget implements IComboRidget {
-	/** List of available options (ridget). */
+	/**
+	 * List of available options (ridget).
+	 * 
+	 * @since 3.0
+	 */
 	protected final IObservableList rowObservables;
-	/** The selected option (ridget). */
+	/**
+	 * The selected option (ridget).
+	 * 
+	 * @since 3.0
+	 */
 	protected final IObservableValue selectionObservable;
 	/** Selection validator that allows or cancels a selection request. */
 	private final SelectionBindingValidator selectionValidator;
@@ -510,6 +518,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void assertIsBoundToModel() {
 		if (optionValues == null) {
 			throw new BindingException("ridget not bound to model"); //$NON-NLS-1$

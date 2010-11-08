@@ -67,6 +67,7 @@ import org.eclipse.riena.ui.swt.separator.Separator;
  * Factory methods are annotated for compatibility with the SWT Designer tool.
  * 
  * @wbp.factory
+ * @since 3.0
  */
 public class UIControlsFactory {
 
@@ -112,11 +113,17 @@ public class UIControlsFactory {
 		Assert.isNotNull(SHARED_BG_COLOR, "You must define a color for LnfKeyConstants.SUB_MODULE_BACKGROUND"); //$NON-NLS-1$
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected static <T> T registerConstruction(final T control) {
 		UIControlsCounter.getInstance().registerConstruction(control);
 		return control;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected static <T> T bind(final T widget, final String bindingId) {
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(widget, bindingId);
 		return widget;

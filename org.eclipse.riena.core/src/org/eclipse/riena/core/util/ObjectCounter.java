@@ -21,6 +21,8 @@ import java.util.Map;
  * stored in {@code Set}s and {@code Map}s.
  * <p>
  * This implementation is thread safe.
+ * 
+ * @since 3.0
  */
 public class ObjectCounter<T> implements Iterable<T> {
 
