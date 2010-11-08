@@ -93,8 +93,8 @@ public class AbstractEmailController extends SubModuleController {
 		});
 
 		if (getNavigationNode().isJumpTarget()) {
-			final IActionRidget openCustomerAction = getRidget("openCustomer");
-			openCustomerAction.setText("Back to Customer");
+			final IActionRidget openCustomerAction = getRidget("openCustomer"); //$NON-NLS-1$
+			openCustomerAction.setText("Back to Customer"); //$NON-NLS-1$
 			openCustomerAction.addListener(new IActionListener() {
 				public void callback() {
 					getNavigationNode().jumpBack();
