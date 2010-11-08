@@ -69,9 +69,8 @@ public class HelloServerSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		actionFacade = (IActionRidget) getRidget("actionFacade"); //$NON-NLS-1$
-		textFacade = (ITextRidget) getRidget("textFacade"); //$NON-NLS-1$
-		callback = (IActionListener) getRidget("callback"); //$NON-NLS-1$
+		actionFacade = getRidget("actionFacade"); //$NON-NLS-1$
+		textFacade = getRidget("textFacade"); //$NON-NLS-1$
 	}
 
 	private final static class MessageBean {
