@@ -115,23 +115,23 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void initMarkerGroup() {
 
-		final IComboRidget ridgetToMarkID = (IComboRidget) getRidget("ridgetToMarkID"); //$NON-NLS-1$
+		final IComboRidget ridgetToMarkID = getRidget("ridgetToMarkID"); //$NON-NLS-1$
 		markerModel = new MarkerModel();
 		ridgetToMarkID.bindToModel(markerModel, "ids", MarkerModel.class, null, markerModel, "selectedId"); //$NON-NLS-1$ //$NON-NLS-2$
 		ridgetToMarkID.updateFromModel();
 
-		final IComboRidget markersCombo = (IComboRidget) getRidget("markers"); //$NON-NLS-1$
+		final IComboRidget markersCombo = getRidget("markers"); //$NON-NLS-1$
 		markersCombo.bindToModel(markerModel, "markers", MarkerModel.class, null, markerModel, "selectedMarker"); //$NON-NLS-1$ //$NON-NLS-2$
 		markersCombo.updateFromModel();
 
-		addMarker = (IActionRidget) getRidget("addMarker"); //$NON-NLS-1$
+		addMarker = getRidget("addMarker"); //$NON-NLS-1$
 		addMarker.addListener(new IActionListener() {
 			public void callback() {
 				doAddMarker();
 			}
 		});
 
-		removeMarker = (IActionRidget) getRidget("removeMarker"); //$NON-NLS-1$
+		removeMarker = getRidget("removeMarker"); //$NON-NLS-1$
 		removeMarker.addListener(new IActionListener() {
 			public void callback() {
 				doRemoveMarker();
@@ -145,17 +145,17 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void initLocalFilterGroup() {
 
-		final IComboRidget ridgetID = (IComboRidget) getRidget("ridgetID"); //$NON-NLS-1$
+		final IComboRidget ridgetID = getRidget("ridgetID"); //$NON-NLS-1$
 		filterModel = new FilterModel();
 		ridgetID.bindToModel(filterModel, "ids", FilterModel.class, null, filterModel, "selectedId"); //$NON-NLS-1$ //$NON-NLS-2$
 		ridgetID.updateFromModel();
 
-		final ISingleChoiceRidget filterType = (ISingleChoiceRidget) getRidget("filterType"); //$NON-NLS-1$		
+		final ISingleChoiceRidget filterType = getRidget("filterType"); //$NON-NLS-1$		
 		filterType.addPropertyChangeListener(new FilterTypeChangeListener());
 		filterType.bindToModel(filterModel, "types", filterModel, "selectedType"); //$NON-NLS-1$ //$NON-NLS-2$
 		filterType.updateFromModel();
 
-		filterTypeValues = (IComboRidget) getRidget("filterTypeValues"); //$NON-NLS-1$
+		filterTypeValues = getRidget("filterTypeValues"); //$NON-NLS-1$
 		filterTypeValues.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if (addFilter != null) {
@@ -164,14 +164,14 @@ public class FilterSubModuleController extends SubModuleController {
 			}
 		});
 
-		addFilter = (IActionRidget) getRidget("addFilter"); //$NON-NLS-1$
+		addFilter = getRidget("addFilter"); //$NON-NLS-1$
 		addFilter.addListener(new IActionListener() {
 			public void callback() {
 				doAddFilter();
 			}
 		});
 
-		final IActionRidget removeFilters = (IActionRidget) getRidget("removeFilters"); //$NON-NLS-1$
+		final IActionRidget removeFilters = getRidget("removeFilters"); //$NON-NLS-1$
 		removeFilters.addListener(new IActionListener() {
 			public void callback() {
 				doRemoveFilters();
@@ -185,17 +185,17 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void initGlobalFilterGroup() {
 
-		final ITextRidget ridgetID = (ITextRidget) getRidget("globalRidgetID"); //$NON-NLS-1$
+		final ITextRidget ridgetID = getRidget("globalRidgetID"); //$NON-NLS-1$
 		globalFilterModel = new FilterModel();
 		ridgetID.bindToModel(globalFilterModel, "selectedId"); //$NON-NLS-1$
 		ridgetID.updateFromModel();
 
-		final ISingleChoiceRidget filterType = (ISingleChoiceRidget) getRidget("globalFilterType"); //$NON-NLS-1$		
+		final ISingleChoiceRidget filterType = getRidget("globalFilterType"); //$NON-NLS-1$		
 		filterType.addPropertyChangeListener(new FilterTypeChangeListener());
 		filterType.bindToModel(globalFilterModel, "types", globalFilterModel, "selectedType"); //$NON-NLS-1$ //$NON-NLS-2$
 		filterType.updateFromModel();
 
-		globalFilterTypeValues = (IComboRidget) getRidget("globalFilterTypeValues"); //$NON-NLS-1$
+		globalFilterTypeValues = getRidget("globalFilterTypeValues"); //$NON-NLS-1$
 		globalFilterTypeValues.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if (globalAddFilter != null) {
@@ -204,14 +204,14 @@ public class FilterSubModuleController extends SubModuleController {
 			}
 		});
 
-		globalAddFilter = (IActionRidget) getRidget("globalAddFilter"); //$NON-NLS-1$
+		globalAddFilter = getRidget("globalAddFilter"); //$NON-NLS-1$
 		globalAddFilter.addListener(new IActionListener() {
 			public void callback() {
 				doGlobalAddFilter();
 			}
 		});
 
-		final IActionRidget removeFilters = (IActionRidget) getRidget("globalRemoveFilters"); //$NON-NLS-1$
+		final IActionRidget removeFilters = getRidget("globalRemoveFilters"); //$NON-NLS-1$
 		removeFilters.addListener(new IActionListener() {
 			public void callback() {
 				doGlobalRemoveFilters();
@@ -331,7 +331,7 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void doAddMarker() {
 		if (markerModel.getSelectedId() != null) {
-			final IBasicMarkableRidget ridget = (IBasicMarkableRidget) getRidget(markerModel.getSelectedId());
+			final IBasicMarkableRidget ridget = getRidget(markerModel.getSelectedId());
 			ridget.addMarker(markerModel.getSelectedMarker().getMarker());
 		}
 	}
@@ -341,7 +341,7 @@ public class FilterSubModuleController extends SubModuleController {
 	 */
 	private void doRemoveMarker() {
 		if (markerModel.getSelectedId() != null) {
-			final IBasicMarkableRidget ridget = (IBasicMarkableRidget) getRidget(markerModel.getSelectedId());
+			final IBasicMarkableRidget ridget = getRidget(markerModel.getSelectedId());
 			ridget.removeMarker(markerModel.getSelectedMarker().getMarker());
 		}
 	}
