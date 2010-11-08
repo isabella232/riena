@@ -15,6 +15,9 @@ import java.util.Collection;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -30,8 +33,6 @@ import org.eclipse.riena.ui.ridgets.IRowRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 
 /**
  * Controller for the {@link TextSubModuleView} example.

@@ -14,14 +14,6 @@ import java.util.Arrays;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
-import org.eclipse.riena.ui.common.IComplexComponent;
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
-import org.eclipse.riena.ui.ridgets.swt.optional.OptionalUIControlsFactory;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
-import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
@@ -31,6 +23,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.common.IComplexComponent;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.swt.optional.OptionalUIControlsFactory;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Example for various marker types.
@@ -85,7 +86,7 @@ public class OptionalMarkerSubModuleView extends SubModuleView {
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing)
 				.applyTo(group);
 
-		Label labelCompTable = UIControlsFactory.createLabel(group, "Composite\nTable:"); //$NON-NLS-1$ //$NON-NLS-2$
+		final Label labelCompTable = UIControlsFactory.createLabel(group, "Composite\nTable:"); //$NON-NLS-1$ 
 		GridDataFactory.fillDefaults().grab(false, true).applyTo(labelCompTable);
 
 		final CompositeTable compTable = OptionalUIControlsFactory.createCompositeTable(group, SWT.BORDER);
