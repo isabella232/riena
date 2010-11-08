@@ -144,7 +144,7 @@ public class DefaultBindingManager implements IBindingManager {
 	 *            ridget container
 	 * @return ridget
 	 */
-	protected IRidget getRidget(final String bindingProperty, final IRidgetContainer controller) {
+	protected <R extends IRidget> R getRidget(final String bindingProperty, final IRidgetContainer controller) {
 		return controller.getRidget(bindingProperty);
 	}
 
@@ -170,7 +170,7 @@ public class DefaultBindingManager implements IBindingManager {
 			if (control instanceof IComplexComponent) {
 				final IComplexComponent complexComponent = (IComplexComponent) control;
 				final String bindingProperty = propertyStrategy.locateBindingProperty(control);
-				final IComplexRidget complexRidget = (IComplexRidget) getRidget(bindingProperty, controller);
+				final IComplexRidget complexRidget = getRidget(bindingProperty, controller);
 				updateBindings(complexRidget, complexComponent.getUIControls(), unbind);
 				if (complexRidget != null) {
 					bindRidget(complexRidget, complexComponent, unbind);
