@@ -84,19 +84,19 @@ public class MessageController extends AbstractRidgetController {
 
 	@Override
 	public void configureRidgets() {
-		final ILabelRidget lblSubject = (ILabelRidget) getRidget("subject"); //$NON-NLS-1$
+		final ILabelRidget lblSubject = getRidget("subject"); //$NON-NLS-1$
 		lblSubject.bindToModel(PojoObservables.observeValue(message, "subject")); //$NON-NLS-1$
 		lblSubject.updateFromModel();
 
-		final ILabelRidget lblFrom = (ILabelRidget) getRidget("from"); //$NON-NLS-1$
+		final ILabelRidget lblFrom = getRidget("from"); //$NON-NLS-1$
 		lblFrom.bindToModel(PojoObservables.observeValue(message, "from")); //$NON-NLS-1$
 		lblFrom.updateFromModel();
 
-		final ILabelRidget lblDate = (ILabelRidget) getRidget("date"); //$NON-NLS-1$
+		final ILabelRidget lblDate = getRidget("date"); //$NON-NLS-1$
 		lblDate.bindToModel(PojoObservables.observeValue(message, "date")); //$NON-NLS-1$
 		lblDate.updateFromModel();
 
-		final ITextRidget txtMessage = (ITextRidget) getRidget("message"); //$NON-NLS-1$
+		final ITextRidget txtMessage = getRidget("message"); //$NON-NLS-1$
 		txtMessage.bindToModel(PojoObservables.observeValue(message, "message")); //$NON-NLS-1$
 		txtMessage.setOutputOnly(true);
 		txtMessage.updateFromModel();

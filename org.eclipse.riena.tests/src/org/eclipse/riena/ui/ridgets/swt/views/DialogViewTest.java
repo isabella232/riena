@@ -143,11 +143,11 @@ public class DialogViewTest extends RienaTestCase {
 		public void configureRidgets() {
 			super.configureRidgets();
 
-			final ITextRidget txtFirstName = (ITextRidget) getRidget(BINDING_ID_FIRSTNAME);
+			final ITextRidget txtFirstName = getRidget(BINDING_ID_FIRSTNAME);
 			txtFirstName.bindToModel(person, "firstname");
 			txtFirstName.updateFromModel();
 
-			final ITextRidget txtLastName = (ITextRidget) getRidget(BINDING_ID_LASTNAME);
+			final ITextRidget txtLastName = getRidget(BINDING_ID_LASTNAME);
 			txtLastName.bindToModel(person, "lastname");
 			txtLastName.updateFromModel();
 		}

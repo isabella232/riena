@@ -50,7 +50,7 @@ public class HelloWorldSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		labelRidget = (ILabelRidget) getRidget("labelRidget"); //$NON-NLS-1$
+		labelRidget = getRidget("labelRidget"); //$NON-NLS-1$
 	}
 
 	/**

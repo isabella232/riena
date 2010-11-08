@@ -53,50 +53,50 @@ public class MarkerSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		final ITextRidget textName = (ITextRidget) getRidget("textName"); //$NON-NLS-1$
+		final ITextRidget textName = getRidget("textName"); //$NON-NLS-1$
 		textName.setText("Chateau Schaedelbrummer"); //$NON-NLS-1$
 
-		final IDecimalTextRidget textPrice = (IDecimalTextRidget) getRidget("textPrice"); //$NON-NLS-1$
+		final IDecimalTextRidget textPrice = getRidget("textPrice"); //$NON-NLS-1$
 		textPrice.setText(Double.toString(-29.99));
 
-		final IComboRidget comboAge = (IComboRidget) getRidget("comboAge"); //$NON-NLS-1$
+		final IComboRidget comboAge = getRidget("comboAge"); //$NON-NLS-1$
 		final List<String> ages = Arrays.asList(new String[] { "<none>", "young", "moderate", "aged", "old" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		comboAge.bindToModel(new WritableList(ages, String.class), String.class, null, new WritableValue());
 		comboAge.updateFromModel();
 		comboAge.setEmptySelectionItem("<none>"); //$NON-NLS-1$
 		comboAge.setSelection(1);
 
-		final ISingleChoiceRidget choiceType = (ISingleChoiceRidget) getRidget("choiceType"); //$NON-NLS-1$
+		final ISingleChoiceRidget choiceType = getRidget("choiceType"); //$NON-NLS-1$
 		choiceType.bindToModel(Arrays.asList("red", "white", "rose"), (List<String>) null, new TestBean(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				TestBean.PROPERTY);
 		choiceType.updateFromModel();
 		choiceType.setSelection("red"); //$NON-NLS-1$
 
-		final IMultipleChoiceRidget choiceFlavor = (IMultipleChoiceRidget) getRidget("choiceFlavor"); //$NON-NLS-1$
+		final IMultipleChoiceRidget choiceFlavor = getRidget("choiceFlavor"); //$NON-NLS-1$
 		choiceFlavor.bindToModel(Arrays.asList("dry", "sweet", "sour", "spicy"), (List<String>) null, new TestBean(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				TestBean.PROPERTY);
 		choiceFlavor.updateFromModel();
 		choiceFlavor.setSelection(Arrays.asList("dry")); //$NON-NLS-1$
 
-		final IListRidget listPersons = (IListRidget) getRidget("listPersons"); //$NON-NLS-1$
+		final IListRidget listPersons = getRidget("listPersons"); //$NON-NLS-1$
 		listPersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		listPersons.bindToModel(createPersonList(), Person.class, "listEntry"); //$NON-NLS-1$
 		listPersons.updateFromModel();
 
-		final ITableRidget tablePersons = (ITableRidget) getRidget("tablePersons"); //$NON-NLS-1$
+		final ITableRidget tablePersons = getRidget("tablePersons"); //$NON-NLS-1$
 		tablePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		String[] colValues = new String[] { "lastname", "firstname" }; //$NON-NLS-1$ //$NON-NLS-2$
 		String[] colHeaders = new String[] { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
 		tablePersons.bindToModel(createPersonList(), Person.class, colValues, colHeaders);
 		tablePersons.updateFromModel();
 
-		final ITreeRidget treePersons = (ITreeRidget) getRidget("treePersons"); //$NON-NLS-1$
+		final ITreeRidget treePersons = getRidget("treePersons"); //$NON-NLS-1$
 		treePersons.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		treePersons.bindToModel(createTreeRoots(), ITreeNode.class, ITreeNode.PROPERTY_CHILDREN,
 				ITreeNode.PROPERTY_PARENT, ITreeNode.PROPERTY_VALUE);
 		treePersons.updateFromModel();
 
-		final IGroupedTreeTableRidget treeWCols = (IGroupedTreeTableRidget) getRidget("treeWCols"); //$NON-NLS-1$
+		final IGroupedTreeTableRidget treeWCols = getRidget("treeWCols"); //$NON-NLS-1$
 		treeWCols.setSelectionType(ISelectableRidget.SelectionType.MULTI);
 		treeWCols.setGroupingEnabled(true);
 		colValues = new String[] { "word", "ACount" }; //$NON-NLS-1$ //$NON-NLS-2$
@@ -105,23 +105,23 @@ public class MarkerSubModuleController extends SubModuleController {
 				ITreeNode.PROPERTY_PARENT, colValues, colHeaders);
 		treeWCols.updateFromModel();
 
-		final IToggleButtonRidget buttonToggle = (IToggleButtonRidget) getRidget("buttonToggle"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonToggle = getRidget("buttonToggle"); //$NON-NLS-1$
 		buttonToggle.setText("Toggle"); //$NON-NLS-1$
 		buttonToggle.setSelected(true);
-		final IActionRidget buttonPush = (IActionRidget) getRidget("buttonPush"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonRadioA = (IToggleButtonRidget) getRidget("buttonRadioA"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonRadioB = (IToggleButtonRidget) getRidget("buttonRadioB"); //$NON-NLS-1$
-		final IToggleButtonRidget buttonCheck = (IToggleButtonRidget) getRidget("buttonCheck"); //$NON-NLS-1$
+		final IActionRidget buttonPush = getRidget("buttonPush"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonRadioA = getRidget("buttonRadioA"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonRadioB = getRidget("buttonRadioB"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonCheck = getRidget("buttonCheck"); //$NON-NLS-1$
 
 		final IRidget[] markables = new IRidget[] { textName, textPrice, comboAge, choiceType, choiceFlavor,
 				listPersons, tablePersons, treePersons, treeWCols, buttonToggle, buttonPush, buttonRadioA,
 				buttonRadioB, buttonCheck };
 
-		final IToggleButtonRidget checkMandatory = (IToggleButtonRidget) getRidget("checkMandatory"); //$NON-NLS-1$
-		final IToggleButtonRidget checkError = (IToggleButtonRidget) getRidget("checkError"); //$NON-NLS-1$
-		final IToggleButtonRidget checkDisabled = (IToggleButtonRidget) getRidget("checkDisabled"); //$NON-NLS-1$
-		final IToggleButtonRidget checkOutput = (IToggleButtonRidget) getRidget("checkOutput"); //$NON-NLS-1$
-		final IToggleButtonRidget checkHidden = (IToggleButtonRidget) getRidget("checkHidden"); //$NON-NLS-1$
+		final IToggleButtonRidget checkMandatory = getRidget("checkMandatory"); //$NON-NLS-1$
+		final IToggleButtonRidget checkError = getRidget("checkError"); //$NON-NLS-1$
+		final IToggleButtonRidget checkDisabled = getRidget("checkDisabled"); //$NON-NLS-1$
+		final IToggleButtonRidget checkOutput = getRidget("checkOutput"); //$NON-NLS-1$
+		final IToggleButtonRidget checkHidden = getRidget("checkHidden"); //$NON-NLS-1$
 
 		checkMandatory.addListener(new IActionListener() {
 			public void callback() {

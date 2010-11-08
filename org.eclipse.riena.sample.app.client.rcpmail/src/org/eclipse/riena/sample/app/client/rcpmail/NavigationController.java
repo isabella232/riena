@@ -24,7 +24,7 @@ public class NavigationController extends AbstractRidgetController {
 
 	@Override
 	public void configureRidgets() {
-		final ITreeRidget tree = (ITreeRidget) getRidget("tree"); //$NON-NLS-1$
+		final ITreeRidget tree = getRidget("tree"); //$NON-NLS-1$
 		tree.bindToModel(createDummyModel(), ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
 				ITreeNode.PROPERTY_VALUE);
 		tree.updateFromModel();

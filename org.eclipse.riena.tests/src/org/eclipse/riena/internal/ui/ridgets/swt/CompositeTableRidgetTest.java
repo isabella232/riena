@@ -757,11 +757,11 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 
 		@Override
 		public void configureRidgets() {
-			final ITextRidget txtFirst = (ITextRidget) getRidget("first"); //$NON-NLS-1$
+			final ITextRidget txtFirst = getRidget("first"); //$NON-NLS-1$
 			txtFirst.bindToModel(rowData, Person.PROPERTY_FIRSTNAME);
 			txtFirst.updateFromModel();
 
-			final ITextRidget txtLast = (ITextRidget) getRidget("last"); //$NON-NLS-1$
+			final ITextRidget txtLast = getRidget("last"); //$NON-NLS-1$
 			txtLast.bindToModel(rowData, Person.PROPERTY_LASTNAME);
 			txtLast.updateFromModel();
 		}

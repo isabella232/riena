@@ -88,16 +88,16 @@ public final class SnippetDialogView001 {
 
 			getWindowRidget().setTitle("Hello Dialog"); //$NON-NLS-1$
 
-			final ITextRidget input = (ITextRidget) getRidget(RIDGET_ID_INPUT);
+			final ITextRidget input = getRidget(RIDGET_ID_INPUT);
 			input.setText("Input please"); //$NON-NLS-1$
 
-			final IActionRidget okAction = (IActionRidget) getRidget(RIDGET_ID_OK);
+			final IActionRidget okAction = getRidget(RIDGET_ID_OK);
 			okAction.addListener(new IActionListener() {
 				public void callback() {
 					getWindowRidget().dispose();
 				}
 			});
-			final IActionRidget cancelAction = (IActionRidget) getRidget(RIDGET_ID_CANCEL);
+			final IActionRidget cancelAction = getRidget(RIDGET_ID_CANCEL);
 			cancelAction.addListener(new IActionListener() {
 				public void callback() {
 					setReturnCode(CANCEL);
