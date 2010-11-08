@@ -47,7 +47,7 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	private void initUiProcessRidget() {
 		if (uiProcessRidget == null) {
 			// fallback
-			uiProcessRidget = (IUIProcessRidget) getRidget("uiProcessRidget"); //$NON-NLS-1$
+			uiProcessRidget = getRidget("uiProcessRidget"); //$NON-NLS-1$
 			if (uiProcessRidget == null) {
 				return;
 			}

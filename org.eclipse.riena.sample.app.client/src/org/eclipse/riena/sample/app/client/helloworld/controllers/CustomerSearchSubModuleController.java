@@ -81,12 +81,12 @@ public class CustomerSearchSubModuleController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		tableRidget = (ITableRidget) getRidget("tableRidget"); //$NON-NLS-1$
-		searchAction = (IActionRidget) getRidget("searchAction"); //$NON-NLS-1$
-		clearAction = (IActionRidget) getRidget("clearAction"); //$NON-NLS-1$
-		openAction = (IActionRidget) getRidget("openAction"); //$NON-NLS-1$
-		firstNameRidget = (ITextRidget) getRidget("firstNameRidget"); //$NON-NLS-1$
-		lastNameRidget = (ITextRidget) getRidget("lastNameRidget"); //$NON-NLS-1$
+		tableRidget = getRidget("tableRidget"); //$NON-NLS-1$
+		searchAction = getRidget("searchAction"); //$NON-NLS-1$
+		clearAction = getRidget("clearAction"); //$NON-NLS-1$
+		openAction = getRidget("openAction"); //$NON-NLS-1$
+		firstNameRidget = getRidget("firstNameRidget"); //$NON-NLS-1$
+		lastNameRidget = getRidget("lastNameRidget"); //$NON-NLS-1$
 	}
 
 	@Override

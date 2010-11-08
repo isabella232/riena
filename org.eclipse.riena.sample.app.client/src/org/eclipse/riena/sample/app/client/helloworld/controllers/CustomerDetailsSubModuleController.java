@@ -46,28 +46,28 @@ public class CustomerDetailsSubModuleController extends SubModuleController {
 
 		final Customer customer = getCustomer();
 
-		final ITextRidget customerNumber = (ITextRidget) getRidget(RIDGET_ID_CUSTOMER_NUMBER);
+		final ITextRidget customerNumber = getRidget(RIDGET_ID_CUSTOMER_NUMBER);
 		customerNumber.setOutputOnly(true);
 		customerNumber.bindToModel(customer, "customerNumber"); //$NON-NLS-1$
 		customerNumber.updateFromModel();
 
-		final ITextRidget lastName = (ITextRidget) getRidget(RIDGET_ID_LAST_NAME);
+		final ITextRidget lastName = getRidget(RIDGET_ID_LAST_NAME);
 		lastName.bindToModel(customer, "lastName"); //$NON-NLS-1$
 		lastName.updateFromModel();
 
-		final ITextRidget firstName = (ITextRidget) getRidget(RIDGET_ID_FIRST_NAME);
+		final ITextRidget firstName = getRidget(RIDGET_ID_FIRST_NAME);
 		firstName.bindToModel(customer, "firstName"); //$NON-NLS-1$
 		firstName.updateFromModel();
 
-		final ITextRidget birthPlace = (ITextRidget) getRidget(RIDGET_ID_BIRTHPLACE);
+		final ITextRidget birthPlace = getRidget(RIDGET_ID_BIRTHPLACE);
 		birthPlace.bindToModel(customer.getBirth(), "birthPlace"); //$NON-NLS-1$
 		birthPlace.updateFromModel();
 
-		final IActionRidget saveAction = (IActionRidget) getRidget(RIDGET_ID_SAVE);
+		final IActionRidget saveAction = getRidget(RIDGET_ID_SAVE);
 		saveAction.addListener(new SaveCallback());
 		saveAction.setText("Save"); //$NON-NLS-1$
 
-		final IActionRidget openOffersAction = (IActionRidget) getRidget(RIDGET_ID_OPEN_OFFERS);
+		final IActionRidget openOffersAction = getRidget(RIDGET_ID_OPEN_OFFERS);
 		openOffersAction.addListener(new OffersCallback());
 		openOffersAction.setEnabled(false);
 		openOffersAction.setText("Offers"); //$NON-NLS-1$
