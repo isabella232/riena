@@ -92,8 +92,13 @@ public final class SwtRidgetFactory {
 			// nothing
 		}
 
-		public IRidget getRidget(final String id) {
-			return ridget;
+		@SuppressWarnings("unchecked")
+		public <R extends IRidget> R getRidget(final String id) {
+			return (R) ridget;
+		}
+
+		public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
+			return getRidget(id);
 		}
 
 		public Collection<? extends IRidget> getRidgets() {
@@ -104,10 +109,6 @@ public final class SwtRidgetFactory {
 			this.ridget = null;
 		}
 
-		@SuppressWarnings("unchecked")
-		public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
-			return (R) getRidget(id);
-		}
 	}
 
 }

@@ -155,8 +155,13 @@ public class InjectBindingManagerTest extends TestCase {
 
 		}
 
-		public IRidget getRidget(final String id) {
-			return ridgets.get(id);
+		@SuppressWarnings("unchecked")
+		public <R extends IRidget> R getRidget(final String id) {
+			return (R) ridgets.get(id);
+		}
+
+		public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
+			return getRidget(id);
 		}
 
 		public Collection<? extends IRidget> getRidgets() {
@@ -180,11 +185,6 @@ public class InjectBindingManagerTest extends TestCase {
 		}
 
 		public void configureRidgets() {
-		}
-
-		@SuppressWarnings("unchecked")
-		public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
-			return (R) getRidget(id);
 		}
 
 	}

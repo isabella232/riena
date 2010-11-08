@@ -969,8 +969,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 		}
 
-		public IRidget getRidget(final String id) {
-			return AbstractMasterDetailsRidget.this.getRidget(id);
+		@SuppressWarnings("unchecked")
+		public <R extends IRidget> R getRidget(final String id) {
+			return (R) AbstractMasterDetailsRidget.this.getRidget(id);
 		}
 
 		public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
