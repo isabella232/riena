@@ -46,13 +46,13 @@ public class CustomerSearchController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		final ITextRidget suchName = (ITextRidget) getRidget("searchLastName"); //$NON-NLS-1$
+		final ITextRidget suchName = getRidget("searchLastName"); //$NON-NLS-1$
 		suchName.bindToModel(customerSearchBean, "lastName"); //$NON-NLS-1$
 		suchName.setMandatory(true);
 
 		((ILabelRidget) getRidget("hits")).bindToModel(result, "hits"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		final ITableRidget kunden = ((ITableRidget) getRidget("result")); //$NON-NLS-1$
+		final ITableRidget kunden = getRidget("result"); //$NON-NLS-1$
 		final String[] columnNames = { "lastname", "firstname", "birthdate", "street", "city" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		final String[] propertyNames = { "lastName", "firstName", "birthDate", "address.street", "address.city" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 

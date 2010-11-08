@@ -94,17 +94,17 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 	 */
 	private void initNavigationFilterGroup() {
 
-		final ITextRidget ridgetID = (ITextRidget) getRidget("nodeId"); //$NON-NLS-1$
+		final ITextRidget ridgetID = getRidget("nodeId"); //$NON-NLS-1$
 		filterModel = new FilterModel();
 		ridgetID.bindToModel(filterModel, "nodeId"); //$NON-NLS-1$
 		ridgetID.updateFromModel();
 
-		final ISingleChoiceRidget filterType = (ISingleChoiceRidget) getRidget("filterType"); //$NON-NLS-1$		
+		final ISingleChoiceRidget filterType = getRidget("filterType"); //$NON-NLS-1$		
 		filterType.addPropertyChangeListener(new FilterTypeChangeListener());
 		filterType.bindToModel(filterModel, "types", filterModel, "selectedType"); //$NON-NLS-1$ //$NON-NLS-2$
 		filterType.updateFromModel();
 
-		filterTypeValues = (IComboRidget) getRidget("filterTypeValues"); //$NON-NLS-1$
+		filterTypeValues = getRidget("filterTypeValues"); //$NON-NLS-1$
 		filterTypeValues.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if (addFilter != null) {
@@ -113,14 +113,14 @@ public class FilterNavigationSubModuleController extends SubModuleController {
 			}
 		});
 
-		addFilter = (IActionRidget) getRidget("addFilter"); //$NON-NLS-1$
+		addFilter = getRidget("addFilter"); //$NON-NLS-1$
 		addFilter.addListener(new IActionListener() {
 			public void callback() {
 				doAddFilter();
 			}
 		});
 
-		final IActionRidget removeFilters = (IActionRidget) getRidget("removeFilters"); //$NON-NLS-1$
+		final IActionRidget removeFilters = getRidget("removeFilters"); //$NON-NLS-1$
 		removeFilters.addListener(new IActionListener() {
 			public void callback() {
 				doRemoveFilters();

@@ -57,10 +57,10 @@ public class CustomerOverviewController extends SubModuleController {
 			getNavigationNode().getParent().setContext("demo.customer", customer); //$NON-NLS-1$
 		}
 
-		final ITextRidget firstName = (ITextRidget) getRidget("firstname"); //$NON-NLS-1$
+		final ITextRidget firstName = getRidget("firstname"); //$NON-NLS-1$
 		firstName.bindToModel(customer, "firstName"); //$NON-NLS-1$
 		firstName.setMandatory(true);
-		final ITextRidget lastName = (ITextRidget) getRidget("lastname"); //$NON-NLS-1$
+		final ITextRidget lastName = getRidget("lastname"); //$NON-NLS-1$
 		lastName.setMandatory(true);
 		lastName.bindToModel(customer, "lastName"); //$NON-NLS-1$
 

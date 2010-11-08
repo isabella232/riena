@@ -34,7 +34,7 @@ public class EmailCustomerController extends AbstractEmailController {
 	public void configureRidgets() {
 		super.configureRidgets();
 
-		final ITableRidget emails = (ITableRidget) getRidget("emailsTable"); //$NON-NLS-1$
+		final ITableRidget emails = getRidget("emailsTable"); //$NON-NLS-1$
 
 		final String[] columnHeaders = { "Subject", "Date" }; //$NON-NLS-1$//$NON-NLS-2$
 		final String[] columnPropertyNames = { "emailSubject", "emailDate" }; //$NON-NLS-1$//$NON-NLS-2$

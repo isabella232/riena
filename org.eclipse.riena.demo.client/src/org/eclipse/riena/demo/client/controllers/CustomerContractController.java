@@ -32,14 +32,14 @@ public class CustomerContractController extends SubModuleController {
 
 		final Customer customer = (Customer) getNavigationNode().getParent().getContext("demo.customer"); //$NON-NLS-1$
 
-		final ITextRidget firstName = (ITextRidget) getRidget("firstname"); //$NON-NLS-1$
+		final ITextRidget firstName = getRidget("firstname"); //$NON-NLS-1$
 		firstName.bindToModel(customer, "firstName"); //$NON-NLS-1$
 		firstName.setMandatory(true);
-		final ITextRidget lastName = (ITextRidget) getRidget("lastname"); //$NON-NLS-1$
+		final ITextRidget lastName = getRidget("lastname"); //$NON-NLS-1$
 		lastName.setMandatory(true);
 		lastName.bindToModel(customer, "lastName"); //$NON-NLS-1$
 
-		final IMasterDetailsRidget master = (IMasterDetailsRidget) getRidget("contracts"); //$NON-NLS-1$
+		final IMasterDetailsRidget master = getRidget("contracts"); //$NON-NLS-1$
 		master.setDelegate(new ContractDelegate());
 		final String[] properties = new String[] { "contractNo", "contractValue", "status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		final String[] headers = new String[] { "contract#", "value", "status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

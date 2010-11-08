@@ -103,7 +103,7 @@ public class ComboSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IToggleButtonRidget buttonSecondValue = (IToggleButtonRidget) getRidget("buttonSecondValue"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonSecondValue = getRidget("buttonSecondValue"); //$NON-NLS-1$
 		if (buttonSecondValue != null) {
 			buttonSecondValue.setText("Always use second person!"); //$NON-NLS-1$
 			buttonSecondValue.addListener(new IActionListener() {

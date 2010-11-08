@@ -37,15 +37,15 @@ public class DateTimeSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		final IDateTimeRidget dtDate = (IDateTimeRidget) getRidget("dtDate"); //$NON-NLS-1$
-		final IDateTimeRidget dtTime = (IDateTimeRidget) getRidget("dtTime"); //$NON-NLS-1$
-		final IDateTimeRidget dtDateOnly = (IDateTimeRidget) getRidget("dtDateOnly"); //$NON-NLS-1$
-		final IDateTimeRidget dtTimeOnly = (IDateTimeRidget) getRidget("dtTimeOnly"); //$NON-NLS-1$
-		final IDateTimeRidget dtCal = (IDateTimeRidget) getRidget("dtCal"); //$NON-NLS-1$
-		final ITextRidget txt1 = (ITextRidget) getRidget("txt1"); //$NON-NLS-1$
-		final ITextRidget txt2 = (ITextRidget) getRidget("txt2"); //$NON-NLS-1$
-		final ITextRidget txt3 = (ITextRidget) getRidget("txt3"); //$NON-NLS-1$
-		final ITextRidget txt4 = (ITextRidget) getRidget("txt4"); //$NON-NLS-1$
+		final IDateTimeRidget dtDate = getRidget("dtDate"); //$NON-NLS-1$
+		final IDateTimeRidget dtTime = getRidget("dtTime"); //$NON-NLS-1$
+		final IDateTimeRidget dtDateOnly = getRidget("dtDateOnly"); //$NON-NLS-1$
+		final IDateTimeRidget dtTimeOnly = getRidget("dtTimeOnly"); //$NON-NLS-1$
+		final IDateTimeRidget dtCal = getRidget("dtCal"); //$NON-NLS-1$
+		final ITextRidget txt1 = getRidget("txt1"); //$NON-NLS-1$
+		final ITextRidget txt2 = getRidget("txt2"); //$NON-NLS-1$
+		final ITextRidget txt3 = getRidget("txt3"); //$NON-NLS-1$
+		final ITextRidget txt4 = getRidget("txt4"); //$NON-NLS-1$
 
 		final long now = System.currentTimeMillis();
 		final TypedBean<Date> date1 = new TypedBean<Date>(new Date(now));

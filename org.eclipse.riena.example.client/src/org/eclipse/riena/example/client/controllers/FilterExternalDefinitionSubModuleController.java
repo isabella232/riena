@@ -39,14 +39,14 @@ public class FilterExternalDefinitionSubModuleController extends SubModuleContro
 	 */
 	private void initRidgets() {
 
-		final IActionRidget removeFilters = (IActionRidget) getRidget("removeOffline"); //$NON-NLS-1$
+		final IActionRidget removeFilters = getRidget("removeOffline"); //$NON-NLS-1$
 		removeFilters.addListener(new IActionListener() {
 			public void callback() {
 				doRemoveFilters();
 			}
 		});
 
-		final IActionRidget addFilters = (IActionRidget) getRidget("addOffline"); //$NON-NLS-1$
+		final IActionRidget addFilters = getRidget("addOffline"); //$NON-NLS-1$
 		addFilters.addListener(new IActionListener() {
 			public void callback() {
 				doAddFilters();

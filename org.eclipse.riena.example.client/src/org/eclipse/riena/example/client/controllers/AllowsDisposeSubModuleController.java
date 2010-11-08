@@ -1,4 +1,5 @@
 package org.eclipse.riena.example.client.controllers;
+
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -29,7 +30,7 @@ public class AllowsDisposeSubModuleController extends SubModuleController {
 		});
 		checkBoxRidget.setSelected(true);
 
-		messageBoxRidget = (IMessageBoxRidget) getRidget("messageBox"); //$NON-NLS-1$
+		messageBoxRidget = getRidget("messageBox"); //$NON-NLS-1$
 		messageBoxRidget
 				.setText("The Controller \"" + getNavigationNode().getLabel() + "\" does not allow disposing.\n Do you want to close the application nevertheless or navigate to the controller?"); //$NON-NLS-1$ //$NON-NLS-2$
 		final MessageBoxOption[] options = new MessageBoxOption[] { CLOSE_NEVERTHELESS, NAVIGATE_TO_CONTROLLER };

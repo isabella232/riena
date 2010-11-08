@@ -30,16 +30,16 @@ public class ComboAndChoiceSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		comboRidgetWithModel = (IComboRidget) getRidget("comboBoxWithModel"); //$NON-NLS-1$
+		comboRidgetWithModel = getRidget("comboBoxWithModel"); //$NON-NLS-1$
 		final SingleSelectionListBean colors = new SingleSelectionListBean(new Object[] {
 				"white", "black", "red", "blue", "green", "brown", "yellow" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		colors.setSelection("blue"); //$NON-NLS-1$
 		comboRidgetWithModel.bindToModel(colors, SingleSelectionListBean.PROPERTY_VALUES, String.class, null, colors,
 				SingleSelectionListBean.PROPERTY_SELECTION);
 
-		comboRidgetWithoutModel = (IComboRidget) getRidget("comboBoxWithoutModel"); //$NON-NLS-1$
+		comboRidgetWithoutModel = getRidget("comboBoxWithoutModel"); //$NON-NLS-1$
 
-		updateAllRidgetsFromModel = (IActionRidget) getRidget("updateAllRidgetsFromModel"); //$NON-NLS-1$
+		updateAllRidgetsFromModel = getRidget("updateAllRidgetsFromModel"); //$NON-NLS-1$
 		updateAllRidgetsFromModel.addListener(new IActionListener() {
 
 			public void callback() {
@@ -47,9 +47,9 @@ public class ComboAndChoiceSubModuleController extends SubModuleController {
 			}
 		});
 
-		final ISingleChoiceRidget compositeNumberModel = (ISingleChoiceRidget) getRidget("compositeNumberModel"); //$NON-NLS-1$
+		final ISingleChoiceRidget compositeNumberModel = getRidget("compositeNumberModel"); //$NON-NLS-1$
 
-		bindComboToModel = (IActionRidget) getRidget("bindComboToModel"); //$NON-NLS-1$
+		bindComboToModel = getRidget("bindComboToModel"); //$NON-NLS-1$
 		bindComboToModel.addListener(new IActionListener() {
 
 			public void callback() {
@@ -61,7 +61,7 @@ public class ComboAndChoiceSubModuleController extends SubModuleController {
 			}
 		});
 
-		bindChoiceToModel = (IActionRidget) getRidget("bindChoiceToModel"); //$NON-NLS-1$
+		bindChoiceToModel = getRidget("bindChoiceToModel"); //$NON-NLS-1$
 		bindChoiceToModel.addListener(new IActionListener() {
 
 			public void callback() {

@@ -29,7 +29,7 @@ public class EmailInboxController extends AbstractEmailController {
 	@Override
 	public void configureRidgets() {
 		super.configureRidgets();
-		final ITableRidget emails = (ITableRidget) getRidget("emailsTable"); //$NON-NLS-1$
+		final ITableRidget emails = getRidget("emailsTable"); //$NON-NLS-1$
 
 		final String[] columnHeaders = { "From", "Subject", "Date" }; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 		final String[] columnPropertyNames = { "emailFrom", "emailSubject", "emailDate" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$

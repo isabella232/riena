@@ -67,12 +67,12 @@ public class AbstractEmailController extends SubModuleController {
 	 */
 	@Override
 	public void configureRidgets() {
-		final ITableRidget emails = (ITableRidget) getRidget("emailsTable"); //$NON-NLS-1$
-		final ILabelRidget emailSubject = (ILabelRidget) getRidget("emailSubject"); //$NON-NLS-1$
-		final ILabelRidget emailFrom = (ILabelRidget) getRidget("emailFrom"); //$NON-NLS-1$
-		final ILabelRidget emailTo = (ILabelRidget) getRidget("emailTo"); //$NON-NLS-1$
-		final ILabelRidget emailDate = (ILabelRidget) getRidget("emailDate"); //$NON-NLS-1$
-		final ITextRidget emailBody = (ITextRidget) getRidget("emailBody"); //$NON-NLS-1$
+		final ITableRidget emails = getRidget("emailsTable"); //$NON-NLS-1$
+		final ILabelRidget emailSubject = getRidget("emailSubject"); //$NON-NLS-1$
+		final ILabelRidget emailFrom = getRidget("emailFrom"); //$NON-NLS-1$
+		final ILabelRidget emailTo = getRidget("emailTo"); //$NON-NLS-1$
+		final ILabelRidget emailDate = getRidget("emailDate"); //$NON-NLS-1$
+		final ITextRidget emailBody = getRidget("emailBody"); //$NON-NLS-1$
 
 		emails.setComparator(3, new TypedComparator<Date>());
 		emails.addPropertyChangeListener(new PropertyChangeListener() {
@@ -93,7 +93,7 @@ public class AbstractEmailController extends SubModuleController {
 		});
 
 		if (getNavigationNode().isJumpTarget()) {
-			final IActionRidget openCustomerAction = (IActionRidget) getRidget("openCustomer");
+			final IActionRidget openCustomerAction = getRidget("openCustomer");
 			openCustomerAction.setText("Back to Customer");
 			openCustomerAction.addListener(new IActionListener() {
 				public void callback() {
