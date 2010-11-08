@@ -192,8 +192,11 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * <pre>
 	 * ITextRidget txtName = (ITextRidget) getRidget(&quot;searchComposite.txtName&quot;);
 	 * </pre>
+	 * 
+	 * @since 3.0
 	 */
-	public IRidget getRidget(final String id) {
+	@SuppressWarnings("unchecked")
+	public <R extends IRidget> R getRidget(final String id) {
 		IRidget result = ridgets.get(id);
 		if (result == null && id.indexOf('.') != -1) {
 			final String parentId = id.substring(0, id.lastIndexOf('.'));
@@ -203,7 +206,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 				result = ((IRidgetContainer) parent).getRidget(childId);
 			}
 		}
-		return result;
+		return (R) result;
 	}
 
 	/**
@@ -211,7 +214,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 */
 	@SuppressWarnings("unchecked")
 	public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
-		R ridget = (R) getRidget(id);
+		R ridget = getRidget(id);
 
 		if (ridget != null) {
 			return ridget;

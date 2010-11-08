@@ -35,8 +35,10 @@ public interface IRidgetContainer {
 	 * @param id
 	 *            the ridget id.
 	 * @return the ridget instance or null, if no ridget with this id was found.
+	 * 
+	 * @since 3.0
 	 */
-	IRidget getRidget(String id);
+	<R extends IRidget> R getRidget(String id);
 
 	/**
 	 * Returns the ridget with the given id from this container. <br>
