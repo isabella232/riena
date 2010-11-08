@@ -141,7 +141,7 @@ public class TextDateSubModuleController extends SubModuleController {
 
 	private void bind(final DataBindingContext dbc, final String id) {
 		final IRidget inputRidget = getRidget("in" + id); //$NON-NLS-1$
-		final ITextRidget outputRidget = (ITextRidget) getRidget("out" + id); //$NON-NLS-1$
+		final ITextRidget outputRidget = getRidget("out" + id); //$NON-NLS-1$
 		outputRidget.setOutputOnly(true);
 		dbc.bindValue(BeansObservables.observeValue(inputRidget, ITextRidget.PROPERTY_TEXT), BeansObservables
 				.observeValue(outputRidget, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
@@ -149,7 +149,7 @@ public class TextDateSubModuleController extends SubModuleController {
 	}
 
 	private void bindToModel(final String id, final StringBean value) {
-		final IDateTextRidget ridget = (IDateTextRidget) getRidget("in" + id); //$NON-NLS-1$
+		final IDateTextRidget ridget = getRidget("in" + id); //$NON-NLS-1$
 		ridget.setFormat(id.replace('_', ' '));
 		ridget.bindToModel(value, TypedBean.PROP_VALUE);
 		ridget.updateFromModel();
