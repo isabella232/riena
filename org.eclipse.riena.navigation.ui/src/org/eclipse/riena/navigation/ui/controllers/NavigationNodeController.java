@@ -190,7 +190,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	 * "searchComposite.txtName":
 	 * 
 	 * <pre>
-	 * ITextRidget txtName = (ITextRidget) getRidget(&quot;searchComposite.txtName&quot;);
+	 * ITextRidget txtName = getRidget(&quot;searchComposite.txtName&quot;);
 	 * </pre>
 	 * 
 	 * @since 3.0
