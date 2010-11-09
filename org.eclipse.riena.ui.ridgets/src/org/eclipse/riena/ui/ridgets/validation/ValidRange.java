@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.ridgets.validation;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Locale;
@@ -44,8 +45,11 @@ import org.eclipse.riena.ui.ridgets.nls.Messages;
  */
 public class ValidRange extends ValidDecimal implements IExecutableExtension {
 
-	private BigDecimal min;
-	private BigDecimal max;
+	private Number min;
+	private Number max;
+
+	//	private BigDecimal min;
+	//	private BigDecimal max;
 
 	/**
 	 * Constructs a range check rule for the default locate, with the range set
@@ -101,10 +105,11 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 		Assert.isNotNull(max, "parameter max must not be null"); //$NON-NLS-1$
 		Assert.isLegal(min.getClass().equals(max.getClass()), "min and max must be of the same class. (min =  " //$NON-NLS-1$
 				+ min.getClass().getName() + ", max = " + max.getClass().getName()); //$NON-NLS-1$		
-		this.min = toBigDecimal(min);
-		this.max = toBigDecimal(max);
-		Assert.isLegal(this.min.compareTo(this.max) <= 0, "min " + this.min + " must be smaller or equal max " //$NON-NLS-1$ //$NON-NLS-2$
-				+ this.max);
+		this.min = min;
+		this.max = max;
+		Assert.isLegal(toBigDecimal(this.min).compareTo(toBigDecimal(this.max)) <= 0,
+				"min " + this.min + " must be smaller or equal max " //$NON-NLS-1$ //$NON-NLS-2$
+						+ this.max);
 	}
 
 	/**
@@ -143,7 +148,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 				}
 			}
 		}
-		if (currentValue.compareTo(min) < 0 || currentValue.compareTo(max) > 0) {
+		if (validateRange(currentValue)) {
 			final String message = NLS.bind(Messages.ValidRange_error_outOfRange,
 					new Object[] { currentValue, min, max });
 			return ValidationRuleStatus.error(true, message);
@@ -151,20 +156,59 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 		return ValidationRuleStatus.ok();
 	}
 
+	protected boolean validateRange(final BigDecimal value) {
+
+		return value.compareTo(toBigDecimal(min, value)) < 0 || value.compareTo(toBigDecimal(max, value)) > 0;
+	}
+
 	/**
 	 * Convert a number to BigDecimal.
 	 * 
 	 * @param number
-	 *            a number
-	 * @return a BigDecimal instance
+	 *            a number.
+	 * 
+	 * @return a BigDecimal instance.
 	 */
 	protected BigDecimal toBigDecimal(final Number number) {
+		return toBigDecimal(number, 0);
+	}
+
+	/**
+	 * Convert a number to BigDecimal.
+	 * 
+	 * @param number
+	 *            a number.
+	 * 
+	 * @param value
+	 *            the value used for the precision of the number to convert.
+	 * 
+	 * @return a BigDecimal instance.
+	 */
+	protected BigDecimal toBigDecimal(final Number number, final BigDecimal value) {
+		return toBigDecimal(number, value.precision());
+	}
+
+	/**
+	 * Convert a number to BigDecimal.
+	 * 
+	 * @param number
+	 *            a number.
+	 * 
+	 * @param precision
+	 *            The number of digits to be used for an operation. A value of 0
+	 *            indicates that unlimited precision (as many digits as are
+	 *            required) will be used. Note that leading zeros (in the
+	 *            coefficient of a number) are never significant.
+	 * 
+	 * @return a BigDecimal instance.
+	 */
+	protected BigDecimal toBigDecimal(final Number number, final int precision) {
 		if (number instanceof BigDecimal) {
 			return (BigDecimal) number;
 		} else if (number instanceof BigInteger) {
 			return new BigDecimal((BigInteger) number);
 		} else if (number instanceof Float || number instanceof Double) {
-			return new BigDecimal(number.doubleValue());
+			return new BigDecimal(number.doubleValue(), new MathContext(precision));
 		} else {
 			return new BigDecimal(number.longValue());
 		}

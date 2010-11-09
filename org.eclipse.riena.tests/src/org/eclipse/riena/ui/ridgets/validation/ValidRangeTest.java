@@ -239,4 +239,27 @@ public class ValidRangeTest extends RienaTestCase {
 		assertTrue(rule.validate("1,1").isOK());
 	}
 
+	public void testDoubleValuesWithMinMaxEqual() {
+		Double min = 5000.0;
+		Double max = 5000.0;
+		ValidRange rule = createRange(min, max);
+		String value = "5000";
+
+		assertTrue(rule.validate(value).isOK());
+
+		min = 5000.5;
+		max = 5000.5;
+		rule = createRange(min, max);
+		value = "5000,5";
+
+		assertTrue(rule.validate(value).isOK());
+
+		min = 5000.55;
+		max = 5000.55;
+		rule = createRange(min, max);
+		value = "5000,55";
+
+		assertTrue(rule.validate(value).isOK());
+	}
+
 }
