@@ -156,6 +156,9 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 		return ValidationRuleStatus.ok();
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected boolean validateRange(final BigDecimal value) {
 
 		return value.compareTo(toBigDecimal(min, value)) < 0 || value.compareTo(toBigDecimal(max, value)) > 0;
@@ -183,6 +186,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	 *            the value used for the precision of the number to convert.
 	 * 
 	 * @return a BigDecimal instance.
+	 * @since 3.0
 	 */
 	protected BigDecimal toBigDecimal(final Number number, final BigDecimal value) {
 		return toBigDecimal(number, value.precision());
@@ -201,6 +205,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	 *            coefficient of a number) are never significant.
 	 * 
 	 * @return a BigDecimal instance.
+	 * @since 3.0
 	 */
 	protected BigDecimal toBigDecimal(final Number number, final int precision) {
 		if (number instanceof BigDecimal) {
