@@ -58,18 +58,24 @@ import org.eclipse.riena.core.util.IOUtils;
 import org.eclipse.riena.core.util.Literal;
 import org.eclipse.riena.core.util.Millis;
 import org.eclipse.riena.core.util.PropertiesUtils;
+import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.monitor.client.Activator;
 import org.eclipse.riena.monitor.common.Collectible;
 
 /**
  * This simple store implements a file based {@code IStore} for the client
- * monitoring witch stores its data in the data area of riena.
+ * monitoring. The store location is either given explicitly with the
+ * configuration data or if not it stores its data in the data area of riena.
  * <p>
  * The simple store expects the following configuration that can be passed with
  * its definition in an extension:
  * <ul>
  * <li>cleanupDelay - defines the period between store cleanup steps (default
  * value is 1 hour if not defined)</li>
+ * <li>storePath - an optional file path for the store (default value is within
+ * the riena data area). The {@code VarableManagerUtil} will perform a string
+ * substitution on storePath.</li>
  * </ul>
  * Periods of time can be specified as a string conforming to
  * {@link Millis#valueOf(String)}.<br>
@@ -88,6 +94,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 
 	private File storeFolder;
 	private long cleanupDelay;
+	private String storePathName;
 	private Cleaner cleaner;
 	private Map<String, Category> categories = new HashMap<String, Category>();
 	private Cipher encrypt;
@@ -99,6 +106,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	private static final String CATEGORY_DELIMITER = "#"; //$NON-NLS-1$
 
 	private static final String CLEANUP_DELAY = "cleanupDelay"; //$NON-NLS-1$
+	private static final String STORE_PATH = "storePath"; //$NON-NLS-1$
 	private static final String CLEANUP_DELAY_DEFAULT = "1 h"; //$NON-NLS-1$
 	private static final byte[] KEY = new byte[8];
 
@@ -110,18 +118,28 @@ public class SimpleStore implements IStore, IExecutableExtension {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleStore.class);
 
-	public SimpleStore() throws CoreException {
-		// perform default initialization
-		setInitializationData(null, null, null);
-		initStore("simplestore"); //$NON-NLS-1$
+	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
+			throws CoreException {
+		Map<String, String> properties = null;
+		try {
+			properties = PropertiesUtils.asMap(data, Literal.map(CLEANUP_DELAY, CLEANUP_DELAY_DEFAULT));
+			cleanupDelay = Millis.valueOf(properties.get(CLEANUP_DELAY));
+			Assert.isLegal(cleanupDelay > 0, "cleanupDelay must be greater than 0."); //$NON-NLS-1$
+			storePathName = VariableManagerUtil.substitute(properties.get(STORE_PATH));
+		} catch (final IllegalArgumentException e) {
+			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
+		}
+		initStore();
+		cleaner = new Cleaner();
 	}
 
-	/**
-	 * @param storeFolderName
-	 */
-	private void initStore(final String storeFolderName) {
-		cleaner = new Cleaner();
-		storeFolder = new File(RienaLocations.getDataArea(Activator.getDefault().getBundle()), storeFolderName);
+	private CoreException configurationException(final String message, final Exception e) {
+		return new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, e));
+	}
+
+	private void initStore() {
+		storeFolder = StringUtils.isGiven(storePathName) ? new File(storePathName) : new File(
+				RienaLocations.getDataArea(Activator.getDefault().getBundle()), "simplestore"); //$NON-NLS-1$
 		if (!storeFolder.isDirectory()) {
 			final boolean directoryCreated = storeFolder.mkdirs();
 			Assert.isTrue(directoryCreated);
@@ -145,27 +163,6 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		}
 	}
 
-	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
-			throws CoreException {
-		Map<String, String> properties = null;
-		try {
-			properties = PropertiesUtils.asMap(data, Literal.map(CLEANUP_DELAY, CLEANUP_DELAY_DEFAULT));
-			cleanupDelay = Millis.valueOf(properties.get(CLEANUP_DELAY));
-			Assert.isLegal(cleanupDelay > 0, "cleanupDelay must be greater than 0."); //$NON-NLS-1$
-		} catch (final IllegalArgumentException e) {
-			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
-		}
-	}
-
-	private CoreException configurationException(final String message, final Exception e) {
-		return new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, message, e));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.monitor.client.IStore#open()
-	 */
 	public void open(final Map<String, Category> categories) {
 		Assert.isNotNull(categories, "categories must not be null"); //$NON-NLS-1$
 		this.categories = categories;
