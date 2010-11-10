@@ -76,6 +76,18 @@ public final class RienaLocations {
 		return existingOrNewDirectory(new File(getDataArea(), symbolicName));
 	}
 
+	/**
+	 * Returns the user area on the file system. This is equivalent to
+	 * {@code System.getProperty("user.home"}.
+	 * 
+	 * @return the user area on the file system.
+	 * 
+	 * @since 3.0
+	 */
+	public static File getUserArea() {
+		return new File(System.getProperty("user.home")); //$NON-NLS-1$
+	}
+
 	private static File existingOrNewDirectory(File location) {
 		if (location.isDirectory()) {
 			LOGGER.log(LogService.LOG_DEBUG, "Found directory at " + location.getAbsolutePath()); //$NON-NLS-1$
