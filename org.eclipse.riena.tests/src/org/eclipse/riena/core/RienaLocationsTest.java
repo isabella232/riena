@@ -38,4 +38,8 @@ public class RienaLocationsTest extends TestCase {
 		assertEquals(new File(new File(Platform.getInstanceLocation().getURL().getFile()), Activator.getDefault()
 				.getBundle().getSymbolicName()), dataArea);
 	}
+
+	public void testGetUserArea() {
+		assertEquals(System.getProperty("user.home"), RienaLocations.getUserArea().toString());
+	}
 }
