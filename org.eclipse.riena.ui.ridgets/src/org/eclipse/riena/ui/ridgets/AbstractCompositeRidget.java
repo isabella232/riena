@@ -173,6 +173,17 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		if (this.enabled != enabled) {
 			this.enabled = enabled;
 			updateEnabled();
+			if (enabled) {
+				updateMarkersOfChildRidgets();
+			}
+		}
+	}
+
+	private void updateMarkersOfChildRidgets() {
+		for (final IRidget ridget : getRidgets()) {
+			if (ridget instanceof IMarkableRidget) {
+				((IMarkableRidget) ridget).updateMarkers();
+			}
 		}
 	}
 

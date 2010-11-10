@@ -85,4 +85,11 @@ public interface IMarkableRidget extends IBasicMarkableRidget {
 	 */
 	void setOutputOnly(boolean outputOnly);
 
+	/**
+	 * Updates all markers that are defined on this ridget.
+	 * 
+	 * @since 3.0
+	 */
+	void updateMarkers();
+
 }
