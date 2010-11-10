@@ -32,6 +32,7 @@ public class SimpleStoreTest extends RienaTestCase {
 
 	public void testPutCollectibleAndGetCollectible() throws CoreException, IOException {
 		final SimpleStore store = new SimpleStore();
+		store.setInitializationData(null, null, null);
 		final File file = File.createTempFile("SimpleStore", ".test");
 		try {
 			final Collectible<String> collectible = new Collectible<String>(CLIENT_INFO, CATEGORY, PAYLOAD);
@@ -47,10 +48,18 @@ public class SimpleStoreTest extends RienaTestCase {
 
 	public void testGetCollectibleFromExistingStoreFileForRegression() throws CoreException {
 		final SimpleStore store = new SimpleStore();
+		store.setInitializationData(null, null, null);
 		final File file = getFile("regression.store");
 		final Collectible<String> outCollectible = ReflectionUtils.invokeHidden(store, "getCollectible", file);
 		assertEquals(CLIENT_INFO, outCollectible.getClientInfo());
 		assertEquals(CATEGORY, outCollectible.getCategory());
 		assertEquals(PAYLOAD, outCollectible.getPayload());
+	}
+
+	public void testSetInitializationData() throws CoreException {
+		final SimpleStore store = new SimpleStore();
+		store.setInitializationData(null, null, "cleanupDelay=1 m; storePath=c:\\temp\\store");
+		assertEquals(60 * 1000, (long) (Long) ReflectionUtils.getHidden(store, "cleanupDelay"));
+		assertEquals("c:\\temp\\store", (String) ReflectionUtils.getHidden(store, "storePathName"));
 	}
 }
