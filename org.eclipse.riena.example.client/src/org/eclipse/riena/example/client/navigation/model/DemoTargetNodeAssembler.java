@@ -37,12 +37,13 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
 public class DemoTargetNodeAssembler extends AbstractNavigationAssembler {
 
 	public final static String ID = "org.eclipse.riena.example.navigate.demotarget"; //$NON-NLS-1$
+	public final static String ID_FIRST_SUBMODULE = "org.eclipse.riena.example.navigate.target.submodule"; //$NON-NLS-1$
 
 	private Set<String> knownTargetIds = null;
 
 	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
 		if (knownTargetIds == null) {
-			knownTargetIds = new HashSet<String>(Arrays.asList(ID));
+			knownTargetIds = new HashSet<String>(Arrays.asList(ID, ID_FIRST_SUBMODULE));
 			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
 		}
 
@@ -58,12 +59,18 @@ public class DemoTargetNodeAssembler extends AbstractNavigationAssembler {
 		module.setIcon(ExampleIcons.ICON_GREEN_LED);
 		moduleGroup.addChild(module);
 
-		final ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.navigate.target.submodule"), "Target"); //$NON-NLS-1$ //$NON-NLS-2$
-		final IWorkareaDefinition def = WorkareaManager.getInstance().registerDefinition(subModule,
+		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(ID_FIRST_SUBMODULE), "Target"); //$NON-NLS-1$ 
+		IWorkareaDefinition def = WorkareaManager.getInstance().registerDefinition(subModule,
 				DemoTargetSubModuleController.class, DemoTargetSubModuleView.ID);
 		def.setRequiredPreparation(true);
 		module.addChild(subModule);
+
+		subModule = new SubModuleNode(new NavigationNodeId(ID_FIRST_SUBMODULE + "2"), "Target2"); //$NON-NLS-1$ //$NON-NLS-2$
+		def = WorkareaManager.getInstance().registerDefinition(subModule, DemoTargetSubModuleController.class,
+				DemoTargetSubModuleView.ID);
+		def.setRequiredPreparation(true);
+		module.addChild(subModule);
+
 		return new INavigationNode<?>[] { moduleGroup };
 	}
 

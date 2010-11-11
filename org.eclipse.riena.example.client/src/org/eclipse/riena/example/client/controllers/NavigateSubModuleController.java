@@ -85,9 +85,13 @@ public class NavigateSubModuleController extends SubModuleController {
 		moveInActiveModule.setText("Move Inactive Module"); //$NON-NLS-1$
 		moveInActiveModule.addListener(new MoveInActiveModule());
 
-		final IActionRidget demoTarget = getRidget(IActionRidget.class, "jumpToTarget"); //$NON-NLS-1$
-		demoTarget.setText("Jump To Target"); //$NON-NLS-1$
-		demoTarget.addListener(new JumpToTarget());
+		final IActionRidget moduleJump = getRidget(IActionRidget.class, "jumpToTargetModule"); //$NON-NLS-1$
+		moduleJump.setText("Jump To Module"); //$NON-NLS-1$
+		moduleJump.addListener(new JumpToTargetModule());
+
+		final IActionRidget subModuleJump = getRidget(IActionRidget.class, "jumpToTargetSubModule"); //$NON-NLS-1$
+		subModuleJump.setText("Jump To SubModule"); //$NON-NLS-1$
+		subModuleJump.addListener(new JumpToTargetSubModule());
 
 		final PersonModificationBean bean = new PersonModificationBean();
 		bean.setPerson(new Person("Doe", "Jane")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -216,7 +220,15 @@ public class NavigateSubModuleController extends SubModuleController {
 		}
 	}
 
-	private class JumpToTarget implements IActionListener {
+	private class JumpToTargetSubModule implements IActionListener {
+
+		public void callback() {
+			getNavigationNode().jump(new NavigationNodeId(DemoTargetNodeAssembler.ID_FIRST_SUBMODULE));
+
+		}
+	}
+
+	private class JumpToTargetModule implements IActionListener {
 
 		public void callback() {
 			getNavigationNode().jump(new NavigationNodeId(DemoTargetNodeAssembler.ID));
