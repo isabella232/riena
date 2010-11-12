@@ -21,6 +21,7 @@ import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IJumpTargetListener;
+import org.eclipse.riena.navigation.IJumpTargetListener.JumpTargetState;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
@@ -41,15 +42,12 @@ import org.eclipse.riena.ui.ridgets.IRidget;
  * NavigationProcessor that don't use addPluginXml() and can be run on the
  * buildserver.
  * <p>
- * FIXME move all tests from {@link NavigationProcessorTest2} over here
- * again, when the addPluginXml() issue is fixed.
+ * FIXME move all tests from {@link NavigationProcessorTest2} over here again,
+ * when the addPluginXml() issue is fixed.
  */
 @NonUITestCase
 public class NavigationProcessorTest extends RienaTestCase {
 
-	/**
-	 * 
-	 */
 	private static final String TARGET_MODULE_GROUP = "org.eclipse.riena.navigation.model.test.moduleGroup.2";
 	private NavigationProcessor navigationProcessor;
 	private IApplicationNode applicationNode;
@@ -852,9 +850,112 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	}
 
-	/**
-	 * @return
-	 */
+	public void testJump() throws Exception {
+
+		final ApplicationNode app = new ApplicationNode();
+		final SubApplicationNode subApp = new SubApplicationNode();
+		app.addChild(subApp);
+
+		final ModuleGroupNode mg = new ModuleGroupNode();
+		subApp.addChild(mg);
+
+		final ModuleNode m1 = new ModuleNode(new NavigationNodeId("m1"));
+		mg.addChild(m1);
+		final ModuleNode m2 = new ModuleNode(new NavigationNodeId("m2"));
+		mg.addChild(m2);
+
+		final SubModuleNode m1s1 = new SubModuleNode(new NavigationNodeId("m1s1"));
+		m1.addChild(m1s1);
+
+		final SubModuleNode m1s2 = new SubModuleNode(new NavigationNodeId("m1s2"));
+		m1.addChild(m1s2);
+
+		final SubModuleNode m1s1s1 = new SubModuleNode(new NavigationNodeId("m1s1s1"));
+		m1s1.addChild(m1s1s1);
+
+		final SubModuleNode m2s1 = new SubModuleNode(new NavigationNodeId("m2s1"));
+		m2.addChild(m2s1);
+
+		final SubModuleNode m2s2 = new SubModuleNode(new NavigationNodeId("m2s2"));
+		m2.addChild(m2s2);
+
+		app.activate();
+
+		final IJumpTargetListener listenerMock = EasyMock.createMock(IJumpTargetListener.class);
+		listenerMock.jumpTargetStateChanged(m1, JumpTargetState.ENABLED);
+		EasyMock.expectLastCall().times(1);
+		EasyMock.replay(listenerMock);
+		m1.addJumpTargetListener(listenerMock);
+
+		m1s2.jump(new NavigationNodeId("m1s1s1"));
+		assertTrue(m1s1s1.isActivated());
+		assertTrue(m1s1s1.isJumpTarget());
+		assertTrue(m1.isJumpTarget());
+		assertTrue(m2.isJumpTarget());
+		assertTrue(m2s1.isJumpTarget());
+		assertFalse(subApp.isJumpTarget());
+
+		EasyMock.verify(listenerMock);
+		EasyMock.reset(listenerMock);
+
+		listenerMock.jumpTargetStateChanged(m1, JumpTargetState.DISABLED);
+		EasyMock.expectLastCall().times(1);
+		EasyMock.replay(listenerMock);
+
+		m2s1.jumpBack();
+		EasyMock.verify(listenerMock);
+		EasyMock.reset(listenerMock);
+		assertTrue(m1s2.isActivated());
+
+		m1s2.jump(new NavigationNodeId("m1s1"));
+		assertTrue(m1s1.isActivated());
+
+		m1s1.jump(new NavigationNodeId("m2s1"));
+		assertTrue(m2s1.isActivated());
+		m2s1.jumpBack();
+		assertTrue(m1s1.isJumpTarget());
+		assertTrue(m1.isJumpTarget());
+		assertTrue(m2.isJumpTarget());
+		assertTrue(m2s1.isJumpTarget());
+		assertFalse(subApp.isJumpTarget());
+		assertTrue(m1s1.isActivated());
+		m1.jumpBack();
+		assertTrue(m1s2.isActivated());
+		m1.jumpBack();
+		//clean state / no jump targets registered
+
+		m1.jump(new NavigationNodeId("m2s1"));
+
+		EasyMock.reset(listenerMock);
+		listenerMock.jumpTargetStateChanged(m1, JumpTargetState.DISABLED);
+		EasyMock.expectLastCall().times(1);
+		EasyMock.replay(listenerMock);
+
+		m2s1.dispose();
+		EasyMock.verify(listenerMock);
+		EasyMock.reset(listenerMock);
+		assertFalse(m1s1.isJumpTarget());
+		assertFalse(m1.isJumpTarget());
+		assertFalse(m2.isJumpTarget());
+
+		m1s1.jump(new NavigationNodeId("m2s2"));
+		EasyMock.reset(listenerMock);
+		listenerMock.jumpTargetStateChanged(m1, JumpTargetState.DISABLED);
+		EasyMock.expectLastCall().times(1);
+		EasyMock.replay(listenerMock);
+		assertTrue(m2s2.isActivated());
+		assertTrue(m1s1.isJumpTarget());
+		assertTrue(m1.isJumpTarget());
+		assertTrue(m2.isJumpTarget());
+		m1s1.dispose();
+		EasyMock.verify(listenerMock);
+		EasyMock.reset(listenerMock);
+		assertFalse(m1s1.isJumpTarget());
+		assertFalse(m1.isJumpTarget());
+		assertFalse(m2.isJumpTarget());
+
+	}
+
 	private INavigationNode<?> createTargetModuleGroup() {
 		final INavigationNode<?> targetModuleGroup = navigationProcessor.create(subApplication, new NavigationNodeId(
 				TARGET_MODULE_GROUP), null);

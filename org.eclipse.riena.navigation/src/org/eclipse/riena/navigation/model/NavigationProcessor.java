@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Stack;
 import java.util.Vector;
 
@@ -59,7 +60,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	private static int maxStacksize = 40;
 	private final Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
 	private final Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
-	private final Map<INavigationNode<?>, Stack<INavigationNode<?>>> jumpTargets = new HashMap<INavigationNode<?>, Stack<INavigationNode<?>>>();
+	private final Map<INavigationNode<?>, Stack<JumpContext>> jumpTargets = new HashMap<INavigationNode<?>, Stack<JumpContext>>();
 	private final Map<INavigationNode<?>, List<IJumpTargetListener>> jumpTargetListeners = new HashMap<INavigationNode<?>, List<IJumpTargetListener>>();
 	private final Map<INavigationNode<?>, INavigationNode<?>> navigationMap = new HashMap<INavigationNode<?>, INavigationNode<?>>();
 	private final List<INavigationHistoryListener> navigationListener = new Vector<INavigationHistoryListener>();
@@ -144,11 +145,11 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	private boolean isJumpSource(final ISubModuleNode node) {
-		final Iterator<Map.Entry<INavigationNode<?>, Stack<INavigationNode<?>>>> it = jumpTargets.entrySet().iterator();
+		final Iterator<Map.Entry<INavigationNode<?>, Stack<JumpContext>>> it = jumpTargets.entrySet().iterator();
 		while (it.hasNext()) {
-			final Map.Entry<INavigationNode<?>, Stack<INavigationNode<?>>> entry = it.next();
-			final Stack<INavigationNode<?>> value = entry.getValue();
-			if (!value.isEmpty() && value.peek().equals(node)) {
+			final Map.Entry<INavigationNode<?>, Stack<JumpContext>> entry = it.next();
+			final Stack<JumpContext> value = entry.getValue();
+			if (!value.isEmpty() && value.peek().getSource().equals(node)) {
 				return true;
 			}
 		}
@@ -264,7 +265,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		// than no other module has to be activated
 		final INavigationNode<?> nodeToDispose = getNodeToDispose(toDispose);
 		if (nodeToDispose != null && !nodeToDispose.isDisposed()) {
-			unregisterJumpSource(nodeToDispose);
+			handleJumpsOnDispose(nodeToDispose);
 			final List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToDispose);
 			final List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToDispose);
 			final INavigationContext navigationContext = new NavigationContext(null, toActivateList, toDeactivateList);
@@ -431,8 +432,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		navigationMap.put(node, sourceNode);
 
 		if (NavigationType.JUMP == navigationType) {
-			registerJump(sourceNode, node);
-			notifyNodeWithSuccessors(node, JumpTargetState.ENABLED);
+			handleJump(sourceNode, node);
 		}
 
 		node.activate();
@@ -445,63 +445,136 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		return node;
 	}
 
-	/**
-	 * @param node
-	 * @param enabled
+	/*
+	 * executes internal jump logic
 	 */
-	private void notifyNodeWithSuccessors(final INavigationNode<?> node, final JumpTargetState enabled) {
-		fireJumpTargetStateChanged(node, enabled);
-		if (!(node instanceof ModuleNode)) {
+	private void handleJump(final INavigationNode<?> sourceNode, final INavigationNode<?> node) {
+		runObserved(sourceNode, new Runnable() {
+
+			public void run() {
+				registerJump(sourceNode, node);
+			}
+		});
+	}
+
+	/*
+	 * locates the topmost root of the given node
+	 */
+	private INavigationNode<?> getRootNode(final INavigationNode<?> node) {
+		INavigationNode<?> topNode = node;
+		while (topNode.getParent() != null) {
+			topNode = topNode.getParent();
+		}
+		return topNode;
+	}
+
+	/*
+	 * saves the current jump state for the given node
+	 */
+	private Map<INavigationNode<?>, JumpTargetState> saveJumpState(final INavigationNode<?> node) {
+		final INavigationNode<?> topNode = getRootNode(node);
+		final Map<INavigationNode<?>, JumpTargetState> savedJumpState = new HashMap<INavigationNode<?>, IJumpTargetListener.JumpTargetState>();
+		saveJumpState(topNode, savedJumpState);
+		return savedJumpState;
+	}
+
+	/*
+	 * saves the current JumpTargetState for all nodes of the subtree starting
+	 * at the root node recursively
+	 */
+	private void saveJumpState(final INavigationNode<?> root,
+			final Map<INavigationNode<?>, JumpTargetState> savedJumpState) {
+		savedJumpState.put(root, isJumpTarget(root) ? JumpTargetState.ENABLED : JumpTargetState.DISABLED);
+		for (final INavigationNode<?> child : root.getChildren()) {
+			saveJumpState(child, savedJumpState);
+		}
+	}
+
+	/*
+	 * Calculates the JumpTargetState changes for the given nodes and notifies
+	 * observers
+	 */
+	private void notifyJumpStateChanged(final INavigationNode<?> node,
+			final Map<INavigationNode<?>, JumpTargetState> oldJumpState) {
+		final Map<INavigationNode<?>, JumpTargetState> savedJumpState = saveJumpState(node);
+		final Iterator<Entry<INavigationNode<?>, JumpTargetState>> iterator = savedJumpState.entrySet().iterator();
+		while (iterator.hasNext()) {
+			final Entry<INavigationNode<?>, JumpTargetState> entry = iterator.next();
+			if (oldJumpState.get(entry.getKey()) != entry.getValue()) {
+				notifyJumpStateChanged(entry.getKey(), entry.getValue());
+			}
+		}
+	}
+
+	/*
+	 * Notifies all jumpTargetState observers for the given node about the state
+	 * change
+	 */
+	private void notifyJumpStateChanged(final INavigationNode<?> node, final JumpTargetState jumpTargetState) {
+		final List<IJumpTargetListener> listeners = jumpTargetListeners.get(node);
+		if (listeners == null) {
 			return;
 		}
-		//Only notify direct children
-		for (final INavigationNode<?> child : node.getChildren()) {
-			notifyDeep(child, enabled);
+		for (final IJumpTargetListener listener : listeners) {
+			listener.jumpTargetStateChanged(node, jumpTargetState);
 		}
 	}
 
 	private void registerJump(final INavigationNode<?> source, final INavigationNode<?> target) {
-		Stack<INavigationNode<?>> sourceStack = jumpTargets.get(target);
+		// get all sources of the current target
+		Stack<JumpContext> sourceStack = jumpTargets.get(target);
 		if (sourceStack == null) {
-			sourceStack = new Stack<INavigationNode<?>>();
+			sourceStack = new Stack<JumpContext>();
 			jumpTargets.put(target, sourceStack);
 		}
+		// save the source
 		if (sourceStack.size() == 0 || !sourceStack.peek().equals(source)) {
-			sourceStack.push(source);
+			sourceStack.push(new JumpContext(source, target));
 		}
 	}
 
-	private void unregisterJumpSource(final INavigationNode<?> source) {
-		final Iterator<Map.Entry<INavigationNode<?>, Stack<INavigationNode<?>>>> it = jumpTargets.entrySet().iterator();
+	/*
+	 * unregisters the given node as and all of it´s children as jump targets
+	 * and sources recursively
+	 */
+	private void handleJumpsOnDispose(final INavigationNode<?> node) {
+		runObserved(node, new Runnable() {
 
-		while (it.hasNext()) {
-			final Map.Entry<INavigationNode<?>, Stack<INavigationNode<?>>> entry = it.next();
-			while (entry.getValue().remove(source)) {
-				;
+			public void run() {
+				unregisterNodeJumps(node);
+
 			}
+		});
+	}
 
-			if (entry.getValue().size() == 0) {
-				final INavigationNode<?> node = entry.getKey();
-				notifyDeep(node, JumpTargetState.DISABLED);
+	private void unregisterNodeJumps(final INavigationNode<?> node) {
+
+		// as there is one NavigationProcess for the whole tree we need to unregister jump targets, too
+		jumpTargets.remove(node);
+
+		final Iterator<Map.Entry<INavigationNode<?>, Stack<JumpContext>>> it = jumpTargets.entrySet().iterator();
+		while (it.hasNext()) {
+			final Map.Entry<INavigationNode<?>, Stack<JumpContext>> entry = it.next();
+			//clear all occurrences of node as a source
+			final Stack<JumpContext> entryStack = entry.getValue();
+			JumpContext ctx = null;
+			for (final JumpContext ictx : entryStack) {
+				if (ictx.getSource().equals(node)) {
+					ctx = ictx;
+				}
+			}
+			entryStack.remove(ctx);
+
+			if (entryStack.isEmpty()) {
 				it.remove();
 			}
 		}
 
-		for (final INavigationNode<?> child : source.getChildren()) {
-			unregisterJumpSource(child);
-		}
-
-	}
-
-	/**
-	 * @param node
-	 * @param disabled
-	 */
-	private void notifyDeep(final INavigationNode<?> node, final JumpTargetState enabled) {
-		fireJumpTargetStateChanged(node, enabled);
+		// unregister children
 		for (final INavigationNode<?> child : node.getChildren()) {
-			notifyDeep(child, enabled);
+			unregisterNodeJumps(child);
 		}
+
 	}
 
 	/**
@@ -515,24 +588,79 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	/**
 	 * @since 2.0
 	 */
-	public void jumpBack(final INavigationNode<?> sourceNode) {
-		final Stack<INavigationNode<?>> sourceStack = jumpTargets.get(sourceNode);
+	public void jumpBack(final INavigationNode<?> node) {
+		runObserved(node, new Runnable() {
+
+			public void run() {
+				jumpBackInternal(node);
+
+			}
+		});
+	}
+
+	private void jumpBackInternal(final INavigationNode<?> node) {
+		final INavigationNode<?> lastJumpedNode = getLastJump(node);
+		// the sourceStack holds all sources (nodes) to the target
+		final Stack<JumpContext> sourceStack = jumpTargets.get(lastJumpedNode);
 		if (sourceStack == null) {
-			final ModuleNode module = sourceNode.getParentOfType(ModuleNode.class);
-			if (module != null) {
-				module.jumpBack();
-				return;
+			return;
+		}
+		if (!sourceStack.isEmpty()) {
+			final INavigationNode<?> backTarget = sourceStack.pop().getSource();
+			setCloseSubTreeOnJumpBack(backTarget);
+			// go back
+			backTarget.activate();
+			if (sourceStack.isEmpty()) {
+				// remove node as it is no target anymore
+				jumpTargets.remove(lastJumpedNode);
 			}
 		}
-		if (sourceStack != null) {
-			if (sourceStack.size() > 0) {
-				final INavigationNode<?> backTarget = sourceStack.pop();
-				setCloseSubTreeOnJumpBack(backTarget);
-				backTarget.activate();
-			}
-			jumpTargets.remove(sourceNode);
-			notifyNodeWithSuccessors(sourceNode, JumpTargetState.DISABLED);
+	}
+
+	/*
+	 * executes the runnable collecting changes of the JumpTargetState
+	 */
+	private void runObserved(final INavigationNode<?> node, final Runnable runnable) {
+		final Map<INavigationNode<?>, JumpTargetState> savedJumpState = saveJumpState(node);
+		runnable.run();
+		notifyJumpStateChanged(node, savedJumpState);
+	}
+
+	/**
+	 * If the node is a child of / or an {@link ModuleGroupNode} locates the
+	 * latest target node inside the {@link ModuleGroupNode}. Else return the
+	 * given node itself.
+	 */
+	private INavigationNode<?> getLastJump(final INavigationNode<?> node) {
+		final ModuleGroupNode moduleGroupNode = (ModuleGroupNode) (node instanceof ModuleGroupNode ? node : node
+				.getParentOfType(ModuleGroupNode.class));
+		if (moduleGroupNode == null) {
+			return node;
 		}
+		final List<INavigationNode<?>> nodes = new LinkedList<INavigationNode<?>>();
+		collectNodes(moduleGroupNode, nodes);
+		final List<JumpContext> latestJumpSources = new ArrayList<JumpContext>();
+		for (final INavigationNode<?> targetNode : nodes) {
+			if (jumpTargets.containsKey(targetNode)) {
+				latestJumpSources.add(jumpTargets.get(targetNode).peek());
+			}
+		}
+		if (latestJumpSources.size() > 0) {
+			Collections.sort(latestJumpSources);
+			return latestJumpSources.get(latestJumpSources.size() - 1).getTarget();
+		}
+		return null;
+	}
+
+	/*
+	 * collect all nodes of the the navigation tree with the given root node
+	 */
+	private void collectNodes(final INavigationNode<?> root, final List<INavigationNode<?>> nodes) {
+		nodes.add(root);
+		for (final INavigationNode<?> child : root.getChildren()) {
+			collectNodes(child, nodes);
+		}
+
 	}
 
 	private void setCloseSubTreeOnJumpBack(final INavigationNode<?> backTarget) {
@@ -547,15 +675,20 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 * @since 2.0
 	 */
 	public boolean isJumpTarget(final INavigationNode<?> node) {
-		final Stack<INavigationNode<?>> sourceStack = jumpTargets.get(node);
+		final ModuleGroupNode moduleGroupNode = node.getParentOfType(ModuleGroupNode.class);
+		INavigationNode<?> targetNode = null;
+		if (moduleGroupNode == null) {
+			targetNode = node;
+		} else {
+			targetNode = getLastJump(moduleGroupNode);
+		}
+
+		final Stack<JumpContext> sourceStack = jumpTargets.get(targetNode);
 		if (sourceStack != null && sourceStack.size() > 0) {
 			return true;
 		}
-		final INavigationNode<?> parent = node.getParent();
-		if (node instanceof SubModuleNode && parent instanceof ModuleNode) {
-			return isJumpTarget(node.getParent());
-		}
 		return false;
+
 	}
 
 	/**
@@ -588,16 +721,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		jumpTargetListeners.remove(node);
 		for (final INavigationNode<?> child : node.getChildren()) {
 			cleanupJumpTargetListeners(child);
-		}
-	}
-
-	private void fireJumpTargetStateChanged(final INavigationNode<?> node, final JumpTargetState jumpTargetState) {
-		final List<IJumpTargetListener> listeners = jumpTargetListeners.get(node);
-		if (listeners == null) {
-			return;
-		}
-		for (final IJumpTargetListener listener : listeners) {
-			listener.jumpTargetStateChanged(node, jumpTargetState);
 		}
 	}
 

@@ -223,7 +223,7 @@ public class NavigateSubModuleController extends SubModuleController {
 	private class JumpToTargetSubModule implements IActionListener {
 
 		public void callback() {
-			getNavigationNode().jump(new NavigationNodeId(DemoTargetNodeAssembler.ID_FIRST_SUBMODULE));
+			getNavigationNode().jump(new NavigationNodeId(DemoTargetNodeAssembler.ID_FIRST_SUBMODULE + "4"));
 
 		}
 	}
@@ -231,7 +231,7 @@ public class NavigateSubModuleController extends SubModuleController {
 	private class JumpToTargetModule implements IActionListener {
 
 		public void callback() {
-			getNavigationNode().jump(new NavigationNodeId(DemoTargetNodeAssembler.ID));
+			getNavigationNode().jump(new NavigationNodeId(DemoTargetNodeAssembler.ID_MODULE));
 
 		}
 	}

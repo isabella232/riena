@@ -36,14 +36,15 @@ import org.eclipse.riena.ui.workarea.WorkareaManager;
  */
 public class DemoTargetNodeAssembler extends AbstractNavigationAssembler {
 
-	public final static String ID = "org.eclipse.riena.example.navigate.demotarget"; //$NON-NLS-1$
+	public final static String ID_MODULE_GROUP = "org.eclipse.riena.example.navigate.target.moduleGroup"; //$NON-NLS-1$
+	public final static String ID_MODULE = "org.eclipse.riena.example.navigate.demotarget"; //$NON-NLS-1$
 	public final static String ID_FIRST_SUBMODULE = "org.eclipse.riena.example.navigate.target.submodule"; //$NON-NLS-1$
 
 	private Set<String> knownTargetIds = null;
 
 	public boolean acceptsToBuildNode(final NavigationNodeId nodeId, final NavigationArgument argument) {
 		if (knownTargetIds == null) {
-			knownTargetIds = new HashSet<String>(Arrays.asList(ID, ID_FIRST_SUBMODULE));
+			knownTargetIds = new HashSet<String>(Arrays.asList(ID_MODULE, ID_FIRST_SUBMODULE + "4")); //$NON-NLS-1$
 			knownTargetIds = Collections.unmodifiableSet(knownTargetIds);
 		}
 
@@ -51,11 +52,10 @@ public class DemoTargetNodeAssembler extends AbstractNavigationAssembler {
 	}
 
 	public INavigationNode<?>[] buildNode(final NavigationNodeId nodeId, final NavigationArgument navigationArgument) {
-		final IModuleGroupNode moduleGroup = new ModuleGroupNode(new NavigationNodeId(
-				"org.eclipse.riena.example.navigate.target.moduleGroup")); //$NON-NLS-1$
+		final IModuleGroupNode moduleGroup = new ModuleGroupNode(new NavigationNodeId(ID_MODULE_GROUP));
 		moduleGroup.setPresentWithSingleModule(false);
 
-		final IModuleNode module = new ModuleNode(new NavigationNodeId(ID), "Target Module"); //$NON-NLS-1$ 
+		IModuleNode module = new ModuleNode(new NavigationNodeId(ID_MODULE), "Target Module1"); //$NON-NLS-1$ 
 		module.setIcon(ExampleIcons.ICON_GREEN_LED);
 		moduleGroup.addChild(module);
 
@@ -66,6 +66,22 @@ public class DemoTargetNodeAssembler extends AbstractNavigationAssembler {
 		module.addChild(subModule);
 
 		subModule = new SubModuleNode(new NavigationNodeId(ID_FIRST_SUBMODULE + "2"), "Target2"); //$NON-NLS-1$ //$NON-NLS-2$
+		def = WorkareaManager.getInstance().registerDefinition(subModule, DemoTargetSubModuleController.class,
+				DemoTargetSubModuleView.ID);
+		def.setRequiredPreparation(true);
+		module.addChild(subModule);
+
+		module = new ModuleNode(new NavigationNodeId(ID_MODULE + "2"), "Target Module2"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		module.setIcon(ExampleIcons.ICON_GREEN_LED);
+		moduleGroup.addChild(module);
+
+		subModule = new SubModuleNode(new NavigationNodeId(ID_FIRST_SUBMODULE + "3"), "Target3"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		def = WorkareaManager.getInstance().registerDefinition(subModule, DemoTargetSubModuleController.class,
+				DemoTargetSubModuleView.ID);
+		def.setRequiredPreparation(true);
+		module.addChild(subModule);
+
+		subModule = new SubModuleNode(new NavigationNodeId(ID_FIRST_SUBMODULE + "4"), "Target4"); //$NON-NLS-1$ //$NON-NLS-2$
 		def = WorkareaManager.getInstance().registerDefinition(subModule, DemoTargetSubModuleController.class,
 				DemoTargetSubModuleView.ID);
 		def.setRequiredPreparation(true);
