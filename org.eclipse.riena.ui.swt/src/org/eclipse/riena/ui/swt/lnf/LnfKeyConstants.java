@@ -649,6 +649,16 @@ public final class LnfKeyConstants {
 	 *      Riena Wiki</a>
 	 */
 	public static final String SUB_MODULE_TREE_DOCUMENT_LEAF_ICON = "subModuleTreeDocumentLeaf.icon"; //$NON-NLS-1$
+
+	/**
+	 * This constant is described in Eclipsepedia.
+	 * 
+	 * @see <a
+	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
+	 *      Riena Wiki</a>
+	 */
+	public static final String WORKAREA_TREE_DOCUMENT_LEAF_ICON = "workareaTreeDocumentLeaf.icon"; //$NON-NLS-1$
+
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 

@@ -28,6 +28,7 @@ import org.eclipse.swt.events.TreeEvent;
 import org.eclipse.swt.events.TreeListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -349,6 +350,18 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		if (imageAttribute != null) {
 			result = (String) imageAttribute.get(element);
 		}
+		if ((result == null) && (isSubModuleNode(element.getClass()))) {
+			ILnfResource<? extends Resource> lnfResource = null;
+			final Tree tree = (Tree) viewer.getControl();
+			final boolean navigation = TREE_KIND_NAVIGATION.equals(tree.getData(TREE_KIND_KEY));
+			lnfResource = navigation ? LnfManager.getLnf().getLnfResource(
+					LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON) : LnfManager.getLnf().getLnfResource(
+					LnfKeyConstants.WORKAREA_TREE_DOCUMENT_LEAF_ICON);
+			if (lnfResource instanceof ImageLnfResource) {
+				final ImageLnfResource imageResource = (ImageLnfResource) lnfResource;
+				result = imageResource.getImagePath();
+			}
+		}
 		if (result == null || Activator.getSharedImage(result) == null) {
 			result = SharedImages.IMG_LEAF;
 		}
@@ -361,7 +374,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 			result = isExpanded ? (String) openImageAttribute.get(element) : (String) imageAttribute.get(element);
 		}
 		if ((result == null) && (isSubModuleNode(element.getClass()))) {
-			ILnfResource lnfResource = null;
+			ILnfResource<?> lnfResource = null;
 			final Tree tree = (Tree) viewer.getControl();
 
 			final boolean navigation = TREE_KIND_NAVIGATION.equals(tree.getData(TREE_KIND_KEY));
@@ -390,7 +403,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 
 		final Class<?>[] interfaces = elementClass.getInterfaces();
 		for (final Class<?> type : interfaces) {
-			if (type.getName().equals("org.eclipse.riena.navigation.ISubModuleNode")) {
+			if (type.getName().equals("org.eclipse.riena.navigation.ISubModuleNode")) { //$NON-NLS-1$
 				return true;
 			}
 		}
@@ -399,25 +412,6 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		}
 		return false;
 
-	}
-
-	private Image getImageForNode(final Object element, final boolean isExpanded) {
-		Image image = null;
-		if (imageAttribute != null && openImageAttribute != null) {
-			final String key = isExpanded ? (String) openImageAttribute.get(element) : (String) imageAttribute
-					.get(element);
-			image = Activator.getSharedImage(key);
-		}
-		if (image == null) {
-			final String key = isExpanded ? LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON
-					: LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON;
-			image = LnfManager.getLnf().getImage(key);
-		}
-		if (image == null) {
-			final String key = isExpanded ? SharedImages.IMG_NODE_EXPANDED : SharedImages.IMG_NODE_COLLAPSED;
-			image = Activator.getSharedImage(key);
-		}
-		return image;
 	}
 
 	// helping classes

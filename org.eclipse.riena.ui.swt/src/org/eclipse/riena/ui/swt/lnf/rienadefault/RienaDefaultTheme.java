@@ -31,7 +31,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 	private static final String IMAGE_FOLDER = "node_expanded.gif"; //$NON-NLS-1$
 	private static final String IMAGE_FOLDER_CLOSED = "node_collapsed.gif"; //$NON-NLS-1$
-	private static final String IMAGE_EMPTY_DOCUMENT = "no_format.gif"; //$NON-NLS-1$
+	private static final String IMAGE_EMPTY_DOCUMENT = "leaf.gif"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE_MODULE = "closeModule"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE_MODULE_HOVER = "closeModule_hover"; //$NON-NLS-1$
 	private static final String IMAGE_CLOSE_MODULE_HOVER_SELECTED = "closeModule_hover_selected"; //$NON-NLS-1$
@@ -375,6 +375,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource(LnfKeyConstants.DEFAULT_NODE_ICON, new ImageLnfResource(IMAGE_DEFAULT_NODE_ICON));
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(
 				IMAGE_EMPTY_DOCUMENT));
+		lnf.putLnfResource(LnfKeyConstants.WORKAREA_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(IMAGE_EMPTY_DOCUMENT));
+
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON,
 				new ImageLnfResource(IMAGE_FOLDER_CLOSED));
 
