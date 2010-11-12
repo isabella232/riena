@@ -26,6 +26,7 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
@@ -850,6 +851,13 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	}
 
+	/**
+	 * Tests the methods
+	 * {@link INavigationProcessor#jump(INavigationNode, NavigationNodeId, NavigationArgument)}
+	 * and {@link INavigationProcessor#jumpBack(INavigationNode)}
+	 * 
+	 * @throws Exception
+	 */
 	public void testJump() throws Exception {
 
 		final ApplicationNode app = new ApplicationNode();
