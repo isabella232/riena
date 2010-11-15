@@ -71,16 +71,6 @@ public class SimpleSender implements ISender, IExecutableExtension {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleSender.class);
 
-	/**
-	 * Creates the {@code SimpleSender}.
-	 * 
-	 * @throws CoreException
-	 */
-	public SimpleSender() throws CoreException {
-		// perform default initialization - maybe redone by the {@code IConfigurationElement.createExecutableExtension(String)}
-		setInitializationData(null, null, null);
-	}
-
 	public void setInitializationData(final IConfigurationElement config, final String propertyName, final Object data)
 			throws CoreException {
 		Map<String, String> properties = null;
