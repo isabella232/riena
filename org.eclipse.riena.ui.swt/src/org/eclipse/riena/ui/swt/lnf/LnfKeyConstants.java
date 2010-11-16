@@ -656,6 +656,7 @@ public final class LnfKeyConstants {
 	 * @see <a
 	 *      href="http://wiki.eclipse.org/Riena_Look_and_Feel#Sub-Module_Tree">
 	 *      Riena Wiki</a>
+	 * @since 3.0
 	 */
 	public static final String WORKAREA_TREE_DOCUMENT_LEAF_ICON = "workareaTreeDocumentLeaf.icon"; //$NON-NLS-1$
 

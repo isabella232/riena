@@ -16,6 +16,7 @@ import org.eclipse.riena.navigation.INavigationNode;
  * Container for holding the source and the targe of a navigation jump.
  * 
  * @see {@link INavigationNode#jump(org.eclipse.riena.navigation.NavigationNodeId)}
+ * @since 3.0
  * 
  */
 public class JumpContext implements Comparable<JumpContext> {
