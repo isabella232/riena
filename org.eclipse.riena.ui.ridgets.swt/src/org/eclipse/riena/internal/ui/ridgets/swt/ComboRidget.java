@@ -46,7 +46,9 @@ public class ComboRidget extends AbstractComboRidget {
 	@Override
 	public void updateFromModel() {
 		super.updateFromModel();
-		selectionTypeEnforcer.setSavedSelection(getSelection());
+		if (!isOutputOnly()) {
+			selectionTypeEnforcer.setSavedSelection(getSelection());
+		}
 	}
 
 	@Override
