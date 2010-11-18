@@ -45,6 +45,13 @@
             label="Sonar"
             style="push">
 				</command>
+			    <visibleWhen
+          			checkEnabled="true">
+      				 <systemTest
+             			property="riena.sonar.menu.visible"
+             			value="true">
+       				</systemTest>
+   				 </visibleWhen>
 			</menu>
 		</menuContribution>
 
