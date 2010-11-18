@@ -400,7 +400,6 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 	}
 
 	private boolean isSubModuleNode(final Class<?> elementClass) {
-
 		final Class<?>[] interfaces = elementClass.getInterfaces();
 		for (final Class<?> type : interfaces) {
 			if (type.getName().equals("org.eclipse.riena.navigation.ISubModuleNode")) { //$NON-NLS-1$
@@ -411,7 +410,19 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 			return isSubModuleNode(elementClass.getSuperclass());
 		}
 		return false;
+	}
 
+	private void updateNodeImage(final TreeItem item, final boolean isExpanded) {
+		final Object element = item.getData();
+		Image image = null;
+		if (getFormatter(0) != null) {
+			image = (Image) getFormatter(0).getImage(element);
+		}
+		if (image == null) {
+			final String key = getImageKeyForNode(element, isExpanded);
+			image = Activator.getSharedImage(key);
+		}
+		item.setImage(image);
 	}
 
 	// helping classes
@@ -436,10 +447,7 @@ public final class TreeRidgetLabelProvider extends TableRidgetLabelProvider impl
 		private void updateIcon(final TreeItem item, final boolean isExpanded) {
 			final TreeRidgetLabelProvider labelProvider = (TreeRidgetLabelProvider) item.getParent().getData(
 					KEY_LABELPROVIDER);
-			final Object element = item.getData();
-			final String key = labelProvider.getImageKeyForNode(element, isExpanded);
-			final Image image = Activator.getSharedImage(key);
-			item.setImage(image);
+			labelProvider.updateNodeImage(item, isExpanded);
 		}
 	}
 
