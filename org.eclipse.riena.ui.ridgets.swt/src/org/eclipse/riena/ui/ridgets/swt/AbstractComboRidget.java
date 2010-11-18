@@ -336,6 +336,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		assertIsBoundToModel();
 		final Object oldSelection = selectionObservable.getValue();
 		if (oldSelection != newSelection) {
+			if (isOutputOnly() && !isBound()) {
+				bindUIControl();
+			}
 			if (newSelection == null || !rowObservables.contains(newSelection)) {
 				if (getUIControl() != null) {
 					clearUIControlListSelection();
@@ -343,6 +346,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 				selectionObservable.setValue(null);
 			} else {
 				selectionObservable.setValue(newSelection);
+			}
+			if (isOutputOnly() && isBound()) {
+				unbindUIControl();
 			}
 		}
 	}
@@ -381,7 +387,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		// disable the selection binding, because updating the combo items
 		// causes the selection to change temporarily
 		selectionValidator.enableBinding(false);
-		if (isOutputOnly()) {
+		if (isOutputOnly() && !isBound()) {
 			bindUIControl();
 		}
 		try {
@@ -398,9 +404,16 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		// Bug 304733: clear selection if not in rowObservables
 		applyMarkSelectionMismatch();
 
-		if (isOutputOnly()) {
+		if (isOutputOnly() && isBound()) {
 			unbindUIControl();
 		}
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	protected boolean isBound() {
+		return listBindingExternal != null && selectionBindingExternal != null;
 	}
 
 	// abstract methods
@@ -754,8 +767,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 
 		private void rewriteText(final Widget uiControl) {
-			System.err.println(savedSelection);
-
 			String textToSet = null;
 			if (savedSelection == null) {
 				textToSet = emptySelection == null ? "" : emptySelection.toString(); //$NON-NLS-1$
@@ -771,9 +782,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 
 		public void propertyChange(final PropertyChangeEvent evt) {
 			savedSelection = getSelection();
-			if (isOutputOnly()) {
+			if (isOutputOnly() && isBound()) {
 				unbindUIControl();
-			} else {
+			} else if (!isBound()) {
 				bindUIControl();
 				rewriteText((Widget) evt.getSource());
 			}

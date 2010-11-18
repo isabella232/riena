@@ -58,6 +58,9 @@ public class CComboRidget extends AbstractComboRidget {
 		assertIsBoundToModel();
 		final Object oldSelection = selectionObservable.getValue();
 		if (oldSelection != newSelection) {
+			if (isOutputOnly() && !isBound()) {
+				bindUIControl();
+			}
 			if (newSelection == null) {
 				if (getUIControl() != null) {
 					clearUIControlListSelection();
@@ -65,6 +68,9 @@ public class CComboRidget extends AbstractComboRidget {
 				selectionObservable.setValue(null);
 			} else {
 				selectionObservable.setValue(newSelection);
+			}
+			if (isOutputOnly() && isBound()) {
+				unbindUIControl();
 			}
 		}
 	}
@@ -80,7 +86,6 @@ public class CComboRidget extends AbstractComboRidget {
 		super.bindUIControl();
 		if (getUIControl() != null) {
 			updateBgColor(isEnabled());
-			getUIControl().addSelectionListener(selectionTypeEnforcer);
 		}
 	}
 
@@ -92,6 +97,7 @@ public class CComboRidget extends AbstractComboRidget {
 			if ((style & SWT.READ_ONLY) == 0) {
 				throw new BindingException("Combo must be READ_ONLY"); //$NON-NLS-1$
 			}
+			((CCombo) uiControl).addSelectionListener(selectionTypeEnforcer);
 		}
 	}
 
