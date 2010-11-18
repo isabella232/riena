@@ -12,11 +12,13 @@ package org.eclipse.riena.example.client.controllers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.beans.common.PersonManager;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -57,7 +59,7 @@ public class CComboSubModuleController extends SubModuleController {
 	}
 
 	private void bindModels() {
-		comboOne.bindToModel(manager, "persons", String.class, null, manager, "selectedPerson"); //$NON-NLS-1$ //$NON-NLS-2$
+		comboOne.bindToModel(manager, "persons", String.class, null, this, "selectedPerson"); //$NON-NLS-1$ //$NON-NLS-2$
 		comboOne.setMandatory(true);
 		comboOne.updateFromModel();
 
@@ -92,6 +94,7 @@ public class CComboSubModuleController extends SubModuleController {
 		buttonSave.addListener(new IActionListener() {
 			public void callback() {
 				value.update();
+				setSelectedPerson(manager.getPersons().toArray(new Person[0])[5]);
 				comboOne.updateFromModel();
 			}
 		});
@@ -106,7 +109,8 @@ public class CComboSubModuleController extends SubModuleController {
 							final Iterator<Person> iterator = manager.getPersons().iterator();
 							iterator.next();
 							final Person second = iterator.next();
-							manager.setSelectedPerson(second);
+							System.err.println("getselec" + " " + getSelectedPerson());
+							setSelectedPerson(second);
 						}
 						comboOne.setOutputOnly(true);
 					} else {
@@ -122,10 +126,30 @@ public class CComboSubModuleController extends SubModuleController {
 		buttonClear.setText("&Clear"); //$NON-NLS-1$
 		buttonClear.addListener(new IActionListener() {
 			public void callback() {
+				//				setSelectedPerson(null);
 				comboOne.setSelection(-1);
 			}
 		});
 
+	}
+
+	public Person getSelectedPerson() {
+		return manager.getSelectedPerson();
+	}
+
+	public void setSelectedPerson(final Person selection) {
+		System.err.println("selected person: " + selection);
+		manager.setSelectedPerson(selection);
+		if (selection != null) {
+			final String lastname = selection.getLastname();
+			if (!StringUtils.isEmpty(lastname) && lastname.startsWith("JJ")) { //$NON-NLS-1$
+				final Collection<Person> persons = manager.getPersons();
+				if ((persons != null) && (!persons.isEmpty())) {
+					manager.setSelectedPerson(persons.iterator().next());
+				}
+			}
+		}
+		comboOne.updateFromModel();
 	}
 
 }

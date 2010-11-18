@@ -31,7 +31,7 @@ public class ComboRidget extends AbstractComboRidget {
 	private final SelectionTypeEnforcer selectionTypeEnforcer;
 
 	public ComboRidget() {
-		selectionTypeEnforcer = new SelectionTypeEnforcer(this);
+		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, selectionTypeEnforcer);
 	}
 
@@ -46,9 +46,7 @@ public class ComboRidget extends AbstractComboRidget {
 	@Override
 	public void updateFromModel() {
 		super.updateFromModel();
-		if (!isOutputOnly()) {
-			selectionTypeEnforcer.setSavedSelection(getSelection());
-		}
+		selectionTypeEnforcer.setSavedSelection(getSelection());
 	}
 
 	@Override

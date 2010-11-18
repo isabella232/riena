@@ -35,7 +35,10 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -378,6 +381,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		// disable the selection binding, because updating the combo items
 		// causes the selection to change temporarily
 		selectionValidator.enableBinding(false);
+		if (isOutputOnly()) {
+			bindUIControl();
+		}
 		try {
 			listBindingExternal.updateModelToTarget();
 			items = new ArrayList<String>();
@@ -391,6 +397,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 		// Bug 304733: clear selection if not in rowObservables
 		applyMarkSelectionMismatch();
+
+		if (isOutputOnly()) {
+			unbindUIControl();
+		}
 	}
 
 	// abstract methods
@@ -725,30 +735,48 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * 
 	 * @since 3.0
 	 */
-	protected final static class SelectionTypeEnforcer extends SelectionAdapter implements PropertyChangeListener {
+	protected final class SelectionTypeEnforcer extends SelectionAdapter implements PropertyChangeListener {
 
-		private final AbstractComboRidget ridget;
 		private Object savedSelection;
 
-		public SelectionTypeEnforcer(final AbstractComboRidget ridget) {
-			this.ridget = ridget;
-			this.savedSelection = ridget.getSelection();
+		public SelectionTypeEnforcer() {
+			this.savedSelection = getSelection();
 		}
 
 		@Override
 		public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 			super.widgetSelected(e);
-			if (ridget.isOutputOnly()) {
-				if (null == savedSelection) {
-					ridget.setSelection(-1);
-				} else {
-					ridget.setSelection(savedSelection);
-				}
+
+			if (isOutputOnly()) {
+				final Widget uiControl = e.widget;
+				rewriteText(uiControl);
+			}
+		}
+
+		private void rewriteText(final Widget uiControl) {
+			System.err.println(savedSelection);
+
+			String textToSet = null;
+			if (savedSelection == null) {
+				textToSet = emptySelection == null ? "" : emptySelection.toString(); //$NON-NLS-1$
+			} else {
+				textToSet = savedSelection.toString();
+			}
+			if (uiControl instanceof CCombo) {
+				((CCombo) uiControl).setText(textToSet);
+			} else if (uiControl instanceof Combo) {
+				((Combo) uiControl).setText(textToSet);
 			}
 		}
 
 		public void propertyChange(final PropertyChangeEvent evt) {
-			savedSelection = ridget.getSelection();
+			savedSelection = getSelection();
+			if (isOutputOnly()) {
+				unbindUIControl();
+			} else {
+				bindUIControl();
+				rewriteText((Widget) evt.getSource());
+			}
 		}
 
 		/**
