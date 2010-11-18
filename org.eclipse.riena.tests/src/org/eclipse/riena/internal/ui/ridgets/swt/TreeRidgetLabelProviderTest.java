@@ -23,6 +23,7 @@ import org.eclipse.core.databinding.observable.map.ObservableMap;
 import org.eclipse.core.databinding.observable.set.IObservableSet;
 import org.eclipse.core.databinding.observable.set.WritableSet;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -35,6 +36,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
+import org.eclipse.swt.widgets.TreeItem;
 
 import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -300,6 +302,40 @@ public class TreeRidgetLabelProviderTest extends TestCase {
 		assertSame(siUnchecked, labelProvider.getColumnImage(alpha, 1));
 
 		assertNull(labelProvider.getColumnImage(node, 99));
+	}
+
+	/**
+	 * As per Bug 316103
+	 */
+	public void testUpdateColumnImageWithFormatter() {
+		final Image image = ImageDescriptor.getMissingImageDescriptor().createImage(); // dummy image
+		try {
+			final ColumnFormatter formatter = new ColumnFormatter() {
+				@Override
+				public Image getImage(final Object element) {
+					return image;
+				}
+			};
+			final IColumnFormatter[] formatters = new IColumnFormatter[] { formatter, null };
+			final TreeRidgetLabelProvider labelProvider = TreeRidgetLabelProvider.createLabelProvider(viewer,
+					WordNode.class, createElements(), COLUMN_PROPERTIES, null, null, null, formatters);
+
+			final TreeItem treeItem = new TreeItem(viewer.getTree(), SWT.NONE);
+			new TreeItem(treeItem, SWT.NONE);
+
+			assertTrue(treeItem.getItemCount() > 0); // has children
+			assertNull(treeItem.getImage());
+
+			ReflectionUtils.invokeHidden(labelProvider, "updateNodeImage", treeItem, true);
+
+			assertSame(image, treeItem.getImage());
+
+			ReflectionUtils.invokeHidden(labelProvider, "updateNodeImage", treeItem, false);
+
+			assertSame(image, treeItem.getImage());
+		} finally {
+			image.dispose();
+		}
 	}
 
 	public void testGetForegroundWithFormatter() {
