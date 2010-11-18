@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.example.ping.client;
+package org.eclipse.riena.internal.example.ping.client;
 
 import org.osgi.framework.BundleContext;
 
