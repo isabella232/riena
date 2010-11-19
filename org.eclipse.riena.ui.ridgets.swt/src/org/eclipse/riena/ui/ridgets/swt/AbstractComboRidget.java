@@ -38,6 +38,7 @@ import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.util.ListenerList;
@@ -52,6 +53,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.nls.Messages;
+import org.eclipse.riena.ui.swt.CompletionCombo;
 
 /**
  * Superclass of ComboRidget that does not depend on the Combo SWT control. May
@@ -741,6 +743,19 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
+	private int getSelectionIndex(final Control control) {
+		if (control instanceof Combo) {
+			return ((Combo) control).getSelectionIndex();
+		}
+		if (control instanceof CCombo) {
+			return ((CCombo) control).getSelectionIndex();
+		}
+		if (control instanceof CompletionCombo) {
+			return ((CompletionCombo) control).getSelectionIndex();
+		}
+		return -1;
+	}
+
 	/**
 	 * TwoWayAdapter that saves the current selection, when outputOnly changes
 	 * and applies it again after the user tries to select an entry in the
@@ -750,10 +765,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 */
 	protected final class SelectionTypeEnforcer extends SelectionAdapter implements PropertyChangeListener {
 
-		private Object savedSelection;
+		private int selectionIndex;
 
 		public SelectionTypeEnforcer() {
-			this.savedSelection = getSelection();
 		}
 
 		@Override
@@ -767,34 +781,44 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 
 		private void rewriteText(final Widget uiControl) {
-			String textToSet = null;
-			if (savedSelection == null) {
-				textToSet = emptySelection == null ? "" : emptySelection.toString(); //$NON-NLS-1$
-			} else {
-				textToSet = savedSelection.toString();
-			}
 			if (uiControl instanceof CCombo) {
-				((CCombo) uiControl).setText(textToSet);
+				if (selectionIndex == -1) {
+					((CCombo) uiControl).deselectAll();
+				} else {
+					((CCombo) uiControl).select(selectionIndex);
+				}
 			} else if (uiControl instanceof Combo) {
-				((Combo) uiControl).setText(textToSet);
+				if (selectionIndex == -1) {
+					((Combo) uiControl).deselectAll();
+				} else {
+					((Combo) uiControl).select(selectionIndex);
+				}
+			} else if (uiControl instanceof CompletionCombo){
+				if (selectionIndex == -1) {
+					((CompletionCombo) uiControl).deselectAll();
+				} else {
+					((CompletionCombo) uiControl).select(selectionIndex);
+				}
 			}
 		}
 
 		public void propertyChange(final PropertyChangeEvent evt) {
-			savedSelection = getSelection();
+			selectionIndex = getSelectionIndex(getUIControl());
 			if (isOutputOnly() && isBound()) {
 				unbindUIControl();
 			} else if (!isBound()) {
 				bindUIControl();
+				if (optionValues != null) {
+					setSelection(selectionIndex);
+				}
 			}
 		}
 
 		/**
-		 * @param savedSelection
-		 *            the savedSelection to set
+		 * Save the currently selected value of the Combo.
 		 */
-		public void setSavedSelection(final Object savedSelection) {
-			this.savedSelection = savedSelection;
+		public void saveSelection() {
+			selectionIndex = getSelectionIndex(getUIControl());
 		}
 
 	}
