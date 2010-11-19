@@ -40,6 +40,7 @@ import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
@@ -817,6 +818,36 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(2, pcl.getCount());
 		assertEquals("B", ridget.getSelection());
 		assertEquals("B", getSelectedString(control));
+	}
+
+	public void testOutputOnlyWithUpdateFromModelInModel() {
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final StringManager stringManager = new StringManagerWithUpdateFromModel(ridget, "A", "B", "C", "D", "E");
+		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
+		ridget.updateFromModel();
+		ridget.setUIControl(control);
+
+		ridget.setSelection("B");
+		assertEquals("B", ridget.getSelection());
+		assertEquals("B", getSelectedString(control));
+
+		ridget.setOutputOnly(true);
+
+		assertTrue(ridget.isOutputOnly());
+		assertTrue(control.isEnabled());
+
+		control.setFocus();
+		selectA(control);
+
+		assertEquals("B", ridget.getSelection());
+		assertEquals("B", getSelectedString(control));
+
+		ridget.setSelection(2);
+
+		assertEquals("C", ridget.getSelection());
+		assertEquals("C", getSelectedString(control));
+
 	}
 
 	// TODO [ev]
@@ -1607,6 +1638,23 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		@Override
 		public String toString() {
 			return name;
+		}
+	}
+
+	private static final class StringManagerWithUpdateFromModel extends StringManager {
+
+		private final IRidget ridget;
+
+		public StringManagerWithUpdateFromModel(final IRidget ridget, final String... items) {
+			super(items);
+			this.ridget = ridget;
+		}
+
+		@Override
+		public void setSelectedItem(final String selectedItem) {
+			super.setSelectedItem(selectedItem);
+			System.err.println("sel: " + selectedItem);
+			ridget.updateFromModel();
 		}
 	}
 }
