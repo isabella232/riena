@@ -784,45 +784,40 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("B", getSelectedString(control));
 	}
 
-	// TODO [ev] discuss
-	//	/**
-	//	 * As per Bug 327628: if the selection is changed via API (=method call) the
-	//	 * ridget should still fire an event, even when output-only is on.
-	//	 */
-	//	public void testOutputOnlyDoesFireSelectionWhenChangedViaSetSelection() {
-	//		final AbstractComboRidget ridget = getRidget();
-	//		final Control control = getWidget();
-	//		final StringManager stringManager = new StringManager("A", "B", "C", "D", "E");
-	//		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
-	//		ridget.updateFromModel();
-	//		ridget.setUIControl(control);
-	//
-	//		final FTPropertyChangeListener pcl = new FTPropertyChangeListener();
-	//		ridget.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, pcl);
-	//
-	//		assertEquals(0, pcl.getCount());
-	//		assertEquals(null, ridget.getSelection());
-	//		assertEquals(null, getSelectedString(control));
-	//
-	//		ridget.setOutputOnly(true);
-	//		ridget.setSelection("A");
-	//
-	//		assertEquals(1, pcl.getCount());
-	//		assertEquals("A", ridget.getSelection());
-	//		assertEquals("A", getSelectedString(control));
-	//
-	//		ridget.setSelection(1);
-	//
-	//		assertEquals(2, pcl.getCount());
-	//		assertEquals("B", ridget.getSelection());
-	//		assertEquals("B", getSelectedString(control));
-	//
-	//		ridget.setSelection(1);
-	//
-	//		assertEquals(2, pcl.getCount());
-	//		assertEquals("B", ridget.getSelection());
-	//		assertEquals("B", getSelectedString(control));
-	//	}
+	public void testOutputOnlyDoesFireSelectionWhenChangedViaSetSelection() {
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final StringManager stringManager = new StringManager("A", "B", "C", "D", "E");
+		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
+		ridget.updateFromModel();
+		ridget.setUIControl(control);
+
+		final FTPropertyChangeListener pcl = new FTPropertyChangeListener();
+		ridget.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, pcl);
+
+		assertEquals(0, pcl.getCount());
+		assertEquals(null, ridget.getSelection());
+		assertEquals(null, getSelectedString(control));
+
+		ridget.setOutputOnly(true);
+		ridget.setSelection("A");
+
+		assertEquals(1, pcl.getCount());
+		assertEquals("A", ridget.getSelection());
+		assertEquals("A", getSelectedString(control));
+
+		ridget.setSelection(1);
+
+		assertEquals(2, pcl.getCount());
+		assertEquals("B", ridget.getSelection());
+		assertEquals("B", getSelectedString(control));
+
+		ridget.setSelection(1);
+
+		assertEquals(2, pcl.getCount());
+		assertEquals("B", ridget.getSelection());
+		assertEquals("B", getSelectedString(control));
+	}
 
 	// TODO [ev]
 	//	public void testSetSelectionIntFiresEvents() {
