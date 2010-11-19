@@ -15,8 +15,6 @@ import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -25,8 +23,6 @@ import org.eclipse.riena.beans.common.IntegerBean;
 import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -37,9 +33,8 @@ public final class SnippetNumericTextRidget001 {
 	public static void main(final String[] args) {
 		final Display display = Display.getDefault();
 		try {
-			final Shell shell = new Shell();
+			final Shell shell = UIControlsFactory.createShell(display);
 			shell.setText(SnippetNumericTextRidget001.class.getSimpleName());
-			shell.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 			GridLayoutFactory.fillDefaults().numColumns(2).margins(10, 10).spacing(20, 10).applyTo(shell);
 
 			UIControlsFactory.createLabel(shell, "###,###:"); //$NON-NLS-1$
@@ -62,8 +57,6 @@ public final class SnippetNumericTextRidget001 {
 					BeansObservables.observeValue(rInput, ITextRidget.PROPERTY_TEXT), null, new UpdateValueStrategy());
 			rInput.bindToModel(new IntegerBean(12345), IntegerBean.PROP_VALUE);
 			rInput.updateFromModel();
-
-			final Button b = new Button(shell, SWT.PUSH);
 
 			shell.setSize(300, 200);
 			shell.open();
