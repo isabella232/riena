@@ -733,9 +733,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			final Object oldValue = event.diff.getOldValue();
 			final Object newValue = event.diff.getNewValue();
 			try {
-				if (!isOutputOnly()) {
-					firePropertyChange(IComboRidget.PROPERTY_SELECTION, oldValue, newValue);
-				}
+				firePropertyChange(IComboRidget.PROPERTY_SELECTION, oldValue, newValue);
 			} finally {
 				disableMandatoryMarkers(hasInput());
 				applyMarkSelectionMismatch();
@@ -793,7 +791,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 				} else {
 					((Combo) uiControl).select(selectionIndex);
 				}
-			} else if (uiControl instanceof CompletionCombo){
+			} else if (uiControl instanceof CompletionCombo) {
 				if (selectionIndex == -1) {
 					((CompletionCombo) uiControl).deselectAll();
 				} else {
