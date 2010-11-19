@@ -250,14 +250,14 @@ public class ValidRangeTest extends RienaTestCase {
 		min = 5000.5;
 		max = 5000.5;
 		rule = createRange(min, max);
-		value = "5000,5";
+		value = TestUtils.getLocalizedNumber("5000,5");
 
 		assertTrue(rule.validate(value).isOK());
 
 		min = 5000.55;
 		max = 5000.55;
 		rule = createRange(min, max);
-		value = "5000,55";
+		value = TestUtils.getLocalizedNumber("5000,55");
 
 		assertTrue(rule.validate(value).isOK());
 	}
