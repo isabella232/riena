@@ -32,6 +32,13 @@ public interface IDecimalTextRidget extends INumericTextRidget {
 	String PROPERTY_PRECISION = "precision"; //$NON-NLS-1$
 
 	/**
+	 * Gets the number of fraction digits.
+	 * 
+	 * @return the number of fraction digits
+	 */
+	int getPrecision();
+
+	/**
 	 * Sets the number of fractional digits of this text field, that is the
 	 * number of digits behind the decimal-separator.
 	 * <p>
@@ -43,12 +50,5 @@ public interface IDecimalTextRidget extends INumericTextRidget {
 	 *            a value equal or greater than 0
 	 */
 	void setPrecision(int numberOfFractionDigits);
-
-	/**
-	 * Gets the number of fraction digits.
-	 * 
-	 * @return the number of fraction digits
-	 */
-	int getPrecision();
 
 }
