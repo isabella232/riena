@@ -786,7 +786,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 				unbindUIControl();
 			} else if (!isBound()) {
 				bindUIControl();
-				rewriteText((Widget) evt.getSource());
 			}
 		}
 
