@@ -1653,7 +1653,6 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		@Override
 		public void setSelectedItem(final String selectedItem) {
 			super.setSelectedItem(selectedItem);
-			System.err.println("sel: " + selectedItem);
 			ridget.updateFromModel();
 		}
 	}
