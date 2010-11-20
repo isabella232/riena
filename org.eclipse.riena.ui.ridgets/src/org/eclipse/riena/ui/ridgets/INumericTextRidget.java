@@ -45,39 +45,65 @@ public interface INumericTextRidget extends ITextRidget {
 	int getMaxLength();
 
 	/**
-	 * TODO [ev] docs
+	 * When true, empty values ("", null) will be converted to zero (i.e. "0" or
+	 * "0,00"). Consult {@link #setConvertEmptyToZero(boolean)} for details.
+	 * <p>
+	 * The default setting for this option is false.
 	 * 
 	 * @since 3.0
 	 */
 	boolean isConvertEmptyToZero();
 
 	/**
+	 * Indicates whether grouping is used to separate thousands.
+	 * <p>
+	 * The default setting for this option is true.
+	 * 
 	 * @return Indicates whether grouping is used to separate thousands.
 	 */
 	boolean isGrouping();
 
 	/**
-	 * @return true if negative value should be marked
+	 * Indicates if negative values should be marked.
+	 * <p>
+	 * The default setting for this option is true.
+	 * 
+	 * @return true if negative values should be marked
 	 */
 	boolean isMarkNegative();
 
 	/**
-	 * @return Indicates whether negative values are allowed. The default value
-	 *         is true.
+	 * Indicates whether negative values are allowed.
+	 * <p>
+	 * The default setting for this option is true.
+	 * 
+	 * @return Indicates whether negative values are allowed.
 	 */
 	boolean isSigned();
 
 	/**
-	 * TODO [ev] docs
+	 * When true, empty values ("", null) will be converted to zero (i.e. "0" or
+	 * "0,00"). This works as follows:
+	 * <ul>
+	 * <li>when an empty value is passed via {@link #setText(String)} or
+	 * {@link #updateFromModel()} the text control will display zero but
+	 * {@link #getText()} returns {@code ""}</li>
+	 * <li>when an empty value is entered by the user it is converted to zero.
+	 * The text control will display zero and {@link #getText()} will return
+	 * zero</li>
+	 * </ul>
+	 * <p>
+	 * The default setting for this option is false.
 	 * 
 	 * @since 3.0
 	 */
 	void setConvertEmptyToZero(boolean nullAsZero);
 
 	/**
-	 * Sets whether grouping is used to separate thousands.
+	 * Sets whether grouping is used to separate thousands. This will use the
+	 * grouping separator of the default locale.
 	 * <p>
-	 * This will use the grouping separator of the default locale.
+	 * The default setting for this option is true.
 	 * 
 	 * @param useGrouping
 	 *            The new grouping state.
@@ -85,6 +111,10 @@ public interface INumericTextRidget extends ITextRidget {
 	void setGrouping(boolean useGrouping);
 
 	/**
+	 * Sets whether negative values should be marked.
+	 * <p>
+	 * The default setting for this option is true.
+	 * 
 	 * @param mustBeMarked
 	 *            whether to mark or not a negative value
 	 */
@@ -110,6 +140,8 @@ public interface INumericTextRidget extends ITextRidget {
 	 * Note that {@link #setText(String)} and {@link #updateFromModel()} will
 	 * throw a RuntimeException with negative values after
 	 * {@code setSigned(false)} has been called.
+	 * <p>
+	 * The default setting for this option is true.
 	 * 
 	 * @param signed
 	 *            The new signed state.
