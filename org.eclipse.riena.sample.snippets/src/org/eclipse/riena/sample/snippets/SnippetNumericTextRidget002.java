@@ -17,12 +17,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Demonstrates how to use a {@link INumericTextRidget} with a length limit.
+ * Demonstrates how to use a {@link INumericTextRidget} or
+ * {@link IDecimalTextRidget} that converts empty values to "0" (or "0,0..0").
  */
 public final class SnippetNumericTextRidget002 {
 
