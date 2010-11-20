@@ -296,12 +296,6 @@ public class SWTModuleController extends ModuleController {
 			updateTree(childAdded);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @seeorg.eclipse.riena.navigation.listener.NavigationNodeListener#
-		 * presentationChanged(org.eclipse.riena.navigation.INavigationNode)
-		 */
 		@Override
 		public void presentationChanged(final IModuleNode source) {
 			if (!getNavigationNode().getNavigationNodeController().equals(SWTModuleController.this)) {
@@ -319,10 +313,9 @@ public class SWTModuleController extends ModuleController {
 			return;
 		}
 		final IModuleNode moduleNode = source.getParentOfType(IModuleNode.class);
-		if ((moduleNode == null) || (!moduleNode.isActivated())) {
+		if (moduleNode != null && !moduleNode.isActivated()) {
 			return;
 		}
-
 		tree.updateFromModel();
 	}
 }
