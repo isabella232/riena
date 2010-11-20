@@ -111,7 +111,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	protected final synchronized void bindUIControl() {
 		final Text control = getTextWidget();
 		if (control != null) {
-			setUIText(getTextBasedOnMarkerState(textValue));
+			setUIText(textValue);
 			updateEditable();
 			addListeners(control);
 		}
@@ -206,7 +206,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	protected void setUIText(final String text) {
 		final Text control = getTextWidget();
 		if (control != null) {
-			control.setText(text);
+			control.setText(getTextBasedOnMarkerState(text));
 			control.setSelection(0, 0);
 		}
 	}
@@ -319,7 +319,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		if (control != null) {
 			final Listener[] vListeners = removeListeners(control, SWT.Verify);
 			final Listener[] mListeners = removeListeners(control, SWT.Modify);
-			TextRidget.this.setUIText(getTextBasedOnMarkerState(newValue));
+			TextRidget.this.setUIText(newValue);
 			addListeners(control, SWT.Modify, mListeners);
 			addListeners(control, SWT.Verify, vListeners);
 		}

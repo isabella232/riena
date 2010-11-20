@@ -1260,6 +1260,200 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		}
 	}
 
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyToZero() {
+		final INumericTextRidget ridget = getRidget();
+
+		assertFalse(ridget.isConvertEmptyToZero());
+
+		ridget.setConvertEmptyToZero(true);
+
+		assertTrue(ridget.isConvertEmptyToZero());
+
+		ridget.setConvertEmptyToZero(false);
+
+		assertFalse(ridget.isConvertEmptyToZero());
+	}
+
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyToZeroWithSetText() {
+		final INumericTextRidget ridget = getRidget();
+		final Text control = getWidget();
+
+		ridget.setText(null);
+
+		assertEquals("", ridget.getText());
+		assertEquals("", control.getText());
+
+		ridget.setText("");
+
+		assertEquals("", ridget.getText());
+		assertEquals("", control.getText());
+
+		ridget.setConvertEmptyToZero(true); // value = "" => control = "0,00"
+
+		assertEquals("", ridget.getText());
+		assertEquals("0", control.getText());
+
+		ridget.setText(null);
+
+		assertEquals("", ridget.getText());
+		assertEquals("0", control.getText());
+
+		ridget.setText("");
+
+		assertEquals("", ridget.getText());
+		assertEquals("0", control.getText());
+
+		ridget.setText("0");
+
+		assertEquals("0", ridget.getText());
+		assertEquals("0", control.getText());
+	}
+
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyDoubleToZeroWithUpdate() {
+		final INumericTextRidget ridget = getRidget();
+		final Text control = getWidget();
+
+		ridget.setConvertEmptyToZero(true);
+		final IntegerBean integerBean = new IntegerBean(null);
+		ridget.bindToModel(integerBean, IntegerBean.PROP_VALUE);
+		ridget.updateFromModel();
+
+		assertEquals("", ridget.getText());
+		assertEquals("0", control.getText());
+
+		integerBean.setValue(Integer.valueOf(3141));
+		ridget.updateFromModel();
+
+		assertEquals(localize("3.141"), ridget.getText());
+		assertEquals(localize("3.141"), control.getText());
+
+		integerBean.setValue(Integer.valueOf(0));
+		ridget.updateFromModel();
+
+		assertEquals("0", ridget.getText());
+		assertEquals("0", control.getText());
+	}
+
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyStringToZeroWithUpdate() {
+		final INumericTextRidget ridget = getRidget();
+		final Text control = getWidget();
+
+		ridget.setConvertEmptyToZero(true);
+		final StringBean stringBean = new StringBean(null);
+		ridget.bindToModel(stringBean, StringBean.PROP_VALUE);
+		ridget.updateFromModel();
+
+		assertEquals("", ridget.getText());
+		assertEquals("0", control.getText());
+
+		stringBean.setValue(localize("3141"));
+		ridget.updateFromModel();
+
+		assertEquals(localize("3.141"), ridget.getText());
+		assertEquals(localize("3.141"), control.getText());
+
+		stringBean.setValue("");
+		ridget.updateFromModel();
+
+		assertEquals("", ridget.getText());
+		assertEquals("0", control.getText());
+
+		stringBean.setValue("0");
+		ridget.updateFromModel();
+
+		assertEquals("0", ridget.getText());
+		assertEquals("0", control.getText());
+	}
+
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyToZeroWithMandatoryMarker() {
+		final INumericTextRidget ridget = getRidget();
+		ridget.setMandatory(true);
+		ridget.setText("");
+
+		TestUtils.assertMandatoryMarker(ridget, 1, false);
+
+		ridget.setConvertEmptyToZero(true);
+		ridget.setText(null);
+
+		TestUtils.assertMandatoryMarker(ridget, 1, false);
+
+		ridget.setText("1");
+
+		TestUtils.assertMandatoryMarker(ridget, 1, true);
+	}
+
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyToZeroDoesNotInterfereWithHiddenValue() {
+		final INumericTextRidget ridget = getRidget();
+		final Text control = getWidget();
+		ridget.setText("1");
+
+		assertEquals("1", control.getText());
+
+		ridget.setEnabled(false);
+
+		assertEquals("", control.getText());
+
+		ridget.setConvertEmptyToZero(true);
+
+		assertEquals("", control.getText());
+
+		ridget.setText(null);
+
+		assertEquals("", control.getText());
+
+		ridget.setEnabled(true);
+
+		assertEquals("", ridget.getText());
+		assertEquals("0", control.getText());
+	}
+
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyToZeroWhenLosingFocus() {
+		final INumericTextRidget ridget = getRidget();
+		final Text control = getWidget();
+		ridget.setText(localize("3.141"));
+		ridget.setConvertEmptyToZero(true);
+
+		assertEquals(localize("3.141"), ridget.getText());
+		assertEquals(localize("3.141"), control.getText());
+
+		control.selectAll();
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "\b\t");
+
+		assertEquals("0", ridget.getText());
+		assertEquals("0", control.getText());
+
+		ridget.setConvertEmptyToZero(false);
+
+		control.selectAll();
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "\b\t");
+
+		assertEquals("", ridget.getText());
+		assertEquals("", control.getText());
+	}
+
 	// helping methods
 	//////////////////
 

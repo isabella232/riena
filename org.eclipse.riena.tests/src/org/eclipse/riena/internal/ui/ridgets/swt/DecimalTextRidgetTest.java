@@ -408,6 +408,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		final StringBean bean = new StringBean();
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
+		control.selectAll();
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), localize("123456,12345-\r"));
 
@@ -453,6 +454,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		final StringBean bean = new StringBean();
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
+		control.selectAll();
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), "123456\r");
 
@@ -497,21 +499,29 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 			ok();
 		}
 
-		expectPropertyChangeEvent(IDecimalTextRidget.PROPERTY_PRECISION, Integer.valueOf(2), Integer.valueOf(5));
+		final FTPropertyChangeListener listener = new FTPropertyChangeListener();
+		ridget.addPropertyChangeListener(IDecimalTextRidget.PROPERTY_PRECISION, listener);
+
+		assertEquals(0, listener.getCount());
+
 		ridget.setPrecision(5);
 
-		verifyPropertyChangeEvents();
+		assertEquals(1, listener.getCount());
+		assertEquals(IDecimalTextRidget.PROPERTY_PRECISION, listener.getEvent().getPropertyName());
+		assertEquals(Integer.valueOf(2), listener.getEvent().getOldValue());
+		assertEquals(Integer.valueOf(5), listener.getEvent().getNewValue());
 		assertEquals(5, ridget.getPrecision());
 
-		expectNoPropertyChangeEvent();
 		ridget.setPrecision(5);
 
-		verifyPropertyChangeEvents();
+		assertEquals(1, listener.getCount()); // no new event
 
-		expectPropertyChangeEvent(IDecimalTextRidget.PROPERTY_PRECISION, Integer.valueOf(5), Integer.valueOf(0));
 		ridget.setPrecision(0);
 
-		verifyPropertyChangeEvents();
+		assertEquals(2, listener.getCount());
+		assertEquals(IDecimalTextRidget.PROPERTY_PRECISION, listener.getEvent().getPropertyName());
+		assertEquals(Integer.valueOf(5), listener.getEvent().getOldValue());
+		assertEquals(Integer.valueOf(0), listener.getEvent().getNewValue());
 		assertEquals(0, ridget.getPrecision());
 	}
 
@@ -628,6 +638,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 
 		assertTrue(ridget.isSigned());
 
+		control.selectAll();
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), "1-\r");
 
@@ -662,6 +673,7 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		final StringBean bean = new StringBean();
 		ridget.bindToModel(bean, StringBean.PROP_VALUE);
 
+		control.selectAll();
 		control.setFocus();
 		UITestHelper.sendString(control.getDisplay(), localize("1234\t"));
 
@@ -951,9 +963,230 @@ public class DecimalTextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setModelToUIControlConverter(myConverter);
 		ridget.updateFromModel();
 
-		assertEquals(localize("3,14"), control.getText());
 		assertEquals(localize("3,14"), ridget.getText());
+		assertEquals(localize("3,14"), control.getText());
 		assertEquals(3.14159265, model.getValue());
+	}
+
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyToZero() {
+		final IDecimalTextRidget ridget = getRidget();
+
+		assertFalse(ridget.isConvertEmptyToZero());
+
+		ridget.setConvertEmptyToZero(true);
+
+		assertTrue(ridget.isConvertEmptyToZero());
+
+		ridget.setConvertEmptyToZero(false);
+
+		assertFalse(ridget.isConvertEmptyToZero());
+	}
+
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyToZeroWithSetText() {
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
+
+		ridget.setText(null);
+
+		assertEquals("", ridget.getText());
+		assertEquals(localize(","), control.getText());
+
+		ridget.setText("");
+
+		assertEquals("", ridget.getText());
+		assertEquals(localize(","), control.getText());
+
+		ridget.setConvertEmptyToZero(true); // value = "" => control = "0,00"
+
+		assertEquals(2, ridget.getPrecision());
+		assertEquals("", ridget.getText());
+		assertEquals(localize("0,00"), control.getText());
+
+		ridget.setText(null);
+
+		assertEquals("", ridget.getText());
+		assertEquals(localize("0,00"), control.getText());
+
+		ridget.setText("");
+
+		assertEquals("", ridget.getText());
+		assertEquals(localize("0,00"), control.getText());
+
+		ridget.setText(localize("0"));
+
+		assertEquals("0", ridget.getText());
+		assertEquals(localize("0,00"), control.getText());
+	}
+
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyToZeroWithChangingPrecision() {
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
+		ridget.setConvertEmptyToZero(true);
+		ridget.setPrecision(2);
+
+		ridget.setText("");
+
+		assertEquals("", ridget.getText());
+		assertEquals(localize("0,00"), control.getText());
+
+		ridget.setPrecision(3);
+
+		assertEquals("", ridget.getText());
+		assertEquals(localize("0,000"), control.getText());
+
+		ridget.setPrecision(2);
+
+		assertEquals("", ridget.getText());
+		assertEquals(localize("0,00"), control.getText());
+	}
+
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyDoubleToZeroWithUpdate() {
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
+
+		ridget.setConvertEmptyToZero(true);
+		final DoubleBean doubleBean = new DoubleBean(null);
+		ridget.bindToModel(doubleBean, DoubleBean.PROP_VALUE);
+		ridget.updateFromModel();
+
+		assertEquals("", ridget.getText());
+		assertEquals(localize("0,00"), control.getText());
+
+		doubleBean.setValue(3.14d);
+		ridget.updateFromModel();
+
+		assertEquals(localize("3,14"), ridget.getText());
+		assertEquals(localize("3,14"), control.getText());
+
+		doubleBean.setValue(0d);
+		ridget.updateFromModel();
+
+		assertEquals("0", ridget.getText());
+		assertEquals(localize("0,00"), control.getText());
+	}
+
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyStringToZeroWithUpdate() {
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
+
+		ridget.setConvertEmptyToZero(true);
+		final StringBean stringBean = new StringBean(null);
+		ridget.bindToModel(stringBean, StringBean.PROP_VALUE);
+		ridget.updateFromModel();
+
+		assertEquals("", ridget.getText());
+		assertEquals(localize("0,00"), control.getText());
+
+		stringBean.setValue(localize("3,14"));
+		ridget.updateFromModel();
+
+		assertEquals(localize("3,14"), ridget.getText());
+		assertEquals(localize("3,14"), control.getText());
+
+		stringBean.setValue("");
+		ridget.updateFromModel();
+
+		assertEquals("", ridget.getText());
+		assertEquals(localize("0,00"), control.getText());
+
+		stringBean.setValue(localize("0"));
+		ridget.updateFromModel();
+
+		assertEquals("0", ridget.getText());
+		assertEquals(localize("0,00"), control.getText());
+	}
+
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyToZeroWithMandatoryMarker() {
+		final IDecimalTextRidget ridget = getRidget();
+		ridget.setMandatory(true);
+		ridget.setText("");
+
+		TestUtils.assertMandatoryMarker(ridget, 1, false);
+
+		ridget.setConvertEmptyToZero(true);
+		ridget.setText(null);
+
+		TestUtils.assertMandatoryMarker(ridget, 1, false);
+
+		ridget.setText("1");
+
+		TestUtils.assertMandatoryMarker(ridget, 1, true);
+	}
+
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyToZeroDoesNotInterfereWithHiddenValue() {
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
+		ridget.setText("1");
+
+		assertEquals(localize("1,00"), control.getText());
+
+		ridget.setEnabled(false);
+
+		assertEquals("", control.getText());
+
+		ridget.setConvertEmptyToZero(true);
+
+		assertEquals("", control.getText());
+
+		ridget.setText(null);
+
+		assertEquals("", control.getText());
+
+		ridget.setEnabled(true);
+
+		assertEquals("", ridget.getText());
+		assertEquals(localize("0,00"), control.getText());
+	}
+
+	/**
+	 * As per Bug 317917
+	 */
+	public void testSetConvertEmptyToZeroWhenLosingFocus() {
+		final IDecimalTextRidget ridget = getRidget();
+		final Text control = getWidget();
+		ridget.setPrecision(2);
+		ridget.setText("1");
+		ridget.setConvertEmptyToZero(true);
+
+		assertEquals(localize("1"), ridget.getText());
+		assertEquals(localize("1,00"), control.getText());
+
+		control.selectAll();
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "\b\t");
+
+		assertEquals("0", ridget.getText());
+		assertEquals(localize("0,00"), control.getText());
+
+		ridget.setConvertEmptyToZero(false);
+
+		control.selectAll();
+		control.setFocus();
+		UITestHelper.sendString(control.getDisplay(), "\b\t");
+
+		assertEquals("", ridget.getText());
+		assertEquals(localize(","), control.getText());
 	}
 
 	// helping methods

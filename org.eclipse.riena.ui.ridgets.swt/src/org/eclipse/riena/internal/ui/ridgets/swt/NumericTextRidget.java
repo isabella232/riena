@@ -189,9 +189,10 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	private final KeyListener keyListener;
 	private final FocusListener focusListener;
 
-	private boolean isSigned;
+	private boolean isConvertEmpty;
 	private boolean isGrouping;
 	private boolean isMarkNegative;
+	private boolean isSigned;
 	private NegativeMarker negativeMarker;
 	private int maxLength;
 	private int precision;
@@ -298,28 +299,25 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		this.precision = precision;
 		final String oldText = getText();
 		final String newText = formatFraction(oldText);
-		if (!oldText.equals(newText)) {
-			setText(newText);
-		}
+		setText(newText);
 	}
 
 	@Override
 	protected void setUIText(final String text) {
-		if (isDecimal() && text.length() > 0) {
-			super.setUIText(beautifyText(text));
-		} else {
-			super.setUIText(text);
-		}
+		super.setUIText(beautifyText(text));
+		//		if (isDecimal()) {
+		//			super.setUIText(beautifyText(text));
+		//		} else {
+		//			if (isConvertEmptyToZero() && text.length() == 0) {
+		//				super.setUIText(createZero());
+		//			} else {
+		//				super.setUIText(text);
+		//			}
+		//		}
 	}
 
-	@Override
-	public void setModelToUIControlConverter(final IConverter converter) {
-		hasCustomConverter = converter != null;
-		super.setModelToUIControlConverter(converter);
-	}
-
-	// API methods
-	//////////////
+	// public methods
+	/////////////////
 
 	public final synchronized int getMaxLength() {
 		return maxLength;
@@ -334,6 +332,10 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		return result;
 	}
 
+	public synchronized boolean isConvertEmptyToZero() {
+		return isConvertEmpty;
+	}
+
 	public synchronized boolean isGrouping() {
 		return isGrouping;
 	}
@@ -344,6 +346,13 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 
 	public synchronized boolean isSigned() {
 		return isSigned;
+	}
+
+	public synchronized void setConvertEmptyToZero(final boolean convertEmpty) {
+		if (isConvertEmpty != convertEmpty) {
+			isConvertEmpty = convertEmpty;
+			setText(getText());
+		}
 	}
 
 	public synchronized void setGrouping(final boolean useGrouping) {
@@ -368,6 +377,12 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			this.maxLength = maxLength;
 			firePropertyChange(INumericTextRidget.PROPERTY_MAXLENGTH, oldValue, maxLength);
 		}
+	}
+
+	@Override
+	public void setModelToUIControlConverter(final IConverter converter) {
+		hasCustomConverter = converter != null;
+		super.setModelToUIControlConverter(converter);
 	}
 
 	public final synchronized void setSigned(final boolean signed) {
@@ -441,8 +456,8 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	}
 
 	private String beautifyText(final String text) {
-		if (String.valueOf(DECIMAL_SEPARATOR).equals(text)) {
-			return text;
+		if (text.length() == 0 || String.valueOf(DECIMAL_SEPARATOR).equals(text)) {
+			return isConvertEmptyToZero() ? createZero() : text;
 		}
 		String newText = formatFraction(text);
 		if (newText.length() > 1 && newText.charAt(0) == DECIMAL_SEPARATOR) {
@@ -506,6 +521,20 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		}
 	}
 
+	private String createZero() {
+		String result;
+		if (isDecimal()) {
+			final int decimalDigits = Math.max(0, getPrecision());
+			final char[] zero = new char[2 + decimalDigits];
+			Arrays.fill(zero, ZERO);
+			zero[1] = DECIMAL_SEPARATOR;
+			result = String.valueOf(zero);
+		} else {
+			result = String.valueOf(ZERO);
+		}
+		return result;
+	}
+
 	private void startModifyListener() {
 		modifyListener.setEnabled(true);
 	}
@@ -554,7 +583,6 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			}
 			result = treatDecimalSeparator(result);
 		}
-
 		return result;
 	}
 
@@ -577,7 +605,6 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 				return text + DECIMAL_SEPARATOR;
 			}
 		}
-
 		return text;
 	}
 
@@ -883,10 +910,8 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	private final class NumericFocusListener extends FocusAdapter {
 		@Override
 		public void focusLost(final FocusEvent e) {
-			if (isDecimal()) {
-				final Text control = (Text) e.widget;
-				beautifyText(control);
-			}
+			final Text control = (Text) e.widget;
+			beautifyText(control);
 		}
 	}
 

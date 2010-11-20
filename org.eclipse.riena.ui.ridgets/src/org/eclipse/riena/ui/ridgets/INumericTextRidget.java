@@ -36,9 +36,43 @@ public interface INumericTextRidget extends ITextRidget {
 	String PROPERTY_MAXLENGTH = "maxLength"; //$NON-NLS-1$
 
 	/**
+	 * Returns the maximum number of decimal digits (excluding separators and
+	 * the minus sign). May be -1 if no limit is set.
+	 * 
+	 * @return the number of decimal digits
+	 * @since 2.0
+	 */
+	int getMaxLength();
+
+	/**
+	 * TODO [ev] docs
+	 * 
+	 * @since 3.0
+	 */
+	boolean isConvertEmptyToZero();
+
+	/**
 	 * @return Indicates whether grouping is used to separate thousands.
 	 */
 	boolean isGrouping();
+
+	/**
+	 * @return true if negative value should be marked
+	 */
+	boolean isMarkNegative();
+
+	/**
+	 * @return Indicates whether negative values are allowed. The default value
+	 *         is true.
+	 */
+	boolean isSigned();
+
+	/**
+	 * TODO [ev] docs
+	 * 
+	 * @since 3.0
+	 */
+	void setConvertEmptyToZero(boolean nullAsZero);
 
 	/**
 	 * Sets whether grouping is used to separate thousands.
@@ -49,29 +83,6 @@ public interface INumericTextRidget extends ITextRidget {
 	 *            The new grouping state.
 	 */
 	void setGrouping(boolean useGrouping);
-
-	/**
-	 * @return Indicates whether negative values are allowed. The default value
-	 *         is true.
-	 */
-	boolean isSigned();
-
-	/**
-	 * Sets whether negative values are allowed.
-	 * <p>
-	 * Note that {@link #setText(String)} and {@link #updateFromModel()} will
-	 * throw a RuntimeException with negative values after
-	 * {@code setSigned(false)} has been called.
-	 * 
-	 * @param signed
-	 *            The new signed state.
-	 */
-	void setSigned(boolean signed);
-
-	/**
-	 * @return true if negative value should be marked
-	 */
-	boolean isMarkNegative();
 
 	/**
 	 * @param mustBeMarked
@@ -94,11 +105,14 @@ public interface INumericTextRidget extends ITextRidget {
 	void setMaxLength(int maxLength);
 
 	/**
-	 * Returns the maximum number of decimal digits (excluding separators and
-	 * the minus sign). May be -1 if no limit is set.
+	 * Sets whether negative values are allowed.
+	 * <p>
+	 * Note that {@link #setText(String)} and {@link #updateFromModel()} will
+	 * throw a RuntimeException with negative values after
+	 * {@code setSigned(false)} has been called.
 	 * 
-	 * @return the number of decimal digits
-	 * @since 2.0
+	 * @param signed
+	 *            The new signed state.
 	 */
-	int getMaxLength();
+	void setSigned(boolean signed);
 }
