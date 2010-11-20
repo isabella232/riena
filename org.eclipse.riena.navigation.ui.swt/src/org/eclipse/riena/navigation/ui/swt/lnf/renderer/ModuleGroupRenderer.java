@@ -131,11 +131,6 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 
 	private class ModuleCompartor implements Comparator<ModuleView> {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-		 */
 		public int compare(final ModuleView o1, final ModuleView o2) {
 			return navigationNode.getIndexOfChild(o1.getNavigationNode()) < navigationNode.getIndexOfChild(o2
 					.getNavigationNode()) ? -1 : 1;
