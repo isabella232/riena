@@ -19,9 +19,12 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 
 /**
- * TODO [ev] docs
+ * /** A CompletionCombo with a text field, with an optional image on the left,
+ * and a table widget (which can show an image next to each item).
  * <p>
- * TODO [ev] write a snippet?
+ * <b>Important:</b> this is the RCP-specific implementation of this widget. Use
+ * {@code UIControlsFactory.createCompletionComboWithImage(...)} to
+ * automatically get the correct platform-specific (RCP or RAP) instance.
  */
 public class CompletionComboWithImageRCP extends AbstractCompletionComboRCP {
 

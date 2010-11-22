@@ -34,7 +34,15 @@ import org.eclipse.swt.widgets.TypedListener;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 
 /**
- * TODO [ev] docs
+ * RCP specific implementation of a {@link CompletionCombo}. There are two
+ * concrete subclasses:
+ * <ul>
+ * <li>CompletionComboRCP &ndash; a CompletionCombo with a text field and a list
+ * widget</li>
+ * <li>CompletionComboWithImageRCP &ndash; a CompletionCombo with a text field,
+ * with an optional image on the left, and a table widget (which can show an
+ * image next to each item)</li>
+ * </ul>
  */
 abstract class AbstractCompletionComboRCP extends CompletionCombo {
 
