@@ -65,7 +65,8 @@ public class CompletionComboSubModuleController extends SubModuleController {
 		final WritableValue selection = new WritableValue() {
 			@Override
 			public void doSetValue(final Object value) {
-				selectionRidget.setText(((City) value).getName());
+				final String text = value == null ? "" : ((City) value).getName(); //$NON-NLS-1$
+				selectionRidget.setText(text);
 			}
 		};
 		result.bindToModel(input, ListBean.PROPERTY_VALUES, City.class, "getName", selection, "value"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -148,7 +149,7 @@ public class CompletionComboSubModuleController extends SubModuleController {
 
 		@Override
 		public String getText(final Object element) {
-			return ("ab" + ((City) element).getName());
+			return ((City) element).getName();
 		}
 
 		@Override
