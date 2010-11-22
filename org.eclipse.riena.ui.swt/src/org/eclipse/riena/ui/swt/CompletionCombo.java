@@ -2359,7 +2359,7 @@ public abstract class CompletionCombo extends Composite {
 
 			final boolean matched = matchPrefixWithList(newPrefix);
 			if (!matched) {
-				if (isAllowMissmatch()) { // TODO [ev] ridget sel
+				if (isAllowMissmatch()) {
 					clearImage();
 					event.doit = true;
 				} else {
@@ -2392,7 +2392,7 @@ public abstract class CompletionCombo extends Composite {
 		final int index = indexOf(newText);
 		if (index != -1 || newText.length() == 0) {
 			ClipboardFacade.getDefault().cut(text);
-			if (index == -1) { // TODO [ev] ridget sel
+			if (index == -1) {
 				clearImage();
 			} else {
 				setImage(index);
@@ -2415,7 +2415,7 @@ public abstract class CompletionCombo extends Composite {
 			final String newText = oldText.substring(0, selection.x) + data
 					+ oldText.substring(selection.y, oldText.length());
 			final int index = indexOf(newText);
-			if (index != -1) { // TODO [ev] ridget sel
+			if (index != -1) {
 				setImage(index);
 				text.setText(newText);
 				setSelection(list, index);
