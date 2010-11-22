@@ -2350,15 +2350,9 @@ public abstract class CompletionCombo extends Composite {
 			}
 
 			final Point selection = getSelection();
-			final String oldPrefix = text.getText().substring(0, selection.x);
 			final String newPrefix;
 			if (event.character == SWT.BS) {
 				newPrefix = buildPrefixOnBackSpace(selection);
-			} else if (isRepeatOfFirstChar(event, oldPrefix)) {
-				if (jumpToNextItem(oldPrefix)) {
-					return;
-				}
-				newPrefix = buildPrefixForInput(event.character, selection);
 			} else {
 				newPrefix = buildPrefixForInput(event.character, selection);
 			}
@@ -2375,27 +2369,6 @@ public abstract class CompletionCombo extends Composite {
 				}
 			}
 		}
-	}
-
-	private boolean isRepeatOfFirstChar(final Event event, final String oldPrefix) {
-		return !isAllowMissmatch() && oldPrefix.length() == 1
-				&& oldPrefix.equalsIgnoreCase(String.valueOf(event.character)) && getSelectionIndex(list) != -1;
-	}
-
-	private boolean jumpToNextItem(final String oldPrefix) {
-		boolean result = false;
-		final int newIndex = getSelectionIndex(list) + 1;
-		if (newIndex < getItemCount(list)) {
-			final String newSelection = getItem(list, newIndex);
-			if (newSelection.length() > 0 && oldPrefix.equalsIgnoreCase(newSelection.substring(0, 1))) {
-				setImage(newIndex);
-				text.setText(newSelection);
-				setSelection(list, newIndex);
-				text.setSelection(1, newSelection.length());
-				result = true;
-			}
-		}
-		return result;
 	}
 
 	private boolean handleClipboardOperations(final Event event) {
@@ -2477,7 +2450,7 @@ public abstract class CompletionCombo extends Composite {
 			return true;
 		}
 		if (isAllowMissmatch()) {
-			// Special character: dash, punktuation, currency, quotes, brakets, ...
+			// Special character: dash, punctuation, currency, quotes, brackets, ...
 			final int type = Character.getType(ch);
 			if (type == Character.LETTER_NUMBER || type == Character.OTHER_NUMBER || type >= Character.DASH_PUNCTUATION
 					&& type < Character.FINAL_QUOTE_PUNCTUATION) {
@@ -2511,27 +2484,22 @@ public abstract class CompletionCombo extends Composite {
 				text.setText(""); //$NON-NLS-1$
 				result = true;
 			} else {
-				int prefixLength = prefix.length();
 				for (final String item : getItems(list)) {
-					if (item.equals(text.getText())) {
-						continue;
-					}
 					if (matchesWord(prefix, item)) {
-						setMatchingTextAndSelection(prefixLength, item);
+						setMatchingTextAndSelection(prefix.length(), item);
 						result = true;
 						break;
 					}
 				}
-				// when nothing was found and the prefix consists of more than 1 character of the same type e.g. "aa"
-				// jump to the next match of "a"
-				if (!result && !isAllowMissmatch() && isMultipleInputOfSameChar(prefix)) {
-					final String singleCharPrefix = prefix.substring(0, 1);
-					prefixLength = singleCharPrefix.length();
-					final String[] items = getItems();
-					for (int i = getSelectionIndex() + 1; i < items.length; i++) {
+				// next if is for 326916 - match sequences of same char
+				if (!result && !isAllowMissmatch() && isMultipleInputOfLastChar(prefix)) {
+					final String oldPrefix = prefix.substring(0, prefix.length() - 1);
+					final int startIndex = getSelectionIndex() + 1;
+					final String[] items = getItems(list);
+					for (int i = startIndex; i < items.length; i++) {
 						final String item = items[i];
-						if (matchesWord(singleCharPrefix, item)) {
-							setMatchingTextAndSelection(prefixLength, item);
+						if (matchesWord(oldPrefix, item)) {
+							setMatchingTextAndSelection(oldPrefix.length(), item);
 							result = true;
 							break;
 						}
@@ -2542,21 +2510,14 @@ public abstract class CompletionCombo extends Composite {
 		return result;
 	}
 
-	private boolean isMultipleInputOfSameChar(final String prefix) {
-		if (prefix.length() < 2) {
+	private boolean isMultipleInputOfLastChar(final String prefix) {
+		final int length = prefix.length();
+		if (length < 2) {
 			return false;
 		}
-
-		final String lowerPrefix = prefix.toLowerCase();
-
-		final char first = lowerPrefix.charAt(0);
-		for (int i = 1; i < lowerPrefix.length(); i++) {
-			final char current = lowerPrefix.charAt(i);
-			if (current != first) {
-				return false;
-			}
-		}
-		return true;
+		final int newLastChar = prefix.charAt(length - 1);
+		final int lastChar = prefix.charAt(length - 2);
+		return Character.toLowerCase(newLastChar) == Character.toLowerCase(lastChar);
 	}
 
 	private void setMatchingTextAndSelection(final int selectionStart, final String item) {
