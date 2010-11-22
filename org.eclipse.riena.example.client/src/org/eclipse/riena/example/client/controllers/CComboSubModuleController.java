@@ -109,14 +109,12 @@ public class CComboSubModuleController extends SubModuleController {
 							final Iterator<Person> iterator = manager.getPersons().iterator();
 							iterator.next();
 							final Person second = iterator.next();
-							System.err.println("getselec" + " " + getSelectedPerson());
 							setSelectedPerson(second);
 						}
 						comboOne.setOutputOnly(true);
 					} else {
 						comboOne.setOutputOnly(false);
 					}
-					System.out.println("Selected Person: " + manager.getSelectedPerson()); //$NON-NLS-1$
 					comboOne.updateFromModel();
 				}
 			});
@@ -138,7 +136,6 @@ public class CComboSubModuleController extends SubModuleController {
 	}
 
 	public void setSelectedPerson(final Person selection) {
-		System.err.println("selected person: " + selection);
 		manager.setSelectedPerson(selection);
 		if (selection != null) {
 			final String lastname = selection.getLastname();
