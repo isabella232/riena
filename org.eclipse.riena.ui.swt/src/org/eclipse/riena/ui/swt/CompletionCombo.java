@@ -34,9 +34,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
@@ -46,12 +48,26 @@ import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
- * TODO [ev] docs
- * 
  * The CompletionCombo class represents a selectable user interface object that
  * combines a text field and a list and issues notification when an item is
  * selected from the list. The list will automatically pop-up when the text
- * widget is focused and the user is typing.
+ * control is focused and the user is typing.
+ * <p>
+ * This class is abstract. There are several implementations along these axes:
+ * RCP-specific or RAP-specific, and with images for each item (using a Table)
+ * or without images for each item (using a List). This yields the following
+ * combinations:
+ * <ul>
+ * <li>ComplectionComboRCP / CompletionComboRAP &ndash; a CompletionCombo with a
+ * text field and a list control</li>
+ * <li>ComplectionComboWithImageRCP / CompletionComboWithImageRAP &ndash; a
+ * CompletionCombo with a text field, with an optional image on the left, and a
+ * table control (which can show an image next to each item)</li>
+ * </ul>
+ * <p>
+ * <b>Important:</b> use {@code UIControlsFactory.createCompletionCombo(...)}
+ * and {@code UIControlsFactory.createCompletionComboWithImage(...)} to
+ * automatically get the correct RCP- or RAP-specific instance.
  * <p>
  * CompletionCombo was written to work around certain limitations in the native
  * combo box. There is no is no strict requirement that CompletionCombo look or
@@ -78,19 +94,41 @@ public abstract class CompletionCombo extends Composite {
 	 */
 	private final Set<Character> inputChars = new HashSet<Character>();
 
+	/**
+	 * Label for showing an image next to the combo's text control. This control
+	 * is optional and may be null.
+	 */
 	private Label label;
+	/**
+	 * The text control for this combo.
+	 */
 	private Text text;
+	/**
+	 * The list control for this combo. Can be a {@link List} or {@link Table}.
+	 */
 	private Control list;
-	private int visibleItemCount = 5;
+	/**
+	 * Pop-up window (Shell) for the list control
+	 */
 	private Shell popup;
+	/**
+	 * Button to trigger showing the selection pop-up.
+	 */
 	private Button arrow;
-	private boolean hasFocus;
+
 	private Listener listener, filter;
 	private Color listForeground, listBackground;
 	private Font font;
 	private Shell _shell;
+
+	private int visibleItemCount = 5;
+	private boolean hasFocus;
 	private boolean autoCompletion;
 	private AutoCompletionMode autoCompletionMode;
+	/**
+	 * Algorithm for flashing the combo's background when non-matching input is
+	 * rejected.
+	 */
 	private IFlashDelegate flashDelegate;
 
 	/**
@@ -110,6 +148,11 @@ public abstract class CompletionCombo extends Composite {
 		NO_MISSMATCH
 	}
 
+	static int checkStyle(final int style) {
+		final int mask = SWT.BORDER | SWT.READ_ONLY | SWT.FLAT | SWT.LEFT_TO_RIGHT | SWTFacade.RIGHT_TO_LEFT;
+		return SWT.NO_FOCUS | (style & mask);
+	}
+
 	/**
 	 * Constructs a new instance of this class given its parent and a style
 	 * value describing its behavior and appearance.
@@ -120,13 +163,12 @@ public abstract class CompletionCombo extends Composite {
 	 * <code>int</code> "|" operator) two or more of those <code>SWT</code>
 	 * style constants. The class description lists the style constants that are
 	 * applicable to the class. Style bits are also inherited from superclasses.
-	 * </p>
 	 * 
 	 * @param parent
-	 *            a widget which will be the parent of the new instance (cannot
+	 *            a control which will be the parent of the new instance (cannot
 	 *            be null)
 	 * @param style
-	 *            the style of widget to construct
+	 *            the style of control to construct
 	 * 
 	 * @exception IllegalArgumentException
 	 *                <ul>
@@ -250,83 +292,200 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Create an optional label for showing the image associated with contents
+	 * of the combo's text control. The label will be placed to the right of the
+	 * combo's text control.
 	 * 
+	 * @return a Label or null to not show any images.
 	 * @since 3.0
 	 */
 	protected abstract Label createLabel(final Composite parent);
 
 	/**
+	 * Create a {@link Control} for selecting entries in this combo.
+	 * 
+	 * @return a control instance; never null. Typically this is a {@link List}
+	 *         or {@link Table} control.
 	 * @since 3.0
 	 */
 	protected abstract Control createList(final Composite parent);
 
 	/**
+	 * Clears all selected elements from the list control.
+	 * 
+	 * @param list
+	 *            the list control; never null
 	 * @since 3.0
 	 */
 	protected abstract void deselectAll(Control list);
 
 	/**
+	 * Returns the image associated with the requested item in the selection
+	 * control.
+	 * 
+	 * @param list
+	 *            the list control; never null
+	 * @param index
+	 *            the zero-relative index of the item
+	 * @return an Image or null. The later case will occur when the selection
+	 *         control does not associate images with it's items (example List)
+	 *         or the individual item has no image (example Table).
+	 * @throws IllegalArgumentException
+	 *             if index is out of range
 	 * @since 3.0
 	 */
 	protected abstract Image getImage(Control list, int index);
 
 	/**
+	 * Return the String associated with the requested item in the selection
+	 * control.
+	 * 
+	 * @param list
+	 *            the list control; never null
+	 * @param index
+	 *            the zero-relative index of the item
+	 * @return a String; never null
+	 * @throws IllegalArgumentException
+	 *             if index is out of range
 	 * @since 3.0
 	 */
 	protected abstract String getItem(Control list, int index);
 
 	/**
+	 * Returns the height of each item in the list control.
+	 * <p>
+	 * Implementation notes: this assumes that all items have the same height.
+	 * The item height is used to calculate the size of the selection pop-up.
+	 * 
+	 * @param list
+	 *            the list control; never null
+	 * @return the height of each item in pixels
+	 * 
 	 * @since 3.0
 	 */
 	protected abstract int getItemHeight(Control list);
 
 	/**
+	 * Returns the Images for the items in the list control. The order of the
+	 * Images in the array must correspond to the order of the items in the
+	 * control.
+	 * 
+	 * @param list
+	 *            the list control; never null
+	 * @return an array of Images; may be empty. May be null if the list control
+	 *         does not support images. Individual entries may be null if the
+	 *         corresponding item does not have an image.
 	 * @since 3.0
 	 */
 	protected abstract Image[] getImages(Control list);
 
 	/**
+	 * Returns the Strings for the items in the list control. The order of the
+	 * Strings in the array must correspond to the order of items in the
+	 * control.
+	 * 
+	 * @param list
+	 *            the list control; never null
+	 * @return an array of Strings; may be empty; never null. Individual entries
+	 *         may be empty but never null.
 	 * @since 3.0
 	 */
 	protected abstract String[] getItems(Control list);
 
 	/**
+	 * Returns the number of items in the list control.
+	 * 
+	 * @param list
+	 *            the list control; never null
+	 * @return the number of items in the list control
 	 * @since 3.0
 	 */
 	protected abstract int getItemCount(Control list);
 
 	/**
+	 * Returns the zero-relative index of the item which is currently selected
+	 * in the list control. Returns -1 if no item is selected.
+	 * 
+	 * @param list
+	 *            the list control; never null
+	 * @return the zero-relative index of the currently selected item; -1 if no
+	 *         item is selected
 	 * @since 3.0
 	 */
 	protected abstract int getSelectionIndex(Control list);
 
 	/**
+	 * Searches from the given {@code start} position and an item matching the
+	 * given {@code string} is found and returns the zero-relative index of the
+	 * match. Returns -1 if no matching item is found.
+	 * 
+	 * @param list
+	 *            the list control; never null
+	 * @return the zero-relative index of the matched item; -1 if no match was
+	 *         found
 	 * @since 3.0
 	 */
 	protected abstract int indexOf(Control list, String string, int start);
 
 	/**
+	 * Removes all items from the list control.
+	 * 
+	 * @param list
+	 *            the list control; never null
 	 * @since 3.0
 	 */
 	protected abstract void removeAll(final Control list);
 
 	/**
+	 * Creates the given items in the list control. The list control is cleared
+	 * at the beginning of this operation
+	 * 
+	 * @param list
+	 *            the list control; never null
+	 * @param items
+	 *            an array of Strings for the items in the control; never null.
+	 *            Individual entries cannot be null.
+	 * @param images
+	 *            an array of Images for the items in the control. May be null
+	 *            if no images should be used. Individual entries may be null,
+	 *            if no image should be used for that item.
+	 * @throws RuntimeException
+	 *             if the images and items arrays have different lengths
 	 * @since 3.0
 	 */
 	protected abstract void setItems(Control list, String[] items, Image[] images);
 
 	/**
+	 * Selects the item at the given zero-relative {@code index} in the list
+	 * control.
+	 * 
+	 * @param list
+	 *            the list control; never null
+	 * @param index
+	 *            the zero-relative index of the item to select. Values that are
+	 *            out of range are ignored.
 	 * @since 3.0
 	 */
 	protected abstract void setSelection(Control list, int index);
 
 	/**
+	 * Scrolls the contents of the list control, so that the item at the given
+	 * zero-relative {@code index} is at the top of the control.
+	 * 
+	 * @param list
+	 *            the list control; never null
+	 * @param index
+	 *            the zero-relative index of the item to show at the top of the
+	 *            control
 	 * @since 3.0
 	 */
 	protected abstract void setTopIndex(Control list, int index);
 
 	/**
+	 * Returns the arrow-button control for this combo. This is the arrow-down
+	 * button at the right side of the combo.
+	 * 
+	 * @return a Button control; never null
 	 * @since 3.0
 	 */
 	protected Button getButtonControl() {
@@ -334,6 +493,10 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
+	 * Returns the list control for this combo. Can be a {@link List} or
+	 * {@link Table} widget.
+	 * 
+	 * @return the list control; never null
 	 * @since 3.0
 	 */
 	protected Control getListControl() {
@@ -341,15 +504,13 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
+	 * Returns the text control for this combo.
+	 * 
+	 * @return a Text control; never null
 	 * @since 3.0
 	 */
 	protected Text getTextControl() {
 		return text;
-	}
-
-	static int checkStyle(final int style) {
-		final int mask = SWT.BORDER | SWT.READ_ONLY | SWT.FLAT | SWT.LEFT_TO_RIGHT | SWTFacade.RIGHT_TO_LEFT;
-		return SWT.NO_FOCUS | (style & mask);
 	}
 
 	/**
@@ -499,14 +660,12 @@ public abstract class CompletionCombo extends Composite {
 	 * <p>
 	 * Note: To clear the selected items in the receiver's list, use
 	 * <code>deselectAll()</code>.
-	 * </p>
 	 * 
 	 * @exception SWTException
 	 *                <ul>
 	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	 *                disposed</li>
-	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	 *                thread that created the receiver</li>
+	 *                disposed</li> <li>ERROR_THREAD_INVALID_ACCESS - if not
+	 *                called from the thread that created the receiver</li>
 	 *                </ul>
 	 * 
 	 * @see #deselectAll
@@ -607,26 +766,6 @@ public abstract class CompletionCombo extends Composite {
 		}
 		return new Point(width + 2 * borderWidth, height + 2 * borderWidth);
 	}
-
-	// TODO [ev] removed - document in migration guide
-	//	/**
-	//	 * Copies the selected text.
-	//	 * <p>
-	//	 * The current selection is copied to the clipboard.
-	//	 * </p>
-	//	 * 
-	//	 * @exception SWTException
-	//	 *                <ul>
-	//	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
-	//	 *                disposed</li>
-	//	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
-	//	 *                thread that created the receiver</li>
-	//	 *                </ul>
-	//	 */
-	//	public void copy() {
-	//		checkWidget();
-	//		text.copy();
-	//	}
 
 	void createPopup(final String[] items, final Image[] images, final int selectionIndex) {
 		// create shell and list
@@ -773,7 +912,7 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Returns the background color of the Combo's List widget.
+	 * Returns the background color of the combo's List control.
 	 * 
 	 * @return a Color instance
 	 * @since 3.0
@@ -783,7 +922,7 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Returns the background color of the Combo's Text widget.
+	 * Returns the background color of the combo's Text control.
 	 * 
 	 * @return a Color instance
 	 * @since 3.0
@@ -795,7 +934,7 @@ public abstract class CompletionCombo extends Composite {
 	/**
 	 * Gets the editable state.
 	 * 
-	 * @return whether or not the receiver is editable
+	 * @return true if the receiver is editable, false otherwise
 	 * 
 	 * @exception SWTException
 	 *                <ul>
@@ -1181,9 +1320,10 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Returns true if the item selection pop-up is dropped (=open), false
+	 * otherwise
 	 * 
-	 * @return
+	 * @return true if the selection pop-up is dropped, false otherwise
 	 * @since 3.0
 	 */
 	protected boolean isDropped() {
@@ -1388,8 +1528,8 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Removes all of the items from the receiver's list and clear the contents
-	 * of receiver's text field.
+	 * Removes all of the items from the receiver's list control and clear the
+	 * contents of receiver's text field.
 	 * <p>
 	 * 
 	 * @exception SWTException
@@ -1513,9 +1653,9 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Sets a flag which indicates that the CompletionCombo should autocomplete
-	 * entries in the Textfield. This autocompletion matches a prefix to the
-	 * dropdown list and focuses on the list entry matching this prefix.
+	 * A flag indicating that the CompletionCombo should autocomplete entries in
+	 * it's text area. This autocompletion matches a prefix to the drop-down
+	 * list and focuses on the list entry matching this prefix.
 	 * <p>
 	 * The default value is true.
 	 * 
@@ -1543,7 +1683,7 @@ public abstract class CompletionCombo extends Composite {
 	/**
 	 * {@inheritDoc}
 	 * <p>
-	 * Note: this will change the background of both the Text and List widgets
+	 * Note: this will change the background of both the Text and List controls
 	 * maintained by this control.
 	 */
 	@Override
@@ -1554,7 +1694,7 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Set the background of this Combo's List widget.
+	 * Set the background of this Combo's List control.
 	 * 
 	 * @param color
 	 *            the new color (or null to set to the default system color)
@@ -1568,7 +1708,7 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Set the background of this Combo's Text widget.
+	 * Set the background of this Combo's Text control.
 	 * 
 	 * @param color
 	 *            the new color (or null to set to the default system color)
@@ -1607,6 +1747,18 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
+	 * Sets the {@link IFlashDelegate} for this widget.
+	 * <p>
+	 * The IFlashDelegate is responsible for providing visual feedback on the
+	 * control, when a user's keyboard entry is rejected. This happens when the
+	 * combo is configured to reject mismatching entries
+	 * (AutoCompletionMode.NO_MISMATCH). When a rejection occurs the combo will
+	 * notify the {@link IFlashDelegate}.
+	 * <p>
+	 * The default value is null.
+	 * 
+	 * @see IFlashDelegate the {@link IFlashDelegate} to use with this combo. A
+	 *      null value indicates that no visual feedback is necessary.
 	 * @since 3.0
 	 */
 	public void setFlashDelegate(final IFlashDelegate delegate) {
@@ -1662,10 +1814,12 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Sets the receiver's list to be the given array of items.
+	 * Fills the combo's list control with the given array of items (with no
+	 * images).
 	 * 
 	 * @param items
-	 *            the array of items
+	 *            an array of Strings for the items in the control; never null.
+	 *            Individual entries cannot be null.
 	 * 
 	 * @exception IllegalArgumentException
 	 *                <ul>
@@ -1680,16 +1834,24 @@ public abstract class CompletionCombo extends Composite {
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
 	 *                thread that created the receiver</li>
 	 *                </ul>
+	 * @see #setItems(String[], Image[])
 	 */
 	public void setItems(final String[] items) {
 		setItems(items, null);
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Fills the combo's list control with the given array of items and images.
 	 * 
 	 * @param items
+	 *            an array of Strings for the items in the control; never null.
+	 *            Individual entries cannot be null.
 	 * @param images
+	 *            an array of Images for the items in the control. May be null
+	 *            if no images should be used. Individual entries may be null,
+	 *            if no image should be used for that item.
+	 * @throws RuntimeException
+	 *             if the images and items arrays have different lengths
 	 * @since 3.0
 	 */
 	public void setItems(final String[] items, final Image[] images) {
@@ -1868,7 +2030,7 @@ public abstract class CompletionCombo extends Composite {
 	public void setVisible(final boolean visible) {
 		super.setVisible(visible);
 		/*
-		 * At this point the widget may have been disposed in a FocusOut event.
+		 * At this point the control may have been disposed in a FocusOut event.
 		 * If so then do not continue.
 		 */
 		if (isDisposed()) {
@@ -1986,7 +2148,7 @@ public abstract class CompletionCombo extends Composite {
 				}
 			}
 			// Further work : Need to add support for incremental search in 
-			// pop up list as characters typed in text widget
+			// pop up list as characters typed in text control
 			break;
 		case SWT.KeyUp:
 			e = new Event();
@@ -2345,15 +2507,12 @@ public abstract class CompletionCombo extends Composite {
 		boolean result = false;
 		if (prefix != null) {
 			if (prefix.length() == 0) {
-
 				clearImage();
 				text.setText(""); //$NON-NLS-1$
 				result = true;
 			} else {
-
 				int prefixLength = prefix.length();
 				for (final String item : getItems(list)) {
-
 					if (item.equals(text.getText())) {
 						continue;
 					}
@@ -2363,20 +2522,14 @@ public abstract class CompletionCombo extends Composite {
 						break;
 					}
 				}
-
 				// when nothing was found and the prefix consists of more than 1 character of the same type e.g. "aa"
 				// jump to the next match of "a"
 				if (!result && !isAllowMissmatch() && isMultipleInputOfSameChar(prefix)) {
-
 					final String singleCharPrefix = prefix.substring(0, 1);
 					prefixLength = singleCharPrefix.length();
-
 					final String[] items = getItems();
-
 					for (int i = getSelectionIndex() + 1; i < items.length; i++) {
-
 						final String item = items[i];
-
 						if (matchesWord(singleCharPrefix, item)) {
 							setMatchingTextAndSelection(prefixLength, item);
 							result = true;
@@ -2443,11 +2596,9 @@ public abstract class CompletionCombo extends Composite {
 		if (prefix == null || word == null) {
 			return false;
 		}
-
 		if (word.toLowerCase().startsWith(prefix.toLowerCase())) {
 			return true;
 		}
-
 		return false;
 	}
 

@@ -11,11 +11,20 @@
 package org.eclipse.riena.ui.swt;
 
 /**
- * @since 3.0
+ * An algorithm for performing a flash operation on a ridget.
+ * <p>
+ * Implementations may vary. For example they may flash the background or a
+ * marker. Typically this requires knowledge of both the ridget (for maintaining
+ * correct marker / color states) and the widget (for performing the flash
+ * operation).
  * 
+ * @since 3.0
  */
 public interface IFlashDelegate {
 
+	/**
+	 * Trigger the flash operation.
+	 */
 	public void flash();
 
 }
