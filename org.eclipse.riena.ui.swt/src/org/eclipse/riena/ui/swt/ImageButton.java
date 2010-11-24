@@ -474,13 +474,19 @@ public class ImageButton extends Composite {
 	private TypedListener createSelectionDelegate() {
 		return new TypedListener(new SelectionListener() {
 			public void widgetSelected(final SelectionEvent e) {
-				for (final SelectionListener sl : selectionListeners) {
+				// copy list of selectionListeners to avoid ConcurrentModificationException when the event
+				// widgetSelected fires a dispose and removes the selectionListener
+				final List<SelectionListener> tempSelListeners = new ArrayList<SelectionListener>(selectionListeners);
+				for (final SelectionListener sl : tempSelListeners) {
 					sl.widgetSelected(e);
 				}
 			}
 
 			public void widgetDefaultSelected(final SelectionEvent e) {
-				for (final SelectionListener sl : selectionListeners) {
+				// copy list of selectionListeners to avoid ConcurrentModificationException when the event
+				// widgetSelected fires a dispose and removes the selectionListener
+				final List<SelectionListener> tempSelListeners = new ArrayList<SelectionListener>(selectionListeners);
+				for (final SelectionListener sl : tempSelListeners) {
 					sl.widgetDefaultSelected(e);
 				}
 			}
