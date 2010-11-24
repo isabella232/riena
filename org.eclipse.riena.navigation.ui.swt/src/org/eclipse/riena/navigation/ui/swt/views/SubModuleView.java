@@ -109,6 +109,8 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	private Composite parentComposite;
 	private Composite contentComposite;
 
+	private boolean isBlocked;
+
 	/**
 	 * Keep a reference to the control that was last focused for a given
 	 * controller id.
@@ -130,6 +132,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	public SubModuleView() {
 		binding = createBinding();
 		focusListener = new FocusListener();
+		isBlocked = false;
 	}
 
 	public void addUpdateListener(final IComponentUpdateListener listener) {
@@ -386,6 +389,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	private void unBlockView() {
+		isBlocked = false;
 		parentComposite.setCursor(oldCursor);
 		contentComposite.setEnabled(true);
 
@@ -398,19 +402,23 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	private void blockView() {
-		oldCursor = parentComposite.getCursor();
-		if (getController() != null) {
-			for (final IRidget ridget : getController().getRidgets()) {
-				if (ridget.hasFocus()) {
-					final Object uiControl = ridget.getUIControl();
-					if (uiControl instanceof Control) {
-						saveFocus((Control) uiControl);
+		if (!isBlocked) {
+			oldCursor = parentComposite.getCursor();
+
+			if (getController() != null) {
+				for (final IRidget ridget : getController().getRidgets()) {
+					if (ridget.hasFocus()) {
+						final Object uiControl = ridget.getUIControl();
+						if (uiControl instanceof Control) {
+							saveFocus((Control) uiControl);
+						}
 					}
 				}
 			}
+			parentComposite.setCursor(getWaitCursor());
+			contentComposite.setEnabled(false);
+			isBlocked = true;
 		}
-		parentComposite.setCursor(getWaitCursor());
-		contentComposite.setEnabled(false);
 	}
 
 	/**
@@ -603,10 +611,6 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	protected IApplicationNode getAppNode() {
 		//use the ApplicationNodeManager API
 		return ApplicationNodeManager.getApplicationNode();
-	}
-
-	private Cursor getArrowCursor() {
-		return contentComposite.getDisplay().getSystemCursor(SWT.CURSOR_ARROW);
 	}
 
 	/**

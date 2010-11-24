@@ -897,20 +897,25 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	private final class BlockManager {
 		private Cursor titleOldCursor;
 		private Cursor bodyOldCursor;
+		private boolean isBlocked;
 
 		public void block() {
-			titleOldCursor = title.getCursor();
-			title.setCursor(getWaitCursor());
-			title.setCloseable(false);
-			if (disableTitle()) {
-				title.setEnabled(false);
+			if (!isBlocked) {
+				titleOldCursor = title.getCursor();
+				title.setCursor(getWaitCursor());
+				title.setCloseable(false);
+				if (disableTitle()) {
+					title.setEnabled(false);
+				}
+				bodyOldCursor = body.getCursor();
+				body.setCursor(getWaitCursor());
+				subModuleTree.setEnabled(false);
+				isBlocked = true;
 			}
-			bodyOldCursor = body.getCursor();
-			body.setCursor(getWaitCursor());
-			subModuleTree.setEnabled(false);
 		}
 
 		public void unblock() {
+			isBlocked = false;
 			title.setCursor(titleOldCursor);
 			title.setCloseable(getNavigationNode().isClosable());
 			title.setEnabled(getNavigationNode().isEnabled());
