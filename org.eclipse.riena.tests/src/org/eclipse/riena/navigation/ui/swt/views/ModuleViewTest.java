@@ -17,7 +17,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -30,7 +29,6 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
@@ -137,17 +135,37 @@ public class ModuleViewTest extends RienaTestCase {
 		view.getTree().notifyListeners(SWT.EraseItem, event);
 		assertTrue(backgroundPainterMock.handleEraseCalled);
 
-		assertSame(waitCursor, title.getCursor());
-		assertSame(waitCursor, body.getCursor());
-		assertFalse(title.isCloseable());
-		assertFalse(tree.getEnabled());
-		
+		assertBlockedState(title, body, tree, waitCursor);
+
 		node.setBlocked(false);
 
+		assertUnBlockedState(title, body, tree, waitCursor);
+
+		// blocking several times should still have the same cursor outcome
+		node.setBlocked(true);
+		node.setBlocked(true);
+
+		assertBlockedState(title, body, tree, waitCursor);
+
+		node.setBlocked(false);
+
+		assertUnBlockedState(title, body, tree, waitCursor);
+	}
+
+	private void assertUnBlockedState(final EmbeddedTitleBar title, final Composite body, final Tree tree,
+			final Cursor waitCursor) {
 		assertNotSame(waitCursor, title.getCursor());
 		assertTrue(title.isCloseable());
 		assertNotSame(waitCursor, body.getCursor());
 		assertTrue(tree.getEnabled());
+	}
+
+	private void assertBlockedState(final EmbeddedTitleBar title, final Composite body, final Tree tree,
+			final Cursor waitCursor) {
+		assertSame(waitCursor, title.getCursor());
+		assertSame(waitCursor, body.getCursor());
+		assertFalse(title.isCloseable());
+		assertFalse(tree.getEnabled());
 	}
 
 	/**
@@ -271,7 +289,7 @@ public class ModuleViewTest extends RienaTestCase {
 
 	private class DisabledSubModuleTreeBackgroundPainterMock implements Listener {
 
-		boolean handleEraseCalled = false;
+		private boolean handleEraseCalled = false;
 
 		public void handleEvent(final Event event) {
 			if (SWT.EraseItem == event.type) {

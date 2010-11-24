@@ -103,6 +103,18 @@ public class SubModuleViewTest extends RienaTestCase {
 
 		assertTrue(contentComposite.isEnabled());
 		assertSame(oldCursor, parentComposite.getCursor());
+
+		// blocking several times should still have the same cursor outcome
+		node.setBlocked(true);
+		node.setBlocked(true);
+
+		assertFalse(contentComposite.isEnabled());
+		assertSame(waitCursor, parentComposite.getCursor());
+
+		node.setBlocked(false);
+
+		assertTrue(contentComposite.isEnabled());
+		assertSame(oldCursor, parentComposite.getCursor());
 	}
 
 	public void testCreateController() throws Exception {
@@ -116,10 +128,10 @@ public class SubModuleViewTest extends RienaTestCase {
 		final SubModuleNode s2 = new SubModuleNode(new NavigationNodeId("s", "2"));
 		moduleNode.addChild(s1);
 		moduleNode.addChild(s2);
-		final TestSharedView subModuleNodeView = new TestSharedView();
-		subModuleNodeView.s1 = s1;
-		subModuleNodeView.s2 = s2;
-		subModuleNodeView.createPartControl(new Shell());
+		final TestSharedView subModuleNodeSharedView = new TestSharedView();
+		subModuleNodeSharedView.s1 = s1;
+		subModuleNodeSharedView.s2 = s2;
+		subModuleNodeSharedView.createPartControl(new Shell());
 		assertNotNull(s1.getNavigationNodeController());
 		s1.activate();
 		final SubModuleController s1c = (SubModuleController) s1.getNavigationNodeController();
@@ -128,9 +140,9 @@ public class SubModuleViewTest extends RienaTestCase {
 		s2.activate();
 		assertEquals(nodesBoundToSharedView.get(2), s2);
 		s1.dispose();
-		assertFalse(subModuleNodeView.unbindActiveCalled);
+		assertFalse(subModuleNodeSharedView.unbindActiveCalled);
 		s2.dispose();
-		assertTrue(subModuleNodeView.unbindActiveCalled);
+		assertTrue(subModuleNodeSharedView.unbindActiveCalled);
 	}
 
 	public void testBindOnActivate() throws Exception {
@@ -164,11 +176,11 @@ public class SubModuleViewTest extends RienaTestCase {
 
 	private final class TestSharedView extends SubModuleView {
 
-		SubModuleNode s1;
-		SubModuleNode s2;
-		Button button;
+		private SubModuleNode s1;
+		private SubModuleNode s2;
+		private Button button;
 
-		boolean unbindActiveCalled;
+		private boolean unbindActiveCalled;
 
 		@Override
 		public void bind(final SubModuleNode node) {
@@ -190,57 +202,26 @@ public class SubModuleViewTest extends RienaTestCase {
 			addUIControl(button, "button");
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.ui.part.ViewPart#getViewSite()
-		 */
 		@Override
 		public IViewSite getViewSite() {
 			return EasyMock.createNiceMock(IViewSite.class);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleView#
-		 * unbindActiveController()
-		 */
 		@Override
 		protected void unbindActiveController() {
 			unbindActiveCalled = true;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.ui.swt.views.SubModuleView#createController
-		 * (org.eclipse.riena.navigation.ISubModuleNode)
-		 */
 		@Override
 		protected SubModuleController createController(final ISubModuleNode node) {
 			return new SubModuleController(node);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.ui.swt.views.SubModuleView#getSecondaryId
-		 * ()
-		 */
 		@Override
 		protected String getSecondaryId() {
 			return SubModuleView.SHARED_ID;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.ui.swt.views.SubModuleView#getAppNode()
-		 */
 		@Override
 		protected IApplicationNode getAppNode() {
 			return appNode;
@@ -255,18 +236,12 @@ public class SubModuleViewTest extends RienaTestCase {
 			cp = new Composite(new Shell(), SWT.NONE);
 		}
 
-		boolean[] blockViewCalled = new boolean[1];
+		private final boolean[] blockViewCalled = new boolean[1];
 
 		@Override
 		protected void basicCreatePartControl(final Composite parent) {
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.riena.navigation.ui.swt.views.SubModuleView#
-		 * getParentComposite()
-		 */
 		@Override
 		protected Composite getParentComposite() {
 			return cp;
@@ -302,12 +277,6 @@ public class SubModuleViewTest extends RienaTestCase {
 		protected void basicCreatePartControl(final Composite parent) {
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.eclipse.riena.navigation.ui.swt.views.SubModuleView#getAppNode()
-		 */
 		@Override
 		protected IApplicationNode getAppNode() {
 			return appNode;
