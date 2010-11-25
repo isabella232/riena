@@ -67,6 +67,14 @@
 			implementation="org.eclipse.riena.internal.communication.factory.hessian.BigIntegerSerializerFactory">
 		</factory>
 	</extension>
+	
+    <extension
+         id="org.eclipse.riena.internal.communication.factory.hessian.UUIDSerializerFactory"
+         point="org.eclipse.riena.communication.factory.hessian.serializerFactories">
+      <factory
+            implementation="org.eclipse.riena.internal.communication.factory.hessian.UUIDSerializerFactory">
+      </factory>
+    </extension>
 
 	<extension
        id="org.eclipse.riena.communication.hessian.ELIndirectListSerializerFactory"
