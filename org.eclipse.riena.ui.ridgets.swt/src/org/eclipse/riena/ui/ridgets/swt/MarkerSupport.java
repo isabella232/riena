@@ -252,7 +252,8 @@ public class MarkerSupport extends BasicMarkerSupport {
 
 	@Override
 	protected void saveState() {
-		this.initialVisible = getUIControl().isVisible();
+		super.saveState();
+		this.initialVisible = getUIControl().getVisible();
 	}
 
 	/**
