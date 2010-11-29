@@ -399,6 +399,16 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			setFocus();
 		}
 		oldCursor = null;
+		// Update markers here, because for some controls (ChoiceComposite, CComboRidget, DatePickerComposite) the mandatory marker was not visualized
+		// after unblock when set while block
+		// ruv 356
+		if (getController() != null) {
+			for (final IRidget ridget : getController().getRidgets()) {
+				if (ridget instanceof IMarkableRidget) {
+					((IMarkableRidget) ridget).updateMarkers();
+				}
+			}
+		}
 	}
 
 	private void blockView() {
