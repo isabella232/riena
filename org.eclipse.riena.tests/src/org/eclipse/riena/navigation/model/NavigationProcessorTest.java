@@ -909,6 +909,12 @@ public class NavigationProcessorTest extends RienaTestCase {
 		listenerMock.jumpTargetStateChanged(m1, JumpTargetState.DISABLED);
 		EasyMock.expectLastCall().times(1);
 		EasyMock.replay(listenerMock);
+		m1s2.addSimpleListener(new SimpleNavigationNodeAdapter() {
+			@Override
+			public void activated(final INavigationNode<?> source) {
+				m1s2.isJumpTarget();
+			}
+		});
 
 		m2s1.jumpBack();
 		EasyMock.verify(listenerMock);

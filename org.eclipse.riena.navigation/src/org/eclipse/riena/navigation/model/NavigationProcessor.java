@@ -608,12 +608,12 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (!sourceStack.isEmpty()) {
 			final INavigationNode<?> backTarget = sourceStack.pop().getSource();
 			setCloseSubTreeOnJumpBack(backTarget);
-			// go back
-			backTarget.activate();
 			if (sourceStack.isEmpty()) {
 				// remove node as it is no target anymore
 				jumpTargets.remove(lastJumpedNode);
 			}
+			// go back
+			backTarget.activate();
 		}
 	}
 
