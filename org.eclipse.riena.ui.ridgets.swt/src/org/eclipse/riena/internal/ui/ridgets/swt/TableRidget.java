@@ -347,9 +347,9 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		return getSortedColumn() != -1 && isSortedAscending;
 	}
 
-	public void refresh(final Object node) {
+	public void refresh(final Object element) {
 		if (viewer != null) {
-			viewer.refresh(node, true);
+			viewer.refresh(element, true);
 		}
 	}
 
