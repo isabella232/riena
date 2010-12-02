@@ -132,6 +132,23 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			}
 			return Result.cache(loadClass(bundle, value));
 		}
+		if (returnType.isEnum()) {
+			final String value = configurationElement.getAttribute(attributeName);
+			if (value == null) {
+				return Result.CACHED_NULL;
+			}
+			final Object[] enumConstants = returnType.getEnumConstants();
+			if (enumConstants == null) {
+				return Result.CACHED_NULL;
+			}
+			for (final Object enumConstant : enumConstants) {
+				if (enumConstant.toString().equalsIgnoreCase(value)) {
+					return Result.cache(enumConstant);
+				}
+			}
+			throw new IllegalStateException("Invalid enum value '" + value + "' for enum type '" + returnType.getName() //$NON-NLS-1$ //$NON-NLS-2$
+					+ "'" + within()); //$NON-NLS-1$
+		}
 		if (returnType.isInterface() && returnType.isAnnotationPresent(ExtensionInterface.class)) {
 			final IConfigurationElement[] cfgElements = configurationElement.getChildren(attributeName);
 			if (cfgElements.length == 0) {
@@ -142,8 +159,8 @@ final class InterfaceBeanHandler implements InvocationHandler {
 						new InterfaceBeanHandler(returnType, symbolReplace, cfgElements[0])));
 			}
 			throw new IllegalStateException(
-					"Got more than one configuration element but the interface expected exactly one, .i.e no array type has been specified for: " //$NON-NLS-1$
-							+ method);
+					"Got more than one configuration element but the interface expected exactly one, .i.e no array type has been specified for method '" //$NON-NLS-1$
+							+ method + "'" + within()); //$NON-NLS-1$
 		}
 		if (returnType.isArray() && returnType.getComponentType().isInterface()) {
 			final IConfigurationElement[] cfgElements = configurationElement.getChildren(attributeName);
@@ -157,8 +174,7 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		}
 
 		if (returnType == Void.class || (args != null && args.length > 0)) {
-			throw new UnsupportedOperationException("Can not handle method '" + method + "' in '" //$NON-NLS-1$ //$NON-NLS-2$
-					+ interfaceType.getName() + "'."); //$NON-NLS-1$
+			throw new UnsupportedOperationException("Can not handle method '" + method + "'" + within());//$NON-NLS-1$ //$NON-NLS-2$
 		}
 		// Now try to create a fresh instance,i.e. createExecutableExtension()
 		if (configurationElement.getAttribute(attributeName) == null
@@ -184,6 +200,11 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			Wire.instance(result).andStart(context);
 		}
 		return Result.noCache(result);
+	}
+
+	private String within() {
+		return " with in interface '" + interfaceType.getName() + "' and bundle '"
+				+ ContributorFactoryOSGi.resolve(configurationElement.getContributor()) + "'";
 	}
 
 	private Class<?> loadClass(final Bundle bundle, final String className) throws ClassNotFoundException {
