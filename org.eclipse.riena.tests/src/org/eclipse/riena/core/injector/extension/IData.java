@@ -17,6 +17,10 @@ import org.eclipse.core.runtime.IConfigurationElement;
 @ExtensionInterface
 public interface IData {
 
+	public enum Color {
+		RED, GREEN
+	};
+
 	@MapContent
 	String getValue();
 
@@ -58,4 +62,6 @@ public interface IData {
 	@CreateLazy()
 	@MapName("objectType")
 	ILazyThing createLazyThing();
+
+	Color getColor();
 }
