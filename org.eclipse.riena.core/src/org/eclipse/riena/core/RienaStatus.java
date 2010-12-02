@@ -44,12 +44,25 @@ public final class RienaStatus {
 	}
 
 	/**
-	 * Riena already active?
+	 * Riena core bundle status.
 	 * 
-	 * @return
+	 * @return {@code true} if the riena.core bundle has been started; otherwise
+	 *         {@code false}
 	 */
 	public static boolean isActive() {
 		return Activator.getDefault().isActive();
+	}
+
+	/**
+	 * Are all riena startup actions executed?
+	 * 
+	 * @return {@code true} if all startup actions have been executed; otherwise
+	 *         {@code false}
+	 * 
+	 * @since 3.0
+	 */
+	public static boolean areStartupActionsExecuted() {
+		return Activator.getDefault().areStartupActionsExecuted();
 	}
 
 	/**

@@ -35,7 +35,8 @@ public class Activator extends RienaPlugin {
 	public static final String PLUGIN_ID = "org.eclipse.riena.core"; //$NON-NLS-1$
 
 	// ´startup´ status of Riena
-	private boolean active = false;
+	private boolean active;
+	private boolean startupActionsExecuted;
 
 	// The shared instance
 	@IgnoreFindBugs(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "that is the eclipse way")
@@ -83,6 +84,7 @@ public class Activator extends RienaPlugin {
 	@IgnoreFindBugs(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "that is the eclipse way")
 	public void stop(final BundleContext context) throws Exception {
 		active = false;
+		startupActionsExecuted = false;
 		Activator.plugin = null;
 		super.stop(context);
 	}
@@ -97,12 +99,25 @@ public class Activator extends RienaPlugin {
 	}
 
 	/**
-	 * Riena status?
+	 * Riena core bundle status.
 	 * 
-	 * @return
+	 * @return {@code true} if this bundle has been started; otherwise
+	 *         {@code false}
 	 */
 	public boolean isActive() {
 		return active;
+	}
+
+	/**
+	 * Are all startup actions executed?
+	 * 
+	 * @return {@code true} if all startup actions have been executed; otherwise
+	 *         {@code false}
+	 * 
+	 * @since 3.0
+	 */
+	public boolean areStartupActionsExecuted() {
+		return startupActionsExecuted;
 	}
 
 	/**
@@ -122,6 +137,7 @@ public class Activator extends RienaPlugin {
 				final ISafeRunnable safeRunnable = new StartupsSafeRunnable();
 				Wire.instance(safeRunnable).andStart(getContext());
 				SafeRunner.run(safeRunnable);
+				startupActionsExecuted = true;
 			}
 		}
 	}
