@@ -17,6 +17,7 @@ Export-Package: org.eclipse.riena.internal.ui.ridgets;x-internal:=true,
  org.eclipse.riena.ui.ridgets.databinding,
  org.eclipse.riena.ui.ridgets.listener,
  org.eclipse.riena.ui.ridgets.marker,
+ org.eclipse.riena.ui.ridgets.nls,
  org.eclipse.riena.ui.ridgets.tree2,
  org.eclipse.riena.ui.ridgets.uibinding,
  org.eclipse.riena.ui.ridgets.validation

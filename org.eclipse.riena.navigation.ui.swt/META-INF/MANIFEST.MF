@@ -22,6 +22,7 @@ Export-Package: org.eclipse.riena.internal.navigation.ui.swt;x-friends:="org.ecl
  org.eclipse.riena.navigation.ui.swt.controllers,
  org.eclipse.riena.navigation.ui.swt.lnf.renderer,
  org.eclipse.riena.navigation.ui.swt.login,
+ org.eclipse.riena.navigation.ui.swt.nls,
  org.eclipse.riena.navigation.ui.swt.presentation,
  org.eclipse.riena.navigation.ui.swt.presentation.stack,
  org.eclipse.riena.navigation.ui.swt.splashHandlers,

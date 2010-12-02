@@ -23,6 +23,7 @@ Export-Package: org.eclipse.riena.internal.ui.swt;x-internal:=true,
  org.eclipse.riena.ui.swt.lnf,
  org.eclipse.riena.ui.swt.lnf.renderer,
  org.eclipse.riena.ui.swt.lnf.rienadefault,
+ org.eclipse.riena.ui.swt.nls,
  org.eclipse.riena.ui.swt.separator,
  org.eclipse.riena.ui.swt.uiprocess,
  org.eclipse.riena.ui.swt.utils
