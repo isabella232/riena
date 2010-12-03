@@ -717,6 +717,24 @@ public class ImageButton extends Composite {
 		}
 	}
 
+	///// check for disposed state before redrawing
+
+	@Override
+	public void redraw() {
+		if (isDisposed()) {
+			return;
+		}
+		super.redraw();
+	}
+
+	@Override
+	public void redraw(final int x, final int y, final int width, final int height, final boolean all) {
+		if (isDisposed()) {
+			return;
+		}
+		super.redraw(x, y, width, height, all);
+	}
+
 	/**
 	 * Shows or hides the "hover" button depending in the hover state.
 	 */
