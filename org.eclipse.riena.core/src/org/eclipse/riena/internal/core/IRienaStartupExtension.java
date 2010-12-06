@@ -23,11 +23,29 @@ import org.eclipse.riena.core.injector.extension.MapName;
 public interface IRienaStartupExtension {
 
 	/**
+	 * Individual startups can be marked to define when they should be executed.
+	 * 
+	 * @since 3.0
+	 */
+	public enum When {
+		BEGINNING, END
+	};
+
+	/**
 	 * Get the contributing bundle.
 	 * 
 	 * @return the contributing bundle
 	 */
 	Bundle getContributingBundle();
+
+	/**
+	 * Get the ´time´ when this startup action shall be performed.
+	 * 
+	 * @return either {@code null} or a value of {@code When}.
+	 * 
+	 * @since 3.0
+	 */
+	When getWhen();
 
 	/**
 	 * Get the name of a {@code Runnable} that shall be executed.

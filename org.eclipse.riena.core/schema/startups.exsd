@@ -82,6 +82,23 @@ The actions are:
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="when">
+            <annotation>
+               <documentation>
+                  Startup action with &apos;when&apos; equals &apos;beginning&apos; will be performed first and startup actions with &apos;when&apos; equals &apos;end&apos; will be performed last.
+Startup actions with the same &apos;when&apos; run in an undefined order.
+If not really required do not set it!
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="beginning">
+                  </enumeration>
+                  <enumeration value="end">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
       </complexType>
    </element>
 
