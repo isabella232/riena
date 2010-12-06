@@ -31,3 +31,4 @@ Export-Package: org.eclipse.riena.internal.navigation.ui.swt;x-friends:="org.ecl
  org.eclipse.riena.navigation.ui.swt.views.desc
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Import-Package: junit.framework;version="3.8.2";resolution:=optional

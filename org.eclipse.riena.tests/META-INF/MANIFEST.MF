@@ -22,5 +22,6 @@ Export-Package: org.eclipse.riena,
  org.eclipse.riena.internal.ui.ridgets.swt;x-internal:=true
 Import-Package: com.ibm.icu.util,
  org.eclipse.equinox.security.auth,
- org.osgi.service.log
+ org.osgi.service.log,
+ junit.framework;version="3.8.2"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
