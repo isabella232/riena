@@ -62,7 +62,7 @@ import org.eclipse.riena.core.injector.extension.ExtensionDescriptor;
  * The return type of a method indicates how the value of an attribute will be
  * converted. If the return type is
  * <ul>
- * <li>a <i>primitive</i> type or <code>java.lang.String</code> than the mapping
+ * <li>a <i>primitive</i> type or <code>java.lang.String</code>than the mapping
  * converts the attribute's value to the corresponding type.</li>
  * <li>an interface or an array of interfaces annotated with
  * <code>@ExtensionInterface</code> than the mapping tries to resolve to a
@@ -73,6 +73,10 @@ import org.eclipse.riena.core.injector.extension.ExtensionDescriptor;
  * methods returns the underlying configuration element.</li>
  * <li><code>java.lang.Class</code> than the attribute is interpreted as a class
  * name and a class instance will be returned.</li>
+ * <li><code>an enum</code> than the attribute is interpreted as the value (case
+ * insensitive) of the corresponding enum type. <code>null</code> will be
+ * returned if the attribute´s value is not given, i.e. <code>null</code> or the
+ * empty string.</li>
  * <li>and finally if none of the above matches the mapping tries to create an
  * new instance of the attribute´s value (interpreted as class name) each time
  * it is called. If the extension attribute is not defined <code>null</code>
