@@ -16,8 +16,9 @@
 
 	<extension
         point="org.eclipse.riena.core.startups">
-      <startup 
-      	requiredBundles="org.eclipse.equinox.log">
+      <startup
+            requiredBundles="org.eclipse.equinox.log"
+            when="beginning">
       </startup>
    </extension>
 
