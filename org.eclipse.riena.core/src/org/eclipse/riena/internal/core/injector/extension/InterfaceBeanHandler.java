@@ -42,6 +42,7 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapContent;
 import org.eclipse.riena.core.injector.extension.MapName;
 import org.eclipse.riena.core.util.Nop;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.Activator;
 
@@ -134,14 +135,10 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		}
 		if (returnType.isEnum()) {
 			final String value = configurationElement.getAttribute(attributeName);
-			if (value == null) {
+			if (StringUtils.isEmpty(value)) {
 				return Result.CACHED_NULL;
 			}
-			final Object[] enumConstants = returnType.getEnumConstants();
-			if (enumConstants == null) {
-				return Result.CACHED_NULL;
-			}
-			for (final Object enumConstant : enumConstants) {
+			for (final Object enumConstant : returnType.getEnumConstants()) {
 				if (enumConstant.toString().equalsIgnoreCase(value)) {
 					return Result.cache(enumConstant);
 				}
