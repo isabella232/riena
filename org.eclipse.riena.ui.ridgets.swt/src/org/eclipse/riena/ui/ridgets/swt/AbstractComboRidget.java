@@ -772,7 +772,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
 			super.widgetSelected(e);
 
-			if (isOutputOnly()) {
+			if (getUIControl() != null && isOutputOnly()) {
 				final Widget uiControl = e.widget;
 				rewriteText(uiControl);
 			}
