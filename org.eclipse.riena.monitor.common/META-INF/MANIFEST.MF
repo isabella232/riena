@@ -6,8 +6,7 @@ Bundle-Version: 3.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.communication.core
-Export-Package: org.eclipse.riena.internal.monitor.common;x-internal:=true,
- org.eclipse.riena.monitor.common
+Export-Package: org.eclipse.riena.monitor.common
 Require-Bundle: com.caucho.hessian,
  org.eclipse.riena.communication.core,
  org.eclipse.riena.communication.factory.hessian,
