@@ -26,6 +26,7 @@ import org.eclipse.riena.sample.app.common.exception.IExceptionService;
 import org.eclipse.riena.sample.app.common.model.ICustomerSearch;
 import org.eclipse.riena.sample.app.common.model.ICustomers;
 import org.eclipse.riena.sample.app.common.model.IHelloWorldService;
+import org.eclipse.riena.sample.app.common.tests.ITestObjectsOverRemoteService;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -79,6 +80,9 @@ public class Activator extends RienaPlugin {
 		context.registerService(ITestcasesWS.class.getName(), new TestcasesService(), null);
 		Publish.service(ITestcasesWS.class.getName())
 				.usingPath("/TestcasesWS").withProtocol("hessian").andStart(context); //$NON-NLS-1$//$NON-NLS-2$
+		context.registerService(ITestObjectsOverRemoteService.class.getName(), new TestObjectsOverRemoteService(), null);
+		Publish.service(ITestObjectsOverRemoteService.class.getName())
+				.usingPath("/TestObjectTypesWS").withProtocol(REMOTE_PROTOCOL_HESSIAN).andStart(context); //$NON-NLS-1$
 	}
 
 	/*

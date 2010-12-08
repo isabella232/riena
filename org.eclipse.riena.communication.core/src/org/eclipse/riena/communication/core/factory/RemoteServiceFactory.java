@@ -173,7 +173,7 @@ public class RemoteServiceFactory {
 
 	/**
 	 * Creates a protocol specific serviceInstance reference
-	 * (IRemoteServcieRefernce) with given end point parameters. Answers the
+	 * (IRemoteServiceRefernce) with given end point parameters. Answers the
 	 * IRemoteServiceReference. If no protocol specific
 	 * {@link IRemoteServiceFactory} OSGI Service available answers
 	 * <code>null</code>.
