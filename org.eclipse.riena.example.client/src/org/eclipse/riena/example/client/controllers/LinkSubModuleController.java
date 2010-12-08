@@ -44,10 +44,12 @@ public class LinkSubModuleController extends SubModuleController {
 		link3.setText("Eclipse <a href=\"http://planeteclipse.org\">Blogs</a>, <a href=\"http://www.eclipse.org/community/news/\">News</a> and <a href=\"http://live.eclipse.org\">Events</a>"); //$NON-NLS-1$
 
 		final ITextRidget textLinkUrl = getRidget("textLinkUrl"); //$NON-NLS-1$
+		textLinkUrl.setText("http://www.eclipse.org"); //$NON-NLS-1$
 		textLinkUrl.setOutputOnly(true);
 
 		final IBrowserRidget browser = getRidget("browser"); //$NON-NLS-1$
 		browser.bindToModel(textLinkUrl, ITextRidget.PROPERTY_TEXT);
+		browser.updateFromModel();
 
 		final ISelectionListener listener = new ISelectionListener() {
 			public void ridgetSelected(final SelectionEvent event) {
