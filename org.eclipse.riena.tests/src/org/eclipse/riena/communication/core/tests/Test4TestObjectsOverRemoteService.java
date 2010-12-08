@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core.tests;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
@@ -83,6 +84,38 @@ public class Test4TestObjectsOverRemoteService extends RienaTestCase {
 	public void testInvalidMap() {
 		try {
 			final Object object = testObjectTypesService.returnMap(1);
+		} catch (final Exception e) {
+			assertTrue(e instanceof RuntimeException);
+			return;
+		}
+		fail("should never get here");
+	}
+
+	public void testSendObject() {
+		testObjectTypesService.sendObject("Hello");
+	}
+
+	public void testSendInvalidObject() {
+		try {
+			testObjectTypesService.sendObject(new TestClientObject());
+		} catch (final Exception e) {
+			assertTrue(e instanceof RuntimeException);
+			return;
+		}
+		fail("should never get here");
+	}
+
+	public void testSendMap() {
+		final HashMap<String, String> map = new HashMap<String, String>();
+		map.put("Hello", "world");
+		testObjectTypesService.sendMap(map);
+	}
+
+	public void testSendInvalidMap() {
+		try {
+			final HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("Hello", new TestClientObject());
+			testObjectTypesService.sendMap(map);
 		} catch (final Exception e) {
 			assertTrue(e instanceof RuntimeException);
 			return;

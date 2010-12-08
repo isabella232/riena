@@ -8,21 +8,11 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.sample.app.common.tests;
-
-import java.util.Map;
+package org.eclipse.riena.communication.core.tests;
 
 /**
  *
  */
-public interface ITestObjectsOverRemoteService {
-
-	Object returnObject(int type);
-
-	Map returnMap(int type);
-
-	void sendObject(Object object);
-
-	int sendMap(Map map);
+public class TestClientObject {
 
 }

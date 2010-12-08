@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.factory.hessian;
 
+import java.util.logging.Handler;
+import java.util.logging.Logger;
+
+import com.caucho.hessian.io.SerializerFactory;
+
 import org.osgi.framework.BundleContext;
 
 import org.eclipse.riena.core.RienaActivator;
@@ -18,6 +23,10 @@ public class Activator extends RienaActivator {
 
 	// The shared instance
 	private static Activator plugin;
+
+	private final Handler watchDog = new RienaHessianWatchDog();
+
+	private Logger logger;
 
 	/*
 	 * @see
@@ -28,6 +37,8 @@ public class Activator extends RienaActivator {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
+		logger = Logger.getLogger(SerializerFactory.class.getName());
+		logger.addHandler(watchDog);
 	}
 
 	/*
@@ -39,6 +50,8 @@ public class Activator extends RienaActivator {
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		Activator.plugin = null;
+		logger.removeHandler(watchDog);
+		logger = null;
 		super.stop(context);
 	}
 

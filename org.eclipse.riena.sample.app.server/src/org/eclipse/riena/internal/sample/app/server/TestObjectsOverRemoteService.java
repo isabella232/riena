@@ -55,4 +55,24 @@ public class TestObjectsOverRemoteService implements ITestObjectsOverRemoteServi
 		return map;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.sample.app.common.tests.ITestObjectsOverRemoteService
+	 * #sendObject(java.lang.Object)
+	 */
+	public void sendObject(final Object object) {
+		if (object == null) {
+			throw new RuntimeException("not expecting a null object");
+		}
+	}
+
+	public int sendMap(final Map map) {
+		if (map == null) {
+			throw new RuntimeException("not expected a null for the map object");
+		}
+
+		return map.size();
+	}
 }
