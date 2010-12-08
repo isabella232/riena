@@ -15,7 +15,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Provides internationalized UI strings.
  * 
- * @since 2.0
+ * @since 3.0
  */
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.riena.ui.ridgets.nls.messages"; //$NON-NLS-1$
