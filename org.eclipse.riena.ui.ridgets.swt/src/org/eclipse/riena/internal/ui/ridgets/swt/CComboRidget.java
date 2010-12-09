@@ -87,6 +87,7 @@ public class CComboRidget extends AbstractComboRidget {
 		if (getUIControl() != null) {
 			updateBgColor(isEnabled());
 		}
+		selectionTypeEnforcer.saveSelection();
 	}
 
 	@Override
