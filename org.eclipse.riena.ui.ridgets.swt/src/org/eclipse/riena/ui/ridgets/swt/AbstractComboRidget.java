@@ -816,8 +816,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		 * Save the currently selected value of the Combo.
 		 */
 		public void saveSelection() {
-			selectionIndex = getSelectionIndex(getUIControl());
+			if (isBound()) {
+				selectionBindingExternal.updateModelToTarget();
+				selectionIndex = getSelectionIndex();
+			}
 		}
-
 	}
 }
