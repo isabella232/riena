@@ -8,47 +8,37 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.communication.core.tests;
+package org.eclipse.riena.communication.core;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.factory.Register;
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.ManualTestCase;
 import org.eclipse.riena.internal.tests.Activator;
 import org.eclipse.riena.sample.app.common.tests.ITestObjectsOverRemoteService;
 
 /**
- * Testcase to test various objecttypes when the are sent over a remote service
- * wire
+ * Test case to test various object types when the are sent over a remote
+ * service wire.
  */
-public class Test4TestObjectsOverRemoteService extends RienaTestCase {
+@ManualTestCase
+public class ObjectsOverRemoteServiceTest extends RienaTestCase {
 
 	private ITestObjectsOverRemoteService testObjectTypesService;
 	private IRemoteServiceRegistration regTestObjectTypesService;
 
-	/**
-	 * @see junit.framework.TestCase#setUp()
-	 */
 	@Override
 	protected void setUp() throws Exception {
-		// TODO Auto-generated method stub
 		super.setUp();
 		regTestObjectTypesService = Register.remoteProxy(ITestObjectsOverRemoteService.class)
 				.usingUrl("http://localhost:8080/hessian/TestObjectTypesWS").withProtocol("hessian")
 				.andStart(Activator.getDefault().getContext());
-		testObjectTypesService = (ITestObjectsOverRemoteService) Activator
-				.getDefault()
-				.getContext()
-				.getService(
-						Activator.getDefault().getContext()
-								.getServiceReference(ITestObjectsOverRemoteService.class.getName()));
+		testObjectTypesService = Service.get(ITestObjectsOverRemoteService.class);
 	}
 
-	/**
-	 * @see junit.framework.TestCase#tearDown()
-	 */
 	@Override
 	protected void tearDown() throws Exception {
 		regTestObjectTypesService.unregister();

@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.communication.core.tests;
+package org.eclipse.riena.communication.core;
 
 /**
  *
