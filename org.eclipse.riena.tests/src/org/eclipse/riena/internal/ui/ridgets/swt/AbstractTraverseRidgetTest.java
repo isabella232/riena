@@ -204,7 +204,8 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setMaximum(20);
 		ridget.setValue(0);
 
-		expectPropertyChangeEvent(ITraverseRidget.PROPERTY_VALUE, 0, 10);
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "valueInternal", 0, 10), new PropertyChangeEvent(
+				ridget, ITraverseRidget.PROPERTY_VALUE, 0, 10));
 		ridget.setValue(10);
 		verifyPropertyChangeEvents();
 
@@ -226,14 +227,16 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(0, ridget.getValue());
 
 		// Test 1 - value > max
-		expectPropertyChangeEvent(ITraverseRidget.PROPERTY_VALUE, 0, 20);
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "valueInternal", 0, 20), new PropertyChangeEvent(
+				ridget, ITraverseRidget.PROPERTY_VALUE, 0, 20));
 		ridget.setValue(30);
 		verifyPropertyChangeEvents();
 
 		// Test 2 - value < min
 		resetEasyMock();
 		ridget.setMinimum(10);
-		expectPropertyChangeEvent(ITraverseRidget.PROPERTY_VALUE, 20, 10);
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "valueInternal", 20, 10), new PropertyChangeEvent(
+				ridget, ITraverseRidget.PROPERTY_VALUE, 20, 10));
 		ridget.setValue(1);
 		verifyPropertyChangeEvents();
 	}
@@ -606,8 +609,9 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		resetEasyMock();
 		ridget.setMaximum(50);
 		ridget.setValue(40);
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_VALUE, 40, newMax),
-				new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_MAXIMUM, 50, newMax));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "valueInternal", 40, newMax),
+				new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_VALUE, 40, newMax), new PropertyChangeEvent(
+						ridget, ITraverseRidget.PROPERTY_MAXIMUM, 50, newMax));
 		ridget.setMaximum(newMax);
 		verifyPropertyChangeEvents();
 
@@ -727,8 +731,9 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setMinimum(0);
 		ridget.setValue(0);
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_VALUE, 0, 5),
-				new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_MINIMUM, 0, 5));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "valueInternal", 0, 5), new PropertyChangeEvent(
+				ridget, ITraverseRidget.PROPERTY_VALUE, 0, 5), new PropertyChangeEvent(ridget,
+				ITraverseRidget.PROPERTY_MINIMUM, 0, 5));
 		ridget.setMinimum(5);
 		verifyPropertyChangeEvents();
 
@@ -779,8 +784,9 @@ public abstract class AbstractTraverseRidgetTest extends AbstractSWTRidgetTest {
 		final int newMin = min + 1;
 		ridget.setIncrement(deltaMaxMin);
 		ridget.setPageIncrement(deltaMaxMin);
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_VALUE, min, newMin),
-				new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_INCREMENT, deltaMaxMin, deltaMaxMin - 1),
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "valueInternal", min, newMin),
+				new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_VALUE, min, newMin), new PropertyChangeEvent(
+						ridget, ITraverseRidget.PROPERTY_INCREMENT, deltaMaxMin, deltaMaxMin - 1),
 				new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_PAGE_INCREMENT, deltaMaxMin, deltaMaxMin - 1),
 				new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_MINIMUM, min, min + 1));
 		ridget.setMinimum(newMin);

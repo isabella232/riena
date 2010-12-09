@@ -46,6 +46,15 @@ import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
  */
 public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
+	/**
+	 * This property is used by the databinding to sync ridget and model. It is
+	 * always fired before its sibling {@link ITextRidget#PROPERTY_TEXT} to
+	 * ensure that the model is updated before any listeners try accessing it.
+	 * <p>
+	 * This property is not API. Do not use in client code.
+	 */
+	private static final String PROPERTY_TEXT_INTERNAL = "textInternal"; //$NON-NLS-1$
+
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	protected final FocusListener focusListener;
@@ -65,13 +74,13 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		isDirectWriting = false;
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
-				forceTextToControl(getTextInternal());
+				forceTextToControl(textValue);
 			}
 		});
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				updateEditable();
-				forceTextToControl(getTextInternal());
+				forceTextToControl(textValue);
 			}
 		});
 	}
@@ -84,7 +93,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 
 	@Override
 	protected IObservableValue getRidgetObservable() {
-		return BeansObservables.observeValue(this, ITextRidget.PROPERTY_TEXT);
+		return BeansObservables.observeValue(this, PROPERTY_TEXT_INTERNAL);
 	}
 
 	@Override
@@ -223,6 +232,15 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		return textValue;
 	}
 
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final synchronized String getTextInternal() {
+		return getText();
+	}
+
 	public void setInputToUIControlConverter(final IConverter converter) {
 		if (converter != null) {
 			Assert.isLegal(converter.getFromType() == String.class,
@@ -250,9 +268,18 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		disableMandatoryMarkers(isNotEmpty(textValue));
 		final IStatus onEdit = checkOnEditRules(textValue, new ValidationCallback(false));
 		if (onEdit.isOK()) {
+			firePropertyChange(PROPERTY_TEXT_INTERNAL, oldValue, textValue);
 			firePropertyChange(ITextRidget.PROPERTY_TEXT, oldValue, textValue);
-			firePropertyChange("textAfter", oldValue, textValue); //$NON-NLS-1$
 		}
+	}
+
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final synchronized void setTextInternal(final String text) {
+		setText(text);
 	}
 
 	public synchronized boolean revalidate() {
@@ -310,10 +337,6 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		}
 	}
 
-	private synchronized String getTextInternal() {
-		return textValue;
-	}
-
 	private synchronized void forceTextToControl(final String newValue) {
 		final Text control = getTextWidget();
 		if (control != null) {
@@ -339,8 +362,8 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 		if (!oldValue.equals(newValue)) {
 			textValue = newValue;
 			if (checkOnEditRules(newValue, null).isOK()) {
+				firePropertyChange(PROPERTY_TEXT_INTERNAL, oldValue, newValue);
 				firePropertyChange(ITextRidget.PROPERTY_TEXT, oldValue, newValue);
-				firePropertyChange("textAfter", oldValue, newValue); //$NON-NLS-1$
 			}
 		}
 	}

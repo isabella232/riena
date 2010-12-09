@@ -29,6 +29,15 @@ import org.eclipse.riena.ui.ridgets.ILabelRidget;
  */
 public abstract class AbstractLabelRidget extends AbstractValueRidget implements ILabelRidget {
 
+	/**
+	 * This property is used by the databinding to sync ridget and model. It is
+	 * always fired before its sibling {@link ILabelRidget#PROPERTY_TEXT} to
+	 * ensure that the model is updated before any listeners try accessing it.
+	 * <p>
+	 * This property is not API. Do not use in client code.
+	 */
+	private static final String PROPERTY_TEXT_INTERNAL = "textInternal"; //$NON-NLS-1$
+
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 	private String text;
 	private String iconID;
@@ -48,7 +57,7 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 
 	@Override
 	protected IObservableValue getRidgetObservable() {
-		return BeansObservables.observeValue(this, ILabelRidget.PROPERTY_TEXT);
+		return BeansObservables.observeValue(this, PROPERTY_TEXT_INTERNAL);
 	}
 
 	@Override
@@ -91,6 +100,15 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 
 	public String getText() {
 		return text;
+	}
+
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final String getTextInternal() {
+		return getText();
 	}
 
 	/**
@@ -145,7 +163,17 @@ public abstract class AbstractLabelRidget extends AbstractValueRidget implements
 		final String oldValue = this.text;
 		this.text = text;
 		updateUIText();
+		firePropertyChange(PROPERTY_TEXT_INTERNAL, oldValue, this.text);
 		firePropertyChange(ILabelRidget.PROPERTY_TEXT, oldValue, this.text);
+	}
+
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final void setTextInternal(final String text) {
+		setText(text);
 	}
 
 	// helping methods

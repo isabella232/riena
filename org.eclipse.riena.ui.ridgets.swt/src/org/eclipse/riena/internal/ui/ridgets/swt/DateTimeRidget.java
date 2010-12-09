@@ -21,8 +21,6 @@ import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.DateAndTimeObservableValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
-import org.eclipse.core.databinding.observable.value.IValueChangeListener;
-import org.eclipse.core.databinding.observable.value.ValueChangeEvent;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.Assert;
@@ -42,11 +40,15 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeRidget {
 
 	/**
-	 * Holds the date value for this ridget.
+	 * This property is used by the databinding to sync ridget and model. It is
+	 * always fired before its sibling {@link IDateTimeRidget#PROPERTY_DATE} to
+	 * ensure that the model is updated before any listeners try accessing it.
 	 * <p>
-	 * Do not access directly. Use {@link #getRidgetObservable()}.
+	 * This property is not API. Do not use in client code.
 	 */
-	private IObservableValue ridgetObservable;
+	private static final String PROPERTY_DATE_INTERNAL = "dateInternal"; //$NON-NLS-1$
+
+	private Date date;
 	private DataBindingContext dbc;
 	private Binding controlBinding;
 
@@ -92,17 +94,7 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 
 	@Override
 	protected final IObservableValue getRidgetObservable() {
-		if (ridgetObservable == null) {
-			ridgetObservable = new WritableValue(null, Date.class);
-			ridgetObservable.addValueChangeListener(new IValueChangeListener() {
-				public void handleValueChange(final ValueChangeEvent event) {
-					final Object oldValue = event.diff.getOldValue();
-					final Object newValue = event.diff.getNewValue();
-					firePropertyChange(IDateTimeRidget.PROPERTY_DATE, oldValue, newValue);
-				}
-			});
-		}
-		return ridgetObservable;
+		return BeansObservables.observeValue(this, PROPERTY_DATE_INTERNAL);
 	}
 
 	@Override
@@ -130,7 +122,16 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	}
 
 	public Date getDate() {
-		return (Date) getRidgetObservable().getValue();
+		return date;
+	}
+
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final Date getDateInternal() {
+		return getDate();
 	}
 
 	public String getText() {
@@ -180,14 +181,30 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	 * #248075</a>.
 	 */
 	public void setDate(final Date date) {
-		getRidgetObservable().setValue(date);
-		if (controlBinding != null) {
-			controlBinding.updateModelToTarget(); // update widget
+		if (isChanged(this.date, date)) {
+			final Object oldDate = this.date;
+			// date is mutable, store / send out copies to be safe
+			this.date = date == null ? null : new Date(date.getTime());
+			final Date newDate = date == null ? null : new Date(date.getTime());
+			firePropertyChange(PROPERTY_DATE_INTERNAL, oldDate, newDate);
+			firePropertyChange(IDateTimeRidget.PROPERTY_DATE, oldDate, newDate);
+			if (controlBinding != null) {
+				controlBinding.updateModelToTarget(); // update widget
+			}
+			final IStatus status = checkAllRules(date, new ValidationCallback(false));
+			if (status.isOK()) {
+				getValueBindingSupport().updateFromTarget();
+			}
 		}
-		final IStatus status = checkAllRules(date, new ValidationCallback(false));
-		if (status.isOK()) {
-			getValueBindingSupport().updateFromTarget();
-		}
+	}
+
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final void setDateInternal(final Date date) {
+		setDate(date);
 	}
 
 	/** Not supported. */
@@ -224,6 +241,13 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 	 */
 	private Date getNonNullDate(final Date date) {
 		return date != null ? date : new Date(0);
+	}
+
+	private boolean isChanged(final Date date1, final Date date2) {
+		if (date1 == date2) {
+			return false;
+		}
+		return date1 != null ? !date1.equals(date2) : !date2.equals(date1);
 	}
 
 	private boolean isTimeControl(final DateTime control) {

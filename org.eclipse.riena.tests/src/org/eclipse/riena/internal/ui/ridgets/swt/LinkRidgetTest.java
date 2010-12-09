@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,7 +146,8 @@ public class LinkRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setText("textA");
 
-		expectPropertyChangeEvent(ILinkRidget.PROPERTY_TEXT, "textA", "textB");
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "textA", "textB"),
+				new PropertyChangeEvent(ridget, ILinkRidget.PROPERTY_TEXT, "textA", "textB"));
 		ridget.setText("textB");
 		verifyPropertyChangeEvents();
 

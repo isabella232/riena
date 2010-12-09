@@ -30,6 +30,15 @@ public class ProgressbarRidget extends AbstractValueRidget {
 	protected static final String PROPERTY_FOREGROUND = "foreground"; //$NON-NLS-1$
 	protected static final String PROPERTY_BACKGROUND = "background"; //$NON-NLS-1$
 
+	/**
+	 * This property is used by the databinding to sync ridget and model. It is
+	 * always fired before its sibling {@link #PROPERTY_SELECTION} to ensure
+	 * that the model is updated before any listeners try accessing it.
+	 * <p>
+	 * This property is not API. Do not use in client code.
+	 */
+	private static final String PROPERTY_SELECTION_INTERNAL = "selectionInternal"; //$NON-NLS-1$
+
 	private Integer selection;
 	private Integer minimum;
 	private Integer maximum;
@@ -43,7 +52,7 @@ public class ProgressbarRidget extends AbstractValueRidget {
 
 	@Override
 	protected IObservableValue getRidgetObservable() {
-		return BeansObservables.observeValue(this, PROPERTY_SELECTION);
+		return BeansObservables.observeValue(this, PROPERTY_SELECTION_INTERNAL);
 	}
 
 	@Override
@@ -172,6 +181,15 @@ public class ProgressbarRidget extends AbstractValueRidget {
 	}
 
 	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final int getSelectionInternal() {
+		return getSelection();
+	}
+
+	/**
 	 * Sets the value for the progress.
 	 * 
 	 * @param selection
@@ -181,7 +199,17 @@ public class ProgressbarRidget extends AbstractValueRidget {
 		final Integer oldSelection = this.selection;
 		this.selection = selection;
 		updateUISelection();
+		firePropertyChange(PROPERTY_SELECTION_INTERNAL, oldSelection, Integer.valueOf(selection));
 		firePropertyChange(PROPERTY_SELECTION, oldSelection, Integer.valueOf(selection));
+	}
+
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final void setSelectionInternal(final int selection) {
+		setSelection(selection);
 	}
 
 	private void updateUISelection() {

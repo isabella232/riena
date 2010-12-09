@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeEvent;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
@@ -203,7 +205,8 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 
 		assertFalse(newValue.equals(ridget.getUrl()));
 
-		expectPropertyChangeEvent(IBrowserRidget.PROPERTY_URL, oldValue, newValue);
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "urlInternal", oldValue, newValue),
+				new PropertyChangeEvent(ridget, IBrowserRidget.PROPERTY_URL, oldValue, newValue));
 		ridget.setUrl(newValue);
 		verifyPropertyChangeEvents();
 
@@ -211,7 +214,8 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setUrl(newValue);
 		verifyPropertyChangeEvents();
 
-		expectPropertyChangeEvent(IBrowserRidget.PROPERTY_URL, newValue, null);
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "urlInternal", newValue, null),
+				new PropertyChangeEvent(ridget, IBrowserRidget.PROPERTY_URL, newValue, null));
 		ridget.setText("<html><body><h1>h1</h1></body></html>");
 		verifyPropertyChangeEvents();
 
@@ -265,6 +269,14 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 					UITestHelper.readAndDispatch(withControl);
 				} else {
 					throw exc;
+				}
+			} catch (final Error error) {
+				tries--;
+				if (tries > 0) {
+					Thread.sleep(500);
+					UITestHelper.readAndDispatch(withControl);
+				} else {
+					throw error;
 				}
 			}
 		}

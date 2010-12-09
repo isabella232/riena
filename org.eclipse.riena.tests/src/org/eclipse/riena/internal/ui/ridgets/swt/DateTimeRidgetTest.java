@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import static org.eclipse.riena.ui.ridgets.IDateTimeRidget.*;
+
 import java.beans.PropertyChangeEvent;
 import java.util.Calendar;
 import java.util.Date;
@@ -78,7 +80,8 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(null, dateBean.getValue());
 
 		final Date date2001 = createDate(2001, 12, 2);
-		expectPropertyChangeEvent(IDateTimeRidget.PROPERTY_DATE, null, date2001);
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "dateInternal", null, date2001),
+				new PropertyChangeEvent(ridget, IDateTimeRidget.PROPERTY_DATE, null, date2001));
 		ridget.setDate(date2001);
 		verifyPropertyChangeEvents();
 
@@ -87,7 +90,8 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("12/2/2001", getDate(control));
 
 		final Date date1800 = createDate(1800, 1, 1);
-		expectPropertyChangeEvent(IDateTimeRidget.PROPERTY_DATE, date2001, date1800);
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "dateInternal", date2001, date1800),
+				new PropertyChangeEvent(ridget, IDateTimeRidget.PROPERTY_DATE, date2001, date1800));
 		ridget.setDate(date1800);
 		verifyPropertyChangeEvents();
 
@@ -121,7 +125,8 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(null, ridget.getDate());
 		assertEquals(asStringEmptyDate(), getDate(control));
 
-		expectPropertyChangeEvent(IDateTimeRidget.PROPERTY_DATE, null, date2000);
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "dateInternal", null, date2000),
+				new PropertyChangeEvent(ridget, IDateTimeRidget.PROPERTY_DATE, null, date2000));
 		ridget.updateFromModel();
 		verifyPropertyChangeEvents();
 
@@ -135,14 +140,16 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(date2000, ridget.getDate());
 		assertEquals("1/1/2000", getDate(control));
 
-		expectPropertyChangeEvent(IDateTimeRidget.PROPERTY_DATE, date2000, date2001);
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "dateInternal", date2000, date2001),
+				new PropertyChangeEvent(ridget, IDateTimeRidget.PROPERTY_DATE, date2000, date2001));
 		ridget.updateFromModel();
 		verifyPropertyChangeEvents();
 
 		assertEquals(date2001, ridget.getDate());
 		assertEquals("12/2/2001", getDate(control));
 
-		expectPropertyChangeEvent(IDateTimeRidget.PROPERTY_DATE, date2001, null);
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "dateInternal", date2001, null),
+				new PropertyChangeEvent(ridget, IDateTimeRidget.PROPERTY_DATE, date2001, null));
 		dateBean.setValue(null);
 		ridget.updateFromModel();
 		verifyPropertyChangeEvents();
@@ -152,18 +159,24 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testWidgetModification() {
-		final PropertyChangeEvent[] events = new PropertyChangeEvent[3];
+		final PropertyChangeEvent[] events = new PropertyChangeEvent[6];
 		String input;
 		final String country = Locale.getDefault().getCountry();
 		if ("DE".equals(country)) {
-			events[0] = createPropertyChangeEvent(2001, 12, 1, 2001, 12, 10);
-			events[1] = createPropertyChangeEvent(2001, 12, 10, 2001, 04, 10);
-			events[2] = createPropertyChangeEvent(2001, 04, 10, 2009, 04, 10);
+			events[0] = createPropertyChangeEvent("dateInternal", 2001, 12, 1, 2001, 12, 10);
+			events[1] = createPropertyChangeEvent(PROPERTY_DATE, 2001, 12, 1, 2001, 12, 10);
+			events[2] = createPropertyChangeEvent("dateInternal", 2001, 12, 10, 2001, 04, 10);
+			events[3] = createPropertyChangeEvent(PROPERTY_DATE, 2001, 12, 10, 2001, 04, 10);
+			events[4] = createPropertyChangeEvent("dateInternal", 2001, 04, 10, 2009, 04, 10);
+			events[5] = createPropertyChangeEvent(PROPERTY_DATE, 2001, 04, 10, 2009, 04, 10);
 			input = "10.04.2009";
 		} else if ("US".equals(country)) {
-			events[0] = createPropertyChangeEvent(2001, 12, 1, 2001, 4, 1);
-			events[1] = createPropertyChangeEvent(2001, 4, 1, 2001, 4, 10);
-			events[2] = createPropertyChangeEvent(2001, 4, 10, 2009, 4, 10);
+			events[0] = createPropertyChangeEvent("dateInternal", 2001, 12, 1, 2001, 4, 1);
+			events[1] = createPropertyChangeEvent(PROPERTY_DATE, 2001, 12, 1, 2001, 4, 1);
+			events[2] = createPropertyChangeEvent("dateInternal", 2001, 4, 1, 2001, 4, 10);
+			events[3] = createPropertyChangeEvent(PROPERTY_DATE, 2001, 4, 1, 2001, 4, 10);
+			events[4] = createPropertyChangeEvent("dateInternal", 2001, 4, 10, 2009, 4, 10);
+			events[5] = createPropertyChangeEvent(PROPERTY_DATE, 2001, 4, 10, 2009, 4, 10);
 			input = "04/10/2009";
 		} else {
 			System.out.println("Skipping DateTimeRidgetTest#testWidgetModification()");
@@ -317,11 +330,11 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 		return cal.getTime();
 	}
 
-	private PropertyChangeEvent createPropertyChangeEvent(final int oldYear, final int oldMonth, final int oldDay,
-			final int newYear, final int newMonth, final int newDay) {
+	private PropertyChangeEvent createPropertyChangeEvent(final String propertyName, final int oldYear,
+			final int oldMonth, final int oldDay, final int newYear, final int newMonth, final int newDay) {
 		final Date oldDate = createDate(oldYear, oldMonth, oldDay);
 		final Date newDate = createDate(newYear, newMonth, newDay);
-		return new PropertyChangeEvent(getRidget(), IDateTimeRidget.PROPERTY_DATE, oldDate, newDate);
+		return new PropertyChangeEvent(getRidget(), propertyName, oldDate, newDate);
 	}
 
 	private String getDate(final DateTime control) {

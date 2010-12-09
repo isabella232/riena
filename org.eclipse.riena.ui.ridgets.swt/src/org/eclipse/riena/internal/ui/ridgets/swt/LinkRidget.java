@@ -37,6 +37,15 @@ import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
  */
 public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 
+	/**
+	 * This property is used by the databinding to sync ridget and model. It is
+	 * always fired before its sibling {@link ILinkRidget#PROPERTY_TEXT} to
+	 * ensure that the model is updated before any listeners try accessing it.
+	 * <p>
+	 * This property is not API. Do not use in client code.
+	 */
+	private static final String PROPERTY_TEXT_INTERNAL = "textInternal"; //$NON-NLS-1$
+
 	private final LinkSelectionObserver selectionObserver;
 
 	private String text;
@@ -77,7 +86,7 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 
 	@Override
 	protected IObservableValue getRidgetObservable() {
-		return BeansObservables.observeValue(this, ILinkRidget.PROPERTY_TEXT);
+		return BeansObservables.observeValue(this, PROPERTY_TEXT_INTERNAL);
 	}
 
 	public void addSelectionListener(final ISelectionListener listener) {
@@ -91,6 +100,15 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 
 	public String getText() {
 		return text;
+	}
+
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final String getTextInternal() {
+		return getText();
 	}
 
 	/**
@@ -110,6 +128,7 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 		final String oldText = this.text;
 		this.text = text;
 		updateUIText();
+		firePropertyChange(PROPERTY_TEXT_INTERNAL, oldText, this.text);
 		firePropertyChange(ILinkRidget.PROPERTY_TEXT, oldText, this.text);
 	}
 
@@ -125,12 +144,21 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 		setText(mergedText);
 	}
 
-	private String convertNullToEmpty(final String value) {
-		return StringUtils.isDeepEmpty(value) ? "" : value; //$NON-NLS-1$
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final void setTextInternal(final String text) {
+		setText(text);
 	}
 
 	// helping methods
 	//////////////////
+
+	private String convertNullToEmpty(final String value) {
+		return StringUtils.isDeepEmpty(value) ? "" : value; //$NON-NLS-1$
+	}
 
 	private void updateUIText() {
 		final Link control = getUIControl();

@@ -160,14 +160,16 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 
 		// Test 1 - value > max
 		final int maxValue = ridget.getMaximum() - ridget.getThumb();
-		expectPropertyChangeEvent(ITraverseRidget.PROPERTY_VALUE, 0, maxValue);
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "valueInternal", 0, maxValue),
+				new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_VALUE, 0, maxValue));
 		ridget.setValue(30);
 		verifyPropertyChangeEvents();
 
 		// Test 2 - value < min
 		resetEasyMock();
 		ridget.setMinimum(10);
-		expectPropertyChangeEvent(ITraverseRidget.PROPERTY_VALUE, maxValue, 10);
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "valueInternal", maxValue, 10),
+				new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_VALUE, maxValue, 10));
 		ridget.setValue(1);
 		verifyPropertyChangeEvents();
 
@@ -535,7 +537,8 @@ public class SliderRidgetTest extends AbstractTraverseRidgetTest {
 		ridget.setPageIncrement(deltaMaxMin);
 		final int oldPageIncrement = ridget.getPageIncrement();
 		final int oldValue = ridget.getValue();
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_VALUE, oldValue, min + 1),
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "valueInternal", oldValue, min + 1),
+				new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_VALUE, oldValue, min + 1),
 				new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_INCREMENT, deltaMaxMin, deltaMaxMin - 1),
 				new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_PAGE_INCREMENT, oldPageIncrement,
 						deltaMaxMin - 1), new PropertyChangeEvent(ridget, ITraverseRidget.PROPERTY_MINIMUM, min,

@@ -523,22 +523,26 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.addListener(listener1);
 
+		assertEquals(0, listener1.getCount());
+
 		final BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
-		final IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
-		ridget.bindToModel(modelOV);
+		ridget.bindToModel(PojoObservables.observeValue(model, "selected"));
 		ridget.updateFromModel();
 
 		assertTrue(ridget.isSelected());
+		assertEquals(1, listener1.getCount());
 
 		ridget.fireAction();
 		ridget.fireAction();
-		assertEquals(5, listener1.getCount());
+
+		assertEquals(3, listener1.getCount());
 
 		ridget.addListener(listener2);
 		ridget.fireAction();
-		assertEquals(7, listener1.getCount());
-		assertEquals(2, listener2.getCount());
+
+		assertEquals(4, listener1.getCount());
+		assertEquals(1, listener2.getCount());
 		assertFalse(ridget.isSelected());
 	}
 

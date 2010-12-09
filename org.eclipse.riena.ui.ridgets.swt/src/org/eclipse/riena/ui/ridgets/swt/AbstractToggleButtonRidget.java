@@ -39,6 +39,16 @@ import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
  */
 public abstract class AbstractToggleButtonRidget extends AbstractValueRidget implements IToggleButtonRidget {
 
+	/**
+	 * This property is used by the databinding to sync ridget and model. It is
+	 * always fired before its sibling
+	 * {@link IToggleButtonRidget#PROPERTY_SELECTED} to ensure that the model is
+	 * updated before any listeners try accessing it.
+	 * <p>
+	 * This property is not API. Do not use in client code.
+	 */
+	private static final String PROPERTY_SELECTED_INTERNAL = "selectedInternal"; //$NON-NLS-1$
+
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
 	private final ActionObserver actionObserver;
@@ -92,7 +102,6 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	public void fireAction() {
 		if (isVisible() && isEnabled()) {
 			setSelected(!isSelected());
-			actionObserver.widgetSelected(null);
 		}
 	}
 
@@ -108,6 +117,15 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 
 	public boolean isSelected() {
 		return selected;
+	}
+
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final boolean isSelectedInternal() {
+		return isSelected();
 	}
 
 	public void removeListener(final IActionListener listener) {
@@ -137,10 +155,20 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 			final boolean oldValue = this.selected;
 			this.selected = selected;
 			actionObserver.widgetSelected(null);
+			firePropertyChange(PROPERTY_SELECTED_INTERNAL, Boolean.valueOf(oldValue), Boolean.valueOf(selected));
 			firePropertyChange(IToggleButtonRidget.PROPERTY_SELECTED, Boolean.valueOf(oldValue),
 					Boolean.valueOf(selected));
 			updateMandatoryMarkers();
 		}
+	}
+
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final void setSelectedInternal(final boolean selected) {
+		setSelected(selected);
 	}
 
 	public final void setText(final String newText) {
@@ -170,7 +198,7 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 
 	@Override
 	protected IObservableValue getRidgetObservable() {
-		return BeansObservables.observeValue(this, IToggleButtonRidget.PROPERTY_SELECTED);
+		return BeansObservables.observeValue(this, PROPERTY_SELECTED_INTERNAL);
 	}
 
 	/**

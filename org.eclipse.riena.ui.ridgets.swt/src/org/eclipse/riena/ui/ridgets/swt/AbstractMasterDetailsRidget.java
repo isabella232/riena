@@ -40,7 +40,6 @@ import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
@@ -156,7 +155,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 						|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER
 								.equals(propertyName))
 						|| IRidget.PROPERTY_ENABLED.equals(propertyName)
-						|| ITextRidget.PROPERTY_TEXT.equals(propertyName)
+						|| "textInternal".equals(propertyName) //$NON-NLS-1$
 						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)
 						|| IMarkableRidget.PROPERTY_MARKER_HIDING.equals(propertyName)
 						|| (IMarkableRidget.PROPERTY_MARKER.equals(propertyName) && getApplyButtonRidget() == evt
@@ -1003,7 +1002,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 					// ignore these events:
 					|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER
 							.equals(propertyName)) || IRidget.PROPERTY_ENABLED.equals(propertyName)
-					|| ITextRidget.PROPERTY_TEXT.equals(propertyName)
+					|| "textInternal".equals(propertyName) //$NON-NLS-1$
 					|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)
 					|| IMarkableRidget.PROPERTY_MARKER_HIDING.equals(propertyName)) {
 				return;

@@ -116,8 +116,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("", ridget.getText());
 		assertEquals(TEXT_TWO, bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "", TEXT_TWO),
-				new PropertyChangeEvent(ridget, "textAfter", "", TEXT_TWO));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "", TEXT_TWO),
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "", TEXT_TWO));
 
 		ridget.updateFromModel();
 
@@ -153,8 +153,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(TEXT_ONE, ridget.getText());
 		assertEquals(TEXT_TWO, bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, TEXT_ONE, TEXT_TWO),
-				new PropertyChangeEvent(ridget, "textAfter", TEXT_ONE, TEXT_TWO));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", TEXT_ONE, TEXT_TWO),
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, TEXT_ONE, TEXT_TWO));
 
 		ridget.updateFromModel();
 
@@ -200,8 +200,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("", ridget.getText());
 		assertEquals(null, bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "", "test"),
-				new PropertyChangeEvent(ridget, "textAfter", "", "test"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "", "test"),
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "", "test"));
 
 		UITestHelper.sendString(display, "\r");
 		UITestHelper.readAndDispatch(control);
@@ -220,8 +220,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("test", ridget.getText());
 		assertEquals("test", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "test", "test2"),
-				new PropertyChangeEvent(ridget, "textAfter", "test", "test2"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "test", "test2"),
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "test", "test2"));
 
 		UITestHelper.sendString(display, "\t");
 
@@ -245,8 +245,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("t", ridget.getText());
 		assertEquals("t", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "t", "te"),
-				new PropertyChangeEvent(ridget, "textAfter", "t", "te"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "t", "te"), new PropertyChangeEvent(
+				ridget, ITextRidget.PROPERTY_TEXT, "t", "te"));
 
 		UITestHelper.sendString(display, "e");
 
@@ -255,8 +255,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("te", ridget.getText());
 		assertEquals("te", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "te", "tes"),
-				new PropertyChangeEvent(ridget, "textAfter", "te", "tes"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "te", "tes"),
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "te", "tes"));
 
 		UITestHelper.sendString(display, "s");
 
@@ -265,8 +265,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("tes", ridget.getText());
 		assertEquals("tes", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "tes", "test"),
-				new PropertyChangeEvent(ridget, "textAfter", "tes", "test"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "tes", "test"),
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "tes", "test"));
 
 		UITestHelper.sendString(display, "t");
 
@@ -275,8 +275,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("test", ridget.getText());
 		assertEquals("test", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "test", "tet"),
-				new PropertyChangeEvent(ridget, "textAfter", "test", "tet"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "test", "tet"),
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "test", "tet"));
 
 		UITestHelper.sendKeyAction(display, SWT.ARROW_LEFT);
 		UITestHelper.sendString(display, "\b");
@@ -286,8 +286,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("tet", ridget.getText());
 		assertEquals("tet", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "tet", "te"),
-				new PropertyChangeEvent(ridget, "textAfter", "tet", "te"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "tet", "te"),
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "tet", "te"));
 
 		UITestHelper.sendString(display, String.valueOf(SWT.DEL));
 
@@ -305,8 +305,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("te", ridget.getText());
 		assertEquals("Test", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "te", "t"),
-				new PropertyChangeEvent(ridget, "textAfter", "te", "t"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "te", "t"), new PropertyChangeEvent(
+				ridget, ITextRidget.PROPERTY_TEXT, "te", "t"));
 
 		UITestHelper.sendString(display, "\b");
 
@@ -328,8 +328,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("", ridget.getText());
 		assertEquals(null, bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "", "test"),
-				new PropertyChangeEvent(ridget, "textAfter", "", "test"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "", "test"),
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "", "test"));
 
 		UITestHelper.sendString(control.getDisplay(), "\r");
 
@@ -347,8 +347,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("test", ridget.getText());
 		assertEquals("test", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "test", "TEST2"),
-				new PropertyChangeEvent(ridget, "textAfter", "test", "TEST2"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "test", "TEST2"),
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "test", "TEST2"));
 
 		UITestHelper.sendString(control.getDisplay(), "\t");
 
@@ -372,8 +372,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("t", ridget.getText());
 		assertEquals("t", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "t", "Test"),
-				new PropertyChangeEvent(ridget, "textAfter", "t", "Test"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "t", "Test"),
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "t", "Test"));
 
 		((Text) ridget.getUIControl()).setText("Test");
 
@@ -391,8 +391,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals("Test", ridget.getText());
 		assertEquals("Toast", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "Test", "Test2"),
-				new PropertyChangeEvent(ridget, "textAfter", "Test", "Test2"));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", "Test", "Test2"),
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, "Test", "Test2"));
 
 		UITestHelper.sendKeyAction(control.getDisplay(), SWT.END);
 		UITestHelper.sendString(control.getDisplay(), "2");
@@ -426,8 +426,8 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(TEXT_TWO, ridget.getText());
 		assertEquals("Bean34", bean.getProperty());
 
-		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, TEXT_TWO, TEXT_ONE),
-				new PropertyChangeEvent(ridget, "textAfter", TEXT_TWO, TEXT_ONE));
+		expectPropertyChangeEvents(new PropertyChangeEvent(ridget, "textInternal", TEXT_TWO, TEXT_ONE),
+				new PropertyChangeEvent(ridget, ITextRidget.PROPERTY_TEXT, TEXT_TWO, TEXT_ONE));
 
 		ridget.setText(TEXT_ONE);
 
@@ -1475,7 +1475,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		final FTPropertyChangeListener listener1 = new FTPropertyChangeListener(bean, "newValue");
 		ridget.addPropertyChangeListener(listener1);
 		final FTPropertyChangeListener listener2 = new FTPropertyChangeListener(bean, "newValue");
-		ridget.addPropertyChangeListener("textAfter", listener2);
+		ridget.addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, listener2);
 
 		ridget.setText("newValue");
 
@@ -1493,7 +1493,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		final FTPropertyChangeListener listener1 = new FTPropertyChangeListener(bean, "abc");
 		ridget.addPropertyChangeListener(listener1);
 		final FTPropertyChangeListener listener2 = new FTPropertyChangeListener(bean, "abc");
-		ridget.addPropertyChangeListener("textAfter", listener2);
+		ridget.addPropertyChangeListener(ITextRidget.PROPERTY_TEXT, listener2);
 		ridget.setDirectWriting(false);
 
 		final Text control = getWidget();
@@ -1819,7 +1819,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		}
 
 		public void propertyChange(final PropertyChangeEvent evt) {
-			if ("textAfter".equals(evt.getPropertyName())) {
+			if (ITextRidget.PROPERTY_TEXT.equals(evt.getPropertyName())) {
 				count++;
 				assertEquals(1, count);
 				assertEquals(value, evt.getNewValue());

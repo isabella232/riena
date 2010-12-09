@@ -106,6 +106,15 @@ import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
  */
 public abstract class AbstractTraverseRidget extends AbstractEditableRidget implements ITraverseRidget {
 
+	/**
+	 * This property is used by the databinding to sync ridget and model. It is
+	 * always fired before its sibling {@link ITraverseRidget#PROPERTY_VALUE} to
+	 * ensure that the model is updated before any listeners try accessing it.
+	 * <p>
+	 * This property is not API. Do not use in client code.
+	 */
+	private static final String PROPERTY_VALUE_INTERNAL = "valueInternal"; //$NON-NLS-1$
+
 	private final ActionObserver actionObserver;
 	private final TooltipChangeHandler tooltipChangedHandler;
 
@@ -165,6 +174,15 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 
 	public int getValue() {
 		return value;
+	}
+
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final int getValueInternal() {
+		return getValue();
 	}
 
 	/**
@@ -236,7 +254,17 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 		this.value = value;
 		updateUIValue();
 		tooltipChangedHandler.updateTooltipPattern();
+		firePropertyChange(PROPERTY_VALUE_INTERNAL, oldValue, this.value);
 		firePropertyChange(ITraverseRidget.PROPERTY_VALUE, oldValue, this.value);
+	}
+
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final void setValueInternal(final int value) {
+		setValue(value);
 	}
 
 	// protected methods
@@ -300,7 +328,7 @@ public abstract class AbstractTraverseRidget extends AbstractEditableRidget impl
 	 */
 	@Override
 	protected IObservableValue getRidgetObservable() {
-		return BeansObservables.observeValue(this, ITraverseRidget.PROPERTY_VALUE);
+		return BeansObservables.observeValue(this, PROPERTY_VALUE_INTERNAL);
 	}
 
 	/**

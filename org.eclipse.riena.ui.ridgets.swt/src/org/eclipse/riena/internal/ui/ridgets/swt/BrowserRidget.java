@@ -37,6 +37,15 @@ import org.eclipse.riena.ui.swt.facades.BrowserFacade;
  */
 public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget {
 
+	/**
+	 * This property is used by the databinding to sync ridget and model. It is
+	 * always fired before its sibling {@link IBrowserRidget#PROPERTY_URL} to
+	 * ensure that the model is updated before any listeners try accessing it.
+	 * <p>
+	 * This property is not API. Do not use in client code.
+	 */
+	private static final String PROPERTY_URL_INTERNAL = "urlInternal"; //$NON-NLS-1$
+
 	private final BrowserUrlListener locationListener;
 
 	private String url;
@@ -76,7 +85,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 
 	@Override
 	protected IObservableValue getRidgetObservable() {
-		return BeansObservables.observeValue(this, IBrowserRidget.PROPERTY_URL);
+		return BeansObservables.observeValue(this, PROPERTY_URL_INTERNAL);
 	}
 
 	@Override
@@ -90,6 +99,15 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 
 	public String getUrl() {
 		return url;
+	}
+
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final String getUrlInternal() {
+		return getUrl();
 	}
 
 	/**
@@ -107,6 +125,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 			final String oldUrl = this.url;
 			this.url = null;
 			updateUIControl();
+			firePropertyChange(PROPERTY_URL_INTERNAL, oldUrl, this.url);
 			firePropertyChange(IBrowserRidget.PROPERTY_URL, oldUrl, this.url);
 		}
 	}
@@ -117,8 +136,18 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 			this.text = null;
 			this.url = url;
 			updateUIControl();
+			firePropertyChange(PROPERTY_URL_INTERNAL, oldUrl, this.url);
 			firePropertyChange(IBrowserRidget.PROPERTY_URL, oldUrl, this.url);
 		}
+	}
+
+	/**
+	 * This method is not API. Do not use in client code.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final void setUrlInternal(final String url) {
+		setUrl(url);
 	}
 
 	// helping methods
