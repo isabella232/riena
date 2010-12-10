@@ -562,11 +562,22 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			updateValueToItem();
 			/* re-create selectionBinding */
 			final ISWTObservableValue controlSelection = getUIControlSelectionObservable();
+			final UpdateValueStrategy controlSelectionBindingStrategy = new UpdateValueStrategy(
+					UpdateValueStrategy.POLICY_UPDATE);
+			controlSelectionBindingStrategy.setConverter(strToObjConverter).setAfterGetValidator(selectionValidator);
+			controlSelectionBindingStrategy.setBeforeSetValidator(new IValidator() {
+
+				public IStatus validate(final Object value) {
+					if (isOutputOnly()) {
+						return Status.CANCEL_STATUS;
+					}
+					return Status.OK_STATUS;
+				}
+			});
 			final DataBindingContext dbc = new DataBindingContext();
 			selectionBindingInternal = dbc.bindValue(controlSelection, selectionObservable,
-					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).setConverter(strToObjConverter)
-							.setAfterGetValidator(selectionValidator), new UpdateValueStrategy(
-							UpdateValueStrategy.POLICY_UPDATE).setConverter(objToStrConverter));
+					controlSelectionBindingStrategy,
+					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE).setConverter(objToStrConverter));
 			/* update selection in combo */
 			selectionBindingInternal.updateModelToTarget();
 		}
