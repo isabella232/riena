@@ -22,6 +22,7 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.listener.NavigationNodeListener;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterRule;
+import org.eclipse.riena.ui.ridgets.IComplexRidget;
 import org.eclipse.riena.ui.ridgets.IMenuItemRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
@@ -171,13 +172,21 @@ public class NavigationUIFilterApplier<N> extends NavigationNodeListener {
 		final INavigationNodeController controller = node.getNavigationNodeController();
 		if (controller instanceof IRidgetContainer) {
 			final IRidgetContainer container = (IRidgetContainer) controller;
-			for (final IRidget ridget : container.getRidgets()) {
-				if (filterRule.matches(ridget, node)) {
-					closure.execute(node, filterRule, ridget);
-				}
-			}
+			executeFilter(node, filterRule, closure, container.getRidgets());
 		}
 
+	}
+
+	private void executeFilter(final INavigationNode<?> node, final IUIFilterRule filterRule,
+			final IUIFilterRuleClosure closure, final Collection<? extends IRidget> ridgets) {
+		for (final IRidget ridget : ridgets) {
+			if (ridget instanceof IComplexRidget) {
+				executeFilter(node, filterRule, closure, ((IComplexRidget) ridget).getRidgets());
+			}
+			if (filterRule.matches(ridget, node)) {
+				closure.execute(node, filterRule, ridget);
+			}
+		}
 	}
 
 	@Override
