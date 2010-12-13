@@ -26,7 +26,7 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
  * implementing an {@link IMasterDetailsDelegate} and introducing it to this
  * ridget via {@link #setDelegate(IMasterDetailsDelegate)}.
  */
-public interface IMasterDetailsRidget extends IRidget, IComplexRidget {
+public interface IMasterDetailsRidget extends IComplexRidget {
 
 	/**
 	 * Binds the table to the model data.
