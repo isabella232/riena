@@ -554,6 +554,7 @@
                mnemonic="P">
             <command
                   commandId="org.eclipse.riena.example.client.openPlayground"
+                  id="org.eclipse.riena.example.client.openPlayground"
                   label="Open Playground"
                   style="push">
             </command>
