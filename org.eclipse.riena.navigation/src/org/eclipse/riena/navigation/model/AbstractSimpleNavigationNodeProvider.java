@@ -139,6 +139,8 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	protected INavigationNode<?> provideNodeHook(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
 			final NavigationArgument argument) {
 
+		//		System.err.println("\ntree:");
+		//		printNodeTree(getRootNode(sourceNode), 0);
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 		if (targetNode == null) {
 			if (LOGGER.isLoggable(LogService.LOG_DEBUG)) {
@@ -163,7 +165,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 				throw new ExtensionPointFailure("No assembler found for ID=" + targetId.getTypeId()); //$NON-NLS-1$
 			}
 		} else {
-			storeNavigationArgument(targetNode, argument);
+			prepareExistingNode(sourceNode, targetNode, argument);
 		}
 		if (argument != null) {
 			if (argument.isPrepareAll()) {
@@ -174,6 +176,19 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 		// TODO: all targetNodes have to be returned, because overriding subclass may need it.
 		return targetNode;
 	}
+
+	//	private void printNodeTree(final INavigationNode<?> root, final int depth) {
+	//		final StringBuffer b = new StringBuffer();
+	//		for (int i = 0; i < depth; i++) {
+	//			b.append("   ");
+	//		}
+	//
+	//		System.err.println(b.toString() + root.getNodeId());
+	//
+	//		for (final INavigationNode<?> c : root.getChildren()) {
+	//			printNodeTree(c, depth + 1);
+	//		}
+	//	}
 
 	/**
 	 * @since 3.0
@@ -198,6 +213,11 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 		if (node.getNodeId() == null && assembler.getId().equals(targetId.getTypeId())) {
 			node.setNodeId(targetId);
 		}
+	}
+
+	protected void prepareExistingNode(final INavigationNode<?> sourceNode, final INavigationNode<?> targetNode,
+			final NavigationArgument argument) {
+		storeNavigationArgument(targetNode, argument);
 	}
 
 	/**
