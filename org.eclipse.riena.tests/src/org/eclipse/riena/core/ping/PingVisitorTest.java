@@ -418,6 +418,8 @@ public class PingVisitorTest extends RienaTestCase {
 			private final IPingable pingable1 = mock2;
 			@SuppressWarnings("unused")
 			private final IPingable pingable2 = mock3;
+			@SuppressWarnings("unused")
+			private final IPingable pingable3 = null;
 		};
 
 		final Set<IPingable> set = new HashSet<IPingable>();
