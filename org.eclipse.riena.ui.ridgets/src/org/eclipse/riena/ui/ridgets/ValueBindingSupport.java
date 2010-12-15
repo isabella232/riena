@@ -76,10 +76,11 @@ public class ValueBindingSupport {
 	private DataBindingContext context;
 	private IObservableValue targetOV;
 	private IObservableValue modelOV;
+
 	private Binding modelBinding;
 	private IConverter uiControlToModelConverter;
 	private IConverter modelToUIControlConverter;
-
+	private AggregateValidationStatus validationStatus;
 	private IMarkable markable;
 
 	public ValueBindingSupport(final IObservableValue target) {
@@ -263,10 +264,14 @@ public class ValueBindingSupport {
 			// causes the ridget to be bound to two models and ui changes are
 			// synched with both! 
 			modelBinding.dispose();
-			getContext().removeBinding(modelBinding);
 		}
+		if (validationStatus != null) {
+			// must dispose old instance, see performance Bug 327684
+			validationStatus.dispose();
+		}
+
 		modelBinding = getContext().bindValue(targetOV, modelOV, uiControlToModelStrategy, modelToUIControlStrategy);
-		final AggregateValidationStatus validationStatus = new AggregateValidationStatus(getContext().getBindings(),
+		validationStatus = new AggregateValidationStatus(getContext().getBindings(),
 				AggregateValidationStatus.MAX_SEVERITY);
 		validationStatus.addValueChangeListener(new IValueChangeListener() {
 			public void handleValueChange(final ValueChangeEvent event) {

@@ -385,6 +385,29 @@ public class ValueBindingSupportTest extends RienaTestCase {
 		assertEquals("michel", target.getValue());
 	}
 
+	/**
+	 * As per Bug 327684
+	 */
+	public void testRebindToModelNoPerfomanceDegratation() {
+		assertNotNull(target);
+		assertNotNull(model);
+		final ValueBindingSupport valueBindingSupport = new ValueBindingSupport(target, model);
+
+		final long start1 = System.currentTimeMillis();
+		for (int i = 0; i < 100; i++) {
+			valueBindingSupport.rebindToModel();
+		}
+		final long time1 = System.currentTimeMillis() - start1;
+
+		final long start2 = System.currentTimeMillis();
+		for (int i = 0; i < 100; i++) {
+			valueBindingSupport.rebindToModel();
+		}
+		final long time2 = System.currentTimeMillis() - start2;
+
+		assertTrue((time2 / 2) <= time1);
+	}
+
 	// helping methods
 	// ////////////////
 
