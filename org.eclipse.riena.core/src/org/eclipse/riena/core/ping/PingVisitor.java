@@ -195,6 +195,10 @@ public class PingVisitor {
 			}
 			try {
 				setAccessible(field);
+				if (field.get(pingable) == null) {
+					// skip null members
+					continue;
+				}
 				pingableList.add((IPingable) field.get(pingable));
 			} catch (final Exception e) {
 				pingableList.add(new UnavailablePingable(field.getName(),
