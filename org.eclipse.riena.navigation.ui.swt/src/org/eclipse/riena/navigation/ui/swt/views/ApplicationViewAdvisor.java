@@ -321,7 +321,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private void doInitialBinding() {
 		binding.injectAndBind(controller);
 		controller.afterBind();
-		controller.getNavigationNode().activate();
 	}
 
 	private void createStatusLine(final Composite shell, final Composite grabCorner) {

@@ -102,8 +102,9 @@ public class MenuItemProperties extends AbstractItemProperties {
 		final IContributionItem contributionItem = getContributionItem();
 		MenuItem menuItem;
 		if (contributionItem != null) {
-			contributionItem.fill(parent, getIndex());
-			menuItem = parent.getItem(getIndex());
+			final int index = getIndex();
+			contributionItem.fill(parent, index);
+			menuItem = parent.getItem(index);
 			setAllProperties(menuItem, false);
 			contributionItem.update();
 		} else {

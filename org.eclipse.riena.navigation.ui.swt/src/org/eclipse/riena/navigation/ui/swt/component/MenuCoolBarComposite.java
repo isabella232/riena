@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +38,6 @@ import org.eclipse.riena.ui.ridgets.swt.MenuManagerHelper;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * This composites has a list of the top-level menus of the Riena menu bar (a
@@ -103,7 +103,6 @@ public class MenuCoolBarComposite extends Composite {
 	private ToolItem createAndAddMenu(final MenuManager menuManager) {
 		if (menuManager.isVisible()) {
 			final ToolItem toolItem = new ToolItem(menuToolBar, SWT.CHECK);
-			SWTBindingPropertyLocator.getInstance().setBindingProperty(toolItem, menuManager.getId());
 			toolItem.setText(menuManager.getMenuText());
 			final MenuManagerHelper helper = new MenuManagerHelper();
 			helper.createMenu(menuToolBar, toolItem, menuManager);
@@ -185,29 +184,40 @@ public class MenuCoolBarComposite extends Composite {
 		}
 	}
 
-	public boolean updateMenuItems() {
-		if (isMenuVisibilityChanged()) {
+	public List<ToolItem> updateMenuItems() {
+		final List<MenuManager> changedItems = getChangedVisibilityItems();
+		final List<ToolItem> changedMenus = new ArrayList<ToolItem>();
+		if (!changedItems.isEmpty()) {
 			if (menuCoolBar != null) {
 				menuCoolBar.dispose();
 			}
 			create();
 			layout();
-			return true;
-		}
-		return false;
-	}
 
-	private boolean isMenuVisibilityChanged() {
-		for (final IContributionItem contribItem : getTopLevelMenuEntries()) {
-			if (contribItem instanceof MenuManager) {
-				final MenuManager topMenuManager = (MenuManager) contribItem;
-				final Boolean isVisible = menuManagerVisibilityMap.get(topMenuManager);
-				if (isVisible == null || !isVisible.equals(topMenuManager.isVisible())) {
-					return true;
+			for (final ToolItem contribItem : getTopLevelItems()) {
+				for (final MenuManager manager : changedItems) {
+					if (manager.getMenuText().equals(contribItem.getText())) {
+						changedMenus.add(contribItem);
+					}
 				}
 			}
 		}
-		return false;
+		return changedMenus;
+	}
+
+	private List<MenuManager> getChangedVisibilityItems() {
+		final List<MenuManager> changedItems = new ArrayList<MenuManager>();
+		for (final IContributionItem contribItem : getTopLevelMenuEntries()) {
+			if (contribItem instanceof MenuManager) {
+				final MenuManager topMenuManager = (MenuManager) contribItem;
+				topMenuManager.updateAll(true);
+				final Boolean isVisible = menuManagerVisibilityMap.get(topMenuManager);
+				if (isVisible == null || !isVisible.equals(topMenuManager.isVisible())) {
+					changedItems.add(topMenuManager);
+				}
+			}
+		}
+		return changedItems;
 	}
 
 }

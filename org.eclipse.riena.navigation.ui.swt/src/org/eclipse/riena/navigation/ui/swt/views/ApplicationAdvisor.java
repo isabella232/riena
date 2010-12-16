@@ -78,6 +78,7 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 	@Override
 	public void postStartup() {
 		installDefaultBinding();
+		controller.getNavigationNode().activate();
 	}
 
 	@Override
@@ -87,8 +88,8 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 			controller.getNavigationNode().dispose();
 		}
 		result &= controller.getNavigationNode().isDisposed();
-		
-		if(result){
+
+		if (result) {
 			SwtUISynchronizer.setWorkbenchShutdown(true);
 		}
 

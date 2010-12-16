@@ -44,7 +44,6 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
-import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -229,8 +228,8 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		}
 
 		final IRidget ridget = menuItemBindingManager.createRidget(item);
-		ridget.setUIControl(item);
 		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, id);
+
 		getUIControls().add(item);
 		controller.addRidget(id, ridget);
 
@@ -260,21 +259,25 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		// items of Riena "menu bar"
 		final List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites(getShell());
 		for (final MenuCoolBarComposite menuBarComp : menuCoolBarComposites) {
-
-			final List<ToolItem> toolItems = menuBarComp.getTopLevelItems();
-			for (final ToolItem toolItem : toolItems) {
-				createRidget(controller, toolItem);
-				if (toolItem.getData() instanceof MenuManager) {
-					final MenuManager manager = (MenuManager) toolItem.getData();
-					createRidget(controller, manager.getMenu());
-				}
-			}
+			createRidgetsForItems(menuBarComp.getTopLevelItems(), controller);
 		}
 
 		// items of cool bar
 		final List<ToolItem> toolItems = getAllToolItems();
 		for (final ToolItem toolItem : toolItems) {
 			createRidget(controller, toolItem);
+		}
+	}
+
+	private void createRidgetsForItems(final List<ToolItem> toolItems, final IController controller) {
+		for (final ToolItem toolItem : toolItems) {
+			if (!SWTBindingPropertyLocator.getInstance().hasBindingProperty(toolItem)) {
+				createRidget(controller, toolItem);
+				if (toolItem.getData() instanceof MenuManager) {
+					final MenuManager manager = (MenuManager) toolItem.getData();
+					createRidget(controller, manager.getMenu());
+				}
+			}
 		}
 	}
 
@@ -527,14 +530,6 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		return SwtViewProvider.getInstance().getViewUsers(id).size();
 	}
 
-	private void rebind() {
-		final IController controller = (IController) ApplicationNodeManager.locateActiveSubApplicationNode()
-				.getNavigationNodeController();
-		menuItemBindingManager.unbind(controller, getUIControls());
-		getUIControls().clear();
-		bindMenuAndToolItems(controller);
-	}
-
 	/**
 	 * After a sub-module node was activated, the corresponding view is shown.
 	 */
@@ -555,12 +550,13 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		@Override
 		public void afterActivated(final ISubModuleNode source) {
 			final List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites(getShell());
-			boolean rebind = false;
 			for (final MenuCoolBarComposite menuBarComp : menuCoolBarComposites) {
-				rebind |= menuBarComp.updateMenuItems();
-			}
-			if (rebind) {
-				rebind();
+				final List<ToolItem> changedItems = menuBarComp.updateMenuItems();
+				if (!changedItems.isEmpty()) {
+					final IController controller = (IController) getNavigationNode().getNavigationNodeController();
+					createRidgets(controller);
+					menuItemBindingManager.bind(controller, getUIControls());
+				}
 			}
 		}
 
