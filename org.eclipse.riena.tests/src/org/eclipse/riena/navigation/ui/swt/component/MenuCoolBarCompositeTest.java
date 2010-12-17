@@ -76,7 +76,6 @@ public class MenuCoolBarCompositeTest extends TestCase {
 
 		final MenuManager manager = getMenuManager("TestMenu", "0815");
 		final ToolItem topItem = ReflectionUtils.invokeHidden(composite, "createAndAddMenu", manager);
-		assertEquals("0815", locator.locateBindingProperty(topItem));
 		assertEquals("TestMenu", topItem.getText());
 
 		final MenuManager invisibleMenuManager = getMenuManager("TestMenu2", "4711");

@@ -223,7 +223,6 @@ public class SubApplicationViewTest extends TestCase {
 		IRidget ridget = controller.getRidget(IActionRidget.BASE_ID_MENUACTION + "4711");
 		assertNotNull(ridget);
 		assertTrue(ridget instanceof MenuItemRidget);
-		assertSame(menuItem, ridget.getUIControl());
 		assertEquals(IActionRidget.BASE_ID_MENUACTION + "4711", SWTBindingPropertyLocator.getInstance()
 				.locateBindingProperty(menuItem));
 
@@ -239,7 +238,6 @@ public class SubApplicationViewTest extends TestCase {
 		ridget = controller.getRidget(IActionRidget.BASE_ID_TOOLBARACTION + "0815");
 		assertNotNull(ridget);
 		assertTrue(ridget instanceof ToolItemRidget);
-		assertSame(toolItem, ridget.getUIControl());
 		assertEquals(IActionRidget.BASE_ID_TOOLBARACTION + "0815", SWTBindingPropertyLocator.getInstance()
 				.locateBindingProperty(toolItem));
 
@@ -262,7 +260,6 @@ public class SubApplicationViewTest extends TestCase {
 		final IRidget ridget = controller.getRidget(IActionRidget.BASE_ID_MENUACTION + "4711");
 		assertNotNull(ridget);
 		assertTrue(ridget instanceof MenuItemRidget);
-		assertSame(item, ridget.getUIControl());
 		assertEquals(IActionRidget.BASE_ID_MENUACTION + "4711", SWTBindingPropertyLocator.getInstance()
 				.locateBindingProperty(item));
 
