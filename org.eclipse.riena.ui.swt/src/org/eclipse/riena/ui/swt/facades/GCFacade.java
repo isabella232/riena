@@ -59,37 +59,6 @@ public abstract class GCFacade {
 	public abstract Image createImage(Display display, int width, int height);
 
 	/**
-	 * @deprecated - RAP's GC now supports this directly TODO [ev] remove
-	 */
-	@Deprecated
-	public abstract void drawLine(GC gc, int x1, int y1, int x2, int y2);
-
-	/**
-	 * Draws a round-cornered rectangle according to the given arguments with
-	 * the GC's foreground color.
-	 * <p>
-	 * The RAP implementation of this class does nothing.
-	 * 
-	 * @param GC
-	 *            a GC instance; never null
-	 * @param x
-	 *            the x coordinate
-	 * @param y
-	 *            the y coordinate
-	 * @param width
-	 *            the width
-	 * @param height
-	 *            the height
-	 * @param arcWidth
-	 *            the width of the arc
-	 * @param arcHeight
-	 *            the height of the arc
-	 * @deprecated - RAP's GC now supports this directly TODO [ev] remove
-	 */
-	@Deprecated
-	public abstract void drawRoundRectangle(GC gc, int x, int y, int width, int height, int arcWidth, int arcHeight);
-
-	/**
 	 * Compute the horizontal distance, in pixels, the cursor should move after
 	 * printing the character in the current font.
 	 * <p>

@@ -75,7 +75,6 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableIndexedRidget;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
-import org.eclipse.riena.ui.swt.facades.GCFacade;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -660,11 +659,9 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	 */
 	private final class TableItemEraser implements Listener {
 
-		private final GCFacade gcFacade;
 		private final Color borderColor;
 
 		public TableItemEraser() {
-			gcFacade = GCFacade.getDefault();
 			borderColor = LnfManager.getLnf().getColor(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR);
 		}
 
@@ -727,11 +724,11 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 					}
 					width = Math.max(0, width - 1);
 					height = Math.max(0, height - 1);
-					gcFacade.drawRoundRectangle(gc, x, y, width, height, 3, 3);
+					gc.drawRoundRectangle(x, y, width, height, 3, 3);
 				} else {
 					final int width = Math.max(0, event.width - 1);
 					final int height = Math.max(0, event.height - 1);
-					gcFacade.drawRoundRectangle(gc, event.x, event.y, width, height, 3, 3);
+					gc.drawRoundRectangle(event.x, event.y, width, height, 3, 3);
 				}
 			} finally {
 				gc.setForeground(oldForeground);

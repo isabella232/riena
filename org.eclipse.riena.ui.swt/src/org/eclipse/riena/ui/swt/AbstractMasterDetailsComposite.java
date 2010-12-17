@@ -36,7 +36,6 @@ import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
-import org.eclipse.riena.ui.swt.facades.GCFacade;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -581,7 +580,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 			}
 			gc.setForeground(fgColor);
 			final Rectangle bounds = ((Control) e.widget).getBounds();
-			GCFacade.getDefault().drawLine(gc, 0, 0, 0, bounds.height);
+			gc.drawLine(0, 0, 0, bounds.height);
 			gc.setForeground(oldFg);
 		}
 	}

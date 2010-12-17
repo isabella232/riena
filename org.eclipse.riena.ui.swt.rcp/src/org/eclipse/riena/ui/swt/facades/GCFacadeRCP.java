@@ -21,17 +21,6 @@ import org.eclipse.swt.widgets.Display;
 public class GCFacadeRCP extends GCFacade {
 
 	@Override
-	public void drawRoundRectangle(final GC gc, final int x, final int y, final int width, final int height,
-			final int arcWidth, final int arcHeight) {
-		gc.drawRoundRectangle(x, y, width, height, arcWidth, arcHeight);
-	}
-
-	@Override
-	public void drawLine(final GC gc, final int x1, final int y1, final int x2, final int y2) {
-		gc.drawLine(x1, y1, x2, y2);
-	}
-
-	@Override
 	public int getAdvanceWidth(final GC gc, final char ch) {
 		return gc.getAdvanceWidth(ch);
 	}
