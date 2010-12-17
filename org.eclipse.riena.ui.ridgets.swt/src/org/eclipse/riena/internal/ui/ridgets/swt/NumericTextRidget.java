@@ -34,7 +34,6 @@ import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.core.util.RAPDetector;
@@ -44,6 +43,7 @@ import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.ToStringConverterFactory;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -440,17 +440,13 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 			final String oldText = control.getText();
 			final String newText = beautifyText(oldText);
 			if (!newText.equals(oldText)) {
-				final Listener[] verifyListeners = control.getListeners(SWT.Verify);
-				for (final Listener listener : verifyListeners) {
-					control.removeListener(SWT.Verify, listener);
-				}
+				final SWTFacade facade = SWTFacade.getDefault();
+				final Object[] verifyListeners = facade.removeListeners(control, SWT.Verify);
 				stopModifyListener();
 				control.setText(newText);
 				control.setSelection(newText.length());
 				startModifyListener();
-				for (final Listener listener : verifyListeners) {
-					control.addListener(SWT.Verify, listener);
-				}
+				facade.addListeners(control, SWT.Verify, verifyListeners);
 			}
 		}
 	}

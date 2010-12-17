@@ -29,8 +29,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
@@ -40,6 +38,7 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractEditableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 
 /**
  * Ridget for an SWT <code>Text</code> widget.
@@ -331,29 +330,16 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	// helping methods
 	// ////////////////
 
-	private void addListeners(final Control control, final int eventType, final Listener[] listeners) {
-		for (final Listener listener : listeners) {
-			control.addListener(eventType, listener);
-		}
-	}
-
 	private synchronized void forceTextToControl(final String newValue) {
 		final Text control = getTextWidget();
 		if (control != null) {
-			final Listener[] vListeners = removeListeners(control, SWT.Verify);
-			final Listener[] mListeners = removeListeners(control, SWT.Modify);
+			final SWTFacade facade = SWTFacade.getDefault();
+			final Object[] vListeners = facade.removeListeners(control, SWT.Verify);
+			final Object[] mListeners = facade.removeListeners(control, SWT.Modify);
 			TextRidget.this.setUIText(newValue);
-			addListeners(control, SWT.Modify, mListeners);
-			addListeners(control, SWT.Verify, vListeners);
+			facade.addListeners(control, SWT.Modify, mListeners);
+			facade.addListeners(control, SWT.Verify, vListeners);
 		}
-	}
-
-	private Listener[] removeListeners(final Control control, final int eventType) {
-		final Listener[] result = control.getListeners(eventType);
-		for (final Listener listener : result) {
-			control.removeListener(eventType, listener);
-		}
-		return result;
 	}
 
 	private synchronized void updateTextValue() {
