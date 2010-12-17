@@ -162,11 +162,6 @@ public final class SWTFacadeRCP extends SWTFacade {
 	}
 
 	@Override
-	public Control getCursorControl(final Display display) {
-		return null;
-	}
-
-	@Override
 	public boolean postEvent(final Display display, final Event event) {
 		return display.post(event);
 	}
@@ -214,4 +209,40 @@ public final class SWTFacadeRCP extends SWTFacade {
 	public boolean traverse(final Control control, final int traversal) {
 		return control.traverse(traversal);
 	}
+
+	// protected methods
+	////////////////////
+
+	@Override
+	protected void addModifyListeners(final Control control, final Object[] listeners) {
+		for (final Object listener : listeners) {
+			control.addListener(SWT.Modify, (Listener) listener);
+		}
+	}
+
+	@Override
+	protected void addVerifyListeners(final Control control, final Object[] listeners) {
+		for (final Object listener : listeners) {
+			control.addListener(SWT.Verify, (Listener) listener);
+		}
+	}
+
+	@Override
+	protected Object[] removeModifyListeners(final Control control) {
+		final Listener[] result = control.getListeners(SWT.Modify);
+		for (final Listener listener : result) {
+			control.removeListener(SWT.Modify, listener);
+		}
+		return result;
+	}
+
+	@Override
+	protected Object[] removeVerifyListeners(final Control control) {
+		final Listener[] result = control.getListeners(SWT.Verify);
+		for (final Listener listener : result) {
+			control.removeListener(SWT.Verify, listener);
+		}
+		return result;
+	}
+
 }
