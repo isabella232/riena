@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.facades.internal;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.window.DefaultToolTip;
 import org.eclipse.swt.custom.CLabel;
@@ -41,11 +42,14 @@ public class SubModuleToolTip extends DefaultToolTip {
 	 * @param parent
 	 *            the tree on whose action the tooltip is shown
 	 * @param labelProvider
-	 *            TODO [ev] docs
+	 *            an {@link ILabelProvider} instance; never null. It has to
+	 *            return the text for the tooltip, presumably based on the
+	 *            corresponding sub-module navigation node.
 	 */
 	public SubModuleToolTip(final Tree parent, final ILabelProvider labelProvider) {
 		super(parent);
 		this.tree = parent;
+		Assert.isNotNull(labelProvider);
 		this.labelProvider = labelProvider;
 		setShift(new Point(0, 0));
 	}

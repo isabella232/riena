@@ -88,7 +88,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	private Class<? extends Object> rowClass;
 	/** The selected option (model). */
 	private IObservableValue selectionValue;
-	/** TODO [ev] docs */
+	/**
+	 * Optional IColumnFormatter providing an Image or Text for each model
+	 * entry.
+	 */
 	private IColumnFormatter formatter;
 	/** A string used for converting from Object to String */
 	private String renderingMethod;
@@ -210,7 +213,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	}
 
 	/**
-	 * TODO [ev] docs
+	 * Provides access to an optional {@link IColumnFormatter} that provides an
+	 * Image or Text for each model entry of the Combo.
+	 * 
+	 * @return an {@link IColumnFormatter} or null (if not set)
 	 * 
 	 * @since 3.0
 	 */
