@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
@@ -272,6 +273,36 @@ public abstract class SWTFacade {
 	public abstract void addFilterMouseWheel(Display display, Listener listener);
 
 	/**
+	 * Adds all listeners of a certain {@code eventType} to the given control.
+	 * <p>
+	 * The implementation in this facade ensures that differences in the
+	 * treatment of typed / untyped listeners between SWT and RWT are masked
+	 * away.
+	 * 
+	 * @param control
+	 *            a {@link Control} instance; never null
+	 * @param eventType
+	 *            one of the following event types: {@link SWT#Verify},
+	 *            {@link SWT#Modify}
+	 * @param listeners
+	 *            an array of appropriate listeners. Note: actual types differ
+	 *            between SWT and RWT.
+	 * @throws IllegalArgumentException
+	 *             if an unsupported event type is used
+	 * 
+	 * @since 3.0
+	 */
+	public void addListeners(final Control control, final int eventType, final Object[] listeners) {
+		if (eventType == SWT.Modify) {
+			addModifyListeners(control, listeners);
+		} else if (eventType == SWT.Verify) {
+			addVerifyListeners(control, listeners);
+		} else {
+			throw new IllegalArgumentException("Unsupported eventType: " + eventType); //$NON-NLS-1$
+		}
+	}
+
+	/**
 	 * Adds a MouseMoveListener to the given control.
 	 * 
 	 * @param control
@@ -444,14 +475,6 @@ public abstract class SWTFacade {
 	public abstract Listener createTreeItemEraserAndPainter();
 
 	/**
-	 * TODO [ev] remove
-	 * 
-	 * @deprecated - RAP now supports display.getCursorControl();
-	 */
-	@Deprecated
-	public abstract Control getCursorControl(Display display);
-
-	/**
 	 * Posts the given event on the display.
 	 * 
 	 * @param display
@@ -538,6 +561,35 @@ public abstract class SWTFacade {
 	public abstract void removePaintListener(Control control, EventListener listener);
 
 	/**
+	 * Removes all listeners of a certain {@code eventType} from the given
+	 * control.
+	 * <p>
+	 * <b>Do not use {@link Widget#removeListener(int, Listener)} !</b> The
+	 * implementation in this facade ensures that differences in the treatment
+	 * of typed / untyped listeners between SWT and RWT are masked away.
+	 * 
+	 * @param control
+	 *            a {@link Control} instance; never null
+	 * @param eventType
+	 *            one of the following event types: {@link SWT#Verify},
+	 *            {@link SWT#Modify}
+	 * @return an array of removed listeners; never null. Avoid casting to
+	 *         actual types, as they differ between SWT and RWT.
+	 * @throws IllegalArgumentException
+	 *             if an unsupported event type is used
+	 * 
+	 * @since 3.0
+	 */
+	public Object[] removeListeners(final Control control, final int eventType) {
+		if (eventType == SWT.Modify) {
+			return removeModifyListeners(control);
+		} else if (eventType == SWT.Verify) {
+			return removeVerifyListeners(control);
+		}
+		throw new IllegalArgumentException("Unsupported eventType: " + eventType); //$NON-NLS-1$
+	}
+
+	/**
 	 * Perform a platform specific traversal action as indicated by the value of
 	 * the {@code traversal} argument. The following values are supported:
 	 * <ul>
@@ -560,4 +612,57 @@ public abstract class SWTFacade {
 	 * @since 3.0
 	 */
 	public abstract boolean traverse(Control control, int traversal);
+
+	// protecected methods
+	//////////////////////
+
+	/**
+	 * Adds an array of {@link SWT#Modify} listeners to the given control.
+	 * 
+	 * @param control
+	 *            a {@link Control} instance; never null
+	 * @param listeners
+	 *            an array of appropriate listeners. Note: actual types differ
+	 *            between SWT and RWT.
+	 * 
+	 * @since 3.0
+	 */
+	protected abstract void addModifyListeners(final Control control, Object[] listeners);
+
+	/**
+	 * Adds an array of {@link SWT#Verify} listeners to the given control.
+	 * 
+	 * @param control
+	 *            a {@link Control} instance; never null
+	 * @param listeners
+	 *            an array of appropriate listeners. Note: actual types differ
+	 *            between SWT and RWT.
+	 * 
+	 * @since 3.0
+	 */
+	protected abstract void addVerifyListeners(final Control control, Object[] listeners);
+
+	/**
+	 * Removes all {@link SWT#Modify} listeners from the given control.
+	 * 
+	 * @param control
+	 *            a {@link Control} instance; never null
+	 * @return an array of removed listeners; never null. Avoid casting to
+	 *         actual types, as they differ between SWT and RWT.
+	 * 
+	 * @since 3.0
+	 */
+	protected abstract Object[] removeModifyListeners(final Control control);
+
+	/**
+	 * 8 Removes all {@link SWT#Verify} listeners from the given control.
+	 * 
+	 * @param control
+	 *            a {@link Control} instance; never null
+	 * @return an array of removed listeners; never null. Avoid casting to
+	 *         actual types, as they differ between SWT and RWT.
+	 * 
+	 * @since 3.0
+	 */
+	protected abstract Object[] removeVerifyListeners(final Control control);
 }

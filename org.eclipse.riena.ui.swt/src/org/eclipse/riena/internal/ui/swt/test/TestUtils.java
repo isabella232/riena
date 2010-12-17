@@ -19,7 +19,6 @@ import junit.framework.Assert;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
@@ -29,6 +28,7 @@ import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 
 /**
  * Utility class for tests.
@@ -308,14 +308,10 @@ public final class TestUtils {
 		final int start = text.indexOf('^');
 		final int end = text.lastIndexOf('^');
 
-		final Listener[] listeners = control.getListeners(SWT.Verify);
-		for (final Listener listener : listeners) {
-			control.removeListener(SWT.Verify, listener);
-		}
+		final SWTFacade facade = SWTFacade.getDefault();
+		final Object[] listeners = facade.removeListeners(control, SWT.Verify);
 		control.setText(removePositionMarkers(text));
-		for (final Listener listener : listeners) {
-			control.addListener(SWT.Verify, listener);
-		}
+		facade.addListeners(control, SWT.Verify, listeners);
 		control.setFocus();
 		if (start == end) {
 			control.setSelection(start, start);
