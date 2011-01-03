@@ -65,6 +65,8 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 	private Binding selectionBinding;
 	private String[] optionLabels;
 
+	private Object selectionValueIgnoredRegardingMandatory;
+
 	/** A list of selection listeners. */
 	private ListenerList<ISelectionListener> selectionListeners;
 
@@ -73,7 +75,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		selectionObservable = new WritableValue();
 		selectionObservable.addChangeListener(new IChangeListener() {
 			public void handleChange(final ChangeEvent event) {
-				disableMandatoryMarkers(hasInput());
+				disableMandatoryMarkers(hasMandatoryInput());
 			}
 		});
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
@@ -217,13 +219,21 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		firePropertyChange(PROPERTY_SELECTION, oldSelection, candidate);
 	}
 
+	public Object getSelectionValueIgnoredRegardingMandatory() {
+		return selectionValueIgnoredRegardingMandatory;
+	}
+
+	public void setSelectionValueIgnoredRegardingMandatory(final Object selectionValueIgnoredRegardingMandatory) {
+		this.selectionValueIgnoredRegardingMandatory = selectionValueIgnoredRegardingMandatory;
+	}
+
 	public IObservableList getObservableList() {
 		return optionsObservable;
 	}
 
 	@Override
 	public final boolean isDisableMandatoryMarker() {
-		return hasInput();
+		return hasMandatoryInput();
 	}
 
 	/**
@@ -345,6 +355,12 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 
 	private boolean hasInput() {
 		return selectionObservable.getValue() != null;
+	}
+
+	private boolean hasMandatoryInput() {
+		return hasInput()
+				&& (selectionValueIgnoredRegardingMandatory == null || !selectionValueIgnoredRegardingMandatory
+						.equals(getSelection()));
 	}
 
 	private void updateEditable(final ChoiceComposite control, final boolean isEditable) {

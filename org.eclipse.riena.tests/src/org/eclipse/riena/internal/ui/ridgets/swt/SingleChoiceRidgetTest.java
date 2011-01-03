@@ -671,6 +671,44 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		}
 	}
 
+	/**
+	 * Test methods get/setSelectionValueIgnoredRegardingMandatory().
+	 */
+	public void testGetSetSelectionValueIgnoredRegardingMandatory() {
+		final ISingleChoiceRidget ridget = getRidget();
+		final String first = optionProvider.getOptions().get(0);
+		final String second = optionProvider.getOptions().get(1);
+		ridget.setSelectionValueIgnoredRegardingMandatory(first);
+		ridget.addMarker(new MandatoryMarker());
+
+		assertEquals(first, ridget.getSelection());
+		assertEquals(first, ridget.getSelectionValueIgnoredRegardingMandatory());
+		assertFalse(ridget.isDisableMandatoryMarker());
+
+		ridget.setSelection(second);
+
+		assertEquals(second, ridget.getSelection());
+		assertTrue(ridget.isDisableMandatoryMarker());
+
+		ridget.setSelection(first);
+
+		assertEquals(first, ridget.getSelection());
+		assertFalse(ridget.isDisableMandatoryMarker());
+
+		ridget.setSelectionValueIgnoredRegardingMandatory(null);
+
+		assertTrue(ridget.isDisableMandatoryMarker());
+
+		ridget.setSelectionValueIgnoredRegardingMandatory(second);
+
+		assertTrue(ridget.isDisableMandatoryMarker());
+
+		ridget.setSelection(second);
+
+		assertEquals(second, ridget.getSelection());
+		assertFalse(ridget.isDisableMandatoryMarker());
+	}
+
 	// helping methods
 	// ////////////////
 

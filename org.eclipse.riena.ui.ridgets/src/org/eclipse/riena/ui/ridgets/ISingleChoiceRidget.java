@@ -88,4 +88,21 @@ public interface ISingleChoiceRidget extends IChoiceRidget {
 	 *            the selection.
 	 */
 	void setSelection(Object selection);
+
+	/**
+	 * Returns the value which is ignored regarding mandatory input (i.e. if the
+	 * selection holds this value an existing mandatory marker is not removed).
+	 * 
+	 * @return the value which is ignored regarding mandatory input or null.
+	 */
+	Object getSelectionValueIgnoredRegardingMandatory();
+
+	/**
+	 * Set the value which is ignored regarding mandatory input (i.e. if the
+	 * selection holds this value an existing mandatory marker is not removed).
+	 * 
+	 * @param selectionValueIgnoredRegardingMandatory
+	 *            the value to set.
+	 */
+	void setSelectionValueIgnoredRegardingMandatory(final Object selectionValueIgnoredRegardingMandatory);
 }
