@@ -281,27 +281,49 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		if (treeRoots.length == 1) {
 			addExpansionCommand(treeRoots[0]);
 			if (checkExpandedMethod != null) {
-				addExpansionCommandsForRootDecendants(treeRoots[0]);
+				addExpansionCommandsForRootDescendants(treeRoots[0]);
 			}
 		}
 	}
 
-	private void addExpansionCommandsForRootDecendants(final Object element) {
-		final Set<Object> allDescendants = new HashSet<Object>();
+	/**
+	 * Adds commands for expansion AND collapsion for all descendants of the
+	 * given root element to the <code>expansionStack</code> .
+	 * 
+	 * @param element
+	 *            root element
+	 */
+	private void addExpansionCommandsForRootDescendants(final Object element) {
+		final List<Object> allDescendants = new ArrayList<Object>();
 		collectChildren(element, allDescendants);
 		for (final Object descendant : allDescendants) {
+			if (isLeaf(descendant)) {
+				continue;
+			}
 			if (isExpanded(descendant)) {
 				addExpansionCommand(descendant);
+			} else {
+				addCollapseCommand(descendant);
 			}
 		}
+	}
+
+	private boolean isLeaf(final Object element) {
+		final List<?> children = getChildren(element);
+		return children.isEmpty();
 	}
 
 	private boolean isExpanded(final Object element) {
-		return ReflectionUtils.invoke(element, checkExpandedMethod, new Object[0]);
+		return ReflectionUtils.invoke(element, checkExpandedMethod);
 	}
 
 	private void addExpansionCommand(final Object element) {
 		final ExpansionCommand cmd = new ExpansionCommand(ExpansionState.EXPAND, element);
+		expansionStack.add(cmd);
+	}
+
+	private void addCollapseCommand(final Object element) {
+		final ExpansionCommand cmd = new ExpansionCommand(ExpansionState.COLLAPSE, element);
 		expansionStack.add(cmd);
 	}
 
@@ -431,6 +453,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	public void collapse(final Object element) {
+		addCollapseCommand(element);
 		final ExpansionCommand cmd = new ExpansionCommand(ExpansionState.COLLAPSE, element);
 		expansionStack.add(cmd);
 		updateExpansionState();
@@ -443,8 +466,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	public void expand(final Object element) {
-		final ExpansionCommand cmd = new ExpansionCommand(ExpansionState.EXPAND, element);
-		expansionStack.add(cmd);
+		addExpansionCommand(element);
 		updateExpansionState();
 	}
 
@@ -637,7 +659,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 	}
 
 	private List<?> collectAllElements() {
-		final Set<Object> allElements = new HashSet<Object>();
+		final List<Object> allElements = new ArrayList<Object>();
 		for (final Object root : treeRoots) {
 			if (root != null) {
 				if (showRoots) {
@@ -646,17 +668,36 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 				collectChildren(root, allElements);
 			}
 		}
-		return new ArrayList<Object>(allElements);
+		return allElements;
 	}
 
-	private void collectChildren(final Object parent, final Set<Object> result) {
+	/**
+	 * Collects all children of the given parent and adds them to the given
+	 * list.
+	 * <p>
+	 * <b>Note</b>: First the leaf of a sub-tree is added, than the parent of
+	 * the leaf, etc. till the root of the sub-tree.
+	 * 
+	 * @param parent
+	 *            parent element
+	 * @param result
+	 *            list of all children
+	 */
+	private void collectChildren(final Object parent, final List<Object> result) {
+		final List<?> children = getChildren(parent);
+		for (final Object child : children) {
+			if (child == null) {
+				continue;
+			}
+			collectChildren(child, result);
+			result.add(child);
+		}
+	}
+
+	private List<?> getChildren(final Object parent) {
 		final String methodName = "get" + StringUtils.capitalize(childrenAccessor); //$NON-NLS-1$
 		final List<?> children = ReflectionUtils.invoke(parent, methodName);
-		for (final Object child : children) {
-			if (child != null && result.add(child)) {
-				collectChildren(child, result);
-			}
-		}
+		return children;
 	}
 
 	private ObservableListTreeContentProvider createContentProvider(final TreeStructureAdvisor structureAdvisor) {

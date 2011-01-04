@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -19,6 +21,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
@@ -48,6 +51,8 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 	private ITreeNode rootChild1Node;
 	private ITreeNode rootChild2Node;
 	private ITreeNode rootChild1Child2Node;
+	private ITreeNode rootChild1Child1Node;
+	private ITreeNode rootChild1Child2ChildNode;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -552,16 +557,58 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("changed", treeRoot.getText());
 	}
 
+	/**
+	 * Tests the private method {@code collectChildren}.
+	 */
+	public void testCollectChildren() {
+
+		initializeTreeModel();
+		final List<ITreeNode> result = new ArrayList<ITreeNode>();
+		ReflectionUtils.invokeHidden(getRidget(), "collectChildren", rootNode, result);
+		assertEquals(5, result.size());
+		assertSame(rootChild1Child1Node, result.get(0));
+		assertSame(rootChild1Child2ChildNode, result.get(1));
+		assertSame(rootChild1Child2Node, result.get(2));
+		assertSame(rootChild1Node, result.get(3));
+		assertSame(rootChild2Node, result.get(4));
+
+	}
+
+	/**
+	 * Tests the private method {@code addExpansionCommandsForRootDescendants}.
+	 */
+	public void testAddExpansionCommandsForRootDescendants() {
+		final ITreeNode[] treeModel = initializeTreeModel();
+		getRidget().bindToModel(treeModel, ITreeNode.class, ITreeNode.PROPERTY_CHILDREN, ITreeNode.PROPERTY_PARENT,
+				ITreeNode.PROPERTY_VALUE, null, null, null, null, ExpandedTreeNode.PROPERTY_EXPANDED);
+		final Queue<?> expansionStack = ReflectionUtils.getHidden(getRidget(), "expansionStack");
+		expansionStack.clear();
+		ReflectionUtils.invokeHidden(getRidget(), "addExpansionCommandsForRootDescendants", treeModel[0]);
+		assertEquals(2, expansionStack.size());
+	}
+
+	/**
+	 * Tests the private method {@code isLeaf(Object)}.
+	 */
+	public void testIsLeaf() {
+		initializeTreeModel();
+		boolean ret = ReflectionUtils.invokeHidden(getRidget(), "isLeaf", rootChild1Node);
+		assertFalse(ret);
+		ret = ReflectionUtils.invokeHidden(getRidget(), "isLeaf", rootChild1Child2ChildNode);
+		assertTrue(ret);
+	}
+
 	// helping methods
 	// ////////////////
 
 	private ITreeNode[] initializeTreeModel() {
-		rootNode = new TreeNode(ROOT_NODE_USER_OBJECT);
-		rootChild1Node = new TreeNode(rootNode, ROOT_CHILD1_NODE_USER_OBJECT);
-		rootChild2Node = new TreeNode(rootNode, ROOT_CHILD2_NODE_USER_OBJECT);
-		new TreeNode(rootChild1Node, ROOT_CHILD1_CHILD1_NODE_USER_OBJECT);
-		rootChild1Child2Node = new TreeNode(rootChild1Node, ROOT_CHILD1_CHILD2_NODE_USER_OBJECT);
-		new TreeNode(rootChild1Child2Node, ROOT_CHILD1_CHILD2_CHILD_NODE_USER_OBJECT);
+		rootNode = new ExpandedTreeNode(ROOT_NODE_USER_OBJECT);
+		rootChild1Node = new ExpandedTreeNode(rootNode, ROOT_CHILD1_NODE_USER_OBJECT, false);
+		rootChild2Node = new ExpandedTreeNode(rootNode, ROOT_CHILD2_NODE_USER_OBJECT);
+		rootChild1Child1Node = new ExpandedTreeNode(rootChild1Node, ROOT_CHILD1_CHILD1_NODE_USER_OBJECT);
+		rootChild1Child2Node = new ExpandedTreeNode(rootChild1Node, ROOT_CHILD1_CHILD2_NODE_USER_OBJECT, true);
+		rootChild1Child2ChildNode = new ExpandedTreeNode(rootChild1Child2Node,
+				ROOT_CHILD1_CHILD2_CHILD_NODE_USER_OBJECT);
 		return new ITreeNode[] { rootNode };
 	}
 
@@ -615,6 +662,38 @@ public class TreeRidgetTest extends AbstractSWTRidgetTest {
 		@SuppressWarnings("unused")
 		public String getIcon() {
 			return "eclipse.gif";
+		}
+	}
+
+	/**
+	 * Tree node with an expanded flag.
+	 */
+	public static final class ExpandedTreeNode extends TreeNode {
+
+		public final static String PROPERTY_EXPANDED = "expanded"; //$NON-NLS-1$
+
+		private boolean expanded;
+
+		public ExpandedTreeNode(final Object pValue) {
+			super(pValue);
+			setExpanded(true);
+		}
+
+		public ExpandedTreeNode(final ITreeNode pParent, final Object pValue) {
+			this(pParent, pValue, true);
+		}
+
+		public ExpandedTreeNode(final ITreeNode pParent, final Object pValue, final boolean expanded) {
+			super(pParent, pValue);
+			setExpanded(expanded);
+		}
+
+		public boolean isExpanded() {
+			return expanded;
+		}
+
+		public void setExpanded(final boolean expanded) {
+			this.expanded = expanded;
 		}
 	}
 }
