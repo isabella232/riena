@@ -369,7 +369,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 					color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY_OUTPUT);
 				}
 				addOutput(control, color);
-			} else {
+			} else if (!(control instanceof Button)) {
 				final Color color = lnf.getColor(LnfKeyConstants.OUTPUT_MARKER_BACKGROUND);
 				addOutput(control, color);
 			}
