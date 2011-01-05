@@ -191,7 +191,6 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 			getNavigationNode().getParent().addSimpleListener(new SimpleNavigationNodeAdapter() {
 				@Override
 				public void labelChanged(final INavigationNode<?> parent) {
-					super.labelChanged(parent);
 					updateLabel();
 				}
 			});
@@ -353,6 +352,11 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		final IWindowRidget windowRidget = getWindowRidget();
 		if (windowRidget != null) {
 			windowRidget.setTitle(getFullTitle());
+			for (final ISubModuleNode child : getNavigationNode().getChildren()) {
+				if (child.getNavigationNodeController() != null) {
+					((SubModuleController) child.getNavigationNodeController()).updateLabel();
+				}
+			}
 		}
 	}
 
