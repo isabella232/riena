@@ -65,7 +65,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 	private Binding selectionBinding;
 	private String[] optionLabels;
 
-	private Object selectionValueIgnoredRegardingMandatory;
+	private Object emptySelectionItem;
 
 	/** A list of selection listeners. */
 	private ListenerList<ISelectionListener> selectionListeners;
@@ -219,12 +219,12 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		firePropertyChange(PROPERTY_SELECTION, oldSelection, candidate);
 	}
 
-	public Object getSelectionValueIgnoredRegardingMandatory() {
-		return selectionValueIgnoredRegardingMandatory;
+	public Object getEmptySelectionItem() {
+		return emptySelectionItem;
 	}
 
-	public void setSelectionValueIgnoredRegardingMandatory(final Object selectionValueIgnoredRegardingMandatory) {
-		this.selectionValueIgnoredRegardingMandatory = selectionValueIgnoredRegardingMandatory;
+	public void setEmptySelectionItem(final Object selectionValueIgnoredRegardingMandatory) {
+		this.emptySelectionItem = selectionValueIgnoredRegardingMandatory;
 	}
 
 	public IObservableList getObservableList() {
@@ -359,7 +359,7 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 
 	private boolean hasMandatoryInput() {
 		return hasInput()
-				&& (selectionValueIgnoredRegardingMandatory == null || !selectionValueIgnoredRegardingMandatory
+				&& (emptySelectionItem == null || !emptySelectionItem
 						.equals(getSelection()));
 	}
 

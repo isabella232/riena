@@ -90,19 +90,25 @@ public interface ISingleChoiceRidget extends IChoiceRidget {
 	void setSelection(Object selection);
 
 	/**
-	 * Returns the value which is ignored regarding mandatory input (i.e. if the
-	 * selection holds this value an existing mandatory marker is not removed).
+	 * Returns the option that represents 'no selection'.
+	 * <p>
+	 * When this option is selected the ridget behaves just as if nothing was
+	 * selected. This option could be represented by an empty value or something
+	 * like "[Please select...]".
 	 * 
-	 * @return the value which is ignored regarding mandatory input or null.
+	 * @return The option that represents 'no selection'.
 	 */
-	Object getSelectionValueIgnoredRegardingMandatory();
+	Object getEmptySelectionItem();
 
 	/**
-	 * Set the value which is ignored regarding mandatory input (i.e. if the
-	 * selection holds this value an existing mandatory marker is not removed).
+	 * Sets the option that represents 'no selection'.
+	 * <p>
+	 * When this option is selected the ridget behaves just as if nothing was
+	 * selected. This option could be represented by an value or something like
+	 * "[Please select...]".
 	 * 
-	 * @param selectionValueIgnoredRegardingMandatory
-	 *            the value to set.
+	 * @param emptySelection
+	 *            The option that represents 'no selection'.
 	 */
-	void setSelectionValueIgnoredRegardingMandatory(final Object selectionValueIgnoredRegardingMandatory);
+	void setEmptySelectionItem(final Object emptySelection);
 }
