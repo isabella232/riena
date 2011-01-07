@@ -438,6 +438,8 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfSetting(LnfKeyConstants.TOOLBAR_WORK_AREA_VERTICAL_GAP, 5);
 
 		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_WIDTH, 165);
+		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_SCROLL_BUTTON_HEIGHT, 14);
+		lnf.putLnfSetting(LnfKeyConstants.NAVIGATION_SCROLL_BAR, false);
 
 		lnf.putLnfSetting(LnfKeyConstants.STATUSLINE_HEIGHT, 20);
 

@@ -21,6 +21,7 @@ import java.util.Map;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -50,19 +51,20 @@ import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPres
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 public class NavigationViewPart extends ViewPart implements IModuleNavigationComponentProvider {
 
 	public final static String ID = "org.eclipse.riena.navigation.ui.swt.views.navigationViewPart"; //$NON-NLS-1$
+	private static final Color NAVIGATION_BACKGROUND = LnfManager.getLnf().getColor(
+			LnfKeyConstants.NAVIGATION_BACKGROUND);
 
 	private IViewFactory viewFactory;
 	private Composite parent;
 	private ResizeListener resizeListener;
-	private Composite scrolledComposite;
-	private ScrollingSupport scrollingSupport;
 	private final List<ModuleGroupView> moduleGroupViews = new ArrayList<ModuleGroupView>();
 	private Composite navigationMainComposite;
+	private INavigationCompositeDelegation navigationCompositeDelegation;
 	private NavigationTreeObserver navigationTreeObserver;
 	private final Map<INavigationNode<?>, ModuleGroupView> moduleGroupNodesToViews;
 	private final Map<INavigationNode<?>, ModuleView> moduleNodesToViews;
@@ -104,31 +106,39 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	private void initLayoutParts() {
 		// configure layout
 		parent.setLayout(new FormLayout());
-		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.NAVIGATION_BACKGROUND));
+		parent.setBackground(NAVIGATION_BACKGROUND);
 		resizeListener = new ResizeListener();
 		parent.addControlListener(resizeListener);
 
 		navigationMainComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		navigationMainComposite.setLayout(new FormLayout());
-		navigationMainComposite.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.NAVIGATION_BACKGROUND));
-
-		scrolledComposite = new Composite(navigationMainComposite, SWT.DOUBLE_BUFFERED);
-
-		scrolledComposite.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.NAVIGATION_BACKGROUND));
-		scrolledComposite.setLayout(new FormLayout());
-		WidgetIdentificationSupport.setIdentification(scrolledComposite, "NavigationView"); //$NON-NLS-1$
-
-		scrollingSupport = new ScrollingSupport(parent, SWT.NONE, this);
-		FormData formData = new FormData();
+		navigationMainComposite.setBackground(NAVIGATION_BACKGROUND);
+		navigationCompositeDelegation = createNavigationCompositeDelegation(parent, navigationMainComposite);
+		final FormData formData = new FormData();
 		formData.top = new FormAttachment(0, 0);
-		formData.bottom = new FormAttachment(100, -15);
-		navigationMainComposite.setLayoutData(formData);
-
-		formData = new FormData();
-		formData.top = new FormAttachment(navigationMainComposite, 0);
 		formData.left = new FormAttachment(0, 0);
 		formData.right = new FormAttachment(100, 0);
-		scrollingSupport.getScrollComposite().setLayoutData(formData);
+		formData.bottom = new FormAttachment(100, navigationCompositeDelegation.getBottomOffest());
+		navigationMainComposite.setLayoutData(formData);
+	}
+
+	/**
+	 * Creates a delegation of the composite for scrolling in the navigation.
+	 * 
+	 * @param superParent
+	 *            parent of the navigation composite
+	 * @param parent
+	 *            composite of the navigation
+	 * @return delegation
+	 */
+	private INavigationCompositeDelegation createNavigationCompositeDelegation(final Composite superParent,
+			final Composite parent) {
+		final boolean scrollBar = LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.NAVIGATION_SCROLL_BAR, false);
+		if (scrollBar) {
+			return new ScrollBarNavigationCompositeDeligation(superParent, parent, this);
+		} else {
+			return new ScrollButtonsNavigationCompositeDeligation(superParent, parent, this);
+		}
 	}
 
 	/**
@@ -137,8 +147,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	@Override
 	public void dispose() {
 		super.dispose();
-
-		if (parent != null && !parent.isDisposed() && resizeListener != null) {
+		if (SwtUtilities.isDisposed(parent) && resizeListener != null) {
 			parent.removeControlListener(resizeListener);
 		}
 	}
@@ -168,8 +177,8 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	private final class ResizeListener extends ControlAdapter {
 		@Override
 		public void controlResized(final ControlEvent e) {
-			updateNavigationSize();
 			parent.layout();
+			updateNavigationSize();
 		}
 	}
 
@@ -305,7 +314,8 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 	private void createModuleGroupView(final IModuleGroupNode moduleGroupNode) {
 		// ModuleGroupView are directly rendered into the bodyComposite
-		final ModuleGroupView moduleGroupView = getViewFactory().createModuleGroupView(scrolledComposite);
+		final ModuleGroupView moduleGroupView = getViewFactory().createModuleGroupView(
+				navigationCompositeDelegation.getNaviagtionComposite());
 		NodeIdentificationSupport.setIdentification(moduleGroupView, "moduleGroupView", moduleGroupNode); //$NON-NLS-1$
 		moduleGroupNodesToViews.put(moduleGroupNode, moduleGroupView);
 		moduleGroupView.addUpdateListener(new ModuleGroupViewObserver());
@@ -337,9 +347,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	}
 
 	private final class ModuleGroupViewObserver implements IComponentUpdateListener {
-
 		public void update(final INavigationNode<?> node) {
-
 			updateNavigationSize();
 		}
 	}
@@ -434,10 +442,38 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	}
 
 	public void updateNavigationSize() {
-		calculateBounds();
-		scrolledComposite.layout();
+		final int height = calculateBounds();
+		navigationCompositeDelegation.getNaviagtionComposite().layout();
 		navigationMainComposite.layout();
-		scrollingSupport.scroll();
+		navigationCompositeDelegation.updateSize(height);
+		final boolean widthChanged = updateModuleGroupWidth(height);
+		if (widthChanged) {
+			updateNavigationSize();
+		}
+		navigationCompositeDelegation.scroll();
+	}
+
+	/**
+	 * If a vertical scroll bar exists, the width of the module groups must be
+	 * updated.
+	 * 
+	 * @param height
+	 *            height of the scrolled composite
+	 * @return {@code true} width of the module groups has changed
+	 */
+	private boolean updateModuleGroupWidth(final int height) {
+		boolean widthChanged = false;
+		int scrollbarWidth = 0;
+		if (height > navigationMainComposite.getBounds().height) {
+			scrollbarWidth = navigationCompositeDelegation.getVerticalScrollBarSize().x;
+		}
+		for (final ModuleGroupView moduleGroupView : moduleGroupViews) {
+			if (moduleGroupView.getScrollbarWidth() != scrollbarWidth) {
+				moduleGroupView.setScrollbarWidth(scrollbarWidth);
+				widthChanged = true;
+			}
+		}
+		return widthChanged;
 	}
 
 	public IModuleGroupNode getActiveModuleGroupNode() {
@@ -507,7 +543,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	}
 
 	public Composite getScrolledComponent() {
-		return scrolledComposite;
+		return navigationCompositeDelegation.getNaviagtionComposite();
 	}
 
 }

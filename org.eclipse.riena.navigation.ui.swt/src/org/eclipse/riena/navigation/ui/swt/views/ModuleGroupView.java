@@ -57,6 +57,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 	private final List<IComponentUpdateListener> updateListeners;
 	private final Map<ModuleNode, ModuleView> registeredModuleViews;
 	private final List<INavigationNode<?>> disposingNodes;
+	private int scrollbarWidth;
 
 	public ModuleGroupView(final Composite parent, final int style) {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
@@ -265,7 +266,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 		fd.top = new FormAttachment(0, positionHint);
 		fd.left = new FormAttachment(0, 0);
 		positionHint += p.y;
-		fd.width = p.x;
+		fd.width = p.x - getScrollbarWidth();
 		fd.bottom = new FormAttachment(0, positionHint);
 		if (!equals(fd, getCurrentFormData())) {
 			setLayoutData(fd);
@@ -463,6 +464,21 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 
 	public void addUpdateListener(final IComponentUpdateListener listener) {
 		updateListeners.add(listener);
+	}
+
+	/**
+	 * @return the scrollbarWidth
+	 */
+	public int getScrollbarWidth() {
+		return scrollbarWidth;
+	}
+
+	/**
+	 * @param scrollbarWidth
+	 *            the scrollbarWidth to set
+	 */
+	public void setScrollbarWidth(final int scrollbarWidth) {
+		this.scrollbarWidth = scrollbarWidth;
 	}
 
 }

@@ -124,7 +124,6 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 			}
 			h = borderRenderer.computeOuterHeight(h);
 		}
-
 		return new Point(w, h);
 
 	}
@@ -191,8 +190,9 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	 * @return width
 	 */
 	public int getItemWidth() {
-		return LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.NAVIGATION_WIDTH) - 2
-				* getLnfBorderRenderer().getBorderWidth();
+		int width = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.NAVIGATION_WIDTH);
+		width -= 2 * getLnfBorderRenderer().getBorderWidth();
+		return width;
 	}
 
 	public boolean isActive() {

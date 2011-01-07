@@ -881,6 +881,16 @@ public final class LnfKeyConstants {
 	public static final String NAVIGATION_WIDTH = "navigation.width"; //$NON-NLS-1$
 
 	/**
+	 * The height of the scroll buttons of the navigation.
+	 */
+	public static final String NAVIGATION_SCROLL_BUTTON_HEIGHT = "navigation.scroll.button.height"; //$NON-NLS-1$
+
+	/**
+	 * Flag to use scroll buttons or scroll bar in the navigation.
+	 */
+	public static final String NAVIGATION_SCROLL_BAR = "navigation.scroll.bar"; //$NON-NLS-1$
+
+	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
 	 * @see <a href=
