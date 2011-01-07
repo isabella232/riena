@@ -48,6 +48,7 @@ public class RienaWindowRenderer {
 	private Composite centerComposite;
 	private DialogTitleBarMouseListener mouseListener;
 	private Composite topComposite;
+	private boolean paintTitlebar;
 
 	public RienaWindowRenderer(final Window dialog) {
 		this.dialog = dialog;
@@ -59,6 +60,16 @@ public class RienaWindowRenderer {
 					new LnfRendererExtension(new DialogTitleBarRenderer(), LnfKeyConstants.DIALOG_RENDERER) };
 			LnfManager.getLnf().update(extensions);
 		}
+	}
+
+	/**
+	 * @param abstractDialogView
+	 * @param paintTitlebar
+	 * @since 3.0
+	 */
+	public RienaWindowRenderer(final Window dialog, final boolean paintTitlebar) {
+		this(dialog);
+		this.paintTitlebar = paintTitlebar;
 	}
 
 	/**
@@ -113,7 +124,7 @@ public class RienaWindowRenderer {
 		int padding = 0;
 		final Composite contentsComposite = new Composite(parent, SWT.NONE);
 		contentsComposite.setLayout(new FormLayout());
-		if (isHideOsBorder()) {
+		if (isHideOsBorder() && paintTitlebar) {
 			SWTFacade.getDefault().addPaintListener(contentsComposite, new DialogBorderPaintListener());
 			padding = getBorderWidth();
 		}
@@ -121,7 +132,7 @@ public class RienaWindowRenderer {
 
 		int titleBarHeight = 0;
 		topComposite = new Composite(contentsComposite, SWT.NONE);
-		if (isHideOsBorder()) {
+		if (isHideOsBorder() && paintTitlebar) {
 			titleBarHeight = getTitleBarHeight();
 
 			final SWTFacade swtFacade = SWTFacade.getDefault();

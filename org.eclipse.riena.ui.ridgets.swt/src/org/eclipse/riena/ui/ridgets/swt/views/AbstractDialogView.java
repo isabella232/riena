@@ -103,9 +103,16 @@ public abstract class AbstractDialogView extends Dialog {
 	protected AbstractDialogView(final Shell parentShell) {
 		super(parentShell != null ? parentShell : getShellByGuessing());
 		title = ""; //$NON-NLS-1$
-		dlgRenderer = new RienaWindowRenderer(this);
+		dlgRenderer = new RienaWindowRenderer(this, isPaintTitlebar());
 		controlledView = new ControlledView();
 		controlledView.setController(createController());
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	protected boolean isPaintTitlebar() {
+		return true;
 	}
 
 	@Override
@@ -223,7 +230,7 @@ public abstract class AbstractDialogView extends Dialog {
 	@Override
 	protected final Control createDialogArea(final Composite parent) {
 		final Composite mainComposite = createMainComposite(parent);
-		if (isResizable() && isHideOsBorder()) {
+		if (isResizable() && isHideOsBorder() && isPaintTitlebar()) {
 			new GrabCorner(mainComposite, mainComposite.getStyle());
 		}
 		createContentComposite(mainComposite);
