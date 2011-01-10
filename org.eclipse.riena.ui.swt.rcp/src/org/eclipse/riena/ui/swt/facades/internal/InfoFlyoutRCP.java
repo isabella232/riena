@@ -61,6 +61,10 @@ public class InfoFlyoutRCP extends InfoFlyout {
 			LnfKeyConstants.INFO_FLYOUT_LEFT_MARGIN);
 	private static final int TEXT_LEFT_MARGIN = LnfManager.getLnf().getIntegerSetting(
 			LnfKeyConstants.INFO_FLYOUT_ICON_TEXT_GAP);
+	private static final int INFO_FLYOUT_RIGHT_MARGIN = LnfManager.getLnf().getIntegerSetting(
+			LnfKeyConstants.INFO_FLYOUT_RIGHT_MARGIN);
+	private static final int RIGHT_LABEL_WIDTH = WIDTH - INFO_FLYOUT_RIGHT_MARGIN - TEXT_LEFT_MARGIN - ICON_LEFT_MARGIN
+			- 30;
 
 	private String message;
 	private String icon;
@@ -229,11 +233,11 @@ public class InfoFlyoutRCP extends InfoFlyout {
 
 	private void updateLayoutData() {
 		final int topIndent = (HEIGHT - rightLabel.getBounds().height) / 2;
+
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(ICON_LEFT_MARGIN, topIndent)
 				.applyTo(leftLabel);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).indent(TEXT_LEFT_MARGIN, topIndent)
-				.hint(WIDTH - 50, SWT.DEFAULT).applyTo(rightLabel);
-
+				.hint(RIGHT_LABEL_WIDTH, SWT.DEFAULT).applyTo(rightLabel);
 	}
 
 	private void updateLocation() {

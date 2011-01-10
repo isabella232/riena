@@ -485,7 +485,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_HEIGHT, 46);
 		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_ICON_TEXT_GAP, 3);
 		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_LEFT_MARGIN, 13);
-		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_RIGHT_MARGIN, 50);
+		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_RIGHT_MARGIN, 20);
 		lnf.putLnfSetting(LnfKeyConstants.INFO_FLYOUT_RIGHT_INDENT, 12);
 
 		lnf.putLnfSetting(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_WIDTH, 160);
