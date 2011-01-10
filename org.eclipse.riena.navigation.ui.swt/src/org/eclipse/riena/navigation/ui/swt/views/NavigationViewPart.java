@@ -442,9 +442,12 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	}
 
 	public void updateNavigationSize() {
-		final int height = calculateBounds();
+		int height = calculateBounds();
 		navigationCompositeDelegation.getNaviagtionComposite().layout();
 		navigationMainComposite.layout();
+		if (navigationMainComposite.getBounds().height == 0) {
+			height = 0;
+		}
 		navigationCompositeDelegation.updateSize(height);
 		final boolean widthChanged = updateModuleGroupWidth(height);
 		if (widthChanged) {
