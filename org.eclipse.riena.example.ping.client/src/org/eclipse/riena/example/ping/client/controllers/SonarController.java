@@ -40,6 +40,7 @@ import org.eclipse.riena.example.ping.client.ridgets.ProgressbarRidget;
 import org.eclipse.riena.example.ping.client.views.SonarView;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
+import org.eclipse.riena.ui.core.uiprocess.UISynchronizer;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
@@ -156,7 +157,7 @@ public class SonarController extends SubModuleController {
 			public void treeExpanded(final TreeEvent e) {
 				if (e.item.getData() instanceof PingResultTreeNode) {
 					final PingResultTreeNode node = (PingResultTreeNode) e.item.getData();
-					((Control) e.getSource()).getDisplay().asyncExec(new Runnable() {
+					UISynchronizer.createSynchronizer().asyncExec(new Runnable() {
 						public void run() {
 							final List<ITreeNode> children = node.getChildren();
 							if (children != null) {
@@ -224,6 +225,17 @@ public class SonarController extends SubModuleController {
 	}
 
 	/**
+	 * Selects the first node that has a failure message, if there is one.
+	 */
+	protected void selectFirstFailure() {
+		final PingResultTreeNode nextFailureNode = getFailureNode(SearchDirection.next, null);
+		if (nextFailureNode != null) {
+			treeRidget.setSelection(nextFailureNode);
+		}
+		updateNextPreviousButtons();
+	}
+
+	/**
 	 * Selects the next node that has a failure message, if there is one.
 	 */
 	protected void selectNextFailure() {
@@ -246,15 +258,32 @@ public class SonarController extends SubModuleController {
 	}
 
 	/**
-	 * Returns the next/previous node that has a failure message.
+	 * Returns the next/previous node that has a failure message, starting the
+	 * search from the currently selected node.
 	 * 
 	 * @param searchDirection
 	 *            if <code>true</code> the next failure will searched, otherwise
 	 *            the
-	 * @return
+	 * @return the failure node if there is one.
 	 */
 	private PingResultTreeNode getFailureNode(final SearchDirection searchDirection) {
 		final PingResultTreeNode selectedTreeNode = getSelectedTreeNode();
+		return getFailureNode(searchDirection, selectedTreeNode);
+	}
+
+	/**
+	 * Returns the next/previous node that has a failure message, starting the
+	 * search from the given node.
+	 * 
+	 * @param searchDirection
+	 *            if <code>true</code> the next failure will searched, otherwise
+	 *            the
+	 * @param startFrom
+	 *            the node to start the search from. If <code>null</code>, the
+	 *            search is started from root.
+	 * @return the failure node if there is one.
+	 */
+	private PingResultTreeNode getFailureNode(final SearchDirection searchDirection, final PingResultTreeNode startFrom) {
 		final List<PingResultTreeNode> nodes = flattenTree();
 		if (nodes.size() == 0) {
 			return null;
@@ -265,7 +294,7 @@ public class SonarController extends SubModuleController {
 			end = 0;
 			increment = -1;
 		}
-		int start = nodes.indexOf(selectedTreeNode);
+		int start = nodes.indexOf(startFrom);
 		if (start < 0) {
 			if (searchDirection == SearchDirection.next) {
 				start = 0;
@@ -414,13 +443,13 @@ public class SonarController extends SubModuleController {
 	 */
 	private class SonarUIProcess extends UIProcess {
 
-		private int pinged = 0;
-		private int pingedRootNodes = 0;
+		private volatile int pinged = 0;
+		private volatile int pingedRootNodes = 0;
 		private volatile boolean canceled;
-		private int failureCount = 0;
-		private boolean endRun;
-		private PingResultTreeNode currentNode;
-		private boolean expand = false;
+		private volatile int failureCount = 0;
+		private volatile boolean endRun;
+		private volatile PingResultTreeNode currentNode;
+		private volatile boolean expand = false;
 		private final IActionListener stopActionListener = new IActionListener() {
 			public void callback() {
 				canceled = true;
@@ -469,6 +498,7 @@ public class SonarController extends SubModuleController {
 				if (canceled) {
 					break;
 				}
+
 				PingVisitor visitor = new PingVisitor();
 				visitor = visitor.ping(pingableNode.getPingable());
 				if (canceled) {
@@ -483,14 +513,28 @@ public class SonarController extends SubModuleController {
 				if (pingResult.hasPingFailed()) {
 					++failureCount;
 				}
-				notifyUpdateUI();
 
-				createChildNodes(pingableNode);
+				createChildNodesUISync(pingableNode);
 
 				monitor.worked(pinged);
 				notifyUpdateUI();
 			}
 			return true;
+		}
+
+		/**
+		 * Calls {@link #createChildNodes(PingResultTreeNode)} using a
+		 * {@link UISynchronizer}.
+		 * 
+		 * @param parent
+		 *            the node for which to create the child nodes.
+		 */
+		private void createChildNodesUISync(final PingResultTreeNode parent) {
+			UISynchronizer.createSynchronizer().asyncExec(new Runnable() {
+				public void run() {
+					createChildNodes(parent);
+				}
+			});
 		}
 
 		/**
@@ -503,11 +547,12 @@ public class SonarController extends SubModuleController {
 		private void createChildNodes(final PingResultTreeNode parent) {
 			currentNode = parent;
 			expand = true;
-			notifyUpdateUI();
+			updateUi();
 
 			final PingResult pingResult = parent.getPingResult();
 			final Iterable<PingResult> nestedResults = pingResult.getNestedResults();
 			boolean failed = false;
+
 			for (final PingResult nested : nestedResults) {
 				++pinged;
 				final PingResultTreeNode child = new PingResultTreeNode(parent, nested.getPingableName());
@@ -516,11 +561,13 @@ public class SonarController extends SubModuleController {
 					++failureCount;
 					failed = true;
 				}
+				// updateUi();
+				treeRidget.setSelection(child);
 				createChildNodes(child);
 			}
 			currentNode = parent;
 			expand = failed;
-			notifyUpdateUI();
+			updateUi();
 		}
 
 		@Override
@@ -578,7 +625,7 @@ public class SonarController extends SubModuleController {
 			treeRidget.updateFromModel();
 
 			SonarController.this.updateUI();
-			selectNextFailure();
+			selectFirstFailure();
 
 			SonarController.this.setShowHourGlassCursor(false);
 		}
