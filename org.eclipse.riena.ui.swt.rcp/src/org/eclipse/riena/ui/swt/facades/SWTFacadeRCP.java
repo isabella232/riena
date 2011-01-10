@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
@@ -208,6 +209,11 @@ public final class SWTFacadeRCP extends SWTFacade {
 	@Override
 	public boolean traverse(final Control control, final int traversal) {
 		return control.traverse(traversal);
+	}
+
+	@Override
+	public void setIncrement(final ScrollBar scrollBar, final int value) {
+		scrollBar.setIncrement(value);
 	}
 
 	// protected methods

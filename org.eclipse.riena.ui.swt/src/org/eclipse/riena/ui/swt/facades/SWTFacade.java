@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
@@ -612,6 +613,18 @@ public abstract class SWTFacade {
 	 * @since 3.0
 	 */
 	public abstract boolean traverse(Control control, int traversal);
+
+	/**
+	 * Sets the amount that the receiver's value will be modified by when the
+	 * up/down (or right/left) arrows are pressed to the argument, which must be
+	 * at least one.
+	 * 
+	 * @param scrollBar
+	 *            the receiver of the new increment
+	 * @param value
+	 *            the new increment (must be greater than zero)
+	 */
+	public abstract void setIncrement(ScrollBar scrollBar, int value);
 
 	// protecected methods
 	//////////////////////

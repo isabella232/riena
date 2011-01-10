@@ -15,6 +15,7 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -65,7 +66,7 @@ public class ScrollBarNavigationCompositeDeligation extends AbstractNavigationCo
 		sc.setBackground(NAVIGATION_BACKGROUND);
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
-		sc.getVerticalBar().setIncrement(10); // TODO: LnF
+		SWTFacade.getDefault().setIncrement(sc.getVerticalBar(), 10); // TODO: LnF
 		setScrollingSupport(new ScrollBarSupport(sc, navigationProvider));
 		return naviComp;
 	}
