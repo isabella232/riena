@@ -83,4 +83,16 @@ public final class WidgetIdentificationSupport {
 	public static void setDefaultIdentification(final Widget aWidget) {
 		setIdentification(aWidget, aWidget.getClass().getName());
 	}
+
+	/**
+	 * Returns the Riena ID of the given widget.
+	 * 
+	 * @param aWidget
+	 *            widget
+	 * @return Riena ID or {@code null} if it has not been set
+	 */
+	public static String getIdentification(final Widget aWidget) {
+		return (String) aWidget.getData(RIENA_ID);
+	}
+
 }

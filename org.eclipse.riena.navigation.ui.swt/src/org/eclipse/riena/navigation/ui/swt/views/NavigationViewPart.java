@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -480,15 +479,13 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	}
 
 	public IModuleGroupNode getActiveModuleGroupNode() {
-		IModuleGroupNode active = null;
-		final Iterator<IModuleGroupNode> it = getSubApplicationNode().getChildren().iterator();
-		while (active == null && it.hasNext()) {
-			active = it.next();
-			if (!active.isActivated()) {
-				active = null;
+		final List<IModuleGroupNode> children = getSubApplicationNode().getChildren();
+		for (final IModuleGroupNode child : children) {
+			if (child.isActivated()) {
+				return child;
 			}
 		}
-		return active;
+		return null;
 	}
 
 	public int calculateBounds() {

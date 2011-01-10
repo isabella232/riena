@@ -33,6 +33,7 @@ public abstract class AbstractNavigationCompositeDeligation implements INavigati
 
 	private final Composite superParent;
 	private final Composite parent;
+	private final IModuleNavigationComponentProvider navigationProvider;
 	private final Composite naviagtionComposite;
 	private AbstractScrollingSupport scrollingSupport;
 
@@ -40,7 +41,8 @@ public abstract class AbstractNavigationCompositeDeligation implements INavigati
 			final IModuleNavigationComponentProvider navigationProvider) {
 		this.superParent = superParent;
 		this.parent = parent;
-		this.naviagtionComposite = createNaviagtionComposite(getParent(), navigationProvider);
+		this.navigationProvider = navigationProvider;
+		this.naviagtionComposite = createNaviagtionComposite(getParent());
 		getScrolledComposite().setLayoutData(getLayoutData());
 	}
 
@@ -103,11 +105,9 @@ public abstract class AbstractNavigationCompositeDeligation implements INavigati
 	 * @param parent
 	 *            a widget which will be the parent of the new composite inside
 	 *            the scroll area
-	 * @param navigationProvider
 	 * @return
 	 */
-	protected Composite createNaviagtionComposite(final Composite parent,
-			final IModuleNavigationComponentProvider navigationProvider) {
+	protected Composite createNaviagtionComposite(final Composite parent) {
 		final Composite composite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		composite.setBackground(NAVIGATION_BACKGROUND);
 		composite.setLayout(new FormLayout());
@@ -142,6 +142,10 @@ public abstract class AbstractNavigationCompositeDeligation implements INavigati
 	 */
 	protected void setScrollingSupport(final AbstractScrollingSupport scrollingSupport) {
 		this.scrollingSupport = scrollingSupport;
+	}
+
+	protected IModuleNavigationComponentProvider getNavigationProvider() {
+		return navigationProvider;
 	}
 
 }

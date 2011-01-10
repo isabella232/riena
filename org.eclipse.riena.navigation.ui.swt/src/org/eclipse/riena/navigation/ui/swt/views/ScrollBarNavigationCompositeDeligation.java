@@ -58,16 +58,15 @@ public class ScrollBarNavigationCompositeDeligation extends AbstractNavigationCo
 	 * with the scrolling logic.
 	 */
 	@Override
-	protected Composite createNaviagtionComposite(final Composite parent,
-			final IModuleNavigationComponentProvider navigationProvider) {
+	protected Composite createNaviagtionComposite(final Composite parent) {
 		sc = new ScrolledComposite(parent, SWT.V_SCROLL);
-		final Composite naviComp = super.createNaviagtionComposite(sc, navigationProvider);
+		final Composite naviComp = super.createNaviagtionComposite(sc);
 		sc.setContent(naviComp);
 		sc.setBackground(NAVIGATION_BACKGROUND);
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		SWTFacade.getDefault().setIncrement(sc.getVerticalBar(), 10); // TODO: LnF
-		setScrollingSupport(new ScrollBarSupport(sc, navigationProvider));
+		setScrollingSupport(new ScrollBarSupport(sc, getNavigationProvider()));
 		return naviComp;
 	}
 

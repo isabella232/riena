@@ -31,6 +31,7 @@ import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * This class provides basic parts of scrolling logic for the navigation.
@@ -198,6 +199,9 @@ public abstract class AbstractScrollingSupport {
 	//////////////////
 
 	private void initMouseWheelObserver(final Composite navigationComponent) {
+		if (SwtUtilities.isDisposed(navigationComponent)) {
+			return;
+		}
 		final Display display = navigationComponent.getDisplay();
 		final MouseWheelAdapter wheelAdapter = new MouseWheelAdapter();
 		SWTFacade.getDefault().addFilterMouseWheel(display, wheelAdapter);
