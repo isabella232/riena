@@ -19,8 +19,8 @@ import java.util.Set;
 
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
@@ -38,6 +38,8 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.marker.Markable;
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.core.util.Nop;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.ui.ridgets.swt.TreeRidgetLabelProvider;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -441,13 +443,6 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 * Adds listeners to the sub-module tree.
 	 */
 	private void addListeners() {
-		final PaintListener paintListener = new PaintListener() {
-			public void paintControl(final PaintEvent event) {
-				onTreePaint(event.gc);
-			}
-		};
-		SWTFacade.getDefault().addPaintListener(getTree(), paintListener);
-
 		getTree().addListener(SWT.Expand, new Listener() {
 			public void handleEvent(final Event event) {
 				// treeDirty = true;
@@ -461,6 +456,16 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 				handleExpandCollapse(event, false);
 			}
 
+		});
+
+		getTree().addControlListener(new ControlListener() {
+			public void controlResized(final ControlEvent e) {
+				getTree().redraw();
+			}
+
+			public void controlMoved(final ControlEvent e) {
+				Nop.reason("nothing todo"); //$NON-NLS-1$
+			}
 		});
 
 		final Listener paintItemListener = new Listener() {
@@ -515,7 +520,8 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 * @param gc
 	 * @param item
 	 *            tree item
-	 * @return true: text was clipped; false: text was not clipped
+	 * @return {@code true}: text of the item changed; {@code false}: text not
+	 *         changed
 	 */
 	private boolean clipSubModuleText(final GC gc, final TreeItem item) {
 		boolean clipped = false;
@@ -525,7 +531,8 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		final String longText = getItemText(item);
 		if (longText != null) {
 			final String text = SwtUtilities.clipText(gc, longText, maxWidth);
-			clipped = !longText.equals(text);
+			clipped = !StringUtils.equals(longText, text);
+			clipped = clipped || !StringUtils.equals(item.getText(), text);
 			if (clipped) {
 				item.setText(text);
 			}
@@ -540,7 +547,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	 * @param gc
 	 * @param item
 	 *            tree item
-	 * @return true: some text was clipped; false: no text was clipped
+	 * @return {@code true}: some texts changed; {@code false}: no text changed
 	 */
 	private boolean clipSubModuleTexts(final GC gc, final TreeItem item) {
 		boolean clipped = clipSubModuleText(gc, item);
@@ -555,10 +562,18 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		return clipped;
 	}
 
+	/**
+	 * Returns the text of the given item. If the data of the item is a node, so
+	 * the label of the node is returned.
+	 * 
+	 * @param item
+	 *            tree item
+	 * @return text of item (or label of node)
+	 */
 	private String getItemText(final TreeItem item) {
-		final INavigationNode<?> subModule = (INavigationNode<?>) item.getData();
-		if (subModule != null) {
-			return subModule.getLabel();
+		final INavigationNode<?> node = (INavigationNode<?>) item.getData();
+		if (node != null) {
+			return node.getLabel();
 		} else {
 			return item.getText();
 		}
@@ -647,19 +662,6 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	}
 
 	/**
-	 * Clips (if necessary) the text of the tree items and hides the scroll
-	 * bars.
-	 * 
-	 * @param gc
-	 */
-	private void onTreePaint(final GC gc) {
-		final TreeItem[] items = getTree().getItems();
-		for (final TreeItem item : items) {
-			clipSubModuleTexts(gc, item);
-		}
-	}
-
-	/**
 	 * Paints the markers of the given tree item.
 	 * 
 	 * @param event
@@ -676,7 +678,8 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 				final Collection<? extends IMarker> markers = getAllMarkers(node, deep);
 				renderer.setMarkers(markers);
 			}
-			renderer.paint(event.gc, event.item);
+			clipSubModuleTexts(event.gc, item);
+			renderer.paint(event.gc, item);
 		}
 	}
 

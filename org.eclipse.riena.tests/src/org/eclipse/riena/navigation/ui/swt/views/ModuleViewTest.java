@@ -124,7 +124,7 @@ public class ModuleViewTest extends RienaTestCase {
 	public void testBlocking() {
 		final EmbeddedTitleBar title = ReflectionUtils.invokeHidden(view, "getTitle");
 		final Composite body = ReflectionUtils.invokeHidden(view, "getBody");
-		final Tree tree = ReflectionUtils.invokeHidden(view, "getTree");
+		final Tree tree = view.getTree();
 		final Cursor waitCursor = title.getDisplay().getSystemCursor(SWT.CURSOR_WAIT);
 
 		node.setBlocked(true);
@@ -284,6 +284,61 @@ public class ModuleViewTest extends RienaTestCase {
 		assertFalse(markers.contains(am3));
 
 		event.gc.dispose();
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code clipSubModuleText(GC, TreeItem)}.
+	 */
+	public void testClipSubModuleText() {
+
+		final String longText = "This is a very long text. Text text will be clipped";
+		subNode.setLabel(longText);
+		final Tree tree = view.getTree();
+		final TreeItem item = tree.getItem(0);
+		assertEquals(longText, item.getText());
+
+		final GC gc = new GC(tree);
+
+		tree.setSize(10, 100);
+		boolean ret = ReflectionUtils.invokeHidden(view, "clipSubModuleText", gc, item);
+		assertTrue(ret);
+		assertEquals("...", item.getText());
+
+		tree.setSize(10000, 100);
+		ret = ReflectionUtils.invokeHidden(view, "clipSubModuleText", gc, item);
+		assertTrue(ret);
+		assertEquals(longText, item.getText());
+
+		ret = ReflectionUtils.invokeHidden(view, "clipSubModuleText", gc, item);
+		assertFalse(ret);
+		assertEquals(longText, item.getText());
+
+		gc.dispose();
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getItemText(TreeItem)}.
+	 */
+	public void testGetItemText() {
+
+		final String label = "Text of Node";
+		subNode.setLabel(label);
+		final Tree tree = view.getTree();
+		final TreeItem item = tree.getItem(0);
+		String retText = ReflectionUtils.invokeHidden(view, "getItemText", item);
+		assertEquals(label, retText);
+
+		final String itemText = "Text of Item";
+		item.setText(itemText);
+		retText = ReflectionUtils.invokeHidden(view, "getItemText", item);
+		assertEquals(label, retText);
+
+		final TreeItem simpleItem = new TreeItem(tree, SWT.NONE);
+		simpleItem.setText(itemText);
+		retText = ReflectionUtils.invokeHidden(view, "getItemText", simpleItem);
+		assertEquals(itemText, retText);
 
 	}
 
