@@ -466,6 +466,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfSetting(LnfKeyConstants.ERROR_MARKER_HORIZONTAL_POSITION, SWT.LEFT);
 		lnf.putLnfSetting(LnfKeyConstants.ERROR_MARKER_VERTICAL_POSITION, SWT.TOP);
 		lnf.putLnfSetting(LnfKeyConstants.ERROR_MARKER_MARGIN, 1);
+		lnf.putLnfSetting(LnfKeyConstants.ROW_ERROR_MARKER_BORDER_WIDTH, 1);
 
 		lnf.putLnfSetting(LnfKeyConstants.FONTDESCRIPTOR_DEFAULT_HEIGHT, 8);
 

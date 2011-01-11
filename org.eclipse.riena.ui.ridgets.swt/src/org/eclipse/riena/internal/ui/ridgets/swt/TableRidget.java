@@ -660,9 +660,11 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private final class TableItemEraser implements Listener {
 
 		private final Color borderColor;
+		private final int borderWidth;
 
 		public TableItemEraser() {
 			borderColor = LnfManager.getLnf().getColor(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR);
+			borderWidth = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.ROW_ERROR_MARKER_BORDER_WIDTH, 1);
 		}
 
 		/*
@@ -706,11 +708,11 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			final Color oldForeground = gc.getForeground();
 			gc.setForeground(borderColor);
 			try {
+				int x = 0, y = 0, width = 0, height = 0;
 				final Table table = (Table) event.widget;
 				final int colCount = table.getColumnCount();
 				if (colCount > 0) {
 					final TableItem item = (TableItem) event.item;
-					int x = 0, y = 0, width = 0, height = 0;
 					for (int i = 0; i < colCount; i++) {
 						final Rectangle bounds = item.getBounds(i);
 						if (i == 0) {
@@ -724,11 +726,18 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 					}
 					width = Math.max(0, width - 1);
 					height = Math.max(0, height - 1);
-					gc.drawRoundRectangle(x, y, width, height, 3, 3);
 				} else {
-					final int width = Math.max(0, event.width - 1);
-					final int height = Math.max(0, event.height - 1);
-					gc.drawRoundRectangle(event.x, event.y, width, height, 3, 3);
+					width = Math.max(0, event.width - 1);
+					height = Math.max(0, event.height - 1);
+					x = event.x;
+					y = event.y;
+				}
+				for (int i = 0; i < borderWidth; i++) {
+					int arc = 3;
+					if (i > 0) {
+						arc = 0;
+					}
+					gc.drawRoundRectangle(x + i, y + i, width - 2 * i, height - 2 * i, arc, arc);
 				}
 			} finally {
 				gc.setForeground(oldForeground);
