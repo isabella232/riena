@@ -765,6 +765,11 @@ public final class LnfKeyConstants {
 
 	public static final String ERROR_MARKER_ICON = "ControlErrorMarker"; //$NON-NLS-1$
 
+	public static final String MESSAGE_BOX_ERROR_ICON = "messageBox.errorIcon"; //$NON-NLS-1$
+	public static final String MESSAGE_BOX_WARNING_ICON = "messageBox.warningIcon"; //$NON-NLS-1$
+	public static final String MESSAGE_BOX_INFO_ICON = "messageBox.infoIcon"; //$NON-NLS-1$
+	public static final String MESSAGE_BOX_QUESTION_ICON = "messageBox.questionIcon"; //$NON-NLS-1$
+
 	/**
 	 * Setting keys
 	 */

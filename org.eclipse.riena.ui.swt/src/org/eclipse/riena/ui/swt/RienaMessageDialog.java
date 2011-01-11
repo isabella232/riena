@@ -19,6 +19,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.ui.swt.facades.DialogConstantsFacade;
+import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * A dialog for showing messages and with an own renderer for the border and the
@@ -227,8 +230,7 @@ public class RienaMessageDialog extends MessageDialog {
 		dialogArea = createDialogArea(centerComposite);
 		buttonBar = createButtonBar(centerComposite);
 
-		// Apply to the parent so that the message gets it too.
-		applyDialogFont(parent);
+		new LnFUpdater().updateUIControls(parent, true);
 
 	}
 
@@ -237,6 +239,74 @@ public class RienaMessageDialog extends MessageDialog {
 		// compute the 'styled' shell style, before creating the shell
 		setShellStyle(dlgRenderer.computeShellStyle());
 		super.create();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * If an error image in the Riena Look&Feel is defined, the LnF image will
+	 * be returned; otherwise the standard SWT error image for a message box
+	 * well be returned.
+	 */
+	@Override
+	public Image getErrorImage() {
+		Image image = getLnfImage(LnfKeyConstants.MESSAGE_BOX_ERROR_ICON);
+		if (image == null) {
+			image = super.getErrorImage();
+		}
+		return image;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * If an warning image in the Riena Look&Feel is defined, the LnF image will
+	 * be returned; otherwise the standard SWT warning image for a message box
+	 * well be returned.
+	 */
+	@Override
+	public Image getWarningImage() {
+		Image image = getLnfImage(LnfKeyConstants.MESSAGE_BOX_WARNING_ICON);
+		if (image == null) {
+			image = super.getWarningImage();
+		}
+		return image;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * If an information image in the Riena Look&Feel is defined, the LnF image
+	 * will be returned; otherwise the standard SWT information image for a
+	 * message box well be returned.
+	 */
+	@Override
+	public Image getInfoImage() {
+		Image image = getLnfImage(LnfKeyConstants.MESSAGE_BOX_INFO_ICON);
+		if (image == null) {
+			image = super.getInfoImage();
+		}
+		return image;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * If an question image in the Riena Look&Feel is defined, the LnF image
+	 * will be returned; otherwise the standard SWT question image for a message
+	 * box well be returned.
+	 */
+	@Override
+	public Image getQuestionImage() {
+		Image image = getLnfImage(LnfKeyConstants.MESSAGE_BOX_QUESTION_ICON);
+		if (image == null) {
+			image = super.getQuestionImage();
+		}
+		return image;
+	}
+
+	private Image getLnfImage(final String lnfKey) {
+		return LnfManager.getLnf().getImage(lnfKey);
 	}
 
 }
