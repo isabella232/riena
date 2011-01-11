@@ -52,7 +52,7 @@ public class RienaWindowRenderer {
 
 	public RienaWindowRenderer(final Window dialog) {
 		this.dialog = dialog;
-
+		paintTitlebar = true;
 		// if we are in design time, supply default renderer
 		if (Beans.isDesignTime() || Activator.getDefault() == null) {
 			final ILnfRendererExtension[] extensions = new ILnfRendererExtension[] {
