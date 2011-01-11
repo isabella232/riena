@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -34,6 +35,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 /**
  * Tests of the class {@link AbstractScrollingSupport}.
  */
+@UITestCase
 public class AbstractScrollingSupportTest extends TestCase {
 
 	private Shell shell;
