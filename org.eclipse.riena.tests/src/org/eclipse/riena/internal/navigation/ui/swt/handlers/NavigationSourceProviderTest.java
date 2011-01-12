@@ -14,6 +14,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.core.util.InvocationTargetFailure;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.StringUtils;
@@ -56,26 +57,22 @@ public class NavigationSourceProviderTest extends TestCase {
 	}
 
 	/**
-	 * Tests the method {@code getPovidesSourceName}.
+	 * Tests the method {@code getVariableNameForNodeId}.
 	 */
-	public void testGetPovidesSourceName() {
+	public void testGetVariableNameForNode() {
 
-		assertNull(provider.getPovidesSourceName(null));
+		assertNull(ReflectionUtils.invokeHidden(provider, "getVariableNameForNode", (Object) null));
 
-		assertNotNull(provider.getPovidesSourceName(new SubModuleNode()));
-		assertNotNull(provider.getPovidesSourceName(new ModuleNode()));
-		assertNotNull(provider.getPovidesSourceName(new ModuleGroupNode()));
-		assertNotNull(provider.getPovidesSourceName(new SubApplicationNode()));
+		assertNotNull(ReflectionUtils.invokeHidden(provider, "getVariableNameForNode", new SubModuleNode()));
+		assertNotNull(ReflectionUtils.invokeHidden(provider, "getVariableNameForNode", new ModuleNode()));
+		assertNotNull(ReflectionUtils.invokeHidden(provider, "getVariableNameForNode", new ModuleGroupNode()));
+		assertNotNull(ReflectionUtils.invokeHidden(provider, "getVariableNameForNode", new SubApplicationNode()));
 
 		try {
-			provider.getPovidesSourceName(new NavigationNode<ISubModuleNode, ISubModuleNode, ISubModuleNodeListener>(
-					null) {
-				public Class<ISubModuleNode> getValidChildType() {
-					return null;
-				}
-			});
-			fail("Expected NavigationModelFailure wasn't throw!");
-		} catch (final NavigationModelFailure failure) {
+			ReflectionUtils.invokeHidden(provider, "getVariableNameForNode", new MockNavigationNode(null));
+			fail("Expected InvocationTargetFailure, but it wasn't thrown!");
+		} catch (final InvocationTargetFailure failure) {
+			assertTrue(failure.getTargetException() instanceof NavigationModelFailure);
 			Nop.reason("Expected failure");
 		}
 
@@ -102,11 +99,15 @@ public class NavigationSourceProviderTest extends TestCase {
 	public void testGetCurrentState() {
 
 		// no navigation model
-		Map<String, String> state = provider.getCurrentState();
-		assertEquals(4, state.keySet().size());
-		assertEquals(4, state.values().size());
-		for (final String value : state.values()) {
-			assertTrue(StringUtils.isEmpty(value));
+		Map<String, Object> state = provider.getCurrentState();
+		assertEquals(5, state.keySet().size());
+		assertEquals(5, state.values().size());
+		for (final Object value : state.values()) {
+			if (value instanceof String) {
+				assertTrue(StringUtils.isEmpty((String) value));
+			} else {
+				assertNull(value);
+			}
 		}
 
 		// navigation model but no node is active
@@ -124,15 +125,19 @@ public class NavigationSourceProviderTest extends TestCase {
 		mod.addChild(subMod2);
 
 		state = provider.getCurrentState();
-		assertEquals(4, state.values().size());
-		for (final String value : state.values()) {
-			assertTrue(StringUtils.isEmpty(value));
+		assertEquals(5, state.values().size());
+		for (final Object value : state.values()) {
+			if (value instanceof String) {
+				assertTrue(StringUtils.isEmpty((String) value));
+			} else {
+				assertNull(value);
+			}
 		}
 
 		// navigation model with active nodes
 		subMod.activate();
 		state = provider.getCurrentState();
-		assertEquals(4, state.keySet().size());
+		assertEquals(5, state.keySet().size());
 		assertTrue(state.values().contains("subMod1"));
 		assertTrue(state.values().contains("mod1"));
 		assertTrue(state.values().contains("mg1"));
@@ -142,4 +147,15 @@ public class NavigationSourceProviderTest extends TestCase {
 
 	}
 
+	private static final class MockNavigationNode extends
+			NavigationNode<ISubModuleNode, ISubModuleNode, ISubModuleNodeListener> {
+
+		public MockNavigationNode(final NavigationNodeId nodeId) {
+			super(nodeId);
+		}
+
+		public Class<ISubModuleNode> getValidChildType() {
+			return null;
+		}
+	}
 }

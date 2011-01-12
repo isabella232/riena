@@ -35,6 +35,10 @@ import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
  */
 public final class ReflectionUtils {
 
+	/**
+	 * 
+	 */
+	private static final Class<Void> NULL_PARAMETER_TYPE = Void.class;
 	/** A cache of Method (or NO_SUCH_METHOD) values. */
 	private static final Map<Integer, Object> METHOD_CACHE = LRUHashMap.createSynchronizedLRUHashMap(25);
 	/** Placeholder indicating a 'null' result (vs a cache miss) */
@@ -466,7 +470,7 @@ public final class ReflectionUtils {
 				if (expectedParameterTypes.length == clazzes.length) {
 					boolean stop = false;
 					for (int j = 0; j < expectedParameterTypes.length && !stop; j++) {
-						if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j])) {
+						if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j]) && clazzes[j] != NULL_PARAMETER_TYPE) {
 							stop = true;
 						}
 					}
@@ -514,7 +518,7 @@ public final class ReflectionUtils {
 					if (expectedParameterTypes.length == clazzes.length) {
 						boolean stop = false;
 						for (int j = 0; j < expectedParameterTypes.length && !stop; j++) {
-							if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j])) {
+							if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j]) && clazzes[j] != NULL_PARAMETER_TYPE) {
 								stop = true;
 							}
 						}
@@ -556,6 +560,8 @@ public final class ReflectionUtils {
 				} else if (argClass == Character.class) {
 					argClass = char.class;
 				}
+			} else {
+				argClass = NULL_PARAMETER_TYPE;
 			}
 			clazzes[i] = argClass;
 		}

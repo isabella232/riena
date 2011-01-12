@@ -32,14 +32,18 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 
 	private boolean isDisposed;
 
-	private static final String ACTIVE_SUB_APPLICATION_NODE_ID = "activeSubApplicationNodeId"; //$NON-NLS-1$
-	private static final String ACTIVE_MODULE_GROUP_NODE_ID = "activeModuleGroupNodeId"; //$NON-NLS-1$
-	private static final String ACTIVE_MODULE_NODE_ID = "activeModuleNodeId"; //$NON-NLS-1$
-	private static final String ACTIVE_SUB_MODULE_NODE_ID = "activeSubModuleNodeId"; //$NON-NLS-1$
-	private static final int ACTIVE_NODE_ID = 1 << 28;
+	private static final String ACTIVE_SUB_APPLICATION_NODE = "activeSubApplicationNode"; //$NON-NLS-1$
+	private static final String ACTIVE_SUB_APPLICATION_NODE_ID = ACTIVE_SUB_APPLICATION_NODE + "Id"; //$NON-NLS-1$
+	private static final String ACTIVE_MODULE_GROUP_NODE = "activeModuleGroupNode"; //$NON-NLS-1$
+	private static final String ACTIVE_MODULE_GROUP_NODE_ID = ACTIVE_MODULE_GROUP_NODE + "Id"; //$NON-NLS-1$
+	private static final String ACTIVE_MODULE_NODE = "activeModuleNode"; //$NON-NLS-1$
+	private static final String ACTIVE_MODULE_NODE_ID = ACTIVE_MODULE_NODE + "Id"; //$NON-NLS-1$
+	private static final String ACTIVE_SUB_MODULE_NODE = "activeSubModuleNode"; //$NON-NLS-1$
+	private static final String ACTIVE_SUB_MODULE_NODE_ID = ACTIVE_SUB_MODULE_NODE + "Id"; //$NON-NLS-1$
+	private static final int EVENT_PRIORITY = 1 << 28;
 
 	private static final String[] PROVIDED_SOURCE_NAMES = new String[] { ACTIVE_SUB_APPLICATION_NODE_ID,
-			ACTIVE_MODULE_GROUP_NODE_ID, ACTIVE_MODULE_NODE_ID, ACTIVE_SUB_MODULE_NODE_ID };
+			ACTIVE_MODULE_GROUP_NODE_ID, ACTIVE_MODULE_NODE_ID, ACTIVE_SUB_MODULE_NODE_ID, ACTIVE_MODULE_NODE };
 
 	public void dispose() {
 		isDisposed = true;
@@ -49,18 +53,24 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 		return isDisposed;
 	}
 
-	public final Map<String, String> getCurrentState() {
+	public final Map<String, Object> getCurrentState() {
 
-		final Map<String, String> state = new HashMap<String, String>();
+		final Map<String, Object> state = new HashMap<String, Object>();
 
-		String id = getTypeNodeId(ApplicationNodeManager.locateActiveSubApplicationNode());
-		state.put(ACTIVE_SUB_APPLICATION_NODE_ID, id);
-		id = getTypeNodeId(ApplicationNodeManager.locateActiveModuleGroupNode());
-		state.put(ACTIVE_MODULE_GROUP_NODE_ID, id);
-		id = getTypeNodeId(ApplicationNodeManager.locateActiveModuleNode());
-		state.put(ACTIVE_MODULE_NODE_ID, id);
-		id = getTypeNodeId(ApplicationNodeManager.locateActiveSubModuleNode());
-		state.put(ACTIVE_SUB_MODULE_NODE_ID, id);
+		final ISubApplicationNode subAppNode = ApplicationNodeManager.locateActiveSubApplicationNode();
+		final IModuleGroupNode moduleGroupNode = ApplicationNodeManager.locateActiveModuleGroupNode();
+		final IModuleNode moduleNode = ApplicationNodeManager.locateActiveModuleNode();
+		final ISubModuleNode subModuleNode = ApplicationNodeManager.locateActiveSubModuleNode();
+
+		state.put(ACTIVE_SUB_APPLICATION_NODE_ID, getTypeNodeId(subAppNode));
+		state.put(ACTIVE_MODULE_GROUP_NODE_ID, getTypeNodeId(moduleGroupNode));
+		state.put(ACTIVE_MODULE_NODE_ID, getTypeNodeId(moduleNode));
+		state.put(ACTIVE_SUB_MODULE_NODE_ID, getTypeNodeId(subModuleNode));
+
+		state.put(ACTIVE_SUB_APPLICATION_NODE, subAppNode);
+		state.put(ACTIVE_MODULE_GROUP_NODE, moduleGroupNode);
+		state.put(ACTIVE_MODULE_NODE, moduleNode);
+		state.put(ACTIVE_SUB_MODULE_NODE, subModuleNode);
 
 		return state;
 
@@ -71,7 +81,9 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 	}
 
 	void fireSourceChange(final INavigationNode<?> node) {
-		fireSourceChanged(ACTIVE_NODE_ID, getPovidesSourceName(node), getTypeNodeId(node));
+		final String variable = getVariableNameForNode(node);
+		fireSourceChanged(EVENT_PRIORITY, variable + "Id", getTypeNodeId(node)); //$NON-NLS-1$
+		fireSourceChanged(EVENT_PRIORITY, variable, node);
 	}
 
 	/**
@@ -90,15 +102,37 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 		}
 	}
 
+	private String getVariableNameForNode(final INavigationNode<?> node) {
+		if (node == null) {
+			return null;
+		}
+
+		if (node instanceof ISubApplicationNode) {
+			return ACTIVE_SUB_APPLICATION_NODE;
+		} else if (node instanceof IModuleGroupNode) {
+			return ACTIVE_MODULE_GROUP_NODE;
+		} else if (node instanceof IModuleNode) {
+			return ACTIVE_MODULE_NODE;
+		} else if (node instanceof ISubModuleNode) {
+			return ACTIVE_SUB_MODULE_NODE;
+		}
+
+		throw new NavigationModelFailure("Unsupported instance of INavigationNode: " + node); //$NON-NLS-1$
+	}
+
 	/**
 	 * Returns the name of the variable for the given node.
 	 * 
 	 * @param node
 	 *            navigation node
 	 * @return name of variable
+	 * 
+	 * @deprecated use <code>getChangedSourceNameForNode(INavigationNode)</code>
+	 *             instead. Add "Id" if you want the variable name for the
+	 *             NodeId
 	 */
+	@Deprecated
 	public String getPovidesSourceName(final INavigationNode<?> node) {
-
 		if (node == null) {
 			return null;
 		}
@@ -114,7 +148,6 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 		}
 
 		throw new NavigationModelFailure("Unsupported instance of INavigationNode: " + node); //$NON-NLS-1$
-
 	}
 
 	/**

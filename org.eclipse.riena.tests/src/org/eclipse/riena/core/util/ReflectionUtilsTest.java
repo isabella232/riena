@@ -63,6 +63,11 @@ public class ReflectionUtilsTest extends RienaTestCase {
 		assertEquals(s, "Hello!");
 	}
 
+	public void testNewInstance5() {
+		final MockClass s = ReflectionUtils.newInstance(MockClass.class, (String) null);
+		assertNull(s.getName());
+	}
+
 	/**
 	 * Test creating an hidden instance #1
 	 * */
@@ -103,7 +108,12 @@ public class ReflectionUtilsTest extends RienaTestCase {
 
 	public void testInvokeWithNull() {
 		final String str = "Hello";
-		assertFalse((Boolean) ReflectionUtils.invoke(str, "equals", new Object[] { null }));
+		assertFalse((Boolean) ReflectionUtils.invoke(str, "equals", (Object) null));
+	}
+
+	public void testInvokeWithNoObjectParameter() {
+		final String str = "Hello";
+		assertFalse((Boolean) ReflectionUtils.invoke(str, "equalsIgnoreCase", (String) null));
 	}
 
 	/**
@@ -349,5 +359,17 @@ public class ReflectionUtilsTest extends RienaTestCase {
 			created = true;
 		}
 
+	}
+
+	private final static class MockClass {
+		private final String name;
+
+		public MockClass(final String name) {
+			this.name = name;
+		}
+
+		public String getName() {
+			return name;
+		}
 	}
 }

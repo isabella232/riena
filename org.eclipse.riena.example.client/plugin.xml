@@ -418,6 +418,10 @@
             name="Exit">
       </command>
       <command
+            id="org.eclipse.riena.example.client.closeModuleCommand"
+            name="Close Module">
+      </command>
+      <command
             id="org.eclipse.riena.example.client.zoomInCommand"
             name="In">
       </command>
@@ -483,6 +487,13 @@
                   </not>
                </visibleWhen>
             </menu>
+            <command 
+            	commandId="org.eclipse.riena.example.client.closeModuleCommand"
+            	style="push"
+                label="Close module"
+                mnemonic="M"
+                tooltip="Closes active module">
+            </command>
             <command
                   commandId="org.eclipse.riena.example.client.exitCommand"
                   id="org.eclipse.riena.example.client.exitMenuItem"
@@ -638,6 +649,18 @@
       <handler
             class="org.eclipse.riena.example.client.handler.ExitHandler"
             commandId="org.eclipse.riena.example.client.exitCommand">
+      </handler>
+      <handler
+            class="org.eclipse.riena.example.client.handler.CloseModuleHandler"
+            commandId="org.eclipse.riena.example.client.closeModuleCommand">
+         <enabledWhen>
+            <with
+                  variable="activeModuleNode">
+               <test
+                     property="org.eclipse.riena.navigation.model.isClosable">
+               </test>
+            </with>
+         </enabledWhen>
       </handler>
       <handler
             class="org.eclipse.riena.example.client.handler.ActionSubmoduleHandler"
@@ -1420,5 +1443,15 @@
            </equals>
         </with>
      </definition>
-	</extension>>
+	</extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="org.eclipse.riena.example.client.ClosablePropertyTester"
+            id="org.eclipse.riena.example.client.closablePropertyTester"
+            namespace="org.eclipse.riena.navigation.model"
+            properties="isClosable"
+            type="org.eclipse.riena.navigation.INavigationNode">
+      </propertyTester>
+   </extension>>
 </plugin>
