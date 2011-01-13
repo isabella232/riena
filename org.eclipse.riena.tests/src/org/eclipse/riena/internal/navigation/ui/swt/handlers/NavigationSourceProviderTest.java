@@ -100,8 +100,8 @@ public class NavigationSourceProviderTest extends TestCase {
 
 		// no navigation model
 		Map<String, Object> state = provider.getCurrentState();
-		assertEquals(5, state.keySet().size());
-		assertEquals(5, state.values().size());
+		assertEquals(8, state.keySet().size());
+		assertEquals(8, state.values().size());
 		for (final Object value : state.values()) {
 			if (value instanceof String) {
 				assertTrue(StringUtils.isEmpty((String) value));
@@ -125,7 +125,7 @@ public class NavigationSourceProviderTest extends TestCase {
 		mod.addChild(subMod2);
 
 		state = provider.getCurrentState();
-		assertEquals(5, state.values().size());
+		assertEquals(8, state.values().size());
 		for (final Object value : state.values()) {
 			if (value instanceof String) {
 				assertTrue(StringUtils.isEmpty((String) value));
@@ -137,7 +137,7 @@ public class NavigationSourceProviderTest extends TestCase {
 		// navigation model with active nodes
 		subMod.activate();
 		state = provider.getCurrentState();
-		assertEquals(5, state.keySet().size());
+		assertEquals(8, state.keySet().size());
 		assertTrue(state.values().contains("subMod1"));
 		assertTrue(state.values().contains("mod1"));
 		assertTrue(state.values().contains("mg1"));
