@@ -709,6 +709,48 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 		assertFalse(ridget.isDisableMandatoryMarker());
 	}
 
+	/**
+	 * Fix report ruv 375. Test method setEmptySelectionItem() with
+	 * emptySelectionItem equal null.
+	 */
+	public void testEmptySelectionItemEqualsNull() {
+		final ISingleChoiceRidget ridget = getRidget();
+		final String optionA = "Option A";
+		final String optionNull = null;
+		final String optionLabelA = "Option label A";
+		final String optionLabelNull = "Option label Null";
+		getRidget().bindToModel(
+				new ArrayList<String>(Arrays.asList(optionA, "Option B", "Option C", "Option D", "Option E",
+						"Option F", optionNull)),
+				new ArrayList<String>(Arrays.asList(optionLabelA, "Option label B", "Option label C", "Option label D",
+						"Option label E", "Option label F", optionLabelNull)), optionProvider, "selectedOption");
+		ridget.setEmptySelectionItem(optionNull);
+		optionProvider.setSelectedOption(optionNull);
+		ridget.addMarker(new MandatoryMarker());
+		getRidget().updateFromModel();
+
+		assertEquals(optionNull, optionProvider.getSelectedOption());
+		assertEquals(optionNull, ridget.getSelection());
+		assertTrue(optionLabelNull.equals(getSelectedControl(getWidget()).getText()));
+		assertFalse(ridget.isDisableMandatoryMarker());
+
+		optionProvider.setSelectedOption(optionA);
+		getRidget().updateFromModel();
+
+		assertTrue(optionA.equals(optionProvider.getSelectedOption()));
+		assertTrue(optionA.equals(ridget.getSelection()));
+		assertTrue(optionLabelA.equals(getSelectedControl(getWidget()).getText()));
+		assertTrue(ridget.isDisableMandatoryMarker());
+
+		optionProvider.setSelectedOption(optionNull);
+		getRidget().updateFromModel();
+
+		assertEquals(optionNull, optionProvider.getSelectedOption());
+		assertEquals(optionNull, ridget.getSelection());
+		assertTrue(optionLabelNull.equals(getSelectedControl(getWidget()).getText()));
+		assertFalse(ridget.isDisableMandatoryMarker());
+	}
+
 	// helping methods
 	// ////////////////
 
@@ -733,11 +775,21 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 
 	private static final class OptionProvider {
 
-		private final List<String> options = new ArrayList<String>(Arrays.asList("Option A", "Option B", "Option C",
-				"Option D", "Option E", "Option F"));
-		private final List<String> optionLabels = new ArrayList<String>(Arrays.asList("Option label A",
-				"Option label B", "Option label C", "Option label D", "Option label E", "Option label F"));
-		private String selectedOption = options.get(0);
+		private final List<String> options;
+		private final List<String> optionLabels;
+		private String selectedOption;
+
+		private OptionProvider() {
+			this(new ArrayList<String>(Arrays.asList("Option A", "Option B", "Option C", "Option D", "Option E",
+					"Option F")), new ArrayList<String>(Arrays.asList("Option label A", "Option label B",
+					"Option label C", "Option label D", "Option label E", "Option label F")));
+		}
+
+		private OptionProvider(final List<String> options, final List<String> optionLabels) {
+			this.options = options;
+			this.optionLabels = optionLabels;
+			selectedOption = options.get(0);
+		}
 
 		public List<String> getOptions() {
 			return options;

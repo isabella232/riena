@@ -90,7 +90,8 @@ public interface ISingleChoiceRidget extends IChoiceRidget {
 	void setSelection(Object selection);
 
 	/**
-	 * Returns the option that represents 'no selection'.
+	 * Returns the option that represents 'no selection'. Option may be also
+	 * null.
 	 * <p>
 	 * When this option is selected the ridget behaves just as if nothing was
 	 * selected. This option could be represented by an empty value or something
@@ -101,14 +102,14 @@ public interface ISingleChoiceRidget extends IChoiceRidget {
 	Object getEmptySelectionItem();
 
 	/**
-	 * Sets the option that represents 'no selection'.
+	 * Sets the option that represents 'no selection'. Option may be also null.
 	 * <p>
 	 * When this option is selected the ridget behaves just as if nothing was
 	 * selected. This option could be represented by an value or something like
 	 * "[Please select...]".
 	 * 
-	 * @param emptySelection
+	 * @param emptySelectionItem
 	 *            The option that represents 'no selection'.
 	 */
-	void setEmptySelectionItem(final Object emptySelection);
+	void setEmptySelectionItem(final Object emptySelectionItem);
 }

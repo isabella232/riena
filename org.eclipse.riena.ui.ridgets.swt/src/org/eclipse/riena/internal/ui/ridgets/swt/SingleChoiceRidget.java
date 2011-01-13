@@ -223,8 +223,8 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 		return emptySelectionItem;
 	}
 
-	public void setEmptySelectionItem(final Object selectionValueIgnoredRegardingMandatory) {
-		this.emptySelectionItem = selectionValueIgnoredRegardingMandatory;
+	public void setEmptySelectionItem(final Object emptySelectionItem) {
+		this.emptySelectionItem = emptySelectionItem;
 	}
 
 	public IObservableList getObservableList() {
@@ -354,13 +354,11 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 	}
 
 	private boolean hasInput() {
-		return selectionObservable.getValue() != null;
+		return getSelection() != null;
 	}
 
 	private boolean hasMandatoryInput() {
-		return hasInput()
-				&& (emptySelectionItem == null || !emptySelectionItem
-						.equals(getSelection()));
+		return hasInput() && (emptySelectionItem == null || !emptySelectionItem.equals(getSelection()));
 	}
 
 	private void updateEditable(final ChoiceComposite control, final boolean isEditable) {
@@ -381,7 +379,8 @@ public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoi
 			final Object value = selectionObservable.getValue();
 			for (final Control child : control.getChildren()) {
 				final Button button = (Button) child;
-				final boolean isSelected = canSelect && (value != null) && (value.equals(child.getData()));
+				final boolean isSelected = canSelect
+						&& ((value != null && value.equals(child.getData())) || (value == null && child.getData() == null));
 				button.setSelection(isSelected);
 			}
 		}
