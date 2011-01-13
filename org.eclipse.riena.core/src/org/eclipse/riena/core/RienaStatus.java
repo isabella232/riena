@@ -50,6 +50,9 @@ public final class RienaStatus {
 	 *         {@code false}
 	 */
 	public static boolean isActive() {
+		if (Activator.getDefault() == null) {
+			return false;
+		}
 		return Activator.getDefault().isActive();
 	}
 

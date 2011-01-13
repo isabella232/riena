@@ -361,7 +361,7 @@ public class ReflectionUtilsTest extends RienaTestCase {
 
 	}
 
-	private final static class MockClass {
+	public final static class MockClass {
 		private final String name;
 
 		public MockClass(final String name) {

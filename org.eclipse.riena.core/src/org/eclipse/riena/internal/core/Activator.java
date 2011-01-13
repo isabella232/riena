@@ -25,6 +25,7 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
+import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
@@ -127,18 +128,32 @@ public class Activator extends RienaPlugin {
 
 		public void bundleChanged(final BundleEvent event) {
 			if (Activator.getDefault() == null) {
+				new ConsoleLogger(StartupBundleListener.class.getName()).log(LogService.LOG_WARNING,
+						"Bundle already gone!"); //$NON-NLS-1$
 				return;
 			}
-			if (event.getBundle() == getContext().getBundle() && event.getType() == BundleEvent.STARTED) {
-				getContext().removeBundleListener(this);
-				active = true;
-				logStage();
-
-				final ISafeRunnable safeRunnable = new StartupsSafeRunnable();
-				Wire.instance(safeRunnable).andStart(getContext());
-				SafeRunner.run(safeRunnable);
-				startupActionsExecuted = true;
+			try {
+				if (event.getBundle() == getContextSave().getBundle() && event.getType() == BundleEvent.STARTED) {
+					getContextSave().removeBundleListener(this);
+					active = true;
+					logStage();
+					final ISafeRunnable safeRunnable = new StartupsSafeRunnable();
+					Wire.instance(safeRunnable).andStart(getContextSave());
+					SafeRunner.run(safeRunnable);
+					startupActionsExecuted = true;
+				}
+			} catch (final IllegalStateException e) {
+				new ConsoleLogger(StartupBundleListener.class.getName()).log(LogService.LOG_WARNING,
+						"BundleContext already gone!"); //$NON-NLS-1$
 			}
+		}
+
+		private BundleContext getContextSave() {
+			final BundleContext context = getContext();
+			if (context == null) {
+				throw new IllegalStateException("BundleContext is <null>"); //$NON-NLS-1$
+			}
+			return context;
 		}
 	}
 
