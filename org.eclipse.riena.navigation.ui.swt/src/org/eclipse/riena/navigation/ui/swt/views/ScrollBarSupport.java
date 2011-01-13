@@ -21,6 +21,7 @@ import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * This class provides scrolling logic for the navigation with a scroll bar.
@@ -44,7 +45,10 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 	@Override
 	public void scroll() {
 		final IModuleNode activeModule = getActiveModule(getActiveNode());
-		scrollTo(activeModule);
+		if (doScroll(activeModule)) {
+			scrollTo(activeModule);
+		}
+
 	}
 
 	/**
@@ -70,8 +74,13 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 	 */
 	@Override
 	protected boolean scrollTo(final Composite topComp, final Composite bottomComp) {
-		sc.showControl(topComp);
-		return true;
+		final int pixels = getScrollPixels(topComp, bottomComp);
+		if (pixels != 0) {
+			scroll(pixels);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -79,15 +88,84 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 	 */
 	@Override
 	protected boolean scrollTo(final Tree tree) {
-		final TreeItem[] selections = tree.getSelection();
-		if (selections.length > 0) {
-			// TODO
-			final Rectangle itemBounds = selections[0].getBounds();
-			sc.setOrigin(itemBounds.x, itemBounds.y);
+		final int pixels = getScrollPixels(tree);
+		if (pixels != 0) {
+			scroll(pixels);
+			return true;
 		} else {
-			sc.showControl(tree);
+			return false;
 		}
-		return true;
+	}
+
+	private boolean doScroll(final IModuleNode module) {
+		if (module == null) {
+			return false;
+		}
+		final ModuleView moduleView = navigationComponentProvider.getModuleViewForNode(module);
+		if (moduleView == null) {
+			return false;
+		}
+		final boolean isClosed = moduleView.getOpenHeight() == 0;
+		if (isClosed) {
+			return doScroll(moduleView.getTitle(), moduleView.getBody());
+		} else {
+			return doScroll(moduleView.getTree());
+		}
+	}
+
+	private boolean doScroll(final Composite topComp, final Composite bottomComp) {
+		final int pixels = getScrollPixels(topComp, bottomComp);
+		if (pixels != 0) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean doScroll(final Tree tree) {
+		final int pixels = getScrollPixels(tree);
+		if (pixels != 0) {
+			return true;
+		}
+		return false;
+	}
+
+	private int getScrollPixels(final Composite topComp, final Composite bottomComp) {
+		int ty = topComp.getBounds().y;
+		ty = sc.getDisplay().map(topComp, sc, 0, ty).y;
+		if (ty < 0) {
+			return ty;
+		}
+
+		final int scHeight = sc.getBounds().height;
+		int by = bottomComp.getBounds().height;
+		by = sc.getDisplay().map(bottomComp, sc, 0, by).y;
+		if (by > scHeight) {
+			return by - scHeight;
+		}
+
+		return 0;
+
+	}
+
+	private int getScrollPixels(final Tree tree) {
+		if (SwtUtilities.isDisposed(tree)) {
+			return 0;
+		}
+		if (tree.getSelectionCount() > 0) {
+			final TreeItem item = tree.getSelection()[0];
+			final Rectangle itemBounds = item.getBounds();
+			int y = sc.getDisplay().map(tree, sc, 0, itemBounds.y).y;
+			if (y < 0) {
+				return y;
+			}
+			final int scHeight = sc.getBounds().height;
+			y = sc.getDisplay().map(tree, sc, 0, itemBounds.y + itemBounds.height).y;
+			if (y > scHeight) {
+				return y - scHeight;
+			}
+		}
+		return 0;
+
 	}
 
 	/**

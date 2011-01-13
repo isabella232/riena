@@ -65,6 +65,7 @@ public class ScrollBarNavigationCompositeDeligation extends AbstractNavigationCo
 		sc.setBackground(NAVIGATION_BACKGROUND);
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
+		sc.setShowFocusedControl(false);
 		SWTFacade.getDefault().setIncrement(sc.getVerticalBar(), 10); // TODO: LnF
 		setScrollingSupport(new ScrollBarSupport(sc, getNavigationProvider()));
 		return naviComp;

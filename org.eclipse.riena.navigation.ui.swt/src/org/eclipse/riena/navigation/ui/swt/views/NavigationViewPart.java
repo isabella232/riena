@@ -43,11 +43,14 @@ import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.ui.controllers.ModuleController;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
+import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
+import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -432,10 +435,17 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		NodeIdentificationSupport.setIdentification(moduleView.getTitle(), "titleBar", moduleNode); //$NON-NLS-1$
 		NodeIdentificationSupport.setIdentification(moduleView.getTree(), "tree", moduleNode); //$NON-NLS-1$
 		moduleNodesToViews.put(moduleNode, moduleView);
-		// now the SWTModuleController implementation can be replaced by your own implementation
-		getViewFactory().createModuleController(moduleNode);
-		//		new SWTModuleController(moduleNode);
+		final ModuleController controller = getViewFactory().createModuleController(moduleNode);
 		moduleView.bind((ModuleNode) moduleNode);
+		if (controller instanceof SWTModuleController) {
+			((SWTModuleController) controller).getTree().addSelectionListener(new ISelectionListener() {
+				public void ridgetSelected(final SelectionEvent event) {
+					// *after* the node in the navigation is  *really* selected
+					// start scrolling
+					navigationCompositeDelegation.scroll();
+				}
+			});
+		}
 		// the size of the module group depends on the module views
 		moduleGroupView.registerModuleView(moduleView);
 	}
@@ -451,8 +461,11 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		final boolean widthChanged = updateModuleGroupWidth(height);
 		if (widthChanged) {
 			updateNavigationSize();
+		} else {
+			navigationMainComposite.layout(true, true);
+			navigationMainComposite.getParent().layout(true, true);
 		}
-		navigationCompositeDelegation.scroll();
+		// navigationCompositeDelegation.scroll();
 	}
 
 	/**

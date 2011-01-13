@@ -92,6 +92,10 @@ public class NavigateSubModuleView extends SubModuleView {
 		fillFactory.applyTo(jumpToTargetSubModule);
 		addUIControl(jumpToTargetSubModule, "jumpToTargetSubModule"); //$NON-NLS-1$
 
+		final Button validation = UIControlsFactory.createButton(parent);
+		fillFactory.applyTo(validation);
+		addUIControl(validation, "validation"); //$NON-NLS-1$
+
 	}
 
 }

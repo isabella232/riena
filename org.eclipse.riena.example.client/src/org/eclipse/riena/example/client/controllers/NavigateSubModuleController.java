@@ -93,6 +93,10 @@ public class NavigateSubModuleController extends SubModuleController {
 		subModuleJump.setText("Jump To SubModule"); //$NON-NLS-1$
 		subModuleJump.addListener(new JumpToTargetSubModule());
 
+		final IActionRidget validation = getRidget(IActionRidget.class, "validation"); //$NON-NLS-1$
+		validation.setText("Validation"); //$NON-NLS-1$
+		validation.addListener(new ValidationListener());
+
 		final PersonModificationBean bean = new PersonModificationBean();
 		bean.setPerson(new Person("Doe", "Jane")); //$NON-NLS-1$ //$NON-NLS-2$
 		final IActionRidget navigateRidget = getRidget(IActionRidget.class, "btnNavigateToRidget"); //$NON-NLS-1$
@@ -240,6 +244,14 @@ public class NavigateSubModuleController extends SubModuleController {
 
 		public void callback() {
 			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.client.textExamplesGroup")); //$NON-NLS-1$
+		}
+
+	}
+
+	private class ValidationListener implements IActionListener {
+
+		public void callback() {
+			getNavigationNode().navigate(new NavigationNodeId("org.eclipse.riena.example.validation")); //$NON-NLS-1$
 		}
 
 	}
