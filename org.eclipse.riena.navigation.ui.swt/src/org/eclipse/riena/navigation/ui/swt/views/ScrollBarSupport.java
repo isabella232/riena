@@ -28,27 +28,24 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class ScrollBarSupport extends AbstractScrollingSupport {
 
-	private final ScrolledComposite sc;
+	private final ScrolledComposite scrolledComposite;
 
 	/**
+	 * @param scrolledComposite
 	 * @param navigationComponentProvider
 	 */
-	public ScrollBarSupport(final ScrolledComposite sc,
+	public ScrollBarSupport(final ScrolledComposite scrolledComposite,
 			final IModuleNavigationComponentProvider navigationComponentProvider) {
 		super(navigationComponentProvider);
-		this.sc = sc;
+		this.scrolledComposite = scrolledComposite;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void scroll() {
 		final IModuleNode activeModule = getActiveModule(getActiveNode());
-		if (doScroll(activeModule)) {
+		if (canScroll(activeModule)) {
 			scrollTo(activeModule);
 		}
-
 	}
 
 	/**
@@ -69,35 +66,27 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected boolean scrollTo(final Composite topComp, final Composite bottomComp) {
 		final int pixels = getScrollPixels(topComp, bottomComp);
-		if (pixels != 0) {
+		if (canScroll(pixels)) {
 			scroll(pixels);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected boolean scrollTo(final Tree tree) {
 		final int pixels = getScrollPixels(tree);
-		if (pixels != 0) {
+		if (canScroll(pixels)) {
 			scroll(pixels);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
-	private boolean doScroll(final IModuleNode module) {
+	private boolean canScroll(final IModuleNode module) {
 		if (module == null) {
 			return false;
 		}
@@ -107,44 +96,38 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 		}
 		final boolean isClosed = moduleView.getOpenHeight() == 0;
 		if (isClosed) {
-			return doScroll(moduleView.getTitle(), moduleView.getBody());
+			return canScroll(moduleView.getTitle(), moduleView.getBody());
 		} else {
-			return doScroll(moduleView.getTree());
+			return canScroll(moduleView.getTree());
 		}
 	}
 
-	private boolean doScroll(final Composite topComp, final Composite bottomComp) {
-		final int pixels = getScrollPixels(topComp, bottomComp);
-		if (pixels != 0) {
-			return true;
-		}
-		return false;
+	private boolean canScroll(final Composite topComp, final Composite bottomComp) {
+		return canScroll(getScrollPixels(topComp, bottomComp));
 	}
 
-	private boolean doScroll(final Tree tree) {
-		final int pixels = getScrollPixels(tree);
-		if (pixels != 0) {
-			return true;
-		}
-		return false;
+	private boolean canScroll(final Tree tree) {
+		return canScroll(getScrollPixels(tree));
+	}
+
+	private boolean canScroll(final int pixels) {
+		return pixels != 0;
 	}
 
 	private int getScrollPixels(final Composite topComp, final Composite bottomComp) {
-		int ty = topComp.getBounds().y;
-		ty = sc.getDisplay().map(topComp, sc, 0, ty).y;
+		final int ty = scrolledComposite.getDisplay().map(topComp, scrolledComposite, 0, topComp.getBounds().y).y;
 		if (ty < 0) {
 			return ty;
 		}
 
-		final int scHeight = sc.getBounds().height;
-		int by = bottomComp.getBounds().height;
-		by = sc.getDisplay().map(bottomComp, sc, 0, by).y;
+		final int scHeight = scrolledComposite.getBounds().height;
+		final int by = scrolledComposite.getDisplay().map(bottomComp, scrolledComposite, 0,
+				bottomComp.getBounds().height).y;
 		if (by > scHeight) {
 			return by - scHeight;
 		}
 
 		return 0;
-
 	}
 
 	private int getScrollPixels(final Tree tree) {
@@ -154,48 +137,38 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 		if (tree.getSelectionCount() > 0) {
 			final TreeItem item = tree.getSelection()[0];
 			final Rectangle itemBounds = item.getBounds();
-			int y = sc.getDisplay().map(tree, sc, 0, itemBounds.y).y;
+			int y = scrolledComposite.getDisplay().map(tree, scrolledComposite, 0, itemBounds.y).y;
 			if (y < 0) {
 				return y;
 			}
-			final int scHeight = sc.getBounds().height;
-			y = sc.getDisplay().map(tree, sc, 0, itemBounds.y + itemBounds.height).y;
+			final int scHeight = scrolledComposite.getBounds().height;
+			y = scrolledComposite.getDisplay().map(tree, scrolledComposite, 0, itemBounds.y + itemBounds.height).y;
 			if (y > scHeight) {
 				return y - scHeight;
 			}
 		}
 		return 0;
-
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected int getNavigationComponentHeight() {
-		return sc.getBounds().height;
+		return scrolledComposite.getBounds().height;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void scrollUp(final int pixels) {
 		scroll(-pixels);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void scrollDown(final int pixels) {
 		scroll(pixels);
 	}
 
 	private void scroll(final int pixels) {
-		final Point origin = sc.getOrigin();
+		final Point origin = scrolledComposite.getOrigin();
 		origin.y += pixels;
-		sc.setOrigin(origin);
+		scrolledComposite.setOrigin(origin);
 	}
 
 }
