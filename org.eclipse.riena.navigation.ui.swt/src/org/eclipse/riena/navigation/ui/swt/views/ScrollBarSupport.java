@@ -31,7 +31,10 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 	private final ScrolledComposite scrolledComposite;
 
 	/**
+	 * Creates a new instance of the support of scrolling with scroll bars.
+	 * 
 	 * @param scrolledComposite
+	 *            the composite around the content that should be scrolled
 	 * @param navigationComponentProvider
 	 */
 	public ScrollBarSupport(final ScrolledComposite scrolledComposite,
@@ -86,6 +89,14 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 		return false;
 	}
 
+	/**
+	 * Returns whether scrolling is necessary to make the given module (and
+	 * maybe the selected sub-module) visible.
+	 * 
+	 * @param module
+	 *            node of the module
+	 * @return {@code true} scrolling is necessary; otherwise {@code false}
+	 */
 	private boolean canScroll(final IModuleNode module) {
 		if (module == null) {
 			return false;
@@ -102,6 +113,16 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 		}
 	}
 
+	/**
+	 * Returns whether scrolling is necessary to make the given composites
+	 * visible.
+	 * 
+	 * @param topComp
+	 *            top composite
+	 * @param bottomComp
+	 *            bottom composite
+	 * @return {@code true} scrolling is necessary; otherwise {@code false}
+	 */
 	private boolean canScroll(final Composite topComp, final Composite bottomComp) {
 		return canScroll(getScrollPixels(topComp, bottomComp));
 	}
@@ -110,26 +131,52 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 		return canScroll(getScrollPixels(tree));
 	}
 
+	/**
+	 * Returns whether scrolling is necessary to make the selected tree item
+	 * visible.
+	 * 
+	 * @param tree
+	 *            tree
+	 * @return {@code true} scrolling is necessary; otherwise {@code false}
+	 */
 	private boolean canScroll(final int pixels) {
 		return pixels != 0;
 	}
 
+	/**
+	 * Returns the amount of pixels which are necessary for scrolling so that
+	 * the given composites are visible.
+	 * 
+	 * @param topComp
+	 *            top composite
+	 * @param bottomComp
+	 *            bottom composite
+	 * @return amount of pixels
+	 */
 	private int getScrollPixels(final Composite topComp, final Composite bottomComp) {
 		final int ty = scrolledComposite.getDisplay().map(topComp, scrolledComposite, 0, topComp.getBounds().y).y;
 		if (ty < 0) {
 			return ty;
 		}
 
-		final int scHeight = scrolledComposite.getBounds().height;
+		final int clientHeight = scrolledComposite.getClientArea().height;
 		final int by = scrolledComposite.getDisplay().map(bottomComp, scrolledComposite, 0,
 				bottomComp.getBounds().height).y;
-		if (by > scHeight) {
-			return by - scHeight;
+		if (by > clientHeight) {
+			return by - clientHeight;
 		}
 
 		return 0;
 	}
 
+	/**
+	 * Returns the amount of pixels which are necessary for scrolling so that
+	 * the selected tree item is visible.
+	 * 
+	 * @param tree
+	 *            tree
+	 * @return amount of pixels
+	 */
 	private int getScrollPixels(final Tree tree) {
 		if (SwtUtilities.isDisposed(tree)) {
 			return 0;
@@ -141,10 +188,10 @@ public class ScrollBarSupport extends AbstractScrollingSupport {
 			if (y < 0) {
 				return y;
 			}
-			final int scHeight = scrolledComposite.getBounds().height;
+			final int clientHeight = scrolledComposite.getClientArea().height;
 			y = scrolledComposite.getDisplay().map(tree, scrolledComposite, 0, itemBounds.y + itemBounds.height).y;
-			if (y > scHeight) {
-				return y - scHeight;
+			if (y > clientHeight) {
+				return y - clientHeight;
 			}
 		}
 		return 0;
