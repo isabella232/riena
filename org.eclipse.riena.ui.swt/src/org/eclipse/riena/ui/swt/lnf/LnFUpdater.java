@@ -190,6 +190,9 @@ public class LnFUpdater {
 		if (!checkLnfKeys(control)) {
 			return;
 		}
+		if (ignoreControl(control)) {
+			return;
+		}
 		final List<PropertyDescriptor> properties = getProperties(control);
 		for (final PropertyDescriptor property : properties) {
 			final Object newValue = getLnfValue(control, property);
@@ -249,6 +252,23 @@ public class LnFUpdater {
 		//			return ignoreProperty((Class<? extends Control>) superclass, property);
 		//		}
 
+		return false;
+
+	}
+
+	private boolean ignoreControl(final Control control) {
+		final Class<? extends Control> controlClass = control.getClass();
+		final IgnoreLnFUpdater ignoreLnFUpdater = controlClass.getAnnotation(IgnoreLnFUpdater.class);
+		if (ignoreLnFUpdater != null) {
+			final String[] ignoreProps = ignoreLnFUpdater.value();
+			for (final String ignoreProp : ignoreProps) {
+				if (ignoreProp != null) {
+					if (ignoreProp.equals("*")) {
+						return true;
+					}
+				}
+			}
+		}
 		return false;
 
 	}

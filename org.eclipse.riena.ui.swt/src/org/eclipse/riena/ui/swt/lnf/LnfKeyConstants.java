@@ -429,9 +429,9 @@ public final class LnfKeyConstants {
 	public static final String ERROR_MARKER_BORDER_COLOR = "errorMarker.borderColor"; //$NON-NLS-1$
 
 	/**
-	 * The border width of the an error marker around a table row.
+	 * The border thickness of the an error marker around a table row.
 	 */
-	public static final String ROW_ERROR_MARKER_BORDER_WIDTH = "rwErrorMarker.borderwidth"; //$NON-NLS-1$
+	public static final String ROW_ERROR_MARKER_BORDER_THICKNESS = "rwErrorMarker.borderthickness"; //$NON-NLS-1$
 
 	/**
 	 * @since 1.2

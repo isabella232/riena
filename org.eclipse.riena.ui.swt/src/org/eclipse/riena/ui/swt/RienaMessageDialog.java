@@ -29,6 +29,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  */
 public class RienaMessageDialog extends MessageDialog {
 
+	private static final LnFUpdater LNF_UPDATER = new LnFUpdater();
+
 	// --- start - code from JFace MessageDialog.java ---
 
 	/**
@@ -230,7 +232,7 @@ public class RienaMessageDialog extends MessageDialog {
 		dialogArea = createDialogArea(centerComposite);
 		buttonBar = createButtonBar(centerComposite);
 
-		new LnFUpdater().updateUIControls(parent, true);
+		LNF_UPDATER.updateUIControls(parent, true);
 
 	}
 

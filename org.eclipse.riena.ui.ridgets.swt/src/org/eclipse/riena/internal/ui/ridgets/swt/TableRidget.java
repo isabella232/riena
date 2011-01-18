@@ -660,11 +660,11 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private final class TableItemEraser implements Listener {
 
 		private final Color borderColor;
-		private final int borderWidth;
+		private final int borderThickness;
 
 		public TableItemEraser() {
 			borderColor = LnfManager.getLnf().getColor(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR);
-			borderWidth = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.ROW_ERROR_MARKER_BORDER_WIDTH, 1);
+			borderThickness = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.ROW_ERROR_MARKER_BORDER_THICKNESS, 1);
 		}
 
 		/*
@@ -732,7 +732,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 					x = event.x;
 					y = event.y;
 				}
-				for (int i = 0; i < borderWidth; i++) {
+				for (int i = 0; i < borderThickness; i++) {
 					int arc = 3;
 					if (i > 0) {
 						arc = 0;
