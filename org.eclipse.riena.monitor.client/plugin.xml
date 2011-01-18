@@ -30,7 +30,7 @@
       </collector>
       <collector
             category="CustomCollector"
-            class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=-2..0; triggerRange=-2"
+            class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=-2..0; triggerRange=-2; async=false"
             maxItems="500">
       </collector>
    </extension>
