@@ -195,7 +195,7 @@ public final class TestCollector {
 			}
 			final Class<?> clazz = getClass(bundle, entryURL);
 			if (clazz == null) {
-				trace("Could not get class name from ", url); //$NON-NLS-1$
+				trace("Could not get class from ", url); //$NON-NLS-1$
 				continue;
 			}
 			if (!TestCase.class.isAssignableFrom(clazz)) {
