@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 compeople AG and others.
+ * Copyright (c) 2007, 2011 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.core.logging;
+package org.eclipse.riena.core.logging;
 
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
@@ -16,8 +16,8 @@ import org.osgi.service.log.LogListener;
 import org.eclipse.equinox.log.SynchronousLogListener;
 
 /**
- * Wraps another {@code LogListener} so that it used as synchronous
- * {@code LogListener}.
+ * Wraps another {@code LogListener} (which defines an asynchronous
+ * {@code LogListener}!) so that it used as synchronous {@code LogListener}.
  */
 public class SynchronousLogListenerAdapter implements SynchronousLogListener {
 
@@ -27,12 +27,6 @@ public class SynchronousLogListenerAdapter implements SynchronousLogListener {
 		this.logListener = logListener;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.osgi.service.log.LogListener#logged(org.osgi.service.log.LogEntry)
-	 */
 	public void logged(final LogEntry entry) {
 		logListener.logged(entry);
 	}

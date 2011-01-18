@@ -25,6 +25,7 @@ import org.eclipse.riena.core.logging.CommandProviderLogFilter;
 import org.eclipse.riena.core.logging.ILogCatcher;
 import org.eclipse.riena.core.logging.LogServiceLogCatcher;
 import org.eclipse.riena.core.logging.PlatformLogCatcher;
+import org.eclipse.riena.core.logging.SynchronousLogListenerAdapter;
 import org.eclipse.riena.core.logging.SysoLogListener;
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.InjectService;
