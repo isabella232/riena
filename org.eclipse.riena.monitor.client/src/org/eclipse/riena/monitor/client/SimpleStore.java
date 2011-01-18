@@ -27,8 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
+import java.util.zip.DeflaterOutputStream;
+import java.util.zip.InflaterInputStream;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -169,31 +169,14 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		cleaner.schedule(Millis.seconds(15));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.monitor.client.IStore#close()
-	 */
 	public void close() {
 		cleaner.cancel();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.monitor.client.IStore#flush()
-	 */
 	public void flush() {
 		// nothing to do here
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.internal.monitor.client.ICollectibleStore#collect(org
-	 * .eclipse.riena.monitor.core.Collectible)
-	 */
 	public synchronized boolean collect(final Collectible<?> collectible) {
 		final File file = getFile(collectible, COLLECT_FILE_EXTENSION);
 		putCollectible(collectible, file);
@@ -201,13 +184,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.monitor.client.IStore#prepareForTransfer
-	 * (java.lang.String)
-	 */
-	public void prepareTransferables(final String category) {
+	public synchronized void prepareTransferables(final String category) {
 		final File[] trans = storeFolder.listFiles(new FilenameFilter() {
 
 			public boolean accept(final File dir, final String name) {
@@ -221,12 +198,6 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.monitor.client.IStore#getTransferables(java
-	 * .lang.String)
-	 */
 	public synchronized List<Collectible<?>> retrieveTransferables(final String category) {
 		final File[] transferables = storeFolder.listFiles(new FilenameFilter() {
 
@@ -277,38 +248,35 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 * Get the compressor for storing the collectibles.
 	 * <p>
 	 * <b>Note: </b>This hook method may be overwritten to provide another
-	 * compressing technology. This method uses GZIP.
+	 * compressing technology. This method uses
+	 * DeflaterOutputStream/InputStream. <br>
+	 * See also <a
+	 * href="http://www.thatsjava.com/java-enterprise/44517/">GZIP/Cipher
+	 * problem</a>
 	 * 
 	 * @param os
 	 * @return
 	 * @throws IOException
 	 */
 	protected OutputStream getCompressor(final OutputStream os) throws IOException {
-		return new GZIPOutputStream(os);
+		return new DeflaterOutputStream(os);
 	}
 
 	/**
 	 * 
-	 * Get the encryptor for retrieving the collectibles.
+	 * Get the decompressor for retrieving the collectibles.
 	 * <p>
-	 * <b>Note: </b>This hook method is intended to be overwritten to provide
-	 * encrypted storage on the local file system on the client. Otherwise no
-	 * encryption will be used.
+	 * <b>Note: </b>This hook method is intended to be overwritten to provide a
+	 * better encrypted storage on the local file system on the client.
 	 * 
 	 * @param is
 	 * @return
 	 * @throws IOException
 	 */
 	protected InputStream getDecompressor(final InputStream is) throws IOException {
-		return new GZIPInputStream(is);
+		return new InflaterInputStream(is);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.monitor.client.IStore#commitTransferred(
-	 * java.util.List)
-	 */
 	public synchronized void commitTransferred(final List<Collectible<?>> collectibles) {
 		for (final Collectible<?> collectible : collectibles) {
 			delete(getFile(collectible, TRANSFER_FILE_EXTENSION));
@@ -456,9 +424,6 @@ public class SimpleStore implements IStore, IExecutableExtension {
 			}
 		}
 
-		/**
-		 * @param value
-		 */
 		private void clean(final List<File> files, final int maxItems) {
 			if (files.size() < maxItems) {
 				return;
