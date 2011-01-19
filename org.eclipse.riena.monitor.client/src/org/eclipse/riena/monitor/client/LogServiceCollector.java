@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 compeople AG and others.
+ * Copyright (c) 2007, 2011 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,43 @@ import org.eclipse.riena.monitor.common.LogEntryTransferObject;
  * Collects logs that are delivered by the
  * {@code org.osgi.service.log.LogListener}.
  * <p>
+ * Example extension:
+ * 
+ * <pre>
+ * &lt;extension point=&quot;org.eclipse.riena.monitor.client.collectors&quot;&gt;
+ *    &lt;collector
+ *          category=&quot;LogCollector&quot;
+ *          class=&quot;org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=1,2; triggerRange=1,2; async=false&quot;
+ *          maxItems=&quot;50&quot;&gt;
+ *    &lt;/collector&gt;
+ *    &lt;collector
+ *          category=&quot;CustomCollector&quot;
+ *          class=&quot;org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=-2..0; triggerRange=-2&quot;
+ *          maxItems=&quot;250&quot;&gt;
+ *    &lt;/collector&gt;
+ * &lt;/extension&gt;
+ * </pre>
+ * 
+ * In the example above there are two required parameters collectRange and
+ * triggerRange. Both parameters are of type range. A range defines a set of
+ * integers (see org.eclipse.riena.monitor.client.Range), e.g.
+ * <ul>
+ * <li>1..3 - is a interval containing 1, 2 and 3</li>
+ * <li>1,2 - are simply the values 1 and 2</li>
+ * <li>1..3, 5,7 - is a interval containing 1, 2, 3, 5 and 7</li>
+ * </ul>
+ * These integers are the log levels defined by org.osgi.service.log.LogService.
+ * So, for the above defined LogServiceCollector this means collect
+ * (collectRange) all logs that are INFO (3), WARNING (2) or ERROR (1) and
+ * trigger transmission (triggerRange) on WARNING (2) or ERROR (1). <br>
+ * The optional parameter async allows to attach the LogServiceCollector either
+ * synchronously or asynchronously. The default is asynchronously. The advantage
+ * of attaching synchronously is that the LogServiceCollector can access thread
+ * information.
+ * <p>
+ * See also <a href=
+ * "http://wiki.eclipse.org/Riena/Getting_Started_with_Client_Monitoring#LogServiceCollector"
+ * >Riena Wiki LogServiceCollector</a>
  */
 public class LogServiceCollector extends AbstractCollector implements IExecutableExtension {
 
