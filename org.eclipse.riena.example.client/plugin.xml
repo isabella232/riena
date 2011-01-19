@@ -335,6 +335,13 @@
       </view>
       <view
             allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.SalaryIgnoreView"
+            id="org.eclipse.riena.example.client.views.SalaryIgnoreView"
+            name="org.eclipse.riena.example.client.views.SalaryIgnoreView"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
             class="org.eclipse.riena.example.client.views.OutlineContractsView"
             id="org.eclipse.riena.example.client.views.OutlineContractsView"
             name="org.eclipse.riena.example.client.views.OutlineContractsView"
@@ -791,6 +798,17 @@
                      selectable="true"
                      sharedView="false"
                      viewId="org.eclipse.riena.example.client.views.SalaryView"
+                     visible="true">
+               </subModule>
+               <subModule
+                     closable="true"
+                     controller="org.eclipse.riena.example.client.controllers.SalaryIgnoreController"
+                     expanded="false"
+                     name="Salary"
+                     nodeId="org.eclipse.riena.example.selectablesubmodule.salaryignore"
+                     selectable="true"
+                     sharedView="false"
+                     viewId="org.eclipse.riena.example.client.views.SalaryIgnoreView"
                      visible="true">
                </subModule>
                <subModule

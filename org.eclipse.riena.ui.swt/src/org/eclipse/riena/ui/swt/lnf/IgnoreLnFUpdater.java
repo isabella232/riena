@@ -17,7 +17,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines a property that should no be manipulated by the {@code LnFUpdater}.
+ * Defines one or more properties which should not be manipulated by the
+ * {@code LnFUpdater}.
+ * <p>
+ * You can use the <i>wildcard</i> "*" to ignore all properties of the class.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })

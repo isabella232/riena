@@ -187,10 +187,10 @@ public class LnFUpdater {
 		if (!Modifier.isPublic(classModifiers)) {
 			return;
 		}
-		if (!checkLnfKeys(control)) {
+		if (ignoreControl(control)) {
 			return;
 		}
-		if (ignoreControl(control)) {
+		if (!checkLnfKeys(control)) {
 			return;
 		}
 		final List<PropertyDescriptor> properties = getProperties(control);
@@ -218,59 +218,6 @@ public class LnFUpdater {
 				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(control, property), e);
 			}
 		}
-	}
-
-	/**
-	 * Returns whether the given property should be ignored for the given
-	 * control.
-	 * <p>
-	 * Properties of the annotation {@code IgnoreLnFUpdater} should not be
-	 * changed.
-	 * 
-	 * @param control
-	 *            UI control
-	 * @param property
-	 *            property to check
-	 * @return {@code true} if property should be ignored; otherwise
-	 *         {@code false}
-	 */
-	private boolean ignoreProperty(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
-
-		final IgnoreLnFUpdater ignoreLnFUpdater = controlClass.getAnnotation(IgnoreLnFUpdater.class);
-		if (ignoreLnFUpdater != null) {
-			final String[] ignoreProps = ignoreLnFUpdater.value();
-			for (final String ignoreProp : ignoreProps) {
-				if (ignoreProp != null) {
-					if (ignoreProp.equals(property.getName())) {
-						return true;
-					}
-				}
-			}
-		}
-		//		final Class<?> superclass = controlClass.getSuperclass();
-		//		if (Control.class.isAssignableFrom(superclass)) {
-		//			return ignoreProperty((Class<? extends Control>) superclass, property);
-		//		}
-
-		return false;
-
-	}
-
-	private boolean ignoreControl(final Control control) {
-		final Class<? extends Control> controlClass = control.getClass();
-		final IgnoreLnFUpdater ignoreLnFUpdater = controlClass.getAnnotation(IgnoreLnFUpdater.class);
-		if (ignoreLnFUpdater != null) {
-			final String[] ignoreProps = ignoreLnFUpdater.value();
-			for (final String ignoreProp : ignoreProps) {
-				if (ignoreProp != null) {
-					if (ignoreProp.equals("*")) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-
 	}
 
 	/**
@@ -849,6 +796,58 @@ public class LnFUpdater {
 
 	private boolean isDirtyLayout() {
 		return dirtyLayout;
+	}
+
+	/**
+	 * Returns whether the given property should be ignored for the given
+	 * control.
+	 * <p>
+	 * Properties of the annotation {@code IgnoreLnFUpdater} should not be
+	 * changed.
+	 * 
+	 * @param controlClass
+	 *            class of the UI control
+	 * @param property
+	 *            description of the property to check
+	 * @return {@code true} if property should be ignored; otherwise
+	 *         {@code false}
+	 */
+	private boolean ignoreProperty(final Class<? extends Control> controlClass, final PropertyDescriptor property) {
+		return ignoreProperty(controlClass, property.getName());
+	}
+
+	/**
+	 * Returns whether the given control should be ignored.
+	 * <p>
+	 * If the the annotation {@code IgnoreLnFUpdater} has a <i>property name</i>
+	 * "*", no property of the given control should be changed. So the complete
+	 * control can be ignored.
+	 * 
+	 * @param control
+	 *            UI control
+	 * @return {@code true} if control should be ignored; otherwise
+	 *         {@code false}
+	 */
+	private boolean ignoreControl(final Control control) {
+		return ignoreProperty(control.getClass(), "*"); //$NON-NLS-1$
+	}
+
+	private boolean ignoreProperty(final Class<?> controlClass, final String property) {
+		if (!Control.class.isAssignableFrom(controlClass)) {
+			return false;
+		}
+		final IgnoreLnFUpdater ignoreLnfUpdater = controlClass.getAnnotation(IgnoreLnFUpdater.class);
+		if (ignoreLnfUpdater == null) {
+			return false;
+		}
+		for (final String ignoreProp : ignoreLnfUpdater.value()) {
+			if (ignoreProp != null) {
+				if (ignoreProp.equals(property)) {
+					return true;
+				}
+			}
+		}
+		return ignoreProperty(controlClass.getSuperclass(), property);
 	}
 
 }

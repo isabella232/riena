@@ -344,7 +344,8 @@ public class LnFUpdaterTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the <i>private</i> method {@code ignoreProperty}.
+	 * Tests the <i>private</i> method
+	 * {@code ignoreProperty(Class<? extends Control>, PropertyDescriptor)}.
 	 * 
 	 * @throws IntrospectionException
 	 *             handled by jUnit
@@ -366,6 +367,31 @@ public class LnFUpdaterTest extends RienaTestCase {
 		property = new PropertyDescriptor("background", Composite.class);
 		ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreProperty", MyComposite.class, property);
 		assertTrue(ret);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code ignoreControl(Control)}.
+	 * 
+	 * @throws IntrospectionException
+	 *             handled by jUnit
+	 */
+	public void testIgnoreControl() throws IntrospectionException {
+
+		final Label label = new Label(shell, SWT.DEFAULT);
+		boolean ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreControl", label);
+		assertFalse(ret);
+		label.dispose();
+
+		Composite comp = new MyComposite(shell, SWT.DEFAULT);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreControl", comp);
+		assertFalse(ret);
+		comp.dispose();
+
+		comp = new MyIgnoreComposite(shell, SWT.DEFAULT);
+		ret = ReflectionUtils.invokeHidden(lnFUpdater, "ignoreControl", comp);
+		assertTrue(ret);
+		comp.dispose();
 
 	}
 
@@ -501,6 +527,15 @@ public class LnFUpdaterTest extends RienaTestCase {
 	private static class MyComposite extends Composite {
 
 		public MyComposite(final Composite parent, final int style) {
+			super(parent, style);
+		}
+
+	}
+
+	@IgnoreLnFUpdater("*")
+	private static class MyIgnoreComposite extends Composite {
+
+		public MyIgnoreComposite(final Composite parent, final int style) {
 			super(parent, style);
 		}
 

@@ -15,15 +15,15 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
- * Dummy controller of the sub-module "Salary".
+ * Dummy controller of the sub-module "Salary (Ignore)".
  */
-public class SalaryController extends SubModuleController implements IController {
+public class SalaryIgnoreController extends SubModuleController implements IController {
 
-	public SalaryController(final ISubModuleNode navigationNode) {
+	public SalaryIgnoreController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
 	}
 
-	public SalaryController() {
+	public SalaryIgnoreController() {
 	}
 
 }
