@@ -77,8 +77,11 @@ public final class RienaStatus {
 	 * <li>the store of the client monitoring is cleaned up on each start
 	 * <li>..</li>
 	 * </ul>
+	 * <b>Note:</b> This property is controlled by the system property
+	 * "riena.development". If <b>NOT</b> defined it defaults to
+	 * <code>true</code>.
 	 * 
-	 * @return
+	 * @return is development or not?
 	 */
 	public static boolean isDevelopment() {
 		return Boolean.parseBoolean(System.getProperty(RIENA_DEVELOPMENT_SYSTEM_PROPERTY, DEVELOPMENT_DEFAULT));
