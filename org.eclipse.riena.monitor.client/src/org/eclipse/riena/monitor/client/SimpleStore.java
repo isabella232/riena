@@ -310,13 +310,15 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 */
 	private Collectible<?> getCollectible(final File file) {
 		ObjectInputStream objectis = null;
+		InputStream fis = null;
 		try {
-			final InputStream fis = new FileInputStream(file);
+			fis = new FileInputStream(file);
 			final InputStream decris = getDecryptor(fis);
 			final InputStream gzipis = getDecompressor(decris);
 			objectis = new ObjectInputStream(gzipis);
 			return (Collectible<?>) objectis.readObject();
 		} catch (final Exception e) {
+			IOUtils.close(fis);
 			LOGGER.log(LogService.LOG_DEBUG, "Error retrieving collectible: " + e.getMessage(), e); //$NON-NLS-1$
 			if (file.exists() && !file.delete()) {
 				file.deleteOnExit();
@@ -335,13 +337,15 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 */
 	private void putCollectible(final Collectible<?> collectible, final File file) {
 		ObjectOutputStream objectos = null;
+		OutputStream fos = null;
 		try {
-			final OutputStream fos = new FileOutputStream(file);
+			fos = new FileOutputStream(file);
 			final OutputStream encos = getEncryptor(fos);
 			final OutputStream gzipos = getCompressor(encos);
 			objectos = new ObjectOutputStream(gzipos);
 			objectos.writeObject(collectible);
 		} catch (final IOException e) {
+			IOUtils.close(fos);
 			LOGGER.log(LogService.LOG_DEBUG, "Error storing collectible: " + e.getMessage(), e); //$NON-NLS-1$
 			if (file.exists() && !file.delete()) {
 				file.deleteOnExit();
