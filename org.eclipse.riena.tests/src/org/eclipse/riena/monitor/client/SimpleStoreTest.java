@@ -56,6 +56,15 @@ public class SimpleStoreTest extends RienaTestCase {
 		assertEquals(PAYLOAD, outCollectible.getPayload());
 	}
 
+	public void testGetBadOldCollectibleFromExistingStoreFile() throws CoreException {
+		final SimpleStore store = new SimpleStore();
+		store.setInitializationData(null, null, null);
+		final File file = getFile("regression.store.old");
+		final Collectible<String> outCollectible = ReflectionUtils.invokeHidden(store, "getCollectible", file);
+		assertNull(outCollectible);
+		assertFalse(file.exists());
+	}
+
 	public void testSetInitializationData() throws CoreException {
 		final SimpleStore store = new SimpleStore();
 		store.setInitializationData(null, null, "cleanupDelay=1 m; storePath=c:\\temp\\store");
