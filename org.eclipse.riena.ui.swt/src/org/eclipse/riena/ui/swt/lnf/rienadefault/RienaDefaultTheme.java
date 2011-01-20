@@ -254,6 +254,15 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource("Tree.background", getPrimaryBackground()); //$NON-NLS-1$
 		lnf.putLnfResource("Tree.foreground", getPrimaryForeground()); //$NON-NLS-1$
 
+		lnf.putLnfResource("CCombo.background", getPrimaryBackground()); //$NON-NLS-1$
+		lnf.putLnfResource("CCombo.foreground", getPrimaryForeground()); //$NON-NLS-1$
+
+		lnf.putLnfResource("CompletionCombo.background", getPrimaryBackground()); //$NON-NLS-1$
+		lnf.putLnfResource("CompletionCombo.foreground", getPrimaryForeground()); //$NON-NLS-1$
+
+		lnf.putLnfResource("DatePickerComposite.background", getPrimaryBackground()); // no effect //$NON-NLS-1$
+		lnf.putLnfResource("DatePickerComposite.foreground", getPrimaryForeground()); // no effect //$NON-NLS-1$
+
 		lnf.putLnfResource("white", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
 		lnf.putLnfResource("lightGray", new ColorLnfResource(192, 192, 192)); //$NON-NLS-1$
 		lnf.putLnfResource("gray", new ColorLnfResource(128, 128, 128)); //$NON-NLS-1$
@@ -317,6 +326,13 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource("Tree.font", getPrimaryFont()); //$NON-NLS-1$
 
 		lnf.putLnfResource("Link.font", getPrimaryFont()); //$NON-NLS-1$
+
+		lnf.putLnfResource("CCombo.font", getPrimaryFont()); //$NON-NLS-1$
+
+		lnf.putLnfResource("CompletionCombo.font", getPrimaryFont()); //$NON-NLS-1$
+
+		lnf.putLnfResource("DatePickerComposite.font", getPrimaryFont()); //$NON-NLS-1$
+
 	}
 
 	private void customizeImages(final ILnfCustomizer lnf) {

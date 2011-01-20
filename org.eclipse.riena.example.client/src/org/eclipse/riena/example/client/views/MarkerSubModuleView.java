@@ -32,8 +32,6 @@ import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.DatePickerComposite;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -47,7 +45,6 @@ public class MarkerSubModuleView extends SubModuleView {
 
 	@Override
 	protected void basicCreatePartControl(final Composite parent) {
-		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		parent.setLayout(new GridLayout(2, false));
 
 		final Group group1 = createMarkerOptionsGroup(parent);
