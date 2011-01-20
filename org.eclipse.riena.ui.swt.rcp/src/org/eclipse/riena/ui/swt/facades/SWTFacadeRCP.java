@@ -216,6 +216,14 @@ public final class SWTFacadeRCP extends SWTFacade {
 		scrollBar.setIncrement(value);
 	}
 
+	public void beforeInfoFlyoutShow(final InfoFlyout flyout) {
+		// nothing
+	}
+
+	public void afterInfoFlyoutShow(final InfoFlyout flyout) {
+		// nothing
+	}
+
 	// protected methods
 	////////////////////
 

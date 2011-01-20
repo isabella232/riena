@@ -20,6 +20,7 @@ import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.InfoFlyout;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer;
@@ -63,6 +64,7 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 			worker = new Worker();
 			worker.start();
 		}
+		SWTFacade.getDefault().beforeInfoFlyoutShow(infoFlyout);
 		try {
 			infos.put(info);
 		} catch (final InterruptedException e) {
@@ -92,7 +94,6 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 					break;
 				}
 			}
-
 		}
 
 		private void processInfo(final InfoFlyoutData info) {
@@ -101,9 +102,15 @@ public class InfoFlyoutRidget extends AbstractRidget implements IInfoFlyoutRidge
 
 			syncher.syncExec(new Runnable() {
 				public void run() {
-					infoFlyout.setMessage(info.getMessage());
-					infoFlyout.setIcon(info.getIcon());
-					infoFlyout.openFlyout();
+					try {
+						infoFlyout.setMessage(info.getMessage());
+						infoFlyout.setIcon(info.getIcon());
+						infoFlyout.openFlyout();
+					} finally {
+						if (infos.isEmpty()) {
+							SWTFacade.getDefault().afterInfoFlyoutShow(infoFlyout);
+						}
+					}
 				}
 			});
 

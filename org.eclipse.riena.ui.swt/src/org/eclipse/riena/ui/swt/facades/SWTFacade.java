@@ -591,6 +591,26 @@ public abstract class SWTFacade {
 	}
 
 	/**
+	 * This method is called before the first InfoFlyout message is processed
+	 * 
+	 * @param flyout
+	 *            a {@link InfoFlyout} instance, never null
+	 */
+	public void beforeInfoFlyoutShow(final InfoFlyout flyout) {
+		// nothing by default
+	}
+
+	/**
+	 * This method is called after all InfoFlyout messages are processed
+	 * 
+	 * @param flyout
+	 *            a {@link InfoFlyout} instance, never null
+	 */
+	public void afterInfoFlyoutShow(final InfoFlyout flyout) {
+		// nothing by default
+	}
+
+	/**
 	 * Perform a platform specific traversal action as indicated by the value of
 	 * the {@code traversal} argument. The following values are supported:
 	 * <ul>
@@ -678,4 +698,5 @@ public abstract class SWTFacade {
 	 * @since 3.0
 	 */
 	protected abstract Object[] removeVerifyListeners(final Control control);
+
 }
