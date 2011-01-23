@@ -365,6 +365,24 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(oldSize - 1, getItemCount(control));
 	}
 
+	public void testUpdateFromModelWithNullValue() {
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final StringManager aManager = new StringManager("A", "B", "C", "D", "E");
+		aManager.setSelectedItem("A");
+		ridget.bindToModel(aManager, "items", String.class, null, aManager, "selectedItem");
+		ridget.updateFromModel();
+
+		assertEquals("A", ridget.getText());
+		assertEquals("A", getText(control));
+
+		aManager.setSelectedItem(null);
+		ridget.updateFromModel();
+
+		assertEquals("", ridget.getText());
+		assertEquals("", getText(control));
+	}
+
 	public void testUpdateSelection() {
 		final AbstractComboRidget ridget = getRidget();
 		final Control control = getWidget();

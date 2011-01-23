@@ -603,10 +603,13 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		if (valueObject != null && renderingMethod != null) {
 			valueObject = ReflectionUtils.invoke(value, renderingMethod, (Object[]) null);
 		}
+		String result;
 		if (valueObject == null || valueObject.toString() == null) {
-			throw new NullPointerException("The item value for a model element is null"); //$NON-NLS-1$
+			result = ""; //$NON-NLS-1$
+		} else {
+			result = valueObject.toString();
 		}
-		return valueObject.toString();
+		return result;
 	}
 
 	/**
@@ -676,6 +679,9 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			items.clear();
 			try {
 				for (final Object value : rowObservables) {
+					if (value == null || value.toString() == null) {
+						throw new NullPointerException("The item value for a model element is null"); //$NON-NLS-1$
+					}
 					final String item = (String) objToStrConverter.convert(value);
 					items.add(item);
 				}
