@@ -123,6 +123,11 @@ public abstract class CompletionCombo extends Composite {
 
 	private int visibleItemCount = 5;
 	private boolean hasFocus;
+    /**
+     * Fix for 335129: ignore FocusOut event when we move the focus from
+	 * the Text widget to the list popup. 
+	 */
+	private boolean ignoreFocusOut;
 	private boolean autoCompletion;
 	private AutoCompletionMode autoCompletionMode;
 	/**
@@ -231,7 +236,8 @@ public abstract class CompletionCombo extends Composite {
 					return;
 				}
 				if (getShell() == event.widget) {
-					getDisplay().asyncExec(new Runnable() {
+					// 335128: fixed by using syncExec instead of asyncExec
+					getDisplay().syncExec(new Runnable() {
 						public void run() {
 							if (isDisposed()) {
 								return;
@@ -253,7 +259,9 @@ public abstract class CompletionCombo extends Composite {
 						dropDown(false);
 						selectAll();
 					} else {
-						handleFocus(SWT.FocusOut);
+						if (!ignoreFocusOut) {
+							handleFocus(SWT.FocusOut);
+						}
 					}
 				}
 			}
@@ -1485,6 +1493,10 @@ public abstract class CompletionCombo extends Composite {
 			dropDown(false);
 			break;
 		case SWT.Deactivate:
+			// 335129: the workaround below is causing the pop-up to
+			// appear and dissappear. I'm commenting it to fix this issue.
+			// Also the original comment referects to GTK but if-clause checks
+			// for "carbon" (Mac), so the whole thing seems dubious to me. [EV]
 			/*
 			 * Bug in GTK. When the arrow button is pressed the popup control
 			 * receives a deactivate event and then the arrow button receives a
@@ -1495,16 +1507,16 @@ public abstract class CompletionCombo extends Composite {
 			 * deactivate causes the deactivate to be called twice and the
 			 * selection event to be disappear.
 			 */
-			if (!"carbon".equals(SWT.getPlatform())) { //$NON-NLS-1$
-				final Point point = arrow.toControl(getDisplay().getCursorLocation());
-				final Point size = arrow.getSize();
-				final Rectangle rect = new Rectangle(0, 0, size.x, size.y);
-				if (!rect.contains(point)) {
-					dropDown(false);
-				}
-			} else {
-				dropDown(false);
-			}
+			//			if (!"carbon".equals(SWT.getPlatform())) { //$NON-NLS-1$
+			//				final Point point = arrow.toControl(getDisplay().getCursorLocation());
+			//				final Point size = arrow.getSize();
+			//				final Rectangle rect = new Rectangle(0, 0, size.x, size.y);
+			//				if (!rect.contains(point)) {
+			//					dropDown(false);
+			//				}
+			//			} else {
+			//				dropDown(false);
+			//			}
 			break;
 		default:
 			break;
@@ -2075,9 +2087,7 @@ public abstract class CompletionCombo extends Composite {
 			break;
 		case SWT.DefaultSelection:
 			dropDown(false);
-			if (isAutoCompletion()) {
-				selectAll();
-			}
+			selectAll();
 			Event e = new Event();
 			e.time = event.time;
 			e.stateMask = event.stateMask;
@@ -2109,7 +2119,7 @@ public abstract class CompletionCombo extends Composite {
 			if (isAutoCompletion()) {
 				handleAutoCompletion(event);
 			} else {
-				event.doit = keyEvent.doit;
+				handleNoAutoCompletion(event);
 			}
 			if (!event.doit) {
 				break;
@@ -2188,11 +2198,11 @@ public abstract class CompletionCombo extends Composite {
 			if (!event.doit) {
 				break;
 			}
-			if (isAutoCompletion()) {
-				if (!isDropped()) {
-					dropDown(true);
-				}
+			if (!isDropped()) {
+				dropDown(true);
+				ignoreFocusOut = true;
 				text.setFocus();
+				ignoreFocusOut = false;
 			}
 			if (event.button != 1) {
 				return;
@@ -2322,11 +2332,10 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Handles the autocompletion process.
+	 * Handles a key press when autocompletion is enabled.
 	 * 
 	 * @param event
 	 *            the key event that triggered the method
-	 * @return if this method handled the event
 	 */
 	private void handleAutoCompletion(final Event event) {
 		event.doit = false;
@@ -2367,6 +2376,38 @@ public abstract class CompletionCombo extends Composite {
 						flashDelegate.flash();
 					}
 				}
+			}
+		}
+	}
+
+	/**
+	 * Handles a key press when autocompletion is disabled.
+	 * 
+	 * @param event
+	 *            the key event that triggered the method
+	 */
+	private void handleNoAutoCompletion(final Event event) {
+		// System.out.println(String.format("ch:%c, kc:%d, mask:%d", event.character, event.keyCode, event.stateMask));
+		if (event.stateMask == SWT.ALT || event.stateMask == SWT.CONTROL) {
+			//  Must use equality instead of (stateMask & const > 0) here!
+			// This allows ALT + x or CONTROL + x combos. However 
+			// ALT + CONTROL + x will not go in here and will be handled
+			// by isInputChar(x) instead.
+			event.doit = handleClipboardOperations(event);
+		} else if (isInputChar(event.character)) {
+			final Point selection = getSelection();
+			final String newPrefix;
+			if (event.character == SWT.BS) {
+				newPrefix = buildPrefixOnBackSpace(selection);
+			} else {
+				newPrefix = buildPrefixForInput(event.character, selection);
+			}
+
+			final int index = indexOf(newPrefix);
+			if (index == -1) {
+				clearImage();
+			} else {
+				setImage(index);
 			}
 		}
 	}
@@ -2496,7 +2537,17 @@ public abstract class CompletionCombo extends Composite {
 					final String oldPrefix = prefix.substring(0, prefix.length() - 1);
 					final int startIndex = getSelectionIndex() + 1;
 					final String[] items = getItems(list);
+					// search beneath startIndex
 					for (int i = startIndex; i < items.length; i++) {
+						final String item = items[i];
+						if (matchesWord(oldPrefix, item)) {
+							setMatchingTextAndSelection(oldPrefix.length(), item);
+							result = true;
+							break;
+						}
+					}
+					// 335126: if no result, then search above startIndex
+					for (int i = 0; !result && i < startIndex; i++) {
 						final String item = items[i];
 						if (matchesWord(oldPrefix, item)) {
 							setMatchingTextAndSelection(oldPrefix.length(), item);

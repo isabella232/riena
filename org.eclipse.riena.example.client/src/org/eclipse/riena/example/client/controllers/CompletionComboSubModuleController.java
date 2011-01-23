@@ -41,13 +41,18 @@ public class CompletionComboSubModuleController extends SubModuleController {
 
 		configureCombo(input, "combo2", "selection2", "text2"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		final IComboRidget combo3 = configureCombo(input, "combo3", "selection3", "text3"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		configureCombo(input, "combo3", "selection3", "text3"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+		final IComboRidget combo3 = configureCombo(input, "combo4", "selection4", "text4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		combo3.setMarkSelectionMismatch(true);
 		final CityFormatter formatter = new CityFormatter();
 		combo3.setColumnFormatter(formatter);
 
-		final IComboRidget combo4 = configureCombo(input, "combo4", "selection4", "text4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final IComboRidget combo4 = configureCombo(input, "combo5", "selection5", "text5"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		combo4.setColumnFormatter(formatter);
+
+		final IComboRidget combo5 = configureCombo(input, "combo6", "selection6", "text6"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		combo5.setColumnFormatter(formatter);
 	}
 
 	// helping methods
