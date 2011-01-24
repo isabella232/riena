@@ -12,9 +12,12 @@ package org.eclipse.riena.monitor.client;
 
 import java.util.Map;
 
+import org.osgi.framework.Bundle;
 import org.osgi.service.log.LogEntry;
 import org.osgi.service.log.LogListener;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExecutableExtension;
@@ -34,7 +37,7 @@ import org.eclipse.riena.monitor.common.LogEntryTransferObject;
  * Collects logs that are delivered by the
  * {@code org.osgi.service.log.LogListener}.
  * <p>
- * Example extension:
+ * Example extensions:
  * 
  * <pre>
  * &lt;extension point=&quot;org.eclipse.riena.monitor.client.collectors&quot;&gt;
@@ -51,9 +54,9 @@ import org.eclipse.riena.monitor.common.LogEntryTransferObject;
  * &lt;/extension&gt;
  * </pre>
  * 
- * In the example above there are two required parameters collectRange and
- * triggerRange. Both parameters are of type range. A range defines a set of
- * integers (see org.eclipse.riena.monitor.client.Range), e.g.
+ * In the example above there are two parameters collectRange and triggerRange.
+ * Both parameters are of type range. A range defines a set of integers (see
+ * org.eclipse.riena.monitor.client.Range), e.g.
  * <ul>
  * <li>1..3 - is a interval containing 1, 2 and 3</li>
  * <li>1,2 - are simply the values 1 and 2</li>
@@ -68,6 +71,24 @@ import org.eclipse.riena.monitor.common.LogEntryTransferObject;
  * of attaching synchronously is that the LogServiceCollector can access thread
  * information.
  * <p>
+ * The collectRange is quiet limited. For a more fine grained control of what
+ * should be collected, a filter class may by specified:
+ * 
+ * <pre>
+ * &lt;extension point=&quot;org.eclipse.riena.monitor.client.collectors&quot;&gt;
+ *    &lt;collector
+ *          category=&quot;LogCollector&quot;
+ *          class=&quot;org.eclipse.riena.monitor.client.LogServiceCollector: triggerRange=1,2; async=false; filterClass=org.eclipse.riena.example.client.monitor.LogServiceCollectorFilter&quot;
+ *          maxItems=&quot;50&quot;&gt;
+ *    &lt;/collector&gt;
+ * &lt;/extension&gt;
+ * </pre>
+ * 
+ * The filter class has to implement the interface
+ * <code>ILogServiceCollectorFilter</code>. With this the collectRange is no
+ * longer necessary but can still be used. If used its filtering is applied
+ * before the filter class.
+ * <p>
  * See also <a href=
  * "http://wiki.eclipse.org/Riena/Getting_Started_with_Client_Monitoring#LogServiceCollector"
  * >Riena Wiki LogServiceCollector</a>
@@ -76,12 +97,14 @@ public class LogServiceCollector extends AbstractCollector implements IExecutabl
 
 	private Range collectRange;
 	private Range triggerRange;
+	private ILogServiceCollectorFilter filter;
 	private boolean async;
 	private ExtendedLogReaderService extendedLogReaderService;
 	private LogListener logListener;
 
 	private static final String TRIGGER_RANGE = "triggerRange"; //$NON-NLS-1$
 	private static final String COLLECT_RANGE = "collectRange"; //$NON-NLS-1$
+	private static final String FILTER_CLASS = "filterClass"; //$NON-NLS-1$
 	private static final String ASYNC_EXEC = "async"; //$NON-NLS-1$
 	private static final String ASYNC_EXEC_DEFAULT = Boolean.TRUE.toString();
 
@@ -89,14 +112,29 @@ public class LogServiceCollector extends AbstractCollector implements IExecutabl
 			throws CoreException {
 		Map<String, String> properties = null;
 		try {
-			properties = PropertiesUtils.asMap(data, Literal.map(ASYNC_EXEC, ASYNC_EXEC_DEFAULT), COLLECT_RANGE,
-					TRIGGER_RANGE);
-			collectRange = new Range(properties.get(COLLECT_RANGE));
+			properties = PropertiesUtils.asMap(data, Literal.map(ASYNC_EXEC, ASYNC_EXEC_DEFAULT), TRIGGER_RANGE);
+			final String collectRangeString = properties.get(COLLECT_RANGE);
+			collectRange = new Range(collectRangeString != null ? collectRangeString : Range.ALL);
 			triggerRange = new Range(properties.get(TRIGGER_RANGE));
+			filter = newFilter(config, properties.get(FILTER_CLASS));
 			async = Boolean.parseBoolean(properties.get(ASYNC_EXEC));
 			logListener = newLogListener();
 		} catch (final IllegalArgumentException e) {
 			throw configurationException("Bad configuration.", e); //$NON-NLS-1$
+		}
+	}
+
+	private ILogServiceCollectorFilter newFilter(final IConfigurationElement configurationElement,
+			final String filterClassName) {
+		if (filterClassName == null) {
+			return null;
+		}
+		final Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
+		Assert.isLegal(bundle != null, "Could not get bundle for filter class " + filterClassName); //$NON-NLS-1$
+		try {
+			return (ILogServiceCollectorFilter) bundle.loadClass(filterClassName).newInstance();
+		} catch (final Throwable t) {
+			throw new IllegalArgumentException("Could not create filter instance for class " + filterClassName, t); //$NON-NLS-1$
 		}
 	}
 
@@ -130,6 +168,9 @@ public class LogServiceCollector extends AbstractCollector implements IExecutabl
 		final LogListener listener = new LogListener() {
 			public void logged(final LogEntry entry) {
 				if (!collectRange.matches(entry.getLevel())) {
+					return;
+				}
+				if (filter != null && !filter.isCollectible((ExtendedLogEntry) entry)) {
 					return;
 				}
 				collect(new LogEntryTransferObject((ExtendedLogEntry) entry));
