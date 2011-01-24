@@ -18,19 +18,24 @@ import org.eclipse.core.runtime.Assert;
 
 /**
  * The {@code Range} class implements a simple solution to specify ranges of
- * integers. A range may consist of several intervals and single values.
+ * integers. A range may consist of several intervals and single values or a
+ * single asterisk '*' that matches all.
  * <p>
- * Ranges are specified with a reverse polish notation, e.g.
+ * E.g.
  * <ul>
  * <li>1..3 -> 1,2 and 3 are within the range</li>
  * <li>1..3, 5..8 -> 1,2,3,5,6,7 and 8 are within the range</li>
  * <li>1..3, 9 -> 1,2,3 and 9 are within the range</li>
+ * <li>* -> matches all</li>
  * <li>etc.</li>
  * </ul>
  */
 public class Range {
 
-	private final List<Match> list = new ArrayList<Match>();
+	private List<Match> list;
+
+	public static final String ALL = "*"; //$NON-NLS-1$
+
 	private static final String DELIM = ","; //$NON-NLS-1$
 	private static final String TILL = ".."; //$NON-NLS-1$
 
@@ -41,23 +46,31 @@ public class Range {
 	 * @throws IllegalArgumentException
 	 */
 	public Range(final String range) {
-		final StringTokenizer tokenizer = new StringTokenizer(range, DELIM);
-		String token = null;
-		try {
-			while (tokenizer.hasMoreTokens()) {
-				token = tokenizer.nextToken().trim();
-				if (token.contains(TILL)) {
-					list.add(new Interval(token));
-				} else {
-					list.add(new Value(token));
+		if (range.equals(ALL)) {
+			list = null;
+		} else {
+			list = new ArrayList<Match>();
+			final StringTokenizer tokenizer = new StringTokenizer(range, DELIM);
+			String token = null;
+			try {
+				while (tokenizer.hasMoreTokens()) {
+					token = tokenizer.nextToken().trim();
+					if (token.contains(TILL)) {
+						list.add(new Interval(token));
+					} else {
+						list.add(new Value(token));
+					}
 				}
+			} catch (final Throwable t) {
+				throw new IllegalArgumentException("Error parsing range '" + range + "' with token '" + token + "'.", t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			}
-		} catch (final Throwable t) {
-			throw new IllegalArgumentException("Error parsing range '" + range + "' with token '" + token + "'.", t); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 
 	public boolean matches(final int value) {
+		if (list == null) {
+			return true;
+		}
 		for (final Match match : list) {
 			if (match.matches(value)) {
 				return true;
