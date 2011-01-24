@@ -27,6 +27,17 @@ public class RangeTest extends TestCase {
 		assertFalse(range.matches(3));
 	}
 
+	public void testAllRange() {
+		final Range range = new Range("*");
+		assertTrue(range.matches(-3));
+		assertTrue(range.matches(-2));
+		assertTrue(range.matches(-1));
+		assertTrue(range.matches(0));
+		assertTrue(range.matches(1));
+		assertTrue(range.matches(2));
+		assertTrue(range.matches(3));
+	}
+
 	public void testSingleValue() {
 		final Range range = new Range("2");
 		assertFalse(range.matches(1));
