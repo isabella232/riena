@@ -52,6 +52,7 @@ public class ExampleTheme extends RienaDefaultTheme {
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(186,
 				193, 225));
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(151, 150, 180));
+		lnf.putLnfResource(LnfKeyConstants.MODULE_GROUP_ACTIVE_BORDER_COLOR, new ColorLnfResource(255, 200, 15));
 
 		lnf.putLnfResource("Text.background", new ColorLnfResource(255, 255, 235)); //$NON-NLS-1$
 	}

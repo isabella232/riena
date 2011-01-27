@@ -39,16 +39,8 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 
 		super.paint(gc, value);
 
-		final RienaDefaultLnf lnf = LnfManager.getLnf();
-
 		// Border
-		Color borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
-		if (isActive()) {
-			borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
-		}
-		if (!isEnabled()) {
-			borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
-		}
+		final Color borderColor = getBorderColor();
 		gc.setForeground(borderColor);
 		// -outer
 		// --top
@@ -167,6 +159,24 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 	 */
 	public int getBorderWidth() {
 		return BORDER_WIDTH;
+	}
+
+	/**
+	 * Returns the color of the border according if it's active, passive or
+	 * disable.
+	 * 
+	 * @return border color
+	 */
+	protected Color getBorderColor() {
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
+		Color borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
+		if (isActive()) {
+			borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
+		}
+		if (!isEnabled()) {
+			borderColor = lnf.getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
+		}
+		return borderColor;
 	}
 
 }

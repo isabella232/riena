@@ -148,6 +148,11 @@
             name="org.eclipse.riena.example.client.views.MarkerHidingSubModuleView">
       </view>
       <view allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.CustomMarkerSubModuleView"
+            id="org.eclipse.riena.example.client.views.CustomMarkerSubModuleView"
+            name="org.eclipse.riena.example.client.views.CustomMarkerSubModuleView">
+      </view>
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView"
             id="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView"
             name="org.eclipse.riena.example.client.views.MasterDetailsSubModuleView">

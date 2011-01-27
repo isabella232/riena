@@ -16,7 +16,6 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Rectangle;
 
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
@@ -26,45 +25,26 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
- * Tests of the class <code>EmbeddedBorderRenderer</code>.
+ * Tests of the class {@link ModuleGroupBorderRenderer}.
  */
 @NonUITestCase
-public class EmbeddedBorderRendererTest extends TestCase {
-
-	/**
-	 * Test of the method <code>computeInnerBounds(Rectangle)</code>.
-	 * 
-	 * @throws Exception
-	 *             handled by JUnit
-	 */
-	public void testComputeInnerBounds() throws Exception {
-
-		final Rectangle outerBounds = new Rectangle(12, 24, 36, 48);
-		final EmbeddedBorderRenderer renderer = new EmbeddedBorderRenderer();
-		final Rectangle innerBounds = renderer.computeInnerBounds(outerBounds);
-		final int width = renderer.getBorderWidth();
-		assertEquals(outerBounds.x + width, innerBounds.x);
-		assertEquals(outerBounds.y + width, innerBounds.y);
-		assertEquals(outerBounds.width - width * 2, innerBounds.width);
-		assertEquals(outerBounds.height - width * 2, innerBounds.height);
-
-	}
+public class ModuleGroupBorderRendererTest extends TestCase {
 
 	/**
 	 * Tests the <i>protected</i> method {@code getBorderColor()}.
 	 */
 	public void testGetBorderColor() {
 
-		final EmbeddedBorderRenderer renderer = new EmbeddedBorderRenderer();
+		final ModuleGroupBorderRenderer renderer = new ModuleGroupBorderRenderer();
 
 		renderer.setActive(true);
 		Color borderColor = ReflectionUtils.invokeHidden(renderer, "getBorderColor");
-		Color expectedColor = LnfManager.getLnf().getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR);
+		Color expectedColor = LnfManager.getLnf().getColor(LnfKeyConstants.MODULE_GROUP_ACTIVE_BORDER_COLOR);
 		assertSame(expectedColor, borderColor);
 
 		renderer.setActive(false);
 		borderColor = ReflectionUtils.invokeHidden(renderer, "getBorderColor");
-		expectedColor = LnfManager.getLnf().getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR);
+		expectedColor = LnfManager.getLnf().getColor(LnfKeyConstants.MODULE_GROUP_PASSIVE_BORDER_COLOR);
 		assertSame(expectedColor, borderColor);
 
 		renderer.setActive(true);
@@ -73,7 +53,7 @@ public class EmbeddedBorderRendererTest extends TestCase {
 		markers.add(newMarker);
 		renderer.setMarkers(markers);
 		borderColor = ReflectionUtils.invokeHidden(renderer, "getBorderColor");
-		expectedColor = LnfManager.getLnf().getColor(LnfKeyConstants.EMBEDDED_TITLEBAR_DISABLED_BORDER_COLOR);
+		expectedColor = LnfManager.getLnf().getColor(LnfKeyConstants.MODULE_GROUP_DISABLED_BORDER_COLOR);
 		assertSame(expectedColor, borderColor);
 
 	}

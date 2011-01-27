@@ -141,6 +141,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 
 		lnf.putLnfResource(LnfKeyConstants.NAVIGATION_BACKGROUND, getPrimaryBackground());
 		lnf.putLnfResource(LnfKeyConstants.MODULE_GROUP_WIDGET_BACKGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.MODULE_GROUP_ACTIVE_BORDER_COLOR, new ColorLnfResource(171, 171, 174));
+		lnf.putLnfResource(LnfKeyConstants.MODULE_GROUP_PASSIVE_BORDER_COLOR, new ColorLnfResource(213, 213, 216));
+		lnf.putLnfResource(LnfKeyConstants.MODULE_GROUP_DISABLED_BORDER_COLOR, new ColorLnfResource(233, 233, 238));
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_BACKGROUND, getPrimaryBackground());
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_BACKGROUND, getPrimaryBackground());
 

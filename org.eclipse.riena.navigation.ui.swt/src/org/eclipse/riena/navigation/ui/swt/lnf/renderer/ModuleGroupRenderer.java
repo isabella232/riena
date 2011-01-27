@@ -140,9 +140,9 @@ public class ModuleGroupRenderer extends AbstractLnfRenderer {
 	private EmbeddedBorderRenderer getLnfBorderRenderer() {
 
 		EmbeddedBorderRenderer renderer = (EmbeddedBorderRenderer) LnfManager.getLnf().getRenderer(
-				LnfKeyConstants.SUB_MODULE_VIEW_BORDER_RENDERER);
+				LnfKeyConstants.MODULE_GROUP_BORDER_RENDERER);
 		if (renderer == null) {
-			renderer = new EmbeddedBorderRenderer();
+			renderer = new ModuleGroupBorderRenderer();
 		}
 		return renderer;
 
