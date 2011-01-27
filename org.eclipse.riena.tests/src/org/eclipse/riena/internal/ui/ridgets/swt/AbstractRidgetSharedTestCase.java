@@ -59,6 +59,9 @@ public abstract class AbstractRidgetSharedTestCase extends RienaTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
+		widget = null;
+		shell.dispose();
+		shell = null;
 		super.tearDown();
 	}
 
