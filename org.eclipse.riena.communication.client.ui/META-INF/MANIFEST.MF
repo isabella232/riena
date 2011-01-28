@@ -4,6 +4,11 @@ Bundle-Name: Ui
 Bundle-SymbolicName: org.eclipse.riena.communication.client.ui
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.riena.communication.client.ui.Activator
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.riena.communication.core,
+ org.eclipse.riena.core,
+ org.eclipse.osgi.services,
+ org.eclipse.swt
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.eclipse.riena.communication.client.ui.hooks
