@@ -23,6 +23,7 @@ import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
 import org.eclipse.riena.example.client.controllers.CompletionComboSubModuleController;
 import org.eclipse.riena.example.client.controllers.ContextMenuSubModuleController;
 import org.eclipse.riena.example.client.controllers.ControllerTestsPlaygroundSubModuleController;
+import org.eclipse.riena.example.client.controllers.CustomMarkerSubModuleController;
 import org.eclipse.riena.example.client.controllers.DateTimeSubModuleController;
 import org.eclipse.riena.example.client.controllers.DefaultButtonSubModuleController;
 import org.eclipse.riena.example.client.controllers.DetachedSubModuleController;
@@ -60,6 +61,7 @@ import org.eclipse.riena.example.client.views.ComboSubModuleView;
 import org.eclipse.riena.example.client.views.CompletionComboSubModuleView;
 import org.eclipse.riena.example.client.views.ContextMenuSubModuleView;
 import org.eclipse.riena.example.client.views.ControllerTestsPlaygroundSubModuleView;
+import org.eclipse.riena.example.client.views.CustomMarkerSubModuleView;
 import org.eclipse.riena.example.client.views.DateTimeSubModuleView;
 import org.eclipse.riena.example.client.views.DefaultButtonSubModuleView;
 import org.eclipse.riena.example.client.views.DetachedSubModuleView;
@@ -244,24 +246,6 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 				ListUsingTableSubModuleView.ID, false);
 		playgroundModule.addChild(listUsingTableSubModule);
 
-		final ISubModuleNode markerSubModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.marker"), "Marker"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(markerSubModule, MarkerSubModuleController.class, MarkerSubModuleView.ID, true);
-		playgroundModule.addChild(markerSubModule);
-		markerSubModule.addMarker(new AttentionMarker());
-
-		final ISubModuleNode markerSubModule2 = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.marker2"), "Marker2"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(markerSubModule2, MarkerSubModuleController.class, MarkerSubModuleView.ID, true);
-		playgroundModule.addChild(markerSubModule2);
-		markerSubModule2.addMarker(new AttentionMarker());
-
-		final ISubModuleNode markerHidingSubModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.markerhiding"), "Marker Hiding"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(markerHidingSubModule, MarkerHidingSubModuleController.class,
-				MarkerHidingSubModuleView.ID, false);
-		playgroundModule.addChild(markerHidingSubModule);
-
 		final ISubModuleNode masterDetailsFolderSubModule = buildMasterDetailsNodes();
 		playgroundModule.addChild(masterDetailsFolderSubModule);
 
@@ -270,12 +254,6 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(messageBoxSubModule, MessageBoxSubModuleController.class,
 				MessageBoxSubModuleView.ID, false);
 		playgroundModule.addChild(messageBoxSubModule);
-
-		final ISubModuleNode messageMarkerSubModule = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.messagemarker"), "Message Marker"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(messageMarkerSubModule, MessageMarkerSubModuleController.class,
-				MessageMarkerSubModuleView.ID).setRequiredPreparation(true);
-		playgroundModule.addChild(messageMarkerSubModule);
 
 		final ISubModuleNode tableSubModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.table"), "Table"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -324,6 +302,8 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 				"org.eclipse.riena.example.noController"), "View without Controller"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(noControllerSubModule, NoControllerSubModuleView.ID);
 		playgroundModule.addChild(noControllerSubModule);
+
+		buildMarkerNodes(moduleGroup);
 
 		return new IModuleGroupNode[] { moduleGroup };
 	}
@@ -446,4 +426,55 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
 		return result;
 	}
+
+	/**
+	 * Creates a module for markers.
+	 * <p>
+	 * The children of the module are all sub-modules to demonstrate markers.
+	 * 
+	 * @param moduleGroup
+	 *            parent
+	 * @return new module
+	 */
+	private IModuleNode buildMarkerNodes(final IModuleGroupNode moduleGroup) {
+
+		final WorkareaManager workarea = WorkareaManager.getInstance();
+
+		final IModuleNode markerModule = new ModuleNode(new NavigationNodeId("markerModule"), "Marker"); //$NON-NLS-1$ //$NON-NLS-2$
+		moduleGroup.addChild(markerModule);
+
+		final ISubModuleNode markerSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.marker"), "Marker"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(markerSubModule, MarkerSubModuleController.class, MarkerSubModuleView.ID, true);
+		markerModule.addChild(markerSubModule);
+		markerSubModule.addMarker(new AttentionMarker());
+
+		final ISubModuleNode markerSubModule2 = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.marker2"), "Marker2"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(markerSubModule2, MarkerSubModuleController.class, MarkerSubModuleView.ID, true);
+		markerModule.addChild(markerSubModule2);
+		markerSubModule2.addMarker(new AttentionMarker());
+
+		final ISubModuleNode customMarkerSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.custommarker"), "Custom Marker"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(customMarkerSubModule, CustomMarkerSubModuleController.class,
+				CustomMarkerSubModuleView.ID, true);
+		markerModule.addChild(customMarkerSubModule);
+
+		final ISubModuleNode markerHidingSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.markerhiding"), "Marker Hiding"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(markerHidingSubModule, MarkerHidingSubModuleController.class,
+				MarkerHidingSubModuleView.ID, false);
+		markerModule.addChild(markerHidingSubModule);
+
+		final ISubModuleNode messageMarkerSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.messagemarker"), "Message Marker"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(messageMarkerSubModule, MessageMarkerSubModuleController.class,
+				MessageMarkerSubModuleView.ID).setRequiredPreparation(true);
+		markerModule.addChild(messageMarkerSubModule);
+
+		return markerModule;
+
+	}
+
 }

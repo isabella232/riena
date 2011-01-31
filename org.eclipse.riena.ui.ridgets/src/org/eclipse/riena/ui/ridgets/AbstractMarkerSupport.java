@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.ridgets;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -31,7 +32,7 @@ import org.eclipse.riena.ui.core.marker.OutputMarker;
  */
 public abstract class AbstractMarkerSupport {
 
-	private Set<IMarker> markers;
+	private Collection<IMarker> markers;
 	private Set<Class<? extends IMarker>> hiddenMarkerTypes;
 	private IBasicMarkableRidget ridget;
 	private PropertyChangeSupport propertyChangeSupport;
@@ -58,6 +59,9 @@ public abstract class AbstractMarkerSupport {
 		}
 
 		initializeMarkers();
+		if (markers.contains(marker)) {
+			return;
+		}
 		final Collection<IMarker> oldValue = cloneMarkers();
 		if (markers.add(marker)) {
 			updateMarkers();
@@ -317,7 +321,7 @@ public abstract class AbstractMarkerSupport {
 
 	private Collection<IMarker> cloneMarkers() {
 		if (markers != null) {
-			return new HashSet<IMarker>(markers);
+			return new ArrayList<IMarker>(markers);
 		} else {
 			return Collections.emptySet();
 		}
@@ -325,7 +329,7 @@ public abstract class AbstractMarkerSupport {
 
 	private void initializeMarkers() {
 		if (markers == null) {
-			markers = new HashSet<IMarker>(1, 1.0f);
+			markers = new ArrayList<IMarker>(1);
 		}
 	}
 

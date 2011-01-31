@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.ridgets.swt;
 
 import java.beans.PropertyChangeSupport;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -32,6 +33,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.marker.AbstractMarker;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.RAPDetector;
@@ -40,8 +42,10 @@ import org.eclipse.riena.internal.ui.ridgets.swt.Activator;
 import org.eclipse.riena.internal.ui.ridgets.swt.SharedColors;
 import org.eclipse.riena.internal.ui.ridgets.swt.SharedImages;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.ICustomMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
+import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IControlDecoration;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
@@ -62,6 +66,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), MarkerSupport.class);
 	private static final String PRE_MANDATORY_BACKGROUND_KEY = "MaSu.preMaBa"; //$NON-NLS-1$
 	private static final String PRE_OUTPUT_BACKGROUND_KEY = "MaSu.preOuBa"; //$NON-NLS-1$
+	private static final String PRE_OUTPUT_FOREGROUND_KEY = "MaSu.preOuFo"; //$NON-NLS-1$
 	private static final String PRE_NEGATIVE_FOREGROUND_KEY = "MaSu.preNeFo"; //$NON-NLS-1$
 	private static final long FLASH_DURATION_MS = 300;
 
@@ -168,11 +173,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 		if (getData(PRE_MANDATORY_BACKGROUND_KEY) == null) {
 			setData(PRE_MANDATORY_BACKGROUND_KEY, getControlBackground(control));
 		}
-		final RienaDefaultLnf lnf = LnfManager.getLnf();
-		Color color = lnf.getColor(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND);
-		if (color == null) {
-			color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY);
-		}
+		final Color color = getMandatoryBackground();
 		if (control instanceof CompletionCombo) {
 			((CompletionCombo) control).setTextBackground(color);
 		} else {
@@ -180,25 +181,44 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
-	protected void addOutput(final Control control, final Color color) {
-		if (getData(PRE_OUTPUT_BACKGROUND_KEY) == null) {
-			final Color background = getControlBackground(control);
-			setData(PRE_OUTPUT_BACKGROUND_KEY, background);
-			control.setBackground(color);
+	protected void addOutput(final Control control, final Color foreground, final Color background) {
+		if (foreground != null) {
+			if (getData(PRE_OUTPUT_FOREGROUND_KEY) == null) {
+				final Color preForeground = getControlForeground(control);
+				setData(PRE_OUTPUT_FOREGROUND_KEY, preForeground);
+				control.setForeground(foreground);
+			}
+		}
+		if (background != null) {
+			if (getData(PRE_OUTPUT_BACKGROUND_KEY) == null) {
+				final Color preBackground = getControlBackground(control);
+				setData(PRE_OUTPUT_BACKGROUND_KEY, preBackground);
+				control.setBackground(background);
+			}
 		}
 	}
 
 	private Color getControlBackground(final Control control) {
+		final Control backgroundControl = getControlWithColor(control);
+		return backgroundControl.getBackground();
+	}
+
+	private Color getControlForeground(final Control control) {
+		final Control foregroundControl = getControlWithColor(control);
+		return foregroundControl.getForeground();
+	}
+
+	private Control getControlWithColor(final Control control) {
 		// a CCombo does return the background of the composite instead of the list we use
 		if (control instanceof CCombo && !RAPDetector.isRAPavailable()) {
 			try {
-				final Control txt = ReflectionUtils.getHidden(control, "list"); //$NON-NLS-1$
-				return txt.getBackground();
+				final Control list = ReflectionUtils.getHidden(control, "list"); //$NON-NLS-1$
+				return list;
 			} catch (final RuntimeException ex) {
 				LOGGER.log(LogService.LOG_WARNING, "Unexpected error when accessing field 'list' in CCombo.", ex); //$NON-NLS-1$
 			}
 		}
-		return control.getBackground();
+		return control;
 	}
 
 	@Override
@@ -225,6 +245,11 @@ public class MarkerSupport extends BasicMarkerSupport {
 	}
 
 	protected void clearOutput(final Control control) {
+		if (getData(PRE_OUTPUT_FOREGROUND_KEY) != null) {
+			final Color data = (Color) getData(PRE_OUTPUT_FOREGROUND_KEY);
+			control.setForeground(data);
+			setData(PRE_OUTPUT_FOREGROUND_KEY, null);
+		}
 		if (getData(PRE_OUTPUT_BACKGROUND_KEY) != null) {
 			final Color data = (Color) getData(PRE_OUTPUT_BACKGROUND_KEY);
 			control.setBackground(data);
@@ -282,7 +307,7 @@ public class MarkerSupport extends BasicMarkerSupport {
 	private void addNegative(final Control control) {
 		if (getData(PRE_NEGATIVE_FOREGROUND_KEY) == null) {
 			setData(PRE_NEGATIVE_FOREGROUND_KEY, control.getForeground());
-			control.setForeground(control.getDisplay().getSystemColor(SWT.COLOR_RED));
+			control.setForeground(getNegativeForeground());
 		}
 	}
 
@@ -364,18 +389,80 @@ public class MarkerSupport extends BasicMarkerSupport {
 			clearOutput(control);
 			final RienaDefaultLnf lnf = LnfManager.getLnf();
 			if (isMandatory(getRidget()) && !isHidden(MandatoryMarker.class)) {
-				Color color = lnf.getColor(LnfKeyConstants.MANDATORY_OUTPUT_MARKER_BACKGROUND);
-				if (color == null) {
-					color = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY_OUTPUT);
+				Color bgColor = lnf.getColor(LnfKeyConstants.MANDATORY_OUTPUT_MARKER_BACKGROUND);
+				if (bgColor == null) {
+					bgColor = Activator.getSharedColor(control.getDisplay(), SharedColors.COLOR_MANDATORY_OUTPUT);
 				}
-				addOutput(control, color);
+				addOutput(control, null, bgColor);
 			} else if (!(control instanceof Button)) {
-				final Color color = lnf.getColor(LnfKeyConstants.OUTPUT_MARKER_BACKGROUND);
-				addOutput(control, color);
+				final Color fgColor = getOutputForeground();
+				final Color bgColor = getOutputBackground();
+				addOutput(control, fgColor, bgColor);
 			}
 		} else {
 			clearOutput(control);
 		}
+	}
+
+	private Color getOutputForeground() {
+		return getCustomForeground(OutputMarker.class);
+	}
+
+	private Color getOutputBackground() {
+		Color color = getCustomBackground(OutputMarker.class);
+		if (color == null) {
+			final RienaDefaultLnf lnf = LnfManager.getLnf();
+			color = lnf.getColor(LnfKeyConstants.OUTPUT_MARKER_BACKGROUND);
+		}
+		return color;
+	}
+
+	private Color getMandatoryBackground() {
+		Color color = getCustomBackground(MandatoryMarker.class);
+		if (color == null) {
+			final RienaDefaultLnf lnf = LnfManager.getLnf();
+			color = lnf.getColor(LnfKeyConstants.MANDATORY_MARKER_BACKGROUND);
+			if (color == null) {
+				color = Activator.getSharedColor(getUIControl().getDisplay(), SharedColors.COLOR_MANDATORY);
+			}
+		}
+		return color;
+	}
+
+	private Color getNegativeForeground() {
+		Color color = getCustomForeground(NegativeMarker.class);
+		if (color == null) {
+			color = getUIControl().getDisplay().getSystemColor(SWT.COLOR_RED);
+		}
+		return color;
+	}
+
+	private Color getCustomForeground(final Class<? extends AbstractMarker> type) {
+		final Collection<? extends AbstractMarker> markers = getRidget().getMarkersOfType(type);
+		Color fgColor = null;
+		for (final IMarker marker : markers) {
+			if (marker instanceof ICustomMarker) {
+				final Object color = ((ICustomMarker) marker).getForeground(getRidget());
+				if (color instanceof Color) {
+					fgColor = (Color) color;
+				}
+			}
+		}
+		return fgColor;
+	}
+
+	private Color getCustomBackground(final Class<? extends AbstractMarker> type) {
+		final Collection<? extends AbstractMarker> markers = getRidget().getMarkersOfType(type);
+		Color bgColor = null;
+		for (final IMarker marker : markers) {
+			if (marker instanceof ICustomMarker) {
+				final Object color = ((ICustomMarker) marker).getBackground(getRidget());
+				if (color instanceof Color) {
+					bgColor = (Color) color;
+				}
+			}
+		}
+		return bgColor;
 	}
 
 	/**

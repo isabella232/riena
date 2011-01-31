@@ -50,6 +50,10 @@
             class="org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer"
             lnfkey="ModuleGroup.renderer">
       </renderer>
+      <renderer
+            class="org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupBorderRenderer"
+            lnfkey="ModuleGroup.borderRenderer">
+      </renderer>
 
       <renderer
             class="org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer"

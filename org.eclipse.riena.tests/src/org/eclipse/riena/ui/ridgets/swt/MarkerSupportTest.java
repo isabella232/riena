@@ -27,12 +27,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
+import org.eclipse.riena.ui.core.marker.ICustomMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
@@ -213,6 +215,110 @@ public class MarkerSupportTest extends RienaTestCase {
 		text.getBackground();
 	}
 
+	/**
+	 * Tests the <i>private</i> method {@code getCustomBackground()}.
+	 */
+	public void testGetCustomBackground() {
+
+		final DefaultRealm realm = new DefaultRealm();
+		try {
+
+			final TextRidget ridget = new TextRidget();
+			final MarkerSupport support = new MarkerSupport(ridget, null);
+
+			Color bg = ReflectionUtils.invokeHidden(support, "getCustomBackground", OutputMarker.class);
+			assertNull(bg);
+
+			ridget.addMarker(new CustomOutputMarker());
+			bg = ReflectionUtils.invokeHidden(support, "getCustomBackground", OutputMarker.class);
+			Color expected = display.getSystemColor(SWT.COLOR_GREEN);
+			assertEquals(expected, bg);
+
+			ridget.addMarker(new Custom2OutputMarker());
+			bg = ReflectionUtils.invokeHidden(support, "getCustomBackground", OutputMarker.class);
+			expected = display.getSystemColor(SWT.COLOR_BLUE);
+			assertEquals(expected, bg);
+
+			ridget.addMarker(new CustomMandatoryMarker());
+			bg = ReflectionUtils.invokeHidden(support, "getCustomBackground", OutputMarker.class);
+			expected = display.getSystemColor(SWT.COLOR_BLUE);
+			assertEquals(expected, bg);
+
+			ridget.addMarker(new CustomMandatoryMarker());
+			bg = ReflectionUtils.invokeHidden(support, "getCustomBackground", MandatoryMarker.class);
+			expected = display.getSystemColor(SWT.COLOR_YELLOW);
+			assertEquals(expected, bg);
+		} finally {
+			realm.dispose();
+		}
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getCustomForeground()}.
+	 */
+	public void testGetCustomForeground() {
+
+		final DefaultRealm realm = new DefaultRealm();
+		try {
+
+			final TextRidget ridget = new TextRidget();
+			final MarkerSupport support = new MarkerSupport(ridget, null);
+
+			Color fg = ReflectionUtils.invokeHidden(support, "getCustomForeground", OutputMarker.class);
+			assertNull(fg);
+
+			ridget.addMarker(new CustomOutputMarker());
+			fg = ReflectionUtils.invokeHidden(support, "getCustomForeground", OutputMarker.class);
+			Color expected = display.getSystemColor(SWT.COLOR_DARK_GREEN);
+			assertEquals(expected, fg);
+
+			ridget.addMarker(new Custom2OutputMarker());
+			fg = ReflectionUtils.invokeHidden(support, "getCustomForeground", OutputMarker.class);
+			expected = display.getSystemColor(SWT.COLOR_CYAN);
+			assertEquals(expected, fg);
+
+			ridget.addMarker(new CustomMandatoryMarker());
+			fg = ReflectionUtils.invokeHidden(support, "getCustomForeground", OutputMarker.class);
+			expected = display.getSystemColor(SWT.COLOR_CYAN);
+			assertEquals(expected, fg);
+
+			ridget.addMarker(new CustomMandatoryMarker());
+			fg = ReflectionUtils.invokeHidden(support, "getCustomForeground", MandatoryMarker.class);
+			assertNull(fg);
+		} finally {
+			realm.dispose();
+		}
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getNegativeForeground()}.
+	 */
+	public void testGetNegativeForeground() {
+
+		final DefaultRealm realm = new DefaultRealm();
+		final Text text = new Text(shell, SWT.NONE);
+		try {
+			final TextRidget ridget = new TextRidget();
+			final MarkerSupport support = new MarkerSupport(ridget, null);
+			ridget.setUIControl(text);
+
+			Color fg = ReflectionUtils.invokeHidden(support, "getNegativeForeground");
+			Color expected = display.getSystemColor(SWT.COLOR_RED);
+			assertEquals(expected, fg);
+
+			ridget.addMarker(new CustomNegativeMarker());
+			fg = ReflectionUtils.invokeHidden(support, "getNegativeForeground");
+			expected = display.getSystemColor(SWT.COLOR_DARK_RED);
+			assertEquals(expected, fg);
+		} finally {
+			SwtUtilities.dispose(text);
+			realm.dispose();
+		}
+
+	}
+
 	// helping classes
 	//////////////////
 
@@ -285,6 +391,54 @@ public class MarkerSupportTest extends RienaTestCase {
 		@Override
 		public void clearMandatory(final Control control) {
 			super.clearMandatory(control);
+		}
+
+	}
+
+	private class CustomOutputMarker extends OutputMarker implements ICustomMarker {
+
+		public Object getBackground(final IMarkable markable) {
+			return display.getSystemColor(SWT.COLOR_GREEN);
+		}
+
+		public Object getForeground(final IMarkable markable) {
+			return display.getSystemColor(SWT.COLOR_DARK_GREEN);
+		}
+
+	}
+
+	private class Custom2OutputMarker extends OutputMarker implements ICustomMarker {
+
+		public Object getBackground(final IMarkable markable) {
+			return display.getSystemColor(SWT.COLOR_BLUE);
+		}
+
+		public Object getForeground(final IMarkable markable) {
+			return display.getSystemColor(SWT.COLOR_CYAN);
+		}
+
+	}
+
+	private class CustomMandatoryMarker extends MandatoryMarker implements ICustomMarker {
+
+		public Object getBackground(final IMarkable markable) {
+			return display.getSystemColor(SWT.COLOR_YELLOW);
+		}
+
+		public Object getForeground(final IMarkable markable) {
+			return null;
+		}
+
+	}
+
+	private class CustomNegativeMarker extends NegativeMarker implements ICustomMarker {
+
+		public Object getBackground(final IMarkable markable) {
+			return null;
+		}
+
+		public Object getForeground(final IMarkable markable) {
+			return display.getSystemColor(SWT.COLOR_DARK_RED);
 		}
 
 	}

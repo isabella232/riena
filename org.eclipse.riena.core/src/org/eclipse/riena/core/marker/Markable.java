@@ -13,9 +13,9 @@ package org.eclipse.riena.core.marker;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
+import org.eclipse.core.runtime.Assert;
 
 /**
  * Standard implementation for the {@link IMarkable} interface, can be used by
@@ -23,14 +23,14 @@ import java.util.Set;
  */
 public class Markable implements IMarkable {
 
-	private final Set<IMarker> markers;
+	private final List<IMarker> markers;
 
 	/**
 	 * Create new Instance and initialize
 	 */
 	public Markable() {
 		super();
-		markers = new HashSet<IMarker>();
+		markers = new ArrayList<IMarker>();
 	}
 
 	/**
@@ -38,12 +38,19 @@ public class Markable implements IMarkable {
 	 */
 	public void addMarker(final IMarker marker) {
 
+		Assert.isNotNull(marker);
+
+		if (markers.contains(marker)) {
+			return;
+		}
+
 		if (marker.isUnique()) {
 			final Collection<? extends IMarker> markersOfType = getMarkersOfType(marker.getClass());
 			boolean unique = false;
 			for (final IMarker m : markersOfType) {
 				if (m.isUnique()) {
 					unique = true;
+					break;
 				}
 			}
 			if (!unique) {

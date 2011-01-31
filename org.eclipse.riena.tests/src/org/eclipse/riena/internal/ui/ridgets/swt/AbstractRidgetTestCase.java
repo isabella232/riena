@@ -12,7 +12,8 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.easymock.EasyMock;
 
@@ -283,8 +284,8 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 		}
 		final IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) getRidget();
 		final IMarker marker = new MandatoryMarker();
-		final HashSet<IMarker> before = new HashSet<IMarker>(markableRidget.getMarkers());
-		final HashSet<IMarker> after = new HashSet<IMarker>(before);
+		final List<IMarker> before = new ArrayList<IMarker>(markableRidget.getMarkers());
+		final List<IMarker> after = new ArrayList<IMarker>(before);
 		after.add(marker);
 
 		assertTrue("Fails for " + markableRidget, markableRidget.isEnabled());

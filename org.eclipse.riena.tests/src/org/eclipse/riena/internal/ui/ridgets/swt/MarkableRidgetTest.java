@@ -11,8 +11,8 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 
 import org.eclipse.swt.SWT;
@@ -147,9 +147,9 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 		Collection<?> markers = ridget.getMarkers();
 		assertEquals(0, markers.size());
 
-		Collection newValue = new HashSet<IMarker>();
+		Collection newValue = new ArrayList<IMarker>();
 		newValue.add(marker1);
-		expectPropertyChangeEvents(new ExpectedMarkerPropertyChangeEvent(ridget.getMarkers(), newValue, false));
+		expectPropertyChangeEvents(new ExpectedMarkerPropertyChangeEvent(new ArrayList<IMarker>(), newValue, false));
 
 		ridget.addMarker(marker1);
 
@@ -201,7 +201,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 
 		verifyPropertyChangeEvents();
 
-		final Collection<?> newValue = new HashSet<IMarker>(ridget.getMarkers());
+		final Collection<?> newValue = new ArrayList<IMarker>(ridget.getMarkers());
 		newValue.remove(marker1);
 		expectPropertyChangeEvents(new ExpectedMarkerPropertyChangeEvent(ridget.getMarkers(), newValue, false));
 
@@ -228,7 +228,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 		ridget.addMarker(marker1);
 		ridget.addMarker(marker2);
 
-		final Collection<IMarker> newValue = new HashSet<IMarker>(ridget.getMarkers());
+		final Collection<IMarker> newValue = new ArrayList<IMarker>(ridget.getMarkers());
 		newValue.clear();
 		expectPropertyChangeEvents(new ExpectedMarkerPropertyChangeEvent(ridget.getMarkers(), newValue, false));
 
@@ -307,7 +307,7 @@ public class MarkableRidgetTest extends AbstractSWTRidgetTest {
 
 		verifyPropertyChangeEvents();
 
-		final Collection<IMarker> newValue = new HashSet<IMarker>(ridget.getMarkers());
+		final Collection<IMarker> newValue = new ArrayList<IMarker>(ridget.getMarkers());
 		newValue.remove(errorMessageMarker);
 		expectPropertyChangeEvents(new ExpectedMarkerPropertyChangeEvent(ridget.getMarkers(), newValue, false));
 
