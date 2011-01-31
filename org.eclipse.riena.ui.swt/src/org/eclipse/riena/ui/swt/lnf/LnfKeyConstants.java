@@ -396,8 +396,17 @@ public final class LnfKeyConstants {
 
 	public static final String NAVIGATION_BACKGROUND = "Navigation.background"; //$NON-NLS-1$
 	public static final String MODULE_GROUP_WIDGET_BACKGROUND = "ModuleGroupWidget.background"; //$NON-NLS-1$
+	/**
+	 * @since 3.0
+	 */
 	public static final String MODULE_GROUP_PASSIVE_BORDER_COLOR = "ModuleGroup.passiveBorderColor"; //$NON-NLS-1$
+	/**
+	 * @since 3.0
+	 */
 	public static final String MODULE_GROUP_ACTIVE_BORDER_COLOR = "ModuleGroup.activeBorderColor"; //$NON-NLS-1$
+	/**
+	 * @since 3.0
+	 */
 	public static final String MODULE_GROUP_DISABLED_BORDER_COLOR = "ModuleGroup.disabledBorderColor"; //$NON-NLS-1$
 	public static final String SUB_MODULE_TREE_BACKGROUND = "SubModuleTree.background"; //$NON-NLS-1$
 	public static final String SUB_MODULE_BACKGROUND = "SubModule.background"; //$NON-NLS-1$
@@ -433,6 +442,8 @@ public final class LnfKeyConstants {
 
 	/**
 	 * The border thickness of the an error marker around a table row.
+	 * 
+	 * @since 3.0
 	 */
 	public static final String ROW_ERROR_MARKER_BORDER_THICKNESS = "rwErrorMarker.borderthickness"; //$NON-NLS-1$
 
@@ -770,18 +781,26 @@ public final class LnfKeyConstants {
 
 	/**
 	 * Error icon of a message box.
+	 * 
+	 * @since 3.0
 	 */
 	public static final String MESSAGE_BOX_ERROR_ICON = "messageBox.errorIcon"; //$NON-NLS-1$
 	/**
 	 * Warning icon of a message box.
+	 * 
+	 * @since 3.0
 	 */
 	public static final String MESSAGE_BOX_WARNING_ICON = "messageBox.warningIcon"; //$NON-NLS-1$
 	/**
 	 * Information icon of a message box.
+	 * 
+	 * @since 3.0
 	 */
 	public static final String MESSAGE_BOX_INFO_ICON = "messageBox.infoIcon"; //$NON-NLS-1$
 	/**
 	 * Question icon of a message box.
+	 * 
+	 * @since 3.0
 	 */
 	public static final String MESSAGE_BOX_QUESTION_ICON = "messageBox.questionIcon"; //$NON-NLS-1$
 
@@ -907,11 +926,15 @@ public final class LnfKeyConstants {
 
 	/**
 	 * The height of the scroll buttons of the navigation.
+	 * 
+	 * @since 3.0
 	 */
 	public static final String NAVIGATION_SCROLL_BUTTON_HEIGHT = "navigation.scroll.button.height"; //$NON-NLS-1$
 
 	/**
 	 * Flag to use scroll buttons or scroll bar in the navigation.
+	 * 
+	 * @since 3.0
 	 */
 	public static final String NAVIGATION_SCROLL_BAR = "navigation.scroll.bar"; //$NON-NLS-1$
 
@@ -1015,6 +1038,9 @@ public final class LnfKeyConstants {
 	public static final String SUB_APPLICATION_SWITCHER_RENDERER = "SubApplication.switcherRenderer"; //$NON-NLS-1$
 
 	public static final String MODULE_GROUP_RENDERER = "ModuleGroup.renderer"; //$NON-NLS-1$
+	/**
+	 * @since 3.0
+	 */
 	public static final String MODULE_GROUP_BORDER_RENDERER = "ModuleGroup.borderRenderer"; //$NON-NLS-1$
 
 	public static final String SUB_MODULE_TREE_ITEM_MARKER_RENDERER = "SubModuleTreeItemMarker.renderer"; //$NON-NLS-1$
