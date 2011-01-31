@@ -317,7 +317,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	private void createModuleGroupView(final IModuleGroupNode moduleGroupNode) {
 		// ModuleGroupView are directly rendered into the bodyComposite
 		final ModuleGroupView moduleGroupView = getViewFactory().createModuleGroupView(
-				navigationCompositeDelegation.getNaviagtionComposite());
+				navigationCompositeDelegation.getNavigationComposite());
 		NodeIdentificationSupport.setIdentification(moduleGroupView, "moduleGroupView", moduleGroupNode); //$NON-NLS-1$
 		moduleGroupNodesToViews.put(moduleGroupNode, moduleGroupView);
 		moduleGroupView.addUpdateListener(new ModuleGroupViewObserver());
@@ -452,7 +452,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 
 	public void updateNavigationSize() {
 		int height = calculateBounds();
-		navigationCompositeDelegation.getNaviagtionComposite().layout();
+		navigationCompositeDelegation.getNavigationComposite().layout();
 		navigationMainComposite.layout();
 		if (navigationMainComposite.getBounds().height == 0) {
 			height = 0;
@@ -556,7 +556,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	}
 
 	public Composite getScrolledComponent() {
-		return navigationCompositeDelegation.getNaviagtionComposite();
+		return navigationCompositeDelegation.getNavigationComposite();
 	}
 
 }

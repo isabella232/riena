@@ -41,8 +41,8 @@ public class ScrollButtonsNavigationCompositeDeligation extends AbstractNavigati
 	 * scrolling with buttons).
 	 */
 	@Override
-	protected Composite createNaviagtionComposite(final Composite parent) {
-		final Composite naviComp = super.createNaviagtionComposite(parent);
+	protected Composite createNavigationComposite(final Composite parent) {
+		final Composite naviComp = super.createNavigationComposite(parent);
 		setScrollingSupport(new ScrollButtonsSupport(getSuperParent(), getNavigationProvider()));
 		return naviComp;
 	}

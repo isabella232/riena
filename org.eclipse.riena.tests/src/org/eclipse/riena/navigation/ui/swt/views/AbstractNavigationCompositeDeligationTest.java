@@ -42,11 +42,11 @@ public class AbstractNavigationCompositeDeligationTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the method {@code createNaviagtionComposite(Composite} .
+	 * Tests the method {@code createNavigationComposite(Composite} .
 	 */
-	public void testCreateNaviagtionComposite() {
+	public void testCreateNavigationComposite() {
 		final MyNavigationCompositeDeligation deligation = new MyNavigationCompositeDeligation(null, shell, null);
-		final Composite comp = ReflectionUtils.invokeHidden(deligation, "createNaviagtionComposite", shell);
+		final Composite comp = ReflectionUtils.invokeHidden(deligation, "createNavigationComposite", shell);
 		assertNotNull(comp);
 		assertEquals(FormLayout.class, comp.getLayout().getClass());
 		assertEquals("NavigationView", WidgetIdentificationSupport.getIdentification(comp));

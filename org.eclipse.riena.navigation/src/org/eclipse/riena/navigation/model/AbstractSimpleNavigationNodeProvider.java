@@ -215,6 +215,9 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void prepareExistingNode(final INavigationNode<?> sourceNode, final INavigationNode<?> targetNode,
 			final NavigationArgument argument) {
 		storeNavigationArgument(targetNode, argument);

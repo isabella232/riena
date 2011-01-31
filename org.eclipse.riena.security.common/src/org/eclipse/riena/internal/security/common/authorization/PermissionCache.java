@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.security.common.authorization;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.security.Permissions;
 import java.security.Principal;
 
@@ -19,6 +21,7 @@ import org.eclipse.riena.core.cache.GenericObjectCache;
 import org.eclipse.riena.core.util.ContainerModel;
 import org.eclipse.riena.security.common.authorization.IPermissionCache;
 
+@Retention(RetentionPolicy.CLASS)
 public class PermissionCache implements IPermissionCache {
 
 	private final GenericObjectCache<String, Permissions> permCache = new GenericObjectCache<String, Permissions>();

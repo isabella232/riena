@@ -50,11 +50,11 @@ public class ScrollButtonsNavigationCompositeDeligationTest extends TestCase {
 	/**
 	 * Tests the method {@code updateSize(int)}.
 	 */
-	public void testCreateNaviagtionComposite() {
+	public void testCreateNavigationComposite() {
 		final MockModuleNavigationComponentProvider navigationProvider = new MockModuleNavigationComponentProvider();
 		final ScrollButtonsNavigationCompositeDeligation deligation = new ScrollButtonsNavigationCompositeDeligation(
 				shell, composite, navigationProvider);
-		final Composite comp = ReflectionUtils.invokeHidden(deligation, "createNaviagtionComposite", composite);
+		final Composite comp = ReflectionUtils.invokeHidden(deligation, "createNavigationComposite", composite);
 		assertSame(composite, comp.getParent());
 		final Composite scrolledComposite = ReflectionUtils.invokeHidden(deligation, "getScrolledComposite");
 		assertNotNull(scrolledComposite);

@@ -44,12 +44,12 @@ public class ScrollBarNavigationCompositeDeligationTest extends TestCase {
 	}
 
 	/**
-	 * Tests the method {@code createNaviagtionComposite(Composite} .
+	 * Tests the method {@code createNavigationComposite(Composite} .
 	 */
-	public void testCreateNaviagtionComposite() {
+	public void testCreateNavigationComposite() {
 		final ScrollBarNavigationCompositeDeligation deligation = new ScrollBarNavigationCompositeDeligation(null,
 				shell, new MockModuleNavigationComponentProvider());
-		final Composite comp = ReflectionUtils.invokeHidden(deligation, "createNaviagtionComposite", shell);
+		final Composite comp = ReflectionUtils.invokeHidden(deligation, "createNavigationComposite", shell);
 		assertEquals(ScrolledComposite.class, comp.getParent().getClass());
 		final ScrolledComposite sc = (ScrolledComposite) comp.getParent();
 		assertSame(comp, sc.getContent());
@@ -69,7 +69,7 @@ public class ScrollBarNavigationCompositeDeligationTest extends TestCase {
 		deligation.updateSize(height);
 		final ScrolledComposite scrolledComposite = ReflectionUtils.invokeHidden(deligation, "getScrolledComposite");
 		assertEquals(height, scrolledComposite.getMinHeight());
-		final int width = deligation.getNaviagtionComposite().getSize().x;
+		final int width = deligation.getNavigationComposite().getSize().x;
 		assertEquals(width, scrolledComposite.getMinWidth());
 	}
 

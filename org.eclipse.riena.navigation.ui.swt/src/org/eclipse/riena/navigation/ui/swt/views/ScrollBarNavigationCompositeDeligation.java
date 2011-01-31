@@ -47,7 +47,7 @@ public class ScrollBarNavigationCompositeDeligation extends AbstractNavigationCo
 	@Override
 	public void updateSize(final int height) {
 		super.updateSize(height);
-		final int width = getNaviagtionComposite().getSize().x;
+		final int width = getNavigationComposite().getSize().x;
 		sc.setMinSize(width, height);
 	}
 
@@ -58,9 +58,9 @@ public class ScrollBarNavigationCompositeDeligation extends AbstractNavigationCo
 	 * with the scrolling logic.
 	 */
 	@Override
-	protected Composite createNaviagtionComposite(final Composite parent) {
+	protected Composite createNavigationComposite(final Composite parent) {
 		sc = new ScrolledComposite(parent, SWT.V_SCROLL);
-		final Composite naviComp = super.createNaviagtionComposite(sc);
+		final Composite naviComp = super.createNavigationComposite(sc);
 		sc.setContent(naviComp);
 		sc.setBackground(NAVIGATION_BACKGROUND);
 		sc.setExpandHorizontal(true);

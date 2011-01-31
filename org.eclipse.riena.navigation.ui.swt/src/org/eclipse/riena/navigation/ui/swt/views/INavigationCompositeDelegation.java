@@ -15,6 +15,8 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * Delegation of a composite for scrolling in the navigation.
+ * 
+ * @since 3.0
  */
 public interface INavigationCompositeDelegation {
 
@@ -30,7 +32,7 @@ public interface INavigationCompositeDelegation {
 	 * 
 	 * @return scrollable composite
 	 */
-	Composite getNaviagtionComposite();
+	Composite getNavigationComposite();
 
 	/**
 	 * Returns the size of the vertical scroll bar of the given
