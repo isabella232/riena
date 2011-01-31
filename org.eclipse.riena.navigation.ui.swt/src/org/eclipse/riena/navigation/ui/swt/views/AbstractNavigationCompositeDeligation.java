@@ -25,6 +25,8 @@ import org.eclipse.riena.ui.swt.utils.WidgetIdentificationSupport;
 /**
  * Abstract implementation of a delegation of a composite for scrolling in the
  * navigation.
+ * 
+ * @since 3.0
  */
 public abstract class AbstractNavigationCompositeDeligation implements INavigationCompositeDelegation {
 

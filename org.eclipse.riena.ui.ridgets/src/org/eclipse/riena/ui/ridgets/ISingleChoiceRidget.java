@@ -98,6 +98,7 @@ public interface ISingleChoiceRidget extends IChoiceRidget {
 	 * like "[Please select...]".
 	 * 
 	 * @return The option that represents 'no selection'.
+	 * @since 3.0
 	 */
 	Object getEmptySelectionItem();
 
@@ -110,6 +111,7 @@ public interface ISingleChoiceRidget extends IChoiceRidget {
 	 * 
 	 * @param emptySelectionItem
 	 *            The option that represents 'no selection'.
+	 * @since 3.0
 	 */
 	void setEmptySelectionItem(final Object emptySelectionItem);
 }

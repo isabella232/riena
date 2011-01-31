@@ -25,6 +25,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * This class provides scrolling logic for the navigation with a scroll bar.
+ * 
+ * @since 3.0
  */
 public class ScrollBarSupport extends AbstractScrollingSupport {
 

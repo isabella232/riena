@@ -20,6 +20,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Delegation of a composite for scrolling in the navigation with a scroll bar.
+ * 
+ * @since 3.0
  */
 public class ScrollBarNavigationCompositeDeligation extends AbstractNavigationCompositeDeligation {
 

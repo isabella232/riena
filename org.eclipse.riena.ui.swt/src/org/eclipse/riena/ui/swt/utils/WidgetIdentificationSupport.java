@@ -90,6 +90,7 @@ public final class WidgetIdentificationSupport {
 	 * @param aWidget
 	 *            widget
 	 * @return Riena ID or {@code null} if it has not been set
+	 * @since 3.0
 	 */
 	public static String getIdentification(final Widget aWidget) {
 		return (String) aWidget.getData(RIENA_ID);

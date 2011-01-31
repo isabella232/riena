@@ -17,6 +17,8 @@ import org.eclipse.riena.core.marker.IMarker;
  * This interface can <i>extend</i> existing markers (e.g. OutputMarker,
  * MandatoryMarker) for special cases to return other background and/or
  * foreground colors.
+ * 
+ * @since 3.0
  */
 public interface ICustomMarker extends IMarker {
 
