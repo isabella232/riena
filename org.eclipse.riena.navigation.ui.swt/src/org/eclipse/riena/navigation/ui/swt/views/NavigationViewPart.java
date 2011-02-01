@@ -465,7 +465,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 			navigationMainComposite.layout(true, true);
 			navigationMainComposite.getParent().layout(true, true);
 		}
-		// navigationCompositeDelegation.scroll();
+		navigationCompositeDelegation.scroll();
 	}
 
 	/**
