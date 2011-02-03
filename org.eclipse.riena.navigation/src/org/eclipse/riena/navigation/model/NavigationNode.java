@@ -668,12 +668,12 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @since 3.0
 	 */
 	public boolean removeMarker(final IMarker marker) {
+		final boolean oldEnabled = isEnabled();
+		final boolean oldVisible = isVisible();
 		final boolean removedMarker = getMarkable().removeMarker(marker);
 		if (!removedMarker) {
 			return false;
 		}
-		final boolean oldEnabled = isEnabled();
-		final boolean oldVisible = isVisible();
 		clearCachedValues();
 		if (oldEnabled != isEnabled()) {
 			propertyChangeSupport.firePropertyChange(ITreeNode2.PROPERTY_ENABLED, oldEnabled, isEnabled());
