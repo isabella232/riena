@@ -369,7 +369,7 @@ public class SimpleStore implements IStore, IExecutableExtension {
 
 		public Cleaner() {
 			super("SimpleStoreCleaner"); //$NON-NLS-1$
-			setUser(true);
+			setUser(false);
 			final Bundle bundle = FrameworkUtil.getBundle(Cleaner.class);
 			if (bundle != null) {
 				bundle.getBundleContext().addBundleListener(new StoppingListener(bundle));
