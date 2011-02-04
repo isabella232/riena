@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.ui.internal.progress.ProgressManager;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.wire.InjectExtension;
@@ -40,6 +41,7 @@ import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
 /**
  * Abstract application defining the basic structure of a Riena application
  */
+@SuppressWarnings("restriction")
 public abstract class AbstractApplication implements IApplication {
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), AbstractApplication.class);
@@ -60,14 +62,27 @@ public abstract class AbstractApplication implements IApplication {
 		ApplicationNodeManager.registerApplicationNode(applicationNode);
 		createStartupNodes(applicationNode);
 		initializeNode(applicationNode);
-		setProgressProviderBridge();
+		installProgressProviderBridge();
 		return createView(context, applicationNode);
 	}
 
-	private void setProgressProviderBridge() {
-		final ProgressProviderBridge bridge = ProgressProviderBridge.instance();
-		Job.getJobManager().setProgressProvider(bridge);
-		bridge.setVisualizerFactory(new ProgressVisualizerLocator());
+	private void installProgressProviderBridge() {
+		disableEclipseProgressManager();
+		/**
+		 * install the riena ProgressProvider which handles creation of
+		 * IProgressMontitor instances for scheduled jobs. riena provides a
+		 * special monitor for background processing.
+		 */
+		final ProgressProviderBridge instance = ProgressProviderBridge.instance();
+		Job.getJobManager().setProgressProvider(instance);
+		instance.setVisualizerFactory(new ProgressVisualizerLocator());
+	}
+
+	protected void disableEclipseProgressManager() {
+		//we need to get the instance first as this is the only way to lock/disable the singleton
+		ProgressManager.getInstance();
+		//shutting down means uninstalling ProgressProvider and removing all Job-Listeners
+		ProgressManager.shutdownProgressManager();
 	}
 
 	/**
