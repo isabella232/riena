@@ -123,9 +123,14 @@ public abstract class CompletionCombo extends Composite {
 
 	private int visibleItemCount = 5;
 	private boolean hasFocus;
-    /**
-     * Fix for 335129: ignore FocusOut event when we move the focus from
-	 * the Text widget to the list popup. 
+	/**
+	 * Stores the enablement setting for this widget, independelty if of parent
+	 * enablement (v.s. isEnabled() which depends on parent enablement)
+	 */
+	private boolean isEnabled = true;
+	/**
+	 * Fix for 335129: ignore FocusOut event when we move the focus from the
+	 * Text widget to the list popup.
 	 */
 	private boolean ignoreFocusOut;
 	private boolean autoCompletion;
@@ -1755,7 +1760,7 @@ public abstract class CompletionCombo extends Composite {
 	public void setEditable(final boolean editable) {
 		checkWidget();
 		text.setEditable(editable);
-		arrow.setEnabled(isEnabled() && editable);
+		arrow.setEnabled(isEnabled && editable);
 	}
 
 	/**
@@ -1779,6 +1784,7 @@ public abstract class CompletionCombo extends Composite {
 
 	@Override
 	public void setEnabled(final boolean enabled) {
+		this.isEnabled = enabled;
 		super.setEnabled(enabled);
 		text.setEnabled(enabled);
 		final boolean editable = enabled && text.getEditable();

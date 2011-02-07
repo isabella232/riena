@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -91,6 +92,20 @@ public class CompletionComboTest extends TestCase {
 		assertEquals(2, children.length);
 		assertTrue(children[0] instanceof Text);
 		assertTrue(children[1] instanceof Button);
+	}
+
+	public void testArrowButtonEnabled() {
+		shell.setEnabled(false);
+		combo.setEnabled(false);
+		combo.setEnabled(true);
+		combo.setEditable(true);
+		shell.setEnabled(true);
+
+		assertTrue(combo.isEnabled());
+		final Text textControl = (Text) ReflectionUtils.invokeHidden(combo, "getTextControl", (Object[]) null);
+		assertTrue(textControl.isEnabled());
+		final Button buttonControl = (Button) ReflectionUtils.invokeHidden(combo, "getButtonControl", (Object[]) null);
+		assertTrue(buttonControl.isEnabled());
 	}
 
 }
