@@ -36,11 +36,11 @@ public class CComboRidget extends AbstractComboRidget {
 	private static final String ORIGINAL_BACKGROUND_KEY = "CCR.orBaKe"; //$NON-NLS-1$
 
 	private final ModifyListener modifyListener;
-
 	private final SelectionTypeEnforcer selectionTypeEnforcer;
 
 	public CComboRidget() {
 		modifyListener = new CComboModifyListener();
+		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if (getUIControl() != null) {
@@ -49,7 +49,6 @@ public class CComboRidget extends AbstractComboRidget {
 				}
 			}
 		});
-		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, selectionTypeEnforcer);
 	}
 
