@@ -202,11 +202,15 @@ public class CComboRidget extends AbstractComboRidget {
 				control.setBackground((Color) control.getData(ORIGINAL_BACKGROUND_KEY));
 				control.setData(ORIGINAL_BACKGROUND_KEY, null);
 			}
-		} else if (control.getData(ORIGINAL_BACKGROUND_KEY) == null) {
-			control.setData(ORIGINAL_BACKGROUND_KEY, control.getBackground());
+		} else {
+			if (control.getData(ORIGINAL_BACKGROUND_KEY) == null) {
+				control.setData(ORIGINAL_BACKGROUND_KEY, control.getBackground());
+			}
+			final Color disabledBg = control.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+			// note: the DisabledPainter will paint the DISABLED_MARKER_BACKGROUND over this, so we are good
+			control.setBackground(disabledBg);
 		}
 		updateMarkers();
-
 	}
 
 	// helping classes
