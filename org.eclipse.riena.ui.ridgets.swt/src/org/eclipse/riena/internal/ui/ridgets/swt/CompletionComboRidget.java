@@ -43,12 +43,12 @@ public class CompletionComboRidget extends AbstractComboRidget {
 
 	@Override
 	protected void bindUIControl() {
-		CompletionCombo control = getUIControl();
+		final CompletionCombo control = getUIControl();
 		if (control != null) {
 			control.setFlashDelegate(flashDelegate);
 		}
 		super.bindUIControl();
-	};
+	}
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
