@@ -2359,11 +2359,6 @@ public abstract class CompletionCombo extends Composite {
 			event.doit = true;
 		} else if (isInputChar(event.character)) {
 			// System.out.println("isInputChar: " + event.character);
-			if (!isDropped()) {
-				dropDown(true);
-				text.setFocus();
-			}
-
 			final Point selection = getSelection();
 			final String newPrefix;
 			if (event.character == SWT.BS) {
