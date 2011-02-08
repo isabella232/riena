@@ -28,13 +28,6 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
  */
 public class ComboRidget extends AbstractComboRidget {
 
-	private final SelectionTypeEnforcer selectionTypeEnforcer;
-
-	public ComboRidget() {
-		selectionTypeEnforcer = new SelectionTypeEnforcer();
-		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, selectionTypeEnforcer);
-	}
-
 	private final ModifyListener modifyListener = new ModifyListener() {
 		public void modifyText(final ModifyEvent e) {
 			if (!isOutputOnly()) {
@@ -42,6 +35,12 @@ public class ComboRidget extends AbstractComboRidget {
 			}
 		}
 	};
+	private final SelectionTypeEnforcer selectionTypeEnforcer;
+
+	public ComboRidget() {
+		selectionTypeEnforcer = new SelectionTypeEnforcer();
+		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, selectionTypeEnforcer);
+	}
 
 	@Override
 	public void updateFromModel() {
