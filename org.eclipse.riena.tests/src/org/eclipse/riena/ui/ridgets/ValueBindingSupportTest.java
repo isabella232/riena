@@ -405,7 +405,8 @@ public class ValueBindingSupportTest extends RienaTestCase {
 		}
 		final long time2 = System.currentTimeMillis() - start2;
 
-		assertTrue((time2 / 2) <= time1);
+		final String msg = String.format("1st iteration: %d, 2nd iteration: %d", time1, time2);
+		assertTrue(msg, (time2 / 2) <= time1);
 	}
 
 	// helping methods
