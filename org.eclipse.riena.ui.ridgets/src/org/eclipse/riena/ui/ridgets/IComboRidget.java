@@ -185,8 +185,13 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 
 	/**
 	 * Set the current selection to newSelection.
+	 * <p>
+	 * New since v3.0: if the {@code newSelection} is not in the list of
+	 * available choices, it will be selected anyway. However
+	 * {@link #getSelectionIndex()} will return -1.
 	 * 
 	 * @param newSelection
+	 *            the value to select in the combo
 	 */
 	void setSelection(Object newSelection);
 

@@ -536,7 +536,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setSelection("X");
 
-		assertEquals(null, ridget.getSelection());
+		assertEquals("X", ridget.getSelection());
 		assertEquals(-1, getSelectionIndex(control));
 
 		ridget.setSelection("A");
@@ -838,7 +838,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals("B", getSelectedString(control));
 	}
 
-	public void testOutputOnlyWithUpdateFromModelInModel() {
+	public void testOutputOnlyBlocksSelectionChangeFromUIAndAllowsChangeViaSetter() {
 		final AbstractComboRidget ridget = getRidget();
 		final Control control = getWidget();
 		final StringManager stringManager = new StringManagerWithUpdateFromModel(ridget, "A", "B", "C", "D", "E");
@@ -855,107 +855,258 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(ridget.isOutputOnly());
 		assertTrue(control.isEnabled());
 
+		// block changes via keyboard  
 		control.setFocus();
 		selectA(control);
 
 		assertEquals("B", ridget.getSelection());
 		assertEquals("B", getSelectedString(control));
 
+		// allow changes via #setSelection
 		ridget.setSelection(2);
 
 		assertEquals("C", ridget.getSelection());
 		assertEquals("C", getSelectedString(control));
-
 	}
 
-	// TODO [ev]
-	//	public void testSetSelectionIntFiresEvents() {
-	//		final AbstractComboRidget ridget = getRidget();
-	//		final Control control = getWidget();
-	//		final StringManager stringManager = new StringManager("A", "B", "C", "D", "E");
-	//		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
-	//		ridget.updateFromModel();
-	//		ridget.setUIControl(control);
-	//
-	//		final FTPropertyChangeListener pcl = new FTPropertyChangeListener();
-	//		ridget.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, pcl);
-	//
-	//		assertEquals(0, pcl.getCount());
-	//		assertEquals(null, ridget.getSelection());
-	//		assertEquals(null, getSelectedString(control));
-	//
-	//		ridget.setSelection(0);
-	//
-	//		assertEquals(1, pcl.getCount());
-	//		assertEquals("A", ridget.getSelection());
-	//		assertEquals("A", getSelectedString(control));
-	//
-	//		ridget.setSelection(1);
-	//
-	//		assertEquals(2, pcl.getCount());
-	//		assertEquals("B", ridget.getSelection());
-	//		assertEquals("B", getSelectedString(control));
-	//
-	//		ridget.setSelection(1);
-	//
-	//		assertEquals(2, pcl.getCount());
-	//		assertEquals("B", ridget.getSelection());
-	//		assertEquals("B", getSelectedString(control));
-	//
-	//		ridget.setSelection(-1);
-	//
-	//		assertEquals(3, pcl.getCount());
-	//		assertEquals(null, ridget.getSelection());
-	//		assertEquals(null, getSelectedString(control));
-	//
-	//		try {
-	//			ridget.setSelection(99);
-	//			fail();
-	//		} catch (final IndexOutOfBoundsException ioobe) {
-	//			// expected
-	//		}
-	//	}
+	public void testOutputOnlyAllowsUpdateFromModel() {
+		final AbstractComboRidget ridget = getRidget();
+		final StringManager stringManager = new StringManager("A");
+		stringManager.setSelectedItem("A");
+		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
 
-	// TODO [ev]
-	//	public void testSetSelectionObjFiresEvents() {
-	//		final AbstractComboRidget ridget = getRidget();
-	//		final Control control = getWidget();
-	//		final StringManager stringManager = new StringManager("A", "B", "C", "D", "E");
-	//		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
-	//		ridget.updateFromModel();
-	//		ridget.setUIControl(control);
-	//
-	//		final FTPropertyChangeListener pcl = new FTPropertyChangeListener();
-	//		ridget.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, pcl);
-	//
-	//		assertEquals(0, pcl.getCount());
-	//		assertEquals(null, ridget.getSelection());
-	//		assertEquals(null, getSelectedString(control));
-	//
-	//		ridget.setSelection("A");
-	//
-	//		assertEquals(1, pcl.getCount());
-	//		assertEquals("A", ridget.getSelection());
-	//		assertEquals("A", getSelectedString(control));
-	//
-	//		ridget.setSelection("B");
-	//
-	//		assertEquals(2, pcl.getCount());
-	//		assertEquals("B", ridget.getSelection());
-	//		assertEquals("B", getSelectedString(control));
-	//
-	//		ridget.setSelection("B");
-	//
-	//		assertEquals(2, pcl.getCount());
-	//		assertEquals("B", ridget.getSelection());
-	//		assertEquals("B", getSelectedString(control));
-	//
-	//		ridget.setSelection("this does not exist");
-	//
-	//		assertEquals(3, pcl.getCount());
-	//		assertEquals(null, ridget.getSelection());
-	//		assertEquals(null, getSelectedString(control));
-	//	}
+		ridget.setOutputOnly(true);
+		ridget.updateFromModel();
+
+		assertEquals("A", ridget.getSelection());
+		assertEquals(0, ridget.getSelectionIndex());
+
+		stringManager.setItems(Arrays.asList("B"));
+		stringManager.setSelectedItem("B");
+		ridget.updateFromModel();
+
+		assertEquals("B", ridget.getSelection());
+		assertEquals(0, ridget.getSelectionIndex());
+	}
+
+	/**
+	 * As per Bug 336588
+	 */
+	public void testOutputOnlyAndUpdateFromModelNPE() {
+		final AbstractComboRidget ridget = getRidget();
+		final StringManager stringManager = new StringManager("A");
+		stringManager.setSelectedItem("A");
+		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
+
+		ridget.setOutputOnly(true);
+		ridget.updateFromModel();
+
+		assertEquals("A", ridget.getSelection());
+		assertEquals(0, ridget.getSelectionIndex());
+
+		stringManager.setItems(Arrays.asList("B"));
+		stringManager.setSelectedItem("B");
+		ridget.setOutputOnly(false);
+		ridget.updateFromModel();
+
+		assertEquals("B", ridget.getSelection());
+		assertEquals(0, ridget.getSelectionIndex());
+	}
+
+	public void testToggleOutputAndEnabledMarkers1() {
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final StringManager stringManager = new StringManager("A");
+		stringManager.setSelectedItem("A");
+		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
+		ridget.updateFromModel();
+
+		checkSelection(ridget, control, true);
+
+		ridget.setOutputOnly(true);
+
+		checkSelection(ridget, control, true);
+
+		ridget.setEnabled(false);
+
+		checkSelection(ridget, control, false);
+
+		ridget.setEnabled(true);
+
+		checkSelection(ridget, control, true);
+
+		ridget.setOutputOnly(false);
+
+		checkSelection(ridget, control, true);
+	}
+
+	public void testToggleOutputAndEnabledMarkers2() {
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final StringManager stringManager = new StringManager("A");
+		stringManager.setSelectedItem("A");
+		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
+		ridget.updateFromModel();
+
+		checkSelection(ridget, control, true);
+
+		ridget.setEnabled(false);
+
+		checkSelection(ridget, control, false);
+
+		ridget.setOutputOnly(true);
+
+		checkSelection(ridget, control, false);
+
+		ridget.setOutputOnly(false);
+
+		checkSelection(ridget, control, false);
+
+		ridget.setEnabled(true);
+
+		checkSelection(ridget, control, true);
+	}
+
+	public void testToggleOutputAndEnabledMarkers3() {
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final StringManager stringManager = new StringManager("A");
+		stringManager.setSelectedItem("A");
+		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
+		ridget.updateFromModel();
+
+		checkSelection(ridget, control, true);
+
+		ridget.setEnabled(false);
+
+		checkSelection(ridget, control, false);
+
+		ridget.setOutputOnly(true);
+
+		checkSelection(ridget, control, false);
+
+		ridget.setEnabled(true);
+
+		checkSelection(ridget, control, true);
+
+		ridget.setOutputOnly(false);
+
+		checkSelection(ridget, control, true);
+	}
+
+	public void testToggleOutputAndEnabledMarkers4() {
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final StringManager stringManager = new StringManager("A");
+		stringManager.setSelectedItem("A");
+		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
+		ridget.updateFromModel();
+
+		checkSelection(ridget, control, true);
+
+		ridget.setOutputOnly(true);
+
+		checkSelection(ridget, control, true);
+
+		ridget.setEnabled(false);
+
+		checkSelection(ridget, control, false);
+
+		ridget.setOutputOnly(false);
+
+		checkSelection(ridget, control, false);
+
+		ridget.setEnabled(true);
+
+		checkSelection(ridget, control, true);
+	}
+
+	public void testSetSelectionIntFiresEvents() {
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final StringManager stringManager = new StringManager("A", "B", "C", "D", "E");
+		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
+		ridget.updateFromModel();
+		ridget.setUIControl(control);
+
+		final FTPropertyChangeListener pcl = new FTPropertyChangeListener();
+		ridget.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, pcl);
+
+		assertEquals(0, pcl.getCount());
+		assertEquals(null, ridget.getSelection());
+		assertEquals(null, getSelectedString(control));
+
+		ridget.setSelection(0);
+
+		assertEquals(1, pcl.getCount());
+		assertEquals("A", ridget.getSelection());
+		assertEquals("A", getSelectedString(control));
+
+		ridget.setSelection(1);
+
+		assertEquals(2, pcl.getCount());
+		assertEquals("B", ridget.getSelection());
+		assertEquals("B", getSelectedString(control));
+
+		ridget.setSelection(1);
+
+		assertEquals(2, pcl.getCount());
+		assertEquals("B", ridget.getSelection());
+		assertEquals("B", getSelectedString(control));
+
+		ridget.setSelection(-1);
+
+		assertEquals(3, pcl.getCount());
+		assertEquals(null, ridget.getSelection());
+		assertEquals(null, getSelectedString(control));
+
+		try {
+			ridget.setSelection(99);
+			fail();
+		} catch (final IndexOutOfBoundsException ioobe) {
+			// expected
+		}
+	}
+
+	public void testSetSelectionObjFiresEvents() {
+		final AbstractComboRidget ridget = getRidget();
+		final Control control = getWidget();
+		final StringManager stringManager = new StringManager("A", "B", "C", "D", "E");
+		ridget.bindToModel(stringManager, "items", String.class, null, stringManager, "selectedItem");
+		ridget.updateFromModel();
+		ridget.setUIControl(control);
+
+		final FTPropertyChangeListener pcl = new FTPropertyChangeListener();
+		ridget.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, pcl);
+
+		assertEquals(0, pcl.getCount());
+		assertEquals(null, ridget.getSelection());
+		assertEquals(null, getSelectedString(control));
+
+		ridget.setSelection("A");
+
+		assertEquals(1, pcl.getCount());
+		assertEquals("A", ridget.getSelection());
+		assertEquals("A", getSelectedString(control));
+
+		ridget.setSelection("B");
+
+		assertEquals(2, pcl.getCount());
+		assertEquals("B", ridget.getSelection());
+		assertEquals("B", getSelectedString(control));
+
+		ridget.setSelection("B");
+
+		assertEquals(2, pcl.getCount());
+		assertEquals("B", ridget.getSelection());
+		assertEquals("B", getSelectedString(control));
+
+		ridget.setSelection("this does not exist");
+
+		assertEquals(3, pcl.getCount());
+		assertEquals("this does not exist", ridget.getSelection());
+		assertEquals(null, getSelectedString(control));
+	}
 
 	/**
 	 * Check that disabling / enabling works when we don't have a bound model.
@@ -1410,6 +1561,18 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		}
 	}
 
+	private void checkSelection(final AbstractComboRidget ridget, final Control control, final boolean isEnabled) {
+		assertEquals("A", ridget.getSelection());
+		assertEquals(0, ridget.getSelectionIndex());
+		if (isEnabled) {
+			assertEquals("A", getText(control));
+			assertEquals(0, getSelectionIndex(control));
+		} else {
+			assertEquals("", getText(control));
+			assertEquals(-1, getSelectionIndex(control));
+		}
+	}
+
 	private Collection<Person> createPersonList() {
 		final Collection<Person> newList = new ArrayList<Person>();
 
@@ -1457,7 +1620,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		return result;
 	}
 
-	private static String getInitials(final Person person) {
+	private String getInitials(final Person person) {
 		if (person == null) {
 			return null;
 		}
@@ -1468,7 +1631,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		return f + l;
 	}
 
-	protected String getItem(final Control control, final int index) {
+	private String getItem(final Control control, final int index) {
 		if (control instanceof Combo) {
 			return ((Combo) control).getItem(index);
 		}
@@ -1494,7 +1657,7 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 		throw new IllegalArgumentException("unknown widget type: " + control);
 	}
 
-	protected int getSelectionIndex(final Control control) {
+	private int getSelectionIndex(final Control control) {
 		if (control instanceof Combo) {
 			return ((Combo) control).getSelectionIndex();
 		}

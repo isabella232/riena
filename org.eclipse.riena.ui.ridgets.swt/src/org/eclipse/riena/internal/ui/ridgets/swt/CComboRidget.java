@@ -21,9 +21,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
@@ -36,11 +36,9 @@ public class CComboRidget extends AbstractComboRidget {
 	private static final String ORIGINAL_BACKGROUND_KEY = "CCR.orBaKe"; //$NON-NLS-1$
 
 	private final ModifyListener modifyListener;
-	private final SelectionTypeEnforcer selectionTypeEnforcer;
 
 	public CComboRidget() {
 		modifyListener = new CComboModifyListener();
-		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if (getUIControl() != null) {
@@ -49,35 +47,22 @@ public class CComboRidget extends AbstractComboRidget {
 				}
 			}
 		});
-		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, selectionTypeEnforcer);
+
 	}
 
 	@Override
-	public void setSelection(final Object newSelection) {
-		assertIsBoundToModel();
-		final Object oldSelection = selectionObservable.getValue();
-		if (oldSelection != newSelection) {
-			if (isOutputOnly() && !isBound()) {
-				bindUIControl();
-			}
-			if (newSelection == null) {
-				if (getUIControl() != null) {
-					clearUIControlListSelection();
-				}
-				selectionObservable.setValue(null);
-			} else {
-				selectionObservable.setValue(newSelection);
-			}
-			if (isOutputOnly() && isBound()) {
-				unbindUIControl();
-			}
-		}
+	public CCombo getUIControl() {
+		return (CCombo) super.getUIControl();
 	}
 
 	@Override
-	public void updateFromModel() {
-		super.updateFromModel();
-		selectionTypeEnforcer.saveSelection();
+	protected void addSelectionListener(final org.eclipse.swt.events.SelectionListener listener) {
+		getUIControl().addSelectionListener(listener);
+	}
+
+	@Override
+	protected void addTextModifyListener() {
+		getUIControl().addModifyListener(modifyListener);
 	}
 
 	@Override
@@ -86,7 +71,6 @@ public class CComboRidget extends AbstractComboRidget {
 		if (getUIControl() != null) {
 			updateBgColor(isEnabled());
 		}
-		selectionTypeEnforcer.saveSelection();
 	}
 
 	@Override
@@ -97,23 +81,7 @@ public class CComboRidget extends AbstractComboRidget {
 			if ((style & SWT.READ_ONLY) == 0) {
 				throw new BindingException("Combo must be READ_ONLY"); //$NON-NLS-1$
 			}
-			((CCombo) uiControl).addSelectionListener(selectionTypeEnforcer);
 		}
-	}
-
-	@Override
-	public CCombo getUIControl() {
-		return (CCombo) super.getUIControl();
-	}
-
-	@Override
-	protected IObservableList getUIControlItemsObservable() {
-		return SWTObservables.observeItems(getUIControl());
-	}
-
-	@Override
-	protected ISWTObservableValue getUIControlSelectionObservable() {
-		return SWTObservables.observeSelection(getUIControl());
 	}
 
 	@Override
@@ -139,13 +107,38 @@ public class CComboRidget extends AbstractComboRidget {
 	}
 
 	@Override
-	protected void removeAllFromUIControl() {
-		getUIControl().removeAll();
+	protected IObservableList getUIControlItemsObservable() {
+		return SWTObservables.observeItems(getUIControl());
+	}
+
+	@Override
+	protected ISWTObservableValue getUIControlSelectionObservable() {
+		return SWTObservables.observeSelection(getUIControl());
+	}
+
+	@Override
+	protected String getUIControlText() {
+		return getUIControl().getText();
 	}
 
 	@Override
 	protected int indexOfInUIControl(final String item) {
 		return getUIControl().indexOf(item);
+	}
+
+	@Override
+	protected void removeAllFromUIControl() {
+		getUIControl().removeAll();
+	}
+
+	@Override
+	protected void removeSelectionListener(final SelectionListener listener) {
+		getUIControl().removeSelectionListener(listener);
+	}
+
+	@Override
+	protected void removeTextModifyListener() {
+		getUIControl().removeModifyListener(modifyListener);
 	}
 
 	@Override
@@ -156,21 +149,6 @@ public class CComboRidget extends AbstractComboRidget {
 	@Override
 	protected void setItemsToControl(final String[] arrItems) {
 		getUIControl().setItems(arrItems);
-	}
-
-	@Override
-	protected void addTextModifyListener() {
-		getUIControl().addModifyListener(modifyListener);
-	}
-
-	@Override
-	protected void removeTextModifyListener() {
-		getUIControl().removeModifyListener(modifyListener);
-	}
-
-	@Override
-	protected String getUIControlText() {
-		return getUIControl().getText();
 	}
 
 	@Override

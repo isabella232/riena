@@ -37,8 +37,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.util.ListenerList;
@@ -74,6 +74,11 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	protected final IObservableValue selectionObservable;
 	/** Selection validator that allows or cancels a selection request. */
 	private final SelectionBindingValidator selectionValidator;
+	/**
+	 * Listener that can undo a user's selection if the ridget is in 'readOnly'
+	 * mode.
+	 */
+	private final SelectionEnforcer selectionEnforcer;
 	/** IValueChangeListener that fires a selection event on change. */
 	private final IValueChangeListener valueChangeNotifier;
 	/** A list of selection listeners. */
@@ -146,14 +151,15 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	private String text;
 
 	public AbstractComboRidget() {
-		super();
 		rowClass = null;
 		rowObservables = new WritableList();
 		selectionObservable = new WritableValue();
 		objToStrConverter = new ObjectToStringConverter();
 		strToObjConverter = new StringToObjectConverter();
 		selectionValidator = new SelectionBindingValidator();
+		selectionEnforcer = new SelectionEnforcer();
 		valueChangeNotifier = new ValueChangeNotifier();
+		text = ""; //$NON-NLS-1$
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				applyEnabled();
@@ -166,7 +172,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 				}
 			}
 		});
-		this.text = ""; //$NON-NLS-1$
 	}
 
 	@Override
@@ -174,6 +179,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		if (getUIControl() != null) {
 			applyText();
 			addTextModifyListener();
+			addSelectionListener(selectionEnforcer);
 			updateEditable();
 		}
 		if (optionValues != null) {
@@ -196,6 +202,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			// the valueChangeNotifier sends the selection changed event (bug 287740)
 			selectionObservable.addValueChangeListener(valueChangeNotifier);
 		}
+		selectionEnforcer.saveSelection();
 	}
 
 	@Override
@@ -203,6 +210,7 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		super.unbindUIControl();
 		if (getUIControl() != null) {
 			removeTextModifyListener();
+			removeSelectionListener(selectionEnforcer);
 		}
 		disposeBinding(listBindingExternal);
 		listBindingExternal = null;
@@ -344,20 +352,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		assertIsBoundToModel();
 		final Object oldSelection = selectionObservable.getValue();
 		if (oldSelection != newSelection) {
-			if (isOutputOnly() && !isBound()) {
-				bindUIControl();
-			}
-			if (newSelection == null || !rowObservables.contains(newSelection)) {
-				if (getUIControl() != null) {
-					clearUIControlListSelection();
-				}
-				selectionObservable.setValue(null);
-			} else {
-				selectionObservable.setValue(newSelection);
-			}
-			if (isOutputOnly() && isBound()) {
-				unbindUIControl();
-			}
+			selectionObservable.setValue(newSelection);
+			selectionEnforcer.saveSelection();
 		}
 	}
 
@@ -395,9 +391,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		// disable the selection binding, because updating the combo items
 		// causes the selection to change temporarily
 		selectionValidator.enableBinding(false);
-		if (isOutputOnly() && !isBound()) {
-			bindUIControl();
-		}
 		try {
 			listBindingExternal.updateModelToTarget();
 			items = new ArrayList<String>();
@@ -411,21 +404,29 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 		// Bug 304733: clear selection if not in rowObservables
 		applyMarkSelectionMismatch();
-
-		if (isOutputOnly() && isBound()) {
-			unbindUIControl();
-		}
+		selectionEnforcer.saveSelection();
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	protected boolean isBound() {
-		return listBindingExternal != null && selectionBindingExternal != null;
+	protected void assertIsBoundToModel() {
+		if (optionValues == null) {
+			throw new BindingException("ridget not bound to model"); //$NON-NLS-1$
+		}
 	}
 
 	// abstract methods
 	///////////////////
+
+	/**
+	 * Attach a given {@link SelectionListener} to the combo.
+	 * 
+	 * @param listener
+	 *            {@link SelectionListener}; never null.
+	 * @since 3.0
+	 */
+	protected abstract void addSelectionListener(SelectionListener listener);
 
 	/**
 	 * Attach a text modify listener to the combo. The listener must invoke
@@ -477,6 +478,15 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * text field.
 	 */
 	protected abstract void removeAllFromUIControl();
+
+	/**
+	 * Remove a given {@link SelectionListener} from the combo.
+	 * 
+	 * @param listener
+	 *            the {@link SelectionListener}; never null.
+	 * @since 3.0
+	 */
+	protected abstract void removeSelectionListener(SelectionListener listener);
 
 	/**
 	 * Remove the text modify listener from the combo.
@@ -546,15 +556,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 			if (selectionMismatchMarker != null) {
 				removeMarker(selectionMismatchMarker);
 			}
-		}
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	protected void assertIsBoundToModel() {
-		if (optionValues == null) {
-			throw new BindingException("ridget not bound to model"); //$NON-NLS-1$
 		}
 	}
 
@@ -764,19 +765,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		}
 	}
 
-	private int getSelectionIndex(final Control control) {
-		if (control instanceof Combo) {
-			return ((Combo) control).getSelectionIndex();
-		}
-		if (control instanceof CCombo) {
-			return ((CCombo) control).getSelectionIndex();
-		}
-		if (control instanceof CompletionCombo) {
-			return ((CompletionCombo) control).getSelectionIndex();
-		}
-		return -1;
-	}
-
 	/**
 	 * TwoWayAdapter that saves the current selection, when outputOnly changes
 	 * and applies it again after the user tries to select an entry in the
@@ -784,24 +772,34 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 * 
 	 * @since 3.0
 	 */
-	protected final class SelectionTypeEnforcer extends SelectionAdapter implements PropertyChangeListener {
+	private final class SelectionEnforcer extends SelectionAdapter {
 
 		private int selectionIndex;
 
-		public SelectionTypeEnforcer() {
-		}
-
 		@Override
 		public void widgetSelected(final org.eclipse.swt.events.SelectionEvent e) {
-			super.widgetSelected(e);
-
 			if (getUIControl() != null && isOutputOnly()) {
 				final Widget uiControl = e.widget;
-				rewriteText(uiControl);
+				resetSelection(uiControl);
 			}
 		}
 
-		private void rewriteText(final Widget uiControl) {
+		/**
+		 * Save the currently selected value of the Combo.
+		 */
+		public void saveSelection() {
+			if (isBound()) {
+				selectionIndex = getSelectionIndex();
+				// System.out.println("## saveSelection; selectionIndex: " + selectionIndex);
+			}
+		}
+
+		private boolean isBound() {
+			return listBindingExternal != null && selectionBindingExternal != null;
+		}
+
+		private void resetSelection(final Widget uiControl) {
+			// System.out.println("## propertyChange; resetSel: " + selectionIndex); 
 			if (uiControl instanceof CCombo) {
 				if (selectionIndex == -1) {
 					((CCombo) uiControl).deselectAll();
@@ -820,28 +818,6 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 				} else {
 					((CompletionCombo) uiControl).select(selectionIndex);
 				}
-			}
-		}
-
-		public void propertyChange(final PropertyChangeEvent evt) {
-			selectionIndex = getSelectionIndex(getUIControl());
-			if (isOutputOnly() && isBound()) {
-				unbindUIControl();
-			} else if (!isBound()) {
-				bindUIControl();
-				if (optionValues != null) {
-					setSelection(selectionIndex);
-				}
-			}
-		}
-
-		/**
-		 * Save the currently selected value of the Combo.
-		 */
-		public void saveSelection() {
-			if (isBound()) {
-				selectionBindingExternal.updateModelToTarget();
-				selectionIndex = getSelectionIndex();
 			}
 		}
 	}

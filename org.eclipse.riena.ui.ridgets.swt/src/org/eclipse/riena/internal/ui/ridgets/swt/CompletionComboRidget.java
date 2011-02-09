@@ -16,6 +16,7 @@ import org.eclipse.jface.databinding.swt.ISWTObservableValue;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
@@ -42,6 +43,21 @@ public class CompletionComboRidget extends AbstractComboRidget {
 	};
 
 	@Override
+	public CompletionCombo getUIControl() {
+		return (CompletionCombo) super.getUIControl();
+	}
+
+	@Override
+	protected void addSelectionListener(final SelectionListener listener) {
+		getUIControl().addSelectionListener(listener);
+	}
+
+	@Override
+	protected void addTextModifyListener() {
+		getUIControl().addModifyListener(modifyListener);
+	}
+
+	@Override
 	protected void bindUIControl() {
 		final CompletionCombo control = getUIControl();
 		if (control != null) {
@@ -53,33 +69,6 @@ public class CompletionComboRidget extends AbstractComboRidget {
 	@Override
 	protected void checkUIControl(final Object uiControl) {
 		AbstractSWTRidget.assertType(uiControl, CompletionCombo.class);
-	}
-
-	@Override
-	protected void addTextModifyListener() {
-		getUIControl().addModifyListener(modifyListener);
-	}
-
-	@Override
-	protected void removeTextModifyListener() {
-		getUIControl().removeModifyListener(modifyListener);
-	}
-
-	@Override
-	public CompletionCombo getUIControl() {
-		return (CompletionCombo) super.getUIControl();
-	}
-
-	@Override
-	protected IObservableList getUIControlItemsObservable() {
-		return SWTObservables.observeItems(getUIControl());
-	}
-
-	@Override
-	protected ISWTObservableValue getUIControlSelectionObservable() {
-		final CompletionCombo control = getUIControl();
-		final Realm realm = SWTObservables.getRealm(control.getDisplay());
-		return (ISWTObservableValue) new CompletionComboSelectionProperty().observe(realm, control);
 	}
 
 	@Override
@@ -105,8 +94,25 @@ public class CompletionComboRidget extends AbstractComboRidget {
 	}
 
 	@Override
+	protected IObservableList getUIControlItemsObservable() {
+		return SWTObservables.observeItems(getUIControl());
+	}
+
+	@Override
+	protected ISWTObservableValue getUIControlSelectionObservable() {
+		final CompletionCombo control = getUIControl();
+		final Realm realm = SWTObservables.getRealm(control.getDisplay());
+		return (ISWTObservableValue) new CompletionComboSelectionProperty().observe(realm, control);
+	}
+
+	@Override
 	protected String getUIControlText() {
 		return getUIControl().getText();
+	}
+
+	@Override
+	protected int indexOfInUIControl(final String item) {
+		return getUIControl().indexOf(item);
 	}
 
 	@Override
@@ -115,8 +121,13 @@ public class CompletionComboRidget extends AbstractComboRidget {
 	}
 
 	@Override
-	protected int indexOfInUIControl(final String item) {
-		return getUIControl().indexOf(item);
+	protected void removeSelectionListener(final SelectionListener listener) {
+		getUIControl().removeSelectionListener(listener);
+	}
+
+	@Override
+	protected void removeTextModifyListener() {
+		getUIControl().removeModifyListener(modifyListener);
 	}
 
 	@Override
@@ -130,6 +141,19 @@ public class CompletionComboRidget extends AbstractComboRidget {
 		getUIControl().setItems(arrItems, arrImages);
 	}
 
+	@Override
+	protected void setTextToControl(final String text) {
+		getUIControl().setText(text);
+	}
+
+	@Override
+	protected void updateEditable() {
+		getUIControl().setEditable(!isOutputOnly());
+	}
+
+	// helping methods
+	//////////////////
+
 	private Image[] getImages(final String[] arrItems) {
 		Image[] result = null;
 		final IColumnFormatter formatter = getColumnFormatter();
@@ -142,16 +166,6 @@ public class CompletionComboRidget extends AbstractComboRidget {
 			}
 		}
 		return result;
-	}
-
-	@Override
-	protected void setTextToControl(final String text) {
-		getUIControl().setText(text);
-	}
-
-	@Override
-	protected void updateEditable() {
-		getUIControl().setEditable(!isOutputOnly());
 	}
 
 }

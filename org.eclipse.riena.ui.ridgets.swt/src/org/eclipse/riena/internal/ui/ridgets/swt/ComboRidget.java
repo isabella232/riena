@@ -17,9 +17,9 @@ import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
 
-import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
@@ -35,23 +35,20 @@ public class ComboRidget extends AbstractComboRidget {
 			}
 		}
 	};
-	private final SelectionTypeEnforcer selectionTypeEnforcer;
 
-	public ComboRidget() {
-		selectionTypeEnforcer = new SelectionTypeEnforcer();
-		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, selectionTypeEnforcer);
+	@Override
+	public Combo getUIControl() {
+		return (Combo) super.getUIControl();
 	}
 
 	@Override
-	public void updateFromModel() {
-		super.updateFromModel();
-		selectionTypeEnforcer.saveSelection();
+	protected void addSelectionListener(final org.eclipse.swt.events.SelectionListener listener) {
+		getUIControl().addSelectionListener(listener);
 	}
 
 	@Override
-	protected void bindUIControl() {
-		super.bindUIControl();
-		selectionTypeEnforcer.saveSelection();
+	protected void addTextModifyListener() {
+		getUIControl().addModifyListener(modifyListener);
 	}
 
 	@Override
@@ -62,24 +59,7 @@ public class ComboRidget extends AbstractComboRidget {
 			if ((style & SWT.READ_ONLY) == 0) {
 				throw new BindingException("Combo must be READ_ONLY"); //$NON-NLS-1$
 			}
-
-			((Combo) uiControl).addSelectionListener(selectionTypeEnforcer);
 		}
-	}
-
-	@Override
-	public Combo getUIControl() {
-		return (Combo) super.getUIControl();
-	}
-
-	@Override
-	protected IObservableList getUIControlItemsObservable() {
-		return SWTObservables.observeItems(getUIControl());
-	}
-
-	@Override
-	protected ISWTObservableValue getUIControlSelectionObservable() {
-		return SWTObservables.observeSelection(getUIControl());
 	}
 
 	@Override
@@ -93,13 +73,38 @@ public class ComboRidget extends AbstractComboRidget {
 	}
 
 	@Override
-	protected void removeAllFromUIControl() {
-		getUIControl().removeAll();
+	protected IObservableList getUIControlItemsObservable() {
+		return SWTObservables.observeItems(getUIControl());
+	}
+
+	@Override
+	protected ISWTObservableValue getUIControlSelectionObservable() {
+		return SWTObservables.observeSelection(getUIControl());
+	}
+
+	@Override
+	protected String getUIControlText() {
+		return getUIControl().getText();
 	}
 
 	@Override
 	protected int indexOfInUIControl(final String item) {
 		return getUIControl().indexOf(item);
+	}
+
+	@Override
+	protected void removeAllFromUIControl() {
+		getUIControl().removeAll();
+	}
+
+	@Override
+	protected void removeSelectionListener(final SelectionListener listener) {
+		getUIControl().removeSelectionListener(listener);
+	}
+
+	@Override
+	protected void removeTextModifyListener() {
+		getUIControl().removeModifyListener(modifyListener);
 	}
 
 	@Override
@@ -110,21 +115,6 @@ public class ComboRidget extends AbstractComboRidget {
 	@Override
 	protected void setItemsToControl(final String[] arrItems) {
 		getUIControl().setItems(arrItems);
-	}
-
-	@Override
-	protected void addTextModifyListener() {
-		getUIControl().addModifyListener(modifyListener);
-	}
-
-	@Override
-	protected void removeTextModifyListener() {
-		getUIControl().removeModifyListener(modifyListener);
-	}
-
-	@Override
-	protected String getUIControlText() {
-		return getUIControl().getText();
 	}
 
 	@Override
