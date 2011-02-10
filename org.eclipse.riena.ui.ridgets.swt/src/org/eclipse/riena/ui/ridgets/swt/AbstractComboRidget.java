@@ -386,6 +386,10 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 
 	@Override
 	public void updateFromModel() {
+		// dont do anything if no model is bound
+		if (optionValues == null) {
+			return;
+		}
 		assertIsBoundToModel();
 		super.updateFromModel();
 		// disable the selection binding, because updating the combo items

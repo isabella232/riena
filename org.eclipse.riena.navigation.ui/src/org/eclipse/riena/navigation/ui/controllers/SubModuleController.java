@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 compeople AG and others.
+ * Copyright (c) 2007, 2011 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,9 @@ package org.eclipse.riena.navigation.ui.controllers;
 
 import java.util.Iterator;
 
-import org.osgi.service.log.LogService;
-
-import org.eclipse.core.databinding.BindingException;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.internal.navigation.ui.Activator;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -248,17 +244,16 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		final Iterator<? extends IRidget> iter = getRidgets().iterator();
 		while (iter.hasNext()) {
 			final IRidget ridget = iter.next();
-			if (RienaStatus.isDevelopment()) {
-				try {
-					ridget.updateFromModel();
-				} catch (final BindingException ex) {
-					LOGGER.log(
-							LogService.LOG_WARNING,
-							"Update from the model was unsuccessful for the ridget: " + ridget + ", with id: " + ridget.getID()); //$NON-NLS-1$ //$NON-NLS-2$
-				}
-			} else {
-				ridget.updateFromModel();
-			}
+			/*
+			 * if (RienaStatus.isDevelopment()) { try {
+			 * ridget.updateFromModel(); } catch (final BindingException ex) {
+			 * LOGGER.log( LogService.LOG_WARNING,
+			 * "Update from the model was unsuccessful for the ridget: " +
+			 * ridget + ", with id: " + ridget.getID()); //$NON-NLS-1$
+			 * //$NON-NLS-2$ } } else {
+			 */
+			ridget.updateFromModel();
+			//			}
 		}
 	}
 
