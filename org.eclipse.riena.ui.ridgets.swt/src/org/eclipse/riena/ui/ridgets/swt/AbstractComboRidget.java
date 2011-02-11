@@ -352,6 +352,11 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		assertIsBoundToModel();
 		final Object oldSelection = selectionObservable.getValue();
 		if (oldSelection != newSelection) {
+			if (newSelection == null || !rowObservables.contains(newSelection)) {
+				if (getUIControl() != null) {
+					clearUIControlListSelection();
+				}
+			}
 			selectionObservable.setValue(newSelection);
 			selectionEnforcer.saveSelection();
 		}

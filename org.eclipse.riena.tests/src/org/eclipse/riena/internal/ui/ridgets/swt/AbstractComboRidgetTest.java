@@ -1056,7 +1056,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setSelection(-1);
 
-		assertEquals(3, pcl.getCount());
+		// one event to clear the UI control plus one event to select
+		assertEquals(4, pcl.getCount());
 		assertEquals(null, ridget.getSelection());
 		assertEquals(null, getSelectedString(control));
 
@@ -1103,7 +1104,8 @@ public abstract class AbstractComboRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setSelection("this does not exist");
 
-		assertEquals(3, pcl.getCount());
+		// one event to clear the UI control plus one event to select
+		assertEquals(4, pcl.getCount());
 		assertEquals("this does not exist", ridget.getSelection());
 		assertEquals(null, getSelectedString(control));
 	}
