@@ -421,7 +421,8 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 	 */
 	protected void assertIsBoundToModel() {
 		if (optionValues == null) {
-			throw new BindingException("ridget not bound to model"); //$NON-NLS-1$
+			final String msg = String.format("ridget with ID '%s' is not bound to  a model", getID()); //$NON-NLS-1$
+			throw new BindingException(msg);
 		}
 	}
 
