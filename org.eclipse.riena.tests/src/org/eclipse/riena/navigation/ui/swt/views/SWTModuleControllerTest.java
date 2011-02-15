@@ -10,14 +10,19 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.views;
 
+import java.util.List;
+
 import junit.framework.TestCase;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.listener.IModuleGroupNodeListener;
+import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 
@@ -202,6 +207,22 @@ public class SWTModuleControllerTest extends TestCase {
 		assertFalse(sm211.isExpanded());
 		assertFalse(sm31.isExpanded());
 		assertFalse(sm32.isExpanded());
+	}
+
+	public void testModuleGroupListenerisAddedRemoved() {
+
+		final IModuleGroupNode mg = new ModuleGroupNode();
+		List<IModuleGroupNodeListener> listeners = ReflectionUtils.invokeHidden(mg, "getListeners");
+		assertTrue(listeners.isEmpty());
+
+		moduleNode.setParent(mg);
+		listeners = ReflectionUtils.invokeHidden(mg, "getListeners");
+		assertEquals(1, listeners.size());
+
+		moduleNode.setParent(null);
+		listeners = ReflectionUtils.invokeHidden(mg, "getListeners");
+		assertTrue(listeners.isEmpty());
+
 	}
 
 	/**

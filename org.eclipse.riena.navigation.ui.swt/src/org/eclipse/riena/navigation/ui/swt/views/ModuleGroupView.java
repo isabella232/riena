@@ -27,6 +27,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -248,6 +249,12 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 				SwtViewProvider.getInstance().replaceNavigationNodeId(source, oldId, newId);
 			}
 		}
+
+		@Override
+		public void markerChanged(final IModuleGroupNode source, final IMarker marker) {
+			super.markerChanged(source, marker);
+			updateEnabled();
+		}
 	}
 
 	/**
@@ -276,6 +283,17 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 			positionHint += MODULE_GROUP_GAP;
 		}
 		return positionHint;
+	}
+
+	/**
+	 * Updates the enabled state of all module views.
+	 * 
+	 * @since 3.0
+	 */
+	public void updateEnabled() {
+		for (final ModuleView moduleView : getAllModuleViews()) {
+			moduleView.updateEnabled();
+		}
 	}
 
 	/**

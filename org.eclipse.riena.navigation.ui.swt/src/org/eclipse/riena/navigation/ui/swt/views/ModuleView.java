@@ -308,6 +308,18 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 	}
 
+	/**
+	 * Updates the enabled flag of the title and the sub-module tree and and
+	 * redraws them.
+	 * 
+	 * @since 3.0
+	 */
+	public void updateEnabled() {
+		title.setEnabled(getNavigationNode().isEnabled());
+		subModuleTree.setEnabled(title.isEnabled());
+		title.redraw();
+	}
+
 	public void updateModuleView() {
 		prepareUpdate();
 		getParent().layout();
@@ -778,7 +790,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		public void markerChanged(final IModuleNode source, final IMarker marker) {
 			super.markerChanged(source, marker);
 			title.setMarkers(source.getMarkers());
-			title.redraw();
+			updateEnabled();
 		}
 
 		@Override

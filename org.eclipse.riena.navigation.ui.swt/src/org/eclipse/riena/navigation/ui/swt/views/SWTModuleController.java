@@ -12,14 +12,18 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.util.List;
 
+import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.listener.ModuleGroupNodeListener;
 import org.eclipse.riena.navigation.listener.ModuleNodeListener;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ModuleController;
+import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.tree2.ITreeNode;
@@ -41,6 +45,8 @@ public class SWTModuleController extends ModuleController {
 
 	private final boolean showOneSubTree;
 	private NavigationTreeObserver navigationTreeObserver;
+	private ModuleGroupListener moduleGrouplistener;
+	private IModuleGroupNode parentModuleGroup;
 
 	/**
 	 * @param navigationNode
@@ -303,6 +309,46 @@ public class SWTModuleController extends ModuleController {
 			}
 		}
 
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * If a new parent has set, a listener for the module group is added. If
+		 * no parent is set ({@code module==null}), the listener for the module
+		 * group is removed.
+		 */
+		@Override
+		public void parentChanged(final IModuleNode module) {
+			super.parentChanged(module);
+			if (module.getParent() instanceof IModuleGroupNode) {
+				if (moduleGrouplistener == null) {
+					moduleGrouplistener = new ModuleGroupListener();
+				}
+				parentModuleGroup = (IModuleGroupNode) module.getParent();
+				parentModuleGroup.addListener(moduleGrouplistener);
+			} else {
+				if ((parentModuleGroup != null) && (moduleGrouplistener != null)) {
+					parentModuleGroup.removeListener(moduleGrouplistener);
+					parentModuleGroup = null;
+				}
+			}
+		}
+
+	}
+
+	private class ModuleGroupListener extends ModuleGroupNodeListener {
+		/**
+		 * {@inheritDoc}
+		 * <p>
+		 * If a DisabledMarer was added or removed, the sub-module will be
+		 * updated.
+		 */
+		@Override
+		public void markerChanged(final IModuleGroupNode source, final IMarker marker) {
+			super.markerChanged(source, marker);
+			if (marker instanceof DisabledMarker) {
+				tree.updateFromModel();
+			}
+		}
 	}
 
 	private void updateTree(final ISubModuleNode source) {
