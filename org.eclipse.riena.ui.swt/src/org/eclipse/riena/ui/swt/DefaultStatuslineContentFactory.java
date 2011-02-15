@@ -51,11 +51,7 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 
 			spacerControl = createSpacer(statusline);
 			if (spacerControl != null) {
-				formData = new FormData();
-				formData.top = new FormAttachment(0, 0);
-				formData.bottom = new FormAttachment(100, 0);
-				formData.right = new FormAttachment(lastControl, 0);
-				spacerControl.setLayoutData(formData);
+				setSpaceLayoutData(lastControl, spacerControl);
 				lastControl = spacerControl;
 			}
 
@@ -69,11 +65,7 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 
 			spacerControl = createSpacer(statusline);
 			if (spacerControl != null) {
-				formData = new FormData();
-				formData.top = new FormAttachment(0, 0);
-				formData.bottom = new FormAttachment(100, 0);
-				formData.right = new FormAttachment(lastControl, 0);
-				spacerControl.setLayoutData(formData);
+				setSpaceLayoutData(lastControl, spacerControl);
 				lastControl = spacerControl;
 			}
 		}
@@ -95,11 +87,7 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 
 		spacerControl = createSpacer(statusline);
 		if (spacerControl != null) {
-			formData = new FormData();
-			formData.top = new FormAttachment(0, 0);
-			formData.bottom = new FormAttachment(100, 0);
-			formData.right = new FormAttachment(lastControl, 0);
-			spacerControl.setLayoutData(formData);
+			setSpaceLayoutData(lastControl, spacerControl);
 			lastControl = spacerControl;
 		}
 
@@ -115,11 +103,7 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 
 		spacerControl = createSpacer(statusline);
 		if (spacerControl != null) {
-			formData = new FormData();
-			formData.top = new FormAttachment(0, 0);
-			formData.bottom = new FormAttachment(100, 0);
-			formData.right = new FormAttachment(lastControl, 0);
-			spacerControl.setLayoutData(formData);
+			setSpaceLayoutData(lastControl, spacerControl);
 			lastControl = spacerControl;
 		}
 
@@ -132,6 +116,15 @@ public class DefaultStatuslineContentFactory implements IStatusLineContentFactor
 		message.setLayoutData(formData);
 		lastControl = message;
 
+	}
+
+	private void setSpaceLayoutData(Control lastControl, Control spacerControl) {
+		FormData formData;
+		formData = new FormData();
+		formData.top = new FormAttachment(0, 0);
+		formData.bottom = new FormAttachment(100, 0);
+		formData.right = new FormAttachment(lastControl, 0);
+		spacerControl.setLayoutData(formData);
 	}
 
 	protected StatuslineNumber createStatuslineNumber(final Statusline statusline) {

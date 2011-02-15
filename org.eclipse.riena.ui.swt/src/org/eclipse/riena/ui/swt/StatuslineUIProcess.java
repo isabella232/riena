@@ -58,6 +58,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	 * the maximum value for the progress
 	 */
 	public static final int PROGRESS_MAX_VALUE = 100;
+	private final static int PORGRESS_BAR_HEIGHT = 14;
 
 	// the base progress bar rendered inside the status line
 	private ProgressBar progressBar;
@@ -203,7 +204,7 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(18, 0);
 		formData.width = 60;
-		formData.height = 14;
+		formData.height = PORGRESS_BAR_HEIGHT;
 
 		progressBar = new ProgressBar(this, SWT.HORIZONTAL);
 		progressBar.setLayoutData(formData);
@@ -219,14 +220,16 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 
 		formData = new FormData();
 		formData.top = new FormAttachment(18, 0);
-		formData.height = 14;
+		// formData.height = 14;
+		formData.bottom = new FormAttachment(100, 0);
 		formData.width = 100;
 		statusLabel.setLayoutData(formData);
 
 		formData = new FormData();
 		formData.top = new FormAttachment(18, 0);
 		formData.left = new FormAttachment(progressBar, 5);
-		formData.height = 14;
+		formData.bottom = new FormAttachment(100, 0);
+		// formData.height = 14;
 		openLabel.setLayoutData(formData);
 
 		// create the popup
@@ -531,7 +534,8 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 				final Integer progressBarWidth = 60;
 				FormData formData = new FormData();
 				formData.top = lastControl != null ? new FormAttachment(lastControl, 2) : new FormAttachment(5, 0);
-				formData.height = 14;
+				formData.bottom = new FormAttachment(100, 0);
+				// formData.height = 14;
 				formData.width = LnfManager.getLnf().getIntegerSetting(
 						LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_WIDTH, 160)
 						- progressBarWidth;
@@ -540,7 +544,8 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 				formData = new FormData();
 				formData.top = lastControl != null ? new FormAttachment(lastControl, 2) : new FormAttachment(5, 0);
 				formData.left = new FormAttachment(label, 3);
-				formData.height = 14;
+				formData.bottom = new FormAttachment(100, 0);
+				// formData.height = 14;
 				formData.width = progressBarWidth;
 				bar.setLayoutData(formData);
 
@@ -568,7 +573,8 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 	private void cleanInactiveProcessPresentation() {
 		final FormData formData = new FormData();
 		formData.top = new FormAttachment(5, 0);
-		formData.height = 14;
+		formData.bottom = new FormAttachment(100, 0);
+		// formData.height = 14;
 		formData.width = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_WIDTH, 160);
 		if (noProcessActiveLabel == null || noProcessActiveLabel.isDisposed()) {
 			noProcessActiveLabel = new Label(popupContent, SWT.NONE);
