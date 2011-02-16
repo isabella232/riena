@@ -399,4 +399,35 @@ public class ChoiceCompositeTest extends RienaTestCase {
 		assertEquals(red, child1.getBackground());
 	}
 
+	/**
+	 * As per Bug ruv301
+	 * 
+	 * control should have the same background color as its parent, if it is
+	 * disabled.
+	 */
+	public void testSetBackgroundColorWhileDisabledRespectingParentsBackground() {
+		final ChoiceComposite control = new ChoiceComposite(shell, SWT.NONE, false);
+		final Button child1 = control.createChild("child1");
+		final Display display = control.getDisplay();
+		final Color red = display.getSystemColor(SWT.COLOR_RED);
+
+		shell.setBackground(red);
+		control.setEnabled(false);
+
+		assertEquals(red, control.getBackground());
+		assertEquals(red, child1.getBackground());
+		assertEquals(red, shell.getBackground());
+
+		control.setEnabled(true);
+
+		assertEquals(red, control.getBackground());
+		assertEquals(red, child1.getBackground());
+		assertEquals(red, shell.getBackground());
+
+		control.setEnabled(false);
+
+		assertEquals(red, control.getBackground());
+		assertEquals(red, child1.getBackground());
+		assertEquals(red, shell.getBackground());
+	}
 }

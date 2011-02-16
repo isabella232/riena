@@ -23,16 +23,11 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.eclipse.riena.ui.swt.lnf.IgnoreLnFUpdater;
-import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
-
 /**
  * This composite presents a list of single or multiple choices. It is mapped to
  * a {@link org.eclipse.riena.ui.ridgets.ISingleChoiceRidget} or
  * {@link org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget}.
  */
-@IgnoreLnFUpdater("background")
 public class ChoiceComposite extends Composite implements SelectionListener {
 
 	private final boolean isMulti;
@@ -80,7 +75,6 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 		this.orientation = SWT.VERTICAL;
 		isEditable = true;
 		applyLayout();
-		setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 	}
 
 	/**
@@ -177,7 +171,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 		setRedraw(false);
 		try {
 			this.bgColor = color;
-			updateBgColor(isEnabled());
+			updateBgColor();
 		} finally {
 			setRedraw(true);
 		}
@@ -229,7 +223,7 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 		try {
 			super.setEnabled(enabled);
 			updateEnabled(enabled);
-			updateBgColor(enabled);
+			updateBgColor();
 		} finally {
 			setRedraw(true);
 		}
@@ -357,8 +351,11 @@ public class ChoiceComposite extends Composite implements SelectionListener {
 		}
 	}
 
-	private void updateBgColor(final boolean isEnabled) {
-		final Color color = isEnabled ? bgColor : getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+	private void updateBgColor() {
+		updateBgColor(isEnabled() && bgColor != null ? bgColor : getParent().getBackground());
+	}
+
+	private void updateBgColor(final Color color) {
 		super.setBackground(color);
 		for (final Control child : getChildren()) {
 			child.setBackground(color);

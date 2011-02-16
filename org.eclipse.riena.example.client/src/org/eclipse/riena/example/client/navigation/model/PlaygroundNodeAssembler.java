@@ -74,6 +74,7 @@ import org.eclipse.riena.example.client.views.ListSubModuleView;
 import org.eclipse.riena.example.client.views.ListUsingTableSubModuleView;
 import org.eclipse.riena.example.client.views.MarkerHidingSubModuleView;
 import org.eclipse.riena.example.client.views.MarkerSubModuleView;
+import org.eclipse.riena.example.client.views.MarkerSubModuleWithAlternativeBackgroundView;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView2;
 import org.eclipse.riena.example.client.views.MasterDetailsSubModuleView3;
@@ -454,6 +455,13 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		workarea.registerDefinition(markerSubModule2, MarkerSubModuleController.class, MarkerSubModuleView.ID, true);
 		markerModule.addChild(markerSubModule2);
 		markerSubModule2.addMarker(new AttentionMarker());
+
+		final ISubModuleNode markerSubModuleAlternativeBackground = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.markerAlternativeBackground"), "Marker with alternative background (used with alternative LnF)"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(markerSubModuleAlternativeBackground, MarkerSubModuleController.class,
+				MarkerSubModuleWithAlternativeBackgroundView.ID, true);
+		markerModule.addChild(markerSubModuleAlternativeBackground);
+		markerSubModuleAlternativeBackground.addMarker(new AttentionMarker());
 
 		final ISubModuleNode customMarkerSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.custommarker"), "Custom Marker"); //$NON-NLS-1$ //$NON-NLS-2$

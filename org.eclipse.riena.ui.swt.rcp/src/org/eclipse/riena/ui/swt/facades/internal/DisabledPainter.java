@@ -15,8 +15,10 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
@@ -28,10 +30,17 @@ public final class DisabledPainter implements PaintListener {
 	public void paintControl(final PaintEvent e) {
 		final GC gc = e.gc;
 		final Control control = (Control) e.widget;
+		if (control instanceof Button) {
+			return;
+		}
 		final int alpha = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.DISABLED_MARKER_STANDARD_ALPHA);
 		gc.setAlpha(alpha);
 		final Color color = LnfManager.getLnf().getColor(LnfKeyConstants.DISABLED_MARKER_BACKGROUND);
 		gc.setBackground(color);
+		if (control instanceof ChoiceComposite) {
+			gc.setAlpha(255);
+			gc.setBackground(control.getParent().getBackground());
+		}
 		// overdraws the content area
 		final Rectangle bounds = control.getBounds();
 		gc.fillRectangle(0, 0, bounds.width, bounds.height);

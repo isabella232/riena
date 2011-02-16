@@ -422,6 +422,13 @@
             name="Police"
             restorable="true">
       </view>
+      <view
+            allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.MarkerSubModuleWithAlternativeBackgroundView"
+            id="org.eclipse.riena.example.client.views.MarkerSubModuleWithAlternativeBackgroundView"
+            name="org.eclipse.riena.example.client.views.MarkerSubModuleWithAlternativeBackgroundView"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
