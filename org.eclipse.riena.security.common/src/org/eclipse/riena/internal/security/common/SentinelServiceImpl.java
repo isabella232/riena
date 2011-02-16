@@ -25,8 +25,8 @@ import org.eclipse.riena.security.common.authorization.IPermissionCache;
 import org.eclipse.riena.security.common.authorization.ISentinelService;
 
 /**
- * Implementation of Sentinel that is registered as OSGi Service so that it can
- * be overwritten.
+ * An implementation of the {@code ISentinelService} which will be registered as
+ * 'default' OSGi service that can be overwritten.
  */
 public class SentinelServiceImpl implements ISentinelService {
 
@@ -65,13 +65,11 @@ public class SentinelServiceImpl implements ISentinelService {
 	}
 
 	/**
-	 * checkAccess reads the current Subject from the SubjectHolderService,
-	 * reads all its permissions from the cache and checks if this permission is
-	 * allowed for this subject
+	 * Check whether the current user is granted the given {@code permission}.
 	 * 
 	 * @param permission
 	 *            permission to be checked
-	 * @return
+	 * @return on true permission granted; otherwise false
 	 */
 	public boolean checkAccess(final Permission permission) {
 		final Subject subject = getSubjectHolder().getSubject();
