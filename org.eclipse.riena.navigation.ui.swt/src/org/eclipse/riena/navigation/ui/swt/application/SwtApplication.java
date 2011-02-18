@@ -57,12 +57,6 @@ public class SwtApplication extends AbstractApplication {
 	protected ILoginSplashViewExtension loginSplashViewExtension;
 	private LoginNonActivityTimer loginNonActivityTimer;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.navigation.ui.application.AbstractApplication#
-	 * onPreCreateModel()
-	 */
 	@Override
 	protected void initializeUI() {
 		PlatformUI.createDisplay();

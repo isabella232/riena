@@ -66,6 +66,9 @@ public abstract class AbstractApplication implements IApplication {
 		return createView(context, applicationNode);
 	}
 
+	/**
+	 * hook called before createModel()
+	 */
 	protected void initializeUI() {
 	}
 
