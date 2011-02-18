@@ -321,12 +321,14 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	/**
-	 * This presentation has no tabs.
-	 * 
-	 * @see org.eclipse.ui.presentations.StackPresentation#getTabList(org.eclipse.ui.presentations.IPresentablePart)
+	 * Return the control of the active part, so that the correct TAB-ordering
+	 * can be set.
 	 */
 	@Override
 	public Control[] getTabList(final IPresentablePart part) {
+		if (current != null) {
+			return new Control[] { current.getControl() };
+		}
 		return new Control[] {};
 	}
 
@@ -516,14 +518,6 @@ public class TitlelessStackPresentation extends StackPresentation {
 			result = (SubApplicationController) subApplication.getNavigationNodeController();
 		}
 		return result;
-	}
-
-	/**
-	 * Return true if the {@link IPresentablePart} has bounds that are different
-	 * than {@code newBounds}.
-	 */
-	private boolean hasOldBounds(final IPresentablePart toSelect, final Rectangle newBounds) {
-		return toSelect.getControl() == null || !newBounds.equals(toSelect.getControl().getBounds());
 	}
 
 	/**
