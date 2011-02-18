@@ -57,9 +57,20 @@ public class SwtApplication extends AbstractApplication {
 	protected ILoginSplashViewExtension loginSplashViewExtension;
 	private LoginNonActivityTimer loginNonActivityTimer;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.riena.navigation.ui.application.AbstractApplication#
+	 * onPreCreateModel()
+	 */
+	@Override
+	protected void initializeUI() {
+		PlatformUI.createDisplay();
+	}
+
 	@Override
 	public Object createView(final IApplicationContext context, final IApplicationNode pNode) {
-		final Display display = PlatformUI.createDisplay();
+		final Display display = Display.getCurrent();
 		try {
 			final ApplicationAdvisor advisor = new ApplicationAdvisor(createApplicationController(pNode),
 					new AdvisorHelper());
@@ -172,7 +183,7 @@ public class SwtApplication extends AbstractApplication {
 	@Override
 	protected Object doPerformLogin(final IApplicationContext context) {
 		final Realm realm = SWTObservables.getRealm(getDisplay());
-		// TODO Is really necessary that the loginDialogViewExtension is used here. Shouldn´t it be done it the super class??
+		// TODO Is really necessary that the loginDialogViewExtension is used here. Shouldnï¿½t it be done it the super class??
 		final ILoginDialogView loginDialogView = loginDialogViewExtension.createViewClass();
 		do {
 			Realm.runWithDefault(realm, new Runnable() {

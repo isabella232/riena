@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.ui.internal.progress.ProgressManager;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.wire.InjectExtension;
@@ -52,7 +53,7 @@ public abstract class AbstractApplication implements IApplication {
 		if (!EXIT_OK.equals(result)) {
 			return result;
 		}
-
+		initializeUI();
 		final IApplicationNode applicationNode = createModel();
 		if (applicationNode == null) {
 			throw new RuntimeException(
@@ -63,6 +64,9 @@ public abstract class AbstractApplication implements IApplication {
 		initializeNode(applicationNode);
 		installProgressProviderBridge();
 		return createView(context, applicationNode);
+	}
+
+	protected void initializeUI() {
 	}
 
 	private void installProgressProviderBridge() {
@@ -79,10 +83,10 @@ public abstract class AbstractApplication implements IApplication {
 
 	protected void disableEclipseProgressManager() {
 		// TODO - causes NPE - see Bug 337383
-		//		//we need to get the instance first as this is the only way to lock/disable the singleton
-		//		ProgressManager.getInstance();
-		//		//shutting down means uninstalling ProgressProvider and removing all Job-Listeners
-		//		ProgressManager.shutdownProgressManager();
+		//we need to get the instance first as this is the only way to lock/disable the singleton
+		ProgressManager.getInstance();
+		//shutting down means uninstalling ProgressProvider and removing all Job-Listeners
+		ProgressManager.shutdownProgressManager();
 	}
 
 	/**
