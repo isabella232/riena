@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.CompletionCombo;
+import org.eclipse.riena.ui.swt.UIConstants;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
@@ -78,14 +79,42 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 			// trace("## focus gained: %s %d", e.widget, e.widget.hashCode());
 			ridget.fireFocusGained();
 		} else {
-			final Control target = findFocusTarget((Control) e.widget);
+			Control target = findFocusTarget((Control) e.widget);
 			if (target != null) {
 				// trace("## %s %d -> %s %d", e.widget, e.widget.hashCode(), target, target.hashCode());
 				target.setFocus();
-			} else { // no suitable control found
+			} else {
+				// no suitable control found, start searching from the top of the view
+				final Composite topControl = findTopContentComposite((Control) e.widget);
+				if (topControl != null) {
+					target = findFocusTarget(null, topControl);
+					if (target != null) {
+						// trace("## %s %d -> %s %d (from top)", e.widget, e.widget.hashCode(), target, target.hashCode());
+						target.setFocus();
+					}
+				}
+			}
+			if (target == null) {
 				// trace("!! %s %d -> NO TARGET", e.widget, e.widget.hashCode());
 			}
 		}
+	}
+
+	/**
+	 * Returns the topmost Composite of the current View in the workarea.
+	 * 
+	 * @return a Composite instance or null
+	 */
+	private Composite findTopContentComposite(final Control startControl) {
+		Composite result = null;
+		Composite start = (startControl instanceof Composite) ? (Composite) startControl : startControl.getParent();
+		while (start != null && result == null) {
+			if (start.getData(UIConstants.DATA_KEY_CONTENT_COMPOSITE) != null) {
+				result = start;
+			}
+			start = start.getParent();
+		}
+		return result;
 	}
 
 	public boolean isClickToFocus() {
@@ -171,9 +200,9 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 		return true;
 	}
 
-	private Control findFocusTarget(final Control control) {
+	private Control findFocusTarget(final Control startControl) {
 		Control result = null;
-		Control start = control;
+		Control start = startControl;
 		while (start.getParent() != null && result == null) {
 			final Composite parent = start.getParent();
 			result = findFocusTarget(start, parent);
@@ -194,13 +223,6 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 		}
 		// find next possible control
 		for (int i = myIndex + 1; result == null && i < siblings.length; i++) {
-			final Control candidate = siblings[i];
-			if (canGetFocus(candidate)) {
-				result = candidate;
-			}
-		}
-		// find previous possible control
-		for (int i = 0; result == null && i < myIndex; i++) {
 			final Control candidate = siblings[i];
 			if (canGetFocus(candidate)) {
 				result = candidate;
