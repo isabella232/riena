@@ -10,27 +10,27 @@
     <extension
          point="org.eclipse.riena.ui.ridgets.annotationHandler">
       <annotationHandler
-            annotation="org.eclipse.riena.ui.ridgets.annotation.HandlesActionCallback"
+            annotation="org.eclipse.riena.ui.ridgets.annotation.OnActionCallback"
             handler="org.eclipse.riena.ui.ridgets.annotation.handler.ActionCallbackAnnotationHandler">
       </annotationHandler>
       <annotationHandler
-            annotation="org.eclipse.riena.ui.ridgets.annotation.HandlesSelectionChange"
+            annotation="org.eclipse.riena.ui.ridgets.annotation.OnSelectionChange"
             handler="org.eclipse.riena.ui.ridgets.annotation.handler.SelectionChangedAnnotationHandler">
       </annotationHandler>
       <annotationHandler
-            annotation="org.eclipse.riena.ui.ridgets.annotation.HandlesFocusGained"
+            annotation="org.eclipse.riena.ui.ridgets.annotation.OnFocusGained"
             handler="org.eclipse.riena.ui.ridgets.annotation.handler.FocusGainedAnnotationHandler">
       </annotationHandler>
       <annotationHandler
-            annotation="org.eclipse.riena.ui.ridgets.annotation.HandlesFocusLost"
+            annotation="org.eclipse.riena.ui.ridgets.annotation.OnFocusLost"
             handler="org.eclipse.riena.ui.ridgets.annotation.handler.FocusLostAnnotationHandler">
       </annotationHandler>
       <annotationHandler
-            annotation="org.eclipse.riena.ui.ridgets.annotation.HandlesPropertyChange"
+            annotation="org.eclipse.riena.ui.ridgets.annotation.OnPropertyChange"
             handler="org.eclipse.riena.ui.ridgets.annotation.handler.PropertyChangeAnnotationHandler">
       </annotationHandler>
       <annotationHandler
-            annotation="org.eclipse.riena.ui.ridgets.annotation.HandlesDoubleClick"
+            annotation="org.eclipse.riena.ui.ridgets.annotation.OnDoubleClick"
             handler="org.eclipse.riena.ui.ridgets.annotation.handler.DoubleClickAnnotationHandler">
       </annotationHandler>
    </extension>

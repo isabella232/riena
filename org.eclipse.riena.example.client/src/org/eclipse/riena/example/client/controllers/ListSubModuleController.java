@@ -30,9 +30,9 @@ import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
-import org.eclipse.riena.ui.ridgets.annotation.HandlesActionCallback;
-import org.eclipse.riena.ui.ridgets.annotation.HandlesDoubleClick;
-import org.eclipse.riena.ui.ridgets.annotation.HandlesPropertyChange;
+import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
+import org.eclipse.riena.ui.ridgets.annotation.OnDoubleClick;
+import org.eclipse.riena.ui.ridgets.annotation.OnPropertyChange;
 
 /**
  * Controller for the {@link TextSubModuleView} example.
@@ -118,26 +118,26 @@ public class ListSubModuleController extends SubModuleController {
 
 	}
 
-	@HandlesPropertyChange(ridgetId = "listPersons", propertyName = ITableRidget.PROPERTY_SELECTION)
+	@OnPropertyChange(ridgetId = "listPersons", propertyName = ITableRidget.PROPERTY_SELECTION)
 	public void selectionChanged() {
 		value.setPerson(manager.getSelectedPerson());
 		textFirst.updateFromModel();
 		textLast.updateFromModel();
 	}
 
-	@HandlesActionCallback(ridgetId = "buttonSort")
+	@OnActionCallback(ridgetId = "buttonSort")
 	public void sortAction() {
 		final boolean ascending = buttonSort.isSelected();
 		listPersons.setSortedAscending(ascending);
 	}
 
-	@HandlesDoubleClick(ridgetId = "listPersons")
-	@HandlesActionCallback(ridgetId = "buttonSort")
+	@OnDoubleClick(ridgetId = "listPersons")
+	@OnActionCallback(ridgetId = "buttonSort")
 	public void dumpDoubleClickedItem() {
 		System.out.println("List of selected item(s): " + listPersons.getSelection()); //$NON-NLS-1$
 	}
 
-	@HandlesActionCallback(ridgetId = "buttonAdd")
+	@OnActionCallback(ridgetId = "buttonAdd")
 	public void addAction() {
 
 		final Person newPerson = new Person("Average", "Joe #" + ++count); //$NON-NLS-1$ //$NON-NLS-2$
@@ -147,7 +147,7 @@ public class ListSubModuleController extends SubModuleController {
 		listPersons.updateSingleSelectionFromModel();
 	}
 
-	@HandlesActionCallback(ridgetId = "buttonRemove")
+	@OnActionCallback(ridgetId = "buttonRemove")
 	public void removeAction() {
 		final Person selPerson = manager.getSelectedPerson();
 		if (selPerson != null) {
@@ -157,7 +157,7 @@ public class ListSubModuleController extends SubModuleController {
 		}
 	}
 
-	@HandlesActionCallback(ridgetId = "buttonSave")
+	@OnActionCallback(ridgetId = "buttonSave")
 	public void saveAction() {
 		value.update();
 		listPersons.updateFromModel();

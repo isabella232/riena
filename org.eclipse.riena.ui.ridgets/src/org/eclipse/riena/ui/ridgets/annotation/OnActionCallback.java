@@ -10,46 +10,41 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.annotation;
 
-import java.beans.PropertyChangeListener;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.ITraverseRidget;
 
 /**
  * This annotation is used to mark a method as target for an automatically
  * generated listener
  * 
  * <pre>
- * ridget.addPropertyChangeListener( {@link PropertyChangeListener} )
+ * ridget.addListener( {@link IActionListener} )
  * </pre>
  * 
  * for the ridget with the given ridget id.
  * <p>
- * All {@link IRidget}s are supported.
+ * Currently supported ridgets:
+ * <ul>
+ * <li>{@link IActionRidget}</li>
+ * <li>{@link ITraverseRidget}</li>
+ * </ul>
  * 
  * @since 3.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface HandlesPropertyChange {
+public @interface OnActionCallback {
 
 	/**
-	 * The valid ridget id. If a property name is not specified a property
-	 * change listener is registered for all properties of the ridget with that
-	 * id.
+	 * The valid ridget id.
 	 * 
 	 * @return ridgetId
 	 */
 	String ridgetId();
-
-	/**
-	 * The property name for that of the property of the ridget to be observed.
-	 * If not given all properties will be observed.
-	 * 
-	 * @return propertyName
-	 */
-	String propertyName() default "";
 }

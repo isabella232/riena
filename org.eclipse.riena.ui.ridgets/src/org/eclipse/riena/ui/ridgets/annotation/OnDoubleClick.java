@@ -16,30 +16,30 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.eclipse.riena.ui.ridgets.IActionListener;
-import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.ITraverseRidget;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.ITreeRidget;
 
 /**
  * This annotation is used to mark a method as target for an automatically
  * generated listener
  * 
  * <pre>
- * ridget.addListener( {@link IActionListener} )
+ * ridget.addDoubleClickListener( {@link IActionListener} )
  * </pre>
  * 
  * for the ridget with the given ridget id.
  * <p>
  * Currently supported ridgets:
  * <ul>
- * <li>{@link IActionRidget}</li>
- * <li>{@link ITraverseRidget}</li>
+ * <li>{@link ITableRidget}</li>
+ * <li>{@link ITreeRidget}</li>
  * </ul>
  * 
  * @since 3.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface HandlesActionCallback {
+public @interface OnDoubleClick {
 
 	/**
 	 * The valid ridget id.

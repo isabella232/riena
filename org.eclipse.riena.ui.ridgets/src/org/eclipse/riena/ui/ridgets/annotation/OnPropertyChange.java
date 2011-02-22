@@ -10,20 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.annotation;
 
+import java.beans.PropertyChangeListener;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 
 /**
  * This annotation is used to mark a method as target for an automatically
- * generated listener ("focusLost" event)
+ * generated listener
  * 
  * <pre>
- * ridget.addFocusListener( {@link IFocusListener} )
+ * ridget.addPropertyChangeListener( {@link PropertyChangeListener} )
  * </pre>
  * 
  * for the ridget with the given ridget id.
@@ -34,12 +34,22 @@ import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface HandlesFocusLost {
+public @interface OnPropertyChange {
 
 	/**
-	 * The valid ridget id.
+	 * The valid ridget id. If a property name is not specified a property
+	 * change listener is registered for all properties of the ridget with that
+	 * id.
 	 * 
 	 * @return ridgetId
 	 */
 	String ridgetId();
+
+	/**
+	 * The property name for that of the property of the ridget to be observed.
+	 * If not given all properties will be observed.
+	 * 
+	 * @return propertyName
+	 */
+	String propertyName() default "";
 }

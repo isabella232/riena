@@ -15,31 +15,26 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.eclipse.riena.ui.ridgets.IActionListener;
-import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.ITreeRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 
 /**
  * This annotation is used to mark a method as target for an automatically
- * generated listener
+ * generated listener ("focusLost" event)
  * 
  * <pre>
- * ridget.addDoubleClickListener( {@link IActionListener} )
+ * ridget.addFocusListener( {@link IFocusListener} )
  * </pre>
  * 
  * for the ridget with the given ridget id.
  * <p>
- * Currently supported ridgets:
- * <ul>
- * <li>{@link ITableRidget}</li>
- * <li>{@link ITreeRidget}</li>
- * </ul>
+ * All {@link IRidget}s are supported.
  * 
  * @since 3.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface HandlesDoubleClick {
+public @interface OnFocusLost {
 
 	/**
 	 * The valid ridget id.

@@ -34,7 +34,7 @@ import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface HandlesFocusGained {
+public @interface OnFocusGained {
 
 	/**
 	 * The valid ridget id.

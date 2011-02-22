@@ -19,10 +19,10 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
-import org.eclipse.riena.ui.ridgets.annotation.HandlesDoubleClick;
+import org.eclipse.riena.ui.ridgets.annotation.OnDoubleClick;
 
 /**
- * Annotation handler for {@code @HandlesDoubleClick}
+ * Annotation handler for {@code @OnDoubleClick}
  * 
  * @since 3.0
  */
@@ -31,9 +31,9 @@ public class DoubleClickAnnotationHandler extends AbstractRidgetContainerAnnotat
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
 			final Method method) {
 
-		if (annotation instanceof HandlesDoubleClick) {
+		if (annotation instanceof OnDoubleClick) {
 			final IRidget ridget = getRidget(annotation, method, ridgetContainer,
-					((HandlesDoubleClick) annotation).ridgetId());
+					((OnDoubleClick) annotation).ridgetId());
 			final String eventPropertyName = method.getParameterTypes().length == 0 ? null : ""; //$NON-NLS-1$
 			if (ridget instanceof ITableRidget) {
 				((ITableRidget) ridget).addDoubleClickListener(EventHandler.create(IActionListener.class,

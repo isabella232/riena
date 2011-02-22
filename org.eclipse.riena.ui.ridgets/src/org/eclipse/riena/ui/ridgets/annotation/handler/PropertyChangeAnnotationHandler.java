@@ -17,10 +17,10 @@ import java.lang.reflect.Method;
 
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
-import org.eclipse.riena.ui.ridgets.annotation.HandlesPropertyChange;
+import org.eclipse.riena.ui.ridgets.annotation.OnPropertyChange;
 
 /**
- * Annotation handler for {@code @HandlesPropertyChange}
+ * Annotation handler for {@code @OnPropertyChange}
  * 
  * @since 3.0
  */
@@ -29,8 +29,8 @@ public class PropertyChangeAnnotationHandler extends AbstractRidgetContainerAnno
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
 			final Method method) {
 
-		if (annotation instanceof HandlesPropertyChange) {
-			final HandlesPropertyChange propertyChangeAnnotation = ((HandlesPropertyChange) annotation);
+		if (annotation instanceof OnPropertyChange) {
+			final OnPropertyChange propertyChangeAnnotation = ((OnPropertyChange) annotation);
 			final IRidget ridget = getRidget(annotation, method, ridgetContainer, propertyChangeAnnotation.ridgetId());
 			final String propertyName = propertyChangeAnnotation.propertyName().length() == 0 ? null
 					: propertyChangeAnnotation.propertyName();

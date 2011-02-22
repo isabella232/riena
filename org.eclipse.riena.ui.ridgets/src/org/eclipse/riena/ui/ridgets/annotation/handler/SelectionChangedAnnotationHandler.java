@@ -17,11 +17,11 @@ import java.lang.reflect.Method;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISelectionObservable;
-import org.eclipse.riena.ui.ridgets.annotation.HandlesSelectionChange;
+import org.eclipse.riena.ui.ridgets.annotation.OnSelectionChange;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 
 /**
- * Annotation handler for {@code @HandlesSelectionChange}
+ * Annotation handler for {@code @OnSelectionChange}
  * 
  * @since 3.0
  */
@@ -30,9 +30,9 @@ public class SelectionChangedAnnotationHandler extends AbstractRidgetContainerAn
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
 			final Method method) {
 
-		if (annotation instanceof HandlesSelectionChange) {
+		if (annotation instanceof OnSelectionChange) {
 			final IRidget ridget = getRidget(annotation, method, ridgetContainer,
-					((HandlesSelectionChange) annotation).ridgetId());
+					((OnSelectionChange) annotation).ridgetId());
 			final String eventPropertyName = method.getParameterTypes().length == 0 ? null : ""; //$NON-NLS-1$
 			((ISelectionObservable) ridget).addSelectionListener(EventHandler.create(ISelectionListener.class,
 					ridgetContainer, method.getName(), eventPropertyName, null));

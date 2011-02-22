@@ -19,10 +19,10 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
-import org.eclipse.riena.ui.ridgets.annotation.HandlesActionCallback;
+import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
 
 /**
- * Annotation handler for {@code @HandlesActionCallback}
+ * Annotation handler for {@code @OnActionCallback}
  * 
  * @since 3.0
  */
@@ -31,9 +31,9 @@ public class ActionCallbackAnnotationHandler extends AbstractRidgetContainerAnno
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
 			final Method method) {
 
-		if (annotation instanceof HandlesActionCallback) {
+		if (annotation instanceof OnActionCallback) {
 			final IRidget ridget = getRidget(annotation, method, ridgetContainer,
-					((HandlesActionCallback) annotation).ridgetId());
+					((OnActionCallback) annotation).ridgetId());
 			final String eventPropertyName = method.getParameterTypes().length == 0 ? null : ""; //$NON-NLS-1$
 			if (ridget instanceof IActionRidget) {
 				((IActionRidget) ridget).addListener(EventHandler.create(IActionListener.class, ridgetContainer,

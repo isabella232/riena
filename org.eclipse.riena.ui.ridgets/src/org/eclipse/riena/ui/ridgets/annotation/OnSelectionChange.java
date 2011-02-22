@@ -34,7 +34,7 @@ import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface HandlesSelectionChange {
+public @interface OnSelectionChange {
 
 	/**
 	 * The valid ridget id.

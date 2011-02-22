@@ -14,7 +14,7 @@ import org.eclipse.riena.beans.common.SingleSelectionListBean;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
-import org.eclipse.riena.ui.ridgets.annotation.HandlesActionCallback;
+import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
 
 /**
  *
@@ -36,12 +36,12 @@ public class ComboAndChoiceSubModuleController extends SubModuleController {
 		comboRidgetWithoutModel = getRidget("comboBoxWithoutModel"); //$NON-NLS-1$
 	}
 
-	@HandlesActionCallback(ridgetId = "updateAllRidgetsFromModel")
+	@OnActionCallback(ridgetId = "updateAllRidgetsFromModel")
 	public void handleUpdateAllRidgetsFromModel() {
 		updateAllRidgetsFromModel();
 	}
 
-	@HandlesActionCallback(ridgetId = "bindComboToModel")
+	@OnActionCallback(ridgetId = "bindComboToModel")
 	public void handleBindComboToModelAction() {
 		final SingleSelectionListBean colors = new SingleSelectionListBean(new Object[] {
 				"white", "black", "red", "blue", "green", "brown", "yellow" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
@@ -50,7 +50,7 @@ public class ComboAndChoiceSubModuleController extends SubModuleController {
 				colors, SingleSelectionListBean.PROPERTY_SELECTION);
 	}
 
-	@HandlesActionCallback(ridgetId = "bindChoiceToModel")
+	@OnActionCallback(ridgetId = "bindChoiceToModel")
 	public void handleBindChoiceToModelAction() {
 		final SingleSelectionListBean numbers = new SingleSelectionListBean(new Object[] {
 				"choice 1", "choice 2", "choice 3" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
