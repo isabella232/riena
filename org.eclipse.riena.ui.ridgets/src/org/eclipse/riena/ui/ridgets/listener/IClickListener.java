@@ -28,6 +28,6 @@ public interface IClickListener {
 	 *            information about the mouse click.
 	 * @see ClickEvent
 	 */
-	public void callback(ClickEvent event);
+	void callback(ClickEvent event);
 
 }
