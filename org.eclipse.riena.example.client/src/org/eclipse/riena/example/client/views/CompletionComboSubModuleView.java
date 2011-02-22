@@ -13,6 +13,9 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -90,10 +93,9 @@ public class CompletionComboSubModuleView extends SubModuleView {
 
 		// row
 
-		UIControlsFactory.createLabel(parent, "autocompletion off:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "1st letter completion:"); //$NON-NLS-1$
 		final CompletionCombo combo3 = UIControlsFactory.createCompletionCombo(parent, "combo3"); //$NON-NLS-1$
-		combo3.setAutoCompletion(false);
-		combo3.setAutoCompletionMode(AutoCompletionMode.ALLOW_MISSMATCH);
+		combo3.setAutoCompletionMode(AutoCompletionMode.FIRST_LETTER_MATCH);
 		fill.applyTo(combo3);
 
 		final Text selection3 = UIControlsFactory.createText(parent, SWT.BORDER, "selection3"); //$NON-NLS-1$ 
@@ -118,7 +120,7 @@ public class CompletionComboSubModuleView extends SubModuleView {
 		UIControlsFactory.createLabel(parent, "allow missmatch:"); //$NON-NLS-1$
 		final CompletionCombo combo4 = UIControlsFactory.createCompletionComboWithImage(parent, "combo4"); //$NON-NLS-1$
 		fill.applyTo(combo4);
-		combo3.setAutoCompletionMode(AutoCompletionMode.ALLOW_MISSMATCH);
+		combo4.setAutoCompletionMode(AutoCompletionMode.ALLOW_MISSMATCH);
 
 		final Text selection4 = UIControlsFactory.createText(parent, SWT.BORDER, "selection4"); //$NON-NLS-1$ 
 		fill.applyTo(selection4);
@@ -138,16 +140,25 @@ public class CompletionComboSubModuleView extends SubModuleView {
 
 		// row
 
-		UIControlsFactory.createLabel(parent, "autocompletion off:"); //$NON-NLS-1$
+		UIControlsFactory.createLabel(parent, "1st letter completion:"); //$NON-NLS-1$
 		final CompletionCombo combo6 = UIControlsFactory.createCompletionComboWithImage(parent, "combo6"); //$NON-NLS-1$
-		combo6.setAutoCompletion(false);
-		combo6.setAutoCompletionMode(AutoCompletionMode.ALLOW_MISSMATCH);
+		combo6.setAutoCompletionMode(AutoCompletionMode.FIRST_LETTER_MATCH);
 		fill.applyTo(combo6);
 
 		final Text selection6 = UIControlsFactory.createText(parent, SWT.BORDER, "selection6"); //$NON-NLS-1$ 
 		fill.applyTo(selection6);
 
 		UIControlsFactory.createText(parent, SWT.BORDER, "text6"); //$NON-NLS-1$
+
+		final Button button = UIControlsFactory.createButton(parent, "Default Button"); //$NON-NLS-1$
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				System.out.println("!! Default Button clicked !!"); //$NON-NLS-1$
+				java.awt.Toolkit.getDefaultToolkit().beep();
+			}
+		});
+		button.getShell().setDefaultButton(button);
 	}
 
 	private Group createGroup(final Composite parent, final String title) {

@@ -42,7 +42,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 
-import org.eclipse.riena.core.util.RAPDetector;
 import org.eclipse.riena.ui.swt.facades.ClipboardFacade;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -133,7 +132,6 @@ public abstract class CompletionCombo extends Composite {
 	 * Text widget to the list popup.
 	 */
 	private boolean ignoreFocusOut;
-	private boolean autoCompletion;
 	private AutoCompletionMode autoCompletionMode;
 	/**
 	 * Algorithm for flashing the combo's background when non-matching input is
@@ -155,7 +153,13 @@ public abstract class CompletionCombo extends Composite {
 		 * The Combo rejects typed characters that would make the String in the
 		 * textfield not match any of the entries in the list.
 		 */
-		NO_MISSMATCH
+		NO_MISSMATCH,
+		/**
+		 * TODO [ev] docs
+		 * 
+		 * @since 3.0
+		 */
+		FIRST_LETTER_MATCH
 	}
 
 	static int checkStyle(final int style) {
@@ -300,7 +304,6 @@ public abstract class CompletionCombo extends Composite {
 		}
 
 		createPopup(null, null, -1);
-		autoCompletion = true;
 		autoCompletionMode = AutoCompletionMode.NO_MISSMATCH;
 	}
 
@@ -658,8 +661,8 @@ public abstract class CompletionCombo extends Composite {
 			}
 			break;
 		case SWT.Selection:
-			text.setFocus();
 			dropDown(!isDropped());
+			setFocus();
 			break;
 		default:
 			break;
@@ -693,13 +696,7 @@ public abstract class CompletionCombo extends Composite {
 		switch (event.type) {
 		case SWT.Dispose:
 			removeListener(SWT.Dispose, listener);
-
-			// FIXME: Workaround for RAP bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=328043
-			// RAP throws a ClassCastException, when notifyListeners is called
-			if (!RAPDetector.isRAPavailable()) {
-				notifyListeners(SWT.Dispose, event);
-			}
-
+			notifyListeners(SWT.Dispose, event);
 			event.type = SWT.None;
 
 			if (popup != null && !popup.isDisposed()) {
@@ -721,14 +718,14 @@ public abstract class CompletionCombo extends Composite {
 			if (focusControl == arrow || focusControl == list) {
 				return;
 			}
-			if (isAutoCompletion()) {
-				text.setFocus();
-			} else {
+			if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH) {
 				if (isDropped()) {
 					list.setFocus();
 				} else {
 					text.setFocus();
 				}
+			} else {
+				text.setFocus();
 			}
 			break;
 		case SWT.FocusOut:
@@ -894,6 +891,13 @@ public abstract class CompletionCombo extends Composite {
 		final Point listSize = list.computeSize(SWT.DEFAULT, itemHeight, false);
 		list.setBounds(1, 1, Math.max(size.x - 2, listSize.x), listSize.y);
 
+		// always select the first element, if selection is empty and [
+		// autocompletion mode is FIRST_LETTER_MATCH
+		if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH && getItemCount() > 0
+				&& getSelectionIndex() == -1) {
+			setMatchingTextAndSelection(0, getItem(0));
+		}
+
 		final int index = getSelectionIndex(list);
 		if (index != -1) {
 			setTopIndex(list, index);
@@ -916,10 +920,10 @@ public abstract class CompletionCombo extends Composite {
 		popup.setBounds(x, y, width, height);
 		popup.setVisible(true);
 		if (isFocusControl()) {
-			if (isAutoCompletion()) {
-				text.setFocus();
-			} else {
+			if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH) {
 				list.setFocus();
+			} else {
+				text.setFocus();
 			}
 		}
 	}
@@ -1324,15 +1328,6 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Returns true, when autocompletion is on. The default value is true.
-	 * 
-	 * @return true if autocompletion is on, false otherwise
-	 */
-	public boolean isAutoCompletion() {
-		return autoCompletion;
-	}
-
-	/**
 	 * Returns true if the item selection pop-up is dropped (=open), false
 	 * otherwise
 	 * 
@@ -1670,20 +1665,6 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * A flag indicating that the CompletionCombo should autocomplete entries in
-	 * it's text area. This autocompletion matches a prefix to the drop-down
-	 * list and focuses on the list entry matching this prefix.
-	 * <p>
-	 * The default value is true.
-	 * 
-	 * @param autoCompletion
-	 *            true if autocompletion should be turned on, false is default
-	 */
-	public void setAutoCompletion(final boolean autoCompletion) {
-		this.autoCompletion = autoCompletion;
-	}
-
-	/**
 	 * Set's the strategy for autocompletion. See {@link AutoCompletionMode} for
 	 * details.
 	 * <p>
@@ -1800,8 +1781,8 @@ public abstract class CompletionCombo extends Composite {
 		if (!isEnabled() || !isVisible()) {
 			return false;
 		}
-		if (isFocusControl()) {
-			return true;
+		if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH && isDropped()) {
+			return list.setFocus();
 		}
 		return text.setFocus();
 	}
@@ -2122,10 +2103,10 @@ public abstract class CompletionCombo extends Composite {
 			if (isDisposed() || !getEditable()) {
 				break;
 			}
-			if (isAutoCompletion()) {
-				handleAutoCompletion(event);
+			if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH) {
+				handleFirstLetterMatch(event);
 			} else {
-				handleNoAutoCompletion(event);
+				handleAutoCompletion(event);
 			}
 			if (!event.doit) {
 				break;
@@ -2207,7 +2188,7 @@ public abstract class CompletionCombo extends Composite {
 			if (!isDropped()) {
 				dropDown(true);
 				ignoreFocusOut = true;
-				text.setFocus();
+				setFocus();
 				ignoreFocusOut = false;
 			}
 			if (event.button != 1) {
@@ -2321,20 +2302,45 @@ public abstract class CompletionCombo extends Composite {
 		}
 	}
 
+	// helping methods
+	//////////////////
+
+	private String buildPrefixOnBackSpace(final Point selection) {
+		String result;
+		final String theText = text.getText();
+		if (isAllowMissmatch()) {
+			final int end = Math.max(0, selection.x - 1);
+			result = theText.substring(0, end) + theText.substring(selection.y);
+		} else {
+			final String prefix = theText.substring(0, selection.x);
+			final int end = Math.max(0, prefix.length() - 1);
+			result = prefix.substring(0, end);
+		}
+		return result;
+	}
+
+	private String buildPrefixForInput(final char typedChar, final Point selection) {
+		String prefix = text.getText().substring(0, selection.x);
+		if (isAllowMissmatch()) {
+			prefix = text.getText().substring(0, selection.x) + typedChar + text.getText().substring(selection.y);
+		} else {
+			prefix += typedChar;
+		}
+		return prefix;
+	}
+
 	private void clearImage() {
 		if (label != null) {
 			label.setImage(null);
 		}
 	}
 
-	private void setImage(final int index) {
-		if (label != null) {
-			label.setImage(getImage(list, index));
+	private String getFirstCharFromTextWidget() {
+		String result = null;
+		if (text.getText().length() > 0) {
+			result = text.getText().substring(0, 1);
 		}
-	}
-
-	private void selectAll() {
-		setSelection(new Point(0, text.getText().length()));
+		return result;
 	}
 
 	/**
@@ -2381,38 +2387,6 @@ public abstract class CompletionCombo extends Composite {
 		}
 	}
 
-	/**
-	 * Handles a key press when autocompletion is disabled.
-	 * 
-	 * @param event
-	 *            the key event that triggered the method
-	 */
-	private void handleNoAutoCompletion(final Event event) {
-		// System.out.println(String.format("ch:%c, kc:%d, mask:%d", event.character, event.keyCode, event.stateMask));
-		if (event.stateMask == SWT.ALT || event.stateMask == SWT.CONTROL) {
-			//  Must use equality instead of (stateMask & const > 0) here!
-			// This allows ALT + x or CONTROL + x combos. However 
-			// ALT + CONTROL + x will not go in here and will be handled
-			// by isInputChar(x) instead.
-			event.doit = handleClipboardOperations(event);
-		} else if (isInputChar(event.character)) {
-			final Point selection = getSelection();
-			final String newPrefix;
-			if (event.character == SWT.BS) {
-				newPrefix = buildPrefixOnBackSpace(selection);
-			} else {
-				newPrefix = buildPrefixForInput(event.character, selection);
-			}
-
-			final int index = indexOf(newPrefix);
-			if (index == -1) {
-				clearImage();
-			} else {
-				setImage(index);
-			}
-		}
-	}
-
 	private boolean handleClipboardOperations(final Event event) {
 		boolean result = true;
 		if (event.stateMask == SWT.CONTROL) {
@@ -2449,6 +2423,66 @@ public abstract class CompletionCombo extends Composite {
 		}
 	}
 
+	/**
+	 * TODO [ev] docs Handles a key press when autocompletion is enabled.
+	 * 
+	 * @param event
+	 *            the key event that triggered the method
+	 */
+	private void handleFirstLetterMatch(final Event event) {
+		event.doit = false;
+		// System.out.println(String.format("ch:%c, kc:%d, mask:%d", event.character, event.keyCode, event.stateMask));
+		if (event.stateMask == SWT.ALT || event.stateMask == SWT.CONTROL) {
+			//  Must use equality instead of (stateMask & const > 0) here!
+			// This allows ALT + x or CONTROL + x combos. However 
+			// ALT + CONTROL + x will not go in here and will be handled
+			// by isInputChar(x) instead.
+			event.doit = handleClipboardOperations(event);
+		} else if (event.character == SWT.DEL || event.character == SWT.BS) {
+			text.setText(""); //$NON-NLS-1$
+			clearSelection();
+			clearImage();
+		} else if (isControlChar(event)) {
+			// System.out.println("isControlChar: " + event.character);
+			event.doit = true;
+		} else if (isInputChar(event.character)) {
+			boolean matched = false;
+
+			int startIndex = 0;
+			final String keyChar = String.valueOf(event.character);
+			final String firstChar = getFirstCharFromTextWidget();
+			if (keyChar.equalsIgnoreCase(firstChar)) {
+				startIndex = getSelectionIndex() + 1;
+			}
+
+			final String prefix = String.valueOf(event.character);
+			final String[] items = getItems(list);
+			// search beneath startIndex
+			for (int i = startIndex; i < items.length; i++) {
+				final String item = items[i];
+				if (matchesWord(prefix, item)) {
+					setMatchingTextAndSelection(0, item);
+					matched = true;
+					break;
+				}
+			}
+			// 335126: if no result, then search above startIndex
+			for (int i = 0; !matched && i < startIndex; i++) {
+				final String item = items[i];
+				if (matchesWord(prefix, item)) {
+					setMatchingTextAndSelection(0, item);
+					matched = true;
+					break;
+				}
+			}
+			if (!matched) {
+				if (flashDelegate != null) {
+					flashDelegate.flash();
+				}
+			}
+		}
+	}
+
 	private void handlePaste() {
 		final String data = ClipboardFacade.getDefault().getTextFromClipboard(getDisplay());
 		if (data != null) {
@@ -2470,17 +2504,24 @@ public abstract class CompletionCombo extends Composite {
 		}
 	}
 
-	private void updateInputChars(final String string) {
-		for (int i = 0; i < string.length(); i++) {
-			final char ch = string.charAt(i);
-			if (!Character.isLetterOrDigit(ch)) {
-				inputChars.add(Character.valueOf(ch));
-			}
-		}
-	}
-
 	private boolean isAllowMissmatch() {
 		return autoCompletionMode == AutoCompletionMode.ALLOW_MISSMATCH;
+	}
+
+	private boolean isControlChar(final Event event) {
+		final char[] chars = { SWT.ESC, SWT.CR };
+		for (final int ch : chars) {
+			if (ch == event.character) {
+				return true;
+			}
+		}
+		final int[] keyCodes = { SWT.ARROW_UP, SWT.ARROW_DOWN, SWT.ARROW_LEFT, SWT.ARROW_RIGHT, SWT.HOME, SWT.END };
+		for (final int keycode : keyCodes) {
+			if (keycode == event.keyCode) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean isInputChar(final char ch) {
@@ -2502,18 +2543,12 @@ public abstract class CompletionCombo extends Composite {
 		return false;
 	}
 
-	private boolean isControlChar(final Event event) {
-		final char[] chars = { SWT.ESC, SWT.CR };
-		for (final int ch : chars) {
-			if (ch == event.character) {
-				return true;
-			}
+	private boolean matchesWord(final String prefix, final String word) {
+		if (prefix == null || word == null) {
+			return false;
 		}
-		final int[] keyCodes = { SWT.ARROW_UP, SWT.ARROW_DOWN, SWT.ARROW_LEFT, SWT.ARROW_RIGHT, SWT.HOME, SWT.END };
-		for (final int keycode : keyCodes) {
-			if (keycode == event.keyCode) {
-				return true;
-			}
+		if (word.toLowerCase().startsWith(prefix.toLowerCase())) {
+			return true;
 		}
 		return false;
 	}
@@ -2533,43 +2568,28 @@ public abstract class CompletionCombo extends Composite {
 						break;
 					}
 				}
-				// next if is for 326916 - match sequences of same char
-				if (!result && !isAllowMissmatch() && isMultipleInputOfLastChar(prefix)) {
-					final String oldPrefix = prefix.substring(0, prefix.length() - 1);
-					final int startIndex = getSelectionIndex() + 1;
-					final String[] items = getItems(list);
-					// search beneath startIndex
-					for (int i = startIndex; i < items.length; i++) {
-						final String item = items[i];
-						if (matchesWord(oldPrefix, item)) {
-							setMatchingTextAndSelection(oldPrefix.length(), item);
-							result = true;
-							break;
-						}
-					}
-					// 335126: if no result, then search above startIndex
-					for (int i = 0; !result && i < startIndex; i++) {
-						final String item = items[i];
-						if (matchesWord(oldPrefix, item)) {
-							setMatchingTextAndSelection(oldPrefix.length(), item);
-							result = true;
-							break;
-						}
-					}
-				}
 			}
 		}
 		return result;
 	}
 
-	private boolean isMultipleInputOfLastChar(final String prefix) {
-		final int length = prefix.length();
-		if (length < 2) {
-			return false;
+	private void updateInputChars(final String string) {
+		for (int i = 0; i < string.length(); i++) {
+			final char ch = string.charAt(i);
+			if (!Character.isLetterOrDigit(ch)) {
+				inputChars.add(Character.valueOf(ch));
+			}
 		}
-		final int newLastChar = prefix.charAt(length - 1);
-		final int lastChar = prefix.charAt(length - 2);
-		return Character.toLowerCase(newLastChar) == Character.toLowerCase(lastChar);
+	}
+
+	private void selectAll() {
+		setSelection(new Point(0, text.getText().length()));
+	}
+
+	private void setImage(final int index) {
+		if (label != null) {
+			label.setImage(getImage(list, index));
+		}
 	}
 
 	private void setMatchingTextAndSelection(final int selectionStart, final String item) {
@@ -2579,40 +2599,6 @@ public abstract class CompletionCombo extends Composite {
 		text.setText(item);
 		setSelection(new Point(selectionStart, item.length()));
 		setSelection(list, index);
-	}
-
-	private String buildPrefixOnBackSpace(final Point selection) {
-		String result;
-		final String theText = text.getText();
-		if (isAllowMissmatch()) {
-			final int end = Math.max(0, selection.x - 1);
-			result = theText.substring(0, end) + theText.substring(selection.y);
-		} else {
-			final String prefix = theText.substring(0, selection.x);
-			final int end = Math.max(0, prefix.length() - 1);
-			result = prefix.substring(0, end);
-		}
-		return result;
-	}
-
-	private String buildPrefixForInput(final char typedChar, final Point selection) {
-		String prefix = text.getText().substring(0, selection.x);
-		if (isAllowMissmatch()) {
-			prefix = text.getText().substring(0, selection.x) + typedChar + text.getText().substring(selection.y);
-		} else {
-			prefix += typedChar;
-		}
-		return prefix;
-	}
-
-	private boolean matchesWord(final String prefix, final String word) {
-		if (prefix == null || word == null) {
-			return false;
-		}
-		if (word.toLowerCase().startsWith(prefix.toLowerCase())) {
-			return true;
-		}
-		return false;
 	}
 
 }
