@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.ridgets.swt.uibinding;
 
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.AbstractRidgetController;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
@@ -47,9 +49,14 @@ public class DefaultSwtBindingDelegate extends AbstractViewBindingDelegate {
 		this(SwtControlRidgetMapper.getInstance());
 	}
 
-	@SuppressWarnings("unchecked")
-	public DefaultSwtBindingDelegate(final IControlRidgetMapper mapper) {
+	public DefaultSwtBindingDelegate(final IControlRidgetMapper<Object> mapper) {
 		super(SWTBindingPropertyLocator.getInstance(), mapper);
+	}
+
+	@Override
+	public void injectRidgets(final IController controller) {
+		super.injectRidgets(controller);
+		RidgetContainerAnnotationProcessor.getInstance().processAnnotations(controller);
 	}
 
 	@Override
@@ -61,4 +68,5 @@ public class DefaultSwtBindingDelegate extends AbstractViewBindingDelegate {
 			WidgetIdentificationSupport.setIdentification((Widget) uiControl, bindingId);
 		}
 	}
+
 }
