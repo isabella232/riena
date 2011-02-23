@@ -13,9 +13,6 @@ package org.eclipse.riena.example.client.views;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -53,7 +50,7 @@ public class CompletionComboSubModuleView extends SubModuleView {
 
 	@Override
 	public void setFocus() {
-		combo1.forceFocus();
+		combo1.setFocus();
 	}
 
 	// helping methods
@@ -65,18 +62,17 @@ public class CompletionComboSubModuleView extends SubModuleView {
 		UIControlsFactory.createLabel(parent, "Selection"); //$NON-NLS-1$
 		UIControlsFactory.createLabel(parent, "Text"); //$NON-NLS-1$
 
-		final GridDataFactory grabFill = GridDataFactory.fillDefaults().grab(true, false);
-		final GridDataFactory fill = GridDataFactory.fillDefaults();
+		final GridDataFactory fill = GridDataFactory.fillDefaults().hint(100, SWT.DEFAULT);
 
 		// row
 
 		UIControlsFactory.createLabel(parent, "allow missmatch:"); //$NON-NLS-1$
 		combo1 = UIControlsFactory.createCompletionCombo(parent, "combo1"); //$NON-NLS-1$
-		grabFill.applyTo(combo1);
+		fill.applyTo(combo1);
 		combo1.setAutoCompletionMode(AutoCompletionMode.ALLOW_MISSMATCH);
 
 		final Text selection1 = UIControlsFactory.createText(parent, SWT.BORDER, "selection1"); //$NON-NLS-1$ 
-		grabFill.applyTo(selection1);
+		fill.applyTo(selection1);
 
 		UIControlsFactory.createText(parent, SWT.BORDER, "text1"); //$NON-NLS-1$ 
 
@@ -150,15 +146,15 @@ public class CompletionComboSubModuleView extends SubModuleView {
 
 		UIControlsFactory.createText(parent, SWT.BORDER, "text6"); //$NON-NLS-1$
 
-		final Button button = UIControlsFactory.createButton(parent, "Default Button"); //$NON-NLS-1$
-		button.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(final SelectionEvent e) {
-				System.out.println("!! Default Button clicked !!"); //$NON-NLS-1$
-				java.awt.Toolkit.getDefaultToolkit().beep();
-			}
-		});
-		button.getShell().setDefaultButton(button);
+		//		final Button button = UIControlsFactory.createButton(parent, "Default Button"); //$NON-NLS-1$
+		//		button.addSelectionListener(new SelectionAdapter() {
+		//			@Override
+		//			public void widgetSelected(final SelectionEvent e) {
+		//				System.out.println("!! Default Button clicked !!"); //$NON-NLS-1$
+		//				java.awt.Toolkit.getDefaultToolkit().beep();
+		//			}
+		//		});
+		//		button.getShell().setDefaultButton(button);
 	}
 
 	private Group createGroup(final Composite parent, final String title) {

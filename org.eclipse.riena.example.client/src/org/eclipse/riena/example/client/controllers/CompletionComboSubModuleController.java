@@ -87,7 +87,7 @@ public class CompletionComboSubModuleController extends SubModuleController {
 
 	private ListBean createInput() {
 		final List<City> values = new ArrayList<City>();
-		values.add(new City("Aachen", Country.GERMANY)); //$NON-NLS-1$
+		values.add(new City("Aachen___ist___lang", Country.GERMANY)); //$NON-NLS-1$
 		values.add(new City("Albi", Country.FRANCE)); //$NON-NLS-1$
 		values.add(new City("Augsburg", Country.GERMANY)); //$NON-NLS-1$
 		values.add(new City("Rome", Country.ITALY)); //$NON-NLS-1$

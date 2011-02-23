@@ -266,7 +266,7 @@ public abstract class CompletionCombo extends Composite {
 				if (shell == CompletionCombo.this.getShell()) {
 					if (event.type == SWT.MouseDown && !isClickedInCombo()) {
 						dropDown(false);
-						selectAll();
+						defaultTextSelection();
 					} else {
 						if (!ignoreFocusOut) {
 							handleFocus(SWT.FocusOut);
@@ -729,6 +729,9 @@ public abstract class CompletionCombo extends Composite {
 			}
 			break;
 		case SWT.FocusOut:
+			if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH) {
+				text.setSelection(0, 0);
+			}
 			if (isDropped()) {
 				dropDown(false);
 			}
@@ -895,7 +898,7 @@ public abstract class CompletionCombo extends Composite {
 		// autocompletion mode is FIRST_LETTER_MATCH
 		if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH && getItemCount() > 0
 				&& getSelectionIndex() == -1) {
-			setMatchingTextAndSelection(0, getItem(0));
+			setMatchingTextAndSelection(0, 0, getItem(0));
 		}
 
 		final int index = getSelectionIndex(list);
@@ -1229,9 +1232,7 @@ public abstract class CompletionCombo extends Composite {
 			if (hasFocus) {
 				return;
 			}
-			if (getEditable()) {
-				text.selectAll();
-			}
+			defaultTextSelection();
 			hasFocus = true;
 			Shell shell = getShell();
 			shell.removeListener(SWT.Deactivate, listener);
@@ -1395,7 +1396,7 @@ public abstract class CompletionCombo extends Composite {
 			}
 			setImage(index);
 			text.setText(getItem(list, index));
-			text.selectAll();
+			defaultTextSelection();
 			setSelection(list, index);
 			Event e = new Event();
 			e.time = event.time;
@@ -1450,6 +1451,13 @@ public abstract class CompletionCombo extends Composite {
 				dropDown(false);
 			}
 			if ((event.stateMask & SWT.ALT) != 0 && (event.keyCode == SWT.ARROW_UP || event.keyCode == SWT.ARROW_DOWN)) {
+				dropDown(false);
+			}
+			if ((event.character == SWT.DEL || event.character == SWT.BS)
+					&& autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH) {
+				text.setText(""); //$NON-NLS-1$
+				clearSelection();
+				clearImage();
 				dropDown(false);
 			}
 			if (event.character == SWT.CR) {
@@ -1658,7 +1666,7 @@ public abstract class CompletionCombo extends Composite {
 			if (index != getSelectionIndex()) {
 				setImage(index);
 				text.setText(getItem(list, index));
-				text.selectAll();
+				defaultTextSelection();
 				setSelection(list, index);
 			}
 		}
@@ -1989,7 +1997,7 @@ public abstract class CompletionCombo extends Composite {
 		}
 		setImage(index);
 		text.setText(string);
-		text.selectAll();
+		defaultTextSelection();
 		setSelection(list, index);
 	}
 
@@ -2074,7 +2082,7 @@ public abstract class CompletionCombo extends Composite {
 			break;
 		case SWT.DefaultSelection:
 			dropDown(false);
-			selectAll();
+			defaultTextSelection();
 			Event e = new Event();
 			e.time = event.time;
 			e.stateMask = event.stateMask;
@@ -2120,7 +2128,7 @@ public abstract class CompletionCombo extends Composite {
 				event.doit = false;
 				if ((event.stateMask & SWT.ALT) != 0) {
 					final boolean dropped = isDropped();
-					text.selectAll();
+					defaultTextSelection();
 					if (!dropped) {
 						setFocus();
 					}
@@ -2198,7 +2206,7 @@ public abstract class CompletionCombo extends Composite {
 				return;
 			}
 			final boolean dropped = isDropped();
-			text.selectAll();
+			defaultTextSelection();
 			if (!dropped) {
 				setFocus();
 			}
@@ -2227,7 +2235,7 @@ public abstract class CompletionCombo extends Composite {
 			if (text.getEditable()) {
 				return;
 			}
-			text.selectAll();
+			defaultTextSelection();
 			break;
 		case SWTFacade.MouseWheel:
 			notifyListeners(SWTFacade.MouseWheel, event);
@@ -2332,6 +2340,14 @@ public abstract class CompletionCombo extends Composite {
 	private void clearImage() {
 		if (label != null) {
 			label.setImage(null);
+		}
+	}
+
+	private void defaultTextSelection() {
+		if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH) {
+			text.setSelection(0, 0);
+		} else {
+			text.selectAll();
 		}
 	}
 
@@ -2461,7 +2477,7 @@ public abstract class CompletionCombo extends Composite {
 			for (int i = startIndex; i < items.length; i++) {
 				final String item = items[i];
 				if (matchesWord(prefix, item)) {
-					setMatchingTextAndSelection(0, item);
+					setMatchingTextAndSelection(0, 0, item);
 					matched = true;
 					break;
 				}
@@ -2470,7 +2486,7 @@ public abstract class CompletionCombo extends Composite {
 			for (int i = 0; !matched && i < startIndex; i++) {
 				final String item = items[i];
 				if (matchesWord(prefix, item)) {
-					setMatchingTextAndSelection(0, item);
+					setMatchingTextAndSelection(0, 0, item);
 					matched = true;
 					break;
 				}
@@ -2563,7 +2579,7 @@ public abstract class CompletionCombo extends Composite {
 			} else {
 				for (final String item : getItems(list)) {
 					if (matchesWord(prefix, item)) {
-						setMatchingTextAndSelection(prefix.length(), item);
+						setMatchingTextAndSelection(prefix.length(), item.length(), item);
 						result = true;
 						break;
 					}
@@ -2582,22 +2598,18 @@ public abstract class CompletionCombo extends Composite {
 		}
 	}
 
-	private void selectAll() {
-		setSelection(new Point(0, text.getText().length()));
-	}
-
 	private void setImage(final int index) {
 		if (label != null) {
 			label.setImage(getImage(list, index));
 		}
 	}
 
-	private void setMatchingTextAndSelection(final int selectionStart, final String item) {
+	private void setMatchingTextAndSelection(final int selectionStart, final int selectionEnd, final String item) {
 		final int index = indexOf(item);
 		Assert.isLegal(index > -1);
 		setImage(index);
 		text.setText(item);
-		setSelection(new Point(selectionStart, item.length()));
+		text.setSelection(selectionStart, selectionEnd);
 		setSelection(list, index);
 	}
 
