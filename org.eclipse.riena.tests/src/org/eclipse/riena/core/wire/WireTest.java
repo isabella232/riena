@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.core.wire;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
+import org.eclipse.riena.core.util.Literal;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.tests.Activator;
@@ -71,6 +74,26 @@ public class WireTest extends RienaTestCase {
 		SequenceUtil.init();
 		puller.stop();
 		SequenceUtil.assertExpected(BeanOnBeanWiring.class, BeanWiring.class);
+	}
+
+	public void testWiringDeeplyAndWithOrderAndCheckSequenceConstraint() {
+		final BeanOnBeanWithOrder beanOnBean = new BeanOnBeanWithOrder();
+		SequenceUtil.init();
+		final WirePuller puller = Wire.instance(beanOnBean).andStart(context);
+		final List<String> expected = Literal.list("BeanWithOrder+schtonk").list("BeanWithOrder+stunk")
+				.list("BeanWithOrder+done").list("BeanOnBeanWithOrder+stunk").list("BeanOnBeanWithOrder+schtonk")
+				.list("BeanOnBeanWithOrder+done");
+		SequenceUtil.assertExpected(expected);
+		assertTrue(beanOnBean.hasSchtonk0());
+		assertTrue(beanOnBean.hasStunk0());
+		assertTrue(beanOnBean.hasSchtonk1());
+		assertTrue(beanOnBean.hasStunk1());
+		SequenceUtil.init();
+		puller.stop();
+		expected.remove("BeanWithOrder+done");
+		expected.remove("BeanOnBeanWithOrder+done");
+		Collections.reverse(expected);
+		SequenceUtil.assertExpected(expected);
 	}
 
 	public void testWiringDeeply() {

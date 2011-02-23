@@ -42,7 +42,10 @@ public final class SequenceUtil {
 	}
 
 	public static void assertExpected(final Object... objects) {
-		final List<Object> temp = Arrays.asList(objects);
-		Assert.assertEquals(temp, sequence);
+		assertExpected(Arrays.asList(objects));
+	}
+
+	public static void assertExpected(final List<?> objects) {
+		Assert.assertEquals(objects, sequence);
 	}
 }
