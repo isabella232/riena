@@ -66,7 +66,7 @@ public class LoggerMill {
 	 * 
 	 * @param logService
 	 */
-	@InjectService(useRanking = true)
+	@InjectService(useRanking = true, order = 1)
 	public void bind(final ExtendedLogService logService) {
 		synchronized (this) {
 			this.logService = logService;
@@ -89,7 +89,7 @@ public class LoggerMill {
 	 * 
 	 * @param logReaderService
 	 */
-	@InjectService(useRanking = true)
+	@InjectService(useRanking = true, order = 1)
 	public void bind(final ExtendedLogReaderService logReaderService) {
 		// When isDevelopment() is explicitly set to {@code false} no default logging will be used. Otherwise if 
 		// no loggers have been defined than a default logging setup will be used.
@@ -141,13 +141,13 @@ public class LoggerMill {
 	}
 
 	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´listenerDefs´ is too expensive")
-	@InjectExtension
+	@InjectExtension(order = 0)
 	public void update(final ILogListenerExtension[] listenerDefs) {
 		this.listenerDefs = listenerDefs;
 	}
 
 	@IgnoreFindBugs(value = "EI_EXPOSE_REP2", justification = "deep cloning the ´catcherDefs´ is too expensive")
-	@InjectExtension
+	@InjectExtension(order = 0)
 	public void update(final ILogCatcherExtension[] catcherDefs) {
 		this.catcherDefs = catcherDefs;
 	}
