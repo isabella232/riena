@@ -67,4 +67,22 @@ public @interface InjectService {
 	 */
 	boolean onceOnly() default false;
 
+	/**
+	 * Defines the order of injections.
+	 * <p>
+	 * Without a defined order injections (service and extension) will be
+	 * injected in an undefined order for each class. This is because of the
+	 * 'contract' in {@code Class.getDeclaredMethods()}: "The elements in the
+	 * array returned are not sorted and are not in any particular order".<br>
+	 * With the {@code order} property it is possible define the sequence of
+	 * injections within a class.
+	 * <p>
+	 * If not defined the default value is {@code 0}.
+	 * <p>
+	 * <b>Note: </b> An order value of {@code Integer.MAX_VALUE} <b>must</b> be
+	 * avoided.
+	 * 
+	 * @since 3.0
+	 */
+	int order() default 0;
 }
