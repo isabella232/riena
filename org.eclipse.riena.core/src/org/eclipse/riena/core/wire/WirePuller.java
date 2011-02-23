@@ -12,6 +12,7 @@ package org.eclipse.riena.core.wire;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.injector.IStoppable;
+import org.eclipse.riena.core.injector.InjectionFailure;
 import org.eclipse.riena.core.injector.extension.ExtensionInjector;
 import org.eclipse.riena.core.injector.service.ServiceInjector;
 import org.eclipse.riena.core.util.Iter;
@@ -137,16 +139,47 @@ public class WirePuller implements IStoppable {
 
 	private boolean injectIntoAnnotatedMethods(final Object bean, final Class<?> beanClass) {
 		boolean hasWirings = false;
-		for (final Method method : beanClass.getDeclaredMethods()) {
-			if (method.isAnnotationPresent(InjectService.class)) {
-				injectServiceInto(bean, method);
+		for (final MAOTupel maot : sortMethodsByInjectionOrder(beanClass.getDeclaredMethods())) {
+			if (maot.annotation == InjectService.class) {
+				verifyOrder(beanClass, maot);
+				injectServiceInto(bean, maot.method);
 				hasWirings = true;
-			} else if (method.isAnnotationPresent(InjectExtension.class)) {
-				injectExtensionInto(bean, method);
+			} else if (maot.annotation == InjectExtension.class) {
+				verifyOrder(beanClass, maot);
+				injectExtensionInto(bean, maot.method);
 				hasWirings = true;
+			} else if (maot.annotation == OnWiringDone.class) {
+				notifyBean(bean, maot.method);
 			}
 		}
 		return hasWirings;
+	}
+
+	private void verifyOrder(final Class<?> beanClass, final MAOTupel maot) {
+		if (maot.order == Integer.MAX_VALUE) {
+			throw new InjectionFailure("Annotation '" + maot.annotation + "' on '" + beanClass.getName() + "." //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ maot.method.getName() + "' has forbidden order Integer.MAX_VALUE"); //$NON-NLS-1$
+		}
+	}
+
+	private List<MAOTupel> sortMethodsByInjectionOrder(final Method[] methods) {
+		final List<MAOTupel> maots = new ArrayList<MAOTupel>();
+		for (final Method method : methods) {
+			final InjectService injectServiceAnnotation = method.getAnnotation(InjectService.class);
+			if (injectServiceAnnotation != null) {
+				maots.add(new MAOTupel(method, InjectService.class, injectServiceAnnotation.order()));
+			}
+			final InjectExtension injectExtensionAnnotation = method.getAnnotation(InjectExtension.class);
+			if (injectExtensionAnnotation != null) {
+				maots.add(new MAOTupel(method, InjectExtension.class, injectExtensionAnnotation.order()));
+			}
+			final OnWiringDone wiringDoneAnnotation = method.getAnnotation(OnWiringDone.class);
+			if (wiringDoneAnnotation != null) {
+				maots.add(new MAOTupel(method, OnWiringDone.class, Integer.MAX_VALUE));
+			}
+		}
+		Collections.sort(maots);
+		return maots;
 	}
 
 	private void injectServiceInto(final Object bean, final Method method) {
@@ -159,6 +192,15 @@ public class WirePuller implements IStoppable {
 		final ExtensionInjectorBuilder bob = new ExtensionInjectorBuilder(bean, method);
 		final ExtensionInjector injector = bob.build();
 		add(injector.andStart(context));
+	}
+
+	private void notifyBean(final Object bean, final Method method) {
+		try {
+			method.invoke(bean);
+		} catch (final Exception e) {
+			throw new InjectionFailure("Invoking the @WiringDone method '" + method + "' on bean class '" //$NON-NLS-1$ //$NON-NLS-2$
+					+ bean.getClass().getName() + "'.", e); //$NON-NLS-1$
+		}
 	}
 
 	/**
@@ -251,4 +293,22 @@ public class WirePuller implements IStoppable {
 	private enum State {
 		STARTED, STOPPED, PENDING
 	}
+
+	private static class MAOTupel implements Comparable<MAOTupel> {
+
+		private final Method method;
+		private final Class<?> annotation;
+		private final int order;
+
+		public MAOTupel(final Method method, final Class<?> annotation, final int order) {
+			this.method = method;
+			this.annotation = annotation;
+			this.order = order;
+		}
+
+		public int compareTo(final MAOTupel tupel) {
+			return this.order == tupel.order ? 0 : this.order < tupel.order ? -1 : 1;
+		}
+	}
+
 }
