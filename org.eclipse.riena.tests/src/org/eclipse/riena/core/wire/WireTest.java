@@ -33,11 +33,6 @@ public class WireTest extends RienaTestCase {
 	private ServiceRegistration schtonkReg;
 	private ServiceRegistration stunkReg;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.tests.RienaTestCase#setUp()
-	 */
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -45,11 +40,6 @@ public class WireTest extends RienaTestCase {
 		stunkReg = context.registerService(Stunk.class.getName(), new Stunk(), null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.tests.RienaTestCase#tearDown()
-	 */
 	@Override
 	protected void tearDown() throws Exception {
 		schtonkReg.unregister();
