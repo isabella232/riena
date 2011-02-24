@@ -18,8 +18,10 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.ui.internal.progress.ProgressManager;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.RAPDetector;
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.navigation.ui.Activator;
@@ -84,11 +86,13 @@ public abstract class AbstractApplication implements IApplication {
 	}
 
 	protected void disableEclipseProgressManager() {
-		// TODO [ev]: causes NPE - see Bug 337383
+		if (RAPDetector.isRAPavailable()) {
+			return;
+		}
 		//		//we need to get the instance first as this is the only way to lock/disable the singleton
-		//		ProgressManager.getInstance();
+		ProgressManager.getInstance();
 		//		//shutting down means uninstalling ProgressProvider and removing all Job-Listeners
-		//		ProgressManager.shutdownProgressManager();
+		ProgressManager.shutdownProgressManager();
 	}
 
 	/**
