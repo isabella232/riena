@@ -36,6 +36,9 @@ import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ModuleController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.ridgets.controller.IController;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.AbstractViewBindingDelegate;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.DefaultSwtBindingDelegate;
 
 /**
  * Tests for the SubModuleNodeView.
@@ -52,10 +55,14 @@ public class SubModuleViewTest extends RienaTestCase {
 	private IModuleNode moduleNode;
 	private ArrayList<SubModuleNode> nodesBoundToSharedView;
 
+	private Shell shell;
+	private Composite parentComposite;
+
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-
+		shell = new Shell();
+		parentComposite = new Composite(shell, SWT.NONE);
 		addPluginXml(SubModuleViewTest.class, "SubModuleViewTest.xml");
 
 		appNode = new ApplicationNode();
@@ -85,6 +92,7 @@ public class SubModuleViewTest extends RienaTestCase {
 	protected void tearDown() throws Exception {
 		node.deactivate(null);
 		removeExtension("sub.module.view.test");
+		shell.dispose();
 		super.tearDown();
 	}
 
@@ -172,6 +180,61 @@ public class SubModuleViewTest extends RienaTestCase {
 		view2.bind(node);
 		assertNotNull(view2.blockViewCalled[0]);
 		assertFalse(view2.blockViewCalled[0]);
+	}
+
+	public void testShared2() {
+		final SubModuleNode node = new SubModuleNode(new NavigationNodeId("testId", SubModuleView.SHARED_ID));
+		final TestSharedView2 smv = new TestSharedView2(node);
+		try {
+			smv.bind(node);
+		} catch (final Exception e) {
+			fail();
+		}
+		assertTrue(smv.bindCalled);
+
+	}
+
+	private final class TestSharedView2 extends SubModuleView {
+
+		private final SubModuleNode node;
+		protected boolean bindCalled = false;
+
+		public TestSharedView2(final SubModuleNode node) {
+			this.node = node;
+			ReflectionUtils.setHidden(this, "contentComposite", parentComposite);
+		}
+
+		@Override
+		protected void basicCreatePartControl(final Composite parent) {
+
+		}
+
+		@Override
+		protected AbstractViewBindingDelegate createBinding() {
+			return new DefaultSwtBindingDelegate() {
+
+				@Override
+				public void bind(final IController controller) {
+					super.bind(controller);
+					bindCalled = true;
+				}
+
+			};
+		}
+
+		@Override
+		protected Composite getParentComposite() {
+			return parentComposite;
+		}
+
+		@Override
+		protected void addUIControls(final Composite composite) {
+		}
+
+		@Override
+		public SubModuleNode getNavigationNode() {
+			return node;
+		}
 	}
 
 	private final class TestSharedView extends SubModuleView {

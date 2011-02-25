@@ -140,10 +140,11 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	public void bind(final SubModuleNode node) {
-		/*
-		 * Shared Views implementation
-		 */
 
+		// create new controller if not existent for new node
+		if ((getNavigationNode() != null) && (getController() == null)) {
+			createViewFacade();
+		}
 		// Different node?
 		if (currentController != getController()) {
 
@@ -155,10 +156,6 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 				}
 				// unbind "old" node
 				binding.unbind(currentController);
-			}
-			// create new controller if not existent for new node
-			if ((getNavigationNode() != null) && (getController() == null)) {
-				createViewFacade();
 			}
 
 			if (getController() != null) {
@@ -379,7 +376,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	protected abstract void basicCreatePartControl(Composite parent);
 
 	protected void blockView(final boolean block) {
-		if (!parentComposite.isDisposed()) {
+		if (!getParentComposite().isDisposed()) {
 			if (block) {
 				blockView();
 			} else {
@@ -390,7 +387,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	private void unBlockView() {
 		isBlocked = false;
-		parentComposite.setCursor(oldCursor);
+		getParentComposite().setCursor(oldCursor);
 		contentComposite.setEnabled(true);
 
 		contentComposite.setRedraw(false);
@@ -413,7 +410,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 	private void blockView() {
 		if (!isBlocked) {
-			oldCursor = parentComposite.getCursor();
+			oldCursor = getParentComposite().getCursor();
 
 			if (getController() != null) {
 				for (final IRidget ridget : getController().getRidgets()) {
@@ -425,7 +422,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 					}
 				}
 			}
-			parentComposite.setCursor(getWaitCursor());
+			getParentComposite().setCursor(getWaitCursor());
 			contentComposite.setEnabled(false);
 			isBlocked = true;
 		}
@@ -514,7 +511,10 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	/**
-	 * Find the navigation node corresponding to the passed ids.
+	 * Find the navigation node corresponding to the passed ids. If the view is
+	 * shared the {@link INavigationNode#isActivated()} state has to be
+	 * considered because there can be multiple nodes matching the nodeId and
+	 * secondaryId. Only the active node counts!
 	 * 
 	 * @param nodeId
 	 *            the id of the node
@@ -544,7 +544,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		}
 	}
 
-	private void addUIControls(final Composite composite) {
+	protected void addUIControls(final Composite composite) {
 		final SWTControlFinder finder = new SWTControlFinder(composite) {
 			@Override
 			public void handleBoundControl(final Control control, final String bindingProperty) {
