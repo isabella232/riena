@@ -59,18 +59,22 @@ public class LnFUpdater {
 	 */
 	private static final String PROPERTY_RIENA_LNF_UPDATE_VIEW = "riena.lnf.update.view"; //$NON-NLS-1$
 
-	private final static Map<Class<? extends Control>, List<PropertyDescriptor>> CONTROL_PROPERTIES = new HashMap<Class<? extends Control>, List<PropertyDescriptor>>();
-	private final static Map<Class<? extends Control>, Map<String, Object>> DEFAULT_PROPERTY_VALUES = new HashMap<Class<? extends Control>, Map<String, Object>>();
+	private final Map<Class<? extends Control>, List<PropertyDescriptor>> CONTROL_PROPERTIES = new HashMap<Class<? extends Control>, List<PropertyDescriptor>>();
+	private final Map<Class<? extends Control>, Map<String, Object>> DEFAULT_PROPERTY_VALUES = new HashMap<Class<? extends Control>, Map<String, Object>>();
 
-	private final static List<PropertyDescriptor> EMPTY_DESCRIPTORS = Collections.emptyList();
+	private final List<PropertyDescriptor> EMPTY_DESCRIPTORS = Collections.emptyList();
 
-	private static final Composite SHELL_COMPOSITE = new Composite(new Shell(), SWT.NONE);
+	private final Composite SHELL_COMPOSITE = new Composite(new Shell(), SWT.NONE);
 
 	private boolean dirtyLayout;
-	private static final Map<Class<? extends Control>, String> SIMPLE_NAMES = new HashMap<Class<? extends Control>, String>();
+	private final Map<Class<? extends Control>, String> SIMPLE_NAMES = new HashMap<Class<? extends Control>, String>();
 
 	private static final Logger LOGGER = Log4r.getLogger(LnFUpdater.class);
 
+	/**
+	 * use {@link LnfUpdaterAccessor#getInstance()} instead.
+	 */
+	@Deprecated
 	public LnFUpdater() {
 		super();
 	}

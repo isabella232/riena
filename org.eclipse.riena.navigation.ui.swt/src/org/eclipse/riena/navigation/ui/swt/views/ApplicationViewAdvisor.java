@@ -85,9 +85,9 @@ import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineSpacer;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.ILnfRenderer;
-import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
+import org.eclipse.riena.ui.swt.lnf.LnfUpdaterAccessor;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
 import org.eclipse.riena.ui.swt.utils.TestingSupport;
@@ -343,7 +343,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		statusLine.setLayoutData(fd);
 		addUIControl(statusLine, "statusline"); //$NON-NLS-1$
 
-		new LnFUpdater().updateUIControls(statusLine, true);
+		LnfUpdaterAccessor.getInstance().updateUIControls(statusLine, true);
 	}
 
 	/**
