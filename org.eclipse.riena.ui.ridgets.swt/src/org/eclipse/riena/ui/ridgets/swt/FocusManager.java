@@ -86,12 +86,10 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 			} else {
 				// no suitable control found, start searching from the top of the view
 				final Composite topControl = findTopContentComposite((Control) e.widget);
-				if (topControl != null) {
-					target = findFocusTarget(null, topControl);
-					if (target != null) {
-						// trace("## %s %d -> %s %d (from top)", e.widget, e.widget.hashCode(), target, target.hashCode());
-						target.setFocus();
-					}
+				target = findFocusTarget(null, topControl);
+				if (target != null) {
+					// trace("## %s %d -> %s %d (from top)", e.widget, e.widget.hashCode(), target, target.hashCode());
+					target.setFocus();
 				}
 			}
 			if (target == null) {
@@ -101,9 +99,10 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 	}
 
 	/**
-	 * Returns the topmost Composite of the current View in the workarea.
+	 * Returns: (a) the topmost Composite of the current View in the workarea,
+	 * or as a fallback: (b) the topmost Shell.
 	 * 
-	 * @return a Composite instance or null
+	 * @return a Composite instance
 	 */
 	private Composite findTopContentComposite(final Control startControl) {
 		Composite result = null;
@@ -113,6 +112,9 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 				result = start;
 			}
 			start = start.getParent();
+		}
+		if (result == null) {
+			result = startControl.getShell();
 		}
 		return result;
 	}
