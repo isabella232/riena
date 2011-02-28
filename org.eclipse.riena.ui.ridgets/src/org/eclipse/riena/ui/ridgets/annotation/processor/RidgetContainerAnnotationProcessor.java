@@ -29,7 +29,7 @@ public final class RidgetContainerAnnotationProcessor {
 
 	private final Map<Class<? extends Annotation>, IRidgetContainerAnnotationHandler> handlerMap = new HashMap<Class<? extends Annotation>, IRidgetContainerAnnotationHandler>();
 
-	private static final SingletonProvider<RidgetContainerAnnotationProcessor> RCAH = new SingletonProvider<RidgetContainerAnnotationProcessor>(
+	private static final SingletonProvider<RidgetContainerAnnotationProcessor> RCAP = new SingletonProvider<RidgetContainerAnnotationProcessor>(
 			RidgetContainerAnnotationProcessor.class);
 
 	/**
@@ -38,7 +38,7 @@ public final class RidgetContainerAnnotationProcessor {
 	 * @return the RidgetContainerAnnotationHandler singleton
 	 */
 	public static RidgetContainerAnnotationProcessor getInstance() {
-		return RCAH.getInstance();
+		return RCAP.getInstance();
 	}
 
 	private RidgetContainerAnnotationProcessor() {
