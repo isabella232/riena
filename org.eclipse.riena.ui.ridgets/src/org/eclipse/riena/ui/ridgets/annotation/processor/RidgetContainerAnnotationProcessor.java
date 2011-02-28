@@ -33,9 +33,9 @@ public final class RidgetContainerAnnotationProcessor {
 			RidgetContainerAnnotationProcessor.class);
 
 	/**
-	 * Answer the singleton <code>RidgetContainerAnnotationHandler</code>
+	 * Answer the singleton <code>RidgetContainerAnnotationProcessor</code>
 	 * 
-	 * @return the RidgetContainerAnnotationHandler singleton
+	 * @return the RidgetContainerAnnotationProcessor singleton
 	 */
 	public static RidgetContainerAnnotationProcessor getInstance() {
 		return RCAP.getInstance();
