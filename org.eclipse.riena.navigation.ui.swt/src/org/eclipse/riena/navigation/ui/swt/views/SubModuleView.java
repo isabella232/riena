@@ -64,7 +64,6 @@ import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.LnfUpdaterAccessor;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SWTControlFinder;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -81,7 +80,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 */
 	public static final String SHARED_ID = "shared"; //$NON-NLS-1$
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubModuleView.class);
-	private final LnFUpdater LNF_UPDATER = LnfUpdaterAccessor.getInstance();
+	private final LnFUpdater lnfUpdater = LnFUpdater.getInstance();
 	private final static Map<SubModuleView, SubModuleNode> FALLBACK_NODES = new HashMap<SubModuleView, SubModuleNode>();
 
 	/**
@@ -169,9 +168,9 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			//callback
 			currentController.afterBind();
 
-			LNF_UPDATER.updateUIControls(getParentComposite(), true);
+			lnfUpdater.updateUIControls(getParentComposite(), true);
 		} else {
-			LNF_UPDATER.updateUIControlsAfterBind(getContentComposite());
+			lnfUpdater.updateUIControlsAfterBind(getContentComposite());
 		}
 		//TODO is this really part of the the binding of the SubModuleView? NavigationSourceProvider is Menu-specific and should be handled in a context of Menus
 		activeNodeChanged(getNavigationNode());
@@ -231,7 +230,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		createWorkarea(contentComposite);
 
 		if (Beans.isDesignTime()) {
-			LNF_UPDATER.updateUIControls(getParentComposite(), true);
+			lnfUpdater.updateUIControls(getParentComposite(), true);
 		} else {
 			createViewFacade();
 			doBinding();

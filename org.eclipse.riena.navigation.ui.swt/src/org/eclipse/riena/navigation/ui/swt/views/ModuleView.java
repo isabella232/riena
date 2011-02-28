@@ -64,7 +64,6 @@ import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.LnfUpdaterAccessor;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
@@ -74,7 +73,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 	private static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
-	private final LnFUpdater LNF_UPDATER = LnfUpdaterAccessor.getInstance();
+	private final LnFUpdater lnfUpdater = LnFUpdater.getInstance();
 	private final AbstractViewBindingDelegate binding;
 	private final Composite parent;
 	private Composite body;
@@ -524,7 +523,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		//		updateModuleView();
 
 		createBodyContent(body);
-		LNF_UPDATER.updateUIControls(body, true);
+		lnfUpdater.updateUIControls(body, true);
 	}
 
 	/**
