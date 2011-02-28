@@ -94,6 +94,11 @@ public class CompletionComboRCP extends AbstractCompletionComboRCP {
 	}
 
 	@Override
+	protected int getTopIndex(final Control list) {
+		return ((List) list).getTopIndex();
+	}
+
+	@Override
 	protected int indexOf(final Control list, final String string, final int start) {
 		return ((List) list).indexOf(string, start);
 	}

@@ -146,16 +146,29 @@ public abstract class CompletionCombo extends Composite {
 	public enum AutoCompletionMode {
 		/**
 		 * The Combo accepts all typed words and and just stops tracking the
-		 * list entries if no match is found.
+		 * list items if no match is found.
 		 */
 		ALLOW_MISSMATCH,
 		/**
 		 * The Combo rejects typed characters that would make the String in the
-		 * textfield not match any of the entries in the list.
+		 * textfield not match any of the items in the list.
 		 */
 		NO_MISSMATCH,
 		/**
-		 * TODO [ev] docs
+		 * The Combo selects the items beginning with the character that was
+		 * just typed (ignoring case). If no match is found the input is
+		 * ignored. When reaching the end of the list of matches, the selection
+		 * wraps around and continues from the beginning.
+		 * <p>
+		 * Examples:
+		 * <ul>
+		 * <li>'a' selects the 1st item beginning with 'a',</li>
+		 * <li>'aa' selects the 2nd item beginning with 'a',</li>
+		 * <li>'aaa' the 3rd item,</li>
+		 * <li>assumming there are only two items beginning with 'a', then 'aaa'
+		 * would wrap and select the 1st item,</li>
+		 * <li>'ad' selects the 1st item beginning with 'd'</li>
+		 * </ul>
 		 * 
 		 * @since 3.0
 		 */
@@ -429,6 +442,19 @@ public abstract class CompletionCombo extends Composite {
 	 * @since 3.0
 	 */
 	protected abstract int getSelectionIndex(Control list);
+
+	/**
+	 * Returns the zero-relative index of the item currently shown in the top
+	 * row of the list control. The index changes as the control is scrolled or
+	 * items are added / removed.
+	 * 
+	 * @param list
+	 *            the list control; never null
+	 * @return the zero-relative index of the item currently shown in the top
+	 *         row of the control
+	 * @since 3.0
+	 */
+	protected abstract int getTopIndex(Control list);
 
 	/**
 	 * Searches from the given {@code start} position and an item matching the
@@ -799,7 +825,7 @@ public abstract class CompletionCombo extends Composite {
 			popup.addListener(popupEvent, listener);
 		}
 		final int[] listEvents = { SWT.MouseUp, SWT.Selection, SWT.Traverse, SWT.KeyDown, SWT.KeyUp, SWT.FocusIn,
-				SWT.Dispose };
+				SWTFacade.MouseWheel, SWT.Dispose };
 		for (final int listEvent : listEvents) {
 			list.addListener(listEvent, listener);
 		}
@@ -1481,6 +1507,23 @@ public abstract class CompletionCombo extends Composite {
 			e.stateMask = event.stateMask;
 			notifyListeners(SWT.KeyDown, e);
 			event.doit = e.doit;
+			break;
+		case SWTFacade.MouseWheel:
+			if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH) {
+				// we handle the mouse wheel event ourselves and move the selection
+				// up or down manually -- the default behavior scrolls the list
+				// but does not move the selection!
+				event.doit = false;
+				final int selection = getSelectionIndex(list);
+				if (selection > -1) {
+					final int newIndex = (event.count < 0) ? selection + 1 : selection - 1;
+					if (newIndex > -1 && newIndex < getItemCount(list)) {
+						setSelection(list, newIndex);
+					}
+				} else {
+					setSelection(list, getTopIndex(list));
+				}
+			}
 			break;
 		default:
 			break;
@@ -2360,7 +2403,11 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * Handles a key press when autocompletion is enabled.
+	 * Handles a key press when one of these autocompletion modes is set:
+	 * <ul>
+	 * <li>AutoCompletionMode.NO_MISSMATCH</li>
+	 * <li>AutoCompletionMode.ALLOW_MISSMATCH</li>
+	 * </ul>
 	 * 
 	 * @param event
 	 *            the key event that triggered the method
@@ -2440,7 +2487,8 @@ public abstract class CompletionCombo extends Composite {
 	}
 
 	/**
-	 * TODO [ev] docs Handles a key press when autocompletion is enabled.
+	 * Handles a key press when the AutoCompletionMode.FIRST_LETTER_MATCH is
+	 * set.
 	 * 
 	 * @param event
 	 *            the key event that triggered the method
