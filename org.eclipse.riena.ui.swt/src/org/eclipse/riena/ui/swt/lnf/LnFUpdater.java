@@ -40,6 +40,8 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.cache.LRUHashMap;
+import org.eclipse.riena.core.singleton.SessionSingletonProvider;
+import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -59,20 +61,29 @@ public class LnFUpdater {
 	 */
 	private static final String PROPERTY_RIENA_LNF_UPDATE_VIEW = "riena.lnf.update.view"; //$NON-NLS-1$
 
-	private final Map<Class<? extends Control>, List<PropertyDescriptor>> CONTROL_PROPERTIES = new HashMap<Class<? extends Control>, List<PropertyDescriptor>>();
-	private final Map<Class<? extends Control>, Map<String, Object>> DEFAULT_PROPERTY_VALUES = new HashMap<Class<? extends Control>, Map<String, Object>>();
+	private final Map<Class<? extends Control>, List<PropertyDescriptor>> controlProperties = new HashMap<Class<? extends Control>, List<PropertyDescriptor>>();
+	private final Map<Class<? extends Control>, Map<String, Object>> defaultPropertyValues = new HashMap<Class<? extends Control>, Map<String, Object>>();
 
-	private final List<PropertyDescriptor> EMPTY_DESCRIPTORS = Collections.emptyList();
+	private final List<PropertyDescriptor> emptyDescriptors = Collections.emptyList();
 
-	private final Composite SHELL_COMPOSITE = new Composite(new Shell(), SWT.NONE);
+	private final Composite shellComposite = new Composite(new Shell(), SWT.NONE);
 
 	private boolean dirtyLayout;
-	private final Map<Class<? extends Control>, String> SIMPLE_NAMES = new HashMap<Class<? extends Control>, String>();
+	private final Map<Class<? extends Control>, String> simpleNames = new HashMap<Class<? extends Control>, String>();
+
+	private static final SingletonProvider<LnFUpdater> LNFU = new SessionSingletonProvider<LnFUpdater>(LnFUpdater.class);
 
 	private static final Logger LOGGER = Log4r.getLogger(LnFUpdater.class);
 
 	/**
-	 * use {@link LnfUpdaterAccessor#getInstance()} instead.
+	 * @return the {@link LnFUpdater} instance bound to the current session
+	 */
+	public static LnFUpdater getInstance() {
+		return LNFU.getInstance();
+	}
+
+	/**
+	 * use {@link LnfUpdater#getInstance()} instead.
 	 */
 	@Deprecated
 	public LnFUpdater() {
@@ -281,10 +292,10 @@ public class LnFUpdater {
 	 * @return simple name of the class or empty string if non existent
 	 */
 	private String getSimpleClassName(final Class<? extends Control> controlClass) {
-		String simpleName = SIMPLE_NAMES.get(controlClass);
+		String simpleName = simpleNames.get(controlClass);
 		if (simpleName == null) {
 			simpleName = getSimpleClassNameBasic(controlClass);
-			SIMPLE_NAMES.put(controlClass, simpleName);
+			simpleNames.put(controlClass, simpleName);
 		}
 		return simpleName;
 	}
@@ -408,7 +419,7 @@ public class LnFUpdater {
 	private Object getDefaultPropertyValue(final Control control, final PropertyDescriptor property) {
 
 		final Class<? extends Control> controlClass = control.getClass();
-		Map<String, Object> defaultValues = DEFAULT_PROPERTY_VALUES.get(controlClass);
+		Map<String, Object> defaultValues = defaultPropertyValues.get(controlClass);
 		if (defaultValues == null) {
 			final Control defaultControl = createDefaultControl(controlClass, control.getStyle());
 			if (defaultControl != null) {
@@ -422,7 +433,7 @@ public class LnFUpdater {
 					}
 				}
 				defaultControl.dispose();
-				DEFAULT_PROPERTY_VALUES.put(controlClass, defaultValues);
+				defaultPropertyValues.put(controlClass, defaultValues);
 			} else {
 				LOGGER.log(LogService.LOG_ERROR, "Cannot create an instance of \"" + controlClass.getName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 			}
@@ -533,7 +544,7 @@ public class LnFUpdater {
 	 */
 	private List<PropertyDescriptor> getProperties(final Control control) {
 		final Class<? extends Control> controlClass = control.getClass();
-		List<PropertyDescriptor> propertyDescriptors = CONTROL_PROPERTIES.get(controlClass);
+		List<PropertyDescriptor> propertyDescriptors = controlProperties.get(controlClass);
 		if (propertyDescriptors == null) {
 			try {
 				final PropertyDescriptor[] descriptors = Introspector.getBeanInfo(controlClass)
@@ -563,9 +574,9 @@ public class LnFUpdater {
 					propertyDescriptors.add(descriptor);
 				}
 			} catch (final IntrospectionException e) {
-				propertyDescriptors = EMPTY_DESCRIPTORS;
+				propertyDescriptors = emptyDescriptors;
 			}
-			CONTROL_PROPERTIES.put(controlClass, propertyDescriptors);
+			controlProperties.put(controlClass, propertyDescriptors);
 		}
 
 		return propertyDescriptors;
@@ -712,7 +723,7 @@ public class LnFUpdater {
 	 */
 	private Control createDefaultControl(final Class<? extends Control> controlClass, final int style) {
 
-		final Composite parent = SHELL_COMPOSITE;
+		final Composite parent = shellComposite;
 
 		// this is the most likely case
 		Control defaultControl = getControl(controlClass, parent, style);

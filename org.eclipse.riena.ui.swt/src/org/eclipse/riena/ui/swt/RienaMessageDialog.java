@@ -22,7 +22,6 @@ import org.eclipse.riena.ui.swt.facades.DialogConstantsFacade;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
-import org.eclipse.riena.ui.swt.lnf.LnfUpdaterAccessor;
 
 /**
  * A dialog for showing messages and with an own renderer for the border and the
@@ -30,7 +29,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfUpdaterAccessor;
  */
 public class RienaMessageDialog extends MessageDialog {
 
-	private final LnFUpdater LNF_UPDATER = LnfUpdaterAccessor.getInstance();
+	private final LnFUpdater lnfUpdater = LnFUpdater.getInstance();
 
 	// --- start - code from JFace MessageDialog.java ---
 
@@ -233,7 +232,7 @@ public class RienaMessageDialog extends MessageDialog {
 		dialogArea = createDialogArea(centerComposite);
 		buttonBar = createButtonBar(centerComposite);
 
-		LNF_UPDATER.updateUIControls(parent, true);
+		lnfUpdater.updateUIControls(parent, true);
 
 	}
 
