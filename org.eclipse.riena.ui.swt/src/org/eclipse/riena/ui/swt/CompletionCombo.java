@@ -264,6 +264,9 @@ public abstract class CompletionCombo extends Composite {
 							if (isDisposed()) {
 								return;
 							}
+							if (event.type == SWT.Deactivate) {
+								closeDropDownAfterDeactivatingShell();
+							}
 							handleFocus(SWT.FocusOut);
 						}
 					});
@@ -1544,30 +1547,8 @@ public abstract class CompletionCombo extends Composite {
 			dropDown(false);
 			break;
 		case SWT.Deactivate:
-			// 335129: the workaround below is causing the pop-up to
-			// appear and dissappear. I'm commenting it to fix this issue.
-			// Also the original comment referects to GTK but if-clause checks
-			// for "carbon" (Mac), so the whole thing seems dubious to me. [EV]
-			/*
-			 * Bug in GTK. When the arrow button is pressed the popup control
-			 * receives a deactivate event and then the arrow button receives a
-			 * selection event. If we hide the popup in the deactivate event,
-			 * the selection event will show it again. To prevent the popup from
-			 * showing again, we will let the selection event of the arrow
-			 * button hide the popup. In Windows, hiding the popup during the
-			 * deactivate causes the deactivate to be called twice and the
-			 * selection event to be disappear.
-			 */
-			//			if (!"carbon".equals(SWT.getPlatform())) { //$NON-NLS-1$
-			//				final Point point = arrow.toControl(getDisplay().getCursorLocation());
-			//				final Point size = arrow.getSize();
-			//				final Rectangle rect = new Rectangle(0, 0, size.x, size.y);
-			//				if (!rect.contains(point)) {
-			//					dropDown(false);
-			//				}
-			//			} else {
-			//				dropDown(false);
-			//			}
+			// 337929: close drop down on Alt + TAB
+			dropDown(false);
 			break;
 		default:
 			break;
@@ -2384,6 +2365,21 @@ public abstract class CompletionCombo extends Composite {
 		if (label != null) {
 			label.setImage(null);
 		}
+	}
+
+	/**
+	 * 337929: close drop down on Alt + TAB
+	 */
+	private void closeDropDownAfterDeactivatingShell() {
+		final Display display = getDisplay();
+		// has to be async, to allow the shell switch to complete
+		display.asyncExec(new Runnable() {
+			public void run() {
+				if (display.getActiveShell() == null) {
+					dropDown(false);
+				}
+			}
+		});
 	}
 
 	private void defaultTextSelection() {
