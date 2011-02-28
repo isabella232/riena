@@ -718,7 +718,6 @@ public abstract class CompletionCombo extends Composite {
 	public void clearSelection() {
 		checkWidget();
 		text.clearSelection();
-		deselectAll(list);
 	}
 
 	void comboEvent(final Event event) {
@@ -1484,10 +1483,11 @@ public abstract class CompletionCombo extends Composite {
 			}
 			if ((event.character == SWT.DEL || event.character == SWT.BS)
 					&& autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH) {
-				text.setText(""); //$NON-NLS-1$
-				clearSelection();
 				clearImage();
+				text.setText(""); //$NON-NLS-1$
+				deselectAll(list);
 				dropDown(false);
+				sendSelectionEvent();
 			}
 			if (event.character == SWT.CR) {
 				// Enter causes default selection
@@ -1681,9 +1681,9 @@ public abstract class CompletionCombo extends Composite {
 	public void select(final int index) {
 		checkWidget();
 		if (index == -1) {
-			deselectAll(list);
 			clearImage();
 			text.setText(""); //$NON-NLS-1$
+			deselectAll(list);
 			return;
 		}
 		if (0 <= index && index < getItemCount(list)) {
@@ -2195,7 +2195,6 @@ public abstract class CompletionCombo extends Composite {
 			notifyListeners(SWT.MenuDetect, e);
 			break;
 		case SWT.Modify:
-			deselectAll(list);
 			e = new Event();
 			e.time = event.time;
 			notifyListeners(SWT.Modify, e);
@@ -2433,9 +2432,14 @@ public abstract class CompletionCombo extends Composite {
 			}
 
 			final boolean matched = matchPrefixWithList(newPrefix);
+			// System.out.println("prefix: '" + newPrefix + "' matched? " + matched);
 			if (!matched) {
 				if (isAllowMissmatch()) {
 					clearImage();
+					if (getSelectionIndex() != -1) {
+						deselectAll(list);
+						sendSelectionEvent();
+					}
 					event.doit = true;
 				} else {
 					if (flashDelegate != null) {
@@ -2473,8 +2477,9 @@ public abstract class CompletionCombo extends Composite {
 				setImage(index);
 			}
 			text.setText(newText);
-			setSelection(list, index);
 			text.setSelection(newText.length());
+			setSelection(list, index);
+			sendSelectionEvent();
 		} else if (index == -1 && isAllowMissmatch()) {
 			clearImage();
 			text.setText(newText);
@@ -2499,9 +2504,12 @@ public abstract class CompletionCombo extends Composite {
 			// by isInputChar(x) instead.
 			event.doit = handleClipboardOperations(event);
 		} else if (event.character == SWT.DEL || event.character == SWT.BS) {
-			text.setText(""); //$NON-NLS-1$
-			clearSelection();
 			clearImage();
+			text.setText(""); //$NON-NLS-1$
+			if (getSelectionIndex() > -1) {
+				deselectAll(list);
+				sendSelectionEvent();
+			}
 		} else if (isControlChar(event)) {
 			// System.out.println("isControlChar: " + event.character);
 			event.doit = true;
@@ -2554,8 +2562,9 @@ public abstract class CompletionCombo extends Composite {
 			if (index != -1) {
 				setImage(index);
 				text.setText(newText);
-				setSelection(list, index);
 				text.setSelection(newText.length());
+				setSelection(list, index);
+				sendSelectionEvent();
 			} else if (index == -1 && isAllowMissmatch()) {
 				clearImage();
 				text.setText(newText);
@@ -2619,6 +2628,10 @@ public abstract class CompletionCombo extends Composite {
 			if (prefix.length() == 0) {
 				clearImage();
 				text.setText(""); //$NON-NLS-1$
+				if (getSelectionIndex() > -1) {
+					deselectAll(list);
+					sendSelectionEvent();
+				}
 				result = true;
 			} else {
 				for (final String item : getItems(list)) {
@@ -2642,6 +2655,13 @@ public abstract class CompletionCombo extends Composite {
 		}
 	}
 
+	private void sendSelectionEvent() {
+		final Event event = new Event();
+		event.widget = this;
+		event.type = SWT.Selection;
+		notifyListeners(event.type, event);
+	}
+
 	private void setImage(final int index) {
 		if (label != null) {
 			label.setImage(getImage(list, index));
@@ -2655,6 +2675,7 @@ public abstract class CompletionCombo extends Composite {
 		text.setText(item);
 		text.setSelection(selectionStart, selectionEnd);
 		setSelection(list, index);
+		sendSelectionEvent();
 	}
 
 }
