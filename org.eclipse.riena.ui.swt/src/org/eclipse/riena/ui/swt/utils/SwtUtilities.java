@@ -32,7 +32,6 @@ import org.eclipse.riena.ui.swt.facades.GCFacade;
 public final class SwtUtilities {
 
 	private static final String THREE_DOTS = "..."; //$NON-NLS-1$
-	private static final GCFacade GC_FACADE = GCFacade.getDefault();
 	private static final Map<GCString, Integer> TEXT_WIDTH_CACHE = LRUHashMap.createLRUHashMap(512);
 
 	/**
@@ -112,7 +111,7 @@ public final class SwtUtilities {
 		final GCString lookupKey = new GCString(gc, Character.toString(ch));
 		Integer width = TEXT_WIDTH_CACHE.get(lookupKey);
 		if (width == null) {
-			width = GC_FACADE.getAdvanceWidth(gc, ch);
+			width = GCFacade.getDefault().getAdvanceWidth(gc, ch);
 			TEXT_WIDTH_CACHE.put(lookupKey, width);
 		}
 		return width;
