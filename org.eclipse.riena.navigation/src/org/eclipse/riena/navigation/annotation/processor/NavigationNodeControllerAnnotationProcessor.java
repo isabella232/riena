@@ -99,7 +99,11 @@ public final class NavigationNodeControllerAnnotationProcessor {
 			final Method method = events.get(event);
 			if (method != null) {
 				try {
-					method.invoke(navigationNodeController, args);
+					if (method.getParameterTypes().length == 0) {
+						method.invoke(navigationNodeController);
+					} else {
+						method.invoke(navigationNodeController, args);
+					}
 				} catch (final Throwable e) {
 					throw new EventDispatchFaiure("Could not dispatch event '" + event + "' via method '" + method //$NON-NLS-1$ //$NON-NLS-2$
 							+ "' to '" + navigationNodeController + "'.", e); //$NON-NLS-1$ //$NON-NLS-2$
