@@ -29,10 +29,8 @@ import org.eclipse.ui.presentations.IStackPresentationSite;
 import org.eclipse.ui.presentations.StackDropResult;
 import org.eclipse.ui.presentations.StackPresentation;
 
-import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
@@ -231,9 +229,25 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	private ISubApplicationNode getSubApplicationNode() {
-		final String sSubAppNodeId = navigation.getPartProperty(PROPERTY_SUBAPPLICATION_NODE);
-		final String[] tmp = sSubAppNodeId.split("-"); //$NON-NLS-1$
-		return (ISubApplicationNode) ApplicationNodeManager.getApplicationNode().findNode(new NavigationNodeId(tmp[0]));
+		return (ISubApplicationNode) findDataObject(navigation.getControl(), PROPERTY_SUBAPPLICATION_NODE);
+	}
+
+	private Object findDataObject(final Control control, final String dataKey) {
+		Object data = control.getData(dataKey);
+		if (data != null) {
+			return data;
+		}
+
+		if (control instanceof Composite) {
+			final Composite composite = (Composite) control;
+
+			final Control[] children = composite.getChildren();
+			final int childCount = children.length;
+			for (int i = 0; i < childCount && data == null; i++) {
+				data = findDataObject(children[i], dataKey);
+			}
+		}
+		return data;
 	}
 
 	@Override

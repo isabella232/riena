@@ -101,8 +101,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		// build the view hierarchy
 		buildNavigationViewHierarchy();
 		initModelObserver();
-		setPartProperty(TitlelessStackPresentation.PROPERTY_SUBAPPLICATION_NODE, getSubApplicationNode().getNodeId()
-				.getTypeId() + "-" + getSubApplicationNode().getNodeId().getInstanceId()); //$NON-NLS-1$
+		parent.setData(TitlelessStackPresentation.PROPERTY_SUBAPPLICATION_NODE, getSubApplicationNode());
 	}
 
 	private void initLayoutParts() {
