@@ -60,4 +60,13 @@ public interface INavigationNodeController extends ITypecastingAdaptable {
 	 */
 	void navigationArgumentChanged(NavigationArgument argument);
 
+	/**
+	 * Get the corresponding navigation node.
+	 * 
+	 * @return the navigation node
+	 * 
+	 * @since 3.0
+	 */
+	INavigationNode<?> getNavigationNode();
+
 }
