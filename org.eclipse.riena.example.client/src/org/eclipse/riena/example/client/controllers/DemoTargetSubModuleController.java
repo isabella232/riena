@@ -13,7 +13,8 @@ package org.eclipse.riena.example.client.controllers;
 import org.eclipse.riena.navigation.IJumpTargetListener;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
+import org.eclipse.riena.navigation.annotation.OnNavigationNodeEvent;
+import org.eclipse.riena.navigation.annotation.OnNavigationNodeEvent.Event;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
@@ -31,14 +32,11 @@ public class DemoTargetSubModuleController extends SubModuleController {
 	public void configureRidgets() {
 		super.configureRidgets();
 		observerJumpBackActionRidget();
-		getNavigationNode().addSimpleListener(new SimpleNavigationNodeAdapter() {
+	}
 
-			@Override
-			public void activated(final INavigationNode<?> source) {
-				synchJumpActionState();
-			}
-
-		});
+	@OnNavigationNodeEvent(event = Event.ACTIVATED)
+	public void activated(final ISubModuleNode source) {
+		synchJumpActionState();
 	}
 
 	private void synchJumpActionState() {
