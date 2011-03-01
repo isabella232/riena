@@ -27,7 +27,7 @@ import org.eclipse.riena.ui.ridgets.annotation.OnPropertyChange;
 public class PropertyChangeAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
-			final Method method) {
+			final Object annotatedObject, final Method method) {
 
 		if (annotation instanceof OnPropertyChange) {
 			final OnPropertyChange propertyChangeAnnotation = ((OnPropertyChange) annotation);
@@ -36,7 +36,7 @@ public class PropertyChangeAnnotationHandler extends AbstractRidgetContainerAnno
 					: propertyChangeAnnotation.propertyName();
 			final String eventPropertyName = method.getParameterTypes().length == 0 ? null : ""; //$NON-NLS-1$
 			ridget.addPropertyChangeListener(propertyName, EventHandler.create(PropertyChangeListener.class,
-					ridgetContainer, method.getName(), eventPropertyName, null));
+					annotatedObject, method.getName(), eventPropertyName, null));
 		}
 	}
 }

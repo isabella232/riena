@@ -29,7 +29,7 @@ import org.eclipse.riena.ui.ridgets.annotation.OnDoubleClick;
 public class DoubleClickAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
-			final Method method) {
+			final Object annotatedObject, final Method method) {
 
 		if (annotation instanceof OnDoubleClick) {
 			final IRidget ridget = getRidget(annotation, method, ridgetContainer,
@@ -37,10 +37,10 @@ public class DoubleClickAnnotationHandler extends AbstractRidgetContainerAnnotat
 			final String eventPropertyName = method.getParameterTypes().length == 0 ? null : ""; //$NON-NLS-1$
 			if (ridget instanceof ITableRidget) {
 				((ITableRidget) ridget).addDoubleClickListener(EventHandler.create(IActionListener.class,
-						ridgetContainer, method.getName(), eventPropertyName, null));
+						annotatedObject, method.getName(), eventPropertyName, null));
 			} else if (ridget instanceof ITreeRidget) {
 				((ITreeRidget) ridget).addDoubleClickListener(EventHandler.create(IActionListener.class,
-						ridgetContainer, method.getName(), eventPropertyName, null));
+						annotatedObject, method.getName(), eventPropertyName, null));
 			} else {
 				errorUnsupportedRidgetType(annotation, ridget);
 			}

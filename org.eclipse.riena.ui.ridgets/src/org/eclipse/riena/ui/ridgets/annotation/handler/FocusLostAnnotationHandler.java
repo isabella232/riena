@@ -27,13 +27,12 @@ import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 public class FocusLostAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
-			final Method method) {
+			final Object annotatedObject, final Method method) {
 
 		if (annotation instanceof OnFocusLost) {
-			final IRidget ridget = getRidget(annotation, method, ridgetContainer,
-					((OnFocusLost) annotation).ridgetId());
+			final IRidget ridget = getRidget(annotation, method, ridgetContainer, ((OnFocusLost) annotation).ridgetId());
 			final String eventPropertyName = method.getParameterTypes().length == 0 ? null : ""; //$NON-NLS-1$
-			ridget.addFocusListener(EventHandler.create(IFocusListener.class, ridgetContainer, method.getName(),
+			ridget.addFocusListener(EventHandler.create(IFocusListener.class, annotatedObject, method.getName(),
 					eventPropertyName, "focusLost")); //$NON-NLS-1$
 		}
 	}

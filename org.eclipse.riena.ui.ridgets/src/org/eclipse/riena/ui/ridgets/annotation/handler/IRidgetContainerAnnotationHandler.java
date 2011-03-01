@@ -34,10 +34,13 @@ public interface IRidgetContainerAnnotationHandler {
 	 * @param annotation
 	 *            the annotation to be handled
 	 * @param ridgetContainer
-	 *            the ridget container whose annotation method should be handled
-	 *            by the receiver
+	 *            the ridget container whose ridgets fire the events
+	 * @param traget
+	 *            the object whose annotation method should be handled by the
+	 *            receiver
 	 * @param method
 	 *            the annotated method
 	 */
-	void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer, final Method method);
+	void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer, final Object target,
+			final Method method);
 }

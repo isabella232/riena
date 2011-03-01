@@ -40,6 +40,7 @@ import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
 import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
@@ -334,6 +335,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		Assert.isLegal(delegate != null, "delegate cannot be null"); //$NON-NLS-1$
 		this.delegate = delegate;
 		delegate.configureRidgets(detailRidgets);
+		RidgetContainerAnnotationProcessor.getInstance().processAnnotations(detailRidgets, delegate);
 	}
 
 	public void setDirectWriting(final boolean directWriting) {
@@ -1001,7 +1003,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 					|| editable == null
 					// ignore these events:
 					|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER
-							.equals(propertyName)) || IRidget.PROPERTY_ENABLED.equals(propertyName)
+							.equals(propertyName))
+					|| IRidget.PROPERTY_ENABLED.equals(propertyName)
 					|| "textInternal".equals(propertyName) //$NON-NLS-1$
 					|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)
 					|| IMarkableRidget.PROPERTY_MARKER_HIDING.equals(propertyName)) {

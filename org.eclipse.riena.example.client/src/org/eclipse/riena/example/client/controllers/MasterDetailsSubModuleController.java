@@ -28,6 +28,7 @@ import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.annotation.OnFocusLost;
 import org.eclipse.riena.ui.ridgets.validation.NotEmpty;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
@@ -73,6 +74,11 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 						Person.PROPERTY_PETS);
 				pets.updateFromModel();
 			}
+		}
+
+		@OnFocusLost(ridgetId = "first")
+		public void dumpFocusLost() {
+			System.out.println("Text field \"first\" has not longer the focus!");
 		}
 
 		public Person createWorkingCopy() {
@@ -135,4 +141,5 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 			}
 		});
 	}
+
 }

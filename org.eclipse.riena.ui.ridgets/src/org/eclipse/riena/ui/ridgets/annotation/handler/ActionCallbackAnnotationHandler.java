@@ -29,17 +29,17 @@ import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
 public class ActionCallbackAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
-			final Method method) {
+			final Object annotatedObject, final Method method) {
 
 		if (annotation instanceof OnActionCallback) {
 			final IRidget ridget = getRidget(annotation, method, ridgetContainer,
 					((OnActionCallback) annotation).ridgetId());
 			final String eventPropertyName = method.getParameterTypes().length == 0 ? null : ""; //$NON-NLS-1$
 			if (ridget instanceof IActionRidget) {
-				((IActionRidget) ridget).addListener(EventHandler.create(IActionListener.class, ridgetContainer,
+				((IActionRidget) ridget).addListener(EventHandler.create(IActionListener.class, annotatedObject,
 						method.getName(), eventPropertyName, null));
 			} else if (ridget instanceof ITraverseRidget) {
-				((ITraverseRidget) ridget).addListener(EventHandler.create(IActionListener.class, ridgetContainer,
+				((ITraverseRidget) ridget).addListener(EventHandler.create(IActionListener.class, annotatedObject,
 						method.getName(), eventPropertyName, null));
 			} else {
 				errorUnsupportedRidgetType(annotation, ridget);

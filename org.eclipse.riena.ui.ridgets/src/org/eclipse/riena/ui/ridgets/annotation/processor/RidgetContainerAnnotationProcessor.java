@@ -59,11 +59,23 @@ public final class RidgetContainerAnnotationProcessor {
 	 * @param ridgetContainer
 	 */
 	public void processAnnotations(final IRidgetContainer ridgetContainer) {
-		for (final Method method : ridgetContainer.getClass().getDeclaredMethods()) {
+		processAnnotations(ridgetContainer, ridgetContainer);
+	}
+
+	/**
+	 * Process the annotations.
+	 * 
+	 * @param ridgetContainer
+	 *            the ridget container whose ridgets fire the events
+	 * @param target
+	 *            the object whose annotation method should be handled
+	 */
+	public void processAnnotations(final IRidgetContainer ridgetContainer, final Object target) {
+		for (final Method method : target.getClass().getDeclaredMethods()) {
 			for (final Annotation annotation : method.getAnnotations()) {
 				final IRidgetContainerAnnotationHandler handler = handlerMap.get(annotation.annotationType());
 				if (handler != null) {
-					handler.handleAnnotation(annotation, ridgetContainer, method);
+					handler.handleAnnotation(annotation, ridgetContainer, target, method);
 				}
 			}
 		}
