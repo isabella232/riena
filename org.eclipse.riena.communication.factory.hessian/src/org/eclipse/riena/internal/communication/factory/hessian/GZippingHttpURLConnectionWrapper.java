@@ -31,6 +31,7 @@ import org.eclipse.riena.communication.core.zipsupport.ReusableBufferedInputStre
 public class GZippingHttpURLConnectionWrapper extends HttpURLConnection {
 
 	private final HttpURLConnection connection;
+	private GZIPOutputStream myGZIPOutputStream;
 
 	public GZippingHttpURLConnectionWrapper(final HttpURLConnection connection) {
 		super(null);
@@ -200,7 +201,8 @@ public class GZippingHttpURLConnectionWrapper extends HttpURLConnection {
 	}
 
 	@Override
-	public Object getContent(@SuppressWarnings("rawtypes") final Class[] classes) throws IOException {
+	public Object getContent(@SuppressWarnings("rawtypes")
+	final Class[] classes) throws IOException {
 		return connection.getContent(classes);
 	}
 
@@ -220,7 +222,12 @@ public class GZippingHttpURLConnectionWrapper extends HttpURLConnection {
 
 	@Override
 	public OutputStream getOutputStream() throws IOException {
-		return new GZIPOutputStream(connection.getOutputStream());
+		this.myGZIPOutputStream = new GZIPOutputStream(connection.getOutputStream());
+		return this.myGZIPOutputStream;
+	}
+
+	public GZIPOutputStream getUsedGZIPOutputStream() {
+		return myGZIPOutputStream;
 	}
 
 	@Override

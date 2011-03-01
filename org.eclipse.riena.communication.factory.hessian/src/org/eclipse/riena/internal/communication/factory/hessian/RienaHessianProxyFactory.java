@@ -89,7 +89,7 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 
 	@Override
 	protected URLConnection openConnection(final URL url) throws IOException {
-		final URLConnection connection;
+		URLConnection connection;
 		final ICallMessageContext mc = mca.getMessageContext();
 		String methodName = mc.getMethodName();
 		final String requestId = mc.getRequestId();
@@ -115,10 +115,10 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 			connection.addRequestProperty("Content-Encoding", "x-hessian-gzip"); //$NON-NLS-1$//$NON-NLS-2$
 		}
 
-		CONNECTIONS.set((HttpURLConnection) connection);
 		if (isZipClientRequest()) {
-			return new GZippingHttpURLConnectionWrapper((HttpURLConnection) connection);
+			connection = new GZippingHttpURLConnectionWrapper((HttpURLConnection) connection);
 		}
+		CONNECTIONS.set((HttpURLConnection) connection);
 		return connection;
 	}
 
@@ -189,8 +189,11 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 				public void completeCall() throws IOException {
 					super.completeCall();
 					this.flush();
-					if (originalOutputStream instanceof GZIPOutputStream) {
-						((GZIPOutputStream) originalOutputStream).finish();
+					final HttpURLConnection urlConnection = CONNECTIONS.get();
+					if (urlConnection instanceof GZippingHttpURLConnectionWrapper) {
+						final GZIPOutputStream gzipOut = ((GZippingHttpURLConnectionWrapper) urlConnection)
+								.getUsedGZIPOutputStream();
+						gzipOut.finish();
 					}
 					outputStreamData.flush();
 				}
