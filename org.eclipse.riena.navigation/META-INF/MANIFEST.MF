@@ -11,6 +11,8 @@ Require-Bundle: org.eclipse.riena.core,
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.internal.navigation;x-internal:=true,
  org.eclipse.riena.navigation,
+ org.eclipse.riena.navigation.annotation,
+ org.eclipse.riena.navigation.annotation.processor,
  org.eclipse.riena.navigation.common,
  org.eclipse.riena.navigation.extension,
  org.eclipse.riena.navigation.listener,
