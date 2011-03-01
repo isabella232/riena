@@ -28,6 +28,7 @@ import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
 import org.eclipse.riena.navigation.NavigationArgument;
+import org.eclipse.riena.navigation.annotation.processor.NavigationNodeControllerAnnotationProcessor;
 import org.eclipse.riena.navigation.common.TypecastingObject;
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
 import org.eclipse.riena.ui.core.context.IContext;
@@ -126,6 +127,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	public void afterBind() {
+		NavigationNodeControllerAnnotationProcessor.getInstance().processAnnotations(this);
 		updateNavigationNodeMarkers();
 	}
 
