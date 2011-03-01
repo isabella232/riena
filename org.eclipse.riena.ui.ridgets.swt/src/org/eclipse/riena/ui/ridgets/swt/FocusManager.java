@@ -191,7 +191,7 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 				return markableRidget.isFocusable() && !markableRidget.isOutputOnly();
 			}
 			// skip IRidgets that are not focusable
-			if (controlsRidget instanceof AbstractSWTWidgetRidget) {
+			if (controlsRidget instanceof AbstractSWTRidget) {
 				return isFocusable((AbstractSWTRidget) controlsRidget);
 			}
 		}
