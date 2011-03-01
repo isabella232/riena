@@ -52,28 +52,23 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public class LnFUpdater {
 
-	private final static Map<String, Object> RESOURCE_CACHE = LRUHashMap.createSynchronizedLRUHashMap(200);
+	private static final Map<String, Object> RESOURCE_CACHE = LRUHashMap.createSynchronizedLRUHashMap(200);
 	private static final Object NULL_RESOURCE = new Object();
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
-
+	private static final SingletonProvider<LnFUpdater> LNFU = new SessionSingletonProvider<LnFUpdater>(LnFUpdater.class);
+	private static final Logger LOGGER = Log4r.getLogger(LnFUpdater.class);
 	/**
 	 * System property defining if properties of views are updated.
 	 */
 	private static final String PROPERTY_RIENA_LNF_UPDATE_VIEW = "riena.lnf.update.view"; //$NON-NLS-1$
 
+	private final Composite shellComposite = new Composite(new Shell(), SWT.NONE);
+	private final Map<Class<? extends Control>, String> simpleNames = new HashMap<Class<? extends Control>, String>();
 	private final Map<Class<? extends Control>, List<PropertyDescriptor>> controlProperties = new HashMap<Class<? extends Control>, List<PropertyDescriptor>>();
 	private final Map<Class<? extends Control>, Map<String, Object>> defaultPropertyValues = new HashMap<Class<? extends Control>, Map<String, Object>>();
-
 	private final List<PropertyDescriptor> emptyDescriptors = Collections.emptyList();
 
-	private final Composite shellComposite = new Composite(new Shell(), SWT.NONE);
-
 	private boolean dirtyLayout;
-	private final Map<Class<? extends Control>, String> simpleNames = new HashMap<Class<? extends Control>, String>();
-
-	private static final SingletonProvider<LnFUpdater> LNFU = new SessionSingletonProvider<LnFUpdater>(LnFUpdater.class);
-
-	private static final Logger LOGGER = Log4r.getLogger(LnFUpdater.class);
 
 	/**
 	 * @return the {@link LnFUpdater} instance bound to the current session
