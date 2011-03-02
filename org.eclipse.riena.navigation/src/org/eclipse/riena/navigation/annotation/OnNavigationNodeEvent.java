@@ -26,7 +26,9 @@ import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
  * </pre>
  * 
  * The {@code event} parameter denotes the corresponding
- * {@link ISimpleNavigationNodeListener} event method.
+ * {@link ISimpleNavigationNodeListener} event method.<br>
+ * The annotated method may either have all parameters of the corresponding
+ * listener event method or none.
  * 
  * @since 3.0
  */
