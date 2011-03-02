@@ -14,8 +14,8 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 
 import org.eclipse.riena.demo.common.Contract;
 import org.eclipse.riena.demo.common.Customer;
-import org.eclipse.riena.navigation.ISubModuleNode;
-import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
+import org.eclipse.riena.navigation.annotation.OnNavigationNodeEvent;
+import org.eclipse.riena.navigation.annotation.OnNavigationNodeEvent.Event;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
@@ -46,15 +46,11 @@ public class CustomerContractController extends SubModuleController {
 		master.bindToModel(new WritableList(customer.getContracts(), Contract.class), Contract.class, properties,
 				headers);
 		// master.updateFromModel();
+	}
 
+	@OnNavigationNodeEvent(event = Event.ACTIVATED)
+	public void activated() {
 		updateAllRidgetsFromModel();
-
-		getNavigationNode().addListener(new SubModuleNodeListener() {
-			@Override
-			public void activated(final ISubModuleNode source) {
-				updateAllRidgetsFromModel();
-			}
-		});
 	}
 
 	public static final class ContractDelegate extends AbstractMasterDetailsDelegate {

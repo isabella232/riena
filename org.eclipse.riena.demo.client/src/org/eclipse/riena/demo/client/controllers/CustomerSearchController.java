@@ -18,11 +18,11 @@ import org.eclipse.riena.demo.common.ICustomerService;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.ui.ridgets.IActionListener;
-import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
+import org.eclipse.riena.ui.ridgets.annotation.OnDoubleClick;
 import org.eclipse.riena.ui.ridgets.swt.DateColumnFormatter;
 
 /**
@@ -65,42 +65,29 @@ public class CustomerSearchController extends SubModuleController {
 						return ((Customer) element).getBirthDate();
 					}
 				});
-		kunden.addDoubleClickListener(new IActionListener() {
-
-			public void callback() {
-				openSelectedCustomer(kunden);
-
-			}
-		});
-
-		((IActionRidget) getRidget("search")).addListener(new IActionListener() { //$NON-NLS-1$
-					public void callback() {
-						result.setCustomers(null);
-						getRidget("result").updateFromModel(); //$NON-NLS-1$
-
-						result.setCustomers(customerDemoService.search(customerSearchBean.getLastName()));
-
-						getRidget("result").updateFromModel(); //$NON-NLS-1$
-						getRidget("hits").updateFromModel(); //$NON-NLS-1$
-					}
-				});
-
-		((IActionRidget) getRidget("new")).addListener(new IActionListener() { //$NON-NLS-1$
-					public void callback() {
-						getNavigationNode().navigate(new NavigationNodeId("riena.demo.client.CustomerRecord")); //$NON-NLS-1$
-
-					}
-				});
-
-		((IActionRidget) getRidget("open")).addListener(new IActionListener() { //$NON-NLS-1$
-					public void callback() {
-						openSelectedCustomer(kunden);
-					}
-
-				});
 	}
 
-	protected void openSelectedCustomer(final ITableRidget kunden) {
+	@OnActionCallback(ridgetId = "search")
+	public void search() {
+		result.setCustomers(null);
+		getRidget("result").updateFromModel(); //$NON-NLS-1$
+
+		result.setCustomers(customerDemoService.search(customerSearchBean.getLastName()));
+
+		getRidget("result").updateFromModel(); //$NON-NLS-1$
+		getRidget("hits").updateFromModel(); //$NON-NLS-1$
+		updateAllRidgetsFromModel();
+	}
+
+	@OnActionCallback(ridgetId = "new")
+	public void newCustomer() {
+		getNavigationNode().navigate(new NavigationNodeId("riena.demo.client.CustomerRecord")); //$NON-NLS-1$
+	}
+
+	@OnActionCallback(ridgetId = "open")
+	@OnDoubleClick(ridgetId = "result")
+	public void openSelectedCustomer() {
+		final ITableRidget kunden = getRidget("result"); //$NON-NLS-1$
 		final int selectionIndex = kunden.getSelectionIndex();
 		if (selectionIndex >= 0) {
 			getNavigationNode()

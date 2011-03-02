@@ -13,19 +13,18 @@ package org.eclipse.riena.demo.client.controllers;
 import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.demo.common.Customer;
 import org.eclipse.riena.navigation.IApplicationNode;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
-import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
+import org.eclipse.riena.navigation.annotation.OnNavigationNodeEvent;
+import org.eclipse.riena.navigation.annotation.OnNavigationNodeEvent.Event;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterProvider;
-import org.eclipse.riena.ui.ridgets.IActionListener;
-import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
+import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
 
 /**
  *
@@ -73,46 +72,37 @@ public class CustomerOverviewController extends SubModuleController {
 		((IDecimalTextRidget) getRidget("salary")).setPrecision(2); //$NON-NLS-1$
 
 		updateAllRidgetsFromModel();
+	}
 
-		((IActionRidget) getRidget("openEmailsAction")).addListener(new IActionListener() { //$NON-NLS-1$
-					public void callback() {
-						final String emailAddress = customer.getEmailAddress();
-						getNavigationNode().jump(
-								new NavigationNodeId("riena.demo.client.customermailfolders.mails", emailAddress), //$NON-NLS-1$
-								new NavigationArgument(customer));
+	@OnActionCallback(ridgetId = "openEmailsAction")
+	public void openEmails() {
+		final String emailAddress = customer.getEmailAddress();
+		getNavigationNode().jump(new NavigationNodeId("riena.demo.client.customermailfolders.mails", emailAddress), //$NON-NLS-1$
+				new NavigationArgument(customer));
+	}
 
-					}
-				});
+	@OnActionCallback(ridgetId = "assistent")
+	public void assistentAction() {
+		final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+		if (((IToggleButtonRidget) getRidget("assistent")).isSelected()) { //$NON-NLS-1$
+			applNode.addFilter(assistent);
+		} else {
+			applNode.removeFilter(assistent);
+		}
+	}
 
-		((IActionRidget) getRidget("assistent")).addListener(new IActionListener() { //$NON-NLS-1$
+	@OnActionCallback(ridgetId = "mandatory")
+	public void mandatoryAction() {
+		final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
+		if (((IToggleButtonRidget) getRidget("mandatory")).isSelected()) { //$NON-NLS-1$
+			applNode.addFilter(mandatory);
+		} else {
+			applNode.removeFilter(mandatory);
+		}
+	}
 
-					public void callback() {
-						final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-						if (((IToggleButtonRidget) getRidget("assistent")).isSelected()) { //$NON-NLS-1$
-							applNode.addFilter(assistent);
-						} else {
-							applNode.removeFilter(assistent);
-						}
-					}
-				});
-
-		((IActionRidget) getRidget("mandatory")).addListener(new IActionListener() { //$NON-NLS-1$
-
-					public void callback() {
-						final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
-						if (((IToggleButtonRidget) getRidget("mandatory")).isSelected()) { //$NON-NLS-1$
-							applNode.addFilter(mandatory);
-						} else {
-							applNode.removeFilter(mandatory);
-						}
-					}
-				});
-
-		getNavigationNode().addListener(new SubModuleNodeListener() {
-			@Override
-			public void activated(final ISubModuleNode source) {
-				updateAllRidgetsFromModel();
-			}
-		});
+	@OnNavigationNodeEvent(event = Event.ACTIVATED)
+	public void activated() {
+		updateAllRidgetsFromModel();
 	}
 }
