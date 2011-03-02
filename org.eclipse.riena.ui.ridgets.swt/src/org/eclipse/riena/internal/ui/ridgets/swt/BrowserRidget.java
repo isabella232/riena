@@ -152,6 +152,17 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		}
 	}
 
+	/**
+	 * This method is not API. Do not use in client code.
+	 * <p>
+	 * Do not remove - used by the data binding.
+	 * 
+	 * @noreference This method is not intended to be referenced by clients.
+	 */
+	public final void setUrlInternal(final String url) {
+		setUrl(url);
+	}
+
 	// helping methods
 	//////////////////
 

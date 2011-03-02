@@ -33,6 +33,8 @@ public interface IBrowserRidget extends IValueRidget {
 	 * Add a {@link ILocationListener} that is notified of URL changes of this
 	 * ridget.
 	 * <p>
+	 * Adding the same listener instance several times has no effect.
+	 * <p>
 	 * Implementation note: you should be aware that these listeners are not
 	 * notified of URL changes in these cases:
 	 * <ul>
