@@ -24,17 +24,24 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.beans.common.AbstractBean;
 import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
-import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 
 /**
  * The controller for the hello dialog of the dialog example.
  */
 public class HelloDialogController extends AbstractWindowController {
+
+	private final String[] carPlates = { "JM5B0ND", "1 SPY", "MNY PNY", "BN D07", "Q RULE2", "MI64EVR" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	private ISingleChoiceRidget compositeCarModel;
+	private ISingleChoiceRidget compositeCarWarranty;
+	private IMultipleChoiceRidget compositeCarPlates;
+	private IMultipleChoiceRidget compositeCarExtras;
+	private CarConfig carConfig;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -44,28 +51,28 @@ public class HelloDialogController extends AbstractWindowController {
 		getWindowRidget().setTitle("James' Car Configurator"); //$NON-NLS-1$
 		getWindowRidget().setIcon(ExampleIcons.ICON_SAMPLE);
 
-		final CarConfig carConfig = new CarConfig();
+		carConfig = new CarConfig();
 
-		final ISingleChoiceRidget compositeCarModel = getRidget("compositeCarModel"); //$NON-NLS-1$
+		compositeCarModel = getRidget("compositeCarModel"); //$NON-NLS-1$
 		compositeCarModel.bindToModel(toList(CarModels.values()),
 				BeansObservables.observeValue(carConfig, CarConfig.PROP_MODEL));
 		compositeCarModel.addMarker(new MandatoryMarker());
 		compositeCarModel.updateFromModel();
 
-		final IMultipleChoiceRidget compositeCarExtras = getRidget("compositeCarExtras"); //$NON-NLS-1$
+		compositeCarExtras = getRidget("compositeCarExtras"); //$NON-NLS-1$
 		final String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				"Park Distance Control System", }; //$NON-NLS-1$
 		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), carConfig,
 				CarConfig.PROP_OPTIONS);
 		compositeCarExtras.updateFromModel();
 
-		final ISingleChoiceRidget compositeCarWarranty = getRidget("compositeCarWarranty"); //$NON-NLS-1$
+		compositeCarWarranty = getRidget("compositeCarWarranty"); //$NON-NLS-1$
 		compositeCarWarranty.bindToModel(toList(CarWarranties.values()),
 				BeansObservables.observeValue(carConfig, CarConfig.PROP_WARRANTY));
 		compositeCarWarranty.addMarker(new MandatoryMarker());
 		compositeCarWarranty.updateFromModel();
 
-		final IMultipleChoiceRidget compositeCarPlates = getRidget("compositeCarPlates"); //$NON-NLS-1$
+		compositeCarPlates = getRidget("compositeCarPlates"); //$NON-NLS-1$
 		compositeCarPlates
 				.bindToModel(toList(carPlates), PojoObservables.observeList(carConfig, CarConfig.PROP_PLATES));
 		compositeCarPlates.addMarker(new MandatoryMarker());
@@ -79,26 +86,26 @@ public class HelloDialogController extends AbstractWindowController {
 
 		final IActionRidget buttonPreset = getRidget("buttonPreset"); //$NON-NLS-1$
 		buttonPreset.setText("&Quick Config"); //$NON-NLS-1$
-		buttonPreset.addListener(new IActionListener() {
-			public void callback() {
-				compositeCarModel.setSelection(CarModels.BMW);
-				compositeCarExtras.setSelection(Arrays.asList(new CarOptions[] { CarOptions.PDCS }));
-				compositeCarWarranty.setSelection(CarWarranties.EXTENDED);
-				compositeCarPlates.setSelection(Arrays.asList(new String[] { carPlates[0] }));
-			}
-		});
-		final IActionRidget buttonReset = getRidget("buttonReset"); //$NON-NLS-1$
 
+		final IActionRidget buttonReset = getRidget("buttonReset"); //$NON-NLS-1$
 		buttonReset.setText("&Reset"); //$NON-NLS-1$
-		buttonReset.addListener(new IActionListener() {
-			public void callback() {
-				carConfig.reset();
-				compositeCarModel.updateFromModel();
-				compositeCarExtras.updateFromModel();
-				compositeCarWarranty.updateFromModel();
-				compositeCarPlates.updateFromModel();
-			}
-		});
+	}
+
+	@OnActionCallback(ridgetId = "buttonPreset")
+	public void onPreset() {
+		compositeCarModel.setSelection(CarModels.BMW);
+		compositeCarExtras.setSelection(Arrays.asList(new CarOptions[] { CarOptions.PDCS }));
+		compositeCarWarranty.setSelection(CarWarranties.EXTENDED);
+		compositeCarPlates.setSelection(Arrays.asList(new String[] { carPlates[0] }));
+	}
+
+	@OnActionCallback(ridgetId = "buttonReset")
+	public void onReset() {
+		carConfig.reset();
+		compositeCarModel.updateFromModel();
+		compositeCarExtras.updateFromModel();
+		compositeCarWarranty.updateFromModel();
+		compositeCarPlates.updateFromModel();
 	}
 
 	// helping methods
@@ -218,7 +225,5 @@ public class HelloDialogController extends AbstractWindowController {
 			return String.valueOf(result);
 		}
 	}
-
-	private final String[] carPlates = { "JM5B0ND", "1 SPY", "MNY PNY", "BN D07", "Q RULE2", "MI64EVR" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
 }
