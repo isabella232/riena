@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright © 2009 Florian Pirchner.
+ * Copyright © 2009, 2011 Florian Pirchner and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,9 +8,11 @@
  * Contributors:
  * Florian Pirchner – initial API and implementation (based on other ridgets of 
  *                    compeople AG)
- * compeople AG     - adjustments for Riena v1.2
+ * compeople AG     - adjustments for Riena v1.2 - 3.0
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets;
+
+import org.eclipse.riena.ui.ridgets.listener.ILocationListener;
 
 /**
  * The browser ridget displays a html page fetched from a given URL.
@@ -28,15 +30,28 @@ public interface IBrowserRidget extends IValueRidget {
 	String PROPERTY_URL = "url"; //$NON-NLS-1$
 
 	/**
-	 * Return the url of this ridget or null.
+	 * Add a {@link ILocationListener} that is notified of URL changes of this
+	 * ridget.
 	 * <p>
-	 * The default value is null.
+	 * Implementation note: you should be aware that these listeners are not
+	 * notified of URL changes in these cases:
+	 * <ul>
+	 * <li>user actions that change the current page content (scripts, dom
+	 * manipulation)</li>
+	 * <li>user actions that open a new browser in a separate window (hyperlink
+	 * with '{@code target="_blank"}')</li>
+	 * <li>per design - changing the URL via API calls, such as
+	 * {@code setUrl(...)} or {@code setText(...)}, does not notfiy listeners,
+	 * to prevent endless listener-event-listener loops</li>
+	 * <li>per design - rebinding this ridget to another browser widget does not
+	 * notify listeners and is not blockable</li>
+	 * </ul>
 	 * 
-	 * @return the url as a String. It is not guaranteed that the return value
-	 *         is a valid url. For example it may be null, empty or browser
-	 *         specific, such as 'about:blank'.
+	 * @param listener
+	 *            a non-null {@link ILocationListener}
+	 * @since 3.0
 	 */
-	String getUrl();
+	void addLocationListener(ILocationListener listener);
 
 	/**
 	 * Return the text last set into the ridget or null.
@@ -48,12 +63,32 @@ public interface IBrowserRidget extends IValueRidget {
 	String getText();
 
 	/**
+	 * Return the url of this ridget or null.
+	 * <p>
+	 * The default value is null.
+	 * 
+	 * @return the url as a String. It is not guaranteed that the return value
+	 *         is a valid url. For example it may be null, empty or browser
+	 *         specific, such as 'about:blank'.
+	 */
+	String getUrl();
+
+	/**
 	 * Returns true, if an OutputMarker was added.
 	 * <p>
 	 * If an OutputMarker is added, the browser widget will not allow leaving
 	 * the page (i.e. it is not possible to folow a link).
 	 */
 	boolean isOutputOnly();
+
+	/**
+	 * Remove a {@link ILocationListener} from this ridget.
+	 * 
+	 * @param listener
+	 *            a non-null {@link ILocationListener}
+	 * @since 3.0
+	 */
+	void removeLocationListener(ILocationListener listener);
 
 	/**
 	 * Adds and removes the default OutputMarker.

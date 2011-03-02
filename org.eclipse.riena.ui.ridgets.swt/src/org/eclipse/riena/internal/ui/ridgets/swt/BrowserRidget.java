@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright © 2009 Florian Pirchner.
+ * Copyright © 2009, 2011 Florian Pirchner and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,19 +8,22 @@
  * Contributors:
  * Florian Pirchner – initial API and implementation (based on other ridgets of
  *                    compeople AG)
- * compeople AG     - adjustments for Riena v1.2
+ * compeople AG     - adjustments for Riena v1.2 - 3.0
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationEvent;
 import org.eclipse.swt.browser.LocationListener;
 
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget;
+import org.eclipse.riena.ui.ridgets.listener.ILocationListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractValueRidget;
 import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
@@ -46,13 +49,13 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	 */
 	private static final String PROPERTY_URL_INTERNAL = "urlInternal"; //$NON-NLS-1$
 
-	private final BrowserUrlListener locationListener;
+	private final InternalLocationListener internalLocationListener;
 
 	private String url;
 	private String text;
 
 	public BrowserRidget() {
-		locationListener = new BrowserUrlListener();
+		internalLocationListener = new InternalLocationListener();
 	}
 
 	@Override
@@ -65,7 +68,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		final Browser control = getUIControl();
 		if (control != null) {
 			updateUIControl();
-			control.addLocationListener(locationListener);
+			control.addLocationListener(internalLocationListener);
 		}
 	}
 
@@ -73,7 +76,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	protected void unbindUIControl() {
 		final Browser control = getUIControl();
 		if (control != null) {
-			control.removeLocationListener(locationListener);
+			control.removeLocationListener(internalLocationListener);
 		}
 		super.unbindUIControl();
 	}
@@ -86,6 +89,10 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	@Override
 	protected IObservableValue getRidgetObservable() {
 		return BeansObservables.observeValue(this, PROPERTY_URL_INTERNAL);
+	}
+
+	public void addLocationListener(final ILocationListener listener) {
+		internalLocationListener.addLocationListener(listener);
 	}
 
 	@Override
@@ -119,6 +126,10 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		return true;
 	}
 
+	public void removeLocationListener(final ILocationListener listener) {
+		internalLocationListener.removeLocationListener(listener);
+	}
+
 	public void setText(final String text) {
 		if (!StringUtils.equals(this.text, text)) {
 			this.text = text;
@@ -141,15 +152,6 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		}
 	}
 
-	/**
-	 * This method is not API. Do not use in client code.
-	 * 
-	 * @noreference This method is not intended to be referenced by clients.
-	 */
-	public final void setUrlInternal(final String url) {
-		setUrl(url);
-	}
-
 	// helping methods
 	//////////////////
 
@@ -163,13 +165,13 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 			if (text != null) {
 				final String browserText = BrowserFacade.getDefault().getText(browser);
 				if (!text.equals(browserText)) {
-					locationListener.unblock();
+					internalLocationListener.unblock();
 					browser.setText(text);
 				}
 			} else {
 				final String notNullUrl = convertNullToEmpty(url);
 				if (!notNullUrl.equals(browser.getUrl())) {
-					locationListener.unblock();
+					internalLocationListener.unblock();
 					browser.setUrl(notNullUrl);
 				}
 			}
@@ -183,9 +185,24 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	 * Listens to location changes in the Browser widget and update's the
 	 * Ridget's URL if necessary.
 	 */
-	private final class BrowserUrlListener implements LocationListener {
+	private final class InternalLocationListener implements LocationListener {
 
+		private ListenerList<ILocationListener> listeners;
 		private boolean block;
+
+		void addLocationListener(final ILocationListener listener) {
+			Assert.isNotNull(listener);
+			if (listeners == null) {
+				listeners = new ListenerList<ILocationListener>(ILocationListener.class);
+			}
+			listeners.add(listener);
+		}
+
+		void removeLocationListener(final ILocationListener listener) {
+			if (listeners != null) {
+				listeners.remove(listener);
+			}
+		}
 
 		/**
 		 * Allow the next url-change, even if output-only marker is set.
@@ -203,13 +220,20 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		 * http://www prefix) so checking for BrowserRidget.url equality is not
 		 * an option for identifying which url to unblock.
 		 */
-		public void unblock() {
+		void unblock() {
 			block = false;
 		}
 
 		public void changing(final LocationEvent event) {
-			if (isOutputOnly() && block) {
-				event.doit = false;
+			if (block) {
+				if (isOutputOnly()) {
+					event.doit = false;
+				}
+				final org.eclipse.riena.ui.ridgets.listener.LocationEvent locEvent = new org.eclipse.riena.ui.ridgets.listener.LocationEvent(
+						event.location, event.top);
+				for (final ILocationListener listener : listeners) {
+					event.doit &= listener.locationChanging(locEvent);
+				}
 			}
 			block = true;
 		}
