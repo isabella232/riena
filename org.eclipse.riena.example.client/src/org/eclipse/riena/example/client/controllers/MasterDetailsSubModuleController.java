@@ -44,7 +44,7 @@ public class MasterDetailsSubModuleController extends SubModuleController {
 	 * Setup the ridgets for editing a person (text ridgets for name, single
 	 * choice ridget for gender, multiple choice ridgets for pets).
 	 */
-	private static final class PersonDelegate extends AbstractMasterDetailsDelegate {
+	public static final class PersonDelegate extends AbstractMasterDetailsDelegate {
 
 		private static final String[] GENDER = { Person.FEMALE, Person.MALE };
 
