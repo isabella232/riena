@@ -36,7 +36,6 @@ import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
-import org.eclipse.riena.ui.ridgets.ITreeImageProvider;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.swt.lnf.ILnfResource;
 import org.eclipse.riena.ui.swt.lnf.ImageLnfResource;
@@ -59,7 +58,6 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  * property, if not null</li>
  * <li>if image accessor properties for leaves are specified, use the image
  * returned by the property, if not null</li>
- * <li>the image returned by the {@link ITreeImageProvider}, if not null</li>
  * <li>otherwise no image is shown</li>
  * </ul>
  * <p>
