@@ -37,7 +37,46 @@ import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
 public @interface OnNavigationNodeEvent {
 
 	enum Event {
-		BEFORE_ACTIVATED, AFTER_ACTIVATED, LABEL_CHANGED, ICON_CHANGED, SELECTED_CHANGED, CHILD_ADDED, CHILD_REMOVED, PRESENTATION_CHANGED, PARENT_CHANGED, EXPANDED_CHANGED, MARKER_CHANGED, ACTIVATED, DEACTIVATED, BEFORE_DECTIVATED, AFTER_DECTIVATED, DISPOSED, BEFORE_DISPOSED, AFTER_DISPOSED, STATE_CHANGED, BLOCK, FILTER_ADDED, FILTER_REMOVED, PREPARED, NODE_ID_CHANGED
+		BEFORE_ACTIVATED, AFTER_ACTIVATED, LABEL_CHANGED, ICON_CHANGED, SELECTED_CHANGED, CHILD_ADDED, CHILD_REMOVED, PRESENTATION_CHANGED, PARENT_CHANGED, EXPANDED_CHANGED, MARKER_CHANGED, ACTIVATED, DEACTIVATED, BEFORE_DECTIVATED, AFTER_DECTIVATED, DISPOSED, BEFORE_DISPOSED, AFTER_DISPOSED, STATE_CHANGED, BLOCK, FILTER_ADDED, FILTER_REMOVED, PREPARED, NODE_ID_CHANGED;
+
+		private final String methodName;
+
+		/**
+		 * Use this constructor when the method name of the corresponding
+		 * listener event method can be simply derived from the enum.
+		 */
+		private Event() {
+			this.methodName = toCamelCase(toString());
+		}
+
+		/**
+		 * Use this for any other case as described in the default constructor.
+		 * 
+		 * @param methodName
+		 *            method name oft the corresponding listener event method
+		 */
+		private Event(final String methodName) {
+			this.methodName = methodName;
+		}
+
+		private String toCamelCase(final String string) {
+			final StringBuilder bob = new StringBuilder(string.length());
+			boolean nextUp = false;
+			for (int i = 0; i < string.length(); i++) {
+				final char c = string.charAt(i);
+				if (nextUp) {
+					bob.append(c);
+				} else if (c != '_') {
+					bob.append(Character.toLowerCase(c));
+				}
+				nextUp = c == '_';
+			}
+			return bob.toString();
+		}
+
+		public String getMethodName() {
+			return methodName;
+		}
 	};
 
 	/**
