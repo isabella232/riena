@@ -84,9 +84,6 @@ public abstract class AbstractRidgetContainerAnnotationHandler implements IRidge
 					return targetMethod.invoke(target, args);
 				}
 			}
-			if (method.getName().equals("equals")) { //$NON-NLS-1$
-				return proxy == args[0];
-			}
 
 			return null;
 		}
