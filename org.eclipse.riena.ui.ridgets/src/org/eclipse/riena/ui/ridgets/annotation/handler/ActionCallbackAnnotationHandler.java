@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.annotation.handler;
 
-import java.beans.EventHandler;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
@@ -29,22 +28,22 @@ import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
 public class ActionCallbackAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
-			final Object traget, final Method method) {
+			final Object target, final Method targetMethod) {
 
 		if (annotation instanceof OnActionCallback) {
-			final IRidget ridget = getRidget(annotation, method, ridgetContainer,
+			final IRidget ridget = getRidget(annotation, targetMethod, ridgetContainer,
 					((OnActionCallback) annotation).ridgetId());
-			final String eventPropertyName = method.getParameterTypes().length == 0 ? null : ""; //$NON-NLS-1$
+			final IActionListener actionListener = createListener(IActionListener.class, "callback", target, //$NON-NLS-1$
+					targetMethod);
 			if (ridget instanceof IActionRidget) {
-				((IActionRidget) ridget).addListener(EventHandler.create(IActionListener.class, traget,
-						method.getName(), eventPropertyName, null));
+				((IActionRidget) ridget).addListener(actionListener);
 			} else if (ridget instanceof ITraverseRidget) {
-				((ITraverseRidget) ridget).addListener(EventHandler.create(IActionListener.class, traget,
-						method.getName(), eventPropertyName, null));
+				((ITraverseRidget) ridget).addListener(actionListener);
 			} else {
 				errorUnsupportedRidgetType(annotation, ridget);
 			}
 
 		}
 	}
+
 }

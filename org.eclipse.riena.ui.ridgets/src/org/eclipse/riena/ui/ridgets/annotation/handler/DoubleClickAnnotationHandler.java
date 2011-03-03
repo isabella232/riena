@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.annotation.handler;
 
-import java.beans.EventHandler;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
@@ -29,18 +28,17 @@ import org.eclipse.riena.ui.ridgets.annotation.OnDoubleClick;
 public class DoubleClickAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
-			final Object traget, final Method method) {
+			final Object target, final Method targetMethod) {
 
 		if (annotation instanceof OnDoubleClick) {
-			final IRidget ridget = getRidget(annotation, method, ridgetContainer,
+			final IRidget ridget = getRidget(annotation, targetMethod, ridgetContainer,
 					((OnDoubleClick) annotation).ridgetId());
-			final String eventPropertyName = method.getParameterTypes().length == 0 ? null : ""; //$NON-NLS-1$
+			final IActionListener actionListener = createListener(IActionListener.class, "callback", target, //$NON-NLS-1$
+					targetMethod);
 			if (ridget instanceof ITableRidget) {
-				((ITableRidget) ridget).addDoubleClickListener(EventHandler.create(IActionListener.class, traget,
-						method.getName(), eventPropertyName, null));
+				((ITableRidget) ridget).addDoubleClickListener(actionListener);
 			} else if (ridget instanceof ITreeRidget) {
-				((ITreeRidget) ridget).addDoubleClickListener(EventHandler.create(IActionListener.class, traget,
-						method.getName(), eventPropertyName, null));
+				((ITreeRidget) ridget).addDoubleClickListener(actionListener);
 			} else {
 				errorUnsupportedRidgetType(annotation, ridget);
 			}

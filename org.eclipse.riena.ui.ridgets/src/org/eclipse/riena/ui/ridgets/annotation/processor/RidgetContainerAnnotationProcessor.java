@@ -71,11 +71,21 @@ public final class RidgetContainerAnnotationProcessor {
 	 *            the object whose annotation method should be handled
 	 */
 	public void processAnnotations(final IRidgetContainer ridgetContainer, final Object target) {
-		for (final Method method : target.getClass().getDeclaredMethods()) {
-			for (final Annotation annotation : method.getAnnotations()) {
+		processAnnotations(ridgetContainer, target, target.getClass());
+	}
+
+	private void processAnnotations(final IRidgetContainer ridgetContainer, final Object target,
+			final Class<?> targetClass) {
+		if (!IRidgetContainer.class.isAssignableFrom(targetClass)) {
+			return;
+		}
+		processAnnotations(ridgetContainer, target, targetClass.getSuperclass());
+
+		for (final Method targetMethod : targetClass.getDeclaredMethods()) {
+			for (final Annotation annotation : targetMethod.getAnnotations()) {
 				final IRidgetContainerAnnotationHandler handler = handlerMap.get(annotation.annotationType());
 				if (handler != null) {
-					handler.handleAnnotation(annotation, ridgetContainer, target, method);
+					handler.handleAnnotation(annotation, ridgetContainer, target, targetMethod);
 				}
 			}
 		}

@@ -11,7 +11,9 @@
 package org.eclipse.riena.ui.ridgets.annotation.handler;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
@@ -37,4 +39,56 @@ public abstract class AbstractRidgetContainerAnnotationHandler implements IRidge
 				+ ridget.getClass().getName() + "' with id '" + ridget.getID() + "'."); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	@SuppressWarnings("unchecked")
+	protected <L> L createListener(final Class<L> listenerClazz, final String listenerMethodName, final Object target,
+			final Method targetMethod) {
+		return (L) Proxy.newProxyInstance(target.getClass().getClassLoader(), new Class[] { listenerClazz },
+				new ListenerHandler(target, listenerClazz, listenerMethodName, targetMethod));
+	}
+
+	private static class ListenerHandler implements InvocationHandler {
+
+		private final Object target;
+		private final Class<?> listenerClazz;
+		private final String listenerMethodName;
+		private final Method targetMethod;
+
+		public ListenerHandler(final Object target, final Class<?> listenerClazz, final String listenerMethodName,
+				final Method targetMethod) {
+			this.target = target;
+			this.listenerClazz = listenerClazz;
+			this.listenerMethodName = listenerMethodName;
+			this.targetMethod = targetMethod;
+			if (!targetMethod.isAccessible()) {
+				targetMethod.setAccessible(true);
+			}
+		}
+
+		public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+			final String methodName = method.getName();
+			if (method.getDeclaringClass() == Object.class) {
+				if (methodName.equals("hashCode")) { //$NON-NLS-1$
+					return System.identityHashCode(proxy);
+				} else if (methodName.equals("equals")) { //$NON-NLS-1$
+					return proxy == args[0];
+				} else if (methodName.equals("toString")) { //$NON-NLS-1$
+					return "Proxy for " + listenerClazz.getName() + " " + proxy.getClass().getName() + '@' //$NON-NLS-1$ //$NON-NLS-2$
+							+ Integer.toHexString(proxy.hashCode());
+				}
+			}
+
+			if (methodName.equals(listenerMethodName)) {
+				if (targetMethod.getParameterTypes().length == 0) {
+					return targetMethod.invoke(target);
+				} else {
+					return targetMethod.invoke(target, args);
+				}
+			}
+			if (method.getName().equals("equals")) { //$NON-NLS-1$
+				return proxy == args[0];
+			}
+
+			return null;
+		}
+	}
 }

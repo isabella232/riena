@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.annotation.handler;
 
-import java.beans.EventHandler;
 import java.beans.PropertyChangeListener;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -27,16 +26,16 @@ import org.eclipse.riena.ui.ridgets.annotation.OnPropertyChange;
 public class PropertyChangeAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
-			final Object traget, final Method method) {
+			final Object target, final Method targetMethod) {
 
 		if (annotation instanceof OnPropertyChange) {
 			final OnPropertyChange propertyChangeAnnotation = ((OnPropertyChange) annotation);
-			final IRidget ridget = getRidget(annotation, method, ridgetContainer, propertyChangeAnnotation.ridgetId());
+			final IRidget ridget = getRidget(annotation, targetMethod, ridgetContainer,
+					propertyChangeAnnotation.ridgetId());
 			final String propertyName = propertyChangeAnnotation.propertyName().length() == 0 ? null
 					: propertyChangeAnnotation.propertyName();
-			final String eventPropertyName = method.getParameterTypes().length == 0 ? null : ""; //$NON-NLS-1$
-			ridget.addPropertyChangeListener(propertyName, EventHandler.create(PropertyChangeListener.class, traget,
-					method.getName(), eventPropertyName, null));
+			ridget.addPropertyChangeListener(propertyName,
+					createListener(PropertyChangeListener.class, "propertyChange", target, targetMethod)); //$NON-NLS-1$
 		}
 	}
 }

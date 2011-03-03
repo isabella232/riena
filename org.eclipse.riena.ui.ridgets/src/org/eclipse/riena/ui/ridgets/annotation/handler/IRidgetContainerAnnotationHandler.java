@@ -38,9 +38,9 @@ public interface IRidgetContainerAnnotationHandler {
 	 * @param traget
 	 *            the object whose annotation method should be handled by the
 	 *            receiver
-	 * @param method
+	 * @param targetMethod
 	 *            the annotated method
 	 */
 	void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer, final Object target,
-			final Method method);
+			final Method targetMethod);
 }
