@@ -59,13 +59,14 @@ public final class NavigationNodeControllerAnnotationProcessor {
 		processAnnotations(navigationNodeController, navigationNodeController.getClass());
 	}
 
-	private void processAnnotations(final INavigationNodeController navigationNodeController, final Class<?> clazz) {
-		if (!INavigationNodeController.class.isAssignableFrom(clazz)) {
+	private void processAnnotations(final INavigationNodeController navigationNodeController, final Class<?> targetClazz) {
+		if (!INavigationNodeController.class.isAssignableFrom(targetClazz)) {
 			return;
 		}
-		processAnnotations(navigationNodeController, clazz.getSuperclass());
+		processAnnotations(navigationNodeController, targetClazz.getSuperclass());
 
-		final EnumMap<OnNavigationNodeEvent.Event, Method> events = getEventMethodMap(navigationNodeController, clazz);
+		final EnumMap<OnNavigationNodeEvent.Event, Method> events = getEventMethodMap(navigationNodeController,
+				targetClazz);
 		if (!events.isEmpty()) {
 			navigationNodeController.getNavigationNode().addSimpleListener(
 					new Listener(events, navigationNodeController));
@@ -73,12 +74,15 @@ public final class NavigationNodeControllerAnnotationProcessor {
 	}
 
 	private EnumMap<OnNavigationNodeEvent.Event, Method> getEventMethodMap(
-			final INavigationNodeController navigationNodeController, final Class<?> clazz) {
+			final INavigationNodeController navigationNodeController, final Class<?> targetClazz) {
 		final EnumMap<OnNavigationNodeEvent.Event, Method> events = new EnumMap<OnNavigationNodeEvent.Event, Method>(
 				OnNavigationNodeEvent.Event.class);
-		for (final Method method : clazz.getDeclaredMethods()) {
+		for (final Method method : targetClazz.getDeclaredMethods()) {
 			final OnNavigationNodeEvent onNavigationNodeEvent = method.getAnnotation(OnNavigationNodeEvent.class);
 			if (onNavigationNodeEvent != null) {
+				if (!method.isAccessible()) {
+					method.setAccessible(true);
+				}
 				events.put(onNavigationNodeEvent.event(), method);
 			}
 		}
