@@ -15,6 +15,8 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * Delegation of a composite for scrolling in the navigation with scroll
  * buttons.
+ * 
+ * @since 3.0
  */
 public class ScrollButtonsNavigationCompositeDeligation extends AbstractNavigationCompositeDeligation {
 

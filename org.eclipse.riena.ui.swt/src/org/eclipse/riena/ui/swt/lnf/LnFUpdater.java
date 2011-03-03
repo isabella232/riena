@@ -72,6 +72,7 @@ public class LnFUpdater {
 
 	/**
 	 * @return the {@link LnFUpdater} instance bound to the current session
+	 * @since 3.0
 	 */
 	public static LnFUpdater getInstance() {
 		return LNFU.getInstance();

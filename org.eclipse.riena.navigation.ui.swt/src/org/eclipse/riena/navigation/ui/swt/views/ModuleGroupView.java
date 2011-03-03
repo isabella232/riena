@@ -486,6 +486,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 
 	/**
 	 * @return the scrollbarWidth
+	 * @since 3.0
 	 */
 	public int getScrollbarWidth() {
 		return scrollbarWidth;
@@ -494,6 +495,7 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 	/**
 	 * @param scrollbarWidth
 	 *            the scrollbarWidth to set
+	 * @since 3.0
 	 */
 	public void setScrollbarWidth(final int scrollbarWidth) {
 		this.scrollbarWidth = scrollbarWidth;

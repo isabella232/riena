@@ -166,6 +166,7 @@ public class EmbeddedBorderRenderer extends AbstractLnfRenderer {
 	 * disable.
 	 * 
 	 * @return border color
+	 * @since 3.0
 	 */
 	protected Color getBorderColor() {
 		final RienaDefaultLnf lnf = LnfManager.getLnf();

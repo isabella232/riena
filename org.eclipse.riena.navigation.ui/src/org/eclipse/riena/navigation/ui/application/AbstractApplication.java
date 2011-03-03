@@ -69,6 +69,8 @@ public abstract class AbstractApplication implements IApplication {
 
 	/**
 	 * hook called before createModel()
+	 * 
+	 * @since 3.0
 	 */
 	protected void initializeUI() {
 	}
@@ -85,6 +87,9 @@ public abstract class AbstractApplication implements IApplication {
 		instance.setVisualizerFactory(new ProgressVisualizerLocator());
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void disableEclipseProgressManager() {
 		if (RAPDetector.isRAPavailable()) {
 			return;

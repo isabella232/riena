@@ -18,6 +18,8 @@ import org.eclipse.equinox.log.SynchronousLogListener;
 /**
  * Wraps another {@code LogListener} (which defines an asynchronous
  * {@code LogListener}!) so that it used as synchronous {@code LogListener}.
+ * 
+ * @since 3.0
  */
 public class SynchronousLogListenerAdapter implements SynchronousLogListener {
 

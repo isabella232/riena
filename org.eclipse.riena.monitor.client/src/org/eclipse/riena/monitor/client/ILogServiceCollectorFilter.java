@@ -15,6 +15,8 @@ import org.eclipse.equinox.log.ExtendedLogEntry;
 /**
  * Instances of this interface can decide whether a {@codelogEntry} should be
  * collected or not.
+ * 
+ * @since 3.0
  */
 public interface ILogServiceCollectorFilter {
 

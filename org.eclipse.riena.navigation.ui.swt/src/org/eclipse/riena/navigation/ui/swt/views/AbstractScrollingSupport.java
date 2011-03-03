@@ -35,6 +35,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * This class provides basic parts of scrolling logic for the navigation.
+ * 
+ * @since 3.0
  */
 public abstract class AbstractScrollingSupport {
 

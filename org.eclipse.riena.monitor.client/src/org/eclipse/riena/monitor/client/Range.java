@@ -34,6 +34,9 @@ public class Range {
 
 	private List<Match> list;
 
+	/**
+	 * @since 3.0
+	 */
 	public static final String ALL = "*"; //$NON-NLS-1$
 
 	private static final String DELIM = ","; //$NON-NLS-1$
