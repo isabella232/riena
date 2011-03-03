@@ -199,7 +199,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 	private final class InternalLocationListener implements LocationListener {
 
 		private ListenerList<ILocationListener> listeners;
-		private boolean block;
+		private boolean canBlock;
 
 		void addLocationListener(final ILocationListener listener) {
 			Assert.isNotNull(listener);
@@ -232,21 +232,21 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		 * an option for identifying which url to unblock.
 		 */
 		void unblock() {
-			block = false;
+			canBlock = false;
 		}
 
 		public void changing(final LocationEvent event) {
-			if (block) {
-				if (isOutputOnly()) {
-					event.doit = false;
-				}
+			if (canBlock && isOutputOnly()) {
+				event.doit = false;
+			}
+			if (listeners != null && event.doit) {
 				final org.eclipse.riena.ui.ridgets.listener.LocationEvent locEvent = new org.eclipse.riena.ui.ridgets.listener.LocationEvent(
 						event.location, event.top);
 				for (final ILocationListener listener : listeners) {
 					event.doit &= listener.locationChanging(locEvent);
 				}
 			}
-			block = true;
+			canBlock = true;
 		}
 
 		public void changed(final LocationEvent event) {

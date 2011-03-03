@@ -14,13 +14,17 @@ import java.beans.PropertyChangeEvent;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.LocationListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.beans.common.StringBean;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget;
+import org.eclipse.riena.ui.ridgets.listener.ILocationListener;
+import org.eclipse.riena.ui.ridgets.listener.LocationEvent;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
@@ -250,8 +254,118 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		}, control2, 3);
 	}
 
+	/**
+	 * As per Bug 338602
+	 */
+	public void testAddLocationListener() {
+		final IBrowserRidget ridget = getRidget();
+		final Browser control = getWidget();
+		final LocationListener intLocLi = ReflectionUtils.getHidden(ridget, "internalLocationListener");
+
+		final FTLocationListener listener = new FTLocationListener();
+		ridget.addLocationListener(listener);
+		ridget.addLocationListener(listener);
+		intLocLi.changing(createLocationEvent(control, "http://www.eclipse.org"));
+
+		assertEquals(1, listener.getCount());
+		assertEquals("http://www.eclipse.org", listener.getLocation());
+
+		ridget.removeLocationListener(listener);
+		intLocLi.changing(createLocationEvent(control, "http://www.eclipse.org/riena"));
+
+		assertEquals(1, listener.getCount());
+		assertEquals("http://www.eclipse.org", listener.getLocation());
+	}
+
+	/**
+	 * As per Bug 338602
+	 */
+	public void testSettersDoNotNotifyLocationListeners() {
+		final IBrowserRidget ridget = getRidget();
+
+		final FTLocationListener listener = new FTLocationListener();
+		ridget.addLocationListener(listener);
+
+		assertEquals(0, listener.getCount());
+
+		ridget.setUrl("http://www.eclipse.org");
+
+		assertEquals(0, listener.getCount());
+
+		ridget.setText("<html><body><h1>Hello</h1></body></html>");
+
+		assertEquals(0, listener.getCount());
+	}
+
+	/**
+	 * As per Bug 338602
+	 */
+	public void testBlockFromLocationListener() {
+		final IBrowserRidget ridget = getRidget();
+		final Browser control = getWidget();
+		final LocationListener intLocLi = ReflectionUtils.getHidden(ridget, "internalLocationListener");
+		intLocLi.changing(createLocationEvent(control, ""));
+
+		final FTLocationListener blockListener = new FTLocationListener() {
+			@Override
+			public boolean locationChanging(final LocationEvent event) {
+				super.locationChanging(event);
+				return false;
+			}
+		};
+		ridget.addLocationListener(blockListener);
+		final FTLocationListener listener = new FTLocationListener();
+		ridget.addLocationListener(listener);
+
+		org.eclipse.swt.browser.LocationEvent event = createLocationEvent(control, "http://www.eclipse.org");
+		intLocLi.changing(event);
+
+		assertFalse(event.doit);
+		assertEquals(1, blockListener.getCount());
+		assertEquals(1, listener.getCount());
+
+		ridget.removeLocationListener(blockListener);
+		event = createLocationEvent(control, "http://www.eclipse.org");
+		intLocLi.changing(event);
+
+		assertTrue(event.doit);
+		assertEquals(1, blockListener.getCount());
+		assertEquals(2, listener.getCount());
+	}
+
+	public void testBlockWhenOutputOnly() {
+		final IBrowserRidget ridget = getRidget();
+		final Browser control = getWidget();
+		final LocationListener intLocLi = ReflectionUtils.getHidden(ridget, "internalLocationListener");
+		intLocLi.changing(createLocationEvent(control, ""));
+
+		final FTLocationListener listener = new FTLocationListener();
+		ridget.addLocationListener(listener);
+
+		ridget.setOutputOnly(true);
+		org.eclipse.swt.browser.LocationEvent event = createLocationEvent(control, "http://www.eclipse.org");
+		intLocLi.changing(event);
+
+		assertFalse(event.doit);
+		assertEquals(0, listener.getCount());
+
+		ridget.setOutputOnly(false);
+		event = createLocationEvent(control, "http://www.eclipse.org");
+		intLocLi.changing(event);
+
+		assertTrue(event.doit);
+		assertEquals(1, listener.getCount());
+	}
+
 	// helping methods
 	//////////////////
+
+	private org.eclipse.swt.browser.LocationEvent createLocationEvent(final Browser control, final String location) {
+		final org.eclipse.swt.browser.LocationEvent event = new org.eclipse.swt.browser.LocationEvent(control);
+		event.location = location;
+		event.doit = true;
+		return event;
+	}
 
 	/**
 	 * Execute the 'closure' op up to {@code tries}-times and process the ui
@@ -281,4 +395,28 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 			}
 		}
 	}
+
+	// helping classes
+	//////////////////
+
+	private static class FTLocationListener implements ILocationListener {
+
+		private int count;
+		private LocationEvent event;
+
+		public int getCount() {
+			return count;
+		}
+
+		public String getLocation() {
+			return event.getLocation();
+		}
+
+		public boolean locationChanging(final LocationEvent event) {
+			count++;
+			this.event = event;
+			return true;
+		}
+	}
+
 }
