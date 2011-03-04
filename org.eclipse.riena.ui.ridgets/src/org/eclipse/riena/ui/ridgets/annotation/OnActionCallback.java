@@ -27,7 +27,8 @@ import org.eclipse.riena.ui.ridgets.ITraverseRidget;
  * ridget.addListener( {@link IActionListener} )
  * </pre>
  * 
- * for the ridget with the given ridget id.
+ * for the ridget with the given ridget id.<br>
+ * The annotated method must have no parameters.
  * <p>
  * Currently supported ridgets:
  * <ul>

@@ -26,7 +26,9 @@ import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
  * ridget.addSelectionListener( {@link ISelectionListener} )
  * </pre>
  * 
- * for the ridget with the given ridget id.
+ * for the ridget with the given ridget id.<br>
+ * The annotated method may either have the same parameter as the corresponding
+ * listener method or none.
  * <p>
  * All {@link ISelectionObservable}s are supported.
  * 

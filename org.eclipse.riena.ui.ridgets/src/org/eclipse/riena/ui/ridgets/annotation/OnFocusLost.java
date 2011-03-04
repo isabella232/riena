@@ -26,7 +26,9 @@ import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
  * ridget.addFocusListener( {@link IFocusListener} )
  * </pre>
  * 
- * for the ridget with the given ridget id.
+ * for the ridget with the given ridget id..<br>
+ * The annotated method may either have the same parameter as the corresponding
+ * listener method or none.
  * <p>
  * All {@link IRidget}s are supported.
  * 
