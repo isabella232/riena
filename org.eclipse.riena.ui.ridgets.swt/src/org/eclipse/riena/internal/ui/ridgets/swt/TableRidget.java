@@ -39,6 +39,8 @@ import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -48,6 +50,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -59,6 +62,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.util.ListenerList;
+import org.eclipse.riena.core.util.RAPDetector;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
@@ -124,6 +128,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private final Map<Integer, Comparator<Object>> comparatorMap;
 	private final Map<Integer, IColumnFormatter> formatterMap;
 	private boolean moveableColumns;
+	private ControlListener columnResizeListener;
 
 	public TableRidget() {
 		itemEraser = new TableItemEraser();
@@ -158,6 +163,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		if (control != null) {
 			viewer = new TableViewer(control);
 			configureControl(control);
+
 			if (viewerObservables != null) {
 				configureViewer(viewer);
 			}
@@ -174,8 +180,19 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 				createMultipleSelectionBinding();
 			}
 
+			columnResizeListener = new ControlListener() {
+				public void controlResized(final ControlEvent e) {
+					applyTableColumnHeaders(control);
+				}
+
+				public void controlMoved(final ControlEvent e) {
+					applyTableColumnHeaders(control);
+				}
+			};
+
 			for (final TableColumn column : control.getColumns()) {
 				column.addSelectionListener(sortListener);
+				column.addControlListener(columnResizeListener);
 			}
 			control.addSelectionListener(selectionTypeEnforcer);
 			control.addMouseListener(clickForwarder);
@@ -199,6 +216,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		if (control != null) {
 			for (final TableColumn column : control.getColumns()) {
 				column.removeSelectionListener(sortListener);
+				column.removeControlListener(columnResizeListener);
 			}
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(clickForwarder);
@@ -524,8 +542,36 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 					columnHeader = columnHeaders[i];
 				}
 				columns[i].setText(columnHeader);
+				final String tooltip = isShowColumnTooltip(columns[i], columnHeader) ? columnHeader : ""; //$NON-NLS-1$
+				columns[i].setToolTipText(tooltip);
 			}
 		}
+	}
+
+	/**
+	 * Returns the width of the table column in pixel.
+	 * 
+	 * @param control
+	 * @param str
+	 * @return
+	 */
+	private int columnTextWidth(final TableColumn control, final String str) {
+		final GC g = new GC(control.getParent());
+		final Font of = g.getFont();
+		g.setFont(control.getParent().getFont());
+		final Point extent = g.stringExtent(str);
+		g.setFont(of);
+		g.dispose();
+		// TODO check if offset in table column differs on various platforms
+		return extent.x + 16;
+	}
+
+	private boolean isShowColumnTooltip(final TableColumn col, final String columnText) {
+		if (RAPDetector.isRAPavailable()) {
+			return false;
+		}
+
+		return col.getWidth() < columnTextWidth(col, columnText);
 	}
 
 	private void checkColumnRange(final int columnIndex) {
@@ -664,7 +710,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 		public TableItemEraser() {
 			borderColor = LnfManager.getLnf().getColor(LnfKeyConstants.ERROR_MARKER_BORDER_COLOR);
-			borderThickness = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.ROW_ERROR_MARKER_BORDER_THICKNESS, 1);
+			borderThickness = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.ROW_ERROR_MARKER_BORDER_THICKNESS,
+					1);
 		}
 
 		/*
