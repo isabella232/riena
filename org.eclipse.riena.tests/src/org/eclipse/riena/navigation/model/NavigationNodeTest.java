@@ -37,6 +37,54 @@ import org.eclipse.riena.ui.filter.impl.UIFilter;
 @NonUITestCase
 public class NavigationNodeTest extends RienaTestCase {
 
+	public void testSetBlockedCalledOnce() {
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final NaviNode node = new NaviNode(id);
+		node.setNavigationProcessor(new NavigationProcessor());
+
+		final SetBlockCalledDetector setBlockedCalledDetector = new SetBlockCalledDetector();
+		node.addSimpleListener(setBlockedCalledDetector);
+
+		assertFalse(node.isBlocked());
+		node.setBlocked(true);
+
+		assertTrue(setBlockedCalledDetector.blockedCalled);
+	}
+
+	public void testSetBlockedCalledTwice() {
+		final NavigationNodeId id = new NavigationNodeId("4711");
+		final NaviNode node = new NaviNode(id);
+		node.setNavigationProcessor(new NavigationProcessor());
+
+		assertFalse(node.isBlocked());
+		node.setBlocked(true);
+
+		final SetBlockCalledDetector setBlockedCalledDetector = new SetBlockCalledDetector();
+		node.addSimpleListener(setBlockedCalledDetector);
+
+		assertTrue(node.isBlocked());
+
+		// call setBlocked again. this time no event should have been fired
+		node.setBlocked(true);
+
+		assertFalse(setBlockedCalledDetector.blockedCalled);
+
+	}
+
+	/**
+	 * Checks of the setBlocked() fires a event.
+	 */
+	private class SetBlockCalledDetector extends SimpleNavigationNodeAdapter {
+		private boolean blockedCalled;
+
+		@Override
+		public void block(final INavigationNode<?> source, final boolean block) {
+			super.block(source, block);
+			blockedCalled = true;
+			System.out.println("NavigationNodeTest.SetBlockCalledDetector.block()");
+		}
+	}
+
 	/**
 	 * Tests the constructor of the
 	 */

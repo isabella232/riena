@@ -916,8 +916,12 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	}
 
 	public void setBlocked(final boolean blocked) {
+		final boolean changed = this.blocked != blocked;
 		this.blocked = blocked;
-		notifyBlockedChanged();
+		if (changed) {
+			notifyBlockedChanged();
+		}
+
 		// taken out because it has caused some problems
 		//		for (final INavigationNode<?> child : getChildren()) {
 		//			child.setBlocked(blocked);
