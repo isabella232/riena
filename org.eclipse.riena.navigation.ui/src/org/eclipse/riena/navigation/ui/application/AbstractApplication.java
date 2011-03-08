@@ -45,14 +45,21 @@ import org.eclipse.riena.ui.core.uiprocess.ProgressProviderBridge;
 @SuppressWarnings("restriction")
 public abstract class AbstractApplication implements IApplication {
 
+	/**
+	 * The result code EXIT_ABORT can be used to indicate that the login process
+	 * was aborted. As a result the application has to be terminated.
+	 */
+	public static final Integer EXIT_ABORT = -1;
+
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), AbstractApplication.class);
+
 	protected ILoginDialogViewExtension loginDialogViewExtension;
 
 	public Object start(final IApplicationContext context) throws Exception {
 
 		final Object result = initializePerformLogin(context);
 		if (!EXIT_OK.equals(result)) {
-			return result;
+			return convertLoginToApplicationResult(result);
 		}
 		initializeUI();
 		final IApplicationNode applicationNode = createModel();
@@ -65,6 +72,24 @@ public abstract class AbstractApplication implements IApplication {
 		initializeNode(applicationNode);
 		installProgressProviderBridge();
 		return createView(context, applicationNode);
+	}
+
+	/**
+	 * Returns the exit Object or code of the application. May be overridden by
+	 * subclasses. By default the login return code <code>EXIT_ABORT</code> is
+	 * converted to application result code <code>EXIT_OK</code>, because
+	 * aborting the login process is a normal way to terminate the application.
+	 * 
+	 * @param result
+	 *            the login result code to convert.
+	 * @return the exit Object or code of the application.
+	 */
+	protected Object convertLoginToApplicationResult(final Object result) {
+		if (EXIT_ABORT.equals(result)) {
+			return EXIT_OK;
+		} else {
+			return result;
+		}
 	}
 
 	/**

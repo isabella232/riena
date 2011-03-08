@@ -22,6 +22,7 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.example.client.application.ExampleIcons;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.internal.example.client.security.authentication.LocalLoginCallbackHandler;
+import org.eclipse.riena.navigation.ui.application.AbstractApplication;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
@@ -39,7 +40,7 @@ public class LoginDialogController extends AbstractWindowController {
 	public static final String RIDGET_ID_CANCEL = "cancelButton"; //$NON-NLS-1$
 	public static final String RIDGET_ID_MESSAGE_LOGIN_EXCEPTION = "messageLoginException"; //$NON-NLS-1$
 	public static final int EXIT_OK = IApplication.EXIT_OK;
-	public static final int EXIT_ABORT = -1;
+	public static final int EXIT_ABORT = AbstractApplication.EXIT_ABORT;
 
 	private static final String JAAS_CONFIG_FILE = "config/sample_jaas.config"; //$NON-NLS-1$
 	private boolean canLogin;
