@@ -809,6 +809,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 		@Override
 		public void beforeActivated(final ISubModuleNode source) {
+
 			/*
 			 * SWT feature: when tree.setFocus() is called below, it will fire a
 			 * selection event in ADDITION of setting the focus. This will
@@ -848,6 +849,10 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			updateExpanded(source); // fix for bug 269221
 			doNotResize = false;
 			resize();
+			final TreeItem currentItem = findItem(getTree().getItems(), source);
+			if (null != currentItem) {
+				getTree().select(currentItem);
+			}
 			getTree().setFocus();
 		}
 
