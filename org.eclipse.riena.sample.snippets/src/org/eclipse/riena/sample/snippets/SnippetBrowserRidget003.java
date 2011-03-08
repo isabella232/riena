@@ -18,6 +18,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget;
 import org.eclipse.riena.ui.ridgets.listener.ILocationListener;
 import org.eclipse.riena.ui.ridgets.listener.LocationEvent;
@@ -44,6 +45,11 @@ public final class SnippetBrowserRidget003 {
 			browserRidget.setUrl("http://www.eclipse.org"); //$NON-NLS-1$
 
 			browserRidget.addLocationListener(new ILocationListener() {
+
+				public void locationChanged(final LocationEvent event) {
+					Nop.reason("not needed"); //$NON-NLS-1$
+				}
+
 				public boolean locationChanging(final LocationEvent event) {
 					System.out.println(event);
 					final String msg = String.format("Go to:\n\n'%s' ?", event.getLocation()); //$NON-NLS-1$
