@@ -261,20 +261,37 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		final IBrowserRidget ridget = getRidget();
 		final Browser control = getWidget();
 		final LocationListener intLocLi = ReflectionUtils.getHidden(ridget, "internalLocationListener");
+		intLocLi.changing(createLocationEvent(control, ""));
 
-		final FTLocationListener listener = new FTLocationListener();
-		ridget.addLocationListener(listener);
-		ridget.addLocationListener(listener);
+		final FTLocationChangingListener changingListener = new FTLocationChangingListener();
+		ridget.addLocationListener(changingListener);
+		ridget.addLocationListener(changingListener);
+		final FTLocationChangedListener changedListener = new FTLocationChangedListener();
+		ridget.addLocationListener(changedListener);
+		ridget.addLocationListener(changedListener);
 		intLocLi.changing(createLocationEvent(control, "http://www.eclipse.org"));
 
-		assertEquals(1, listener.getCount());
-		assertEquals("http://www.eclipse.org", listener.getLocation());
+		assertEquals(1, changingListener.getCount());
+		assertEquals("http://www.eclipse.org", changingListener.getLocation());
+		assertEquals(0, changedListener.getCount());
 
-		ridget.removeLocationListener(listener);
+		intLocLi.changed(createLocationEvent(control, "http://www.eclipse.org"));
+
+		assertEquals(1, changingListener.getCount());
+		assertEquals(1, changedListener.getCount());
+		assertEquals("http://www.eclipse.org", changedListener.getLocation());
+
+		ridget.removeLocationListener(changingListener);
 		intLocLi.changing(createLocationEvent(control, "http://www.eclipse.org/riena"));
 
-		assertEquals(1, listener.getCount());
-		assertEquals("http://www.eclipse.org", listener.getLocation());
+		assertEquals(1, changingListener.getCount());
+		assertEquals(1, changedListener.getCount());
+
+		ridget.removeLocationListener(changedListener);
+		intLocLi.changed(createLocationEvent(control, "http://www.eclipse.org/riena"));
+
+		assertEquals(1, changingListener.getCount());
+		assertEquals(1, changedListener.getCount());
 	}
 
 	/**
@@ -282,8 +299,11 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testSettersDoNotNotifyLocationListeners() {
 		final IBrowserRidget ridget = getRidget();
+		final Browser control = getWidget();
+		final LocationListener intLocLi = ReflectionUtils.getHidden(ridget, "internalLocationListener");
+		intLocLi.changing(createLocationEvent(control, ""));
 
-		final FTLocationListener listener = new FTLocationListener();
+		final FTLocationChangingListener listener = new FTLocationChangingListener();
 		ridget.addLocationListener(listener);
 
 		assertEquals(0, listener.getCount());
@@ -306,7 +326,7 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		final LocationListener intLocLi = ReflectionUtils.getHidden(ridget, "internalLocationListener");
 		intLocLi.changing(createLocationEvent(control, ""));
 
-		final FTLocationListener blockListener = new FTLocationListener() {
+		final FTLocationChangingListener blockListener = new FTLocationChangingListener() {
 			@Override
 			public boolean locationChanging(final LocationEvent event) {
 				super.locationChanging(event);
@@ -314,23 +334,25 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 			}
 		};
 		ridget.addLocationListener(blockListener);
-		final FTLocationListener listener = new FTLocationListener();
+		final FTLocationChangingListener listener = new FTLocationChangingListener();
 		ridget.addLocationListener(listener);
 
 		org.eclipse.swt.browser.LocationEvent event = createLocationEvent(control, "http://www.eclipse.org");
 		intLocLi.changing(event);
 
-		assertFalse(event.doit);
 		assertEquals(1, blockListener.getCount());
 		assertEquals(1, listener.getCount());
+		assertFalse(listener.isAllowed());
+		assertFalse(event.doit);
 
 		ridget.removeLocationListener(blockListener);
 		event = createLocationEvent(control, "http://www.eclipse.org");
 		intLocLi.changing(event);
 
-		assertTrue(event.doit);
 		assertEquals(1, blockListener.getCount());
 		assertEquals(2, listener.getCount());
+		assertTrue(listener.isAllowed());
+		assertTrue(event.doit);
 	}
 
 	public void testBlockWhenOutputOnly() {
@@ -339,7 +361,7 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		final LocationListener intLocLi = ReflectionUtils.getHidden(ridget, "internalLocationListener");
 		intLocLi.changing(createLocationEvent(control, ""));
 
-		final FTLocationListener listener = new FTLocationListener();
+		final FTLocationChangingListener listener = new FTLocationChangingListener();
 		ridget.addLocationListener(listener);
 
 		ridget.setOutputOnly(true);
@@ -363,6 +385,7 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 	private org.eclipse.swt.browser.LocationEvent createLocationEvent(final Browser control, final String location) {
 		final org.eclipse.swt.browser.LocationEvent event = new org.eclipse.swt.browser.LocationEvent(control);
 		event.location = location;
+		event.top = true;
 		event.doit = true;
 		return event;
 	}
@@ -399,13 +422,17 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 	// helping classes
 	//////////////////
 
-	private static class FTLocationListener implements ILocationListener {
+	private static class FTLocationChangingListener implements ILocationListener {
 
-		private int count;
+		private int countChanging;
 		private LocationEvent event;
 
+		public boolean isAllowed() {
+			return event.isAllowed();
+		}
+
 		public int getCount() {
-			return count;
+			return countChanging;
 		}
 
 		public String getLocation() {
@@ -413,9 +440,37 @@ public class BrowserRidgetTest extends AbstractSWTRidgetTest {
 		}
 
 		public boolean locationChanging(final LocationEvent event) {
-			count++;
+			countChanging++;
 			this.event = event;
 			return true;
+		}
+
+		public void locationChanged(final LocationEvent event) {
+			// unused
+		}
+	}
+
+	private static class FTLocationChangedListener implements ILocationListener {
+
+		private int countChanged;
+		private LocationEvent event;
+
+		public int getCount() {
+			return countChanged;
+		}
+
+		public String getLocation() {
+			return event.getLocation();
+		}
+
+		public boolean locationChanging(final LocationEvent event) {
+			// unused
+			return true;
+		}
+
+		public void locationChanged(final LocationEvent event) {
+			countChanged++;
+			this.event = event;
 		}
 	}
 

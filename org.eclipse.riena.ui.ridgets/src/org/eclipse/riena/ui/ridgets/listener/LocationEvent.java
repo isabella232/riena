@@ -18,20 +18,25 @@ package org.eclipse.riena.ui.ridgets.listener;
 public final class LocationEvent {
 
 	private final String location;
+	private final boolean allow;
 	private final boolean topFrame;
 
 	/**
-	 * // * Creates a new LocationEvent instance.
+	 * Creates a new LocationEvent instance.
 	 * 
 	 * @param location
 	 *            the new location (URL)
+	 * @param allow
+	 *            true if the location should be opened, false if the location
+	 *            should not be opened
 	 * @param topFrame
 	 *            true if the location is to be opened in the top frame. Most
 	 *            commonly the value is {@code false} (i.e. when no frames are
 	 *            used).
 	 */
-	public LocationEvent(final String location, final boolean topFrame) {
+	public LocationEvent(final String location, final boolean allow, final boolean topFrame) {
 		this.location = location;
+		this.allow = allow;
 		this.topFrame = topFrame;
 	}
 
@@ -40,6 +45,19 @@ public final class LocationEvent {
 	 */
 	public String getLocation() {
 		return location;
+	}
+
+	/**
+	 * A flag indicating that it is permitted to open (visit) the hyperlink (
+	 * {@code true}) or that it is not permitted to opend the hyperlink (
+	 * {@code false}).
+	 * <p>
+	 * This can be used to check if the change has already been vetoed.
+	 * 
+	 * @return a boolean value
+	 */
+	public boolean isAllowed() {
+		return allow;
 	}
 
 	/**

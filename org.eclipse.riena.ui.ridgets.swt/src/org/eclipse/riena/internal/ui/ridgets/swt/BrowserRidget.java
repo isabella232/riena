@@ -201,6 +201,10 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		private ListenerList<ILocationListener> listeners;
 		private boolean canBlock;
 
+		InternalLocationListener() {
+			canBlock = true;
+		}
+
 		void addLocationListener(final ILocationListener listener) {
 			Assert.isNotNull(listener);
 			if (listeners == null) {
@@ -236,14 +240,16 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 		}
 
 		public void changing(final LocationEvent event) {
-			if (canBlock && isOutputOnly()) {
-				event.doit = false;
-			}
-			if (listeners != null && event.doit) {
-				final org.eclipse.riena.ui.ridgets.listener.LocationEvent locEvent = new org.eclipse.riena.ui.ridgets.listener.LocationEvent(
-						event.location, event.top);
-				for (final ILocationListener listener : listeners) {
-					event.doit &= listener.locationChanging(locEvent);
+			if (canBlock) {
+				if (isOutputOnly()) {
+					event.doit = false;
+				}
+				if (listeners != null && event.doit) {
+					for (final ILocationListener listener : listeners) {
+						final org.eclipse.riena.ui.ridgets.listener.LocationEvent locEvent = new org.eclipse.riena.ui.ridgets.listener.LocationEvent(
+								event.location, event.doit, event.top);
+						event.doit &= listener.locationChanging(locEvent);
+					}
 				}
 			}
 			canBlock = true;
@@ -251,7 +257,14 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 
 		public void changed(final LocationEvent event) {
 			if (event.top && !isNullOrAboutBlank(event.location)) {
-				setUrl(event.location);
+				if (!StringUtils.equals(url, event.location)) {
+					setUrl(event.location);
+					final org.eclipse.riena.ui.ridgets.listener.LocationEvent locEvent = new org.eclipse.riena.ui.ridgets.listener.LocationEvent(
+							event.location, event.doit, event.top);
+					for (final ILocationListener listener : listeners) {
+						listener.locationChanged(locEvent);
+					}
+				}
 			}
 		}
 

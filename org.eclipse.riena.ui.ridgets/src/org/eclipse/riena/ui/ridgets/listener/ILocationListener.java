@@ -23,10 +23,31 @@ public interface ILocationListener {
 	 * <p>
 	 * The listener may return false to reject the change. If several listeners
 	 * are notified, the return values are aggregated (boolean AND).
+	 * <p>
+	 * The following values from LocationEvent are relevant:
+	 * <ul>
+	 * <li>{@link LocationEvent#getLocation()}</li>
+	 * <li>{@link LocationEvent#isAllowed()}</li>
+	 * </ul>
 	 * 
 	 * @param event
 	 *            a {@link LocationEvent} describing the change; never null
 	 * @return true to accept the change, false to reject (block) the change.
 	 */
 	boolean locationChanging(LocationEvent event);
+
+	/**
+	 * This method is called when the URL has been changed. It is called after
+	 * {@link #locationChanging(LocationEvent)}.
+	 * <p>
+	 * The following values from LocationEvent are relevant:
+	 * <ul>
+	 * <li>{@link LocationEvent#getLocation()}</li>
+	 * <li>{@link LocationEvent#isTopFrame()}</li>
+	 * </ul>
+	 * 
+	 * @param event
+	 *            a {@link LocationEvent} describing the change; never null.
+	 */
+	void locationChanged(LocationEvent event);
 }
