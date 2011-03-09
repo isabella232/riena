@@ -68,7 +68,7 @@ public class CustomerSearchController extends SubModuleController {
 	}
 
 	@OnActionCallback(ridgetId = "search")
-	public void search() {
+	protected void search() {
 		result.setCustomers(null);
 		getRidget("result").updateFromModel(); //$NON-NLS-1$
 
@@ -80,13 +80,13 @@ public class CustomerSearchController extends SubModuleController {
 	}
 
 	@OnActionCallback(ridgetId = "new")
-	public void newCustomer() {
+	protected void newCustomer() {
 		getNavigationNode().navigate(new NavigationNodeId("riena.demo.client.CustomerRecord")); //$NON-NLS-1$
 	}
 
 	@OnActionCallback(ridgetId = "open")
 	@OnDoubleClick(ridgetId = "result")
-	public void openSelectedCustomer() {
+	protected void openSelectedCustomer() {
 		final ITableRidget kunden = getRidget("result"); //$NON-NLS-1$
 		final int selectionIndex = kunden.getSelectionIndex();
 		if (selectionIndex >= 0) {

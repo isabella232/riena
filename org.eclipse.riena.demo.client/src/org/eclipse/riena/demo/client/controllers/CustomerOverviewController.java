@@ -75,14 +75,14 @@ public class CustomerOverviewController extends SubModuleController {
 	}
 
 	@OnActionCallback(ridgetId = "openEmailsAction")
-	public void openEmails() {
+	protected void openEmails() {
 		final String emailAddress = customer.getEmailAddress();
 		getNavigationNode().jump(new NavigationNodeId("riena.demo.client.customermailfolders.mails", emailAddress), //$NON-NLS-1$
 				new NavigationArgument(customer));
 	}
 
 	@OnActionCallback(ridgetId = "assistent")
-	public void assistentAction() {
+	protected void assistentAction() {
 		final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
 		if (((IToggleButtonRidget) getRidget("assistent")).isSelected()) { //$NON-NLS-1$
 			applNode.addFilter(assistent);
@@ -92,7 +92,7 @@ public class CustomerOverviewController extends SubModuleController {
 	}
 
 	@OnActionCallback(ridgetId = "mandatory")
-	public void mandatoryAction() {
+	protected void mandatoryAction() {
 		final IApplicationNode applNode = getNavigationNode().getParentOfType(IApplicationNode.class);
 		if (((IToggleButtonRidget) getRidget("mandatory")).isSelected()) { //$NON-NLS-1$
 			applNode.addFilter(mandatory);
@@ -102,7 +102,7 @@ public class CustomerOverviewController extends SubModuleController {
 	}
 
 	@OnNavigationNodeEvent(event = Event.ACTIVATED)
-	public void activated() {
+	protected void activated() {
 		updateAllRidgetsFromModel();
 	}
 }

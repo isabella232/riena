@@ -49,7 +49,7 @@ public class CustomerContractController extends SubModuleController {
 	}
 
 	@OnNavigationNodeEvent(event = Event.ACTIVATED)
-	public void activated() {
+	protected void activated() {
 		updateAllRidgetsFromModel();
 	}
 

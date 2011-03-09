@@ -25,11 +25,11 @@ import org.eclipse.riena.demo.common.IEmailService;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
-import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
 
 /**
  * abstract email controller
@@ -95,35 +95,29 @@ public class AbstractEmailController extends SubModuleController {
 		if (getNavigationNode().isJumpTarget()) {
 			final IActionRidget openCustomerAction = getRidget("openCustomer"); //$NON-NLS-1$
 			openCustomerAction.setText("Back to Customer"); //$NON-NLS-1$
-			openCustomerAction.addListener(new IActionListener() {
-				public void callback() {
-					getNavigationNode().jumpBack();
-					getNavigationNode().getParent().dispose();
-				}
-			});
+		}
+	}
 
+	@OnActionCallback(ridgetId = "openCustomer")
+	protected void openCustomer() {
+		if (getNavigationNode().isJumpTarget()) {
+			getNavigationNode().jumpBack();
+			getNavigationNode().getParent().dispose();
 		} else {
+			if (selectedEmail != null) {
+				final String selectedEmailAddress = openCustomerWithEmailAddress();
+				if (selectedEmailAddress != null) {
+					final Customer customer = customerDemoService.findCustomerWithEmailAddress(selectedEmailAddress);
 
-			((IActionRidget) getRidget("openCustomer")).addListener(new IActionListener() { //$NON-NLS-1$
-						public void callback() {
-							if (selectedEmail != null) {
-								final String selectedEmailAddress = openCustomerWithEmailAddress();
-								if (selectedEmailAddress != null) {
-									final Customer customer = customerDemoService
-											.findCustomerWithEmailAddress(selectedEmailAddress);
+					System.out.println("customer " + customer); //$NON-NLS-1$
 
-									System.out.println("customer " + customer); //$NON-NLS-1$
-
-									if (customer != null) {
-										getNavigationNode().navigate(
-												new NavigationNodeId(
-														"riena.demo.client.CustomerRecord", selectedEmailAddress), //$NON-NLS-1$
-												new NavigationArgument(customer));
-									}
-								}
-							}
-						}
-					});
+					if (customer != null) {
+						getNavigationNode().navigate(
+								new NavigationNodeId("riena.demo.client.CustomerRecord", selectedEmailAddress), //$NON-NLS-1$
+								new NavigationArgument(customer));
+					}
+				}
+			}
 		}
 
 	}
