@@ -25,7 +25,6 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
-import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -44,7 +43,7 @@ public class ListSubModuleController extends SubModuleController {
 	private final PersonManager manager;
 	/** Holds editable data for a person. */
 	private final PersonModificationBean value;
-	private IListRidget listPersons;
+	private ITableRidget listPersons;
 	private ITextRidget textFirst;
 	private ITextRidget textLast;
 
