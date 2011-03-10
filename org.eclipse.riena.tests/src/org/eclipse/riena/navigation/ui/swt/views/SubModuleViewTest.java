@@ -344,6 +344,14 @@ public class SubModuleViewTest extends RienaTestCase {
 		protected IApplicationNode getAppNode() {
 			return appNode;
 		}
+
+		@Override
+		protected void registerView() {
+		}
+
+		@Override
+		protected void destroyView() {
+		}
 	}
 
 }

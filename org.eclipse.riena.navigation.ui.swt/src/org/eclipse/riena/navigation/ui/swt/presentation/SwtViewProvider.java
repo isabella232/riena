@@ -18,12 +18,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.core.runtime.Assert;
+
 import org.eclipse.riena.core.singleton.SessionSingletonProvider;
 import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
+import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
@@ -61,7 +64,6 @@ public class SwtViewProvider {
 	}
 
 	public SwtViewId getSwtViewId(final INavigationNode<?> node) {
-
 		SwtViewId swtViewId = views.get(node);
 		if (swtViewId == null) {
 			final ISubModuleNode submodule = node.getTypecastedAdapter(ISubModuleNode.class);
@@ -72,6 +74,16 @@ public class SwtViewProvider {
 				swtViewId = createAndRegisterSwtViewId(node);
 			}
 		}
+
+		boolean found = false;
+		for (final Entry<INavigationNode<?>, SwtViewId> entry : views.entrySet()) {
+			if (entry.getKey() == node) {
+				found = true;
+			}
+		}
+		Assert.isLegal(found,
+				"Cannot register node with id " + node.getNodeId().getTypeId() + ":" + node.getNodeId().getInstanceId() //$NON-NLS-1$ //$NON-NLS-2$ 
+						+ " because a different node with the same id is already registered."); //$NON-NLS-1$
 
 		return swtViewId;
 	}
@@ -238,5 +250,34 @@ public class SwtViewProvider {
 	 */
 	public INavigationNode<?> getCurrentPrepared() {
 		return currentPrepared;
+	}
+
+	private final Map<String, SubModuleView> registerdViewInstances = new HashMap<String, SubModuleView>();
+
+	/**
+	 * Registers the given view as being created
+	 * 
+	 * @param id
+	 *            the id of the view
+	 * @param subModuleView
+	 *            the {@link SubModuleView} instance
+	 */
+	public void registerView(final String id, final SubModuleView subModuleView) {
+		registerdViewInstances.put(id, subModuleView);
+	}
+
+	/**
+	 * Returns the {@link SubModuleView} associated with the given id
+	 */
+	public SubModuleView getRegisteredView(final String id) {
+		return registerdViewInstances.get(id);
+	}
+
+	/**
+	 * Unregisters the {@link SubModuleView} associated with the given id
+	 */
+	public void unregisterView(final String id) {
+		registerdViewInstances.remove(id);
+
 	}
 }

@@ -46,7 +46,6 @@ import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
-import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
@@ -543,7 +542,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			final SwtViewId id = getViewId(source);
 			final SwtViewProvider viewProvider = SwtViewProvider.getInstance();
 			viewProvider.setCurrentPrepared(source);
-			prepareView(id);
+			prepareView(id, source);
 			viewProvider.setCurrentPrepared(null);
 		}
 
@@ -568,7 +567,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			}
 
 			final SwtViewId id = getViewId(source);
-			prepareView(id);
+			prepareView(id, null);
 			showView(id);
 
 		}
@@ -579,7 +578,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 				final SwtViewId id = getViewId(source);
 				/*
 				 * hideView internally disposes(RCP) a view if ref count is 0.
-				 * For shared views this behavior is critical as RCP doesn´t
+				 * For shared views this behavior is critical as RCP doesnï¿½t
 				 * know if a View is reused the Riena way. We just hide it if
 				 * Riena has no more references. For a list of references we use
 				 * the SwtViewProvider#getViewUsers API. We cannot set parts
@@ -616,21 +615,9 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 
 		private void createNavigation() {
 			final String secId = createNextId();
-			prepareView(NavigationViewPart.ID, secId);
+			prepareView(NavigationViewPart.ID, secId, null);
 			showView(NavigationViewPart.ID, secId);
 		}
-
-		//		private boolean isViewOfActiveNode(IViewReference viewRef) {
-		//			IViewPart view = viewRef.getView(false);
-		//
-		//			if (view instanceof INavigationNodeView<?, ?>) {
-		//				INavigationNode<?> navigationNode = ((INavigationNodeView<?, ?>) view).getNavigationNode();
-		//				return navigationNode.isActivated();
-		//			} else {
-		//				return true;
-		//			}
-		//
-		//		}
 
 	}
 
@@ -702,8 +689,8 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		}
 	}
 
-	private IViewReference prepareView(final SwtViewId id) {
-		return prepareView(id.getId(), id.getSecondary());
+	private IViewReference prepareView(final SwtViewId id, final ISubModuleNode currentPrepared) {
+		return prepareView(id.getId(), id.getSecondary(), currentPrepared);
 	}
 
 	/**
@@ -713,15 +700,18 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 *            the id of the view extension to use
 	 * @param secondary
 	 *            the secondary id to use
+	 * @param currentPrepared
 	 * @return the view reference, or <code>null</code> if none is found
 	 */
-	private IViewReference prepareView(final String id, final String secondary) {
+	private IViewReference prepareView(final String id, final String secondary, final ISubModuleNode currentPrepared) {
 
 		try {
 			final IWorkbenchPage page = getActivePage();
 			// open view but don't activate it and don't bring it to top
-			final IViewPart viewPart = page.showView(id, secondary, IWorkbenchPage.VIEW_VISIBLE);
-			final INavigationNode<?> currentPrepared = SwtViewProvider.getInstance().getCurrentPrepared();
+			IViewPart viewPart = SwtViewProvider.getInstance().getRegisteredView(id);
+			if (viewPart == null) {
+				viewPart = page.showView(id, secondary, IWorkbenchPage.VIEW_VISIBLE);
+			}
 
 			/*
 			 * Shared views are only created once. All binding logic is done in

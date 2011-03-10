@@ -210,7 +210,6 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	@Override
 	public void createPartControl(final Composite parent) {
 		this.parentComposite = parent;
-
 		//markup for SubModuleViews. The StackPresentation uses this information for layouting
 		parent.setData(IS_SUB_MODULE_VIEW_COMPOSITE, Boolean.TRUE);
 		if (!Beans.isDesignTime()) {
@@ -229,11 +228,14 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		contentComposite.setData(TitlelessStackPresentation.DATA_KEY_CONTENT_COMPOSITE, true);
 		createWorkarea(contentComposite);
 
+		registerView();
+
 		if (Beans.isDesignTime()) {
 			lnfUpdater.updateUIControls(getParentComposite(), true);
 		} else {
 			createViewFacade();
 			doBinding();
+
 		}
 
 		if (getViewSite() != null) {
@@ -251,6 +253,10 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		});
 	}
 
+	protected void registerView() {
+		SwtViewProvider.getInstance().registerView(getViewSite().getId(), this);
+	}
+
 	@Override
 	public void dispose() {
 		final IApplicationNode appNode = getAppNode();
@@ -258,7 +264,13 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 			navigationTreeObserver.removeListenerFrom(appNode);
 		}
 		FALLBACK_NODES.remove(this);
+		destroyView();
+	}
+
+	protected void destroyView() {
+		final String id = getViewSite().getId();
 		super.dispose();
+		SwtViewProvider.getInstance().unregisterView(id);
 	}
 
 	/**
