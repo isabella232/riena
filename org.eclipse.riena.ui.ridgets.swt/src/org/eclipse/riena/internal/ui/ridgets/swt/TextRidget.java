@@ -343,6 +343,9 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	}
 
 	private synchronized void updateTextValue() {
+		if (isOutputOnly()) {
+			return;
+		}
 		final String oldValue = textValue;
 		final String newValue = getUIText();
 		if (!oldValue.equals(newValue)) {

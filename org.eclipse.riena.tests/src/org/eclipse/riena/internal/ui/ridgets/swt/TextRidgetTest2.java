@@ -1760,6 +1760,26 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 		assertEquals(whiteBg, control.getBackground());
 	}
 
+	public void testUpdateTextValue() {
+
+		final ITextRidget ridget = getRidget();
+		final Text control = getWidget();
+		control.setText("one");
+		ReflectionUtils.invokeHidden(ridget, "updateTextValue");
+		assertEquals("one", ridget.getText());
+
+		ridget.setOutputOnly(true);
+		control.setText("two");
+		ReflectionUtils.invokeHidden(ridget, "updateTextValue");
+		assertEquals("one", ridget.getText());
+
+		ridget.setOutputOnly(false);
+		control.setText("three");
+		ReflectionUtils.invokeHidden(ridget, "updateTextValue");
+		assertEquals("three", ridget.getText());
+
+	}
+
 	// helping methods
 	//////////////////
 
@@ -1803,7 +1823,7 @@ public class TextRidgetTest2 extends AbstractSWTRidgetTest {
 
 		public IStatus validate(final Object value) {
 			invokeCount++;
-			return ValidationRuleStatus.error(false, message + String.valueOf(invokeCount)); //$NON-NLS-1$
+			return ValidationRuleStatus.error(false, message + String.valueOf(invokeCount));
 		}
 	}
 
