@@ -72,8 +72,10 @@ public final class ImageStore {
 		Image image = loadImage(fullName);
 		if (image == null) {
 			final String defaultIconName = getDefaultIconMangerImageName(imageName);
-			fullName = getFullName(defaultIconName, fileExtension);
-			image = loadImage(fullName);
+			if (!StringUtils.equals(defaultIconName, imageName)) {
+				fullName = getFullName(defaultIconName, fileExtension);
+				image = loadImage(fullName);
+			}
 		}
 		return image;
 	}
@@ -208,7 +210,7 @@ public final class ImageStore {
 			sb.append(iconPath.getPath());
 		}
 
-		LOGGER.log(LogService.LOG_WARNING, sb.toString());
+		LOGGER.log(LogService.LOG_DEBUG, sb.toString());
 		return null;
 
 	}
