@@ -52,6 +52,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
+import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -1883,6 +1884,21 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		} finally {
 			mandatoryMarkerBg.dispose();
 		}
+	}
+
+	public void testAutoEnableRemove() {
+		final MasterDetailsRidget mdRidget = getRidget();
+		bindToModel(true);
+		final IActionRidget removeBtn = (IActionRidget) mdRidget
+				.getRidget(AbstractMasterDetailsComposite.BIND_ID_REMOVE);
+		removeBtn.setEnabled(false);
+		assertFalse(removeBtn.isEnabled());
+		mdRidget.setSelection(input.get(1));
+		assertTrue(removeBtn.isEnabled());
+		removeBtn.setEnabled(false);
+		mdRidget.setAutoEnableRemove(false);
+		mdRidget.setSelection(input.get(2));
+		assertFalse(removeBtn.isEnabled());
 	}
 
 	/**

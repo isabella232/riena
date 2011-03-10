@@ -415,4 +415,15 @@ public interface IMasterDetailsRidget extends IComplexRidget {
 	 * @since 2.0
 	 */
 	void updateApplyButton();
+
+	/**
+	 * Set to false to handle the enabled state of the remove ridget manually
+	 * from outside. Otherwise the ridget´s enabled state is controlled by the
+	 * {@link IMasterDetailsRidget}
+	 * 
+	 * @param autoEnableRemove
+	 *            false for manual control over the enabled state of remove
+	 *            ridget
+	 */
+	void setAutoEnableRemove(final boolean autoEnableRemove);
 }
