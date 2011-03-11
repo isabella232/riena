@@ -707,10 +707,14 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 
 		try {
 			final IWorkbenchPage page = getActivePage();
-			// open view but don't activate it and don't bring it to top
-			IViewPart viewPart = SwtViewProvider.getInstance().getRegisteredView(id);
+			IViewPart viewPart = null;
+			if (SubModuleView.SHARED_ID.equals(secondary)) {
+				viewPart = SwtViewProvider.getInstance().getRegisteredView(id);
+			}
 			if (viewPart == null) {
+				// open view but don't activate it and don't bring it to top
 				viewPart = page.showView(id, secondary, IWorkbenchPage.VIEW_VISIBLE);
+
 			}
 
 			/*
@@ -734,5 +738,4 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		return null;
 
 	}
-
 }
