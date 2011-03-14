@@ -253,6 +253,9 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		});
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void registerView() {
 		SwtViewProvider.getInstance().registerView(getViewSite().getId(), this);
 	}
@@ -267,6 +270,9 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		destroyView();
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void destroyView() {
 		final String id = getViewSite().getId();
 		super.dispose();
@@ -556,6 +562,9 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void addUIControls(final Composite composite) {
 		final SWTControlFinder finder = new SWTControlFinder(composite) {
 			@Override

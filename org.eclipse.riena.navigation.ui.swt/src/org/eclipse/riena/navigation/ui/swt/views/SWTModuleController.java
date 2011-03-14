@@ -301,6 +301,9 @@ public class SWTModuleController extends ModuleController {
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void expandTree(final ISubModuleNode source) {
 		tree.expand(source);
 	}

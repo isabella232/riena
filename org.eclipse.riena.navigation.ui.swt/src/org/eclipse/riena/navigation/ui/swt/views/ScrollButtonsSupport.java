@@ -33,6 +33,8 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
 /**
  * This class provides scrolling logic for the navigation with scroll buttons.
+ * 
+ * @since 3.0
  */
 public class ScrollButtonsSupport extends AbstractScrollingSupport {
 
