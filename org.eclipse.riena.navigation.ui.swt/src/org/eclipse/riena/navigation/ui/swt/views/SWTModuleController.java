@@ -103,6 +103,7 @@ public class SWTModuleController extends ModuleController {
 				"label", PROPERTY_ENABLED, PROPERTY_VISIBLE, PROPERTY_IMAGE, null, PROPERTY_EXPANDED); //$NON-NLS-1$
 		tree.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
 		selectActiveNode();
+		tree.updateFromModel();
 	}
 
 	/**
@@ -257,9 +258,21 @@ public class SWTModuleController extends ModuleController {
 			super.expandedChanged(source);
 			if (tree != null) {
 				if (source.isExpanded()) {
-					tree.expand(source);
+					expandSubModuleNode(source);
 				} else {
 					tree.collapse(source);
+				}
+			}
+		}
+
+		protected void expandSubModuleNode(final ISubModuleNode source) {
+			expandTree(source);
+			final List<ISubModuleNode> children = source.getChildren();
+			if (children.size() > 0) {
+				for (final ISubModuleNode child : children) {
+					if (child.isExpanded()) {
+						expandSubModuleNode(child);
+					}
 				}
 			}
 		}
@@ -286,6 +299,10 @@ public class SWTModuleController extends ModuleController {
 			}
 			updateTree(childAdded);
 		}
+	}
+
+	protected void expandTree(final ISubModuleNode source) {
+		tree.expand(source);
 	}
 
 	/**

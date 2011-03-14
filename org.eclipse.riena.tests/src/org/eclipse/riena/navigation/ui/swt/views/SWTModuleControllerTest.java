@@ -14,8 +14,11 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.databinding.observable.Realm;
+
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.internal.ui.ridgets.swt.TreeRidget;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -25,6 +28,7 @@ import org.eclipse.riena.navigation.listener.IModuleGroupNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
 
 /**
  * Test of the class {@link SWTModuleController}.
@@ -32,7 +36,7 @@ import org.eclipse.riena.navigation.model.SubModuleNode;
 @NonUITestCase
 public class SWTModuleControllerTest extends TestCase {
 
-	private SWTModuleController controller;
+	private TestSWTModuleController controller;
 	private IModuleNode moduleNode;
 
 	/**
@@ -44,7 +48,25 @@ public class SWTModuleControllerTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		moduleNode = new ModuleNode();
-		controller = new SWTModuleController(moduleNode);
+		controller = new TestSWTModuleController(moduleNode);
+	}
+
+	private class TestSWTModuleController extends SWTModuleController {
+
+		int expandCalledTimes = 0;
+
+		public TestSWTModuleController(final IModuleNode node) {
+			super(node);
+		}
+
+		void reset() {
+			expandCalledTimes = 0;
+		}
+
+		@Override
+		protected void expandTree(final ISubModuleNode source) {
+			expandCalledTimes++;
+		}
 	}
 
 	/**
@@ -207,6 +229,33 @@ public class SWTModuleControllerTest extends TestCase {
 		assertFalse(sm211.isExpanded());
 		assertFalse(sm31.isExpanded());
 		assertFalse(sm32.isExpanded());
+	}
+
+	public void testExpandNode() {
+
+		final ISubModuleNode sm0 = new SubModuleNode(new NavigationNodeId("sm0"));
+
+		final ISubModuleNode sm1 = new SubModuleNode(new NavigationNodeId("sm1"));
+		sm1.setExpanded(true);
+		sm0.addChild(sm1);
+		final ISubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("sm2"));
+		sm1.addChild(sm2);
+		sm2.setExpanded(true);
+		final ISubModuleNode sm3 = new SubModuleNode(new NavigationNodeId("sm3"));
+		sm3.setExpanded(true);
+		sm2.addChild(sm3);
+		moduleNode.addChild(sm0);
+		controller.reset();
+		Realm.runWithDefault(new DefaultRealm(), new Runnable() {
+
+			public void run() {
+				controller.setTree(new TreeRidget());
+
+			}
+		});
+		sm0.setExpanded(true);
+		assertEquals(4, controller.expandCalledTimes);
+
 	}
 
 	public void testModuleGroupListenerisAddedRemoved() {
