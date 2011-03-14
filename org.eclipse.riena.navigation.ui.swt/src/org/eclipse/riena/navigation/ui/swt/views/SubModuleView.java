@@ -228,11 +228,10 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		contentComposite.setData(TitlelessStackPresentation.DATA_KEY_CONTENT_COMPOSITE, true);
 		createWorkarea(contentComposite);
 
-		registerView();
-
 		if (Beans.isDesignTime()) {
 			lnfUpdater.updateUIControls(getParentComposite(), true);
 		} else {
+			registerView();
 			createViewFacade();
 			doBinding();
 
