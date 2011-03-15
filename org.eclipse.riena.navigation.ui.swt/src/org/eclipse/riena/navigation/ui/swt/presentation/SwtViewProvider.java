@@ -261,6 +261,7 @@ public class SwtViewProvider {
 	 *            the id of the view
 	 * @param subModuleView
 	 *            the {@link SubModuleView} instance
+	 * @since 3.0
 	 */
 	public void registerView(final String id, final SubModuleView subModuleView) {
 		registerdViewInstances.put(id, subModuleView);
@@ -268,6 +269,8 @@ public class SwtViewProvider {
 
 	/**
 	 * Returns the {@link SubModuleView} associated with the given id
+	 * 
+	 * @since 3.0
 	 */
 	public SubModuleView getRegisteredView(final String id) {
 		return registerdViewInstances.get(id);
@@ -275,6 +278,8 @@ public class SwtViewProvider {
 
 	/**
 	 * Unregisters the {@link SubModuleView} associated with the given id
+	 * 
+	 * @since 3.0
 	 */
 	public void unregisterView(final String id) {
 		registerdViewInstances.remove(id);

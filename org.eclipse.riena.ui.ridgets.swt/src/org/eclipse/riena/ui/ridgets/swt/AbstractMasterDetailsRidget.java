@@ -251,6 +251,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void setAutoEnableRemove(final boolean autoEnableRemove) {
 		final boolean change = autoEnableRemove != this.autoControlRemove;
 		this.autoControlRemove = autoEnableRemove;

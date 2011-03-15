@@ -31,6 +31,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * Helper class for Ridgets to delegate their marker issues to that just handles
  * the basic markers for uneditable Ridgets: the HiddenMarker to toggle
  * visibility and the DisabledMarker that toggles the enabled state.
+ * 
+ * @since 3.0
  */
 public class BasicMarkerSupport extends AbstractMarkerSupport {
 
@@ -110,6 +112,9 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		disabledMarkerVisualizer.updateDisabled(control, initialEnabled);
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	@Override
 	public void bind() {
 		if (getUIControl() != null) {
@@ -118,6 +123,9 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	@Override
 	public void unbind() {
 		if (getUIControl() != null) {

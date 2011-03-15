@@ -48,6 +48,8 @@ public abstract class AbstractApplication implements IApplication {
 	/**
 	 * The result code EXIT_ABORT can be used to indicate that the login process
 	 * was aborted. As a result the application has to be terminated.
+	 * 
+	 * @since 3.0
 	 */
 	public static final Integer EXIT_ABORT = -1;
 
@@ -83,6 +85,7 @@ public abstract class AbstractApplication implements IApplication {
 	 * @param result
 	 *            the login result code to convert.
 	 * @return the exit Object or code of the application.
+	 * @since 3.0
 	 */
 	protected Object convertLoginToApplicationResult(final Object result) {
 		if (EXIT_ABORT.equals(result)) {

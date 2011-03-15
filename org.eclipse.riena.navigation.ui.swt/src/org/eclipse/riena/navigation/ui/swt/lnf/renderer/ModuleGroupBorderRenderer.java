@@ -18,6 +18,8 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
  * Renderer of the border around a module group.
+ * 
+ * @since 3.0
  */
 public class ModuleGroupBorderRenderer extends EmbeddedBorderRenderer {
 

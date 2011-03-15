@@ -595,6 +595,7 @@ public abstract class SWTFacade {
 	 * 
 	 * @param flyout
 	 *            a {@link InfoFlyout} instance, never null
+	 * @since 3.0
 	 */
 	public void beforeInfoFlyoutShow(final InfoFlyout flyout) {
 		// nothing by default
@@ -605,6 +606,7 @@ public abstract class SWTFacade {
 	 * 
 	 * @param flyout
 	 *            a {@link InfoFlyout} instance, never null
+	 * @since 3.0
 	 */
 	public void afterInfoFlyoutShow(final InfoFlyout flyout) {
 		// nothing by default
@@ -643,6 +645,7 @@ public abstract class SWTFacade {
 	 *            the receiver of the new increment
 	 * @param value
 	 *            the new increment (must be greater than zero)
+	 * @since 3.0
 	 */
 	public abstract void setIncrement(ScrollBar scrollBar, int value);
 
