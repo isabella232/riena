@@ -40,7 +40,8 @@ public class RankingInjector extends ServiceInjector {
 		if (serviceRef == null) {
 			return;
 		}
-		if (trackedServiceRef != null && serviceRef.compareTo(trackedServiceRef) < 0) {
+		final ServiceReference tempRef = trackedServiceRef;
+		if (tempRef != null && serviceRef.compareTo(tempRef) < 0) {
 			return;
 		}
 
@@ -54,7 +55,8 @@ public class RankingInjector extends ServiceInjector {
 		if (serviceRef == null) {
 			return;
 		}
-		if (serviceRef.compareTo(trackedServiceRef) != 0) {
+		final ServiceReference tempRef = trackedServiceRef;
+		if (tempRef != null && serviceRef.compareTo(tempRef) != 0) {
 			return;
 		}
 		invokeUnbindMethod(serviceRef);
