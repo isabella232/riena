@@ -79,6 +79,21 @@ public class LnFUpdater {
 	}
 
 	/**
+	 * Clears all cached data like the default property names and control
+	 * properties. This method is not supposed to be called from Riena at all.
+	 * It is only needed for the Riena-Toolbox to refresh the LnF.
+	 * 
+	 * @since 3.0
+	 */
+	public void clearCache() {
+		RESOURCE_CACHE.clear();
+		defaultPropertyValues.clear();
+		controlProperties.clear();
+		simpleNames.clear();
+		emptyDescriptors.clear();
+	}
+
+	/**
 	 * use {@link LnfUpdater#getInstance()} instead.
 	 */
 	@Deprecated
