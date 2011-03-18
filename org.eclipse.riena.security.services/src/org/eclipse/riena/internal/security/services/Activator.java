@@ -16,18 +16,14 @@ import org.osgi.framework.BundleContext;
 
 import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.core.RienaConstants;
-import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.security.authenticationservice.AuthenticationService;
 import org.eclipse.riena.internal.security.authorizationservice.AuthorizationService;
 import org.eclipse.riena.internal.security.sessionservice.SessionService;
-import org.eclipse.riena.security.authorizationservice.IPermissionStore;
-import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authentication.IAuthenticationService;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
-import org.eclipse.riena.security.common.session.ISessionHolder;
 import org.eclipse.riena.security.server.session.ISessionService;
 import org.eclipse.riena.security.sessionservice.ISessionProvider;
-import org.eclipse.riena.security.sessionservice.ISessionStore;
 import org.eclipse.riena.security.sessionservice.SessionProvider;
 
 /**
@@ -48,80 +44,54 @@ public class Activator extends RienaActivator {
 		super();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
-		createAuthenticationServiceAndInjectors();
-		createAuthorizationServiceAndInjectors();
-		createSessionServiceAndInjectors();
-		createSessionProviderAndInjectors();
-
+		createAuthenticationServiceAndWire();
+		createAuthorizationServiceAndWire();
+		createSessionServiceAndWire();
+		createSessionProvider();
 	}
 
-	private void createAuthenticationServiceAndInjectors() {
-		// register AuthenticationService
+	private void createAuthenticationServiceAndWire() {
 		final IAuthenticationService authenticationService = new AuthenticationService();
+		Wire.instance(authenticationService).andStart();
+
 		final Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString()); //$NON-NLS-1$
 		properties.put("riena.remote.protocol", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("riena.remote.path", IAuthenticationService.WS_ID); //$NON-NLS-1$
 		getContext().registerService(IAuthenticationService.class.getName(), authenticationService, properties);
-
-		// start injectors
-		Inject.service(ISessionService.class).useRanking().into(authenticationService)
-				.andStart(Activator.getDefault().getContext());
-		Inject.service(ISubjectHolder.class).useRanking().into(authenticationService)
-				.andStart(Activator.getDefault().getContext());
-		Inject.service(ISessionHolder.class).useRanking().into(authenticationService)
-				.andStart(Activator.getDefault().getContext());
 	}
 
-	private void createAuthorizationServiceAndInjectors() {
-		// register AuthorizationService
+	private void createAuthorizationServiceAndWire() {
 		final IAuthorizationService authorizationService = new AuthorizationService();
+		Wire.instance(authorizationService).andStart();
+
 		final Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString()); //$NON-NLS-1$
 		properties.put("riena.remote.protocol", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("riena.remote.path", IAuthorizationService.WS_ID); //$NON-NLS-1$
 		getContext().registerService(IAuthorizationService.class.getName(), authorizationService, properties);
-
-		Inject.service(IPermissionStore.class).useRanking().into(authorizationService)
-				.andStart(Activator.getDefault().getContext());
 	}
 
-	private void createSessionServiceAndInjectors() {
-		// register SessionService
+	private void createSessionServiceAndWire() {
+		final ISessionService sessionService = new SessionService();
+		Wire.instance(sessionService).andStart();
+
 		final Hashtable<String, Object> properties = RienaConstants.newDefaultServiceProperties();
 		properties.put("riena.remote", Boolean.TRUE.toString()); //$NON-NLS-1$
 		properties.put("riena.remote.protocol", "hessian"); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("riena.remote.path", ISessionService.WS_ID); //$NON-NLS-1$
-		final ISessionService sessionService = new SessionService();
 		getContext().registerService(ISessionService.class.getName(), sessionService, properties);
-
-		Inject.service(ISessionStore.class).into(sessionService).andStart(Activator.getDefault().getContext());
-		Inject.service(ISessionProvider.class).into(sessionService).andStart(Activator.getDefault().getContext());
 	}
 
-	private void createSessionProviderAndInjectors() {
-		// register SessionProvider
+	private void createSessionProvider() {
 		getContext().registerService(ISessionProvider.class.getName(), new SessionProvider(),
 				RienaConstants.newDefaultServiceProperties());
-
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		Activator.plugin = null;

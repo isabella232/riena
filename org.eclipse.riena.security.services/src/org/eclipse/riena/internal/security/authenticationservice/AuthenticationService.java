@@ -19,6 +19,7 @@ import javax.security.auth.login.LoginException;
 import org.eclipse.equinox.security.auth.ILoginContext;
 import org.eclipse.equinox.security.auth.LoginContextFactory;
 
+import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authentication.AuthenticationFailure;
 import org.eclipse.riena.security.common.authentication.AuthenticationTicket;
@@ -47,10 +48,6 @@ public class AuthenticationService implements IAuthenticationService {
 	 */
 	public static final String VERSION_ID = "$Id$"; //$NON-NLS-1$
 
-	// private Properties properties;
-	//	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), AuthenticationService.class);
-
-	// private IAuthenticationModule authenticationModule;
 	private ISessionService sessionService;
 	private ISubjectHolder subjectHolder;
 	private ISessionHolder sessionHolder;
@@ -63,6 +60,7 @@ public class AuthenticationService implements IAuthenticationService {
 		super();
 	}
 
+	@InjectService(useRanking = true)
 	public void bind(final ISessionService sessionService) {
 		this.sessionService = sessionService;
 	}
@@ -73,6 +71,7 @@ public class AuthenticationService implements IAuthenticationService {
 		}
 	}
 
+	@InjectService(useRanking = true)
 	public void bind(final ISubjectHolder subjectHolder) {
 		this.subjectHolder = subjectHolder;
 	}
@@ -83,16 +82,7 @@ public class AuthenticationService implements IAuthenticationService {
 		}
 	}
 
-	// public void bind(IAuthenticationModule authenticationModule) {
-	// this.authenticationModule = authenticationModule;
-	// }
-	//
-	// public void unbind(IAuthenticationModule authenticationModule) {
-	// if (this.authenticationModule == authenticationModule) {
-	// this.authenticationModule = null;
-	// }
-	// }
-
+	@InjectService(useRanking = true)
 	public void bind(final ISessionHolder sessionHolder) {
 		this.sessionHolder = sessionHolder;
 	}
@@ -103,17 +93,7 @@ public class AuthenticationService implements IAuthenticationService {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.security.common.authentication.IAuthenticationService
-	 * #login(java.lang.String,
-	 * org.eclipse.riena.security.common.authentication.
-	 * credentials.AbstractCredential[])
-	 */
-	public AuthenticationTicket login(final String loginContext, final AbstractCredential[] credentials)
-			throws AuthenticationFailure {
+	public AuthenticationTicket login(final String loginContext, final AbstractCredential[] credentials) {
 		try {
 			final Callback[] callbacks = Callback2CredentialConverter.credentials2Callbacks(credentials);
 			// create login context and login
@@ -149,7 +129,7 @@ public class AuthenticationService implements IAuthenticationService {
 		}
 	}
 
-	public void logout() throws AuthenticationFailure {
+	public void logout() {
 		final Session session = sessionHolder.getSession();
 		if (session == null) {
 			throw new AuthenticationFailure("no valid session"); //$NON-NLS-1$
