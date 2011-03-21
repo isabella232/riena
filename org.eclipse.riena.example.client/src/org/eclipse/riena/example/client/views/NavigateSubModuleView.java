@@ -95,7 +95,6 @@ public class NavigateSubModuleView extends SubModuleView {
 		final Button validation = UIControlsFactory.createButton(parent);
 		fillFactory.applyTo(validation);
 		addUIControl(validation, "validation"); //$NON-NLS-1$
-
 	}
 
 }

@@ -32,6 +32,11 @@ public class NavigationArgument {
 	private String ridgetId;
 	private boolean prepareAll;
 	private NodePositioner nodePositioner;
+	/**
+	 * internal flag that indicated creation of nodes on a worker-thread
+	 * 
+	 */
+	private boolean createNodesAsync;
 
 	/**
 	 */
@@ -109,6 +114,21 @@ public class NavigationArgument {
 			final NavigationNodeId parentNodeId) {
 		this(parameter, parentNodeId);
 		this.updateListener = updateListener;
+	}
+
+	/**
+	 * @return the createNodesAsync
+	 */
+	public boolean isCreateNodesAsync() {
+		return createNodesAsync;
+	}
+
+	/**
+	 * @param createNodesAsync
+	 *            the createNodesAsync to set
+	 */
+	public void setCreateNodesAsync(final boolean createNodesAsync) {
+		this.createNodesAsync = createNodesAsync;
 	}
 
 	/**

@@ -27,12 +27,14 @@ import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.model.RunAsync;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
- *
+ * Sample for asynchronous buildNode(..)
  */
+@RunAsync
 public class ComboAndListNodeAssembler extends AbstractNavigationAssembler {
 
 	private Set<String> knownTargetIds = null;
@@ -78,8 +80,18 @@ public class ComboAndListNodeAssembler extends AbstractNavigationAssembler {
 				ListSubModuleView.ID, false);
 		subModule.addChild(subModule4);
 
+		sleep(3);
+
 		module.addChild(subModule);
 		return new IModuleGroupNode[] { node };
+	}
+
+	private void sleep(final int i) {
+		try {
+			Thread.sleep(i * 1000);
+		} catch (final InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

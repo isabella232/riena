@@ -1040,6 +1040,18 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		getNavigationProcessor().create(this, targetId, argument);
 	}
 
+	public void createAsync(final NavigationNodeId targetId, NavigationArgument argument) {
+		if (null == argument) {
+			argument = new NavigationArgument();
+		}
+		argument.setCreateNodesAsync(true);
+		getNavigationProcessor().create(this, targetId, argument);
+	}
+
+	public void createAsync(final NavigationNodeId targetId) {
+		createAsync(targetId, null);
+	}
+
 	public void moveTo(final NavigationNodeId targetId) {
 		throw new UnsupportedOperationException("Only ModuleNodes can be moved to a new target."); //$NON-NLS-1$
 

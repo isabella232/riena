@@ -19,11 +19,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
@@ -41,6 +45,7 @@ import org.eclipse.riena.navigation.StartupNodeInfo.Level;
 import org.eclipse.riena.navigation.extension.ICommonNavigationAssemblyExtension;
 import org.eclipse.riena.navigation.extension.INavigationAssembly2Extension;
 import org.eclipse.riena.navigation.extension.INode2Extension;
+import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 
 /**
  * This class provides navigation nodes that are defined by assemlies2
@@ -133,14 +138,12 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 *            the ID of the target node
 	 * @param argument
 	 *            contains information passed used for providing the target node
+	 * @param createNodeAsync
 	 * @return target node
 	 */
 	@SuppressWarnings("rawtypes")
 	protected INavigationNode<?> provideNodeHook(final INavigationNode<?> sourceNode, final NavigationNodeId targetId,
 			final NavigationArgument argument) {
-
-		//		System.err.println("\ntree:");
-		//		printNodeTree(getRootNode(sourceNode), 0);
 		INavigationNode<?> targetNode = findNode(getRootNode(sourceNode), targetId);
 		if (targetNode == null) {
 			if (LOGGER.isLoggable(LogService.LOG_DEBUG)) {
@@ -150,13 +153,37 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 			final INavigationAssembler assembler = getNavigationAssembler(targetId, argument);
 			if (assembler != null) {
 				final NavigationNodeId parentTypeId = getParentTypeId(argument, assembler);
-				// Call of findNode() on the result of method provideNodeHook() fixes problem for the case when the result 
-				// is not the node with typeId parentTypeId but one of the nodes parents (i.e. when the nodes assembler also 
-				// builds some of its parent nodes). 
+				// Call of findNode() on the result of method provideNodeHook() fixes problem for the case when the result
+				// is not the node with typeId parentTypeId but one of the nodes parents (i.e. when the nodes assembler also
+				// builds some of its parent nodes).
 				final INavigationNode parentNode = findNode(provideNodeHook(sourceNode, parentTypeId, null),
 						parentTypeId);
 				prepareNavigationAssembler(targetId, assembler, parentNode);
-				final INavigationNode<?>[] targetNodes = assembler.buildNode(targetId, argument);
+
+				INavigationNode<?>[] targetNodes = null;
+				if ((null != argument && argument.isCreateNodesAsync()) || shouldRunAsync(assembler)) {
+					final Callable<INavigationNode<?>[]> callable = new Callable<INavigationNode<?>[]>() {
+
+						public INavigationNode<?>[] call() throws Exception {
+							return assembler.buildNode(targetId, argument);
+						}
+					};
+					// Could be done with ExecutorService and Future. Using an UIProcess because of rap thread context attachment!
+					final NodeBuilderProcess process = new NodeBuilderProcess(callable);
+					process.start();
+					// FIXME addeed a dependecy to org.eclipse.swt so we can use the Display for dispatching.
+					// maybe we could move this code to UISynchronizer instead and get rid of the dependency
+					final Display display = Display.getCurrent();
+					// dispatch events
+					while (!process.isFinished()) {
+						if (!display.readAndDispatch()) {
+							display.sleep();
+						}
+					}
+					targetNodes = process.getResult();
+				} else {
+					targetNodes = assembler.buildNode(targetId, argument);
+				}
 				if ((targetNodes != null) && (targetNodes.length > 0)) {
 					prepareNodesAfterBuild(targetNodes, argument, parentNode, assembler, targetId, sourceNode);
 					targetNode = targetNodes[0];
@@ -175,6 +202,48 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 
 		// TODO: all targetNodes have to be returned, because overriding subclass may need it.
 		return targetNode;
+	}
+
+	/**
+	 * @param assembler
+	 * @return <code>true</code> if the given assembler has a {@link RunAsync}
+	 *         annotation, otherwise <code>false</code>
+	 */
+	private boolean shouldRunAsync(final INavigationAssembler assembler) {
+		return assembler.getClass().isAnnotationPresent(RunAsync.class);
+	}
+
+	private class NodeBuilderProcess extends UIProcess {
+
+		private final AtomicBoolean finished = new AtomicBoolean(false);
+		private final Callable<INavigationNode<?>[]> command;
+		private INavigationNode<?>[] result = null;
+
+		public NodeBuilderProcess(final Callable<INavigationNode<?>[]> command) {
+			super("worker", false); //$NON-NLS-1$
+			this.command = command;
+		}
+
+		@Override
+		public boolean runJob(final IProgressMonitor monitor) {
+			try {
+				result = command.call();
+			} catch (final Exception e) {
+				LOGGER.log(LogService.LOG_ERROR, e.getMessage());
+			} finally {
+				finished.set(true);
+			}
+			return true;
+		}
+
+		private boolean isFinished() {
+			return finished.get();
+		}
+
+		private INavigationNode<?>[] getResult() {
+			return result;
+		}
+
 	}
 
 	//	private void printNodeTree(final INavigationNode<?> root, final int depth) {

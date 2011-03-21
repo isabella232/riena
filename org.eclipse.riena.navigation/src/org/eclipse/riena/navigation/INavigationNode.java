@@ -619,6 +619,35 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	void create(NavigationNodeId targetId, NavigationArgument argument);
 
 	/**
+	 * Creates the specified navigation node on a worker-thread and adds it to
+	 * the application model if does not already exist. It also adds the
+	 * NavigationArgument to the context of the NavigationNode.
+	 * 
+	 * @param targetId
+	 *            ID of the node to create. Also refers to an extension point
+	 *            describing the target node that is used to create it if it
+	 *            does not exist.
+	 * @param argument
+	 *            The optional NavigationArgument
+	 * @see INavigationAssembler
+	 * @see NavigationArgument
+	 */
+	void createAsync(NavigationNodeId targetId, NavigationArgument argument);
+
+	/**
+	 * Creates the specified navigation node on a worker-thread and adds it to
+	 * the application model if does not already exist. It also adds the
+	 * NavigationArgument to the context of the NavigationNode.
+	 * 
+	 * @param targetId
+	 *            ID of the node to create. Also refers to an extension point
+	 *            describing the target node that is used to create it if it
+	 *            does not exist.
+	 * @see INavigationAssembler
+	 */
+	void createAsync(final NavigationNodeId targetId);
+
+	/**
 	 * Moves this node to the node identified by the targetId. When moving a
 	 * node as child to another keep in mind that you have to honor the strict
 	 * type hierarchy of the nodes in the navigation model.

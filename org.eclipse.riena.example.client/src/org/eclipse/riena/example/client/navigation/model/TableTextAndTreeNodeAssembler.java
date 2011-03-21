@@ -50,6 +50,12 @@ public class TableTextAndTreeNodeAssembler extends AbstractNavigationAssembler {
 	public IModuleGroupNode[] buildNode(final NavigationNodeId presentationId,
 			final NavigationArgument navigationArgument) {
 
+		try {
+			Thread.sleep(3000);
+		} catch (final InterruptedException e) {
+			e.printStackTrace();
+		}
+
 		final IModuleGroupNode node = new ModuleGroupNode(new NavigationNodeId(
 				"org.eclipse.riena.example.navigate.tableTextAndTree")); //$NON-NLS-1$
 		final IModuleNode module = new ModuleNode(null, "Table,Text&Tree"); //$NON-NLS-1$

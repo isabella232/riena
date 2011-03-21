@@ -42,11 +42,11 @@ public class NavigateSubModuleController extends SubModuleController {
 	public void configureRidgets() {
 
 		final IActionRidget comboAndList = getRidget(IActionRidget.class, "comboAndList"); //$NON-NLS-1$
-		comboAndList.setText("Combo and List (SubApplication 1)"); //$NON-NLS-1$
+		comboAndList.setText("Combo and List (async) (SubApplication 1)"); //$NON-NLS-1$
 		comboAndList.addListener(new ComboAndListListener());
 
 		final IActionRidget tableTextAndTree = getRidget(IActionRidget.class, "tableTextAndTree"); //$NON-NLS-1$
-		tableTextAndTree.setText("Table, Text and Tree (SubApplication 2) [First Position]"); //$NON-NLS-1$
+		tableTextAndTree.setText("Table, Text and Tree (async) (SubApplication 2) [First Position]"); //$NON-NLS-1$
 		tableTextAndTree.addListener(new TableTextAndTreeListener());
 
 		final IActionRidget textAssembly = getRidget(IActionRidget.class, "textAssembly"); //$NON-NLS-1$
@@ -107,7 +107,6 @@ public class NavigateSubModuleController extends SubModuleController {
 
 			}
 		});
-
 	}
 
 	private class ComboAndListListener implements IActionListener {
@@ -125,7 +124,7 @@ public class NavigateSubModuleController extends SubModuleController {
 		public void callback() {
 			final NavigationArgument naviAgr = new NavigationArgument();
 			naviAgr.setNodePositioner(NodePositioner.ADD_BEGINNING);
-			getNavigationNode().navigate(
+			getNavigationNode().createAsync(
 					new NavigationNodeId("org.eclipse.riena.example.navigate.tableTextAndTree"), naviAgr); //$NON-NLS-1$
 		}
 
