@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.riena.security.common" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.eclipse.riena.security.common" id="permissionCacheConfig" name="PermissionCache configuration"/>
+      </appinfo>
+      <documentation>
+         Allows to set the properties of the permission cache.
+
+If this properties are not set, the following defaults apply:
+
+on the client:
+	minimumSize = 1
+	timeout = 999999000 ms
+	
+on the server:	
+	minimumSize = 100
+	timeout = 360000
+
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence minOccurs="0" maxOccurs="1">
+            <element ref="config"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="config">
+      <annotation>
+         <documentation>
+            The properties of the permission cache.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="minimumSize" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Set the minimum number of entries that are held in the cache. This is the number of objects that are held in the cache as minimum even if there is a low-memory situation. There is no guarantee that there are minimumSize objects in the cache because objects are also removed if a timeout occurs. However objects are not automatically garbage-collected if they are in the pool of minimumSize objects but only when the application tries to get them and the expiration of the entry is detected.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="timeout" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Set the timeout (in milliseconds) for cached objects. After the timeout objects can not be found with get, even if the GC has not yet cleaned them from the cache.
+
+-1 maps to Integer.MAX_VALUE
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+
+</schema>

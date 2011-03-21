@@ -44,12 +44,6 @@ public class Activator extends RienaPlugin {
 	public Activator() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
@@ -65,7 +59,7 @@ public class Activator extends RienaPlugin {
 		context.registerService(ISubjectHolder.class.getName(), ContainerModel.isClient() ? new SimpleSubjectHolder()
 				: new SimpleThreadedSubjectHolder(), null);
 
-		context.registerService(IPermissionCache.class.getName(), new PermissionCache(), null);
+		createPermissionCacheAndWire();
 
 		createSentinelServiceAndInjectors();
 	}
@@ -83,12 +77,14 @@ public class Activator extends RienaPlugin {
 				.andStart(Activator.getDefault().getContext());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
+	private void createPermissionCacheAndWire() {
+		final PermissionCache permissionCache = new PermissionCache();
+		Wire.instance(permissionCache).andStart();
+
+		getContext().registerService(IPermissionCache.class.getName(), permissionCache,
+				RienaConstants.newDefaultServiceProperties());
+	}
+
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		Activator.plugin = null;

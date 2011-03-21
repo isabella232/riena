@@ -17,6 +17,7 @@ import javax.security.auth.Subject;
 
 import org.eclipse.riena.core.cache.GenericObjectCache;
 import org.eclipse.riena.core.util.ContainerModel;
+import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.security.common.authorization.IPermissionCache;
 
 public class PermissionCache implements IPermissionCache {
@@ -49,5 +50,14 @@ public class PermissionCache implements IPermissionCache {
 	}
 
 	public void purgePermissions(final Principal principal) {
+	}
+
+	@InjectExtension(min = 0, max = 1)
+	public void update(final IPermissionCacheExtension permissionCacheExtension) {
+		if (permissionCacheExtension != null) {
+			permCache.setMinimumSize(permissionCacheExtension.getMinimumSize());
+			final int timeout = permissionCacheExtension.getTimeout();
+			permCache.setTimeout(timeout == -1 ? Integer.MAX_VALUE : timeout);
+		}
 	}
 }
