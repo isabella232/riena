@@ -922,10 +922,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 			notifyBlockedChanged();
 		}
 
-		// taken out because it has caused some problems
-		//		for (final INavigationNode<?> child : getChildren()) {
-		//			child.setBlocked(blocked);
-		//		}
+		for (final INavigationNode<?> child : getChildren()) {
+			child.setBlocked(blocked);
+		}
 	}
 
 	/**
