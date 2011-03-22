@@ -145,18 +145,18 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 		verify(getMockNavigationProcessor());
 	}
 
-	public void testNavigateTableTextAndTree() {
+	public void testNavigateFirstModule() {
 		final NavigationArgument naviAgr = new NavigationArgument();
 		naviAgr.setNodePositioner(NodePositioner.ADD_BEGINNING);
 		expect(
 				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
-						eq(new NavigationNodeId("org.eclipse.riena.example.navigate.tableTextAndTree")), eq(naviAgr)))
-				.andReturn(createNavigationNode("org.eclipse.riena.example.navigate.tableTextAndTree"));
+						eq(new NavigationNodeId("org.eclipse.riena.example.navigate.firstmodule")), eq(naviAgr)))
+				.andReturn(createNavigationNode("org.eclipse.riena.example.navigate.firstmodule"));
 
 		replay(getMockNavigationProcessor());
-		final IActionRidget navigateToTableTextAndTree = getController().getRidget(IActionRidget.class,
-				"tableTextAndTree");
-		navigateToTableTextAndTree.fireAction();
+		final IActionRidget navigateFirstModule = getController().getRidget(IActionRidget.class,
+				"openAsFirstModule");
+		navigateFirstModule.fireAction();
 		verify(getMockNavigationProcessor());
 	}
 
