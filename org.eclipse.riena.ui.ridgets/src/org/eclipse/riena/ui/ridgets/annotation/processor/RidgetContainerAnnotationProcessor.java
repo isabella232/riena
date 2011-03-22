@@ -76,7 +76,7 @@ public final class RidgetContainerAnnotationProcessor {
 
 	private void processAnnotations(final IRidgetContainer ridgetContainer, final Object target,
 			final Class<?> targetClass) {
-		if (!IRidgetContainer.class.isAssignableFrom(targetClass)) {
+		if (targetClass == Object.class) {
 			return;
 		}
 		processAnnotations(ridgetContainer, target, targetClass.getSuperclass());
