@@ -53,6 +53,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaLocations;
 import org.eclipse.riena.core.RienaStatus;
+import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.util.CipherUtils;
 import org.eclipse.riena.core.util.IOUtils;
 import org.eclipse.riena.core.util.Literal;
@@ -192,9 +193,15 @@ public class SimpleStore implements IStore, IExecutableExtension {
 			}
 		});
 		for (final File file : trans) {
-			final String name = file.getName().replace(COLLECT_FILE_EXTENSION, TRANSFER_FILE_EXTENSION);
-			final boolean fileRenamed = file.renameTo(new File(file.getParent(), name));
-			Assert.isTrue(fileRenamed);
+			final String transferName = file.getName().replace(COLLECT_FILE_EXTENSION, TRANSFER_FILE_EXTENSION);
+			final File transfer = new File(file.getParent(), transferName);
+			if (transfer.exists()) {
+				transfer.delete();
+			}
+			if (!file.renameTo(transfer)) {
+				new ConsoleLogger(SimpleStore.class.getName()).log(LogService.LOG_WARNING,
+						"Could not rename " + file + " to " + transfer + "."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			}
 		}
 	}
 
