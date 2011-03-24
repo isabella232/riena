@@ -30,6 +30,7 @@ import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.RAPDetector;
 import org.eclipse.riena.internal.navigation.ui.swt.handlers.SwitchModule;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.NavigationProcessor;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -244,10 +245,27 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 		boolean result = true;
 		final INavigationNode<?> node = (INavigationNode<?>) item.getData();
 		if (node instanceof SubModuleNode) {
-			//			result = ((SubModuleNode) node).isSelectable() || !node.getChildren().isEmpty();
-			result = ((SubModuleNode) node).isSelectable();
+			result = isSelectableRoot((SubModuleNode) node);
+
 		}
 		return result;
+	}
+
+	/*
+	 * return true if the node or one of its child-successors is selectable
+	 */
+	private boolean isSelectableRoot(final ISubModuleNode node) {
+		if (node.isSelectable()) {
+			return true;
+		}
+		final List<ISubModuleNode> children = node.getChildren();
+		for (final ISubModuleNode child : children) {
+			if (isSelectableRoot(child)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
