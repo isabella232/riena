@@ -8,42 +8,31 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.annotation.handler;
+package org.eclipse.riena.internal.ui.ridgets.annotation.handler;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-import org.eclipse.riena.ui.ridgets.IActionListener;
-import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
-import org.eclipse.riena.ui.ridgets.ITraverseRidget;
-import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
+import org.eclipse.riena.ui.ridgets.annotation.OnFocusGained;
+import org.eclipse.riena.ui.ridgets.annotation.handler.AbstractRidgetContainerAnnotationHandler;
+import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 
 /**
- * Annotation handler for {@code @OnActionCallback}
+ * Annotation handler for {@code @OnFocusGained}
  * 
  * @since 3.0
  */
-public class ActionCallbackAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
+public class FocusGainedAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
 			final Object target, final Method targetMethod) {
 
-		if (annotation instanceof OnActionCallback) {
+		if (annotation instanceof OnFocusGained) {
 			final IRidget ridget = getRidget(annotation, targetMethod, ridgetContainer,
-					((OnActionCallback) annotation).ridgetId());
-			final IActionListener actionListener = createListener(IActionListener.class, "callback", target, //$NON-NLS-1$
-					targetMethod);
-			if (ridget instanceof IActionRidget) {
-				((IActionRidget) ridget).addListener(actionListener);
-			} else if (ridget instanceof ITraverseRidget) {
-				((ITraverseRidget) ridget).addListener(actionListener);
-			} else {
-				errorUnsupportedRidgetType(annotation, ridget);
-			}
-
+					((OnFocusGained) annotation).ridgetId());
+			ridget.addFocusListener(createListener(IFocusListener.class, "focusGained", target, targetMethod)); //$NON-NLS-1$
 		}
 	}
-
 }

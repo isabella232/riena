@@ -8,40 +8,43 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.annotation.handler;
+package org.eclipse.riena.internal.ui.ridgets.annotation.handler;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
-import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.ITreeRidget;
-import org.eclipse.riena.ui.ridgets.annotation.OnDoubleClick;
+import org.eclipse.riena.ui.ridgets.ITraverseRidget;
+import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
+import org.eclipse.riena.ui.ridgets.annotation.handler.AbstractRidgetContainerAnnotationHandler;
 
 /**
- * Annotation handler for {@code @OnDoubleClick}
+ * Annotation handler for {@code @OnActionCallback}
  * 
  * @since 3.0
  */
-public class DoubleClickAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
+public class ActionCallbackAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
 			final Object target, final Method targetMethod) {
 
-		if (annotation instanceof OnDoubleClick) {
+		if (annotation instanceof OnActionCallback) {
 			final IRidget ridget = getRidget(annotation, targetMethod, ridgetContainer,
-					((OnDoubleClick) annotation).ridgetId());
+					((OnActionCallback) annotation).ridgetId());
 			final IActionListener actionListener = createListener(IActionListener.class, "callback", target, //$NON-NLS-1$
 					targetMethod);
-			if (ridget instanceof ITableRidget) {
-				((ITableRidget) ridget).addDoubleClickListener(actionListener);
-			} else if (ridget instanceof ITreeRidget) {
-				((ITreeRidget) ridget).addDoubleClickListener(actionListener);
+			if (ridget instanceof IActionRidget) {
+				((IActionRidget) ridget).addListener(actionListener);
+			} else if (ridget instanceof ITraverseRidget) {
+				((ITraverseRidget) ridget).addListener(actionListener);
 			} else {
 				errorUnsupportedRidgetType(annotation, ridget);
 			}
+
 		}
 	}
+
 }

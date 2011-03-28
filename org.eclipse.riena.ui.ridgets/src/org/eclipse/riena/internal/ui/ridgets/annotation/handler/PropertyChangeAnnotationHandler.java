@@ -8,30 +8,35 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.annotation.handler;
+package org.eclipse.riena.internal.ui.ridgets.annotation.handler;
 
+import java.beans.PropertyChangeListener;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
-import org.eclipse.riena.ui.ridgets.annotation.OnFocusLost;
-import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
+import org.eclipse.riena.ui.ridgets.annotation.OnPropertyChange;
+import org.eclipse.riena.ui.ridgets.annotation.handler.AbstractRidgetContainerAnnotationHandler;
 
 /**
- * Annotation handler for {@code @OnFocusLost}
+ * Annotation handler for {@code @OnPropertyChange}
  * 
  * @since 3.0
  */
-public class FocusLostAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
+public class PropertyChangeAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
 			final Object target, final Method targetMethod) {
 
-		if (annotation instanceof OnFocusLost) {
+		if (annotation instanceof OnPropertyChange) {
+			final OnPropertyChange propertyChangeAnnotation = ((OnPropertyChange) annotation);
 			final IRidget ridget = getRidget(annotation, targetMethod, ridgetContainer,
-					((OnFocusLost) annotation).ridgetId());
-			ridget.addFocusListener(createListener(IFocusListener.class, "focusLost", target, targetMethod)); //$NON-NLS-1$
+					propertyChangeAnnotation.ridgetId());
+			final String propertyName = propertyChangeAnnotation.propertyName().length() == 0 ? null
+					: propertyChangeAnnotation.propertyName();
+			ridget.addPropertyChangeListener(propertyName,
+					createListener(PropertyChangeListener.class, "propertyChange", target, targetMethod)); //$NON-NLS-1$
 		}
 	}
 }

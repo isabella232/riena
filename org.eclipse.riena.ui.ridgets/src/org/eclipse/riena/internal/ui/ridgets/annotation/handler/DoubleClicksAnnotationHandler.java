@@ -8,30 +8,32 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.ui.ridgets.annotation.handler;
+package org.eclipse.riena.internal.ui.ridgets.annotation.handler;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
-import org.eclipse.riena.ui.ridgets.annotation.OnFocusGained;
-import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
+import org.eclipse.riena.ui.ridgets.annotation.OnDoubleClick;
+import org.eclipse.riena.ui.ridgets.annotation.OnDoubleClicks;
+import org.eclipse.riena.ui.ridgets.annotation.handler.AbstractRidgetContainerAnnotationHandler;
+import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
 
 /**
- * Annotation handler for {@code @OnFocusGained}
+ * Annotation handler for {@code OnDoubleClicks}
  * 
  * @since 3.0
  */
-public class FocusGainedAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
+public class DoubleClicksAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
 			final Object target, final Method targetMethod) {
 
-		if (annotation instanceof OnFocusGained) {
-			final IRidget ridget = getRidget(annotation, targetMethod, ridgetContainer,
-					((OnFocusGained) annotation).ridgetId());
-			ridget.addFocusListener(createListener(IFocusListener.class, "focusGained", target, targetMethod)); //$NON-NLS-1$
+		if (annotation instanceof OnDoubleClicks) {
+			for (final OnDoubleClick nestedAnnotation : ((OnDoubleClicks) annotation).value()) {
+				RidgetContainerAnnotationProcessor.getInstance().handle(nestedAnnotation, ridgetContainer, target,
+						targetMethod);
+			}
 		}
 	}
 }
