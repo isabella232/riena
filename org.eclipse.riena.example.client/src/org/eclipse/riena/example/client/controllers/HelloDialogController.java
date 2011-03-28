@@ -29,6 +29,7 @@ import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
+import org.eclipse.riena.ui.ridgets.annotation.OnActionCallbacks;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 
 /**
@@ -106,6 +107,12 @@ public class HelloDialogController extends AbstractWindowController {
 		compositeCarExtras.updateFromModel();
 		compositeCarWarranty.updateFromModel();
 		compositeCarPlates.updateFromModel();
+	}
+
+	@SuppressWarnings("unused")
+	@OnActionCallbacks({ @OnActionCallback(ridgetId = "buttonPreset"), @OnActionCallback(ridgetId = "buttonReset") })
+	private void demonstrateMutlipleOnActionCallbacksAnnotation() {
+		System.out.println("Demonstrate multiple @OnActionCallback annotations!"); //$NON-NLS-1$
 	}
 
 	// helping methods
