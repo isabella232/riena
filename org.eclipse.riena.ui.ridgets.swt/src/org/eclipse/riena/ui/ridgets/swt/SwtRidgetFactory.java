@@ -11,9 +11,10 @@
 package org.eclipse.riena.ui.ridgets.swt;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.widgets.Control;
@@ -81,11 +82,15 @@ public final class SwtRidgetFactory {
 	}
 
 	private static final class DummyContainer implements IRidgetContainer {
-
+		private final Map<String, IRidget> ridgets = new HashMap<String, IRidget>();
 		private IRidget ridget;
 
 		public void addRidget(final String id, final IRidget ridget) {
-			this.ridget = ridget;
+			if (id == null) {
+				this.ridget = ridget;
+			} else {
+				ridgets.put(id, ridget);
+			}
 		}
 
 		public void configureRidgets() {
@@ -94,7 +99,10 @@ public final class SwtRidgetFactory {
 
 		@SuppressWarnings("unchecked")
 		public <R extends IRidget> R getRidget(final String id) {
-			return (R) ridget;
+			if (id == null) {
+				return (R) ridget;
+			}
+			return (R) ridgets.get(id);
 		}
 
 		public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
@@ -102,7 +110,7 @@ public final class SwtRidgetFactory {
 		}
 
 		public Collection<? extends IRidget> getRidgets() {
-			return Arrays.asList(ridget);
+			return ridgets.values();
 		}
 
 		void clear() {

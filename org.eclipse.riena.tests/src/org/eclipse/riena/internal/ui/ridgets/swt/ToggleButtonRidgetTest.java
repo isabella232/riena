@@ -12,6 +12,9 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
@@ -26,10 +29,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.riena.core.marker.AbstractMarker;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * Tests of the class <code>ToggleButtonRidget</code>.
@@ -833,6 +839,40 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(control.isEnabled());
 	}
 
+	public void testSingleChoiceRadioButtons() throws Exception {
+		// setting up test chase: we need two RadioButtons with the same parent
+		// those buttons have to be bound and the ridgets must be
+		// available in the controller
+		// not using injectRidgets of the BindingManager to keep the test as capsuled as possible
+		final IRidgetContainer controller = new DummyContainer();
+
+		final Button button = new Button(getShell(), SWT.RADIO);
+		final IToggleButtonRidget ridget = new ToggleButtonRidget();
+		ridget.setUIControl(button);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, "radio1");
+		ridget.setController(controller);
+		controller.addRidget("radio1", ridget);
+
+		final Button button2 = new Button(getShell(), SWT.RADIO);
+		final IToggleButtonRidget ridget2 = new ToggleButtonRidget();
+		ridget2.setUIControl(button2);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(button2, "radio2");
+		ridget2.setController(controller);
+		controller.addRidget("radio2", ridget2);
+
+		ridget2.setSelected(true);
+		assertFalse(ridget.isSelected());
+		assertTrue(ridget2.isSelected());
+		assertFalse(button.getSelection());
+		assertTrue(button2.getSelection());
+
+		ridget.setSelected(true);
+		assertTrue(ridget.isSelected());
+		assertFalse(ridget2.isSelected());
+		assertTrue(button.getSelection());
+		assertFalse(button2.getSelection());
+	}
+
 	// helping methods
 	//////////////////
 
@@ -867,6 +907,31 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		public void setSelected(final boolean selected) {
 			this.selected = selected;
+		}
+	}
+
+	private static final class DummyContainer implements IRidgetContainer {
+		private final Map<String, IRidget> ridgets = new HashMap<String, IRidget>();
+
+		public void addRidget(final String id, final IRidget ridget) {
+			ridgets.put(id, ridget);
+		}
+
+		public void configureRidgets() {
+			// nothing
+		}
+
+		@SuppressWarnings("unchecked")
+		public <R extends IRidget> R getRidget(final String id) {
+			return (R) ridgets.get(id);
+		}
+
+		public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
+			return getRidget(id);
+		}
+
+		public Collection<? extends IRidget> getRidgets() {
+			return ridgets.values();
 		}
 	}
 

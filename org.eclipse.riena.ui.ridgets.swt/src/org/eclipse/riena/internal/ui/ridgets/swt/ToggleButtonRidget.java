@@ -26,8 +26,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractToggleButtonRidget;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * Adapter of the SWT Widget <code>Button</code> with the style SWT.CHECK,
@@ -136,6 +138,20 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 	}
 
 	@Override
+	public void setSelected(final boolean selected) {
+		final Button selectedUIControl = getUIControl();
+		if (!isSelected() && selected && isRadioSingleSelection(selectedUIControl)) {
+			for (final Button sibling : getSiblings(selectedUIControl)) {
+				final String bindingId = SWTBindingPropertyLocator.getInstance().locateBindingProperty(sibling);
+				final IToggleButtonRidget siblingRidget = getController().getRidget(IToggleButtonRidget.class,
+						bindingId);
+				siblingRidget.setSelected(false);
+			}
+		}
+		super.setSelected(selected);
+	}
+
+	@Override
 	protected void updateMandatoryMarkers() {
 		final boolean disableMarker = isDisableMandatoryMarker();
 		final Button control = getUIControl();
@@ -172,15 +188,19 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 	}
 
 	private boolean isCheck(final Control control) {
-		return (control.getStyle() & SWT.CHECK) > 0;
+		return control != null && (control.getStyle() & SWT.CHECK) > 0;
 	}
 
 	private boolean isRadio(final Control control) {
-		return (control.getStyle() & SWT.RADIO) > 0;
+		return control != null && (control.getStyle() & SWT.RADIO) > 0;
+	}
+
+	private boolean isRadioSingleSelection(final Control control) {
+		return isRadio(control) && (control.getStyle() & SWT.NO_RADIO_GROUP) == 0;
 	}
 
 	private boolean isToggle(final Control control) {
-		return (control.getStyle() & SWT.TOGGLE) > 0;
+		return control != null && (control.getStyle() & SWT.TOGGLE) > 0;
 	}
 
 	private boolean siblingsAreSelected() {
@@ -211,6 +231,7 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 
 		private final Button button;
 
+		@SuppressWarnings("restriction")
 		public SelectionObservableWithOutputOnly(final Button source) {
 			super(getValueBindingSupport().getContext().getValidationRealm(), source, new ButtonSelectionProperty());
 			Assert.isNotNull(source);
@@ -239,5 +260,6 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 				button.removeSelectionListener(this);
 			}
 		}
+
 	}
 }
