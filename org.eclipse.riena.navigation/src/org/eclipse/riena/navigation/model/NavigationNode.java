@@ -412,7 +412,12 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 * @since 2.0
 	 */
 	public void prepare() {
+		final List<C> oldChildren = new ArrayList<C>(getChildren());
 		getNavigationProcessor().prepare(this);
+		//if the prepare() creates child nodes, we have to fire an event to notify the tree about changes
+		if (!getChildren().isEmpty() && getChildren().size() > oldChildren.size()) {
+			fireChildAdded(getChild(0), oldChildren);
+		}
 	}
 
 	public boolean allowsActivate(final INavigationContext context) {
