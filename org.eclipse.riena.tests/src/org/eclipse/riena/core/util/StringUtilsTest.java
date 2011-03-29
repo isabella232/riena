@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -138,4 +139,11 @@ public class StringUtilsTest extends TestCase {
 				joined.lastIndexOf(separator));
 	}
 
+	public void testSplit() {
+		assertEquals(Collections.EMPTY_LIST, StringUtils.split(null, ','));
+		assertEquals(Literal.list(""), StringUtils.split("", ','));
+		assertEquals(Literal.list("1"), StringUtils.split("1", ','));
+		assertEquals(Literal.list("1").list("2"), StringUtils.split("1,2", ','));
+		assertEquals(Literal.list("1").list("2").list(""), StringUtils.split("1,2,", ','));
+	}
 }
