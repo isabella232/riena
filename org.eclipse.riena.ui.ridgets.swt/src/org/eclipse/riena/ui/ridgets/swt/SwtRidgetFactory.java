@@ -86,11 +86,10 @@ public final class SwtRidgetFactory {
 		private IRidget ridget;
 
 		public void addRidget(final String id, final IRidget ridget) {
-			if (id == null) {
-				this.ridget = ridget;
-			} else {
+			if (id != null && !"dummy".equals(id)) { //$NON-NLS-1$
 				ridgets.put(id, ridget);
 			}
+			this.ridget = ridget;
 		}
 
 		public void configureRidgets() {
@@ -99,7 +98,7 @@ public final class SwtRidgetFactory {
 
 		@SuppressWarnings("unchecked")
 		public <R extends IRidget> R getRidget(final String id) {
-			if (id == null) {
+			if (id == null || "dummy".equals(id)) { //$NON-NLS-1$
 				return (R) ridget;
 			}
 			return (R) ridgets.get(id);
