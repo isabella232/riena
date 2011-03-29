@@ -10,7 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.core.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Collection of String/CharSequence utilities.
@@ -137,4 +140,32 @@ public final class StringUtils {
 		}
 		return sb.toString();
 	}
+
+	/**
+	 * Split the {@code separator} separated string.
+	 * <p>
+	 * That could also be made with {@code String.split()} but this
+	 * implementation avoids creating a regExp and because of that it is a
+	 * little bit faster.
+	 * 
+	 * @param string
+	 * @param separator
+	 * @return a list of the splitted string
+	 */
+	public static List<String> split(final String string, final char separator) {
+		if (string == null) {
+			return Collections.emptyList();
+		}
+		final List<String> result = new ArrayList<String>();
+		int fromIndex = 0;
+		int i;
+		while ((i = string.indexOf(separator, fromIndex)) > 0) {
+			result.add(string.substring(fromIndex, i));
+			fromIndex = i + 1;
+		}
+		result.add(string.substring(fromIndex));
+
+		return result;
+	}
+
 }
