@@ -27,7 +27,6 @@ import org.osgi.service.log.LogService;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.equinox.log.Logger;
-import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
@@ -46,6 +45,7 @@ import org.eclipse.riena.navigation.extension.ICommonNavigationAssemblyExtension
 import org.eclipse.riena.navigation.extension.INavigationAssembly2Extension;
 import org.eclipse.riena.navigation.extension.INode2Extension;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
+import org.eclipse.riena.ui.core.uiprocess.UISynchronizer;
 
 /**
  * This class provides navigation nodes that are defined by assemlies2
@@ -171,15 +171,11 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 					// Could be done with ExecutorService and Future. Using an UIProcess because of rap thread context attachment!
 					final NodeBuilderProcess process = new NodeBuilderProcess(callable);
 					process.start();
-					// FIXME addeed a dependecy to org.eclipse.swt so we can use the Display for dispatching.
-					// maybe we could move this code to UISynchronizer instead and get rid of the dependency
-					final Display display = Display.getCurrent();
-					// dispatch events
-					while (!process.isFinished()) {
-						if (!display.readAndDispatch()) {
-							display.sleep();
+					UISynchronizer.createSynchronizer().readAndDispatch(new Callable<Boolean>() {
+						public Boolean call() throws Exception {
+							return process.isFinished();
 						}
-					}
+					});
 					targetNodes = process.getResult();
 				} else {
 					targetNodes = assembler.buildNode(targetId, argument);

@@ -7,8 +7,7 @@ Bundle-Activator: org.eclipse.riena.internal.navigation.Activator
 Require-Bundle: org.eclipse.riena.core,
  org.eclipse.riena.ui.core,
  org.eclipse.riena.ui.ridgets,
- org.eclipse.riena.ui.filter;visibility:=reexport,
- org.eclipse.swt
+ org.eclipse.riena.ui.filter;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.riena.internal.navigation;x-internal:=true,
  org.eclipse.riena.navigation,

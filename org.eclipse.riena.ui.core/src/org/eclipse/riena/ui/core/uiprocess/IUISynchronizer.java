@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.uiprocess;
 
+import java.util.concurrent.Callable;
+
 /**
  * Class implementing this interface are responsible for executing a
  * {@code Runnable} on the UI-Thread of the underlying widget toolkit.
@@ -33,4 +35,14 @@ public interface IUISynchronizer {
 	 *            the {@code Runnable} to be executed on the UI-thread
 	 */
 	void asyncExec(Runnable runnable);
+
+	/**
+	 * Dispatches the swt-events while the given condition returns
+	 * <code>true</code>
+	 * 
+	 * @param condition
+	 *            the run condition
+	 * @since 3.0
+	 */
+	void readAndDispatch(Callable<Boolean> condition);
 }

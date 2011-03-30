@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -261,5 +262,30 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	 */
 	public static void setWorkbenchShutdown(final boolean workbenchShutdown) {
 		SwtUISynchronizer.workbenchShutdown.set(workbenchShutdown);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.ui.core.uiprocess.IUISynchronizer#readAndDispatch(java
+	 * .util.concurrent.Callable)
+	 */
+	public void readAndDispatch(final Callable<Boolean> condition) {
+		Assert.isNotNull(condition);
+
+		final Display display = Display.getCurrent();
+
+		// dispatch events
+		try {
+			while (!condition.call()) {
+				if (!display.readAndDispatch()) {
+					display.sleep();
+				}
+			}
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 }
