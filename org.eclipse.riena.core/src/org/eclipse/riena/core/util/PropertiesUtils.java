@@ -133,7 +133,7 @@ public final class PropertiesUtils {
 		}
 		// validate optional expected keys
 		for (final String expectedKey : expectedKeys) {
-			Assert.isLegal(result.containsKey(expectedKey), "data " + data + "does not contain expected key " //$NON-NLS-1$ //$NON-NLS-2$
+			Assert.isLegal(result.containsKey(expectedKey), "data " + data + " does not contain expected key " //$NON-NLS-1$ //$NON-NLS-2$
 					+ expectedKey + "."); //$NON-NLS-1$
 		}
 		return Collections.unmodifiableMap(result);
