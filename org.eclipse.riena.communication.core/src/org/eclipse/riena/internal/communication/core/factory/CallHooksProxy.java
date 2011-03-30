@@ -19,8 +19,6 @@ import javax.security.auth.Subject;
 import com.caucho.hessian.client.HessianRuntimeException;
 import com.caucho.hessian.io.HessianProtocolException;
 
-import org.osgi.service.log.LogService;
-
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.communication.core.RemoteFailure;
@@ -58,17 +56,16 @@ public class CallHooksProxy extends AbstractHooksProxy {
 		if (callHooks.size() > 0) {
 			// call before service hook
 			for (final ICallHook sHook : callHooks) {
-				try {
-					sHook.beforeCall(context);
-				} catch (final Throwable e) {
-					LOGGER.log(LogService.LOG_ERROR, "exception in beforeCall", e); //$NON-NLS-1$
-				}
+				sHook.beforeCall(context);
 			}
 		}
 
+		final ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
+		Thread.currentThread().setContextClassLoader(rsd.getServiceClassLoader());
 		try {
 			return super.invoke(proxy, method, args);
 		} catch (final InvocationTargetException e) {
+			Thread.currentThread().setContextClassLoader(oldClassLoader);
 			// first check for specific Hessian exceptions
 			if (e.getTargetException() instanceof HessianRuntimeException
 					|| e.getTargetException() instanceof HessianProtocolException) {
@@ -97,15 +94,12 @@ public class CallHooksProxy extends AbstractHooksProxy {
 			context.setRemoteFailure(true);
 			throw new RemoteFailure("Error while invoking remote service", e.getTargetException()); //$NON-NLS-1$
 		} finally {
+			Thread.currentThread().setContextClassLoader(oldClassLoader);
 			context.getMessageContext().fireEndCall();
 			// call hooks after the call
 			if (callHooks.size() > 0) {
 				for (final ICallHook sHook : callHooks) {
-					try {
-						sHook.afterCall(context);
-					} catch (final Throwable e) {
-						LOGGER.log(LogService.LOG_ERROR, "exception in afterCall", e); //$NON-NLS-1$
-					}
+					sHook.afterCall(context);
 				}
 			}
 		}
