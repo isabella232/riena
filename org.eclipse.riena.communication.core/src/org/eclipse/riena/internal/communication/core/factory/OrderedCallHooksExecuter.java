@@ -20,25 +20,19 @@ import org.eclipse.riena.core.util.Orderer;
 import org.eclipse.riena.core.wire.InjectExtension;
 
 /**
- * A {@code ICallHook} that executes the ´ordered´ call hooks.
+ * A {@link ICallHook} that executes the ´ordered´ call hooks.
  */
 public class OrderedCallHooksExecuter implements ICallHook {
 
 	private List<ICallHook> orderedCallHooks;
 	private List<ICallHook> reversedCallHooks;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void beforeCall(final CallContext context) {
 		for (final ICallHook sHook : orderedCallHooks) {
 			sHook.beforeCall(context);
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public void afterCall(final CallContext context) {
 		for (final ICallHook sHook : reversedCallHooks) {
 			sHook.afterCall(context);
