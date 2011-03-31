@@ -60,9 +60,6 @@ public class NavigationNodeId {
 		return instanceId;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(final Object other) {
 		if (this == other) {
@@ -78,30 +75,14 @@ public class NavigationNodeId {
 		return StringUtils.equals(typeId, otherId.typeId) && StringUtils.equals(instanceId, otherId.instanceId);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder("NavNodeId:"); //$NON-NLS-1$
-		if (typeId != null) {
-			sb.append(typeId);
-		} else {
-			sb.append("null"); //$NON-NLS-1$
-		}
-		if (instanceId != null) {
-			sb.append("["); //$NON-NLS-1$
-			sb.append(instanceId);
-			sb.append("]"); //$NON-NLS-1$
-		} else {
-			sb.append("[null]"); //$NON-NLS-1$
-		}
-		return sb.toString();
+		final StringBuilder builder = new StringBuilder();
+		builder.append("NavigationNodeId [typeId=").append(typeId).append(", instanceId=").append(instanceId) //$NON-NLS-1$ //$NON-NLS-2$
+				.append("]"); //$NON-NLS-1$
+		return builder.toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int hashCode() {
 		if (hash == 0) {
