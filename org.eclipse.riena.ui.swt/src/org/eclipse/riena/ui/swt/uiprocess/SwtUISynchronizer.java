@@ -70,12 +70,12 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		if (!hasDisplay()) {
 			waitForDisplay(15000);
 		}
-		final Display display = getDisplay();
-		if (executeOnDisplay(executor, runnable, display)) {
+		final Display currentDisplay = getDisplay();
+		if (executeOnDisplay(executor, runnable, currentDisplay)) {
 			return;
 		}
 
-		if (display == null || getDisplay().isDisposed()) {
+		if (currentDisplay == null || getDisplay().isDisposed()) {
 			if (isSyncExecutor(executor)) {
 				waitForDisplayInitialisation(runnable);
 			} else {
@@ -264,23 +264,19 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		SwtUISynchronizer.workbenchShutdown.set(workbenchShutdown);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.ui.core.uiprocess.IUISynchronizer#readAndDispatch(java
-	 * .util.concurrent.Callable)
+	/**
+	 * @since 3.0
 	 */
 	public void readAndDispatch(final Callable<Boolean> condition) {
 		Assert.isNotNull(condition);
 
-		final Display display = Display.getCurrent();
+		final Display currentDisplay = Display.getCurrent();
 
 		// dispatch events
 		try {
 			while (!condition.call()) {
-				if (!display.readAndDispatch()) {
-					display.sleep();
+				if (!currentDisplay.readAndDispatch()) {
+					currentDisplay.sleep();
 				}
 			}
 		} catch (final Exception e) {
