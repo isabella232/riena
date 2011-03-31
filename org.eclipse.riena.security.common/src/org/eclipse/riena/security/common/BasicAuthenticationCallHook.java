@@ -59,12 +59,12 @@ public class BasicAuthenticationCallHook implements ICallHook {
 		if (subject == null) {
 			return;
 		}
-		Object credentials = null;
+		Object credential = null;
 		final Iterator<Object> iterator = subject.getPrivateCredentials().iterator();
 		if (iterator.hasNext()) {
-			credentials = iterator.next();
+			credential = iterator.next();
 		}
-		final String password = credentials instanceof String ? (String) credentials : ""; //$NON-NLS-1$
+		final String password = credential instanceof String ? (String) credential : ""; //$NON-NLS-1$
 		for (final Principal principal : subject.getPrincipals()) {
 			final String useridPlusPassword = principal.getName() + ":" + password; //$NON-NLS-1$
 			final String authorizationInBase64 = new String(Base64.encode(useridPlusPassword.getBytes()));
