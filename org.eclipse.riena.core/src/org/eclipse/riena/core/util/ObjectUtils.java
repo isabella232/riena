@@ -38,10 +38,9 @@ public final class ObjectUtils {
 		if (object1 == null && object2 == null) {
 			return true;
 		}
-		if (object1 == null) {
-			return object2.equals(object1);
-		} else {
-			return object1.equals(object2);
+		if (object1 == null || object2 == null) {
+			return false;
 		}
+		return object1.equals(object2);
 	}
 }
