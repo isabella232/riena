@@ -352,9 +352,21 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 			textValue = newValue;
 			if (checkOnEditRules(newValue, null).isOK()) {
 				firePropertyChange(PROPERTY_TEXT_INTERNAL, oldValue, newValue);
-				firePropertyChange(ITextRidget.PROPERTY_TEXT, oldValue, newValue);
+				if (isExternalValueChange(oldValue, newValue)) {
+					firePropertyChange(ITextRidget.PROPERTY_TEXT, oldValue, newValue);
+				}
 			}
 		}
+	}
+
+	/**
+	 * Answers true if the the {@link TextRidget} should fire a
+	 * {@link PropertyChangeEvent} for property
+	 * {@link ITextRidget#PROPERTY_TEXT} given the transition from oldValue to
+	 * newValue.
+	 */
+	protected boolean isExternalValueChange(final String oldValue, final String newValue) {
+		return true;
 	}
 
 	// helping classes

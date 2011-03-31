@@ -12,6 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
@@ -515,6 +516,36 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 		if (converter != null) {
 			checkNumber((String) converter.convert(value));
 		}
+	}
+
+	@Override
+	protected boolean isExternalValueChange(final String oldValue, final String newValue) {
+		if (oldValue.equals(newValue)) {
+			return false;
+		}
+
+		// compare the numeric value ignoring format
+		try {
+			final BigDecimal oldExtrValue = converttValue(oldValue);
+			final BigDecimal newExtrValue = converttValue(newValue);
+			return oldExtrValue.compareTo(newExtrValue) != 0;
+		} catch (final NumberFormatException nfe) {
+			return true;
+		}
+
+	}
+
+	/*
+	 * convert the given String to a numeric value
+	 */
+	private BigDecimal converttValue(String value) {
+		value = value.replaceAll(String.valueOf("\\" + GROUPING_SEPARATOR), ""); //$NON-NLS-1$ //$NON-NLS-2$
+		value = value.replaceAll(String.valueOf("\\" + DECIMAL_SEPARATOR), String.valueOf(GROUPING_SEPARATOR)); //$NON-NLS-1$
+		if (String.valueOf(GROUPING_SEPARATOR).equals(value)) {
+			value = "0"; //$NON-NLS-1$
+		}
+		return new BigDecimal(value);
+
 	}
 
 	private String createZero() {

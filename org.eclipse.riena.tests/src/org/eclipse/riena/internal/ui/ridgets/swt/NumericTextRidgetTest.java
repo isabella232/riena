@@ -31,6 +31,7 @@ import org.eclipse.riena.beans.common.DoubleBean;
 import org.eclipse.riena.beans.common.IntegerBean;
 import org.eclipse.riena.beans.common.StringBean;
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.ui.swt.test.TestUtils;
 import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
@@ -132,6 +133,21 @@ public class NumericTextRidgetTest extends TextRidgetTest {
 		} catch (final NumberFormatException nfe) {
 			ok();
 		}
+	}
+
+	public void testValueChanged() {
+		final String oldValue = "1.234,5600";
+		final String newValue = "1.234,56";
+		assertFalse(callExternalValueChanged(oldValue, newValue));
+		assertTrue(callExternalValueChanged(oldValue, newValue + "01"));
+		assertFalse(callExternalValueChanged(oldValue, "0" + newValue));
+		assertFalse(callExternalValueChanged(",", "0"));
+		assertFalse(callExternalValueChanged(",", "0,00000"));
+
+	}
+
+	private boolean callExternalValueChanged(final Object... values) {
+		return ReflectionUtils.invokeHidden(getRidget(), "isExternalValueChange", values);
 	}
 
 	public void testSetTextNoGroup() throws Exception {
