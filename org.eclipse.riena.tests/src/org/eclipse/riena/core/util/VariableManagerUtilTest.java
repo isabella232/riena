@@ -59,6 +59,15 @@ public class VariableManagerUtilTest extends RienaTestCase {
 		assertEquals("", VariableManagerUtil.substitute(""));
 	}
 
+	public void testReolveUnknownVariable() throws CoreException {
+		try {
+			VariableManagerUtil.substitute("${micky.mouse}");
+			fail("Expected CoreException");
+		} catch (final CoreException e) {
+			ok();
+		}
+	}
+
 	public void testUpdatedWrongKey() throws CoreException {
 		VariableManagerUtil.addVariable("host", "${host");
 		assertEquals("${host", VariableManagerUtil.substitute("${host}"));
