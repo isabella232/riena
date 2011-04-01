@@ -15,14 +15,9 @@ import java.util.Hashtable;
 
 import org.osgi.framework.BundleContext;
 
-import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.core.RienaPlugin;
 import org.eclipse.riena.core.cache.GenericObjectCache;
 import org.eclipse.riena.core.cache.IGenericObjectCache;
-import org.eclipse.riena.core.injector.Inject;
-import org.eclipse.riena.security.common.ISubjectHolder;
-import org.eclipse.riena.security.common.session.ISessionHolder;
-import org.eclipse.riena.security.server.session.ISessionService;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -41,12 +36,6 @@ public class Activator extends RienaPlugin {
 	public Activator() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.runtime.Plugins#start(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
@@ -56,31 +45,8 @@ public class Activator extends RienaPlugin {
 		final Hashtable<String, String> props = new Hashtable<String, String>();
 		props.put("cache.type", "PrincipalCache"); //$NON-NLS-1$ //$NON-NLS-2$
 		context.registerService(IGenericObjectCache.class.getName(), principalCache, props);
-		createSecurityServiceHookAndInjectors();
 	}
 
-	private void createSecurityServiceHookAndInjectors() {
-		// create SecurityServiceHook
-		final IServiceHook securityServiceHook = new SecurityServiceHook();
-		getContext().registerService(IServiceHook.class.getName(), securityServiceHook, null);
-
-		// create and Start Injectors
-		Inject.service(IGenericObjectCache.class).useFilter("(cache.type=PrincipalCache)").into(securityServiceHook) //$NON-NLS-1$
-				.andStart(Activator.getDefault().getContext());
-		Inject.service(ISessionService.class).useRanking().into(securityServiceHook)
-				.andStart(Activator.getDefault().getContext());
-		Inject.service(ISubjectHolder.class).useRanking().into(securityServiceHook)
-				.andStart(Activator.getDefault().getContext());
-		Inject.service(ISessionHolder.class).useRanking().into(securityServiceHook)
-				.andStart(Activator.getDefault().getContext());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.core.runtime.Plugin#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop(final BundleContext context) throws Exception {
 		Activator.plugin = null;
