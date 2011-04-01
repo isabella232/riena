@@ -15,15 +15,13 @@ import org.osgi.framework.BundleEvent;
 import org.osgi.framework.BundleListener;
 import org.osgi.service.log.LogService;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
-import org.eclipse.core.variables.IStringVariableManager;
-import org.eclipse.core.variables.VariablesPlugin;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaConstants;
 import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.logging.ConsoleLogger;
 import org.eclipse.riena.core.wire.Wire;
@@ -53,20 +51,6 @@ public class Activator extends RienaPlugin {
 		Activator.plugin = this;
 		startStartupListener();
 		startExceptionHandling();
-	}
-
-	/**
-	 * 
-	 */
-	private void logStage() {
-		final IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
-		String stage;
-		try {
-			stage = variableManager.performStringSubstitution("Riena is running in stage '${riena.stage}'."); //$NON-NLS-1$
-		} catch (final CoreException e) {
-			stage = "No stage information set."; //$NON-NLS-1$
-		}
-		Log4r.getLogger(this, Activator.class).log(LogService.LOG_INFO, stage);
 	}
 
 	private void startStartupListener() {
@@ -146,6 +130,11 @@ public class Activator extends RienaPlugin {
 				new ConsoleLogger(StartupBundleListener.class.getName()).log(LogService.LOG_WARNING,
 						"BundleContext already gone!"); //$NON-NLS-1$
 			}
+		}
+
+		private void logStage() {
+			Log4r.getLogger(StartupBundleListener.class).log(LogService.LOG_INFO,
+					"Riena is running in stage '" + RienaStatus.getStage() + "'."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		private BundleContext getContextSave() {
