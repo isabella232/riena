@@ -23,7 +23,9 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.communication.core.hooks.IServiceHook;
 import org.eclipse.riena.communication.core.hooks.ServiceContext;
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.cache.IGenericObjectCache;
+import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.NotAuthorizedFailure;
 import org.eclipse.riena.security.common.session.ISessionHolder;
@@ -35,7 +37,6 @@ import org.eclipse.riena.security.server.session.ISessionService;
  * reads the cookies and set SessionHolder, PrincipalLocationHolder and
  * PrincipalHolder. It also sets "Set-Cookie" on return, when the session has
  * changed.
- * 
  */
 public class SecurityServiceHook implements IServiceHook {
 
@@ -45,79 +46,33 @@ public class SecurityServiceHook implements IServiceHook {
 	public final static String SSOID = "x-compeople-ssoid"; //$NON-NLS-1$
 	/**
 	 * <code>PRINCIPAL</code> the name of the id, under which the principal is
-	 * stored in the current messagecontext *
+	 * stored in the current message context *
 	 */
 	public static final String PRINCIPAL = "principal"; //$NON-NLS-1$
 	/** <code>SET_SESSION</code> */
 	public static final String SET_SESSION = "set-ssoid"; //$NON-NLS-1$
 
 	private static final String RIENA_SECURE_WEBSERVICES_PROPERTY = "riena.secure.webservices"; //$NON-NLS-1$
-	// private static final String UNSECURE_WEBSERVICES_ID =
-	// "riena.security.server.UnsecureWebservices";
 
 	private IGenericObjectCache<String, Principal[]> principalCache;
 	private ISessionService sessionService;
 	private ISubjectHolder subjectHolder;
 	private ISessionHolder sessionHolder;
 
-	// private HashMap<String, Boolean> freeHivemindWebservices = new
-	// HashMap<String, Boolean>();
 	private final boolean requiresSSOIDbyDefault = false;
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SecurityServiceHook.class);
 
-	/**
-	 * 
-	 */
 	public SecurityServiceHook() {
 		super();
 
-		// List<UnsecureWebservice> tempList =
-		// RegistryAccessor.fetchRegistry().getConfiguration(
-		// UNSECURE_WEBSERVICES_ID);
-		final String appName = "???appname??????";// RuntimeInfo.getApplicationName(); //$NON-NLS-1$
-		//		if (appName == null) {
-		//			appName = "<unknown>"; //$NON-NLS-1$
-		//		}
-		// if (tempList.size() == 0) {
-		// LOGGER.log(LogService.LOG_INFO, appName +" : no unsecureWebservices
-		// defined");
-		// }
-		// for (int i = 0; i < tempList.size(); i++) {
-		// UnsecureWebservice freeWS = tempList.get(i);
-		// freeHivemindWebservices.put(freeWS.getServiceId(), Boolean.TRUE);
-		// if (freeWS.getServiceId().equals("*")) {
-		// requiresSSOIDbyDefault = false;
-		// }
-		// if (freeWS.getServiceId().equals("*")) {
-		// LOGGER.log(LogService.LOG_INFO, appName
-		// +" : defining ALL WEBSERVICES in this Webapp as unsecure (SSOID is
-		// not required). definition * for
-		// UnsecureServices found.");
-		// } else {
-		// LOGGER.log(LogService.LOG_INFO, appName + ": defining a Webservice "
-		// + freeWS.getServiceId() +" as unsecure
-		// (SSOID not required).");
-		// }
-		// }
-
-		// String preferenceValue =
-		// PreferencesAccessor.fetchPreferences().getSystemPreference(
-		// "spirit.security.server.UnsecureWebservices").getString("All");
-		// if (preferenceValue.equalsIgnoreCase("true")) {
-		// requiresSSOIDbyDefault = false;
-		// LOGGER.log(LogService.LOG_INFO," ALL WEBSERVICES are defined as
-		// unsecure in webapp:" + appName
-		// +" using SystemPreference
-		// spirit.security.server.UnsecureWebservices.");
-		// }
-
 		if (!requiresSSOIDbyDefault) {
-			LOGGER.log(LogService.LOG_INFO, appName
+			LOGGER.log(LogService.LOG_INFO, "Stage " + RienaStatus.getStage() //$NON-NLS-1$
 					+ ": defining ALL WEBSERVICES in this Webapp as unsecure (SSOID is not required)."); //$NON-NLS-1$
 		}
 	}
 
+	@InjectService(useFilter = "(cache.type=PrincipalCache)")
 	public void bind(final IGenericObjectCache<String, Principal[]> principalCache) {
 		this.principalCache = principalCache;
 	}
@@ -128,6 +83,7 @@ public class SecurityServiceHook implements IServiceHook {
 		}
 	}
 
+	@InjectService(useRanking = true)
 	public void bind(final ISessionService sessionService) {
 		this.sessionService = sessionService;
 	}
@@ -138,6 +94,7 @@ public class SecurityServiceHook implements IServiceHook {
 		}
 	}
 
+	@InjectService(useRanking = true)
 	public void bind(final ISubjectHolder subjectHolder) {
 		this.subjectHolder = subjectHolder;
 	}
@@ -148,6 +105,7 @@ public class SecurityServiceHook implements IServiceHook {
 		}
 	}
 
+	@InjectService(useRanking = true)
 	public void bind(final ISessionHolder sessionHolder) {
 		this.sessionHolder = sessionHolder;
 	}
@@ -158,22 +116,8 @@ public class SecurityServiceHook implements IServiceHook {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.communication.core.hooks.IServiceHook#beforeService
-	 * (org.eclipse.riena.communication.core.hooks.ServiceContext)
-	 */
 	public void beforeService(final ServiceContext callback) {
 		final boolean requiresSSOID = requiresSSOIDbyDefault;
-		// if (freeHivemindWebservices.get(callback.getComponentId()) != null) {
-		// requiresSSOID = false;
-		// } else {
-		// if (callback.isUnsecure()) {
-		// requiresSSOID = false;
-		// }
-		// }
 
 		// first extract the cookies
 		final Cookie[] cookies = callback.getCookies();
@@ -201,8 +145,7 @@ public class SecurityServiceHook implements IServiceHook {
 			}
 		}
 
-		// check the ssoid in the session service potentially with a webservice
-		// call
+		// check the ssoid in the session service potentially with a webservice call
 		// note: ssoid and plid are not set
 		if (ssoid != null) {
 			Principal[] principals = principalCache.get(ssoid);
@@ -239,13 +182,6 @@ public class SecurityServiceHook implements IServiceHook {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.communication.core.hooks.IServiceHook#afterService(
-	 * org.eclipse.riena.communication.core.hooks.ServiceContext)
-	 */
 	public void afterService(final ServiceContext context) {
 		final Session afterSession = sessionHolder.getSession();
 		final Session beforeSession = (Session) context.getProperty("de.compeople.ssoid"); //$NON-NLS-1$
