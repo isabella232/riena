@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core;
 
+import org.eclipse.core.runtime.CoreException;
+
+import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
@@ -98,5 +101,18 @@ public final class RienaStatus {
 	 */
 	public static boolean isTest() {
 		return Boolean.parseBoolean(System.getProperty(RIENA_TEST_SYSTEM_PROPERTY, TEST_DEFAULT));
+	}
+
+	/**
+	 * Return the stage riena is currently running in.
+	 * 
+	 * @return the stage or if not set the string {@code "<unknown>"}
+	 */
+	public static String getStage() {
+		try {
+			return VariableManagerUtil.substitute("${riena.stage}"); //$NON-NLS-1$
+		} catch (final CoreException e) {
+			return "<unknown>"; //$NON-NLS-1$
+		}
 	}
 }
