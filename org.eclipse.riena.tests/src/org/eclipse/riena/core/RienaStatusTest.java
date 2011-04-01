@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.core;
 
+import org.eclipse.core.runtime.CoreException;
+
+import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
@@ -33,5 +36,13 @@ public class RienaStatusTest extends RienaTestCase {
 				System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, savedValue);
 			}
 		}
+	}
+
+	public void testGetStage() throws CoreException {
+		VariableManagerUtil.addVariable("riena.stage", "Test");
+		assertEquals("Test", RienaStatus.getStage());
+
+		VariableManagerUtil.removeVariable("riena.stage");
+		assertEquals(RienaStatus.UNKNOWN_STAGE, RienaStatus.getStage());
 	}
 }
