@@ -42,6 +42,11 @@ public final class RienaStatus {
 	 */
 	public static final String TEST_DEFAULT = "false"; //$NON-NLS-1$
 
+	/**
+	 * Value of {@code getStage()} if no stage has been defined.
+	 */
+	public static final String UNKNOWN_STAGE = "<unknown>"; //$NON-NLS-1$
+
 	private RienaStatus() {
 		// Utility
 	}
@@ -112,7 +117,7 @@ public final class RienaStatus {
 		try {
 			return VariableManagerUtil.substitute("${riena.stage}"); //$NON-NLS-1$
 		} catch (final CoreException e) {
-			return "<unknown>"; //$NON-NLS-1$
+			return UNKNOWN_STAGE;
 		}
 	}
 }
