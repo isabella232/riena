@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.annotation;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -32,6 +33,7 @@ import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
  * 
  * @since 3.0
  */
+@Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface OnNavigationNodeEvent {

@@ -11,6 +11,7 @@
 package org.eclipse.riena.ui.ridgets.annotation;
 
 import java.beans.PropertyChangeListener;
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -34,6 +35,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
  * 
  * @since 3.0
  */
+@Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface OnPropertyChange {
