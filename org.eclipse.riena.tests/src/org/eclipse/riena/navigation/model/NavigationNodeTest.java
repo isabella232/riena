@@ -705,7 +705,7 @@ public class NavigationNodeTest extends RienaTestCase {
 	public void testToString() {
 
 		NaviNode node = new NaviNode(null);
-		assertEquals("no label nodeId=null", node.toString());
+		assertEquals("NavigationNode [label=null, nodeId=null]", node.toString());
 
 		node = new NaviNode(null);
 		node.setLabel("LabelOfNode");
