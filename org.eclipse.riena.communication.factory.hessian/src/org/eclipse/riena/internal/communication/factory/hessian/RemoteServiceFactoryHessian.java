@@ -17,6 +17,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+
+import com.caucho.hessian.io.SerializerFactory;
 
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
@@ -50,6 +56,32 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 		messageContextAccessor = new CallMsgCtxAcc();
 		rienaHessianProxyFactory = new RienaHessianProxyFactory();
 		rienaHessianProxyFactory.setCallMessageContextAccessor(messageContextAccessor);
+		final Logger logger = Logger.getLogger(SerializerFactory.class.getName());
+		logger.addHandler(watchDog);
+	}
+
+	private final Handler watchDog = new RienaHessianWatchDog();
+
+	private final static class RienaHessianWatchDog extends Handler {
+
+		@Override
+		public void publish(final LogRecord record) {
+			if (record.getLevel() != Level.WARNING) {
+				return;
+			}
+			if (record.getMessage().contains("Hessian/Burlap: '") //$NON-NLS-1$
+					&& record.getMessage().contains("' is an unknown class in ")) { //$NON-NLS-1$
+				throw new RuntimeException(record.getMessage());
+			}
+		}
+
+		@Override
+		public void flush() {
+		}
+
+		@Override
+		public void close() throws SecurityException {
+		}
 	}
 
 	public IRemoteServiceReference createProxy(final RemoteServiceDescription endpoint) {
@@ -58,13 +90,23 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			url = "http://localhost/" + PROTOCOL + endpoint.getPath(); //$NON-NLS-1$
 		}
 		try {
-			final Object proxy = rienaHessianProxyFactory.create(endpoint.getServiceInterfaceClass(), url);
+			final Object proxy = rienaHessianProxyFactory.create(endpoint.getServiceInterfaceClass(), url,
+					new ClassLoader() {
+						@Override
+						public Class<?> loadClass(final String name) throws ClassNotFoundException {
+							try {
+								return endpoint.getServiceClassLoader().loadClass(name);
+							} catch (final Throwable ex) {
+								return getClass().getClassLoader().loadClass(name);
+							}
+						}
+					});
 			final RemoteServiceReference serviceReference = new RemoteServiceReference(endpoint);
 			// set the create proxy as service instance
 			serviceReference.setServiceInstance(proxy);
 			return serviceReference;
 		} catch (final MalformedURLException e) {
-			throw new RuntimeException("MalformedURLException", e); //$NON-NLS-1$
+			throw new RuntimeException("MalformedURLException for endpoint '" + endpoint + ".", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

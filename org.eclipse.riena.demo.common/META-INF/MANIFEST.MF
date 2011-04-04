@@ -3,9 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Demo Common Plug-in 
 Bundle-SymbolicName: org.eclipse.riena.demo.common
 Bundle-Version: 3.0.0.qualifier
-Require-Bundle: org.eclipse.riena.communication.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.eclipse.riena.demo.common
-Eclipse-RegisterBuddy: org.eclipse.riena.communication.core
+
 

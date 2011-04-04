@@ -15,11 +15,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
@@ -28,7 +28,6 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaStatus;
-import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.riena.core.wire.Wire;
@@ -128,7 +127,7 @@ public class RemoteServiceFactory {
 	 */
 	public IRemoteServiceRegistration createAndRegisterProxy(final Class<?> interfaceClass, final String url,
 			final String protocol, final BundleContext context) {
-		final RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol);
+		final RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol, context.getBundle());
 		return createAndRegisterProxy(rsd, context);
 	}
 
@@ -173,7 +172,7 @@ public class RemoteServiceFactory {
 
 	/**
 	 * Creates a protocol specific serviceInstance reference
-	 * (IRemoteServiceRefernce) with given end point parameters. Answers the
+	 * (IRemoteServiceReference) with given end point parameters. Answers the
 	 * IRemoteServiceReference. If no protocol specific
 	 * {@link IRemoteServiceFactory} OSGI Service available answers
 	 * <code>null</code>.
@@ -183,19 +182,14 @@ public class RemoteServiceFactory {
 	 * @param protocol
 	 * @return the serviceInstance references or <code>null</code>
 	 */
-	public IRemoteServiceReference createProxy(final Class<?> interfaceClass, final String url, final String protocol) {
-		final RemoteServiceDescription rsd = createDescription(interfaceClass, url, protocol);
-		return createProxy(rsd);
+	public IRemoteServiceReference createProxy(final Class<?> interfaceClass, final String url, final String protocol,
+			final BundleContext context) {
+		return createProxy(createDescription(interfaceClass, url, protocol, context.getBundle()));
 	}
 
 	private RemoteServiceDescription createDescription(final Class<?> interfaceClass, final String url,
-			final String protocol) {
-		final RemoteServiceDescription rsd = new RemoteServiceDescription();
-		rsd.setServiceInterfaceClass(interfaceClass);
-		rsd.setServiceInterfaceClassName(interfaceClass.getName());
-		rsd.setURL(url);
-		rsd.setProtocol(protocol);
-		return rsd;
+			final String protocol, final Bundle bundle) {
+		return new RemoteServiceDescription(interfaceClass, url, protocol, bundle);
 	}
 
 	/**
@@ -208,19 +202,10 @@ public class RemoteServiceFactory {
 	 * @return the serviceInstance references or <code>null</code>
 	 */
 	public IRemoteServiceReference createProxy(final RemoteServiceDescription rsd) {
-		// BundleContext context = Activator.getDefault().getContext();
 		if (!RienaStatus.isActive()) {
 			LOGGER.log(LogService.LOG_WARNING, "riena.core is not started. This may probably not work."); //$NON-NLS-1$
 		}
 
-		try {
-			// Substitute any ${refs} within the url
-			rsd.setURL(VariableManagerUtil.substitute(rsd.getURL()));
-		} catch (final CoreException e) {
-			LOGGER.log(LogService.LOG_ERROR, "Could not substitute url '" + rsd.getURL() + "'.", e); //$NON-NLS-1$ //$NON-NLS-2$
-			return null;
-		}
-		// ServiceReference[] references;
 		if (rsd.getProtocol() == null) {
 			return null;
 		}
@@ -248,22 +233,20 @@ public class RemoteServiceFactory {
 	}
 
 	private IRemoteServiceReference createLazyProxy(final RemoteServiceDescription rsd) {
-		try {
-			final LazyProxyHandler lazyProxyHandler = new LazyProxyHandler(rsd);
-			final Class<?> serviceClass = RemoteServiceFactory.class.getClassLoader().loadClass(
-					rsd.getServiceInterfaceClassName());
-
-			final Object serviceInstance = Proxy.newProxyInstance(this.getClass().getClassLoader(),
-					new Class[] { serviceClass }, lazyProxyHandler);
-			final LazyRemoteServiceReference ref = new LazyRemoteServiceReference(serviceInstance,
-					rsd.getServiceInterfaceClassName(), rsd);
-			lazyProxyHandler.setLazyRemoteServiceReference(ref);
-			return ref;
-		} catch (final ClassNotFoundException e) {
+		//		try {
+		final LazyProxyHandler lazyProxyHandler = new LazyProxyHandler(rsd);
+		final Class<?> serviceClass = rsd.getServiceInterfaceClass();
+		if (serviceClass == null) {
 			LOGGER.log(LogService.LOG_ERROR, "Could not load service interface class '" //$NON-NLS-1$
-					+ rsd.getServiceInterfaceClassName() + "'.", e); //$NON-NLS-1$
+					+ rsd.getServiceInterfaceClassName() + "'."); //$NON-NLS-1$
 			return null;
 		}
+		final Object serviceInstance = Proxy.newProxyInstance(rsd.getServiceClassLoader(),
+				new Class[] { serviceClass }, lazyProxyHandler);
+		final LazyRemoteServiceReference ref = new LazyRemoteServiceReference(serviceInstance,
+				rsd.getServiceInterfaceClassName(), rsd);
+		lazyProxyHandler.setLazyRemoteServiceReference(ref);
+		return ref;
 	}
 
 	/**

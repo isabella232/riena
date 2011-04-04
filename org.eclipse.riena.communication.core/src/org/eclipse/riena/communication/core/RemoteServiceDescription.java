@@ -14,18 +14,19 @@ import static org.eclipse.riena.communication.core.publisher.RSDPublisherPropert
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-import org.osgi.framework.Constants;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.ServiceReference;
+
+import org.eclipse.core.runtime.CoreException;
 
 import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
+import org.eclipse.riena.core.util.VariableManagerUtil;
 
 /**
  * The RemoteServiceDescription describes an remote service end point. Usually
@@ -53,7 +54,10 @@ public class RemoteServiceDescription {
 		REGISTERED,
 		/**
 		 * The "remote" OSGi Service was modified
+		 * 
+		 * @deprecated no longer be used
 		 */
+		@Deprecated
 		MODIFIED,
 		/**
 		 * The "remote" OSGi Service was unregistered
@@ -61,78 +65,88 @@ public class RemoteServiceDescription {
 		UNREGISTERED
 	};
 
+	private final Class<?> serviceInterfaceClass;
+	private final Bundle bundle;
+	private final String serviceInterfaceClassName;
+	private final String protocol;
+	private final ServiceReference serviceRef;
+	private final String path;
+	private final ClassLoader serviceClassLoader = new ClassLoader() {
+		@Override
+		public Class<?> loadClass(final String name) throws ClassNotFoundException {
+			return bundle.loadClass(name);
+		}
+	};
 	private State state = State.REGISTERED;
-	private transient Class<?> serviceInterfaceClass;
-	private transient Object service;
-	private transient ServiceReference serviceRef;
-	private String path;
-	private String version;
-	private String bundleName;
-	private String serviceInterfaceClassName;
+	private Object service;
 	private String url;
-	private String protocol;
-	private final Map<String, Object> properties = new HashMap<String, Object>();
 
 	/**
-	 * Create a instance of a RemoteServiceDescription
+	 * Create an instance of a RemoteServiceDescription with the given
+	 * parameters.
+	 * 
+	 * @param interfaceClass
+	 * @param url
+	 * @param protocol
+	 * @param bundle
 	 */
-	public RemoteServiceDescription() {
-		super();
+	public RemoteServiceDescription(final Class<?> interfaceClass, final String url, final String protocol,
+			final Bundle bundle) {
+		this.serviceInterfaceClass = interfaceClass;
+		this.serviceInterfaceClassName = interfaceClass.getName();
+		this.url = url;
+		this.protocol = protocol;
+		this.bundle = bundle;
+		// not needed in this context
+		this.path = null;
+		this.serviceRef = null;
 	}
 
 	/**
-	 * Create an instance of a RemoteServiceDescription with the given service
-	 * reference and service object
+	 * Create an instance of a RemoteServiceDescription with the given
+	 * parameters.
 	 * 
+	 * @param interfaceName
 	 * @param serviceRef
-	 * @param service
+	 * @param path
+	 * @param protocol
+	 * @throws ClassNotFoundException
 	 */
-	public RemoteServiceDescription(final ServiceReference serviceRef, final Object service,
-			final Class<?> serviceInterface) {
-		this();
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public RemoteServiceDescription(final String interfaceName, final ServiceReference serviceRef, final String path,
+			final String protocol) throws ClassNotFoundException {
+		this.serviceInterfaceClassName = interfaceName;
 		this.serviceRef = serviceRef;
-		this.service = service;
-		final String[] keys = serviceRef.getPropertyKeys();
-		for (final String key : keys) {
-			if (key.equals(Constants.OBJECTCLASS)) {
-				// String obejctClassName =
-				// CommunicationUtil.accessProperty(serviceRef
-				// .getProperty(PROP_SERVICE_CLASSNAME),null);
-				serviceInterfaceClass = serviceInterface;
-				serviceInterfaceClassName = serviceInterfaceClass.getName();
-			} else if (key.equals(PROP_REMOTE_PROTOCOL)) {
-				protocol = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PROTOCOL), null);
-			} else if (key.equals(PROP_REMOTE_PATH)) {
-				path = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PATH), null);
-			} else {
-				setProperty(key, CommunicationUtil.accessProperty(serviceRef.getProperty(key), null));
-			}
-		}
-		bundleName = serviceRef.getBundle().getSymbolicName();
-		// TODO enable this later
-		//		assertServiceConstraints();
+		this.bundle = serviceRef.getBundle();
+		this.service = bundle.getBundleContext().getService(serviceRef);
+		this.path = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PATH), path);
+		this.protocol = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PROTOCOL), protocol);
+		this.serviceInterfaceClass = bundle.loadClass(interfaceName);
+	}
+
+	public ClassLoader getServiceClassLoader() {
+		return serviceClassLoader;
 	}
 
 	/**
 	 * Disposes this RemoteServiceDescription. release all references.
 	 */
 	public void dispose() {
-		bundleName = null;
 		service = null;
-		serviceRef = null;
-		serviceInterfaceClass = null;
-		serviceInterfaceClassName = null;
-		path = null;
 		url = null;
-		version = null;
-		protocol = null;
+		state = State.UNREGISTERED;
 	}
 
 	/**
-	 * @return the bundle name from where the service comes
+	 * Get the bundle this {@code RemoteServiceDescription} uses for class
+	 * resolution.
+	 * 
+	 * @return the bundle
+	 * 
+	 * @since 3.0
 	 */
-	public String getBundleName() {
-		return bundleName;
+	public Bundle getBundle() {
+		return bundle;
 	}
 
 	/**
@@ -162,6 +176,7 @@ public class RemoteServiceDescription {
 	/**
 	 * 
 	 * @return the service interface of the service
+	 * @throws ClassNotFoundException
 	 */
 	public Class<?> getServiceInterfaceClass() {
 		return serviceInterfaceClass;
@@ -185,7 +200,10 @@ public class RemoteServiceDescription {
 
 	/**
 	 * The state of the service. Values are:<br>
-	 * <br> {@link #REGISTERED}<br> {@link #MODIFIED}<br> {@link #UNREGISTERED}<br>
+	 * <br>
+	 * {@link #REGISTERED}<br>
+	 * {@link #MODIFIED}<br>
+	 * {@link #UNREGISTERED}<br>
 	 * 
 	 * @return the current state of the service
 	 */
@@ -198,47 +216,11 @@ public class RemoteServiceDescription {
 	 * @return the absolute URL the the service end point is published
 	 */
 	public String getURL() {
-		return url;
-	}
-
-	/**
-	 * 
-	 * @return the service or bundle version
-	 */
-	public String getVersion() {
-		return version;
-	}
-
-	@Override
-	public int hashCode() {
-		return getPath().hashCode();
-	}
-
-	/**
-	 * Sets the bundle name from where the service comes
-	 * 
-	 * @param bundleName
-	 */
-	public void setBundleName(final String bundleName) {
-		this.bundleName = bundleName;
-	}
-
-	/**
-	 * Sets the content path where the service end point becomes published
-	 * 
-	 * @param path
-	 */
-	public void setPath(final String path) {
-		this.path = path;
-	}
-
-	/**
-	 * Sets the protocol under the service end point becomes available
-	 * 
-	 * @param protocol
-	 */
-	public void setProtocol(final String protocol) {
-		this.protocol = protocol;
+		try {
+			return VariableManagerUtil.substitute(url);
+		} catch (final CoreException e) {
+			return url;
+		}
 	}
 
 	/**
@@ -253,40 +235,6 @@ public class RemoteServiceDescription {
 	}
 
 	/**
-	 * Sets the service interface of the service
-	 * 
-	 * @param interfaceClass
-	 */
-	public void setServiceInterfaceClass(final Class<?> interfaceClass) {
-		this.serviceInterfaceClass = interfaceClass;
-		// TODO enable this later
-		//		assertServiceConstraints();
-	}
-
-	/**
-	 * the service interface name of the service
-	 * 
-	 * @param interfaceClassName
-	 */
-	public void setServiceInterfaceClassName(final String interfaceClassName) {
-		this.serviceInterfaceClassName = interfaceClassName;
-
-	}
-
-	/**
-	 * Sets the service reference for the service
-	 * 
-	 * @param serviceRef
-	 */
-	public void setServiceRef(final ServiceReference serviceRef) {
-		this.serviceRef = serviceRef;
-	}
-
-	public void setState(final State type) {
-		this.state = type;
-	}
-
-	/**
 	 * Sets the absolute URL the the service end point is published
 	 * 
 	 * @param url
@@ -295,38 +243,10 @@ public class RemoteServiceDescription {
 		this.url = url;
 	}
 
-	/**
-	 * Sets the service or bundle version
-	 * 
-	 * @param version
-	 */
-	public void setVersion(final String version) {
-		this.version = version;
-	}
-
 	@Override
 	public String toString() {
-		return "protocol=" + protocol + ", url=" + url + ", interface=" + serviceInterfaceClassName; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	}
-
-	/**
-	 * Sets the given property
-	 * 
-	 * @param name
-	 * @param value
-	 */
-	public void setProperty(final String name, final Object value) {
-		properties.put(name, value);
-	}
-
-	/**
-	 * Answers the property value for the given name
-	 * 
-	 * @param name
-	 * @return the property value
-	 */
-	public Object getProperty(final String name) {
-		return properties.get(name);
+		return "RemoteServiceDescription [serviceInterfaceClassName=" + serviceInterfaceClassName + ", protocol=" //$NON-NLS-1$ //$NON-NLS-2$
+				+ protocol + ", url=" + url + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	// TODO remove @Suppresswarnings when this becomes activated
@@ -353,4 +273,5 @@ public class RemoteServiceDescription {
 			}
 		}
 	}
+
 }

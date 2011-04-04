@@ -60,9 +60,12 @@ public class CallHooksProxy extends AbstractHooksProxy {
 			}
 		}
 
+		final ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
+		Thread.currentThread().setContextClassLoader(rsd.getServiceClassLoader());
 		try {
 			return super.invoke(proxy, method, args);
 		} catch (final InvocationTargetException e) {
+			Thread.currentThread().setContextClassLoader(oldClassLoader);
 			// first check for specific Hessian exceptions
 			if (e.getTargetException() instanceof HessianRuntimeException
 					|| e.getTargetException() instanceof HessianProtocolException) {
@@ -91,6 +94,7 @@ public class CallHooksProxy extends AbstractHooksProxy {
 			context.setRemoteFailure(true);
 			throw new RemoteFailure("Error while invoking remote service", e.getTargetException()); //$NON-NLS-1$
 		} finally {
+			Thread.currentThread().setContextClassLoader(oldClassLoader);
 			context.getMessageContext().fireEndCall();
 			// call hooks after the call
 			if (callHooks.size() > 0) {

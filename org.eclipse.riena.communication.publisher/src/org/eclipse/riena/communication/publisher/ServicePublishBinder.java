@@ -130,15 +130,8 @@ public class ServicePublishBinder implements IServicePublishBinder {
 
 	public void publish(final String interfaceName, final ServiceReference serviceRef, final String path,
 			final String protocol) {
-		RemoteServiceDescription rsd;
 		try {
-			final Class<?> interfaceClazz = serviceRef.getBundle().loadClass(interfaceName);
-			rsd = new RemoteServiceDescription(serviceRef, Activator.getDefault().getContext().getService(serviceRef),
-					interfaceClazz);
-			rsd.setService(Activator.getDefault().getContext().getService(serviceRef));
-			rsd.setPath(path);
-			rsd.setProtocol(protocol);
-			publish(rsd);
+			publish( new RemoteServiceDescription(interfaceName, serviceRef, path, protocol));
 		} catch (final ClassNotFoundException e) {
 			LOGGER.log(LogService.LOG_WARNING,
 					"Could not load class for remote service interface for service reference" + serviceRef, e); //$NON-NLS-1$
@@ -149,10 +142,10 @@ public class ServicePublishBinder implements IServicePublishBinder {
 		synchronized (rsDescs) {
 
 			final ServiceHooksProxy handler = new ServiceHooksProxy(rsd.getService());
-			final Object service = Proxy.newProxyInstance(rsd.getServiceInterfaceClass().getClassLoader(),
+			final Object service = Proxy.newProxyInstance(rsd.getServiceClassLoader(),
 					new Class[] { rsd.getServiceInterfaceClass() }, handler);
 			handler.setRemoteServiceDescription(rsd);
-			final RemoteServiceDescription rsDescFound = rsDescs.get(rsd.getProtocol() + "::" + rsd.getPath()); //$NON-NLS-1$
+			final RemoteServiceDescription rsDescFound = rsDescs.get(getRSDKey(rsd));
 			if (rsDescFound != null) {
 				LOGGER.log(LogService.LOG_WARNING, "A service endpoint with path=[" + rsd.getPath() //$NON-NLS-1$
 						+ "] and remoteType=[" + rsd.getProtocol() + "] already published... ignored"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -182,11 +175,15 @@ public class ServicePublishBinder implements IServicePublishBinder {
 			// set full URL under which the service is available
 			rsd.setURL(url);
 			handler.setMessageContextAccessor(servicePublisher.getMessageContextAccessor());
-			rsDescs.put(rsd.getProtocol() + "::" + rsd.getPath(), rsd); //$NON-NLS-1$
+			rsDescs.put(getRSDKey(rsd), rsd);
 			LOGGER.log(LogService.LOG_DEBUG, "service endpoints count: " + rsDescs.size()); //$NON-NLS-1$
 
 		}
 
+	}
+
+	private String getRSDKey(final RemoteServiceDescription rsd) {
+		return rsd.getProtocol() + "::" + rsd.getPath(); //$NON-NLS-1$
 	}
 
 	public RemoteServiceDescription[] getAllServices() {

@@ -170,9 +170,11 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 
 		out.setSerializerFactory(serializerFactory);
 
+		final ClassLoader original = Thread.currentThread().getContextClassLoader();
 		try {
-			final Object instance = rsd.getService();
-			final HessianSkeleton sk = new HessianSkeleton(instance, rsd.getServiceInterfaceClass());
+			final Object service = rsd.getService();
+			Thread.currentThread().setContextClassLoader(rsd.getServiceClassLoader());
+			final HessianSkeleton sk = new HessianSkeleton(service, rsd.getServiceInterfaceClass());
 			sk.invoke(inp, out);
 		} catch (final Throwable t) {
 			Throwable t2 = t;
@@ -185,6 +187,7 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 		} finally {
 			inp.close();
 			out.close(); // Hessian2Output forgets to close if the service throws an exception
+			Thread.currentThread().setContextClassLoader(original);
 		}
 	}
 
