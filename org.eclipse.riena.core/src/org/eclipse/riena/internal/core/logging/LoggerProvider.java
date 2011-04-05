@@ -86,10 +86,10 @@ public final class LoggerProvider {
 	 * initialization exceptions.
 	 */
 	private void initLoggerMill() {
-		if (loggerMillIsWired) {
+		if (loggerMillIsWired || loggerMillIsWiring) {
 			return;
 		}
-		synchronized (loggerMill) {
+		synchronized (this) {
 			if (!loggerMillIsWired && !loggerMillIsWiring && RienaStatus.isActive()) {
 				loggerMillIsWiring = true;
 				Wire.instance(loggerMill).andStart();
