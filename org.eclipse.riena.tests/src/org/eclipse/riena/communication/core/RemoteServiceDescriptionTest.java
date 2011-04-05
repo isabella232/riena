@@ -14,7 +14,7 @@ import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
- *
+ * FIXME RemoteServiceDescriptionTest does not compile
  */
 @NonUITestCase
 public class RemoteServiceDescriptionTest extends RienaTestCase {
