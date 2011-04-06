@@ -12,182 +12,118 @@ package org.eclipse.riena.communication.core;
 
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.internal.tests.Activator;
 
 /**
- * FIXME RemoteServiceDescriptionTest does not compile
+ * Testing the RemoteServiceDescriptor
  */
 @NonUITestCase
 public class RemoteServiceDescriptionTest extends RienaTestCase {
 
-	//	public void testDefaultCreation() {
-	//		final RemoteServiceDescription rsd = new RemoteServiceDescription();
-	//		assertNull(rsd.getBundleName());
-	//		assertNull(rsd.getPath());
-	//		assertNull(rsd.getProperty(""));
-	//		assertNull(rsd.getProtocol());
-	//		assertNull(rsd.getService());
-	//		assertNull(rsd.getServiceInterfaceClassName());
-	//		assertNull(rsd.getURL());
-	//		assertNull(rsd.getVersion());
-	//		assertNull(rsd.getServiceInterfaceClass());
-	//		assertNull(rsd.getServiceRef());
-	//		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
-	//	}
-	//
-	//	public void testNonDefaultCreationObjectClass() {
-	//		final ServiceReference ref = EasyMock.createMock(ServiceReference.class);
-	//
-	//		EasyMock.expect(ref.getPropertyKeys()).andReturn(new String[] { Constants.OBJECTCLASS });
-	//		EasyMock.expect(ref.getBundle()).andReturn(Activator.getDefault().getBundle());
-	//		EasyMock.replay(ref);
-	//
-	//		final Object service = "Service";
-	//		final RemoteServiceDescription rsd = new RemoteServiceDescription(ref, service, String.class);
-	//
-	//		assertNull(rsd.getProperty(""));
-	//		assertNotNull(rsd.getBundleName());
-	//		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundleName());
-	//		assertNull(rsd.getPath());
-	//		assertNull(rsd.getProtocol());
-	//		assertTrue(service == rsd.getService());
-	//		assertEquals(String.class.getName(), rsd.getServiceInterfaceClassName());
-	//		assertNull(rsd.getURL());
-	//		assertNull(rsd.getVersion());
-	//		assertEquals(String.class, rsd.getServiceInterfaceClass());
-	//		assertNotNull(rsd.getServiceRef());
-	//		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
-	//	}
-	//
-	//	public void testNonDefaultCreationPropRemoteProtocol() {
-	//		final ServiceReference ref = EasyMock.createMock(ServiceReference.class);
-	//
-	//		EasyMock.expect(ref.getPropertyKeys()).andReturn(new String[] { RSDPublisherProperties.PROP_REMOTE_PROTOCOL });
-	//		EasyMock.expect(ref.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL)).andReturn("https");
-	//		EasyMock.expect(ref.getBundle()).andReturn(Activator.getDefault().getBundle());
-	//		EasyMock.replay(ref);
-	//
-	//		final Object service = "Service";
-	//		final RemoteServiceDescription rsd = new RemoteServiceDescription(ref, service, String.class);
-	//
-	//		assertNull(rsd.getProperty(""));
-	//		assertNotNull(rsd.getBundleName());
-	//		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundleName());
-	//		assertNull(rsd.getPath());
-	//		assertEquals("https", rsd.getProtocol());
-	//		assertTrue(service == rsd.getService());
-	//		assertNull(rsd.getServiceInterfaceClassName());
-	//		assertNull(rsd.getURL());
-	//		assertNull(rsd.getVersion());
-	//		assertNull(rsd.getServiceInterfaceClass());
-	//		assertNotNull(rsd.getServiceRef());
-	//		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
-	//	}
-	//
-	//	public void testNonDefaultCreationPropRemotePath() {
-	//		final ServiceReference ref = EasyMock.createMock(ServiceReference.class);
-	//
-	//		EasyMock.expect(ref.getPropertyKeys()).andReturn(new String[] { RSDPublisherProperties.PROP_REMOTE_PATH });
-	//		EasyMock.expect(ref.getProperty(RSDPublisherProperties.PROP_REMOTE_PATH)).andReturn("/server/here");
-	//		EasyMock.expect(ref.getBundle()).andReturn(Activator.getDefault().getBundle());
-	//		EasyMock.replay(ref);
-	//
-	//		final Object service = "Service";
-	//		final RemoteServiceDescription rsd = new RemoteServiceDescription(ref, service, String.class);
-	//
-	//		assertNull(rsd.getProperty(""));
-	//		assertNotNull(rsd.getBundleName());
-	//		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundleName());
-	//		assertEquals("/server/here", rsd.getPath());
-	//		assertNull(rsd.getProtocol());
-	//		assertTrue(service == rsd.getService());
-	//		assertNull(rsd.getServiceInterfaceClassName());
-	//		assertNull(rsd.getURL());
-	//		assertNull(rsd.getVersion());
-	//		assertNull(rsd.getServiceInterfaceClass());
-	//		assertNotNull(rsd.getServiceRef());
-	//		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
-	//	}
-	//
-	//	public void testNonDefaultCreationPropConfigId() {
-	//		final ServiceReference ref = EasyMock.createMock(ServiceReference.class);
-	//
-	//		EasyMock.expect(ref.getPropertyKeys()).andReturn(new String[] { RSDPublisherProperties.PROP_CONFIG_ID });
-	//		EasyMock.expect(ref.getProperty(RSDPublisherProperties.PROP_CONFIG_ID)).andReturn("org.eclipse.riena.configid");
-	//		EasyMock.expect(ref.getBundle()).andReturn(Activator.getDefault().getBundle());
-	//		EasyMock.replay(ref);
-	//
-	//		final Object service = "Service";
-	//		final RemoteServiceDescription rsd = new RemoteServiceDescription(ref, service, String.class);
-	//
-	//		assertNull(rsd.getProperty(""));
-	//		assertNotNull(rsd.getBundleName());
-	//		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundleName());
-	//		assertNull(rsd.getPath());
-	//		assertNull(rsd.getProtocol());
-	//		assertTrue(service == rsd.getService());
-	//		assertNull(rsd.getServiceInterfaceClassName());
-	//		assertNull(rsd.getURL());
-	//		assertNull(rsd.getVersion());
-	//		assertNull(rsd.getServiceInterfaceClass());
-	//		assertNotNull(rsd.getServiceRef());
-	//		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
-	//	}
-	//
-	//	public void testNonDefaultCreationPropElse() {
-	//		final ServiceReference ref = EasyMock.createMock(ServiceReference.class);
-	//
-	//		EasyMock.expect(ref.getPropertyKeys()).andReturn(
-	//				new String[] { "the Answer to Life, the Universe, and Everything" });
-	//		EasyMock.expect(ref.getProperty("the Answer to Life, the Universe, and Everything")).andReturn("42");
-	//		EasyMock.expect(ref.getBundle()).andReturn(Activator.getDefault().getBundle());
-	//		EasyMock.replay(ref);
-	//
-	//		final Object service = "Service";
-	//		final RemoteServiceDescription rsd = new RemoteServiceDescription(ref, service, String.class);
-	//
-	//		assertEquals("42", rsd.getProperty("the Answer to Life, the Universe, and Everything"));
-	//		assertNotNull(rsd.getBundleName());
-	//		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundleName());
-	//		assertNull(rsd.getPath());
-	//		assertNull(rsd.getProtocol());
-	//		assertTrue(service == rsd.getService());
-	//		assertNull(rsd.getServiceInterfaceClassName());
-	//		assertNull(rsd.getURL());
-	//		assertNull(rsd.getVersion());
-	//		assertNull(rsd.getServiceInterfaceClass());
-	//		assertNotNull(rsd.getServiceRef());
-	//		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
-	//	}
-	//
-	//	public void testNonDefaultCreationAllTheStuff() {
-	//		final ServiceReference ref = EasyMock.createMock(ServiceReference.class);
-	//
-	//		EasyMock.expect(ref.getPropertyKeys()).andReturn(
-	//				new String[] { Constants.OBJECTCLASS, RSDPublisherProperties.PROP_REMOTE_PATH,
-	//						RSDPublisherProperties.PROP_REMOTE_PROTOCOL, RSDPublisherProperties.PROP_CONFIG_ID,
-	//						"the Answer to Life, the Universe, and Everything" });
-	//		EasyMock.expect(ref.getProperty(Constants.OBJECTCLASS)).andReturn(String.class);
-	//		EasyMock.expect(ref.getProperty("the Answer to Life, the Universe, and Everything")).andReturn("42");
-	//		EasyMock.expect(ref.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL)).andReturn("https");
-	//		EasyMock.expect(ref.getProperty(RSDPublisherProperties.PROP_REMOTE_PATH)).andReturn("/server/here");
-	//		EasyMock.expect(ref.getProperty(RSDPublisherProperties.PROP_CONFIG_ID)).andReturn("org.eclipse.riena.configid");
-	//		EasyMock.expect(ref.getBundle()).andReturn(Activator.getDefault().getBundle());
-	//		EasyMock.replay(ref);
-	//
-	//		final Object service = "Service";
-	//		final RemoteServiceDescription rsd = new RemoteServiceDescription(ref, service, String.class);
-	//
-	//		assertEquals("42", rsd.getProperty("the Answer to Life, the Universe, and Everything"));
-	//		assertNotNull(rsd.getBundleName());
-	//		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundleName());
-	//		assertEquals("/server/here", rsd.getPath());
-	//		assertEquals("https", rsd.getProtocol());
-	//		assertTrue(service == rsd.getService());
-	//		assertEquals(String.class.getName(), rsd.getServiceInterfaceClassName());
-	//		assertNull(rsd.getURL());
-	//		assertNull(rsd.getVersion());
-	//		assertEquals(String.class, rsd.getServiceInterfaceClass());
-	//		assertNotNull(rsd.getServiceRef());
-	//		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
-	//	}
+	public void testNonDefaultCreationObjectClass() throws ClassNotFoundException {
+		final Object service = "Service";
+		final RemoteServiceDescription rsd = new RemoteServiceDescription(String.class, null, null, Activator
+				.getDefault().getBundle());
+		rsd.setService(service);
+
+		assertNotNull(rsd.getBundle());
+		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundle().getSymbolicName());
+		assertNull(rsd.getPath());
+		assertNull(rsd.getProtocol());
+		assertTrue(service == rsd.getService());
+		assertEquals(String.class.getName(), rsd.getServiceInterfaceClassName());
+		assertNull(rsd.getURL());
+		assertEquals(String.class, rsd.getServiceInterfaceClass());
+		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
+	}
+
+	public void testNonDefaultCreationPropRemoteProtocol() {
+		final Object service = "Service";
+		final RemoteServiceDescription rsd = new RemoteServiceDescription(String.class, null, "hessian", Activator
+				.getDefault().getBundle());
+		rsd.setService(service);
+
+		assertNotNull(rsd.getBundle());
+		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundle().getSymbolicName());
+		assertNull(rsd.getPath());
+		assertEquals("hessian", rsd.getProtocol());
+		assertTrue(service == rsd.getService());
+		assertNotNull(rsd.getServiceInterfaceClassName());
+		assertNull(rsd.getURL());
+		assertNotNull(rsd.getServiceInterfaceClass());
+		assertNull(rsd.getServiceRef());
+		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
+	}
+
+	public void testNonDefaultCreationPropRemotePath() {
+		final Object service = "Service";
+		final RemoteServiceDescription rsd = new RemoteServiceDescription(String.class, null, null, Activator
+				.getDefault().getBundle());
+		rsd.setService(service);
+
+		assertNotNull(rsd.getBundle());
+		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundle().getSymbolicName());
+		//		assertEquals("/server/here", rsd.getPath());
+		assertNull(rsd.getProtocol());
+		assertTrue(service == rsd.getService());
+		assertNotNull(rsd.getServiceInterfaceClassName());
+		assertNull(rsd.getURL());
+		assertNotNull(rsd.getServiceInterfaceClass());
+		assertNull(rsd.getServiceRef());
+		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
+	}
+
+	public void testNonDefaultCreationPropConfigId() {
+		final Object service = "Service";
+		final RemoteServiceDescription rsd = new RemoteServiceDescription(String.class, null, null, Activator
+				.getDefault().getBundle());
+		rsd.setService(service);
+
+		assertNotNull(rsd.getBundle());
+		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundle().getSymbolicName());
+		assertNull(rsd.getPath());
+		assertNull(rsd.getProtocol());
+		assertTrue(service == rsd.getService());
+		assertNotNull(rsd.getServiceInterfaceClassName());
+		assertNull(rsd.getURL());
+		assertNotNull(rsd.getServiceInterfaceClass());
+		assertNull(rsd.getServiceRef());
+		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
+	}
+
+	public void testNonDefaultCreationPropElse() {
+		final Object service = "Service";
+		final RemoteServiceDescription rsd = new RemoteServiceDescription(String.class, null, null, Activator
+				.getDefault().getBundle());
+		rsd.setService(service);
+
+		assertNotNull(rsd.getBundle());
+		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundle().getSymbolicName());
+		assertNull(rsd.getPath());
+		assertNull(rsd.getProtocol());
+		assertTrue(service == rsd.getService());
+		assertNotNull(rsd.getServiceInterfaceClassName());
+		assertNull(rsd.getURL());
+		assertNotNull(rsd.getServiceInterfaceClass());
+		assertNull(rsd.getServiceRef());
+		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
+	}
+
+	public void testNonDefaultCreationAllTheStuff() {
+		final Object service = "Service";
+		final RemoteServiceDescription rsd = new RemoteServiceDescription(String.class, null, "hessian", Activator
+				.getDefault().getBundle());
+		rsd.setService(service);
+
+		assertNotNull(rsd.getBundle());
+		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundle().getSymbolicName());
+		//		assertEquals("/server/here", rsd.getPath());
+		assertEquals("hessian", rsd.getProtocol());
+		assertTrue(service == rsd.getService());
+		assertEquals(String.class.getName(), rsd.getServiceInterfaceClassName());
+		assertNull(rsd.getURL());
+		assertEquals(String.class, rsd.getServiceInterfaceClass());
+		assertNull(rsd.getServiceRef());
+		assertEquals(RemoteServiceDescription.State.REGISTERED, rsd.getState());
+	}
 }
