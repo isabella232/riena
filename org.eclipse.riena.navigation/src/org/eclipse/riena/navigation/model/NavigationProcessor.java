@@ -363,30 +363,34 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 */
 	public void move(final INavigationNode<?> sourceNode, final NavigationNodeId targetId) {
 		Assert.isTrue(ModuleNode.class.isAssignableFrom(sourceNode.getClass()));
-		final ModuleNode moduleNode = ModuleNode.class.cast(sourceNode);
+		final ModuleNode sourceModuleNode = ModuleNode.class.cast(sourceNode);
 		final INavigationNode<?> targetNode = create(sourceNode, targetId);
 		Assert.isTrue(ModuleGroupNode.class.isAssignableFrom(targetNode.getClass()));
 		final ModuleGroupNode targetModuleGroup = ModuleGroupNode.class.cast(targetNode);
-		final ModuleGroupNode oldParentModuleGroup = ModuleGroupNode.class.cast(moduleNode.getParent());
+		final ModuleGroupNode oldParentModuleGroup = ModuleGroupNode.class.cast(sourceModuleNode.getParent());
 		if (targetModuleGroup.equals(oldParentModuleGroup)) {
 			return;
 		}
-		final boolean isActivated = moduleNode.isActivated();
-		final boolean isBlocked = moduleNode.isBlocked();
-		final boolean isEnabled = moduleNode.isEnabled();
-		final boolean isVisible = moduleNode.isVisible();
+		final boolean isActivated = sourceModuleNode.isActivated();
+		final boolean isBlocked = sourceModuleNode.isBlocked();
+		final boolean isEnabled = sourceModuleNode.isEnabled();
+		final boolean isVisible = sourceModuleNode.isVisible();
 
-		moduleNode.dispose(null);
-		moduleNode.deactivate(null);
-		oldParentModuleGroup.removeChild(moduleNode);
-		targetModuleGroup.addChild(moduleNode);
+		sourceModuleNode.dispose(null);
+		sourceModuleNode.deactivate(null);
+		oldParentModuleGroup.removeChild(sourceModuleNode);
+		targetModuleGroup.addChild(sourceModuleNode);
 
-		moduleNode.setBlocked(isBlocked || targetModuleGroup.isBlocked());
-		moduleNode.setEnabled(isEnabled && targetModuleGroup.isEnabled());
-		moduleNode.setVisible(isVisible && targetModuleGroup.isVisible());
+		for (final ISubModuleNode child : sourceModuleNode.getChildren()) {
+			child.setParent(sourceModuleNode);
+		}
+
+		sourceModuleNode.setBlocked(isBlocked || targetModuleGroup.isBlocked());
+		sourceModuleNode.setEnabled(isEnabled && targetModuleGroup.isEnabled());
+		sourceModuleNode.setVisible(isVisible && targetModuleGroup.isVisible());
 
 		if (isActivated) {
-			moduleNode.activate();
+			sourceModuleNode.activate();
 		}
 
 		if (oldParentModuleGroup.getChildren().size() == 0) {
@@ -745,7 +749,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	}
 
 	//	/**
-	//	 * 
+	//	 *
 	//	 * @see org.eclipse.riena.navigation.INavigationProcessor#navigate(org.eclipse.riena.navigation.INavigationNode,
 	//	 *      org.eclipse.riena.navigation.NavigationNodeId,
 	//	 *      org.eclipse.riena.navigation.NavigationArgument)
@@ -767,7 +771,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	//
 	//			/*
 	//			 * (non-Javadoc)
-	//			 * 
+	//			 *
 	//			 * @see
 	//			 * org.eclipse.riena.ui.core.uiprocess.UIProcess#runJob(org.eclipse
 	//			 * .core.runtime.IProgressMonitor)
@@ -814,7 +818,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	//		};
 	//
 	//		// TODO must be set?
-	//		p.setNote("sample uiProcess note"); //$NON-NLS-1$ 
+	//		p.setNote("sample uiProcess note"); //$NON-NLS-1$
 	//		p.setTitle("sample uiProcess title"); //$NON-NLS-1$
 	//		p.start();
 	//	}

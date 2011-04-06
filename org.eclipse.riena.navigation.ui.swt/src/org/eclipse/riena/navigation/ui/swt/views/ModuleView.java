@@ -91,6 +91,8 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	private ModuleGroupNode moduleGroupNode;
 	private Map<ISubModuleNode, Set<IMarker>> subModuleMarkerCache;
 	private Listener disabledSubModuleTreeBgPainter;
+	private SubModuleListener subModuleListener;
+	private ModuleListener moduleListener;
 
 	public ModuleView(final Composite parent) {
 		this.parent = parent;
@@ -120,12 +122,12 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 	}
 
 	public void bind(final ModuleNode node) {
-
 		moduleNode = node;
-
 		navigationTreeObserver = new NavigationTreeObserver();
-		navigationTreeObserver.addListener(new SubModuleListener());
-		navigationTreeObserver.addListener(new ModuleListener());
+		subModuleListener = new SubModuleListener();
+		navigationTreeObserver.addListener(subModuleListener);
+		moduleListener = new ModuleListener();
+		navigationTreeObserver.addListener(moduleListener);
 		navigationTreeObserver.addListenerTo(moduleNode);
 
 		if (getNavigationNode().getNavigationNodeController() instanceof IController) {
@@ -134,13 +136,20 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			binding.bind(controller);
 			controller.afterBind();
 		}
-
 	}
 
 	/**
 	 * Disposes this module item.
 	 */
 	public void dispose() {
+		if (null != subModuleListener) {
+			navigationTreeObserver.removeListener(subModuleListener);
+		}
+
+		if (null != moduleListener) {
+			navigationTreeObserver.removeListener(moduleListener);
+		}
+
 		subModuleMarkerCache.clear();
 		unbind();
 		SwtUtilities.dispose(title);
@@ -849,6 +858,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			updateExpanded(source); // fix for bug 269221
 			doNotResize = false;
 			resize();
+
 			final TreeItem currentItem = findItem(getTree().getItems(), source);
 			if (null != currentItem) {
 				getTree().select(currentItem);
