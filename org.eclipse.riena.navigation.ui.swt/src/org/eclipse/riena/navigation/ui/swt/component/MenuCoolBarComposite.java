@@ -50,7 +50,8 @@ public class MenuCoolBarComposite extends Composite {
 	private CoolItem menuCoolItem;
 	private ToolBar menuToolBar;
 	private CoolBar menuCoolBar;
-	private final Map<MenuManager, Boolean> menuManagerVisibilityMap;
+	private final Map<MenuManager, Boolean> menuManagerToVisibility;
+	private final Map<MenuManager, Integer> menuManagerToChildCount;
 
 	/**
 	 * Creates an new instance of {@code MenuCoolBarComposite} given its parent
@@ -70,7 +71,8 @@ public class MenuCoolBarComposite extends Composite {
 		super(parent, style);
 		setLayout(new FillLayout());
 		this.window = window;
-		menuManagerVisibilityMap = new HashMap<MenuManager, Boolean>();
+		menuManagerToVisibility = new HashMap<MenuManager, Boolean>();
+		menuManagerToChildCount = new HashMap<MenuManager, Integer>();
 		create();
 	}
 
@@ -129,7 +131,10 @@ public class MenuCoolBarComposite extends Composite {
 		for (final IContributionItem contribItem : getTopLevelMenuEntries()) {
 			if (contribItem instanceof MenuManager) {
 				final MenuManager topMenuManager = (MenuManager) contribItem;
-				menuManagerVisibilityMap.put(topMenuManager, topMenuManager.isVisible());
+				menuManagerToVisibility.put(topMenuManager, topMenuManager.isVisible());
+				if (topMenuManager.getMenu() != null) {
+					menuManagerToChildCount.put(topMenuManager, topMenuManager.getMenu().getItemCount());
+				}
 				createAndAddMenu(topMenuManager);
 			}
 		}
@@ -142,6 +147,7 @@ public class MenuCoolBarComposite extends Composite {
 	/**
 	 * Returns the top-level menu entries.
 	 */
+	@SuppressWarnings("restriction")
 	private IContributionItem[] getTopLevelMenuEntries() {
 		if (window instanceof WorkbenchWindow) {
 			final MenuManager menuManager = ((WorkbenchWindow) window).getMenuManager();
@@ -185,9 +191,9 @@ public class MenuCoolBarComposite extends Composite {
 	}
 
 	public List<ToolItem> updateMenuItems() {
-		final List<MenuManager> changedItems = getChangedVisibilityItems();
+		final List<MenuManager> changedTopMenuManager = getChangedVisibilityItems();
 		final List<ToolItem> changedMenus = new ArrayList<ToolItem>();
-		if (!changedItems.isEmpty()) {
+		if (!changedTopMenuManager.isEmpty()) {
 			if (menuCoolBar != null) {
 				menuCoolBar.dispose();
 			}
@@ -195,7 +201,7 @@ public class MenuCoolBarComposite extends Composite {
 			layout();
 
 			for (final ToolItem contribItem : getTopLevelItems()) {
-				for (final MenuManager manager : changedItems) {
+				for (final MenuManager manager : changedTopMenuManager) {
 					if (manager.getMenuText().equals(contribItem.getText())) {
 						changedMenus.add(contribItem);
 					}
@@ -211,8 +217,10 @@ public class MenuCoolBarComposite extends Composite {
 			if (contribItem instanceof MenuManager) {
 				final MenuManager topMenuManager = (MenuManager) contribItem;
 				topMenuManager.updateAll(true);
-				final Boolean isVisible = menuManagerVisibilityMap.get(topMenuManager);
-				if (isVisible == null || !isVisible.equals(topMenuManager.isVisible())) {
+				final Boolean isVisible = menuManagerToVisibility.get(topMenuManager);
+				final Integer childCount = menuManagerToChildCount.get(topMenuManager);
+				if (childCount == null || isTopMenuVisibilityChanged(topMenuManager, isVisible)
+						|| isMenuItemVisibilityChanged(topMenuManager, childCount)) {
 					changedItems.add(topMenuManager);
 				}
 			}
@@ -220,4 +228,11 @@ public class MenuCoolBarComposite extends Composite {
 		return changedItems;
 	}
 
+	private boolean isMenuItemVisibilityChanged(final MenuManager topMenuManager, final int childCount) {
+		return topMenuManager.getMenu() == null || childCount != topMenuManager.getMenu().getItemCount();
+	}
+
+	private boolean isTopMenuVisibilityChanged(final MenuManager topMenuManager, final Boolean wasVisible) {
+		return wasVisible == null || !wasVisible.equals(topMenuManager.isVisible());
+	}
 }
