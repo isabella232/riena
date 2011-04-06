@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 
 import org.eclipse.core.runtime.CoreException;
@@ -72,11 +73,19 @@ public class RemoteServiceDescription {
 	private final ServiceReference serviceRef;
 	private final String path;
 	private final ClassLoader serviceClassLoader = new ClassLoader() {
+		private final Bundle thisBundle = FrameworkUtil.getBundle(RemoteServiceDescription.class);
+
 		@Override
 		public Class<?> loadClass(final String name) throws ClassNotFoundException {
-			return bundle.loadClass(name);
+			try {
+				return bundle.loadClass(name);
+			} catch (final ClassNotFoundException e) {
+				// Fallback which allows the use of buddy-classloading
+				return thisBundle.loadClass(name);
+			}
 		}
 	};
+
 	private State state = State.REGISTERED;
 	private Object service;
 	private String url;
