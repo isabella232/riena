@@ -18,7 +18,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
 import org.osgi.framework.ServiceReference;
 
 import org.eclipse.core.runtime.CoreException;
@@ -67,24 +66,12 @@ public class RemoteServiceDescription {
 	};
 
 	private final Class<?> serviceInterfaceClass;
-	private final Bundle bundle;
+	private final Bundle serviceBundle;
 	private final String serviceInterfaceClassName;
 	private final String protocol;
 	private final ServiceReference serviceRef;
 	private final String path;
-	private final ClassLoader serviceClassLoader = new ClassLoader() {
-		private final Bundle thisBundle = FrameworkUtil.getBundle(RemoteServiceDescription.class);
-
-		@Override
-		public Class<?> loadClass(final String name) throws ClassNotFoundException {
-			try {
-				return bundle.loadClass(name);
-			} catch (final ClassNotFoundException e) {
-				// Fallback which allows the use of buddy-classloading
-				return thisBundle.loadClass(name);
-			}
-		}
-	};
+	private final ClassLoader serviceClassLoader;
 
 	private State state = State.REGISTERED;
 	private Object service;
@@ -105,10 +92,11 @@ public class RemoteServiceDescription {
 		this.serviceInterfaceClassName = interfaceClass.getName();
 		this.url = url;
 		this.protocol = protocol;
-		this.bundle = bundle;
+		this.serviceBundle = bundle;
 		// not needed in this context
 		this.path = null;
 		this.serviceRef = null;
+		this.serviceClassLoader = new ServiceClassLoader(serviceBundle);
 	}
 
 	/**
@@ -126,11 +114,12 @@ public class RemoteServiceDescription {
 			final String protocol) throws ClassNotFoundException {
 		this.serviceInterfaceClassName = interfaceName;
 		this.serviceRef = serviceRef;
-		this.bundle = serviceRef.getBundle();
-		this.service = bundle.getBundleContext().getService(serviceRef);
+		this.serviceBundle = serviceRef.getBundle();
+		this.service = serviceBundle.getBundleContext().getService(serviceRef);
 		this.path = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PATH), path);
 		this.protocol = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PROTOCOL), protocol);
-		this.serviceInterfaceClass = bundle.loadClass(interfaceName);
+		this.serviceInterfaceClass = serviceBundle.loadClass(interfaceName);
+		this.serviceClassLoader = new ServiceClassLoader(serviceBundle);
 	}
 
 	public ClassLoader getServiceClassLoader() {
@@ -155,7 +144,7 @@ public class RemoteServiceDescription {
 	 * @since 3.0
 	 */
 	public Bundle getBundle() {
-		return bundle;
+		return serviceBundle;
 	}
 
 	/**

@@ -38,6 +38,7 @@ import org.osgi.service.log.LogService;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
+import org.eclipse.riena.communication.core.ServiceClassLoader;
 import org.eclipse.riena.communication.core.zipsupport.ReusableBufferedInputStream;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
@@ -172,9 +173,8 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 
 		final ClassLoader original = Thread.currentThread().getContextClassLoader();
 		try {
-			final Object service = rsd.getService();
-			Thread.currentThread().setContextClassLoader(rsd.getServiceClassLoader());
-			final HessianSkeleton sk = new HessianSkeleton(service, rsd.getServiceInterfaceClass());
+			Thread.currentThread().setContextClassLoader(new ServiceClassLoader(original, rsd.getBundle()));
+			final HessianSkeleton sk = new HessianSkeleton(rsd.getService(), rsd.getServiceInterfaceClass());
 			sk.invoke(inp, out);
 		} catch (final Throwable t) {
 			Throwable t2 = t;
