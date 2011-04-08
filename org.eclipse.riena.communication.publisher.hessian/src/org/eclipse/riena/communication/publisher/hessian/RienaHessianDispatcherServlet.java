@@ -38,7 +38,6 @@ import org.osgi.service.log.LogService;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
-import org.eclipse.riena.communication.core.ServiceClassLoader;
 import org.eclipse.riena.communication.core.zipsupport.ReusableBufferedInputStream;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
@@ -171,9 +170,10 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 
 		out.setSerializerFactory(serializerFactory);
 
-		final ClassLoader original = Thread.currentThread().getContextClassLoader();
+		// TODO TCCL causes problems wit log4j: http://articles.qos.ch/classloader.html
+		//		final ClassLoader original = Thread.currentThread().getContextClassLoader();
 		try {
-			Thread.currentThread().setContextClassLoader(new ServiceClassLoader(original, rsd.getBundle()));
+			//			Thread.currentThread().setContextClassLoader(new ServiceClassLoader(original, rsd.getBundle()));
 			final HessianSkeleton sk = new HessianSkeleton(rsd.getService(), rsd.getServiceInterfaceClass());
 			sk.invoke(inp, out);
 		} catch (final Throwable t) {
@@ -187,7 +187,7 @@ public class RienaHessianDispatcherServlet extends GenericServlet {
 		} finally {
 			inp.close();
 			out.close(); // Hessian2Output forgets to close if the service throws an exception
-			Thread.currentThread().setContextClassLoader(original);
+			//			Thread.currentThread().setContextClassLoader(original);
 		}
 	}
 
