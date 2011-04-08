@@ -475,7 +475,11 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		 */
 		public void run() {
 			if (control != null) {
-				control.redraw();
+				synchronized (control.getDisplay()) {
+					if (!control.isDisposed()) {
+						control.redraw();
+					}
+				}
 			}
 		}
 	}
