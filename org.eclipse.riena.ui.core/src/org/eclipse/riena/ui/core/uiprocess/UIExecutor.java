@@ -76,7 +76,7 @@ public final class UIExecutor {
 			}
 		});
 		if (process.getError() != null) {
-			throw new RuntimeException("Exception will executing callable.", process.getError()); //$NON-NLS-1$
+			throw new RuntimeException("Exception while executing callable.", process.getError()); //$NON-NLS-1$
 		}
 		return process.getResult();
 	}
