@@ -113,9 +113,29 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	}
 
 	public boolean isPresentSubModules() {
-		// consider number of visible children only
-		return isPresentSingleSubModule()
-				|| !(getVisibleChildCount(this) == 1 && getVisibleChildCount(getChild(0)) == 0);
+		// 1. check if flag is set
+		// 2. check if module has more than one child
+		// 3. check if module has only one child with subChilds
+		return isPresentSingleSubModule() || getVisibleChildCount(this) > 1 || hasSingleChildWithChildren();
+	}
+
+	/**
+	 * Checks if this node has a single child with children as well.
+	 * 
+	 * @return
+	 */
+	private boolean hasSingleChildWithChildren() {
+		if (getVisibleChildCount(this) == 1) {
+			final Iterator<ISubModuleNode> childIter = getChildren().iterator();
+			while (childIter.hasNext()) {
+				final INavigationNode<?> child = childIter.next();
+				if (child.isVisible() && !child.getChildren().isEmpty()) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	/*

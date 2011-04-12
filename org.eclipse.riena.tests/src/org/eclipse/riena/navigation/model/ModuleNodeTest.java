@@ -21,41 +21,90 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 @NonUITestCase
 public class ModuleNodeTest extends TestCase {
 
-	/**
-	 * Tests the method {@code calcDepth()}
-	 */
-	public void testCalcDepth() {
+	public void testCalcDepthNoChild() {
+		final ModuleNode module = new ModuleNode();
+		assertEquals(0, module.calcDepth());
+	}
 
-		final ModuleNode m = new ModuleNode();
-		assertEquals(0, m.calcDepth());
-
+	public void testCalcDepthOneChild() {
+		final ModuleNode module = new ModuleNode();
 		final SubModuleNode sm = new SubModuleNode(new NavigationNodeId("module1"));
-		m.addChild(sm);
-		assertEquals(0, m.calcDepth());
+		module.addChild(sm);
+		assertEquals(0, module.calcDepth());
+	}
 
-		final SubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("module2"));
-		m.addChild(sm2);
-		assertEquals(2, m.calcDepth());
+	public void testCalcDepthTwoChilds() {
+		final ModuleNode module = new ModuleNode();
+		final SubModuleNode sm = new SubModuleNode(new NavigationNodeId("subModule1"));
+		final SubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("subModule2"));
+		module.addChild(sm);
+		module.addChild(sm2);
+		assertEquals(2, module.calcDepth());
+	}
+
+	public void testCalcDepthTwoChildsAndExpanded() {
+		final ModuleNode module = new ModuleNode();
+		final SubModuleNode sm = new SubModuleNode(new NavigationNodeId("subModule1"));
+		final SubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("subModule2"));
+		module.addChild(sm);
+		module.addChild(sm2);
+		assertEquals(2, module.calcDepth());
 
 		final SubModuleNode sm21 = new SubModuleNode(new NavigationNodeId("module21"));
 		sm21.setNavigationProcessor(new NavigationProcessor());
 		sm2.addChild(sm21);
-		assertEquals(2, m.calcDepth());
+		assertEquals(2, module.calcDepth());
 		sm2.setExpanded(true);
-		assertEquals(3, m.calcDepth());
+		assertEquals(3, module.calcDepth());
+	}
 
-		sm21.setEnabled(false);
-		assertEquals(3, m.calcDepth());
-		sm21.setVisible(false);
-		assertEquals(2, m.calcDepth());
+	public void testCalcDepthTwoChildsAndSetVisible() {
+		final ModuleNode module = new ModuleNode();
+		final NavigationProcessor navigationProcessor = new NavigationProcessor();
+		final SubModuleNode sm = new SubModuleNode(new NavigationNodeId("subModule1"));
+		sm.setNavigationProcessor(navigationProcessor);
+		final SubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("subModule2"));
+		sm2.setNavigationProcessor(navigationProcessor);
+		final SubModuleNode sm3 = new SubModuleNode(new NavigationNodeId("subModule3"));
+		sm3.setNavigationProcessor(navigationProcessor);
+		module.addChild(sm);
+		module.addChild(sm2);
+		module.addChild(sm3);
+		assertEquals(3, module.calcDepth());
 
-		/*
-		 * If there are 2 children of Module and Child 1 is not visible then the
-		 * tree shell not be rendered
-		 */
+		sm3.setVisible(false);
+		assertEquals(2, module.calcDepth());
+	}
+
+	public void testCalcDepthTwoChildsAndInvisibleWithSubChilds() {
+		final ModuleNode module = new ModuleNode();
+		final NavigationProcessor navigationProcessor = new NavigationProcessor();
+		final SubModuleNode sm = new SubModuleNode(new NavigationNodeId("subModule1"));
+		sm.setNavigationProcessor(navigationProcessor);
 		sm.setVisible(false);
-		assertEquals(0, m.calcDepth());
+		final SubModuleNode sm2 = new SubModuleNode(new NavigationNodeId("subModule2"));
+		sm2.setNavigationProcessor(navigationProcessor);
+		sm2.setExpanded(true);
 
+		final SubModuleNode sm21 = new SubModuleNode(new NavigationNodeId("subModule2.1"));
+		sm21.setNavigationProcessor(navigationProcessor);
+		module.addChild(sm);
+		module.addChild(sm2);
+		sm2.addChild(sm21);
+
+		assertEquals(2, module.calcDepth());
+	}
+
+	public void testIsPresentSubModules() throws Exception {
+		final SubModuleNode childOne = new SubModuleNode(new NavigationNodeId("nodeOne"));
+		childOne.setVisible(false);
+		final SubModuleNode childTwo = new SubModuleNode(new NavigationNodeId("nodeTwo"));
+
+		final ModuleNode module = new ModuleNode();
+		module.addChild(childOne);
+		module.addChild(childTwo);
+
+		assertFalse(module.isPresentSubModules());
 	}
 
 }
