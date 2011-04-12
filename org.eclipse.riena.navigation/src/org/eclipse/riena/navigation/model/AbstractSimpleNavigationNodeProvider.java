@@ -20,12 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
@@ -44,8 +42,7 @@ import org.eclipse.riena.navigation.StartupNodeInfo.Level;
 import org.eclipse.riena.navigation.extension.ICommonNavigationAssemblyExtension;
 import org.eclipse.riena.navigation.extension.INavigationAssembly2Extension;
 import org.eclipse.riena.navigation.extension.INode2Extension;
-import org.eclipse.riena.ui.core.uiprocess.UIProcess;
-import org.eclipse.riena.ui.core.uiprocess.UISynchronizer;
+import org.eclipse.riena.ui.core.uiprocess.UIExecutor;
 
 /**
  * This class provides navigation nodes that are defined by assemlies2
@@ -162,21 +159,11 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 
 				INavigationNode<?>[] targetNodes = null;
 				if ((null != argument && argument.isCreateNodesAsync()) || shouldRunAsync(assembler)) {
-					final Callable<INavigationNode<?>[]> callable = new Callable<INavigationNode<?>[]>() {
-
+					targetNodes = UIExecutor.executeLively(new Callable<INavigationNode<?>[]>() {
 						public INavigationNode<?>[] call() throws Exception {
 							return assembler.buildNode(targetId, argument);
 						}
-					};
-					// Could be done with ExecutorService and Future. Using an UIProcess because of rap thread context attachment!
-					final NodeBuilderProcess process = new NodeBuilderProcess(callable);
-					process.start();
-					UISynchronizer.createSynchronizer().readAndDispatch(new Callable<Boolean>() {
-						public Boolean call() throws Exception {
-							return process.isFinished();
-						}
 					});
-					targetNodes = process.getResult();
 				} else {
 					targetNodes = assembler.buildNode(targetId, argument);
 				}
@@ -207,39 +194,6 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 	 */
 	private boolean shouldRunAsync(final INavigationAssembler assembler) {
 		return assembler.getClass().isAnnotationPresent(RunAsync.class);
-	}
-
-	private class NodeBuilderProcess extends UIProcess {
-
-		private final AtomicBoolean finished = new AtomicBoolean(false);
-		private final Callable<INavigationNode<?>[]> command;
-		private INavigationNode<?>[] result = null;
-
-		public NodeBuilderProcess(final Callable<INavigationNode<?>[]> command) {
-			super("worker", false); //$NON-NLS-1$
-			this.command = command;
-		}
-
-		@Override
-		public boolean runJob(final IProgressMonitor monitor) {
-			try {
-				result = command.call();
-			} catch (final Exception e) {
-				LOGGER.log(LogService.LOG_ERROR, e.getMessage());
-			} finally {
-				finished.set(true);
-			}
-			return true;
-		}
-
-		private boolean isFinished() {
-			return finished.get();
-		}
-
-		private INavigationNode<?>[] getResult() {
-			return result;
-		}
-
 	}
 
 	//	private void printNodeTree(final INavigationNode<?> root, final int depth) {
