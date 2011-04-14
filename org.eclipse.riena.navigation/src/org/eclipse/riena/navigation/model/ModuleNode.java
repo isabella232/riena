@@ -126,9 +126,7 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 */
 	private boolean hasSingleChildWithChildren() {
 		if (getVisibleChildCount(this) == 1) {
-			final Iterator<ISubModuleNode> childIter = getChildren().iterator();
-			while (childIter.hasNext()) {
-				final INavigationNode<?> child = childIter.next();
+			for (final INavigationNode<?> child : getChildren()) {
 				if (child.isVisible() && !child.getChildren().isEmpty()) {
 					return true;
 				}
