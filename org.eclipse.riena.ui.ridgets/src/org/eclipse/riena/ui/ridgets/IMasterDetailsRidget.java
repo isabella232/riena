@@ -426,4 +426,11 @@ public interface IMasterDetailsRidget extends IComplexRidget {
 	 *            ridget
 	 */
 	void setAutoEnableRemove(final boolean autoEnableRemove);
+
+	/**
+	 * Applies the details to the master.
+	 * 
+	 * @since 3.0
+	 */
+	void handleApply();
 }
