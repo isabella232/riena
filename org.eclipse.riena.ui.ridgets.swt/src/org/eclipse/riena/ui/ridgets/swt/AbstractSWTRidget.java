@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.ridgets.swt;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -78,7 +79,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	}
 
 	@Override
-	public final boolean hasFocus() {
+	public boolean hasFocus() {
 		if (getUIControl() != null) {
 			final Control control = getUIControl();
 			return control.isFocusControl();
