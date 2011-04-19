@@ -10,11 +10,16 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.controller;
 
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Assert;
+
+import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.ui.core.context.IContext;
+import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
@@ -150,8 +155,37 @@ public abstract class AbstractWindowController implements IController, IContext 
 	/**
 	 * @since 2.0
 	 */
+	@SuppressWarnings("unchecked")
 	public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
-		return getRidget(id);
+		R ridget = getRidget(id);
+
+		if (ridget != null) {
+			return ridget;
+		}
+		if (RienaStatus.isTest()) {
+			try {
+				if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
+					final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(
+							ridgetClazz);
+					if (mappedRidgetClazz != null) {
+						ridget = mappedRidgetClazz.newInstance();
+					}
+					Assert.isNotNull(
+							ridget,
+							"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+				} else {
+					ridget = ridgetClazz.newInstance();
+				}
+			} catch (final InstantiationException e) {
+				throw new RuntimeException(e);
+			} catch (final IllegalAccessException e) {
+				throw new RuntimeException(e);
+			}
+
+			addRidget(id, ridget);
+		}
+
+		return ridget;
 	}
 
 	public Collection<? extends IRidget> getRidgets() {
@@ -161,7 +195,25 @@ public abstract class AbstractWindowController implements IController, IContext 
 	/**
 	 * @return The window ridget.
 	 */
+	@SuppressWarnings("unchecked")
 	public IWindowRidget getWindowRidget() {
+		if (RienaStatus.isTest() && windowRidget == null) {
+			final Class<IWindowRidget> mappedRidgetClazz = (Class<IWindowRidget>) ClassRidgetMapper.getInstance()
+					.getRidgetClass(IWindowRidget.class);
+			try {
+				if (mappedRidgetClazz != null) {
+					windowRidget = mappedRidgetClazz.newInstance();
+				}
+				Assert.isNotNull(
+						windowRidget,
+						"Could not find a corresponding implementation for IWindowRidget in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ 
+			} catch (final InstantiationException e) {
+				throw new RuntimeException(e);
+			} catch (final IllegalAccessException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
 		return windowRidget;
 	}
 

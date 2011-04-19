@@ -77,6 +77,7 @@ import org.eclipse.riena.internal.ui.ridgets.swt.TreeRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TreeTableRidget;
 import org.eclipse.riena.ui.ridgets.ClassRidgetMapper;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.swt.ImageButtonRidget;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.IMappingCondition;
@@ -140,8 +141,8 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(Button.class, ToggleButtonRidget.class, SWT.CHECK);
 		addMapping(Button.class, ToggleButtonRidget.class, SWT.TOGGLE);
 		addMapping(Button.class, ToggleButtonRidget.class, SWT.RADIO);
-		addMapping(Button.class, ActionRidget.class);
 		addMapping(ImageButton.class, ImageButtonRidget.class);
+		addMapping(Button.class, ActionRidget.class);
 		addMapping(ChoiceComposite.class, SingleChoiceRidget.class, new SingleChoiceCondition());
 		addMapping(ChoiceComposite.class, MultipleChoiceRidget.class, new MultipleChoiceCondition());
 		addMapping(Composite.class, CompositeRidget.class, new CompositeWithBindingIdCondition());
@@ -154,7 +155,6 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(Link.class, LinkRidget.class);
 		addMapping(Tree.class, TreeRidget.class, new TreeWithoutColumnsCondition());
 		addMapping(Tree.class, TreeTableRidget.class, new TreeWithColumnsCondition());
-		addMapping(Shell.class, ShellRidget.class);
 		addMapping(MessageBox.class, MessageBoxRidget.class);
 		addMapping(Statusline.class, StatuslineRidget.class);
 		addMapping(StatuslineNumber.class, StatuslineNumberRidget.class);
@@ -167,6 +167,7 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(ProgressBar.class, ProgressBarRidget.class);
 		addMapping(InfoFlyout.class, InfoFlyoutRidget.class);
 		addMapping(StatusMeterWidget.class, StatusMeterRidget.class);
+		addMapping(Shell.class, ShellRidget.class);
 	}
 
 	public void addMapping(final Class<? extends Object> controlClazz, final Class<? extends IRidget> ridgetClazz) {

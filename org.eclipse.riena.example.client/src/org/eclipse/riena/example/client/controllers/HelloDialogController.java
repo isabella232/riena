@@ -54,42 +54,46 @@ public class HelloDialogController extends AbstractWindowController {
 
 		carConfig = new CarConfig();
 
-		compositeCarModel = getRidget("compositeCarModel"); //$NON-NLS-1$
+		compositeCarModel = getRidget(ISingleChoiceRidget.class, "compositeCarModel"); //$NON-NLS-1$
 		compositeCarModel.bindToModel(toList(CarModels.values()),
 				BeansObservables.observeValue(carConfig, CarConfig.PROP_MODEL));
 		compositeCarModel.addMarker(new MandatoryMarker());
 		compositeCarModel.updateFromModel();
 
-		compositeCarExtras = getRidget("compositeCarExtras"); //$NON-NLS-1$
+		compositeCarExtras = getRidget(IMultipleChoiceRidget.class, "compositeCarExtras"); //$NON-NLS-1$
 		final String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				"Park Distance Control System", }; //$NON-NLS-1$
 		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), carConfig,
 				CarConfig.PROP_OPTIONS);
 		compositeCarExtras.updateFromModel();
 
-		compositeCarWarranty = getRidget("compositeCarWarranty"); //$NON-NLS-1$
+		compositeCarWarranty = getRidget(ISingleChoiceRidget.class, "compositeCarWarranty"); //$NON-NLS-1$
 		compositeCarWarranty.bindToModel(toList(CarWarranties.values()),
 				BeansObservables.observeValue(carConfig, CarConfig.PROP_WARRANTY));
 		compositeCarWarranty.addMarker(new MandatoryMarker());
 		compositeCarWarranty.updateFromModel();
 
-		compositeCarPlates = getRidget("compositeCarPlates"); //$NON-NLS-1$
+		compositeCarPlates = getRidget(IMultipleChoiceRidget.class, "compositeCarPlates"); //$NON-NLS-1$
 		compositeCarPlates
 				.bindToModel(toList(carPlates), PojoObservables.observeList(carConfig, CarConfig.PROP_PLATES));
 		compositeCarPlates.addMarker(new MandatoryMarker());
 		compositeCarPlates.updateFromModel();
 
-		final ITextRidget txtPrice = getRidget("txtPrice"); //$NON-NLS-1$
+		final ITextRidget txtPrice = getRidget(ITextRidget.class, "txtPrice"); //$NON-NLS-1$
 		txtPrice.setOutputOnly(true);
 		final DataBindingContext dbc = new DataBindingContext();
 		dbc.bindValue(BeansObservables.observeValue(txtPrice, ITextRidget.PROPERTY_TEXT),
 				BeansObservables.observeValue(carConfig, CarConfig.PROP_PRICE), null, null);
 
-		final IActionRidget buttonPreset = getRidget("buttonPreset"); //$NON-NLS-1$
+		final IActionRidget buttonPreset = getRidget(IActionRidget.class, "buttonPreset"); //$NON-NLS-1$
 		buttonPreset.setText("&Quick Config"); //$NON-NLS-1$
 
-		final IActionRidget buttonReset = getRidget("buttonReset"); //$NON-NLS-1$
+		final IActionRidget buttonReset = getRidget(IActionRidget.class, "buttonReset"); //$NON-NLS-1$
 		buttonReset.setText("&Reset"); //$NON-NLS-1$
+	}
+
+	public CarConfig getCarConfig() {
+		return carConfig;
 	}
 
 	@OnActionCallback(ridgetId = "buttonPreset")
@@ -129,7 +133,7 @@ public class HelloDialogController extends AbstractWindowController {
 	 * Bean that holds a single car configuration composed of: model, option(s),
 	 * warranty, plate(s).
 	 */
-	private static final class CarConfig extends AbstractBean {
+	public static final class CarConfig extends AbstractBean {
 		public static final String PROP_MODEL = "model"; //$NON-NLS-1$
 		public static final String PROP_OPTIONS = "options"; //$NON-NLS-1$
 		public static final String PROP_WARRANTY = "warranty"; //$NON-NLS-1$
@@ -141,7 +145,6 @@ public class HelloDialogController extends AbstractWindowController {
 		private CarWarranties warranty;
 		private List<String> plates = new ArrayList<String>();
 
-		@SuppressWarnings("unused")
 		public CarModels getModel() {
 			return model;
 		}
@@ -151,7 +154,6 @@ public class HelloDialogController extends AbstractWindowController {
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
-		@SuppressWarnings("unused")
 		public List<CarOptions> getOptions() {
 			return Collections.unmodifiableList(options);
 		}
@@ -161,7 +163,6 @@ public class HelloDialogController extends AbstractWindowController {
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
-		@SuppressWarnings("unused")
 		public CarWarranties getWarranty() {
 			return warranty;
 		}
@@ -171,7 +172,6 @@ public class HelloDialogController extends AbstractWindowController {
 			firePropertyChanged(PROP_PRICE, null, getPrice());
 		}
 
-		@SuppressWarnings("unused")
 		public List<String> getPlates() {
 			return Collections.unmodifiableList(plates);
 		}
@@ -202,7 +202,7 @@ public class HelloDialogController extends AbstractWindowController {
 		}
 	}
 
-	private enum CarModels {
+	public enum CarModels {
 		ASTON_MARTIN("Aston Martin V-12 Vanquish"), LOTUS("Lotus Esprit Turbo"), BMW("BMW Z8"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		private final String label;
@@ -218,7 +218,7 @@ public class HelloDialogController extends AbstractWindowController {
 		}
 	}
 
-	private enum CarOptions {
+	public enum CarOptions {
 		FRONT_GUNS, SELF_DESTRUCT, UNDERWATER, PDCS
 	}
 

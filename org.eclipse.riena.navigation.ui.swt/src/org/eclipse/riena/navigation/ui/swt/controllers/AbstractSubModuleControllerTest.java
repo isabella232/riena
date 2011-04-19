@@ -26,17 +26,17 @@ import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
-import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
- * Abstract class for SubModuleController testing. All controller tests should
- * use this as the super class
+ * Abstract class for controller testing. All controller tests should use this
+ * as the super class
  * 
  * @since 2.0
  */
 @NonUITestCase
-public abstract class AbstractSubModuleControllerTest<C extends SubModuleController> extends RienaTestCase {
+public abstract class AbstractSubModuleControllerTest<C extends IController> extends RienaTestCase {
 
 	private C controller;
 	private final INavigationProcessor mockNavigationProcessor = EasyMock.createMock(INavigationProcessor.class);
@@ -73,6 +73,9 @@ public abstract class AbstractSubModuleControllerTest<C extends SubModuleControl
 		super.tearDown();
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected C getController() {
 		return controller;
 	}
@@ -81,5 +84,8 @@ public abstract class AbstractSubModuleControllerTest<C extends SubModuleControl
 		return mockNavigationProcessor;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected abstract C createController(ISubModuleNode node);
 }
