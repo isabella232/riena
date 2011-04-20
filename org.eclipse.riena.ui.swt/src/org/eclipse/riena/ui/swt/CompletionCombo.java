@@ -746,15 +746,7 @@ public abstract class CompletionCombo extends Composite {
 			if (focusControl == arrow || focusControl == list) {
 				return;
 			}
-			if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH) {
-				if (isDropped()) {
-					list.setFocus();
-				} else {
-					text.setFocus();
-				}
-			} else {
-				text.setFocus();
-			}
+			setFocus();
 			break;
 		case SWT.FocusOut:
 			if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH) {
@@ -897,7 +889,7 @@ public abstract class CompletionCombo extends Composite {
 		if (!drop) {
 			popup.setVisible(false);
 			if (!isDisposed() && isFocusControl()) {
-				text.setFocus();
+				setFocus();
 			}
 			return;
 		}
@@ -924,10 +916,10 @@ public abstract class CompletionCombo extends Composite {
 
 		// always select the first element, if selection is empty and [
 		// autocompletion mode is FIRST_LETTER_MATCH
-		if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH && getItemCount() > 0
-				&& getSelectionIndex() == -1) {
-			setMatchingTextAndSelection(0, 0, getItem(0));
-		}
+		//		if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH && getItemCount() > 0
+		//				&& getSelectionIndex() == -1) {
+		//			setMatchingTextAndSelection(0, 0, getItem(0));
+		//		}
 
 		final int index = getSelectionIndex(list);
 		if (index != -1) {
@@ -951,11 +943,7 @@ public abstract class CompletionCombo extends Composite {
 		popup.setBounds(x, y, width, height);
 		popup.setVisible(true);
 		if (isFocusControl()) {
-			if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH) {
-				list.setFocus();
-			} else {
-				text.setFocus();
-			}
+			setFocus();
 		}
 	}
 
@@ -1812,9 +1800,6 @@ public abstract class CompletionCombo extends Composite {
 		checkWidget();
 		if (!isEnabled() || !isVisible()) {
 			return false;
-		}
-		if (autoCompletionMode == AutoCompletionMode.FIRST_LETTER_MATCH && isDropped()) {
-			return list.setFocus();
 		}
 		return text.setFocus();
 	}

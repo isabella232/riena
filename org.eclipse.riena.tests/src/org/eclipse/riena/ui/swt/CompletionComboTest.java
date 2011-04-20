@@ -20,8 +20,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.ui.swt.CompletionCombo.AutoCompletionMode;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -33,13 +33,16 @@ public class CompletionComboTest extends TestCase {
 
 	private Shell shell;
 	private CompletionCombo combo;
+	private Text text;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		shell = new Shell();
 		shell.setLayout(new RowLayout());
+		shell.setBounds(0, 0, 200, 200);
 		combo = UIControlsFactory.createCompletionCombo(shell, SWT.NONE);
+		text = UIControlsFactory.createText(shell, SWT.BORDER);
 	}
 
 	@Override
@@ -102,10 +105,48 @@ public class CompletionComboTest extends TestCase {
 		shell.setEnabled(true);
 
 		assertTrue(combo.isEnabled());
-		final Text textControl = (Text) ReflectionUtils.invokeHidden(combo, "getTextControl", (Object[]) null);
+		final Text textControl = combo.getTextControl();
 		assertTrue(textControl.isEnabled());
-		final Button buttonControl = (Button) ReflectionUtils.invokeHidden(combo, "getButtonControl", (Object[]) null);
+		final Button buttonControl = combo.getButtonControl();
 		assertTrue(buttonControl.isEnabled());
+	}
+
+	/**
+	 * Tests the method {@code setFocus()}.
+	 */
+	public void testSetFocus() {
+
+		shell.open();
+
+		text.setFocus();
+		assertTrue(text.isFocusControl());
+
+		text.setFocus();
+		combo.setAutoCompletionMode(AutoCompletionMode.ALLOW_MISSMATCH);
+		combo.setFocus();
+		assertTrue(combo.getTextControl().isFocusControl());
+
+		text.setFocus();
+		combo.setAutoCompletionMode(AutoCompletionMode.FIRST_LETTER_MATCH);
+		combo.setFocus();
+		assertTrue(combo.getTextControl().isFocusControl());
+
+		text.setFocus();
+		combo.setAutoCompletionMode(AutoCompletionMode.NO_MISSMATCH);
+		combo.setFocus();
+		assertTrue(combo.getTextControl().isFocusControl());
+
+		text.setFocus();
+		combo.setEnabled(false);
+		combo.setFocus();
+		assertFalse(combo.getTextControl().isFocusControl());
+
+		text.setFocus();
+		combo.setEnabled(true);
+		combo.setVisible(false);
+		combo.setFocus();
+		assertFalse(combo.getTextControl().isFocusControl());
+
 	}
 
 }
