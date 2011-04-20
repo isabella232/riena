@@ -17,9 +17,7 @@ import java.util.Comparator;
 import org.easymock.LogicalOperator;
 
 import org.eclipse.riena.beans.common.Person;
-import org.eclipse.riena.example.client.controllers.NavigateSubModuleController;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-import org.eclipse.riena.internal.example.client.beans.PersonModificationBean;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
@@ -154,8 +152,7 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 				.andReturn(createNavigationNode("org.eclipse.riena.example.navigate.firstmodule"));
 
 		replay(getMockNavigationProcessor());
-		final IActionRidget navigateFirstModule = getController().getRidget(IActionRidget.class,
-				"openAsFirstModule");
+		final IActionRidget navigateFirstModule = getController().getRidget(IActionRidget.class, "openAsFirstModule");
 		navigateFirstModule.fireAction();
 		verify(getMockNavigationProcessor());
 	}

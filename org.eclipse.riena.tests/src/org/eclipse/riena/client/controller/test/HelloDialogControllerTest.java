@@ -12,9 +12,8 @@ package org.eclipse.riena.client.controller.test;
 
 import java.util.Arrays;
 
-import org.eclipse.riena.example.client.controllers.HelloDialogController;
-import org.eclipse.riena.example.client.controllers.HelloDialogController.CarModels;
-import org.eclipse.riena.example.client.controllers.HelloDialogController.CarOptions;
+import org.eclipse.riena.client.controller.test.HelloDialogController.CarModels;
+import org.eclipse.riena.client.controller.test.HelloDialogController.CarOptions;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.controllers.AbstractSubModuleControllerTest;
 import org.eclipse.riena.ui.ridgets.IActionRidget;

@@ -7,7 +7,6 @@ Bundle-Activator: org.eclipse.riena.internal.tests.Activator
 Require-Bundle: org.apache.log4j;resolution:=optional,
  org.easymock,
  org.eclipse.riena.client,
- org.eclipse.riena.example.client,
  org.eclipse.riena.monitor.common,
  org.eclipse.riena.monitor.client,
  org.eclipse.riena.objecttransaction,

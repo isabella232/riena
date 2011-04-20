@@ -17,7 +17,6 @@ import java.util.Locale;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
-import org.eclipse.riena.example.client.controllers.MarkerSubModuleController;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.ui.swt.test.TestUtils;
 import org.eclipse.riena.navigation.ISubModuleNode;

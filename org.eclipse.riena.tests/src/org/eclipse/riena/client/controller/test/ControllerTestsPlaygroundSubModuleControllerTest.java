@@ -23,7 +23,6 @@ import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.beans.common.TypedBean;
 import org.eclipse.riena.core.util.ReflectionUtils;
-import org.eclipse.riena.example.client.controllers.ControllerTestsPlaygroundSubModuleController;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.CComboRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;

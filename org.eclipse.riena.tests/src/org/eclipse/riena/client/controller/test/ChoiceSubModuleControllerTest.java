@@ -12,9 +12,8 @@ package org.eclipse.riena.client.controller.test;
 
 import java.util.Arrays;
 
-import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController;
-import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController.CarModels;
-import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController.CarOptions;
+import org.eclipse.riena.client.controller.test.ChoiceSubModuleController.CarModels;
+import org.eclipse.riena.client.controller.test.ChoiceSubModuleController.CarOptions;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.swt.controllers.AbstractSubModuleControllerTest;

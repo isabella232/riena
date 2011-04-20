@@ -12,7 +12,6 @@ package org.eclipse.riena.client.controller.test;
 
 import org.easymock.EasyMock;
 
-import org.eclipse.riena.example.client.controllers.NavigationSubModuleController;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
