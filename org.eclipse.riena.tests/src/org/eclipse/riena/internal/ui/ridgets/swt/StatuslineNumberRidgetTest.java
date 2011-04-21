@@ -72,9 +72,12 @@ public class StatuslineNumberRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	/**
-	 * Tests the method {@code setNumber(int)}.
+	 * Tests the method {@code setNumber(Integer)}.
 	 */
 	public void testSetNumber() {
+
+		getRidget().setNumber(null);
+		assertEquals("", getLabel().getText());
 
 		getRidget().setNumber(Integer.valueOf((4711)));
 		assertEquals("0004711", getLabel().getText());
@@ -86,6 +89,14 @@ public class StatuslineNumberRidgetTest extends AbstractSWTRidgetTest {
 	 * Tests the method {@code setNumberString(String)}.
 	 */
 	public void testSetNumberString() {
+
+		getRidget().setNumberString(null);
+		assertEquals("", getLabel().getText());
+		assertNull(getRidget().getNumber());
+
+		getRidget().setNumberString("4711");
+		assertEquals("4711", getLabel().getText());
+		assertEquals(4711, (int) getRidget().getNumber());
 
 		getRidget().setNumberString("0815-12");
 		assertEquals("0815-12", getLabel().getText());

@@ -53,12 +53,13 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 
 		if (this.number == null) {
 			numberString = ""; //$NON-NLS-1$
+			this.number = 0;
 		} else {
 			// TODO use Numberformatter instead of toString()
-			numberString = number.toString();
+			numberString = this.number.toString();
 		}
 		if (getUIControl() != null) {
-			getUIControl().setNumber(number);
+			getUIControl().setNumber(this.number);
 		}
 	}
 

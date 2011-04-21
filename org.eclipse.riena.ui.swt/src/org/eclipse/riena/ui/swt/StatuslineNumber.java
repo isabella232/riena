@@ -81,18 +81,19 @@ public class StatuslineNumber extends AbstractStatuslineComposite {
 	 */
 	public void setNumber(final int number) {
 
-		if (number <= 0) {
-			numberLabel.setText(""); //$NON-NLS-1$
-			return;
+		String numberStrg = ""; //$NON-NLS-1$
+
+		if (number > 0) {
+			numberStrg = Integer.toString(number);
+			// add leading '0'
+			final StringBuilder sb = new StringBuilder(numberStrg);
+			while (sb.length() < 7) {
+				sb.insert(0, '0');
+			}
+			numberStrg = sb.toString();
 		}
 
-		final String numberStrg = Integer.toString(number);
-		// add leading '0'
-		final StringBuilder sb = new StringBuilder(numberStrg);
-		while (sb.length() < 7) {
-			sb.insert(0, '0');
-		}
-		numberLabel.setText(sb.toString());
+		setNumber(numberStrg);
 
 	}
 
