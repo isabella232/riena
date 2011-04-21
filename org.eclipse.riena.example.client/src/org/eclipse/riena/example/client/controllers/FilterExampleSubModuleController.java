@@ -13,16 +13,23 @@ package org.eclipse.riena.example.client.controllers;
 import java.util.Collection;
 
 import org.eclipse.riena.core.service.Service;
+import org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.NavigationNodeUtility;
+import org.eclipse.riena.navigation.model.ModuleNode;
+import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.filter.IUIFilter;
 import org.eclipse.riena.ui.filter.IUIFilterContainer;
 import org.eclipse.riena.ui.filter.IUIFilterProvider;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
  *
@@ -116,6 +123,18 @@ public class FilterExampleSubModuleController extends SubModuleController {
 		sampleText.bindToModel(sampleBean, "text"); //$NON-NLS-1$
 		sampleText.updateFromModel();
 
+		final IActionRidget addFilteredNode = getRidget("addNode"); //$NON-NLS-1$
+		addFilteredNode.addListener(new IActionListener() {
+			public void callback() {
+				final ISubModuleNode sharedViewSm10 = new SubModuleNode(new NavigationNodeId(
+						"newx", "10" + System.currentTimeMillis()), "new x"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				WorkareaManager.getInstance().registerDefinition(sharedViewSm10,
+						SharedViewDemoSubModuleController.class, SharedViewDemoSubModuleView.ID, true);
+				getNavigationNode().getParentOfType(ModuleNode.class).addChild(sharedViewSm10);
+
+			}
+		});
+
 	}
 
 	private void doFilter(final FilterId filterId, final String buttonRidgetId) {
@@ -127,7 +146,7 @@ public class FilterExampleSubModuleController extends SubModuleController {
 		final IUIFilter filter = container.getFilter();
 		final Collection<String> targetNodeIds = container.getFilterTargetNodeIds();
 		for (final String targetNodeId : targetNodeIds) {
-			final INavigationNode<?> node = NavigationNodeUtility.findNodeLongId(targetNodeId, applNode);
+			final INavigationNode<?> node = NavigationNodeUtility.findNodesByLongId(targetNodeId, applNode).get(0);
 			if (menuToolAction.isSelected()) {
 				node.addFilter(filter);
 			} else {

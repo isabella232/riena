@@ -21,10 +21,12 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.ui.internal.progress.ProgressManager;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.core.util.RAPDetector;
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.navigation.ui.Activator;
+import org.eclipse.riena.internal.navigation.ui.filter.IUIFilterApplier;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
@@ -69,11 +71,19 @@ public abstract class AbstractApplication implements IApplication {
 			throw new RuntimeException(
 					"Application did not return an ApplicationModel in method 'createModel' but returned NULL. Cannot continue"); //$NON-NLS-1$
 		}
+		applyUserInterfaceFilters(applicationNode);
 		ApplicationNodeManager.registerApplicationNode(applicationNode);
 		createStartupNodes(applicationNode);
 		initializeNode(applicationNode);
 		installProgressProviderBridge();
 		return createView(context, applicationNode);
+	}
+
+	private void applyUserInterfaceFilters(final IApplicationNode applicationNode) {
+		final IUIFilterApplier filter = Service.get(IUIFilterApplier.class);
+		if (filter != null) {
+			filter.applyFilter(applicationNode);
+		}
 	}
 
 	/**

@@ -10,9 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.application;
 
+import java.security.Permissions;
+import java.security.Principal;
+
+import javax.security.auth.Subject;
+
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.internal.example.client.Activator;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -24,6 +30,8 @@ import org.eclipse.riena.navigation.model.ApplicationNode;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.swt.application.SwtApplication;
+import org.eclipse.riena.security.common.ISubjectHolder;
+import org.eclipse.riena.security.common.authorization.IPermissionCache;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
@@ -48,10 +56,37 @@ public class SwtExampleApplication extends SwtApplication {
 	}
 
 	@Override
+	protected void initializeUI() {
+		super.initializeUI();
+		setDummyPermissions();
+	}
+
+	private void setDummyPermissions() {
+		final ISubjectHolder subjectHolder = Service.get(ISubjectHolder.class);
+		final IPermissionCache pmCache = Service.get(IPermissionCache.class);
+		final Subject subject = new Subject();
+		final Principal principal = new Principal() {
+
+			public String getName() {
+				return "DummyPrincipal"; //$NON-NLS-1$
+			}
+		};
+		subject.getPrincipals().add(principal);
+		subjectHolder.setSubject(subject);
+		final Permissions p = new Permissions();
+		/*
+		 * sample for Permission controled UIFilters. Enable code to add
+		 * permission.
+		 */
+		//		p.add(new RuntimePermission("navi", "newx"));
+		pmCache.putPermissions(principal, p);
+	}
+
+	@Override
 	protected IApplicationNode createModel() {
 		ISubApplicationNode subApplication = null;
 
-		final String bundleVersion = (String) Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
+		final String bundleVersion = Activator.getDefault().getBundle().getHeaders().get("Bundle-Version"); //$NON-NLS-1$
 
 		final IApplicationNode applicationNode = new ApplicationNode(
 				new NavigationNodeId("application"), "Example & Playground - " + bundleVersion); //$NON-NLS-1$ //$NON-NLS-2$

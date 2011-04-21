@@ -82,7 +82,7 @@ public class FilterExampleSubModuleView extends SubModuleView {
 		ridgetsGroup = new Group(parent, SWT.NONE);
 		ridgetsGroup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		ridgetsGroup.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
-		final GridLayout gridLayout = new GridLayout();
+		GridLayout gridLayout = new GridLayout();
 		gridLayout.verticalSpacing = 0;
 		gridLayout.numColumns = 2;
 		ridgetsGroup.setLayout(gridLayout);
@@ -99,6 +99,26 @@ public class FilterExampleSubModuleView extends SubModuleView {
 		ridgetButton.setLayoutData(gdActivateButton1);
 		ridgetButton.setText("activate"); //$NON-NLS-1$
 		addUIControl(ridgetButton, "ridgetBtn"); //$NON-NLS-1$
+
+		ridgetsGroup = new Group(parent, SWT.NONE);
+		ridgetsGroup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		ridgetsGroup.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+		gridLayout = new GridLayout();
+		gridLayout.verticalSpacing = 0;
+		gridLayout.numColumns = 2;
+		ridgetsGroup.setLayout(gridLayout);
+		ridgetsGroup.setText("Permission based UIFilters"); //$NON-NLS-1$
+
+		final Label inTheLabel2 = new Label(ridgetsGroup, SWT.NONE);
+		inTheLabel2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		inTheLabel2.setText("Adds a new SubModule which is honored by a Permission Filter"); //$NON-NLS-1$
+
+		final Button addFilteredNodeAction = new Button(ridgetsGroup, SWT.PUSH);
+		final GridData gdActivateButton12 = new GridData(SWT.RIGHT, SWT.BOTTOM, false, false);
+		gdActivateButton12.widthHint = 80;
+		addFilteredNodeAction.setLayoutData(gdActivateButton12);
+		addFilteredNodeAction.setText("add node"); //$NON-NLS-1$
+		addUIControl(addFilteredNodeAction, "addNode"); //$NON-NLS-1$
 
 		final Group ridgetsGroup1 = new Group(parent, SWT.NONE);
 		ridgetsGroup1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
@@ -68,9 +69,9 @@ public final class NavigationNodeUtility {
 	 *            ID
 	 * @param node
 	 *            start mode
-	 * @return found node or {@code null} if none was found
+	 * @return list of found nodes or {@code null} if none was found
 	 */
-	public static INavigationNode<?> findNode(final String id, final INavigationNode<?> node) {
+	public static List<INavigationNode<?>> findNode(final String id, final INavigationNode<?> node) {
 
 		return findNode(id, node, new IIdClosure() {
 			public String getId(final INavigationNode<?> node) {
@@ -94,17 +95,44 @@ public final class NavigationNodeUtility {
 	 *            ID
 	 * @param node
 	 *            start mode
-	 * @return found node or {@code null} if none was found
+	 * @return list of found nodes or {@code null} if none was found
 	 * 
 	 * @see #getNodeLongId(INavigationNode)
 	 */
-	public static INavigationNode<?> findNodeLongId(final String id, final INavigationNode<?> node) {
+	public static List<INavigationNode<?>> findNodesByLongId(final String id, final INavigationNode<?> node) {
+		final ArrayList<INavigationNode<?>> result = new ArrayList<INavigationNode<?>>();
+		findNodesByLongId(id, node, result);
+		return result;
+	}
 
-		return findNode(id, node, new IIdClosure() {
+	public static void findNodesByLongId(final String id, final INavigationNode<?> node,
+			final List<INavigationNode<?>> result) {
+		findNode(id, node, new IIdClosure() {
 			public String getId(final INavigationNode<?> node) {
-				return getNodeLongId(node);
+				final String nodeLongId = getNodeLongId(node);
+				return nodeLongId;
 			}
-		});
+		}, result);
+	}
+
+	private static void findNode(final String id, final INavigationNode<?> node, final IIdClosure closure,
+			final List<INavigationNode<?>> collector) {
+
+		Assert.isNotNull(id);
+		Assert.isNotNull(node);
+
+		final StringMatcher matcher = new StringMatcher(id);
+		final String nodeId = closure.getId(node);
+		if (matcher.match(nodeId)) {
+			collector.add(node);
+		}
+		final List<?> children = node.getChildren();
+		for (final Object child : children) {
+			if (child instanceof INavigationNode<?>) {
+				findNode(id, (INavigationNode<?>) child, closure, collector);
+
+			}
+		}
 
 	}
 
@@ -120,29 +148,13 @@ public final class NavigationNodeUtility {
 	 *            start node
 	 * @param closure
 	 *            returns the ID of a node
-	 * @return found node or {@code null} if none was found
+	 * @return list of found nodes or {@code null} if none was found
 	 */
-	private static INavigationNode<?> findNode(final String id, final INavigationNode<?> node, final IIdClosure closure) {
-
-		Assert.isNotNull(id);
-		Assert.isNotNull(node);
-
-		final StringMatcher matcher = new StringMatcher(id);
-		final String nodeId = closure.getId(node);
-		if (matcher.match(nodeId)) {
-			return node;
-		}
-		final List<?> children = node.getChildren();
-		for (final Object child : children) {
-			if (child instanceof INavigationNode<?>) {
-				final INavigationNode<?> findNode = findNode(id, (INavigationNode<?>) child, closure);
-				if (findNode != null) {
-					return findNode;
-				}
-			}
-		}
-
-		return null;
+	private static List<INavigationNode<?>> findNode(final String id, final INavigationNode<?> node,
+			final IIdClosure closure) {
+		final List<INavigationNode<?>> result = new ArrayList<INavigationNode<?>>();
+		findNode(id, node, closure, result);
+		return result;
 
 	}
 
