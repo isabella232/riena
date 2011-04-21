@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.internal.jobs.JobManager;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
@@ -38,6 +39,13 @@ public class ProgressProviderBridge extends ProgressProvider {
 
 	public ProgressProviderBridge() {
 		jobUiProcess = Collections.synchronizedMap(new HashMap<Job, UIProcess>());
+		registerJobChangeListener();
+	}
+
+	/**
+	 * Registers an internal observer at the {@link JobManager}
+	 */
+	protected void registerJobChangeListener() {
 		Job.getJobManager().addJobChangeListener(new JobObserver());
 	}
 
@@ -97,9 +105,9 @@ public class ProgressProviderBridge extends ProgressProvider {
 
 	/**
 	 * 
-	 * @return a list of all running {@link UIProcess} instances
+	 * @return a list of all registered {@link UIProcess} instances
 	 */
-	public List<UIProcess> getRunningUIProcesses() {
+	public List<UIProcess> getRegisteredUIProcesses() {
 		return new ArrayList<UIProcess>(jobUiProcess.values());
 	}
 
