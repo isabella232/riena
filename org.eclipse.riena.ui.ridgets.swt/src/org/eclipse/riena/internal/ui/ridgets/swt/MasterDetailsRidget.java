@@ -16,6 +16,7 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
@@ -48,12 +49,37 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 	}
 
 	@Override
-	protected void bindUIControl() {
+	public void setUIControl(final Object uiControl) {
+		super.setUIControl(uiControl);
+		registerDirtyDetailsChecker();
+	}
+
+	private void registerDirtyDetailsChecker() {
 		final MasterDetailsComposite control = getUIControl();
 		if (control != null) {
-			final Table table = control.getTable();
-			table.addSelectionListener(dirtyDetailsChecker);
+			// delay invocation to prevent race condition between observers of the table. The dirtyDetailsChecker should run after enablement binding logic
+			final Display display = control.getDisplay();
+			synchronized (display) {
+				if (!display.isDisposed()) {
+					display.asyncExec(new Runnable() {
+
+						public void run() {
+							final Table table = control.getTable();
+							if (!table.isDisposed()) {
+								table.addSelectionListener(dirtyDetailsChecker);
+							}
+
+						}
+					});
+				}
+			}
 		}
+	}
+
+	@Override
+	public void configureRidgets() {
+		super.configureRidgets();
+
 	}
 
 	@Override
@@ -143,14 +169,17 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 	 */
 	private final class DirtyDetailsChecker extends SelectionAdapter {
 
-		private int oldIndex = -1; // single selection 
+		private int oldIndex = -1; // single selection
+		private Object cachedSelection = new Object();
 
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
 			final Table table = (Table) e.widget;
-			if (oldIndex == table.getSelectionIndex()) { // already selected
+			final Object selection = e.item.getData();
+			if (oldIndex == table.getSelectionIndex() && cachedSelection.equals(selection)) { // already selected
 				return;
 			}
+			cachedSelection = selection;
 			if (areDetailsChanged()) {
 				if (!getUIControl().confirmDiscardChanges()) {
 					table.setSelection(oldIndex);
@@ -158,11 +187,12 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 				}
 			}
 			oldIndex = table.getSelectionIndex();
-			handleSelectionChange(e.item.getData());
+			handleSelectionChange(selection);
 		}
 
 		void clearSavedSelection() {
 			oldIndex = -1;
+			cachedSelection = new Object();
 		}
 	}
 

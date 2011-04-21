@@ -23,6 +23,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -52,7 +53,6 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingManager;
 import org.eclipse.riena.ui.ridgets.validation.MinLength;
-import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -787,6 +787,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertNull(delegate.lastItem);
 
 		final Table table = widget.getTable();
+		final SelectionAdapter dirtyDetailsChecker = ReflectionUtils.getHidden(getRidget(), "dirtyDetailsChecker");
+		table.addSelectionListener(dirtyDetailsChecker);
 		table.setSelection(0);
 		final Event event1 = createSelectionEvent(widget, first);
 		table.notifyListeners(SWT.Selection, event1);
@@ -1884,21 +1886,6 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		} finally {
 			mandatoryMarkerBg.dispose();
 		}
-	}
-
-	public void testAutoEnableRemove() {
-		final MasterDetailsRidget mdRidget = getRidget();
-		bindToModel(true);
-		final IActionRidget removeBtn = (IActionRidget) mdRidget
-				.getRidget(AbstractMasterDetailsComposite.BIND_ID_REMOVE);
-		removeBtn.setEnabled(false);
-		assertFalse(removeBtn.isEnabled());
-		mdRidget.setSelection(input.get(1));
-		assertTrue(removeBtn.isEnabled());
-		removeBtn.setEnabled(false);
-		mdRidget.setAutoEnableRemove(false);
-		mdRidget.setSelection(input.get(2));
-		assertFalse(removeBtn.isEnabled());
 	}
 
 	/**

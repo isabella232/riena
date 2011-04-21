@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 compeople AG and others.
+ * Copyright (c) 2007, 2010 compeople AG and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
@@ -61,8 +60,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	private IObservableList rowObservables;
 	private IMasterDetailsDelegate delegate;
-	private boolean autoControlRemove = true;
-	private Binding removeToSelectionBinding;
+	private DataBindingContext dbc;
 
 	/**
 	 * A blank model entry for clearing the details area. Will be initialized
@@ -241,24 +239,22 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		detailRidgets = new DetailRidgetContainer();
 		setEnabled(false, false);
 
-		if (autoControlRemove) {
-			bindRemoveEnablementToValue();
+		final IObservableValue viewerSelection = getSelectionObservable();
+
+		Assert.isLegal(dbc == null);
+		if (hasRemoveButton()) {
+			dbc = new DataBindingContext();
+			bindEnablementToValue(dbc, getRemoveButtonRidget(), new ComputedValue(Boolean.TYPE) {
+				@Override
+				protected Object calculate() {
+					return Boolean.valueOf(viewerSelection.getValue() != null);
+				}
+			});
 		}
 
 		final PropertyChangeListener directWritingPCL = new DirectWritingPropertyChangeListener();
 		for (final IRidget ridget : detailRidgets.getRidgets()) {
 			ridget.addPropertyChangeListener(directWritingPCL);
-		}
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public void setAutoEnableRemove(final boolean autoEnableRemove) {
-		final boolean change = autoEnableRemove != this.autoControlRemove;
-		this.autoControlRemove = autoEnableRemove;
-		if (change) {
-			bindRemoveEnablementToValue();
 		}
 	}
 
@@ -557,27 +553,10 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
-	private void bindRemoveEnablementToValue() {
-		if (!hasRemoveButton()) {
-			return;
-		}
-		if (autoControlRemove) {
-			if (removeToSelectionBinding == null) {
-				removeToSelectionBinding = new DataBindingContext().bindValue(
-						BeansObservables.observeValue(getRemoveButtonRidget(), IRidget.PROPERTY_ENABLED),
-						new ComputedValue(Boolean.TYPE) {
-							@Override
-							protected Object calculate() {
-								return Boolean.valueOf(getSelectionObservable().getValue() != null);
-							}
-						}, null, null);
-			}
-		} else {
-			if (removeToSelectionBinding != null) {
-				removeToSelectionBinding.dispose();
-				removeToSelectionBinding = null;
-			}
-		}
+	private void bindEnablementToValue(final DataBindingContext dbc, final IRidget ridget, final IObservableValue value) {
+		Assert.isNotNull(ridget);
+		Assert.isNotNull(value);
+		dbc.bindValue(BeansObservables.observeValue(ridget, IRidget.PROPERTY_ENABLED), value, null, null);
 	}
 
 	private boolean canAdd() {
