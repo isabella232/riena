@@ -10,8 +10,10 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.uiprocess;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -39,10 +41,17 @@ public class ProgressProviderBridge extends ProgressProvider {
 		Job.getJobManager().addJobChangeListener(new JobObserver());
 	}
 
+	/**
+	 * 
+	 * @return the singleton instance of {@link ProgressProviderBridge}
+	 */
 	public static ProgressProviderBridge instance() {
 		return PPB.getInstance();
 	}
 
+	/**
+	 * Sets the global {@link IProgressVisualizerLocator}
+	 */
 	public void setVisualizerFactory(final IProgressVisualizerLocator visualizerLocator) {
 		this.visualizerLocator = visualizerLocator;
 	}
@@ -72,12 +81,26 @@ public class ProgressProviderBridge extends ProgressProvider {
 		return new UIProcess(job);
 	}
 
-	public void registerMapping(final Job job, final UIProcess process) {
+	/**
+	 * Registers a mapping {@link Job} -> {@link UIProcess}
+	 */
+	public synchronized void registerMapping(final Job job, final UIProcess process) {
 		jobUiProcess.put(job, process);
 	}
 
-	public void unregisterMapping(final Job job) {
+	/**
+	 * Unregisters a mapping {@link Job} -> {@link UIProcess}
+	 */
+	public synchronized void unregisterMapping(final Job job) {
 		jobUiProcess.remove(job);
+	}
+
+	/**
+	 * 
+	 * @return a list of all running {@link UIProcess} instances
+	 */
+	public List<UIProcess> getRunningUIProcesses() {
+		return new ArrayList<UIProcess>(jobUiProcess.values());
 	}
 
 	private final class JobObserver extends JobChangeAdapter {
