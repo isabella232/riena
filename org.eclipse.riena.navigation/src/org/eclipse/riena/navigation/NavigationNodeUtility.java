@@ -70,6 +70,7 @@ public final class NavigationNodeUtility {
 	 * @param node
 	 *            start mode
 	 * @return list of found nodes or {@code null} if none was found
+	 * @since 3.0
 	 */
 	public static List<INavigationNode<?>> findNode(final String id, final INavigationNode<?> node) {
 
@@ -98,6 +99,7 @@ public final class NavigationNodeUtility {
 	 * @return list of found nodes or {@code null} if none was found
 	 * 
 	 * @see #getNodeLongId(INavigationNode)
+	 * @since 3.0
 	 */
 	public static List<INavigationNode<?>> findNodesByLongId(final String id, final INavigationNode<?> node) {
 		final ArrayList<INavigationNode<?>> result = new ArrayList<INavigationNode<?>>();
@@ -105,6 +107,9 @@ public final class NavigationNodeUtility {
 		return result;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public static void findNodesByLongId(final String id, final INavigationNode<?> node,
 			final List<INavigationNode<?>> result) {
 		findNode(id, node, new IIdClosure() {

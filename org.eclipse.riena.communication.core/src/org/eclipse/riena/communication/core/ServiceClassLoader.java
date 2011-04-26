@@ -19,6 +19,8 @@ import org.osgi.framework.FrameworkUtil;
  * which should allow buddy class-loading.<br>
  * All other requests to this class loader will be delegated to the given
  * {@code parent} class loader.
+ * 
+ * @since 3.0
  */
 public class ServiceClassLoader extends ClassLoader {
 

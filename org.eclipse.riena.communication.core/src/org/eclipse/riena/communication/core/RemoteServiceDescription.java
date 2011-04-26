@@ -122,6 +122,9 @@ public class RemoteServiceDescription {
 		this.serviceClassLoader = new ServiceClassLoader(serviceBundle);
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public ClassLoader getServiceClassLoader() {
 		return serviceClassLoader;
 	}

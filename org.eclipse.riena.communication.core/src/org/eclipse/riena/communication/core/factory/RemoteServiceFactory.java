@@ -181,6 +181,7 @@ public class RemoteServiceFactory {
 	 * @param url
 	 * @param protocol
 	 * @return the serviceInstance references or <code>null</code>
+	 * @since 3.0
 	 */
 	public IRemoteServiceReference createProxy(final Class<?> interfaceClass, final String url, final String protocol,
 			final BundleContext context) {

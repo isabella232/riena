@@ -119,6 +119,9 @@ public class MarkerSupport extends BasicMarkerSupport {
 		initialVisible = true;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	@Override
 	public synchronized final void flash() {
 		final Control control = getUIControl();
