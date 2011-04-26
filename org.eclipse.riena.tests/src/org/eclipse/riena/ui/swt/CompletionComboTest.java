@@ -125,28 +125,28 @@ public class CompletionComboTest extends TestCase {
 		text.setFocus();
 		combo.setAutoCompletionMode(AutoCompletionMode.ALLOW_MISSMATCH);
 		combo.setFocus();
-		assertTrue(combo.getTextControl().isFocusControl());
+		assertTrue(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl());
 
 		text.setFocus();
 		combo.setAutoCompletionMode(AutoCompletionMode.FIRST_LETTER_MATCH);
 		combo.setFocus();
-		assertTrue(combo.getTextControl().isFocusControl());
+		assertTrue(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl());
 
 		text.setFocus();
 		combo.setAutoCompletionMode(AutoCompletionMode.NO_MISSMATCH);
 		combo.setFocus();
-		assertTrue(combo.getTextControl().isFocusControl());
+		assertTrue(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl());
 
 		text.setFocus();
 		combo.setEnabled(false);
 		combo.setFocus();
-		assertFalse(combo.getTextControl().isFocusControl());
+		assertFalse(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl());
 
 		text.setFocus();
 		combo.setEnabled(true);
 		combo.setVisible(false);
 		combo.setFocus();
-		assertFalse(combo.getTextControl().isFocusControl());
+		assertFalse(((Text) ReflectionUtils.invokeHidden(combo, "getTextControl")).isFocusControl());
 
 	}
 
