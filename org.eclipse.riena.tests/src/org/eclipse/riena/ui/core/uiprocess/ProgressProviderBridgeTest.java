@@ -44,9 +44,8 @@ public class ProgressProviderBridgeTest extends TestCase {
 		final List<UIProcess> runningUIProcesses = bridge.getRegisteredUIProcesses();
 		assertEquals(1, runningUIProcesses.size());
 		assertEquals(p1, runningUIProcesses.get(0));
-		bridge.unregisterMapping(p1.getJob());
+		bridge.unregisterMapping((Job) ReflectionUtils.invokeHidden(p1, "getJob"));
 		assertEquals(0, bridge.getRegisteredUIProcesses().size());
-
 	}
 
 }
