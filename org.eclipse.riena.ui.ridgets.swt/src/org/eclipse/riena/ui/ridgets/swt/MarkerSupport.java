@@ -181,6 +181,9 @@ public class MarkerSupport extends BasicMarkerSupport {
 		}
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void addOutput(final Control control, final Color foreground, final Color background) {
 		if (foreground != null) {
 			if (getData(PRE_OUTPUT_FOREGROUND_KEY) == null) {

@@ -21,6 +21,8 @@ import org.eclipse.riena.navigation.INavigationAssembler;
  * Defines that the buildNode() method of an {@link INavigationAssembler} should
  * be run on a worker-thread. The UI events will be dispatched, while the worker
  * is running so the UI does not freeze.
+ * 
+ * @since 3.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })

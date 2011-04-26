@@ -18,6 +18,8 @@ import org.eclipse.core.runtime.Assert;
  * Base64 encoding and decoding as defined by RFC 1521 (5.2).
  * <p>
  * <b>Note:</b> This is a copy of org.eclipse.osgi.internal.signedcontent.Base64
+ * 
+ * @since 3.0
  */
 public final class Base64 {
 

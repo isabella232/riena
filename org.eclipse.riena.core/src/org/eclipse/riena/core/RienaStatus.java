@@ -44,6 +44,8 @@ public final class RienaStatus {
 
 	/**
 	 * Value of {@code getStage()} if no stage has been defined.
+	 * 
+	 * @since 3.0
 	 */
 	public static final String UNKNOWN_STAGE = "<unknown>"; //$NON-NLS-1$
 
@@ -112,6 +114,7 @@ public final class RienaStatus {
 	 * Return the stage riena is currently running in.
 	 * 
 	 * @return the stage or if not set the string {@code "<unknown>"}
+	 * @since 3.0
 	 */
 	public static String getStage() {
 		try {

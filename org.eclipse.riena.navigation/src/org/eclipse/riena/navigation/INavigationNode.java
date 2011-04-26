@@ -631,6 +631,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 *            The optional NavigationArgument
 	 * @see INavigationAssembler
 	 * @see NavigationArgument
+	 * @since 3.0
 	 */
 	void createAsync(NavigationNodeId targetId, NavigationArgument argument);
 
@@ -644,6 +645,7 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 *            describing the target node that is used to create it if it
 	 *            does not exist.
 	 * @see INavigationAssembler
+	 * @since 3.0
 	 */
 	void createAsync(final NavigationNodeId targetId);
 

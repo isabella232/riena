@@ -151,6 +151,7 @@ public final class StringUtils {
 	 * @param string
 	 * @param separator
 	 * @return a list of the splitted string
+	 * @since 3.0
 	 */
 	public static List<String> split(final String string, final char separator) {
 		if (string == null) {

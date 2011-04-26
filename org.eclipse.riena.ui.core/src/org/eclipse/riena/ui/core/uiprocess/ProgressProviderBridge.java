@@ -44,6 +44,8 @@ public class ProgressProviderBridge extends ProgressProvider {
 
 	/**
 	 * Registers an internal observer at the {@link JobManager}
+	 * 
+	 * @since 3.0
 	 */
 	protected void registerJobChangeListener() {
 		Job.getJobManager().addJobChangeListener(new JobObserver());
@@ -106,6 +108,7 @@ public class ProgressProviderBridge extends ProgressProvider {
 	/**
 	 * 
 	 * @return a list of all registered {@link UIProcess} instances
+	 * @since 3.0
 	 */
 	public List<UIProcess> getRegisteredUIProcesses() {
 		return new ArrayList<UIProcess>(jobUiProcess.values());
