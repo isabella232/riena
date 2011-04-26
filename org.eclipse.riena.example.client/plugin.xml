@@ -780,6 +780,11 @@
             parentNodeId="application">
       </assembly2>
       <assembly2
+            id="org.eclipse.riena.example.uiProcesses.assembly"
+            assembler="org.eclipse.riena.example.client.navigation.model.UIProcessNodeAssembler"
+            parentNodeId="playground">
+      </assembly2>
+      <assembly2
             id="org.eclipse.riena.example.navigate.assembly"
             assembler="org.eclipse.riena.example.client.navigation.model.NavigateNodeAssembler"
             parentNodeId="org.eclipse.riena.example.navigation.subapplication">
@@ -1255,6 +1260,7 @@
                 </subModule>
              </module>
           </moduleGroup>
+<!--          
          <moduleGroup
                name="uiProcesses_group"
                nodeId="org.eclipse.riena.example.uiProcesses">
@@ -1287,6 +1293,7 @@
                      controller="org.eclipse.riena.example.client.controllers.RemoteServiceProgressSubModuleController"/>
             </module>
          </moduleGroup>
+-->         
        </assembly2>
        <assembly2
              id="org.eclipse.riena.example.client.setnodeidsample"

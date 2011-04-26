@@ -25,6 +25,8 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 public class RemoteServiceProgressSubModuleView extends SubModuleView {
 
+	public final static String ID = RemoteServiceProgressSubModuleView.class.getName();
+
 	@Override
 	protected void basicCreatePartControl(final Composite parent) {
 		parent.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));

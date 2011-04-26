@@ -62,10 +62,23 @@ public class NavigationViewFactory implements IViewFactory {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.IViewFactory#createModuleGroupController(org.eclipse.riena.navigation.IModuleGroupNode)
+	 * {@inheritDoc}
+	 * <p>
+	 * This implementation supports three different ways to provide the module
+	 * group controller:
+	 * <ul>
+	 * <li>returns the module group controller of the given node, if exists</li>
+	 * <li>returns the module group controller defined with extension, if exists
+	 * </li>
+	 * <li>returns the default module group controller:
+	 * {@link ModuleGroupController}</li>
+	 * </ul>
 	 */
 	public ModuleGroupController createModuleGroupController(final IModuleGroupNode moduleGroupNode) {
 		ModuleGroupController controller = null;
+		if (moduleGroupNode.getNavigationNodeController() instanceof ModuleGroupController) {
+			return (ModuleGroupController) moduleGroupNode.getNavigationNodeController();
+		}
 		if (moduleGroupDescriptionExtension != null) {
 			final Class<ModuleGroupController> moduleGroupClazz = moduleGroupDescriptionExtension.getController();
 			if (moduleGroupClazz != null) {
@@ -104,11 +117,19 @@ public class NavigationViewFactory implements IViewFactory {
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.IViewFactory#createModuleController(org.eclipse.riena.navigation.IModuleNode)
+	 * {@inheritDoc}
+	 * <p>
+	 * This implementation supports three different ways to provide the module
+	 * controller:
+	 * <ul>
+	 * <li>returns the module controller of the given node, if exists</li>
+	 * <li>returns the module controller defined with extension, if exists</li>
+	 * <li>returns the default module controller: {@link SWTModuleController}</li>
+	 * </ul>
 	 */
 	public ModuleController createModuleController(final IModuleNode moduleNode) {
 		ModuleController controller = null;
-		if (moduleNode.getNavigationNodeController() != null) {
+		if (moduleNode.getNavigationNodeController() instanceof ModuleController) {
 			return (ModuleController) moduleNode.getNavigationNodeController();
 		}
 		if (moduleDescriptionExtension != null) {
