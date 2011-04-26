@@ -33,7 +33,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	private final UICallbackDispatcher callbackDispatcher;
 	private final Job job;
 
-	/**
+/**
 	 * Creates a new UIProcess.
 	 * <p>
 	 * For executing processes the {@code UIProcess) uses the
@@ -54,7 +54,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		this(name, false);
 	}
 
-	/**
+/**
 	 * Creates a new UIProcess.
 	 * <p>
 	 * For executing processes the {@code UIProcess) uses the
@@ -79,7 +79,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		this(name, user, new Object());
 	}
 
-	/**
+/**
 	 * Creates a new UIProcess.
 	 * <p>
 	 * For executing processes the {@code UIProcess) uses the
@@ -106,7 +106,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		this(name, UISynchronizer.createSynchronizer(), user, context);
 	}
 
-	/**
+/**
 	 * Creates a new UIProcess.
 	 * <p>
 	 * For executing processes the {@code UIProcess) uses the
@@ -137,7 +137,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		this(name, new UICallbackDispatcher(syncher), user, context);
 	}
 
-	/**
+/**
 	 * Creates a new UIProcess.
 	 * <p>
 	 * For executing processes the {@code UIProcess) uses the
@@ -171,7 +171,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		updateProcessConfiguration();
 	}
 
-	/**
+/**
 	 * Creates a new UIProcess.
 	 * <p>
 	 * For executing processes the {@code UIProcess) uses the
@@ -268,7 +268,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * @return the job wrapped by the {@link UIProcess}. This job is run by the
 	 *         {@link JobManager} on a worker {@link Thread}
 	 */
-	protected Job getJob() {
+	public Job getJob() {
 		return job;
 	}
 
