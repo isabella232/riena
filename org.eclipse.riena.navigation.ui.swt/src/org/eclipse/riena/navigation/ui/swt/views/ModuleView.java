@@ -951,6 +951,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			title.setEnabled(getNavigationNode().isEnabled());
 			body.setCursor(bodyOldCursor);
 			subModuleTree.setEnabled(true);
+			subModuleTree.setFocus();
 		}
 
 		private boolean disableTitle() {
