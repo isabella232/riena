@@ -80,6 +80,7 @@ public class BeforeActivateSubModuleController extends SubModuleController {
 	private void initAllow() {
 		setAllowNext(false);
 		allowChoice.updateFromModel();
+		setAllowContext();
 	};
 
 	public void setAllowNext(final boolean allowNext) {
