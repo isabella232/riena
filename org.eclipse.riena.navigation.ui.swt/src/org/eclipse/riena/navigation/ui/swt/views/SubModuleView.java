@@ -409,7 +409,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 
 		contentComposite.setRedraw(false);
 		contentComposite.setRedraw(true);
-		if (canRestoreFocus()) {
+		if (shouldRestoreFocus() && canRestoreFocus()) {
 			setFocus();
 		}
 		oldCursor = null;
@@ -455,6 +455,17 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		final Integer id = Integer.valueOf(getControllerId());
 		final Control control = focusControlMap.get(id);
 		return !SwtUtilities.isDisposed(control);
+	}
+
+	/**
+	 * @since 3.0
+	 */
+	protected boolean shouldRestoreFocus() {
+		if (getController() != null && getController().getModuleController() instanceof SWTModuleController) {
+			return !((SWTModuleController) getController().getModuleController()).getTree().hasFocus();
+		} else {
+			return true;
+		}
 	}
 
 	/**
