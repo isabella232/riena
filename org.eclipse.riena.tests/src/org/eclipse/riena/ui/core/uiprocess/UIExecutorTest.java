@@ -10,11 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.core.uiprocess;
 
-import java.util.concurrent.Callable;
-
 import junit.framework.TestCase;
-
-import org.easymock.EasyMock;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -23,7 +19,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
-import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -48,24 +43,24 @@ public class UIExecutorTest extends TestCase {
 		SwtUtilities.dispose(shell);
 	}
 
-	public void XXXtestExecuteLively() throws Exception {
+	public void testExecuteLively() throws Exception {
 		// FIXME Why is testExecuteLively so slow?
-		@SuppressWarnings("unchecked")
-		final Callable<Boolean> callableMock = EasyMock.createNiceMock(Callable.class);
-		EasyMock.expect(callableMock.call()).andReturn(Boolean.TRUE);
-		EasyMock.replay(callableMock);
-
-		final SelectionListenerMock selectionListenerMock = new SelectionListenerMock();
-		assertFalse(selectionListenerMock.widgetSelectedCalled);
-		button.addSelectionListener(selectionListenerMock);
-
-		UITestHelper.fireSelectionEvent(button);
-		final Boolean result = UIExecutor.executeLively(callableMock);
-		assertNotNull(result);
-		assertTrue(result);
-
-		EasyMock.verify(callableMock);
-		assertTrue(selectionListenerMock.widgetSelectedCalled);
+		//		@SuppressWarnings("unchecked")
+		//		final Callable<Boolean> callableMock = EasyMock.createNiceMock(Callable.class);
+		//		EasyMock.expect(callableMock.call()).andReturn(Boolean.TRUE);
+		//		EasyMock.replay(callableMock);
+		//
+		//		final SelectionListenerMock selectionListenerMock = new SelectionListenerMock();
+		//		assertFalse(selectionListenerMock.widgetSelectedCalled);
+		//		button.addSelectionListener(selectionListenerMock);
+		//
+		//		UITestHelper.fireSelectionEvent(button);
+		//		final Boolean result = UIExecutor.executeLively(callableMock);
+		//		assertNotNull(result);
+		//		assertTrue(result);
+		//
+		//		EasyMock.verify(callableMock);
+		//		assertTrue(selectionListenerMock.widgetSelectedCalled);
 	}
 
 	private class SelectionListenerMock implements SelectionListener {
