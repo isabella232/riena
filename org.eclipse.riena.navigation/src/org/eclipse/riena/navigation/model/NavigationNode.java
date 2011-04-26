@@ -1036,6 +1036,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		getNavigationProcessor().create(this, targetId, argument);
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void createAsync(final NavigationNodeId targetId, NavigationArgument argument) {
 		if (null == argument) {
 			argument = new NavigationArgument();
@@ -1044,6 +1047,9 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		getNavigationProcessor().create(this, targetId, argument);
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	public void createAsync(final NavigationNodeId targetId) {
 		createAsync(targetId, null);
 	}
