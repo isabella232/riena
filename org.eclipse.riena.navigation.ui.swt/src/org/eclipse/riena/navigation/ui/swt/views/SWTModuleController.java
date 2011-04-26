@@ -33,7 +33,7 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 import org.eclipse.riena.ui.swt.uiprocess.SwtUISynchronizer;
 
 /**
- * Controller of a module.
+ * Controller of a module with a tree.
  */
 public class SWTModuleController extends ModuleController {
 
