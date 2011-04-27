@@ -295,9 +295,16 @@ public class SWTModuleController extends ModuleController {
 			super.childAdded(source, childAdded);
 			if (source.getIndexOfChild(childAdded) < source.getChildren().size() - 1) {
 				tree.updateFromModel();
-				return;
+			} else {
+				updateTree(childAdded);
 			}
-			updateTree(childAdded);
+			// If a leaf is now a folder
+			// the expansion must be updated for the tree item
+			if (source.getChildren().size() == 1) {
+				if (source.isExpanded()) {
+					tree.expand(source);
+				}
+			}
 		}
 	}
 
