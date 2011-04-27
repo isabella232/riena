@@ -36,6 +36,7 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
 import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
+import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.common.TypecastingObject;
@@ -300,47 +301,45 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 
 	}
 
-	public void addChild(final C pChild) {
-		checkChild(pChild);
-		final List<C> oldList = new ArrayList<C>(children);
-		children.add(pChild);
-		fireChildAdded(pChild, oldList);
-		// Adds the parent to the child after all listeners are notified that the child was added to the parent!
-		addChildParent(pChild);
+	public void addChild(final C child) {
+		addChild(children.size(), child);
 	}
 
 	/**
 	 * @since 2.0
 	 */
-	public void addChild(final int index, final C pChild) {
-		checkChild(pChild);
+	public void addChild(final int index, final C child) {
+		checkChild(child);
 		final List<C> oldList = new ArrayList<C>(children);
-		children.add(index, pChild);
-		fireChildAdded(pChild, oldList);
+		children.add(index, child);
+		fireChildAdded(child, oldList);
+		if (isNonSelectableSubModule(child)) {
+			child.setEnabled(false);
+		}
 		// Adds the parent to the child after all listeners are notified that the child was added to the parent!
-		addChildParent(pChild);
+		addChildParent(child);
 	}
 
-	private void fireChildAdded(final C pChild, final List<C> oldList) {
+	private void fireChildAdded(final C child, final List<C> oldList) {
 		propertyChangeSupport.firePropertyChange(INavigationNodeListenerable.PROPERTY_CHILDREN, oldList, children);
-		notifyChildAdded(pChild);
+		notifyChildAdded(child);
 	}
 
-	private void checkChild(final C pChild) {
-		if (pChild == null) {
+	private void checkChild(final C child) {
+		if (child == null) {
 			throw new NavigationModelFailure("Cannot add null!"); //$NON-NLS-1$
 		}
-		if (hasChild(pChild)) {
-			throw new NavigationModelFailure("Child node \"" + pChild.toString() + "\" is already added!"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (hasChild(child)) {
+			throw new NavigationModelFailure("Child node \"" + child.toString() + "\" is already added!"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		if (pChild.isDisposed()) {
-			throw new NavigationModelFailure("Cannot add disposed child node \"" + pChild.toString() + "\"!"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (child.isDisposed()) {
+			throw new NavigationModelFailure("Cannot add disposed child node \"" + child.toString() + "\"!"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		if (pChild == this) {
-			throw new NavigationModelFailure("Cannot add node \"" + pChild.toString() + "\" to itself!"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (child == this) {
+			throw new NavigationModelFailure("Cannot add node \"" + child.toString() + "\" to itself!"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		if (!checkChildClass(pChild.getClass())) {
-			String msg = "Cannot add \"" + pChild.toString() + "\" to \"" + this.toString() + "\"!"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		if (!checkChildClass(child.getClass())) {
+			String msg = "Cannot add \"" + child.toString() + "\" to \"" + this.toString() + "\"!"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			msg += " Because node isn't instance of " + getValidChildType().toString() + "."; //$NON-NLS-1$ //$NON-NLS-2$
 			throw new NavigationModelFailure(msg);
 		}
@@ -350,7 +349,29 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		return children.contains(pChild);
 	}
 
+	private boolean isNonSelectableSubModule(final INavigationNode<?> node) {
+		return node instanceof SubModuleNode && !((SubModuleNode) node).isSelectable();
+	}
+
+	private boolean isSelectableSubModule(final INavigationNode<?> node) {
+		return node instanceof SubModuleNode && ((SubModuleNode) node).isSelectable();
+	}
+
+	private void enableNonSelectableParents() {
+		ISubModuleNode parentNode = getParentOfType(ISubModuleNode.class);
+		while (parentNode != null) {
+			if (isNonSelectableSubModule(parentNode)) {
+				parentNode.setEnabled(true);
+			}
+			parentNode = parentNode.getParentOfType(ISubModuleNode.class);
+		}
+	}
+
 	protected void addChildParent(final C child) {
+		if (isNonSelectableSubModule(this) && !isEnabled() && isSelectableSubModule(child)) {
+			enableNonSelectableParents();
+			setEnabled(true);
+		}
 		child.setParent(this);
 	}
 
@@ -681,6 +702,10 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		notifyMarkersChanged(marker);
 		if ((marker instanceof DisabledMarker) || (marker instanceof HiddenMarker)) {
 			for (final C child : getChildren()) {
+				if (isNonSelectableSubModule(child) && marker instanceof DisabledMarker
+						&& child.getChildren().size() == 0) {
+					continue;
+				}
 				child.removeMarker(marker);
 			}
 		}
