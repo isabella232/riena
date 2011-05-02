@@ -118,6 +118,7 @@ public class NavigationArgument {
 
 	/**
 	 * @return the createNodesAsync
+	 * @since 3.0
 	 */
 	public boolean isCreateNodesAsync() {
 		return createNodesAsync;
@@ -126,6 +127,7 @@ public class NavigationArgument {
 	/**
 	 * @param createNodesAsync
 	 *            the createNodesAsync to set
+	 * @since 3.0
 	 */
 	public void setCreateNodesAsync(final boolean createNodesAsync) {
 		this.createNodesAsync = createNodesAsync;
