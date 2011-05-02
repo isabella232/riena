@@ -85,6 +85,7 @@ public class RemoteServiceDescription {
 	 * @param url
 	 * @param protocol
 	 * @param bundle
+	 * @since 3.0
 	 */
 	public RemoteServiceDescription(final Class<?> interfaceClass, final String url, final String protocol,
 			final Bundle bundle) {
@@ -108,6 +109,7 @@ public class RemoteServiceDescription {
 	 * @param path
 	 * @param protocol
 	 * @throws ClassNotFoundException
+	 * @since 3.0
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public RemoteServiceDescription(final String interfaceName, final ServiceReference serviceRef, final String path,
