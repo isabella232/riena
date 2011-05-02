@@ -267,6 +267,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * 
 	 * @return the job wrapped by the {@link UIProcess}. This job is run by the
 	 *         {@link JobManager} on a worker {@link Thread}
+	 * @since 3.0
 	 */
 	public Job getJob() {
 		return job;
