@@ -659,7 +659,7 @@ public class NavigationNodeTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the method {@code checkChildClass}
+	 * Tests the method {@code checkChildClass}.
 	 */
 	public void testCheckChildClass() {
 
@@ -676,6 +676,90 @@ public class NavigationNodeTest extends RienaTestCase {
 			fail("Exception expected");
 		} catch (final AssertionFailedException e) {
 			ok("Exception expected");
+		}
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code checkChild}.
+	 * 
+	 * @throws Exception
+	 *             handled by JUnit
+	 */
+	public void testCheckChild() throws Exception {
+
+		// child is parent 
+		final NavigationNodeId id = new NavigationNodeId("4711", "0815");
+		final NaviNode node = new NaviNode(id);
+		try {
+			ReflectionUtils.invokeHidden(node, "checkChild", node);
+			fail("Exception expected");
+		} catch (final Exception e) {
+			if (e.getCause() instanceof NavigationModelFailure) {
+				ok("Exception expected");
+			} else {
+				fail("Unexpcted exception");
+			}
+		}
+
+		// already added
+		final NavigationNodeId id1 = new NavigationNodeId("child1", "1");
+		final NaviNode child1 = new NaviNode(id1);
+		ReflectionUtils.invokeHidden(node, "checkChild", child1);
+		node.addChild(child1);
+		try {
+			ReflectionUtils.invokeHidden(node, "checkChild", child1);
+			fail("Exception expected");
+		} catch (final Exception e) {
+			if (e.getCause() instanceof NavigationModelFailure) {
+				ok("Exception expected");
+			} else {
+				fail("Unexpcted exception");
+			}
+		}
+
+		// disposed node
+		final NavigationNodeId id2 = new NavigationNodeId("child2", "2");
+		final NaviNode child2 = new NaviNode(id2);
+		ReflectionUtils.invokeHidden(node, "checkChild", child2);
+		child2.dispose();
+		try {
+			ReflectionUtils.invokeHidden(node, "checkChild", child2);
+			fail("Exception expected");
+		} catch (final Exception e) {
+			if (e.getCause() instanceof NavigationModelFailure) {
+				ok("Exception expected");
+			} else {
+				fail("Unexpcted exception");
+			}
+		}
+
+		// module node
+		final NavigationNodeId id3 = new NavigationNodeId("child3", "3");
+		final ModuleNode child3 = new ModuleNode(id3);
+		try {
+			ReflectionUtils.invokeHidden(node, "checkChild", child3);
+			fail("Exception expected");
+		} catch (final Exception e) {
+			if (e.getCause() instanceof NavigationModelFailure) {
+				ok("Exception expected");
+			} else {
+				fail("Unexpcted exception");
+			}
+		}
+
+		// same ID
+		final NavigationNodeId id4 = new NavigationNodeId("4711", "0815");
+		final NaviNode child4 = new NaviNode(id4);
+		try {
+			ReflectionUtils.invokeHidden(node, "checkChild", child4);
+			fail("Exception expected");
+		} catch (final Exception e) {
+			if (e.getCause() instanceof NavigationModelFailure) {
+				ok("Exception expected");
+			} else {
+				fail("Unexpcted exception");
+			}
 		}
 
 	}

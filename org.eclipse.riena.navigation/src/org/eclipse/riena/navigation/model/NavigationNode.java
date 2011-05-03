@@ -343,6 +343,13 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 			msg += " Because node isn't instance of " + getValidChildType().toString() + "."; //$NON-NLS-1$ //$NON-NLS-2$
 			throw new NavigationModelFailure(msg);
 		}
+		if (child.getNodeId() != null) {
+			if (child.getNodeId().equals(this.getNodeId())) {
+				String msg = "Cannot add \"" + child.toString() + "\" to \"" + this.toString() + "\"!"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				msg += " Because both nodes have the same NavigationNodeId."; //$NON-NLS-1$
+				throw new NavigationModelFailure(msg);
+			}
+		}
 	}
 
 	protected boolean hasChild(final INavigationNode<?> pChild) {
