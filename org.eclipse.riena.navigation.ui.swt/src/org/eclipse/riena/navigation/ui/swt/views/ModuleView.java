@@ -769,6 +769,19 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 	}
 
+	private static TreeItem findItem(final TreeItem[] items, final ISubModuleNode source) {
+		for (final TreeItem item : items) {
+			if (item.getData() == source) {
+				return item;
+			}
+			final TreeItem result = item.getItemCount() > 0 ? findItem(item.getItems(), source) : null;
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+
 	// helping classes
 	//////////////////
 
@@ -837,19 +850,6 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 				}
 				tree.select(item);
 			}
-		}
-
-		private TreeItem findItem(final TreeItem[] items, final ISubModuleNode source) {
-			for (final TreeItem item : items) {
-				if (item.getData() == source) {
-					return item;
-				}
-				final TreeItem result = item.getItemCount() > 0 ? findItem(item.getItems(), source) : null;
-				if (result != null) {
-					return result;
-				}
-			}
-			return null;
 		}
 
 		@Override

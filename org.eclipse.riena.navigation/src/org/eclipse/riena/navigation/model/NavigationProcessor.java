@@ -107,6 +107,9 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				// 6. hande node on the histBack
 				// 7. do the activation chain
 				final List<INavigationNode<?>> toActivateList = getNodesToActivateOnActivation(toActivate);
+				if (toActivateList.isEmpty()) {
+					return;
+				}
 				final List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnActivation(toActivate);
 				INavigationContext navigationContext = new NavigationContext(null, toActivateList, toDeactivateList);
 				if (allowsDeactivate(navigationContext)) {
@@ -1263,8 +1266,6 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				if (!subModuleNode.getChildren().isEmpty()) {
 					return findSelectableChildNode(subModuleNode);
 				}
-
-				throw new RuntimeException("submodule node that is selectable=false must have at least one child"); //$NON-NLS-1$
 			}
 
 			return null;

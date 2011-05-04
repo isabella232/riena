@@ -36,7 +36,6 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.INavigationNodeController;
 import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISimpleNavigationNodeListener;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.common.TypecastingObject;
@@ -313,9 +312,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		final List<C> oldList = new ArrayList<C>(children);
 		children.add(index, child);
 		fireChildAdded(child, oldList);
-		if (isNonSelectableSubModule(child)) {
-			child.setEnabled(false);
-		}
 		// Adds the parent to the child after all listeners are notified that the child was added to the parent!
 		addChildParent(child);
 	}
@@ -356,29 +352,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		return children.contains(pChild);
 	}
 
-	private boolean isNonSelectableSubModule(final INavigationNode<?> node) {
-		return node instanceof SubModuleNode && !((SubModuleNode) node).isSelectable();
-	}
-
-	private boolean isSelectableSubModule(final INavigationNode<?> node) {
-		return node instanceof SubModuleNode && ((SubModuleNode) node).isSelectable();
-	}
-
-	private void enableNonSelectableParents() {
-		ISubModuleNode parentNode = getParentOfType(ISubModuleNode.class);
-		while (parentNode != null) {
-			if (isNonSelectableSubModule(parentNode)) {
-				parentNode.setEnabled(true);
-			}
-			parentNode = parentNode.getParentOfType(ISubModuleNode.class);
-		}
-	}
-
 	protected void addChildParent(final C child) {
-		if (isNonSelectableSubModule(this) && !isEnabled() && isSelectableSubModule(child)) {
-			enableNonSelectableParents();
-			setEnabled(true);
-		}
 		child.setParent(this);
 	}
 
@@ -709,10 +683,6 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		notifyMarkersChanged(marker);
 		if ((marker instanceof DisabledMarker) || (marker instanceof HiddenMarker)) {
 			for (final C child : getChildren()) {
-				if (isNonSelectableSubModule(child) && marker instanceof DisabledMarker
-						&& child.getChildren().size() == 0) {
-					continue;
-				}
 				child.removeMarker(marker);
 			}
 		}

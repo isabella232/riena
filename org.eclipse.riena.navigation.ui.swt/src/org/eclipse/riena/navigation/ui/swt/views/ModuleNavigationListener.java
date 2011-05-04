@@ -182,6 +182,19 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 		return result;
 	}
 
+	private static TreeItem findItem(final TreeItem[] items, final INavigationNode<?> source) {
+		for (final TreeItem item : items) {
+			if (item.getData() == source) {
+				return item;
+			}
+			final TreeItem result = item.getItemCount() > 0 ? findItem(item.getItems(), source) : null;
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Find the first selectable TreeItem below {@code item} in the tree. Will
 	 * consider all available (=expanded) tree items.
@@ -293,7 +306,33 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 	}
 
 	protected NodeSwitcher createNodeSwitcher(final TreeItem item) {
-		return new NodeSwitcher(item.getDisplay(), (INavigationNode<?>) item.getData());
+		return new NodeSwitcher(item);
+	}
+
+	/**
+	 * Activates the given node.
+	 * <p>
+	 * If the activation fails (maybe the node is not selectable), update the
+	 * selection inside the tree.
+	 * 
+	 * @param node
+	 *            navigation node to activated
+	 * @param tree
+	 *            tree of the module
+	 */
+	private static void activateNode(final INavigationNode<?> node, final Tree tree) {
+		node.setContext("fromUI", true); //$NON-NLS-1$
+		node.activate();
+		if (!node.isActivated()) {
+			final INavigationNode<?> selectedNode = node.getNavigationProcessor().getSelectedNode();
+			if (selectedNode != null) {
+				final TreeItem item = findItem(tree.getItems(), selectedNode);
+				if (item != null) {
+					tree.setSelection(item);
+				}
+			}
+
+		}
 	}
 
 	// helping classes
@@ -309,14 +348,16 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 		 */
 		private static final int TIMEOUT_MS = RAPDetector.isRAPavailable() ? 50 : 300;
 
-		private final INavigationNode<?> node;
 		protected final Display display;
+		private final Tree tree;
+		private final INavigationNode<?> node;
 
 		private volatile boolean isCancelled;
 
-		protected NodeSwitcher(final Display display, final INavigationNode<?> node) {
-			this.display = display;
-			this.node = node;
+		protected NodeSwitcher(final TreeItem item) {
+			this.display = item.getDisplay();
+			this.tree = item.getParent();
+			this.node = (INavigationNode<?>) item.getData();
 		}
 
 		@Override
@@ -330,8 +371,7 @@ public class ModuleNavigationListener extends SelectionAdapter implements KeyLis
 				// node activation must be triggered from the UI thread:
 				display.syncExec(new Runnable() {
 					public void run() {
-						node.setContext("fromUI", true); //$NON-NLS-1$
-						node.activate();
+						activateNode(node, tree);
 					}
 				});
 			}

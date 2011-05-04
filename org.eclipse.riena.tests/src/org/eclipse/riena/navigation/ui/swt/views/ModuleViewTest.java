@@ -342,6 +342,38 @@ public class ModuleViewTest extends RienaTestCase {
 
 	}
 
+	/**
+	 * Tests the <i>private</i> method {@code findItem}.
+	 * 
+	 * @throws Exception
+	 *             handled by JUnit
+	 */
+	public void testFindItem() throws Exception {
+
+		final Tree tree = view.getTree();
+
+		final TreeItem item1 = new TreeItem(tree, SWT.NONE);
+		final SubModuleNode s1 = new SubModuleNode("s1");
+		item1.setData(s1);
+
+		TreeItem foundItem = ReflectionUtils.invokeHidden(view, "findItem", tree.getItems(), s1);
+		assertSame(item1, foundItem);
+
+		final SubModuleNode s2 = new SubModuleNode("s2");
+		foundItem = ReflectionUtils.invokeHidden(view, "findItem", tree.getItems(), s2);
+		assertNull(foundItem);
+
+		s1.addChild(s2);
+		foundItem = ReflectionUtils.invokeHidden(view, "findItem", tree.getItems(), s2);
+		assertNull(foundItem);
+
+		final TreeItem item2 = new TreeItem(item1, SWT.NONE);
+		item2.setData(s2);
+		foundItem = ReflectionUtils.invokeHidden(view, "findItem", tree.getItems(), s2);
+		assertSame(item2, foundItem);
+
+	}
+
 	private class DisabledSubModuleTreeBackgroundPainterMock implements Listener {
 
 		private boolean handleEraseCalled = false;
