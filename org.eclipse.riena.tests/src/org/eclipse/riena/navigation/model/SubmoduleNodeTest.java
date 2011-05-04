@@ -12,7 +12,6 @@ package org.eclipse.riena.navigation.model;
 
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 
 /**
@@ -111,49 +110,4 @@ public class SubmoduleNodeTest extends RienaTestCase {
 		assertTrue(submoduleSubChild.isSelectable());
 	}
 
-	public void testAddNonSelectableNode() {
-		final NavigationNodeId id = new NavigationNodeId("4711");
-		final ISubModuleNode nonSelectableNode = new SubModuleNode(id);
-		nonSelectableNode.setNavigationProcessor(navigationProcessor);
-		nonSelectableNode.setSelectable(false);
-		submoduleFirst.addChild(nonSelectableNode);
-		assertFalse(nonSelectableNode.isEnabled());
-
-		final NavigationNodeId id1 = new NavigationNodeId("4712");
-		final ISubModuleNode nonSelectableNode2 = new SubModuleNode(id1);
-		nonSelectableNode2.setNavigationProcessor(navigationProcessor);
-		nonSelectableNode2.setSelectable(false);
-		nonSelectableNode.addChild(nonSelectableNode2);
-		assertFalse(nonSelectableNode.isEnabled());
-		assertFalse(nonSelectableNode2.isEnabled());
-
-		final NavigationNodeId id2 = new NavigationNodeId("0815");
-		final ISubModuleNode node = new SubModuleNode(id2);
-		node.setNavigationProcessor(navigationProcessor);
-		nonSelectableNode2.addChild(node);
-		assertTrue(nonSelectableNode.isEnabled());
-		assertTrue(nonSelectableNode2.isEnabled());
-
-		//test sibling non-selectable
-		final NavigationNodeId id3 = new NavigationNodeId("4713");
-		final ISubModuleNode nonSelectableNode3 = new SubModuleNode(id3);
-		nonSelectableNode3.setNavigationProcessor(navigationProcessor);
-		nonSelectableNode3.setSelectable(false);
-		submoduleSecond.addChild(nonSelectableNode3);
-		assertFalse(nonSelectableNode3.isEnabled());
-
-		final NavigationNodeId id4 = new NavigationNodeId("4714");
-		final ISubModuleNode nonSelectableNode4 = new SubModuleNode(id4);
-		nonSelectableNode4.setNavigationProcessor(navigationProcessor);
-		nonSelectableNode4.setSelectable(false);
-		nonSelectableNode3.addChild(nonSelectableNode4);
-		assertFalse(nonSelectableNode4.isEnabled());
-
-		final NavigationNodeId id5 = new NavigationNodeId("0816");
-		final ISubModuleNode node2 = new SubModuleNode(id5);
-		node2.setNavigationProcessor(navigationProcessor);
-		nonSelectableNode3.addChild(node2);
-		assertTrue(nonSelectableNode3.isEnabled());
-		assertFalse(nonSelectableNode4.isEnabled());
-	}
 }
