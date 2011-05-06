@@ -43,6 +43,7 @@ import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ICompositeRidget;
+import org.eclipse.riena.ui.ridgets.IMasterDetailsActionRidgetFacade;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
@@ -1919,6 +1920,33 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		}
 	}
 
+	public void testUpdateMasterDetailsActionRidgets() {
+		final MasterDetailsRidget ridget = getRidget();
+		final MDBean first = new MDBean("first", "");
+		input.add(0, first);
+		bindToModel(true);
+		final MDBean second = new MDBean("second", "");
+		input.add(0, second);
+		bindToModel(true);
+		delegate.updateActionsCalled = false;
+		ridget.updateFromModel();
+		assertFalse(delegate.updateActionsCalled);
+		ridget.setSelection(first);
+		assertTrue(delegate.updateActionsCalled);
+		delegate.updateActionsCalled = false;
+		ridget.setSelection(second);
+		assertTrue(delegate.updateActionsCalled);
+		delegate.updateActionsCalled = false;
+		ridget.setSelection(null);
+
+		delegate.updateActionsCalled = false;
+		ridget.setSelection(second);
+		getWidget().txtColumn1.setFocus();
+		UITestHelper.sendString(getWidget().getDisplay(), "dirty\t");
+		assertTrue(delegate.updateActionsCalled);
+		delegate.updateActionsCalled = false;
+	}
+
 	// helping methods
 	//////////////////
 
@@ -2103,6 +2131,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		private ITextRidget txtColumn1;
 		private ITextRidget txtColumn2;
 		private String validationResult;
+		private boolean updateActionsCalled;
 
 		public void configureRidgets(final IRidgetContainer container) {
 			checkContainer(container);
@@ -2205,6 +2234,12 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			assertNotNull(container.getRidget("txtColumn1"));
 			assertNotNull(container.getRidget("txtColumn2"));
 			assertEquals(2, container.getRidgets().size());
+		}
+
+		@Override
+		public void updateMasterDetailsActionRidgets(final IMasterDetailsActionRidgetFacade actionRidgetFacade,
+				final Object selection) {
+			updateActionsCalled = true;
 		}
 	}
 

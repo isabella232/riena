@@ -1,12 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 compeople AG and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    compeople AG - initial API and implementation
+ * Copyright (c) 2007, 2010 compeople AG and others. All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is
+ * available at http://www.eclipse.org/legal/epl-v10.html Contributors: compeople AG - initial API and implementation
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt;
 
@@ -21,6 +16,8 @@ import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
+import org.eclipse.core.databinding.observable.ChangeEvent;
+import org.eclipse.core.databinding.observable.IChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.ComputedValue;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -35,6 +32,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IMasterDetailsActionRidgetFacade;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -42,7 +40,6 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
 import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
-import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
  * Common functionality that is shared between implementations of the
@@ -143,7 +140,13 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	 */
 	private StoredSelection preNewSelection;
 
+	/**
+	 * Facade for convenient access to {@link IActionRidget}s
+	 */
+	private ActionRidgetFacade actionRidgetFacade;
+
 	public AbstractMasterDetailsRidget() {
+		actionRidgetFacade = new ActionRidgetFacade();
 		addPropertyChangeListener(null, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				final String propertyName = evt.getPropertyName();
@@ -153,13 +156,13 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 						|| delegate == null
 						|| editable == null
 						// ignore these events:
-						|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER
+						|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IBasicMarkableRidget.PROPERTY_MARKER
 								.equals(propertyName))
 						|| IRidget.PROPERTY_ENABLED.equals(propertyName)
 						|| "textInternal".equals(propertyName) //$NON-NLS-1$
 						|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)
-						|| IMarkableRidget.PROPERTY_MARKER_HIDING.equals(propertyName)
-						|| (IMarkableRidget.PROPERTY_MARKER.equals(propertyName) && getApplyButtonRidget() == evt
+						|| IBasicMarkableRidget.PROPERTY_MARKER_HIDING.equals(propertyName)
+						|| (IBasicMarkableRidget.PROPERTY_MARKER.equals(propertyName) && getApplyButtonRidget() == evt
 								.getSource())) {
 					return;
 				}
@@ -434,6 +437,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		} else {
 			getApplyButtonRidget().setEnabled(areDetailsChanged());
 		}
+		if (delegate != null) {
+			delegate.updateMasterDetailsActionRidgets(actionRidgetFacade, editable);
+		}
 	}
 
 	@Override
@@ -443,7 +449,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	// protected methods
-	////////////////////
+	// //////////////////
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
@@ -478,6 +484,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		ignoreChanges = true;
 		try {
 			delegate.prepareItemSelected(newSelection);
+			delegate.updateMasterDetailsActionRidgets(actionRidgetFacade, newSelection);
 			if (newSelection != null) { // selection changed
 				if (editable == null) {
 					updateMarkers(true, false); // workaround for 327177
@@ -545,7 +552,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	// helping methods
-	//////////////////
+	// ////////////////
 
 	private void assertIsBoundToModel() {
 		if (rowObservables == null) {
@@ -556,7 +563,17 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	private void bindEnablementToValue(final DataBindingContext dbc, final IRidget ridget, final IObservableValue value) {
 		Assert.isNotNull(ridget);
 		Assert.isNotNull(value);
-		dbc.bindValue(BeansObservables.observeValue(ridget, IRidget.PROPERTY_ENABLED), value, null, null);
+		final IObservableValue ridgetObservable = BeansObservables.observeValue(ridget, IRidget.PROPERTY_ENABLED);
+		dbc.bindValue(ridgetObservable, value, null, null);
+		ridgetObservable.addChangeListener(new IChangeListener() {
+
+			public void handleChange(final ChangeEvent event) {
+				if (delegate != null) {
+					delegate.updateMasterDetailsActionRidgets(actionRidgetFacade, getTableSelection());
+				}
+			}
+		});
+
 	}
 
 	private boolean canAdd() {
@@ -610,7 +627,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		preNewSelection = null;
 	}
 
-	private void clearSelection() {
+	protected void clearSelection() {
 		updateDetails(getBlankEntry());
 		editable = null;
 	}
@@ -633,19 +650,19 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	private IRidget getTableRidget() {
 		// this is not necessarily an ITableRidget, can be any IRidget
-		return getRidget(MasterDetailsComposite.BIND_ID_TABLE);
+		return getRidget(AbstractMasterDetailsComposite.BIND_ID_TABLE);
 	}
 
 	private IActionRidget getNewButtonRidget() {
-		return getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_NEW);
+		return getRidget(IActionRidget.class, AbstractMasterDetailsComposite.BIND_ID_NEW);
 	}
 
 	private IActionRidget getRemoveButtonRidget() {
-		return getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_REMOVE);
+		return getRidget(IActionRidget.class, AbstractMasterDetailsComposite.BIND_ID_REMOVE);
 	}
 
 	private IActionRidget getApplyButtonRidget() {
-		return getRidget(IActionRidget.class, MasterDetailsComposite.BIND_ID_APPLY);
+		return getRidget(IActionRidget.class, AbstractMasterDetailsComposite.BIND_ID_APPLY);
 	}
 
 	private boolean hasErrors(final IRidgetContainer ridgetContainer) {
@@ -793,7 +810,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		System.out.println(String.format("prop: %s %s", evt.getPropertyName(), className)); //$NON-NLS-1$
 	}
 
-	private void updateDetails(final Object masterEntry) {
+	protected void updateDetails(final Object masterEntry) {
 		Assert.isNotNull(masterEntry);
 		ignoreChanges = true;
 		try {
@@ -878,6 +895,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 	}
 
+	/**
+	 * Non API; public for testing only.
+	 */
 	public void handleApply() {
 		assertIsBoundToModel();
 		Assert.isNotNull(editable);
@@ -945,7 +965,23 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	// helping classes
-	//////////////////
+	// ////////////////
+
+	private final class ActionRidgetFacade implements IMasterDetailsActionRidgetFacade {
+
+		public IActionRidget getAddActionRidget() {
+			return getRidget(IActionRidget.class, AbstractMasterDetailsComposite.BIND_ID_NEW);
+		}
+
+		public IActionRidget getApplyActionRidget() {
+			return getRidget(IActionRidget.class, AbstractMasterDetailsComposite.BIND_ID_APPLY);
+		}
+
+		public IActionRidget getRemoveActionRidget() {
+			return getRidget(IActionRidget.class, AbstractMasterDetailsComposite.BIND_ID_REMOVE);
+		}
+
+	}
 
 	/**
 	 * IRidgetContainer exposing the 'detail' ridgets only (instead of all
@@ -999,12 +1035,12 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 					|| delegate == null
 					|| editable == null
 					// ignore these events:
-					|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IMarkableRidget.PROPERTY_MARKER
+					|| (!applyRequiresNoErrors && !applyRequiresNoMandatories && IBasicMarkableRidget.PROPERTY_MARKER
 							.equals(propertyName))
 					|| IRidget.PROPERTY_ENABLED.equals(propertyName)
 					|| "textInternal".equals(propertyName) //$NON-NLS-1$
 					|| IMarkableRidget.PROPERTY_OUTPUT_ONLY.equals(propertyName)
-					|| IMarkableRidget.PROPERTY_MARKER_HIDING.equals(propertyName)) {
+					|| IBasicMarkableRidget.PROPERTY_MARKER_HIDING.equals(propertyName)) {
 				return;
 			}
 			// traceEvent(evt);

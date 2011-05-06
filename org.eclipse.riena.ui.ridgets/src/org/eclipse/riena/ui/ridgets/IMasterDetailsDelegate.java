@@ -367,4 +367,18 @@ public interface IMasterDetailsDelegate {
 	 */
 	void itemApplied(Object changedItem);
 
+	/**
+	 * Hook to provide safe control over the state of the
+	 * {@link IMasterDetailsRidget} inner action ridgets (create, remove, apply)
+	 * 
+	 * @param actionRidgetFacade
+	 *            facade for convenient access to {@link IActionRidget}s of the
+	 *            {@link IMasterDetailsRidget}
+	 * @param selection
+	 *            the selected item behind the master row. <b>May be null</b>,
+	 *            if nothing is selected
+	 * 
+	 */
+	void updateMasterDetailsActionRidgets(IMasterDetailsActionRidgetFacade actionRidgetFacade, Object selection);
+
 }

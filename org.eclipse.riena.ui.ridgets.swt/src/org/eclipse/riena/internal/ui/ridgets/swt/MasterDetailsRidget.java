@@ -1,12 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2011 compeople AG and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    compeople AG - initial API and implementation
+ * Copyright (c) 2007, 2010 compeople AG and others. All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is
+ * available at http://www.eclipse.org/legal/epl-v10.html Contributors: compeople AG - initial API and implementation
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
@@ -16,13 +11,14 @@ import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 
+import org.eclipse.riena.core.util.ObjectUtils;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
+import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
@@ -49,37 +45,12 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 	}
 
 	@Override
-	public void setUIControl(final Object uiControl) {
-		super.setUIControl(uiControl);
-		registerDirtyDetailsChecker();
-	}
-
-	private void registerDirtyDetailsChecker() {
+	protected void bindUIControl() {
 		final MasterDetailsComposite control = getUIControl();
 		if (control != null) {
-			// delay invocation to prevent race condition between observers of the table. The dirtyDetailsChecker should run after enablement binding logic
-			final Display display = control.getDisplay();
-			synchronized (display) {
-				if (!display.isDisposed()) {
-					display.asyncExec(new Runnable() {
-
-						public void run() {
-							final Table table = control.getTable();
-							if (!table.isDisposed()) {
-								table.addSelectionListener(dirtyDetailsChecker);
-							}
-
-						}
-					});
-				}
-			}
+			final Table table = control.getTable();
+			table.addSelectionListener(dirtyDetailsChecker);
 		}
-	}
-
-	@Override
-	public void configureRidgets() {
-		super.configureRidgets();
-
 	}
 
 	@Override
@@ -130,10 +101,10 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 	}
 
 	// helping methods
-	//////////////////
+	// ////////////////
 
 	private ITableRidget getTableRidget() {
-		return getRidget(ITableRidget.class, MasterDetailsComposite.BIND_ID_TABLE);
+		return getRidget(ITableRidget.class, AbstractMasterDetailsComposite.BIND_ID_TABLE);
 	}
 
 	/**
@@ -155,8 +126,24 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 		table.setFocus();
 	}
 
+	@Override
+	public void updateFromModel() {
+		final Object oldSelection = getTableSelection();
+		super.updateFromModel();
+		final Object tableSelection = getTableSelection();
+		if (!ObjectUtils.equals(oldSelection, tableSelection)) {
+			handleSelectionChange(tableSelection);
+		} else if (tableSelection != null) {
+			updateDetails(tableSelection);
+		}
+
+		if (dirtyDetailsChecker != null) {
+			dirtyDetailsChecker.clearSavedSelection();
+		}
+	}
+
 	// helping classes
-	//////////////////
+	// ////////////////
 
 	/**
 	 * If the details area is dirty, it will ask for confirmation when changing
@@ -170,16 +157,15 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 	private final class DirtyDetailsChecker extends SelectionAdapter {
 
 		private int oldIndex = -1; // single selection
-		private Object cachedSelection = new Object();
+		private Object oldSelection = new Object();
 
 		@Override
 		public void widgetSelected(final SelectionEvent e) {
+			final Object newSelection = e.item.getData();
 			final Table table = (Table) e.widget;
-			final Object selection = e.item.getData();
-			if (oldIndex == table.getSelectionIndex() && cachedSelection.equals(selection)) { // already selected
+			if (oldIndex == table.getSelectionIndex() || oldSelection.equals(newSelection)) { // already selected
 				return;
 			}
-			cachedSelection = selection;
 			if (areDetailsChanged()) {
 				if (!getUIControl().confirmDiscardChanges()) {
 					table.setSelection(oldIndex);
@@ -187,12 +173,13 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 				}
 			}
 			oldIndex = table.getSelectionIndex();
-			handleSelectionChange(selection);
+			oldSelection = newSelection;
+			handleSelectionChange(newSelection);
 		}
 
 		void clearSavedSelection() {
 			oldIndex = -1;
-			cachedSelection = new Object();
+			oldSelection = new Object();
 		}
 	}
 
