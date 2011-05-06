@@ -64,6 +64,9 @@ public interface IRemoteServiceRegistry {
 	 * 
 	 * @param reference
 	 *            the reference to register
+	 * @param context
+	 *            the bundle context to in which the service (proxy) will be
+	 *            registered
 	 * @return the RemoteServiceRegistration object
 	 * 
 	 * @see #unregisterService(IRemoteServiceReference)
@@ -84,10 +87,11 @@ public interface IRemoteServiceRegistry {
 
 	/**
 	 * Answers a list of {@link IRemoteServiceRegistration} objects for all
-	 * registered "remote" OSGi Services for the given hostId
+	 * registered "remote" OSGi Services for the given {@code context}
 	 * 
 	 * @param context
-	 *            BundleContext in which the service (proxy) is registered
+	 *            BundleContext in which the service (proxy) is registered; if
+	 *            {@code null} all registered services will be returned
 	 * @return a list of IRemoteServiceRegistration objects
 	 */
 	List<IRemoteServiceRegistration> registeredServices(BundleContext context);
