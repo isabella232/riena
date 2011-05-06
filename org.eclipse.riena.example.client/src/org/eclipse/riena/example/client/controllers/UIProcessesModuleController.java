@@ -46,10 +46,10 @@ public class UIProcessesModuleController extends SWTModuleController {
 		final List<UIProcess> processes = ProgressProviderBridge.instance().getRegisteredUIProcesses();
 		for (final UIProcess process : processes) {
 			final Job job = process.getJob();
-			if (job.getState() != Job.NONE) {
+			if (job.getState() == Job.RUNNING) {
 				final Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
 				final String title = "Running Jobs"; //$NON-NLS-1$
-				String message = "Disposed was canceled\nbecause job ''{0}'' isn't finished yet!"; //$NON-NLS-1$
+				String message = "Dispose was canceled\nbecause job ''{0}'' is still running!"; //$NON-NLS-1$
 				message = NLS.bind(message, job.getName());
 				RienaMessageDialog.openError(shell, title, message);
 				return false;
