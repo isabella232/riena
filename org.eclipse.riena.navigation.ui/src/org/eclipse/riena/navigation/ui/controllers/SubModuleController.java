@@ -12,10 +12,6 @@ package org.eclipse.riena.navigation.ui.controllers;
 
 import java.util.Iterator;
 
-import org.eclipse.equinox.log.Logger;
-
-import org.eclipse.riena.core.Log4r;
-import org.eclipse.riena.internal.navigation.ui.Activator;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -40,7 +36,6 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	public static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
 
 	private static final String TITLE_SEPARATOR = " - "; //$NON-NLS-1$
-	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubModuleController.class);
 
 	private IDefaultActionManager actionManager;
 	/**

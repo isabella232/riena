@@ -126,6 +126,12 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * All methods that overrides this method must call
+	 * <code>super.afterBind()</code>.
+	 */
 	public void afterBind() {
 		NavigationNodeControllerAnnotationProcessor.getInstance().processAnnotations(this);
 		updateNavigationNodeMarkers();
