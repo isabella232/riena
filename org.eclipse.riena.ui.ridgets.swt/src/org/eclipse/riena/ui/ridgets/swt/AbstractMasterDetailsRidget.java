@@ -627,6 +627,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		preNewSelection = null;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void clearSelection() {
 		updateDetails(getBlankEntry());
 		editable = null;

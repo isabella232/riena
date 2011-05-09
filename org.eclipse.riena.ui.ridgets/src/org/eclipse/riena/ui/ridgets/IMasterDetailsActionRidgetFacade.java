@@ -13,6 +13,8 @@ package org.eclipse.riena.ui.ridgets;
 /**
  * Facade for convenient access to {@link IActionRidget}s of
  * {@link IMasterDetailsRidget}
+ * 
+ * @since 3.0
  */
 public interface IMasterDetailsActionRidgetFacade {
 
