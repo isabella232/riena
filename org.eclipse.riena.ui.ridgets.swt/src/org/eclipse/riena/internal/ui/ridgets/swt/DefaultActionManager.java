@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -81,7 +82,7 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 	}
 
 	public void activate() {
-		if (control2button == null) {
+		if (control2button == null && !RienaStatus.isTest()) {
 			shell = ((Control) windowRidget.getUIControl()).getShell();
 			display = shell.getDisplay();
 			control2button = new HashMap<Control, Button>();
