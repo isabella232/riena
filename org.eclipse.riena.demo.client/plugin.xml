@@ -64,16 +64,7 @@
             name="mailFolder2"
             restorable="true">
       </view>
-      <view
-            allowMultiple="true"
-            class="org.eclipse.riena.demo.client.views.EmailCustomerView"
-            id="riena.demo.client.customermail.mails"
-            name="customerMail"
-            restorable="true">
-      </view>
    </extension>
-
-
 
      <extension
          point="org.eclipse.riena.navigation.assemblies2">

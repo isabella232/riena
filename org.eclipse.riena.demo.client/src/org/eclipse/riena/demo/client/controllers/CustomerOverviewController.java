@@ -63,14 +63,13 @@ public class CustomerOverviewController extends SubModuleController {
 		lastName.setMandatory(true);
 		lastName.bindToModel(customer, "lastName"); //$NON-NLS-1$
 
-		((ITextRidget) getRidget("zipcode")).bindToModel(customer.getAddress(), "zipCode"); //$NON-NLS-1$ //$NON-NLS-2$
-		((ITextRidget) getRidget("street")).bindToModel(customer.getAddress(), "street"); //$NON-NLS-1$ //$NON-NLS-2$
-		((ITextRidget) getRidget("city")).bindToModel(customer.getAddress(), "city"); //$NON-NLS-1$ //$NON-NLS-2$
-		((ITextRidget) getRidget("emailaddress")).bindToModel(customer, "emailAddress"); //$NON-NLS-1$ //$NON-NLS-2$
-		((IDateTextRidget) getRidget("birthdate")).bindToModel(customer, "birthDate"); //$NON-NLS-1$ //$NON-NLS-2$
-		((ITextRidget) getRidget("salary")).bindToModel(customer, "salary"); //$NON-NLS-1$ //$NON-NLS-2$
-		((IDecimalTextRidget) getRidget("salary")).setPrecision(2); //$NON-NLS-1$
-
+		getRidget(ITextRidget.class, "zipcode").bindToModel(customer.getAddress(), "zipCode"); //$NON-NLS-1$ //$NON-NLS-2$
+		getRidget(ITextRidget.class, "street").bindToModel(customer.getAddress(), "street"); //$NON-NLS-1$ //$NON-NLS-2$
+		getRidget(ITextRidget.class, "city").bindToModel(customer.getAddress(), "city"); //$NON-NLS-1$ //$NON-NLS-2$
+		getRidget(ITextRidget.class, "emailaddress").bindToModel(customer, "emailAddress"); //$NON-NLS-1$ //$NON-NLS-2$
+		getRidget(IDateTextRidget.class, "birthdate").bindToModel(customer, "birthDate"); //$NON-NLS-1$ //$NON-NLS-2$
+		getRidget(ITextRidget.class, "salary").bindToModel(customer, "salary"); //$NON-NLS-1$ //$NON-NLS-2$
+		getRidget(IDecimalTextRidget.class, "salary").setPrecision(2); //$NON-NLS-1$
 		updateAllRidgetsFromModel();
 	}
 

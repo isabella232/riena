@@ -71,7 +71,7 @@ public class EclipseTheme extends RienaDefaultTheme {
 		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR,
 				lnf.getLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR));
 
-		lnf.putLnfResource("Label.foreground", new ColorLnfResource(112, 54, 190)); //$NON-NLS-1$
+		//lnf.putLnfResource("Label.foreground", new ColorLnfResource(112, 54, 190)); //$NON-NLS-1$
 	}
 
 	private void customizeImages(final ILnfCustomizer lnf) {
@@ -88,6 +88,11 @@ public class EclipseTheme extends RienaDefaultTheme {
 	}
 
 	private void customizeFonts(final ILnfCustomizer lnf) {
+
+		lnf.putLnfResource("Text.font", new FontLnfResource("Arial", 12, SWT.NORMAL)); //$NON-NLS-1$ //$NON-NLS-2$
+
+		lnf.putLnfResource("Label.font", new FontLnfResource("Arial", 10, SWT.NORMAL)); //$NON-NLS-1$ //$NON-NLS-2$
+
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_FONT, new FontLnfResource("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
 
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_FONT, new FontLnfResource("Arial", 11, SWT.BOLD)); //$NON-NLS-1$

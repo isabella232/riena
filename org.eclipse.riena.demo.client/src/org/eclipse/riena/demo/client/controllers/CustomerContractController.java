@@ -29,23 +29,21 @@ public class CustomerContractController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-
 		final Customer customer = (Customer) getNavigationNode().getParent().getContext("demo.customer"); //$NON-NLS-1$
 
-		final ITextRidget firstName = getRidget("firstname"); //$NON-NLS-1$
+		final ITextRidget firstName = getRidget(ITextRidget.class, "firstname"); //$NON-NLS-1$
 		firstName.bindToModel(customer, "firstName"); //$NON-NLS-1$
 		firstName.setMandatory(true);
-		final ITextRidget lastName = getRidget("lastname"); //$NON-NLS-1$
+		final ITextRidget lastName = getRidget(ITextRidget.class, "lastname"); //$NON-NLS-1$
 		lastName.setMandatory(true);
 		lastName.bindToModel(customer, "lastName"); //$NON-NLS-1$
 
-		final IMasterDetailsRidget master = getRidget("contracts"); //$NON-NLS-1$
+		final IMasterDetailsRidget master = getRidget(IMasterDetailsRidget.class, "contracts"); //$NON-NLS-1$
 		master.setDelegate(new ContractDelegate());
 		final String[] properties = new String[] { "contractNo", "contractValue", "status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		final String[] headers = new String[] { "contract#", "value", "status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		master.bindToModel(new WritableList(customer.getContracts(), Contract.class), Contract.class, properties,
 				headers);
-		// master.updateFromModel();
 	}
 
 	@OnNavigationNodeEvent(event = Event.ACTIVATED)
@@ -66,7 +64,6 @@ public class CustomerContractController extends SubModuleController {
 			txtcontractNo.updateFromModel();
 
 			final ITextRidget txtLast = (ITextRidget) container.getRidget("description"); //$NON-NLS-1$
-			// txtLast.setMandatory(true);
 			txtLast.bindToModel(workingCopy, "description"); //$NON-NLS-1$
 			txtLast.updateFromModel();
 
@@ -75,8 +72,7 @@ public class CustomerContractController extends SubModuleController {
 			txtValue.bindToModel(workingCopy, "contractValue"); //$NON-NLS-1$
 			txtValue.updateFromModel();
 
-			final ITextRidget txtStatus = (ITextRidget) container.getRidget("status"); //$NON-NLS-1$
-			// txtStatus.setMandatory(true);
+			final ITextRidget txtStatus = container.getRidget(ITextRidget.class, "status"); //$NON-NLS-1$
 			txtStatus.bindToModel(workingCopy, "status"); //$NON-NLS-1$
 			txtStatus.updateFromModel();
 		}

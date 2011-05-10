@@ -26,15 +26,11 @@ public class EmailCustomerController extends AbstractEmailController {
 
 	private List<Email> customerEmailsList = new ArrayList<Email>();
 
-	/*
-	 * @seeorg.eclipse.riena.navigation.ui.controllers.SubModuleController#
-	 * configureRidgets()
-	 */
 	@Override
 	public void configureRidgets() {
 		super.configureRidgets();
 
-		final ITableRidget emails = getRidget("emailsTable"); //$NON-NLS-1$
+		final ITableRidget emails = getRidget(ITableRidget.class, "emailsTable"); //$NON-NLS-1$
 
 		final String[] columnHeaders = { "Subject", "Date" }; //$NON-NLS-1$//$NON-NLS-2$
 		final String[] columnPropertyNames = { "emailSubject", "emailDate" }; //$NON-NLS-1$//$NON-NLS-2$
@@ -54,7 +50,7 @@ public class EmailCustomerController extends AbstractEmailController {
 		}
 		// show all mails concerning this customer
 		emailsResult.setEmails(customerEmailsList);
-		getRidget("emailsTable").updateFromModel(); //$NON-NLS-1$
+		emails.updateFromModel();
 
 	}
 }

@@ -38,41 +38,37 @@ public class AbstractEmailController extends SubModuleController {
 
 	protected IEmailService mailDemoService;
 	protected Email selectedEmail;
+	private ICustomerService customerDemoService;
+	protected EmailsResult emailsResult = new EmailsResult();
 
 	@InjectService(useRanking = true)
 	public void bind(final IEmailService mailDemoService) {
 		this.mailDemoService = mailDemoService;
 	}
 
-	public void unbind(final IEmailService mailDemoService) {
+	public void unbind(@SuppressWarnings("unused")
+	final IEmailService mailDemoService) {
 		this.mailDemoService = null;
 	}
-
-	private ICustomerService customerDemoService;
 
 	@InjectService(useRanking = true)
 	public void bind(final ICustomerService customerDemoService) {
 		this.customerDemoService = customerDemoService;
 	}
 
-	public void unbind(final ICustomerService customerDemoService) {
+	public void unbind(@SuppressWarnings("unused")
+	final ICustomerService customerDemoService) {
 		this.customerDemoService = null;
 	}
 
-	protected EmailsResult emailsResult = new EmailsResult();
-
-	/*
-	 * @seeorg.eclipse.riena.navigation.ui.controllers.SubModuleController#
-	 * configureRidgets()
-	 */
 	@Override
 	public void configureRidgets() {
-		final ITableRidget emails = getRidget("emailsTable"); //$NON-NLS-1$
-		final ILabelRidget emailSubject = getRidget("emailSubject"); //$NON-NLS-1$
-		final ILabelRidget emailFrom = getRidget("emailFrom"); //$NON-NLS-1$
-		final ILabelRidget emailTo = getRidget("emailTo"); //$NON-NLS-1$
-		final ILabelRidget emailDate = getRidget("emailDate"); //$NON-NLS-1$
-		final ITextRidget emailBody = getRidget("emailBody"); //$NON-NLS-1$
+		final ITableRidget emails = getRidget(ITableRidget.class, "emailsTable"); //$NON-NLS-1$
+		final ILabelRidget emailSubject = getRidget(ILabelRidget.class, "emailSubject"); //$NON-NLS-1$
+		final ILabelRidget emailFrom = getRidget(ILabelRidget.class, "emailFrom"); //$NON-NLS-1$
+		final ILabelRidget emailTo = getRidget(ILabelRidget.class, "emailTo"); //$NON-NLS-1$
+		final ILabelRidget emailDate = getRidget(ILabelRidget.class, "emailDate"); //$NON-NLS-1$
+		final ITextRidget emailBody = getRidget(ITextRidget.class, "emailBody"); //$NON-NLS-1$
 
 		emails.setComparator(3, new TypedComparator<Date>());
 		emails.addPropertyChangeListener(new PropertyChangeListener() {
@@ -93,7 +89,7 @@ public class AbstractEmailController extends SubModuleController {
 		});
 
 		if (getNavigationNode().isJumpTarget()) {
-			final IActionRidget openCustomerAction = getRidget("openCustomer"); //$NON-NLS-1$
+			final IActionRidget openCustomerAction = getRidget(IActionRidget.class, "openCustomer"); //$NON-NLS-1$
 			openCustomerAction.setText("Back to Customer"); //$NON-NLS-1$
 		}
 	}

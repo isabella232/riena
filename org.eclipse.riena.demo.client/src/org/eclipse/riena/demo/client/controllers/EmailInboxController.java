@@ -21,15 +21,10 @@ import org.eclipse.riena.ui.ridgets.swt.DateColumnFormatter;
  *
  */
 public class EmailInboxController extends AbstractEmailController {
-
-	/*
-	 * @seeorg.eclipse.riena.navigation.ui.controllers.SubModuleController#
-	 * configureRidgets()
-	 */
 	@Override
 	public void configureRidgets() {
 		super.configureRidgets();
-		final ITableRidget emails = getRidget("emailsTable"); //$NON-NLS-1$
+		final ITableRidget emails = getRidget(ITableRidget.class, "emailsTable"); //$NON-NLS-1$
 
 		final String[] columnHeaders = { "From", "Subject", "Date" }; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 		final String[] columnPropertyNames = { "emailFrom", "emailSubject", "emailDate" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
@@ -45,7 +40,7 @@ public class EmailInboxController extends AbstractEmailController {
 		final List<Email> inboxEmailList = mailDemoService.showEmailsList("Inbox"); //$NON-NLS-1$
 
 		emailsResult.setEmails(inboxEmailList);
-		getRidget("emailsTable").updateFromModel(); //$NON-NLS-1$
+		getRidget(ITableRidget.class, "emailsTable").updateFromModel(); //$NON-NLS-1$
 	}
 
 }

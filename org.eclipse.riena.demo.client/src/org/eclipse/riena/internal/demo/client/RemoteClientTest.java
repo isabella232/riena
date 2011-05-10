@@ -25,7 +25,8 @@ public class RemoteClientTest {
 		}
 	}
 
-	public void unbind(final ICustomerService customerService) {
+	public void unbind(@SuppressWarnings("unused")
+	final ICustomerService customerService) {
 		System.out.println("remoteclientest: customer service unbound"); //$NON-NLS-1$
 
 	}
