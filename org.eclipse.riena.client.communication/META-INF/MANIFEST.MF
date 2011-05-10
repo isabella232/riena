@@ -8,3 +8,4 @@ Require-Bundle: org.eclipse.riena.communication.console;visibility:=reexport,
  org.eclipse.riena.communication.core;visibility:=reexport,
  org.eclipse.riena.communication.factory.hessian;visibility:=reexport,
  org.eclipse.riena.core
+Bundle-Vendor: Eclipse.org - Riena

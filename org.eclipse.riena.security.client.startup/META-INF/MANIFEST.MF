@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Client Startup Plug-in 
+Bundle-Name: Riena Security Client Startup Plug-in
 Bundle-SymbolicName: org.eclipse.riena.security.client.startup;singleton:=true
 Bundle-Version: 3.0.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.security.client.startup.Activator
@@ -10,3 +10,4 @@ Require-Bundle: org.eclipse.riena.core,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.eclipse.riena.internal.security.client.startup;x-internal:=true
+Bundle-Vendor: Eclipse.org - Riena

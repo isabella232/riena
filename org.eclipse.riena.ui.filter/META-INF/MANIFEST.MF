@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Filter Plug-in 
+Bundle-Name: Riena UI Filter Plug-in
 Bundle-SymbolicName: org.eclipse.riena.ui.filter;singleton:=true
 Bundle-Version: 3.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
@@ -13,3 +13,4 @@ Require-Bundle: org.eclipse.core.databinding,
  org.eclipse.riena.core,
  org.eclipse.riena.ui.core
 Bundle-Activator: org.eclipse.riena.internal.ui.filter.Activator
+Bundle-Vendor: Eclipse.org - Riena

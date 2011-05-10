@@ -27,3 +27,4 @@ Export-Package: org.eclipse.riena.example.client.application,
  org.eclipse.riena.internal.example.client.beans;x-internal:=true,
  org.eclipse.riena.internal.example.client.security.authentication;x-internal:=true
 Eclipse-BuddyPolicy: registered
+Bundle-Vendor: Eclipse.org - Riena

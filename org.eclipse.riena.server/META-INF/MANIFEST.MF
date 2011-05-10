@@ -13,3 +13,4 @@ Require-Bundle: com.caucho.hessian;visibility:=reexport,
  org.eclipse.riena.communication.publisher.hessian;visibility:=reexport
 Eclipse-RegisterBuddy: org.eclipse.riena.communication.core
 Eclipse-BuddyPolicy: registered
+Bundle-Vendor: Eclipse.org - Riena

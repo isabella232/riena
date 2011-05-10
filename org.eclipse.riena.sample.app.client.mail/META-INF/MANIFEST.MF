@@ -8,3 +8,4 @@ Require-Bundle: org.eclipse.riena.client
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.eclipse.riena.sample.app.client.mail
+Bundle-Vendor: Eclipse.org - Riena

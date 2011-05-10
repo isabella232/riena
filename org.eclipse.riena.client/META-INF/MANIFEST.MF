@@ -35,3 +35,4 @@ Require-Bundle: com.caucho.hessian;visibility:=reexport,
  org.eclipse.riena.communication.client.ui;resolution:=optional;visibility:=reexport
 Eclipse-RegisterBuddy: org.eclipse.riena.communication.core
 Eclipse-BuddyPolicy: registered
+Bundle-Vendor: Eclipse.org - Riena

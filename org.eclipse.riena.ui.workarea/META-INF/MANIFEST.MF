@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Workarea Plug-in
+Bundle-Name: Riena UI Workarea Plug-in
 Bundle-SymbolicName: org.eclipse.riena.ui.workarea;singleton:=true
 Bundle-Version: 3.0.0.qualifier
 Bundle-Activator: org.eclipse.riena.internal.ui.workarea.Activator
@@ -14,3 +14,4 @@ Export-Package: org.eclipse.riena.internal.ui.workarea;x-internal:=true,
  org.eclipse.riena.internal.ui.workarea.registry;x-internal:=true,
  org.eclipse.riena.ui.workarea,
  org.eclipse.riena.ui.workarea.spi
+Bundle-Vendor: Eclipse.org - Riena
