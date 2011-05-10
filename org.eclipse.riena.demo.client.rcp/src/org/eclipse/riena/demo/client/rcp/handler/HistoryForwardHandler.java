@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.client.handler;
+package org.eclipse.riena.demo.client.rcp.handler;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -18,31 +18,31 @@ import org.eclipse.riena.navigation.ApplicationNodeManager;
 /**
  * 
  */
-public class HistoryBackwardHandler extends DummyHandler {
+public class HistoryForwardHandler extends DummyHandler {
 
 	/**
-	 * @see org.eclipse.riena.demo.client.handler.DummyHandler#getTitle()
+	 * @see org.eclipse.riena.demo.client.rcp.handler.DummyHandler#getTitle()
 	 */
 	@Override
 	protected String getTitle() {
-		return "History Forward"; //$NON-NLS-1$
+		return "History Backward"; //$NON-NLS-1$
 	}
 
 	/**
-	 * @see org.eclipse.riena.demo.client.handler.DummyHandler#getMessage()
+	 * @see org.eclipse.riena.demo.client.rcp.handler.DummyHandler#getMessage()
 	 */
 	@Override
 	protected String getMessage() {
-		return "History Forward\n"; //$NON-NLS-1$
+		return "History Backward\n"; //$NON-NLS-1$
 	}
 
 	/**
-	 * @see org.eclipse.riena.demo.client.handler.DummyHandler#execute(org.eclipse
+	 * @see org.eclipse.riena.demo.client.rcp.handler.DummyHandler#execute(org.eclipse
 	 *      .core.commands.ExecutionEvent)
 	 */
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		ApplicationNodeManager.getApplicationNode().historyBack();
+		ApplicationNodeManager.getApplicationNode().historyForward();
 		return null;
 	}
 }

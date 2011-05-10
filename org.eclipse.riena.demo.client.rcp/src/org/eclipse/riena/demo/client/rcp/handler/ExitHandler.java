@@ -8,37 +8,26 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.client.handler;
+package org.eclipse.riena.demo.client.rcp.handler;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
-
-import org.eclipse.riena.ui.swt.RienaMessageDialog;
 
 /**
  * 
  */
-public class DummyHandler extends AbstractHandler {
+public class ExitHandler extends AbstractHandler {
 
 	/**
 	 * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands.ExecutionEvent)
 	 */
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
-
-		RienaMessageDialog.openInformation(HandlerUtil.getActiveShell(event), getTitle(), getMessage());
-
+		final IWorkbenchWindow workbenchWindow = HandlerUtil.getActiveWorkbenchWindow(event);
+		workbenchWindow.close();
 		return null;
-
-	}
-
-	protected String getTitle() {
-		return "Dummy"; //$NON-NLS-1$
-	}
-
-	protected String getMessage() {
-		return "Not implemented!"; //$NON-NLS-1$
 	}
 
 }

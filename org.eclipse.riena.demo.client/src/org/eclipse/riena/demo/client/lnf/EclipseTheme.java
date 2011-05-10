@@ -42,9 +42,11 @@ public class EclipseTheme extends RienaDefaultTheme {
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FOREGROUND, new ColorLnfResource(64, 0, 64));
 
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(215,
-				214, 231));
+				214, 231)); // d7d6e7 hell
+
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(150,
-				146, 192));
+				146, 192)); // 9692c0 dunkel
+
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR, new ColorLnfResource(121, 117, 168));
 
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_START_COLOR, new ColorLnfResource(250,
@@ -73,14 +75,14 @@ public class EclipseTheme extends RienaDefaultTheme {
 	}
 
 	private void customizeImages(final ILnfCustomizer lnf) {
-		String imagePath = "Tabback.png"; //$NON-NLS-1$ 
+		String imagePath = "Tabback.png"; //$NON-NLS-1$
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_BACKGROUND_IMAGE, new ImageLnfResource(imagePath));
-		imagePath = "EclipseLogo.png"; //$NON-NLS-1$ 
+		imagePath = "EclipseLogo.png"; //$NON-NLS-1$
 		lnf.putLnfResource(LnfKeyConstants.TITLELESS_SHELL_LOGO, new ImageLnfResource(imagePath));
 
-		imagePath = "ledred.png"; //$NON-NLS-1$ 
+		imagePath = "ledred.png"; //$NON-NLS-1$
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(imagePath));
-		imagePath = "folder_favorite.png"; //$NON-NLS-1$ 
+		imagePath = "folder_favorite.png"; //$NON-NLS-1$
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_CLOSED_ICON, new ImageLnfResource(imagePath));
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_FOLDER_OPEN_ICON, new ImageLnfResource(imagePath));
 	}
