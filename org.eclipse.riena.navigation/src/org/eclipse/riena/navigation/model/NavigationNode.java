@@ -1226,37 +1226,4 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 		return navigationArgument;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((nodeId == null) ? 0 : nodeId.hashCode());
-		//result = prime * result + ((getLabel() == null) ? 0 : getLabel().hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final NavigationNode<?, ?, ?> other = (NavigationNode<?, ?, ?>) obj;
-		//		if (getLabel() == null) {
-		//			if (other.getLabel() != null) {
-		//				return false;
-		//			}
-		//		} else if (!getLabel().equals(other.getLabel())) {
-		//			return false;
-		//		}
-		if (nodeId == null) {
-			return (other.nodeId == null);
-		}
-		return nodeId.equals(other.nodeId);
-	}
 }
