@@ -813,6 +813,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		System.out.println(String.format("prop: %s %s", evt.getPropertyName(), className)); //$NON-NLS-1$
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected void updateDetails(final Object masterEntry) {
 		Assert.isNotNull(masterEntry);
 		ignoreChanges = true;

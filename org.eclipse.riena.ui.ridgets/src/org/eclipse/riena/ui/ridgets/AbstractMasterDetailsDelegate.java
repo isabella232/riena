@@ -182,6 +182,8 @@ public abstract class AbstractMasterDetailsDelegate implements IMasterDetailsDel
 	 * {@inheritDoc}
 	 * <p>
 	 * Default implementation for this method. Subclasses may override.
+	 * 
+	 * @since 3.0
 	 */
 	public void updateMasterDetailsActionRidgets(final IMasterDetailsActionRidgetFacade actionRidgetFacade,
 			final Object selection) {
