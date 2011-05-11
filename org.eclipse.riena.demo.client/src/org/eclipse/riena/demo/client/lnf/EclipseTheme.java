@@ -20,7 +20,7 @@ import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultTheme;
 
 /**
- * Theme of the Look and Feel (Lnf) of the example application.
+ * Theme of the Look and Feel (Lnf) of the demo client.
  */
 public class EclipseTheme extends RienaDefaultTheme {
 
@@ -42,10 +42,10 @@ public class EclipseTheme extends RienaDefaultTheme {
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FOREGROUND, new ColorLnfResource(64, 0, 64));
 
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_START_COLOR, new ColorLnfResource(215,
-				214, 231)); // d7d6e7 hell
+				214, 231));
 
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BACKGROUND_END_COLOR, new ColorLnfResource(150,
-				146, 192)); // 9692c0 dunkel
+				146, 192));
 
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_ACTIVE_BORDER_COLOR, new ColorLnfResource(121, 117, 168));
 
@@ -54,8 +54,6 @@ public class EclipseTheme extends RienaDefaultTheme {
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BACKGROUND_END_COLOR, new ColorLnfResource(219,
 				219, 219));
 		lnf.putLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR, new ColorLnfResource(183, 183, 183));
-
-		//		lnf.putLnfResource("Text.background", new ColorLnfResource(230, 230, 230)); //$NON-NLS-1$
 
 		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_TOP_SELECTION_COLOR, new ColorLnfResource(172, 167,
 				226));
@@ -71,7 +69,11 @@ public class EclipseTheme extends RienaDefaultTheme {
 		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_PASSIVE_BACKGROUND_END_COLOR,
 				lnf.getLnfResource(LnfKeyConstants.EMBEDDED_TITLEBAR_PASSIVE_BORDER_COLOR));
 
-		//lnf.putLnfResource("Label.foreground", new ColorLnfResource(112, 54, 190)); //$NON-NLS-1$
+		lnf.putLnfResource("Table.background", new ColorLnfResource(255, 255, 255)); //$NON-NLS-1$
+		lnf.putLnfResource("Label.foreground", new ColorLnfResource(0, 0, 0)); //$NON-NLS-1$
+
+		lnf.putLnfResource(LnfKeyConstants.TITLEBAR_SEPARATOR_FIRST_LINE_FOREGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.TITLEBAR_SEPARATOR_SECOND_LINE_FOREGROUND, getPrimaryBackground());
 	}
 
 	private void customizeImages(final ILnfCustomizer lnf) {

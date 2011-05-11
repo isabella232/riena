@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.demo.client.views;
 
-import com.swtdesigner.SWTResourceManager;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
@@ -94,7 +92,7 @@ public class CustomerOverviewView extends SubModuleView {
 		openEmailsButton.setBounds(625, 465, 109, 38);
 
 		final Group grpUifilter = UIControlsFactory.createGroup(container, "UIFilter"); //$NON-NLS-1$
-		grpUifilter.setBounds(576, 340, 190, 89);
+		grpUifilter.setBounds(545, 340, 190, 89);
 
 		final Button buttonA = UIControlsFactory.createButtonToggle(grpUifilter, "Restricted Content", "assistent"); //$NON-NLS-1$ //$NON-NLS-2$
 		buttonA.setBounds(28, 20, 143, 26);
@@ -102,16 +100,13 @@ public class CustomerOverviewView extends SubModuleView {
 		final Button buttonB = UIControlsFactory.createButtonToggle(grpUifilter, "Add Validation", "mandatory"); //$NON-NLS-1$ //$NON-NLS-2$
 		buttonB.setBounds(28, 52, 143, 26);
 
-		final Composite composite = new Composite(container, SWT.NONE);
-		composite.setBackground(SWTResourceManager.getColor(121, 117, 168));
+		final Composite composite = DemoClientUIControlsFactory.createSeparator(container);
 		composite.setBounds(30, 110, 706, 2);
 
-		final Composite composite2 = new Composite(container, SWT.NONE);
-		composite2.setBackground(SWTResourceManager.getColor(121, 117, 168));
+		final Composite composite2 = DemoClientUIControlsFactory.createSeparator(container);
 		composite2.setBounds(30, 214, 706, 2);
 
-		final Composite composite3 = new Composite(container, SWT.NONE);
-		composite3.setBackground(SWTResourceManager.getColor(121, 117, 168));
-		composite3.setBounds(0, 450, 766, 2);
+		final Composite composite3 = DemoClientUIControlsFactory.createSeparator(container);
+		composite3.setBounds(30, 450, 706, 2);
 	}
 }

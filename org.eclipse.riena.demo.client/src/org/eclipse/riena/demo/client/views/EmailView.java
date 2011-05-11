@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.internal.demo.client.DemoClientUIControlsFactory;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -113,14 +114,11 @@ public class EmailView extends SubModuleView {
 		//create button
 		final Button openCustomerButton = UIControlsFactory.createButton(container, "Open Customer", "openCustomer"); //$NON-NLS-1$ //$NON-NLS-2$
 		openCustomerButton.setBounds(580, 474, 133, 38);
-		openCustomerButton.setFont(SWTResourceManager.getFont("Arial", 10, SWT.BOLD)); //$NON-NLS-1$
 
-		final Composite composite = UIControlsFactory.createComposite(container, SWT.NONE);
-		composite.setBackground(SWTResourceManager.getColor(121, 117, 168));
-		composite.setBounds(25, 235, 1054, 2);
+		final Composite composite = DemoClientUIControlsFactory.createSeparator(container);
+		composite.setBounds(25, 235, 706, 2);
 
-		final Composite composite2 = UIControlsFactory.createComposite(container, SWT.NONE);
-		composite2.setBackground(SWTResourceManager.getColor(121, 117, 168));
-		composite2.setBounds(25, 457, 1054, 2);
+		final Composite composite2 = DemoClientUIControlsFactory.createSeparator(container);
+		composite2.setBounds(25, 457, 706, 2);
 	}
 }

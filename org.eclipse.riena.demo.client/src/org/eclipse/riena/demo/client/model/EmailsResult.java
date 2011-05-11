@@ -8,18 +8,32 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.client.controllers;
+package org.eclipse.riena.demo.client.model;
 
-public class SearchBean {
+import java.util.List;
 
-	private String lastName;
+import org.eclipse.riena.demo.common.Email;
 
-	public void setLastName(final String lastName) {
-		this.lastName = lastName;
+/**
+ * contains emails
+ */
+public class EmailsResult {
+
+	private List<Email> emails;
+
+	/**
+	 * @return the emails
+	 */
+	public List<Email> getEmails() {
+		return emails;
 	}
 
-	public String getLastName() {
-		return lastName;
+	/**
+	 * @param emails
+	 *            the emails to set
+	 */
+	public void setEmails(final List<Email> emails) {
+		this.emails = emails;
 	}
 
 }

@@ -8,32 +8,29 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.client.controllers;
+package org.eclipse.riena.demo.client.model;
 
 import java.util.List;
 
-import org.eclipse.riena.demo.common.Email;
+import org.eclipse.riena.demo.common.Customer;
 
-/**
- * contains emails
- */
-public class EmailsResult {
+public class SearchResult {
 
-	private List<Email> emails;
+	private List<Customer> customers;
 
-	/**
-	 * @return the emails
-	 */
-	public List<Email> getEmails() {
-		return emails;
+	public void setCustomers(final List<Customer> customers) {
+		this.customers = customers;
 	}
 
-	/**
-	 * @param emails
-	 *            the emails to set
-	 */
-	public void setEmails(final List<Email> emails) {
-		this.emails = emails;
+	public List<Customer> getCustomers() {
+		return customers;
+	}
+
+	public int getHits() {
+		if (customers == null) {
+			return 0;
+		}
+		return customers.size();
 	}
 
 }

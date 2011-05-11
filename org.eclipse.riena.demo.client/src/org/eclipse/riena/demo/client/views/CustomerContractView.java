@@ -16,7 +16,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -52,7 +51,7 @@ public class CustomerContractView extends SubModuleView {
 		final Text lastname = UIControlsFactory.createText(container, SWT.BORDER, "lastname"); //$NON-NLS-1$
 		lastname.setBounds(235, 62, 182, 32);
 
-		final Group group = new Group(container, SWT.NONE);
+		final Composite group = new Composite(container, SWT.NONE);
 		group.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		group.setLayout(new FillLayout());
 		group.setBounds(130, 120, 537, 310);
@@ -93,10 +92,10 @@ public class CustomerContractView extends SubModuleView {
 		final Label contractsLabel = DemoClientUIControlsFactory.createSectionLabel(container, "Contracts"); //$NON-NLS-1$
 		contractsLabel.setBounds(25, 136, 81, 28);
 
-		final Composite composite = UIControlsFactory.createComposite(container, SWT.NONE);
+		final Composite composite = DemoClientUIControlsFactory.createSeparator(container);
 		composite.setBounds(30, 105, 706, 2);
 
-		final Composite composite2 = UIControlsFactory.createComposite(container, SWT.NONE);
-		composite2.setBounds(0, 450, 767, 2);
+		final Composite composite2 = DemoClientUIControlsFactory.createSeparator(container);
+		composite2.setBounds(30, 450, 706, 2);
 	}
 }

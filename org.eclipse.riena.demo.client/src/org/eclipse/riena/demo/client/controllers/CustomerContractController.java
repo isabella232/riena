@@ -41,7 +41,7 @@ public class CustomerContractController extends SubModuleController {
 		final IMasterDetailsRidget master = getRidget(IMasterDetailsRidget.class, "contracts"); //$NON-NLS-1$
 		master.setDelegate(new ContractDelegate());
 		final String[] properties = new String[] { "contractNo", "contractValue", "status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		final String[] headers = new String[] { "contract#", "value", "status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final String[] headers = new String[] { "ContractNo", "Value", "Status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		master.bindToModel(new WritableList(customer.getContracts(), Contract.class), Contract.class, properties,
 				headers);
 	}

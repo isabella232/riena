@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.demo.client;
 import com.swtdesigner.SWTResourceManager;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -26,6 +27,12 @@ public class DemoClientUIControlsFactory extends UIControlsFactory {
 		final Label createLabel = createLabel(parent, text);
 		createLabel.setFont(SWTResourceManager.getFont("Arial", 12, SWT.BOLD)); //$NON-NLS-1$
 		return createLabel;
+	}
+
+	public static Composite createSeparator(final Composite parent) {
+		final Composite composite1 = UIControlsFactory.createComposite(parent, SWT.NONE);
+		composite1.setBackground(SWTResourceManager.getColor(121, 117, 168));
+		return composite1;
 	}
 
 }

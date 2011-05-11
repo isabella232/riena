@@ -13,6 +13,8 @@ package org.eclipse.riena.demo.client.controllers;
 import java.util.Date;
 
 import org.eclipse.riena.core.wire.InjectService;
+import org.eclipse.riena.demo.client.model.SearchBean;
+import org.eclipse.riena.demo.client.model.SearchResult;
 import org.eclipse.riena.demo.common.Customer;
 import org.eclipse.riena.demo.common.ICustomerService;
 import org.eclipse.riena.navigation.NavigationArgument;
@@ -47,16 +49,15 @@ public class CustomerSearchController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
-		final ITextRidget suchName = getRidget("searchLastName"); //$NON-NLS-1$
+		final ITextRidget suchName = getRidget(ITextRidget.class, "searchLastName"); //$NON-NLS-1$
 		suchName.bindToModel(customerSearchBean, "lastName"); //$NON-NLS-1$
 		suchName.setMandatory(true);
 
 		((ILabelRidget) getRidget("hits")).bindToModel(result, "hits"); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final ITableRidget kunden = getRidget("result"); //$NON-NLS-1$
-		final String[] columnNames = { "lastname", "firstname", "birthdate", "street", "city" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		final String[] columnNames = { "Lastname", "Firstname", "Birthdate", "Street", "City" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		final String[] propertyNames = { "lastName", "firstName", "birthDate", "address.street", "address.city" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-
 		kunden.bindToModel(result, "customers", Customer.class, propertyNames, columnNames); //$NON-NLS-1$
 
 		kunden.setColumnFormatter(2, new DateColumnFormatter("dd.MM.yyyy") { //$NON-NLS-1$

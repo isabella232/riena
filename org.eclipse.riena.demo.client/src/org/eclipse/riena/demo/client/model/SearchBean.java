@@ -8,29 +8,18 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.demo.client.controllers;
+package org.eclipse.riena.demo.client.model;
 
-import java.util.List;
+public class SearchBean {
 
-import org.eclipse.riena.demo.common.Customer;
+	private String lastName;
 
-public class SearchResult {
-
-	private List<Customer> customers;
-
-	public void setCustomers(final List<Customer> customers) {
-		this.customers = customers;
+	public void setLastName(final String lastName) {
+		this.lastName = lastName;
 	}
 
-	public List<Customer> getCustomers() {
-		return customers;
-	}
-
-	public int getHits() {
-		if (customers == null) {
-			return 0;
-		}
-		return customers.size();
+	public String getLastName() {
+		return lastName;
 	}
 
 }

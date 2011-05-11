@@ -18,6 +18,7 @@ import java.util.Date;
 
 import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.core.wire.InjectService;
+import org.eclipse.riena.demo.client.model.EmailsResult;
 import org.eclipse.riena.demo.common.Customer;
 import org.eclipse.riena.demo.common.Email;
 import org.eclipse.riena.demo.common.ICustomerService;

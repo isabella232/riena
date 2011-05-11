@@ -13,6 +13,7 @@ package org.eclipse.riena.demo.client.views;
 import com.swtdesigner.SWTResourceManager;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -21,6 +22,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.internal.demo.client.DemoClientUIControlsFactory;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
@@ -32,6 +34,7 @@ public class EmailView2 extends SubModuleView {
 	protected void basicCreatePartControl(final Composite parent) {
 		parent.setLayout(new FillLayout(SWT.VERTICAL));
 
+		final Font boldFont11 = SWTResourceManager.getFont("Arial", 11, SWT.BOLD); //$NON-NLS-1$
 		final Composite container = new Composite(parent, SWT.NONE);
 
 		final Table table = UIControlsFactory.createTable(container, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION,
@@ -48,6 +51,7 @@ public class EmailView2 extends SubModuleView {
 		tableColumn2.setWidth(143);
 
 		Label l = UIControlsFactory.createLabel(container, "Subject", SWT.WRAP); //$NON-NLS-1$
+		l.setFont(boldFont11);
 		l.setLocation(25, 254);
 		l.setSize(58, 18);
 
@@ -56,14 +60,17 @@ public class EmailView2 extends SubModuleView {
 		subjectLabel.setSize(619, 17);
 
 		l = UIControlsFactory.createLabel(container, "From", SWT.WRAP); //$NON-NLS-1$
+		l.setFont(boldFont11);
 		l.setLocation(25, 278);
 		l.setSize(40, 18);
 
 		final Label fromLabel = UIControlsFactory.createLabel(container, "", "emailFrom"); //$NON-NLS-1$ //$NON-NLS-2$
+		fromLabel.setFont(boldFont11);
 		fromLabel.setLocation(103, 277);
 		fromLabel.setSize(302, 17);
 
 		l = UIControlsFactory.createLabel(container, "To", SWT.WRAP); //$NON-NLS-1$
+		l.setFont(boldFont11);
 		l.setLocation(411, 277);
 		l.setSize(23, 18);
 
@@ -72,6 +79,7 @@ public class EmailView2 extends SubModuleView {
 		toLabel.setSize(282, 17);
 
 		l = UIControlsFactory.createLabel(container, "Date", SWT.WRAP); //$NON-NLS-1$
+		l.setFont(boldFont11);
 		l.setLocation(25, 302);
 		l.setSize(37, 18);
 
@@ -87,12 +95,10 @@ public class EmailView2 extends SubModuleView {
 		final Button openCustomerButton = UIControlsFactory.createButton(container, "Open Customer", "openCustomer"); //$NON-NLS-1$ //$NON-NLS-2$
 		openCustomerButton.setBounds(580, 474, 133, 38);
 
-		final Composite composite = UIControlsFactory.createComposite(container, SWT.NONE);
-		composite.setBackground(SWTResourceManager.getColor(121, 117, 168));
-		composite.setBounds(25, 235, 1054, 2);
+		final Composite composite = DemoClientUIControlsFactory.createSeparator(container);
+		composite.setBounds(25, 235, 706, 2);
 
-		final Composite composite2 = UIControlsFactory.createComposite(container, SWT.NONE);
-		composite2.setBackground(SWTResourceManager.getColor(121, 117, 168));
-		composite2.setBounds(25, 457, 1054, 2);
+		final Composite composite2 = DemoClientUIControlsFactory.createSeparator(container);
+		composite2.setBounds(25, 457, 706, 2);
 	}
 }
