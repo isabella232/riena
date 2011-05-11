@@ -65,7 +65,6 @@ public class EmailView2 extends SubModuleView {
 		l.setSize(40, 18);
 
 		final Label fromLabel = UIControlsFactory.createLabel(container, "", "emailFrom"); //$NON-NLS-1$ //$NON-NLS-2$
-		fromLabel.setFont(boldFont11);
 		fromLabel.setLocation(103, 277);
 		fromLabel.setSize(302, 17);
 

@@ -16,13 +16,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.internal.demo.client.DemoClientUIControlsFactory;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
+import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
+import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -51,7 +52,7 @@ public class CustomerSearchView extends SubModuleView {
 
 		final Label treffer = UIControlsFactory.createLabel(container, "no", SWT.RIGHT, "hits"); //$NON-NLS-1$ //$NON-NLS-2$
 		treffer.setFont(SWTResourceManager.getFont("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
-		treffer.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+		treffer.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		treffer.setBounds(665, 110, 33, 19);
 
 		final Button openCustomerButton = UIControlsFactory.createButton(container, "&Open", "open"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -62,7 +63,7 @@ public class CustomerSearchView extends SubModuleView {
 
 		final Label hitsLabel = UIControlsFactory.createLabel(container, "Hits", SWT.NONE); //$NON-NLS-1$
 		hitsLabel.setFont(SWTResourceManager.getFont("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
-		hitsLabel.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+		hitsLabel.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
 		hitsLabel.setForeground(SWTResourceManager.getColor(0, 0, 1));
 		hitsLabel.setBounds(703, 110, 30, 19);
 

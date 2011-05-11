@@ -65,7 +65,6 @@ public class EmailView extends SubModuleView {
 		final Label subjectLabel = UIControlsFactory.createLabel(container, "", SWT.NONE, "emailSubject"); //$NON-NLS-1$ //$NON-NLS-2$
 		subjectLabel.setLocation(103, 254);
 		subjectLabel.setSize(619, 17);
-		subjectLabel.setFont(SWTResourceManager.getFont("Arial", 11, SWT.BOLD)); //$NON-NLS-1$
 		subjectLabel.setForeground(SWTResourceManager.getColor(1, 1, 1));
 
 		l = UIControlsFactory.createLabel(container, "From", SWT.WRAP); //$NON-NLS-1$
