@@ -345,11 +345,35 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 				msg += " Because both nodes have the same NavigationNodeId."; //$NON-NLS-1$
 				throw new NavigationModelFailure(msg);
 			}
+			if (hasChild(child.getNodeId())) {
+				String msg = "Cannot add \"" + child.toString() + "\" to \"" + this.toString() + "\"!"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				msg += " Because a child with the same NavigationNodeId already exists."; //$NON-NLS-1$
+				throw new NavigationModelFailure(msg);
+			}
 		}
 	}
 
 	protected boolean hasChild(final INavigationNode<?> pChild) {
 		return children.contains(pChild);
+	}
+
+	/**
+	 * Checks if this node has a child node with the given ID.
+	 * 
+	 * @param nodeId
+	 *            ID of a navigation node
+	 * @return {@code true} child with the given ID exists; otherwise
+	 *         {@code false}
+	 */
+	protected boolean hasChild(final NavigationNodeId nodeId) {
+		for (final C child : children) {
+			if (child.getNodeId() != null) {
+				if (child.getNodeId().equals(nodeId)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	protected void addChildParent(final C child) {

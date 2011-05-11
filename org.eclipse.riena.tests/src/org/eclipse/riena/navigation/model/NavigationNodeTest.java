@@ -762,6 +762,20 @@ public class NavigationNodeTest extends RienaTestCase {
 			}
 		}
 
+		// same ID
+		final NavigationNodeId id5 = new NavigationNodeId("child1", "1");
+		final NaviNode child5 = new NaviNode(id5);
+		try {
+			ReflectionUtils.invokeHidden(node, "checkChild", child5);
+			fail("Exception expected");
+		} catch (final Exception e) {
+			if (e.getCause() instanceof NavigationModelFailure) {
+				ok("Exception expected");
+			} else {
+				fail("Unexpcted exception");
+			}
+		}
+
 	}
 
 	/**
