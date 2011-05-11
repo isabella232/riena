@@ -882,36 +882,6 @@ public class NavigationNodeTest extends RienaTestCase {
 		assertEquals("value2", node.getContext("context1"));
 	}
 
-	/**
-	 * Tests the method {@code equals(Object)}.
-	 */
-	public void testEquals() {
-
-		NaviNode node = new NaviNode(null);
-		assertFalse(node.equals(null));
-		assertTrue(node.equals(node));
-		assertFalse(node.equals(new Object()));
-
-		NaviNode node2 = new NaviNode(null);
-		assertTrue(node.equals(node2));
-
-		final NavigationNodeId id = new NavigationNodeId("a");
-		node = new NaviNode(id);
-		NavigationNodeId id2 = new NavigationNodeId("b");
-		node2 = new NaviNode(id2);
-		assertFalse(node.equals(node2));
-
-		node = new NaviNode(id);
-		node2 = new NaviNode(id);
-		assertTrue(node.equals(node2));
-
-		id2 = new NavigationNodeId("a");
-		node = new NaviNode(id);
-		node2 = new NaviNode(id2);
-		assertTrue(node.equals(node2));
-
-	}
-
 	private class NaviNode extends SubModuleNode implements ISimpleNavigationNodeListener {
 
 		private boolean markersChangedCalled;
