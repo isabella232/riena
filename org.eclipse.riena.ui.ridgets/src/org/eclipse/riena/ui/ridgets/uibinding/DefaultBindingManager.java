@@ -167,21 +167,21 @@ public class DefaultBindingManager implements IBindingManager {
 	private void updateBindings(final IRidgetContainer controller, final List<Object> uiControls, final boolean unbind) {
 
 		for (final Object control : uiControls) {
+			final String bindingProperty = propertyStrategy.locateBindingProperty(control);
+			if (bindingProperty == null) {
+				continue;
+			}
 			if (control instanceof IComplexComponent) {
 				final IComplexComponent complexComponent = (IComplexComponent) control;
-				final String bindingProperty = propertyStrategy.locateBindingProperty(control);
 				final IComplexRidget complexRidget = getRidget(bindingProperty, controller);
-				updateBindings(complexRidget, complexComponent.getUIControls(), unbind);
 				if (complexRidget != null) {
+					updateBindings(complexRidget, complexComponent.getUIControls(), unbind);
 					bindRidget(complexRidget, complexComponent, unbind);
 				}
 			} else {
-				final String bindingProperty = propertyStrategy.locateBindingProperty(control);
-				if (bindingProperty != null) {
-					final IRidget ridget = getRidget(bindingProperty, controller);
-					Assert.isNotNull(ridget, "Null ridget for property: " + bindingProperty); //$NON-NLS-1$
-					bindRidget(ridget, control, unbind);
-				}
+				final IRidget ridget = getRidget(bindingProperty, controller);
+				Assert.isNotNull(ridget, "Null ridget for property: " + bindingProperty); //$NON-NLS-1$
+				bindRidget(ridget, control, unbind);
 			}
 		}
 	}

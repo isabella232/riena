@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -79,12 +80,15 @@ public class MenuPropertiesTest extends TestCase {
 	public void testCreateItem() {
 
 		final Menu menu = new Menu(shell);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(menu, "menu");
 		final MenuItem menuItem = new MenuItem(menu, SWT.CASCADE);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(menuItem, "menuItem");
 		final Menu menu2 = new Menu(shell, SWT.DROP_DOWN);
 		menuItem.setMenu(menu2);
 		final MenuRidget ridget = new MenuRidget();
 		ridget.setUIControl(menuItem);
 		final MenuItem menuItem2 = new MenuItem(menu2, SWT.NONE);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(menuItem2, "menuItem2");
 		menuItem2.setText("Simple menu item");
 		final MenuItemRidget childRidget = new MenuItemRidget();
 		childRidget.setUIControl(menuItem2);
@@ -97,6 +101,7 @@ public class MenuPropertiesTest extends TestCase {
 		assertNotNull(retMenuItem.getMenu());
 		assertNotSame(menu2, retMenuItem.getMenu());
 		assertEquals(1, retMenuItem.getMenu().getItemCount());
+		assertEquals("menuItem", SWTBindingPropertyLocator.getInstance().locateBindingProperty(retMenuItem));
 		final MenuItem retChildMenuItem = retMenuItem.getMenu().getItems()[0];
 		assertEquals(menuItem2.getText(), retChildMenuItem.getText());
 

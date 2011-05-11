@@ -23,6 +23,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
 /**
  * Tests of the class {@link MenuItemRidget}.
@@ -42,7 +43,10 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 	@Override
 	protected MenuItem createWidget(final Composite parent) {
 		final Menu menu = new Menu(parent);
-		return new MenuItem(menu, SWT.NONE);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(menu, "menu");
+		final MenuItem item = new MenuItem(menu, SWT.NONE);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, "item");
+		return item;
 	}
 
 	@Override

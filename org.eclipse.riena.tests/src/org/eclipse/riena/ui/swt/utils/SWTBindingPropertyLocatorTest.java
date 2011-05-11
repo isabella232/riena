@@ -84,7 +84,12 @@ public class SWTBindingPropertyLocatorTest extends TestCase {
 
 		assertEquals("text1", locator.locateBindingProperty(text));
 
-		locator.setBindingProperty(complexComponent, "");
+		try {
+			locator.setBindingProperty(complexComponent, "");
+
+		} catch (final IllegalArgumentException ex) {
+
+		}
 
 		assertEquals("text1", locator.locateBindingProperty(text));
 	}

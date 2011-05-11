@@ -68,6 +68,7 @@ public class ToolItemPropertiesTest extends TestCase {
 		final ToolItemRidget ridget = new ToolItemRidget();
 		final ToolBar toolbar = new ToolBar(shell, SWT.BORDER);
 		final ToolItem item = new ToolItem(toolbar, SWT.PUSH);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, "item4711");
 		final String text = "toolItem0815";
 		item.setText(text);
 		ridget.setUIControl(item);
@@ -81,6 +82,7 @@ public class ToolItemPropertiesTest extends TestCase {
 		assertSame(toolbar, item2.getParent());
 		assertEquals(1, toolbar.getItemCount());
 		assertEquals(text, item2.getText());
+		assertEquals("item4711", SWTBindingPropertyLocator.getInstance().locateBindingProperty(item2));
 
 	}
 

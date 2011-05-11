@@ -16,16 +16,20 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.internal.ui.ridgets.swt.CompositeRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.common.IComplexComponent;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.DefaultRealm;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -115,6 +119,22 @@ public class DefaultBindingManagerTest extends TestCase {
 		assertNotNull(ridgetContainer.getRidget("label1"));
 		assertSame(label1, ridgetContainer.getRidget("label1").getUIControl());
 
+		final ComplexComposite complex = new ComplexComposite(shell, SWT.NONE);
+		complex.setData(BINDING_PROPERTY, "complex1"); //$NON-NLS-1$
+		uiControls.add(complex);
+
+		final Label label2 = new Label(complex, SWT.NONE);
+		label2.setData(BINDING_PROPERTY, "label2"); //$NON-NLS-1$
+
+		manager.injectRidgets(ridgetContainer, uiControls);
+		manager.bind(ridgetContainer, uiControls);
+
+		// injected and binded
+		assertNotNull(ridgetContainer.getRidget("complex1.label2"));
+		assertSame(label2, ridgetContainer.getRidget("complex1.label2").getUIControl());
+
+		label2.dispose();
+		complex.dispose();
 		label1.dispose();
 
 	}
@@ -171,7 +191,8 @@ public class DefaultBindingManagerTest extends TestCase {
 	}
 
 	/**
-	 * This Mapper returns always the class <code>LabelRidget</code>.
+	 * This Mapper returns always the class <code>LabelRidget</code> or
+	 * {@code CompositeRidget}.
 	 */
 	private static class ControlRidgetMapper implements IControlRidgetMapper<Object> {
 
@@ -185,11 +206,29 @@ public class DefaultBindingManagerTest extends TestCase {
 		}
 
 		public Class<? extends IRidget> getRidgetClass(final Class<? extends Object> controlClazz) {
+			if (controlClazz == ComplexComposite.class) {
+				return CompositeRidget.class;
+			}
 			return LabelRidget.class;
 		}
 
 		public Class<? extends IRidget> getRidgetClass(final Object control) {
-			return LabelRidget.class;
+			return getRidgetClass(control.getClass());
+		}
+
+	}
+
+	/**
+	 * Simple implementation of {@code IComplexComponent}.
+	 */
+	private class ComplexComposite extends Composite implements IComplexComponent {
+
+		public ComplexComposite(final Composite parent, final int style) {
+			super(parent, style);
+		}
+
+		public List<Object> getUIControls() {
+			return SWTBindingPropertyLocator.getControlsWithBindingProperty(this);
 		}
 
 	}

@@ -65,13 +65,17 @@ public class MenuItemPropertiesTest extends TestCase {
 
 		final MenuItemRidget ridget = new MenuItemRidget();
 		final Menu menu = new Menu(shell);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(menu, "menu");
 		final MenuItem item = new MenuItem(menu, SWT.PUSH);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, "item");
 		item.setText("MenuItem0815");
 		ridget.setUIControl(item);
 
 		final MyMenuItemProperties itemProperties = new MyMenuItemProperties(ridget);
 		final Menu menu2 = new Menu(shell);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(menu2, "menu2");
 		final MenuItem item2 = itemProperties.createItem(menu2);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(item2, "item2");
 		assertSame(item2, ridget.getUIControl());
 		assertSame(menu2, item2.getParent());
 		assertEquals(item.getText(), item2.getText());
@@ -85,7 +89,9 @@ public class MenuItemPropertiesTest extends TestCase {
 
 		final MenuItemRidget ridget = new MenuItemRidget();
 		final Menu menu = new Menu(shell);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(menu, "menu");
 		final MenuItem item = new MenuItem(menu, SWT.PUSH);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, "item");
 		final String text = "MenuItem0815";
 		item.setText(text);
 		ridget.setUIControl(item);
@@ -95,6 +101,7 @@ public class MenuItemPropertiesTest extends TestCase {
 		assertEquals(0, menu.getItemCount());
 
 		final MenuItem item2 = itemProperties.createItem();
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(item2, "item2");
 		assertSame(item2, ridget.getUIControl());
 		assertSame(menu, item2.getParent());
 		assertEquals(1, menu.getItemCount());

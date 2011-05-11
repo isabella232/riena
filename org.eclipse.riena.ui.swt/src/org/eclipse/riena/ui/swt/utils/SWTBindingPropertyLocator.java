@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -123,6 +124,8 @@ public final class SWTBindingPropertyLocator implements IBindingPropertyLocator 
 	 *            the control.
 	 */
 	public void setBindingProperty(final Object uiControl, final String id) {
+		Assert.isNotNull(id, "The binding property must not be null"); //$NON-NLS-1$
+		Assert.isLegal(id.length() > 0, "The binding property must not be empty"); //$NON-NLS-1$
 		if (uiControl instanceof Widget) {
 			final Widget widget = (Widget) uiControl;
 			if (widget.isDisposed()) {

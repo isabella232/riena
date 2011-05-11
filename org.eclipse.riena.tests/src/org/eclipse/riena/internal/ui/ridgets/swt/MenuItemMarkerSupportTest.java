@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
+import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
@@ -56,8 +57,11 @@ public class MenuItemMarkerSupportTest extends TestCase {
 
 		final Shell shell = new Shell();
 		final Menu menu = new Menu(shell, SWT.NONE);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(menu, "menu");
 		final MenuItem item = new MenuItem(menu, SWT.CASCADE);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, "item");
 		final Menu menu2 = new Menu(shell, SWT.DROP_DOWN);
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(menu2, "menu2");
 		item.setMenu(menu2);
 		final MenuRidget ridget = new MenuRidget();
 		ridget.setUIControl(item);
