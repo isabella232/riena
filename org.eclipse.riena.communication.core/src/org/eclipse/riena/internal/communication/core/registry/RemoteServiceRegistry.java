@@ -71,7 +71,7 @@ public class RemoteServiceRegistry implements IRemoteServiceRegistry {
 		final Dictionary<String, Object> props = new Hashtable<String, Object>();
 		props.put("service.url", url); //$NON-NLS-1$
 		props.put("service.protocol", reference.getDescription().getProtocol()); //$NON-NLS-1$
-		final ServiceRegistration<?> serviceRegistration = context.registerService(
+		final ServiceRegistration serviceRegistration = context.registerService(
 				reference.getServiceInterfaceClassName(), reference.getServiceInstance(), props);
 		try {
 			Activator.getDefault().getContext().addServiceListener(new ServiceListener() {
