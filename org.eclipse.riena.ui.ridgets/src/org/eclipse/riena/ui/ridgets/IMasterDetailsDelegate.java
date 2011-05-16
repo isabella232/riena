@@ -377,6 +377,7 @@ public interface IMasterDetailsDelegate {
 	 * @param selection
 	 *            the selected item behind the master row. <b>May be null</b>,
 	 *            if nothing is selected
+	 * @since 3.0
 	 * 
 	 */
 	void updateMasterDetailsActionRidgets(IMasterDetailsActionRidgetFacade actionRidgetFacade, Object selection);

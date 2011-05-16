@@ -364,6 +364,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	 *            ID of a navigation node
 	 * @return {@code true} child with the given ID exists; otherwise
 	 *         {@code false}
+	 * @since 3.0
 	 */
 	protected boolean hasChild(final NavigationNodeId nodeId) {
 		for (final C child : children) {
