@@ -227,6 +227,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- FIXME: disabled javadoc plugin, becuase it slows down the build 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -247,7 +248,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 
 		</plugins>
 		<pluginManagement>
