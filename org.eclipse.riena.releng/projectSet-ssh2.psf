@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <psf version="2.0">
 <provider id="org.eclipse.team.cvs.core.cvsnature">
-<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/com.caucho.hessian,com.caucho.hessian,v3_2_0"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/com.caucho.hessian,com.caucho.hessian,v3_2_0_update"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.beans.common,org.eclipse.riena.beans.common"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.build.feature,org.eclipse.riena.build.feature"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.build.feature.core.sdk,org.eclipse.riena.build.feature.core.sdk"/>
