@@ -88,7 +88,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		if (ridget != null) {
 			return ridget;
 		}
-		if (RienaStatus.isTest()) {
+		if (allowRidgetCreation()) {
 			try {
 				if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
 					final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(
@@ -112,6 +112,10 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		}
 
 		return ridget;
+	}
+
+	protected boolean allowRidgetCreation() {
+		return RienaStatus.isTest();
 	}
 
 	public Collection<? extends IRidget> getRidgets() {
