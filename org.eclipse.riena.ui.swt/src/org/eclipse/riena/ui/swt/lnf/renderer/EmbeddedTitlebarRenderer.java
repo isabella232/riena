@@ -20,7 +20,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
@@ -475,15 +474,8 @@ public class EmbeddedTitlebarRenderer extends AbstractLnfRenderer {
 		 * @see java.lang.Runnable#run()
 		 */
 		public void run() {
-			if (control != null) {
-				final Display display = Display.getCurrent();
-				if (display != null) {
-					synchronized (display) {
-						if (!control.isDisposed()) {
-							control.redraw();
-						}
-					}
-				}
+			if (control != null && !control.isDisposed()) {
+				control.redraw();
 			}
 		}
 	}
