@@ -198,7 +198,6 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	}
 
 	private void updateProcessConfiguration() {
-		register();
 		configureProcessInfo();
 	}
 
@@ -333,9 +332,18 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 
 	/**
 	 * starts the {@link UIProcess} using jobs API
+	 * 
+	 * @return true if the UIProces could be scheduled false if the UIProcess is
+	 *         already scheduled.
 	 */
-	public void start() {
+	public boolean start() {
+		final int state = job.getState();
+		if (state == Job.RUNNING || state == Job.WAITING || state == Job.SLEEPING) {
+			return false;
+		}
+		register();
 		job.schedule();
+		return true;
 	}
 
 	@Override

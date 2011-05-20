@@ -38,6 +38,7 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	private final List<IUIMonitor> uiMonitors;
 	private final ProcessInfo pInfo;
 	private ThreadSwitcher threadSwitcher;
+	private JobChangeAdapter jobListener;
 
 	/**
 	 * Creates a instance of {@link UICallbackDispatcher}.
@@ -59,6 +60,9 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	 * @see IUIMonitorContainer#addUIMonitor(IUIMonitor)
 	 */
 	public void addUIMonitor(final IUIMonitor uiMontitor) {
+		if (uiMonitors.contains(uiMontitor)) {
+			return;
+		}
 		final IProcessInfoAware processInfoAware = (IProcessInfoAware) uiMontitor.getAdapter(IProcessInfoAware.class);
 		if (processInfoAware != null) {
 			processInfoAware.setProcessInfo(pInfo);
@@ -85,14 +89,17 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 	}
 
 	private void observeJob(final Job job) {
-		job.addJobChangeListener(new JobChangeAdapter() {
+		if (jobListener == null) {
+			jobListener = new JobChangeAdapter() {
 
-			@Override
-			public void done(final IJobChangeEvent event) {
-				super.done(event);
-				jobDone();
-			}
-		});
+				@Override
+				public void done(final IJobChangeEvent event) {
+					super.done(event);
+					jobDone();
+				}
+			};
+			job.addJobChangeListener(jobListener);
+		}
 	}
 
 	private List<IUIMonitor> getMonitors() {

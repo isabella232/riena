@@ -24,6 +24,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 public class UIProcessDemoSubModuleController extends SubModuleController {
 
 	private boolean registered;
+	private UIProcess process;
 
 	public UIProcessDemoSubModuleController() {
 		this(null);
@@ -65,53 +66,57 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 	}
 
 	void runUIProcess() {
+		if (process == null) {
+			process = new UIProcess("sample uiProcess", true, getNavigationNode()) { //$NON-NLS-1$
 
-		final UIProcess p = new UIProcess("sample uiProcess", true, getNavigationNode()) { //$NON-NLS-1$
-
-			@Override
-			public void initialUpdateUI(final int totalWork) {
-				super.initialUpdateUI(totalWork);
-				setBlocked(true);
-			}
-
-			@Override
-			public boolean runJob(final IProgressMonitor monitor) {
-				try {
-					Thread.sleep(500);
-				} catch (final InterruptedException e1) {
-					e1.getCause(); // .ignore();
+				@Override
+				public void initialUpdateUI(final int totalWork) {
+					super.initialUpdateUI(totalWork);
+					//					setBlocked(true);
 				}
-				for (int i = 0; i < 10; i++) {
-					if (monitor.isCanceled()) {
-						monitor.done();
-						return false;
-					}
+
+				@Override
+				public boolean runJob(final IProgressMonitor monitor) {
 					try {
 						Thread.sleep(500);
-					} catch (final InterruptedException e) {
-						e.printStackTrace();
+					} catch (final InterruptedException e1) {
+						e1.getCause(); // .ignore();
 					}
-					setTitle("sample uiProcess worked [" + i + "]"); //$NON-NLS-1$ //$NON-NLS-2$
-					monitor.worked(1);
+					for (int i = 0; i < 10; i++) {
+						if (monitor.isCanceled()) {
+							monitor.done();
+							return false;
+						}
+						try {
+							Thread.sleep(500);
+						} catch (final InterruptedException e) {
+							e.printStackTrace();
+						}
+						setTitle("sample uiProcess worked [" + i + "]"); //$NON-NLS-1$ //$NON-NLS-2$
+						monitor.worked(1);
+					}
+					return true;
 				}
-				return true;
-			}
 
-			@Override
-			public void finalUpdateUI() {
-				super.finalUpdateUI();
-				setBlocked(false);
-			}
+				@Override
+				public void finalUpdateUI() {
+					super.finalUpdateUI();
+					setBlocked(false);
+				}
 
-			@Override
-			protected int getTotalWork() {
-				return 10;
-			}
-		};
-		p.setNote("sample uiProcess note " + getNavigationNode().getLabel() + ".."); //$NON-NLS-1$ //$NON-NLS-2$
-		p.setTitle("sample uiProcess"); //$NON-NLS-1$
-		p.setCancelEnabled(false);
-		p.start();
+				@Override
+				protected int getTotalWork() {
+					return 10;
+				}
+			};
+			process.setNote("sample uiProcess note " + getNavigationNode().getLabel() + ".."); //$NON-NLS-1$ //$NON-NLS-2$
+			process.setTitle("sample uiProcess"); //$NON-NLS-1$
+			process.setCancelEnabled(false);
+		}
+
+		if (process.start()) {
+			process.setTitle("sample uiProcess"); //$NON-NLS-1$
+		}
 
 	}
 
