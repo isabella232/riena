@@ -17,14 +17,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.demo.common.Address;
+import org.eclipse.riena.demo.common.Contract;
 import org.eclipse.riena.demo.common.Customer;
 
 /**
  * Implementation for accessing Customer Records
  */
 public class CustomerRepository implements ICustomerRepository {
+
+	private static String[] STATI = { "NEW", "PENDING", "CLOSED", "CANCELED" };
 
 	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy"); //$NON-NLS-1$
 
@@ -141,6 +146,25 @@ public class CustomerRepository implements ICustomerRepository {
 		} catch (final ParseException p) {
 			System.out.println(p.getMessage());
 		}
+		for (final Customer customer : customers) {
+			addContractEntries(customer);
+		}
 	}
 
+	public void addContractEntries(final Customer customer) {
+		for (int i = 0; i < 3; i++) {
+			final String status = STATI[new Random().nextInt(STATI.length)];
+			final String contractNo = String.valueOf(Math.abs(new Random().nextInt(10000)));
+			final double nextDouble = new Random().nextDouble() * 1000000;
+			final double contractValue = Math.round(nextDouble * 100d) / 100d;
+			customer.addContract(new Contract(contractNo, "contract desc for " + contractNo, contractValue, status));
+		}
+	}
+
+	public void addWorkAddress(final Customer customer) {
+		final Address workAddress = new Address();
+		workAddress.setCity("Frankfurt");
+		workAddress.setStreet((customer.getAddress().getStreet()));
+		workAddress.setZipCode((customer.getAddress().getZipCode()));
+	}
 }

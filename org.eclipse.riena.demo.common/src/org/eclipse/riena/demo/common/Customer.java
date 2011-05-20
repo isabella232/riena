@@ -20,6 +20,7 @@ public class Customer {
 	private String lastName;
 	private String firstName;
 	private Address address;
+	private Address workAddress;
 	private String emailAddress;
 	private Date birthDate;
 	private float salary;
@@ -69,6 +70,21 @@ public class Customer {
 	}
 
 	/**
+	 * @return the workAddress
+	 */
+	public Address getWorkAddress() {
+		return workAddress;
+	}
+
+	/**
+	 * @param workAddress
+	 *            the workAddress to set
+	 */
+	public void setWorkAddress(final Address workAddress) {
+		this.workAddress = workAddress;
+	}
+
+	/**
 	 * @param emailAddress
 	 *            the emailAddress to set
 	 */
@@ -105,6 +121,10 @@ public class Customer {
 
 	public void setContracts(final List<Contract> contracts) {
 		this.contracts = contracts;
+	}
+
+	public void addContract(final Contract contract) {
+		contracts.add(contract);
 	}
 
 }

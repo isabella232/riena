@@ -21,7 +21,20 @@ public class Contract {
 		contractNo = ""; //$NON-NLS-1$
 		description = ""; //$NON-NLS-1$
 		status = ""; //$NON-NLS-1$
+	}
 
+	/**
+	 * @param contractNo
+	 * @param description
+	 * @param contractValue
+	 * @param status
+	 */
+	public Contract(final String contractNo, final String description, final double contractValue, final String status) {
+		super();
+		this.contractNo = contractNo;
+		this.description = description;
+		this.contractValue = contractValue;
+		this.status = status;
 	}
 
 	public String getContractNo() {

@@ -20,7 +20,10 @@ import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.AbstractMasterDetailsDelegate;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.swt.NumberColumnFormatter;
+import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
 /**
  *
@@ -41,9 +44,17 @@ public class CustomerContractController extends SubModuleController {
 		final IMasterDetailsRidget master = getRidget(IMasterDetailsRidget.class, "contracts"); //$NON-NLS-1$
 		master.setDelegate(new ContractDelegate());
 		final String[] properties = new String[] { "contractNo", "contractValue", "status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		final String[] headers = new String[] { "ContractNo", "Value", "Status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final String[] headers = new String[] { "ContractNo", "Value in €", "Status" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		master.bindToModel(new WritableList(customer.getContracts(), Contract.class), Contract.class, properties,
 				headers);
+
+		final ITableRidget table = master.getRidget(ITableRidget.class, MasterDetailsComposite.BIND_ID_TABLE);
+		table.setColumnFormatter(1, new NumberColumnFormatter(Double.class, 2) {
+			@Override
+			protected Number getValue(final Object element) {
+				return ((Contract) element).getContractValue();
+			}
+		});
 	}
 
 	@OnNavigationNodeEvent(event = Event.ACTIVATED)
