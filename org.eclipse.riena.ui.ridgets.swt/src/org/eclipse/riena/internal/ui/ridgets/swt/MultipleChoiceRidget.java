@@ -46,13 +46,12 @@ import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.LnFUpdater;
-import org.eclipse.riena.ui.swt.utils.SWTControlFinder;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Ridget for a {@link ChoiceComposite} widget with multiple selection.
  */
-public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultipleChoiceRidget {
+public class MultipleChoiceRidget extends AbstractChoiceRidget implements IMultipleChoiceRidget {
 
 	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
 
@@ -87,49 +86,6 @@ public class MultipleChoiceRidget extends AbstractSWTRidget implements IMultiple
 				updateEditable(getUIControl(), !isOutput);
 			}
 		});
-	}
-
-	@Override
-	public boolean hasFocus() {
-		if (getUIControl() != null) {
-			final Control control = getUIControl();
-
-			if (control.isFocusControl()) {
-				return true;
-			}
-
-			if (!(control instanceof Composite)) {
-				return false;
-			}
-
-			final ChildFocusChecker checker = new ChildFocusChecker((Composite) control);
-			checker.run();
-
-			return checker.childHasFocus;
-		}
-		return false;
-	}
-
-	private static class ChildFocusChecker extends SWTControlFinder {
-
-		private boolean childHasFocus = false;
-
-		public ChildFocusChecker(final Composite composite) {
-			super(composite);
-		}
-
-		@Override
-		public void handleBoundControl(final Control control, final String bindingProperty) {
-			super.handleControl(control);
-		}
-
-		@Override
-		public void handleControl(final Control control) {
-			super.handleControl(control);
-			if (control.isFocusControl()) {
-				childHasFocus = true;
-			}
-		}
 	}
 
 	@Override

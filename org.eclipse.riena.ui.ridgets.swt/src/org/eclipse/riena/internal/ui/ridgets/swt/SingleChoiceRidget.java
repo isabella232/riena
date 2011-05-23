@@ -52,7 +52,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 /**
  * Ridget for a {@link ChoiceComposite} widget with single selection.
  */
-public class SingleChoiceRidget extends AbstractSWTRidget implements ISingleChoiceRidget {
+public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleChoiceRidget {
 
 	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
 

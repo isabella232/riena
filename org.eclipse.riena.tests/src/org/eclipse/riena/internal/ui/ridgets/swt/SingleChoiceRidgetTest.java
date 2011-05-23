@@ -76,6 +76,19 @@ public final class SingleChoiceRidgetTest extends MarkableRidgetTest {
 	// testing methods
 	// ////////////////
 
+	public void testHasFocus() throws Exception {
+		final ISingleChoiceRidget choiceRidget = getRidget();
+		assertNotNull(choiceRidget);
+
+		final ChoiceComposite widget = getWidget();
+		assertNotNull(widget);
+
+		assertFalse(choiceRidget.hasFocus());
+		getRidget().setUIControl(widget);
+		widget.getChildren()[0].setFocus();
+		assertTrue(getRidget().hasFocus());
+	}
+
 	/**
 	 * Test that the control is mapped to the expected ridget.
 	 */
