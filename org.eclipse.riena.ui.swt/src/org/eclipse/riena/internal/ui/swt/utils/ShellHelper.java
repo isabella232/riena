@@ -15,7 +15,6 @@ import org.osgi.service.log.LogService;
 import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.Log4r;
@@ -47,8 +46,8 @@ public class ShellHelper {
 				}
 			} else {
 				resoreBounds = shell.getBounds();
-				final Display display = shell.getDisplay();
-				shell.setBounds(display.getClientArea());
+				final Rectangle clientBounds = shell.getMonitor().getClientArea();
+				shell.setBounds(clientBounds);
 			}
 		} else {
 			shell.setMaximized(shell.getMaximized());
@@ -67,12 +66,7 @@ public class ShellHelper {
 			LOGGER.log(LogService.LOG_WARNING, "No shell of the application found!"); //$NON-NLS-1$
 			return false;
 		}
-		if (isMaximzed(shell)) {
-			final Display display = shell.getDisplay();
-			return display.getClientArea().equals(shell.getBounds());
-		} else {
-			return shell.getMaximized();
-		}
+		return isMaximzed(shell);
 	}
 
 	/**
@@ -83,14 +77,14 @@ public class ShellHelper {
 	 * @return {@code true} if the shell is maximized; {@code false} if the
 	 *         shell isn't maximized.
 	 */
-	public static boolean isMaximzed(final Shell shell) {
+	private static boolean isMaximzed(final Shell shell) {
 		if ((shell == null) || shell.isDisposed()) {
 			LOGGER.log(LogService.LOG_WARNING, "shell equals null or is disposed!"); //$NON-NLS-1$
 			return false;
 		}
 		if (isShellTitleless()) {
-			final Display display = shell.getDisplay();
-			return display.getClientArea().equals(shell.getBounds());
+			final Rectangle clientBounds = shell.getMonitor().getClientArea();
+			return clientBounds.equals(shell.getBounds());
 		} else {
 			return shell.getMaximized();
 		}
