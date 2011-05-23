@@ -259,10 +259,12 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 			if (event.top && !isNullOrAboutBlank(event.location)) {
 				if (!StringUtils.equals(url, event.location)) {
 					setUrl(event.location);
-					final org.eclipse.riena.ui.ridgets.listener.LocationEvent locEvent = new org.eclipse.riena.ui.ridgets.listener.LocationEvent(
-							event.location, event.doit, event.top);
-					for (final ILocationListener listener : listeners) {
-						listener.locationChanged(locEvent);
+					if (listeners != null) {
+						final org.eclipse.riena.ui.ridgets.listener.LocationEvent locEvent = new org.eclipse.riena.ui.ridgets.listener.LocationEvent(
+								event.location, event.doit, event.top);
+						for (final ILocationListener listener : listeners) {
+							listener.locationChanged(locEvent);
+						}
 					}
 				}
 			}
