@@ -114,6 +114,9 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		return ridget;
 	}
 
+	/**
+	 * @since 3.0
+	 */
 	protected boolean allowRidgetCreation() {
 		return RienaStatus.isTest();
 	}
