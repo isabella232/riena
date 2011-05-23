@@ -335,6 +335,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	 * 
 	 * @return true if the UIProces could be scheduled false if the UIProcess is
 	 *         already scheduled.
+	 * @since 3.0
 	 */
 	public boolean start() {
 		final int state = job.getState();
