@@ -41,6 +41,7 @@ public class ProgressProviderBridgeTest extends TestCase {
 		Job.getJobManager().setProgressProvider(bridge);
 
 		final UIProcess p1 = new UIProcess("p1", new SwtUISynchronizer(), true, new Object());
+		p1.start();
 		final List<UIProcess> runningUIProcesses = bridge.getRegisteredUIProcesses();
 		assertEquals(1, runningUIProcesses.size());
 		assertEquals(p1, runningUIProcesses.get(0));
