@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.internal.ui.swt.utils.ShellHelper;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
@@ -33,6 +34,8 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  * TODO After any mouse operation a method of this listener is called.
  */
 public abstract class AbstractTitleBarMouseListener implements MouseListener, MouseTrackListener, MouseMoveListener {
+
+	private final static ShellHelper SHELL_HELPER = new ShellHelper();
 
 	enum BtnState {
 		NONE, HOVER, HOVER_SELECTED;
@@ -130,11 +133,15 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 
 		final boolean redraw = updateRenderer();
 		if (redraw) {
-			final Control control = (Control) e.getSource();
-			if (!control.isDisposed()) {
-				final Rectangle buttonBounds = getTitleBarRenderer().getAllButtonsBounds();
-				control.redraw(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height, false);
-			}
+			redrawButtons(e);
+		}
+	}
+
+	private void redrawButtons(final MouseEvent e) {
+		final Control control = (Control) e.getSource();
+		if (!control.isDisposed()) {
+			final Rectangle buttonBounds = getTitleBarRenderer().getAllButtonsBounds();
+			control.redraw(buttonBounds.x, buttonBounds.y, buttonBounds.width, buttonBounds.height, false);
 		}
 	}
 
@@ -238,8 +245,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 					}
 				} else if (getTitleBarRenderer().isInsideMaximizeButton(pointer)) {
 					if (btnStates[MAX_BTN_INDEX] == BtnState.HOVER_SELECTED) {
-						final boolean maximized = shell.getMaximized();
-						shell.setMaximized(!maximized);
+						SHELL_HELPER.maximizeRestore();
 					}
 				} else if (getTitleBarRenderer().isInsideMinimizeButton(pointer)) {
 					if (btnStates[MIN_BTN_INDEX] == BtnState.HOVER_SELECTED) {
@@ -282,6 +288,7 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 	}
 
 	private void move(final MouseEvent e) {
+		final boolean wasMaximized = ShellHelper.isShellMaximzed();
 		final Point moveEndPoint = new Point(e.x, e.y);
 		final Control control = (Control) e.getSource();
 		final Shell shell = getShell(control);
@@ -290,6 +297,9 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		final int x = shell.getLocation().x - xMove;
 		final int y = shell.getLocation().y - yMove;
 		shell.setLocation(x, y);
+		if (wasMaximized != ShellHelper.isShellMaximzed()) {
+			redrawButtons(e);
+		}
 	}
 
 	private Shell getShell(Control control) {
@@ -372,4 +382,5 @@ public abstract class AbstractTitleBarMouseListener implements MouseListener, Mo
 		SwtUtilities.dispose(grabCursor);
 		SwtUtilities.dispose(defaultCursor);
 	}
+
 }

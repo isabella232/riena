@@ -18,6 +18,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.internal.ui.swt.utils.ShellHelper;
 import org.eclipse.riena.ui.swt.lnf.AbstractLnfRenderer;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 
@@ -101,7 +102,7 @@ public abstract class AbstractTitleBarRenderer extends AbstractLnfRenderer {
 		}
 
 		setActive(true);
-		setMaximized(shell.getMaximized());
+		setMaximized(ShellHelper.isShellMaximzed());
 		resetBounds();
 
 		paintBackground(gc);
