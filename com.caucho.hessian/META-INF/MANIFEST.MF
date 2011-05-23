@@ -5,9 +5,9 @@ Bundle-Vendor: hessian created by caucho.com / plugin created for Riena
 Bundle-SymbolicName: com.caucho.hessian;singleton:=true
 Bundle-Version: 3.2.0
 Eclipse-BuddyPolicy: registered
+Bundle-ClassPath: .,
+ lib/hessian-3.2.0.jar
 Export-Package: com.caucho.hessian.client;version="3.2.0",
  com.caucho.hessian.io;version="3.2.0",
  com.caucho.hessian.server;version="3.2.0"
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Import-Package: javax.servlet;version="2.4.0",
- javax.servlet.http;version="2.4.0"
+Import-Package: org.osgi.framework;version="1.4.0"
