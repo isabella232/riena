@@ -16,10 +16,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Tests of the class {@link ShellHelper}.
  */
+@NonUITestCase
 public class ShellHelperTest extends TestCase {
 
 	/**
