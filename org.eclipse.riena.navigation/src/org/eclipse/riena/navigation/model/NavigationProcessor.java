@@ -535,7 +535,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			jumpTargets.put(target, sourceStack);
 		}
 		// save the source
-		if (sourceStack.size() == 0 || !sourceStack.peek().equals(source)) {
+		if (sourceStack.size() == 0 || !sourceStack.peek().getSource().equals(source)) {
 			sourceStack.push(new JumpContext(source, target));
 		}
 	}
