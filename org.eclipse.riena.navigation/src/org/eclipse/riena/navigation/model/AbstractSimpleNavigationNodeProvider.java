@@ -157,7 +157,7 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 						parentTypeId);
 				prepareNavigationAssembler(targetId, assembler, parentNode);
 
-				INavigationNode<?>[] targetNodes = null;
+				INavigationNode<?>[] targetNodes;
 				if ((null != argument && argument.isCreateNodesAsync()) || shouldRunAsync(assembler)) {
 					targetNodes = UIExecutor.executeLively(new Callable<INavigationNode<?>[]>() {
 						public INavigationNode<?>[] call() throws Exception {
