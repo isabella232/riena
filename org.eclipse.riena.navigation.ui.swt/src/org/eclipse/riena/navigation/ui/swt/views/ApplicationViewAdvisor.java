@@ -443,8 +443,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	private Composite createCoolBarComposite(final Composite parent, Composite previous) {
 		Assert.isTrue(parent.getLayout() instanceof FormLayout);
 
-		int padding = getCoolBarSeparatorPadding();
-
 		final Composite separator = UIControlsFactory.createSeparator(parent, SWT.HORIZONTAL);
 		FormData formData = new FormData();
 		formData.top = new FormAttachment(previous);
@@ -454,7 +452,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		separator.setLayoutData(formData);
 		previous = separator;
 
-		padding = getShellPadding();
+		final int padding = getShellPadding();
 		final Composite result = new Composite(parent, SWT.NONE);
 		result.setLayout(new FillLayout());
 		formData = new FormData();
