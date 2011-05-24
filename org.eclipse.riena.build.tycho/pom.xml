@@ -72,10 +72,14 @@
 							<linkXref>true</linkXref>
 							<minimumTokens>100</minimumTokens>
 							<targetJdk>1.5</targetJdk>
-							<!-- <excludes> <exclude>**/*Bean.java</exclude> <exclude>**/generated/*.java</exclude> 
-								</excludes> -->
-							<!-- <excludeRoots> <excludeRoot>target/generated-sources/stubs</excludeRoot> 
-								</excludeRoots> -->
+							<rulesets>
+							   <!-- List of available rules:  http://pmd.sourceforge.net/rules/index.html -->
+          						<ruleset>/rulesets/basic.xml</ruleset>
+          						<ruleset>/rulesets/braces.xml</ruleset>
+            					<ruleset>/rulesets/naming.xml</ruleset>
+            					<ruleset>/rulesets/design.xml</ruleset>
+            					<ruleset>/rulesets/unusedcode.xml</ruleset>
+        					</rulesets>
 						</configuration>
 					</plugin>
 
