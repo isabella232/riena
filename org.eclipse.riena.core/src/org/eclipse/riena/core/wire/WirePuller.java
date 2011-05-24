@@ -13,6 +13,7 @@ package org.eclipse.riena.core.wire;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +49,8 @@ public class WirePuller implements IStoppable {
 	private List<IStoppable> injections;
 	private State state = State.PENDING;
 	private BundleListener bundleStoppingListener;
+
+	private static final Comparator<MAOTupel> ORDER_COMPARATOR = new OrderComparator();
 
 	// Only for unit testing of classes using accessors
 	private static Map<Class<?>, Class<? extends IWiring>> wiringMocks;
@@ -156,7 +159,7 @@ public class WirePuller implements IStoppable {
 	}
 
 	private void verifyOrder(final Class<?> beanClass, final MAOTupel maot) {
-		if (maot.order == Integer.MAX_VALUE) {
+		if (maot.getOrder() == Integer.MAX_VALUE) {
 			throw new InjectionFailure("Annotation '" + maot.annotation + "' on '" + beanClass.getName() + "." //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					+ maot.method.getName() + "' has forbidden order Integer.MAX_VALUE"); //$NON-NLS-1$
 		}
@@ -178,7 +181,7 @@ public class WirePuller implements IStoppable {
 				maots.add(new MAOTupel(method, OnWiringDone.class, Integer.MAX_VALUE));
 			}
 		}
-		Collections.sort(maots);
+		Collections.sort(maots, ORDER_COMPARATOR);
 		return maots;
 	}
 
@@ -294,7 +297,7 @@ public class WirePuller implements IStoppable {
 		STARTED, STOPPED, PENDING
 	}
 
-	private static class MAOTupel implements Comparable<MAOTupel> {
+	private static class MAOTupel {
 
 		private final Method method;
 		private final Class<?> annotation;
@@ -306,9 +309,17 @@ public class WirePuller implements IStoppable {
 			this.order = order;
 		}
 
-		public int compareTo(final MAOTupel tupel) {
-			return this.order == tupel.order ? 0 : this.order < tupel.order ? -1 : 1;
+		public int getOrder() {
+			return order;
 		}
 	}
 
+	/**
+	 * Compares MAOTuples by order.
+	 */
+	private static final class OrderComparator implements Comparator<MAOTupel> {
+		public int compare(final MAOTupel tupel1, final MAOTupel tupel2) {
+			return tupel1.getOrder() == tupel2.getOrder() ? 0 : tupel1.getOrder() < tupel2.getOrder() ? -1 : 1;
+		}
+	}
 }
