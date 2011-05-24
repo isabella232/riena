@@ -37,18 +37,18 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 	/**
 	 * the separator key used in the format for this date validation rule
 	 */
-	private final char separatorKey = '.'; // default is the dot-separator
+	private static final char SEPERATOR_KEY = '.'; // default is the dot-separator
 
 	// placeholderValid to use in completion, if no input occurs between two
 	// separators
-	private final String placeholderValid = "1"; //$NON-NLS-1$
+	private static final String PLACEHOLDER_VALID = "1"; //$NON-NLS-1$
 	// placeholderInvalid to use in completion to mark invalid input. May be
 	// used, if input occurs for
 	// some part of the format pattern, which should be marked as invalid.
 	// Example: yyyy is the part of the format pattern to be validated and the
 	// input is 0xx and should be
 	// marked invalid, so 0xx is replaced by ?.
-	private final String placeholderInvalid = "?"; //$NON-NLS-1$
+	private static final String PLACEHOLDER_INVALID = "?"; //$NON-NLS-1$
 
 	private String pattern;
 
@@ -101,9 +101,9 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 		// https://issues.apache.org/jira/browse/VALIDATOR-221
 		if (datePattern.contains(DAY_COMPONENT_LETTER) && datePattern.contains(MONTH_COMPONENT_LETTER)
 				&& !datePattern.contains(YEAR_COMPONENT_LETTER)) {
-			datePattern += separatorKey + YEAR_COMPONENT_LETTER + YEAR_COMPONENT_LETTER + YEAR_COMPONENT_LETTER
+			datePattern += SEPERATOR_KEY + YEAR_COMPONENT_LETTER + YEAR_COMPONENT_LETTER + YEAR_COMPONENT_LETTER
 					+ YEAR_COMPONENT_LETTER;
-			value += separatorKey + A_LEAP_YEAR;
+			value += SEPERATOR_KEY + A_LEAP_YEAR;
 		}
 
 		if (checkValidIntermediate) {
@@ -156,11 +156,11 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 			if (nextSeparatorIndexOfValueToCheck == 0
 					|| isPlaceholderInvalidSubstitutionNeeded(valueToCheck.substring(0,
 							nextSeparatorIndexOfValueToCheck))) {
-				completedValue.append(placeholderValid);
+				completedValue.append(PLACEHOLDER_VALID);
 				completedValue.append(valueToCheck.charAt(nextSeparatorIndexOfValueToCheck));
 			} else if (isNoPossibleCompletionToAllowedYear(valueToCheck.substring(0, nextSeparatorIndexOfValueToCheck),
 					datePatternToCheck)) {
-				completedValue.append(placeholderInvalid);
+				completedValue.append(PLACEHOLDER_INVALID);
 			} else {
 				completedValue.append(valueToCheck.substring(0, nextSeparatorIndexOfValueToCheck + 1));
 			}
@@ -171,9 +171,9 @@ public abstract class AbstractValidDate implements IValidator, IExecutableExtens
 
 		if (("".equals(valueToCheck) && !"".equals(datePatternToCheck)) //$NON-NLS-1$//$NON-NLS-2$
 				|| isPlaceholderInvalidSubstitutionNeeded(valueToCheck)) {
-			completedValue.append(placeholderValid);
+			completedValue.append(PLACEHOLDER_VALID);
 		} else if (isNoPossibleCompletionToAllowedYear(valueToCheck, datePatternToCheck)) {
-			completedValue.append(placeholderInvalid);
+			completedValue.append(PLACEHOLDER_INVALID);
 		} else {
 			completedValue.append(valueToCheck);
 		}
