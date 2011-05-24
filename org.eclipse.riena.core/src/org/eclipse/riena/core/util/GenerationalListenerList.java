@@ -42,7 +42,7 @@ import org.eclipse.core.runtime.Assert;
  */
 public class GenerationalListenerList<E> implements Iterable<E> {
 
-	private int generation;
+	private int generation = 0;
 	private boolean modified;
 	private int size;
 	private Entry<E> tail = new Entry<E>(null, generation);
@@ -58,7 +58,7 @@ public class GenerationalListenerList<E> implements Iterable<E> {
 	private final static int NEVER_GC = -1;
 
 	// Just for printing some stats 
-	private static boolean printStats = false;
+	private static boolean printStats = true;
 	private static int statsCounter;
 	private int statsListNumber;
 	private int statsAdded = 0;
