@@ -26,7 +26,7 @@ public class ShellHelper {
 
 	private final static Logger LOGGER = Log4r.getLogger(ShellHelper.class);
 
-	private Rectangle resoreBounds;
+	private Rectangle restoreBounds;
 
 	/**
 	 * Maximizes or restores the shell of the active workbench.
@@ -39,13 +39,13 @@ public class ShellHelper {
 		}
 		if (isShellTitleless()) {
 			if (isShellMaximzed()) {
-				if (resoreBounds != null) {
-					shell.setBounds(resoreBounds);
+				if (restoreBounds != null) {
+					shell.setBounds(restoreBounds);
 				} else {
 					LOGGER.log(LogService.LOG_WARNING, "No restore bounds exists! Restore of shell canceled."); //$NON-NLS-1$
 				}
 			} else {
-				resoreBounds = shell.getBounds();
+				restoreBounds = shell.getBounds();
 				final Rectangle clientBounds = shell.getMonitor().getClientArea();
 				shell.setBounds(clientBounds);
 			}
