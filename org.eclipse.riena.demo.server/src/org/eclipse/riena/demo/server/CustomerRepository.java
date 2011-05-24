@@ -29,7 +29,7 @@ import org.eclipse.riena.demo.common.Customer;
  */
 public class CustomerRepository implements ICustomerRepository {
 
-	private static String[] STATI = { "NEW", "PENDING", "CLOSED", "CANCELED" };
+	private final static String[] STATES = { "NEW", "PENDING", "CLOSED", "CANCELED" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy"); //$NON-NLS-1$
 
@@ -64,16 +64,8 @@ public class CustomerRepository implements ICustomerRepository {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.demo.server.ICustomerRepository#searchWithEmailAddress
-	 * (java.lang.String)
-	 */
 	public Customer findCustomerWithEmailAddress(final String emailAddress) {
 		return email2customer.get(emailAddress);
-
 	}
 
 	private void init() {
@@ -153,17 +145,17 @@ public class CustomerRepository implements ICustomerRepository {
 
 	public void addContractEntries(final Customer customer) {
 		for (int i = 0; i < 3; i++) {
-			final String status = STATI[new Random().nextInt(STATI.length)];
+			final String status = STATES[new Random().nextInt(STATES.length)];
 			final String contractNo = String.valueOf(Math.abs(new Random().nextInt(10000)));
 			final double nextDouble = new Random().nextDouble() * 1000000;
 			final double contractValue = Math.round(nextDouble * 100d) / 100d;
-			customer.addContract(new Contract(contractNo, "contract desc for " + contractNo, contractValue, status));
+			customer.addContract(new Contract(contractNo, "contract desc for " + contractNo, contractValue, status)); //$NON-NLS-1$
 		}
 	}
 
 	public void addWorkAddress(final Customer customer) {
 		final Address workAddress = new Address();
-		workAddress.setCity("Frankfurt");
+		workAddress.setCity("Frankfurt"); //$NON-NLS-1$
 		workAddress.setStreet((customer.getAddress().getStreet()));
 		workAddress.setZipCode((customer.getAddress().getZipCode()));
 	}
