@@ -38,11 +38,7 @@ public class Activator extends RienaPlugin {
 	private boolean startupActionsExecuted;
 
 	// The shared instance
-	@IgnoreFindBugs(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "that is the eclipse way")
 	private static Activator plugin;
-	{
-		plugin = this;
-	}
 
 	@Override
 	@IgnoreFindBugs(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "that is the eclipse way")
