@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.2"?>
-<plugin>
-   <extension id="core.test.extpoint.id7" point="core.test.extpoint">
-      <test
-            objectType="org.eclipse.riena.core.injector.extension.LazyThing">
-      </test>
-   </extension>
-</plugin>

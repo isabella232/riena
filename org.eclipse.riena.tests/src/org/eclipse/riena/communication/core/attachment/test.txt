@@ -1,6 +1,0 @@
-HTTP/1.1 200 Ok
-Date: Fri, 01 Feb 2008 13:42:50 GMT
-Server: MyService
-Content-Type: text/plain
-
-This text file is access in AttachmentTest to test the Attachment class.

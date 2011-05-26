@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.2"?>
-<plugin>
-   <extension-point id="core.test.extpointB" name="core test extensionpoint B" schema="src/org/eclipse/riena/core/extension/extpoint.exsd"/>
-</plugin>
