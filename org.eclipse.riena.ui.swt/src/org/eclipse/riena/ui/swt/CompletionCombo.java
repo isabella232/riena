@@ -138,6 +138,8 @@ public abstract class CompletionCombo extends Composite {
 	 * rejected.
 	 */
 	private IFlashDelegate flashDelegate;
+	private Menu systemContextMenu;
+	private Menu emptyContextMenu;
 
 	/**
 	 * This enumeration is used to configure the the way the autocompletion
@@ -226,6 +228,9 @@ public abstract class CompletionCombo extends Composite {
 		label = createLabel(this);
 		text = new Text(this, textStyle);
 		text.setBackground(getBackground());
+		systemContextMenu = text.getMenu();
+		emptyContextMenu = new Menu(text);
+
 		int arrowStyle = SWT.ARROW | SWT.DOWN;
 		if ((style & SWT.FLAT) != 0) {
 			arrowStyle |= SWT.FLAT;
@@ -320,7 +325,7 @@ public abstract class CompletionCombo extends Composite {
 		}
 
 		createPopup(null, null, -1);
-		autoCompletionMode = AutoCompletionMode.NO_MISSMATCH;
+		setAutoCompletionMode(AutoCompletionMode.NO_MISSMATCH);
 	}
 
 	/**
@@ -1696,6 +1701,14 @@ public abstract class CompletionCombo extends Composite {
 	public void setAutoCompletionMode(final AutoCompletionMode autoCompletionMode) {
 		Assert.isNotNull(autoCompletionMode);
 		this.autoCompletionMode = autoCompletionMode;
+
+		// hide system context menu so the user can not modify the text
+		// by using the cut or paste action
+		if (this.autoCompletionMode == AutoCompletionMode.ALLOW_MISSMATCH) {
+			text.setMenu(systemContextMenu);
+		} else {
+			text.setMenu(emptyContextMenu);
+		}
 	}
 
 	/**
@@ -2488,13 +2501,6 @@ public abstract class CompletionCombo extends Composite {
 			// ALT + CONTROL + x will not go in here and will be handled
 			// by isInputChar(x) instead.
 			event.doit = handleClipboardOperations(event);
-		} else if (event.character == SWT.DEL || event.character == SWT.BS) {
-			clearImage();
-			text.setText(""); //$NON-NLS-1$
-			if (getSelectionIndex() > -1) {
-				deselectAll(list);
-				sendSelectionEvent();
-			}
 		} else if (isControlChar(event)) {
 			// System.out.println("isControlChar: " + event.character);
 			event.doit = true;
