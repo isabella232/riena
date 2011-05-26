@@ -175,17 +175,9 @@ public class CompletionComboRidgetTest extends AbstractComboRidgetTest {
 
 		listener.assertSelection(5, "A2", "A1");
 
-		UITestHelper.sendString(control.getDisplay(), "\b");
-
-		listener.assertSelection(6, "A1", "");
-
-		UITestHelper.sendString(control.getDisplay(), "\b");
-
-		listener.assertSelection(6, "A1", "");
-
 		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
 
-		listener.assertSelection(7, "", "A1");
+		listener.assertSelection(6, "A1", "A2");
 	}
 
 	/**
@@ -222,15 +214,15 @@ public class CompletionComboRidgetTest extends AbstractComboRidgetTest {
 
 		UITestHelper.sendString(control.getDisplay(), "\b");
 
-		listener.assertSelection(4, "B", "");
+		listener.assertSelection(3, "A2", "B");
 
 		UITestHelper.sendString(control.getDisplay(), "\b");
 
-		listener.assertSelection(4, "B", "");
+		listener.assertSelection(3, "A2", "B");
 
 		UITestHelper.sendKeyAction(control.getDisplay(), UITestHelper.KC_ARROW_DOWN);
 
-		listener.assertSelection(5, "", "A1");
+		listener.assertSelection(4, "B", "C");
 	}
 
 	/**
