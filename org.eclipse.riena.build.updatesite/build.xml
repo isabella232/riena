@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="project" default="renameZip">
+    <description>
+            description
+    </description>
+
+    <!-- ================================= 
+          target: default              
+         ================================= -->
+    <target name="renameZip" description="description">
+    	<basename property="file.feature" file="${basedir}/target/repository"/>
+        
+    </target>
+
+</project>
