@@ -71,5 +71,7 @@
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.communication.client.ui,org.eclipse.riena.communication.client.ui"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.security.ui,org.eclipse.riena.security.ui"/>
 <project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.demo.client.rcp,org.eclipse.riena.demo.client.rcp"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.build.tycho,org.eclipse.riena.build.tycho"/>
+<project reference="1.0,:extssh:dev.eclipse.org:/cvsroot/rt,org.eclipse.riena/org.eclipse.riena.build.updatesite,org.eclipse.riena.build.updatesite"/>
 </provider>
 </psf>
