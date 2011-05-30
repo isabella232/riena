@@ -177,7 +177,7 @@
 		<attribute name="package" default="" />
 		<attribute name="cvsroot" default="" />
 		<sequential>
-			<cvs cvsRoot="@{cvsroot}" failonerror="true" dest="${CHECKOUT_DIR}" passfile=".cvspass" tag="@{tag}" package="@{package}" />
+			<cvs cvsRoot="@{cvsroot}" failonerror="true" dest="${CHECKOUT_DIR}" tag="@{tag}" package="@{package}" />
 		</sequential>
 	</macrodef>
 
@@ -185,7 +185,7 @@
 	<macrodef name="login">
 		<attribute name="cvsroot" default="" />
 		<sequential>
-			<cvspass cvsRoot="@{cvsroot}" password="anonymous" passfile=".cvspass" />
+			<cvspass cvsRoot="@{cvsroot}" password="anonymous"/>
 		</sequential>
 	</macrodef>
 </project>
