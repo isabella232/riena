@@ -73,13 +73,13 @@
 							<minimumTokens>100</minimumTokens>
 							<targetJdk>1.5</targetJdk>
 							<rulesets>
-							   <!-- List of available rules:  http://pmd.sourceforge.net/rules/index.html -->
-          						<ruleset>/rulesets/basic.xml</ruleset>
-          						<ruleset>/rulesets/braces.xml</ruleset>
-            					<ruleset>/rulesets/naming.xml</ruleset>
-            					<ruleset>/rulesets/design.xml</ruleset>
-            					<ruleset>/rulesets/unusedcode.xml</ruleset>
-        					</rulesets>
+								<!-- List of available rules: http://pmd.sourceforge.net/rules/index.html -->
+								<ruleset>/rulesets/basic.xml</ruleset>
+								<ruleset>/rulesets/braces.xml</ruleset>
+								<ruleset>/rulesets/naming.xml</ruleset>
+								<ruleset>/rulesets/design.xml</ruleset>
+								<ruleset>/rulesets/unusedcode.xml</ruleset>
+							</rulesets>
 						</configuration>
 					</plugin>
 
@@ -98,11 +98,7 @@
 			</build>
 		</profile>
 	</profiles>
-
-	
-	
-		<!--<modules>  <module>../org.eclipse.riena.toolbox</module>
-	
+	<modules>
 		<module>../org.eclipse.riena.core</module>
 		<module>../org.eclipse.riena.build.feature.core.sdk</module>
 		<module>../org.eclipse.riena.communication.core</module>
@@ -156,10 +152,24 @@
 		<module>../org.eclipse.riena.demo.client</module>
 		<module>../org.eclipse.riena.demo.common</module>
 		<module>../org.eclipse.riena.demo.server</module>
-		
-	</modules>-->
+	</modules>
 
 	<repositories>
+
+
+<!-- uncomment to build against local targets instead of indigo updatesite -->
+<!-- 		<repository>
+			<id>rcp-target</id>
+			<layout>p2</layout>
+			<url>file:////C:/build/targets/eclipse-3.7RC1/org.eclipse.rcp.source-3.7RC1</url>
+		</repository>
+
+		<repository>
+			<id>equinox-target</id>
+			<layout>p2</layout>
+			<url>file:////C:/build/targets/eclipse-3.7RC1/equinox-SDK-3.7RC1</url>
+		</repository>
+ -->
 		<repository>
 			<id>indigo</id>
 			<layout>p2</layout>
@@ -171,7 +181,7 @@
 		<pluginRepository>
 			<id>sonatype.org</id>
 			<url>https://repository.sonatype.org/content/repositories/tycho-014/</url>
-			</pluginRepository>
+		</pluginRepository>
 	</pluginRepositories>
 
 	<build>
@@ -204,34 +214,18 @@
 				<version>${tycho-version}</version>
 				<configuration>
 					<resolver>p2</resolver>
-					<!-- ignoreTychoRepositories>true</ignoreTychoRepositories -->
-					<url>http://download.eclipse.org/releases/indigo/</url>
+					<ignoreTychoRepositories>true</ignoreTychoRepositories>
 					<environments>
-						<!--  <environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86_64</arch>
-						</environment>-->
+						<!-- <environment> <os>linux</os> <ws>gtk</ws> <arch>x86</arch> </environment> 
+							<environment> <os>linux</os> <ws>gtk</ws> <arch>x86_64</arch> </environment> -->
 						<environment>
 							<os>win32</os>
 							<ws>win32</ws>
 							<arch>x86</arch>
 						</environment>
-						<!--  <environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86_64</arch>
-						</environment>-->
+						<!-- <environment> <os>win32</os> <ws>win32</ws> <arch>x86_64</arch> 
+							</environment> <environment> <os>macosx</os> <ws>cocoa</ws> <arch>x86_64</arch> 
+							</environment> -->
 					</environments>
 				</configuration>
 			</plugin>
@@ -249,31 +243,15 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- FIXME: disabled javadoc plugin, becuase it slows down the build 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<failOnError>false</failOnError>
-					<encoding>${project.build.sourceEncoding}</encoding>
-					<quiet>true</quiet>
-					<links>
-						<link>http://java.sun.com/j2se/1.5.0/docs/api</link>
-					</links>
-				</configuration>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin> -->
+			<!-- FIXME: disabled javadoc plugin, becuase it slows down the build <plugin> 
+				<groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
+				<version>2.7</version> <configuration> <failOnError>false</failOnError> <encoding>${project.build.sourceEncoding}</encoding> 
+				<quiet>true</quiet> <links> <link>http://java.sun.com/j2se/1.5.0/docs/api</link> 
+				</links> </configuration> <executions> <execution> <id>attach-javadocs</id> 
+				<goals> <goal>jar</goal> </goals> </execution> </executions> </plugin> -->
 
 		</plugins>
-		<pluginManagement>
+		 <pluginManagement>
 			<plugins>
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
