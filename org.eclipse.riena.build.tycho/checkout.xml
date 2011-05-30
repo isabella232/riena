@@ -10,8 +10,8 @@
 	<property name="RT" value=":pserver:anonymous@dev.eclipse.org:/cvsroot/rt" />
 	<property name="ECLIPSE" value=":pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse" />
 	<property name="TECHNOLOGY" value=":pserver:anonymous@dev.eclipse.org:/cvsroot/technology" />
-	<property name="CHECKOUT_DIR" value="c:/tmp/checkout" />
-	<property name="TARGET_DIR" value="c:/tmp/target" />
+	<!-- <property name="CHECKOUT_DIR" value="c:/tmp/checkout" />
+	<property name="TARGET_DIR" value="c:/tmp/target" /> -->
 
 	<!-- ############################################################################################################ -->
 
