@@ -109,7 +109,7 @@
 	<!-- evil hack that replaces the MANIFEST.MF in the bundle org.eclipse.riena.communication.core so the tycho build can find the javax.servlet dependency -->
 	<target name="copyCommunicationCoreManifest">
 		<copy tofile="${COPY_TARGET_DIR}/org.eclipse.riena.communication.core/META-INF/MANIFEST.MF">
-			<fileset dir="${basedir}}">
+			<fileset dir="${basedir}">
 				<include name="communication-core.manifest"/>
 			</fileset>
 		</copy>
