@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     org.eclipse.riena.build.tycho    
+     checks out all required projects from cvs to build Riena headless
+                   
+     ====================================================================== -->
+<project name="org.eclipse.riena.toolbox.build.tycho" default="checkout">
+
+	<property name="TOOLS" value=":pserver:anonymous@dev.eclipse.org:/cvsroot/tools" />
+	<property name="RT" value=":pserver:anonymous@dev.eclipse.org:/cvsroot/rt" />
+	<property name="ECLIPSE" value=":pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse" />
+	<property name="TECHNOLOGY" value=":pserver:anonymous@dev.eclipse.org:/cvsroot/technology" />
+	<property name="CHECKOUT_DIR" value="c:/tmp/checkout" />
+	<property name="TARGET_DIR" value="c:/tmp/target" />
+
+	<!-- ############################################################################################################ -->
+
+	
+	<target name="checkoutEclipse" description="check out Riena projects">
+			<login cvsRoot="${ECLIPSE}" />
+			<checkout cvsroot="${ECLIPSE}" package="org.eclipse.core.net" tag="I20110511-0800" />
+			<checkout cvsroot="${ECLIPSE}" package="org.eclipse.core.variables" tag="v20110511" />
+			<checkout cvsroot="${ECLIPSE}" package="e4/org.eclipse.e4.ui/bundles/org.pushingpixels.trident" tag="v20100204-1500" />
+		</target>
+
+		<target name="checkoutTechnology" description="check out Riena projects">
+			<login cvsRoot="${TECHNOLOGY}" />
+			<checkout cvsroot="${TECHNOLOGY}" package="org.eclipse.swt.nebula/org.eclipse.nebula.widgets.compositetable" />
+		</target>
+
+		<target name="checkoutRT" description="check out Riena projects">
+			<login cvsRoot="${RT}" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.communication.client.ui" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.security.ui" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.demo.client.rcp" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.build.tycho" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.build.updatesite" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/com.caucho.hessian" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.beans.common" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.build.feature" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.build.feature.core.sdk" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.build.feature.rap.sdk" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.build.feature.samples.sdk" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.client" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.client.communication" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.client.ridgets" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.communication.console" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.communication.core" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.communication.factory.hessian" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.communication.publisher" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.communication.publisher.hessian" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.communication.sample.pingpong.client" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.communication.sample.pingpong.client.config" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.communication.sample.pingpong.common" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.communication.sample.pingpong.server" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.core" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.demo.client" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.demo.common" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.demo.server" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.documents" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.example.client" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.example.client.optional" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.example.ping.client" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.monitor.client" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.monitor.common" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.navigation" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.navigation.ui" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.navigation.ui.swt" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.objecttransaction" />
+			<!--<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.releng"/> -->
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.sample.app.client" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.sample.app.client.mail" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.sample.app.client.rcpmail" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.sample.app.common" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.sample.app.server" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.sample.snippets" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.security.client.startup" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.security.common" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.security.server" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.security.services" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.security.simpleservices" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.server" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.tests" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.ui.common" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.ui.core" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.ui.filter" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.ui.ridgets" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.ui.ridgets.swt" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.ui.ridgets.swt.optional" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.ui.swt" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.ui.swt.rcp" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.ui.workarea" />
+		</target>
+
+		<target name="checkoutTools" description="check out Riena projects">
+			<login cvsRoot="${TOOLS}" />
+
+			<checkout cvsroot="${TOOLS}" package="org.eclipse.orbit/javax.servlet" tag="v2_5" />
+			<checkout cvsroot="${TOOLS}" package="org.eclipse.orbit/org.apache.log4j" tag="v1_2_13" />
+			<checkout cvsroot="${TOOLS}" package="org.eclipse.orbit/org.junit" tag="v3_8_2" />
+			<checkout cvsroot="${TOOLS}" package="org.eclipse.orbit/org.apache.commons.beanutils" tag="v1_7_0" />
+			<checkout cvsroot="${TOOLS}" package="org.eclipse.orbit/org.apache.oro" tag="v2_0_8" />
+			<checkout cvsroot="${TOOLS}" package="org.eclipse.orbit/org.easymock" tag="v2_4" />
+		</target>
+	
+	
+	<!-- ############################################################################################################ -->
+	
+	<target name="copyUpdateSite">
+		<delete dir="${COPY_TARGET_DIR}"/>
+		<copy todir="${COPY_TARGET_DIR}">
+			<fileset dir="${COPY_SRC_DIR}" defaultexcludes="no">
+				<include name="**" />
+			</fileset>
+		</copy>
+	</target>
+
+
+	<target name="clean">
+		<delete dir="${TARGET_DIR}" />
+		<mkdir dir="${TARGET_DIR}" />
+
+		<delete dir="${CHECKOUT_DIR}" />
+		<mkdir dir="${CHECKOUT_DIR}" />
+	</target>
+
+
+	<target name="move">
+		<move todir="${TARGET_DIR}/org.eclipse.core.net" includeemptydirs="true" overwrite="true">
+			<fileset dir="${CHECKOUT_DIR}/org.eclipse.core.net" defaultexcludes="no">
+					<include name="**" />
+			</fileset>
+		</move>
+		
+		<move todir="${TARGET_DIR}/org.eclipse.core.variables" includeemptydirs="true" overwrite="true">
+			<fileset dir="${CHECKOUT_DIR}/org.eclipse.core.variables" defaultexcludes="no">
+						<include name="**" />
+			</fileset>
+		</move>
+		
+		<move todir="${TARGET_DIR}" includeemptydirs="true" overwrite="true">
+			<fileset dir="${CHECKOUT_DIR}/e4/org.eclipse.e4.ui/bundles/" defaultexcludes="no">
+				<include name="**" />
+			</fileset>
+
+			<fileset dir="${CHECKOUT_DIR}/org.eclipse.swt.nebula/" defaultexcludes="no">
+				<include name="**" />
+			</fileset>
+
+			<fileset dir="${CHECKOUT_DIR}/org.eclipse.riena/" defaultexcludes="no">
+				<include name="**" />
+			</fileset>
+			
+			<fileset dir="${CHECKOUT_DIR}/org.eclipse.orbit/" defaultexcludes="no">
+				<include name="**" />
+			</fileset>
+		</move>
+	</target>
+
+	<target name="checkout" depends="clean, checkoutRT, checkoutEclipse, checkoutTechnology, checkoutTools, move " />
+
+
+	<!-- ############################################################################################################ -->
+
+	<macrodef name="checkout">
+		<attribute name="tag" default="" />
+		<attribute name="package" default="" />
+		<attribute name="cvsroot" default="" />
+		<sequential>
+			<cvs cvsRoot="@{cvsroot}" failonerror="true" dest="${CHECKOUT_DIR}" passfile=".cvspass" tag="@{tag}" package="@{package}" />
+		</sequential>
+	</macrodef>
+
+
+	<macrodef name="login">
+		<attribute name="cvsroot" default="" />
+		<sequential>
+			<cvspass cvsRoot="@{cvsroot}" password="anonymous" passfile=".cvspass" />
+		</sequential>
+	</macrodef>
+</project>
