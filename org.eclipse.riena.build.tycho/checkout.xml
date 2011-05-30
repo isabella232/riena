@@ -106,6 +106,16 @@
 	
 	<!-- ############################################################################################################ -->
 	
+	<!-- evil hack that replaces the MANIFEST.MF in the bundle org.eclipse.riena.communication.core so the tycho build can find the javax.servlet dependency -->
+	<target name="copyCommunicationCoreManifest">
+		<copy tofile="${COPY_TARGET_DIR}/org.eclipse.riena.communication.core/META-INF/MANIFEST.MF">
+			<fileset dir="${basedir}}">
+				<include name="communication-core.manifest"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	
 	<target name="copyUpdateSite">
 		<delete dir="${COPY_TARGET_DIR}"/>
 		<copy todir="${COPY_TARGET_DIR}">
@@ -157,7 +167,7 @@
 		</move>
 	</target>
 
-	<target name="checkout" depends="clean, checkoutRT, checkoutEclipse, checkoutTechnology, checkoutTools, move " />
+	<target name="checkout" depends="clean, checkoutRT, checkoutEclipse, checkoutTechnology, checkoutTools, move, copyCommunicationCoreManifest " />
 
 
 	<!-- ############################################################################################################ -->
