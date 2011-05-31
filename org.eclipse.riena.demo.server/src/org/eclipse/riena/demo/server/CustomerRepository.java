@@ -79,6 +79,7 @@ public class CustomerRepository implements ICustomerRepository {
 			crv.getAddress().setZipCode("12345"); //$NON-NLS-1$
 			crv.getAddress().setCity("Musterstadt"); //$NON-NLS-1$
 			crv.setEmailAddress("Josef.Mundl@mail.org"); //$NON-NLS-1$
+			addWorkAddress(crv);
 			customers.add(crv);
 			if (crv.getEmailAddress() != null) {
 				email2customer.put(crv.getEmailAddress(), crv);
@@ -92,6 +93,7 @@ public class CustomerRepository implements ICustomerRepository {
 			crv.getAddress().setZipCode("12366"); //$NON-NLS-1$
 			crv.getAddress().setCity("Musterhaus"); //$NON-NLS-1$
 			crv.setEmailAddress("Robert.Muster@mail.org"); //$NON-NLS-1$
+			addWorkAddress(crv);
 			customers.add(crv);
 			if (crv.getEmailAddress() != null) {
 				email2customer.put(crv.getEmailAddress(), crv);
@@ -105,6 +107,7 @@ public class CustomerRepository implements ICustomerRepository {
 			crv.getAddress().setZipCode("12345"); //$NON-NLS-1$
 			crv.getAddress().setCity("Musterstadt"); //$NON-NLS-1$
 			crv.setEmailAddress("Trulli.Muster-Maier@mail.org"); //$NON-NLS-1$
+			addWorkAddress(crv);
 			customers.add(crv);
 			if (crv.getEmailAddress() != null) {
 				email2customer.put(crv.getEmailAddress(), crv);
@@ -118,6 +121,7 @@ public class CustomerRepository implements ICustomerRepository {
 			crv.getAddress().setZipCode("12345"); //$NON-NLS-1$
 			crv.getAddress().setCity("Musterstadt"); //$NON-NLS-1$
 			crv.setEmailAddress("Elfriede.Mustermann@mail.org"); //$NON-NLS-1$
+			addWorkAddress(crv);
 			customers.add(crv);
 			if (crv.getEmailAddress() != null) {
 				email2customer.put(crv.getEmailAddress(), crv);
@@ -131,6 +135,7 @@ public class CustomerRepository implements ICustomerRepository {
 			crv.getAddress().setZipCode("12345"); //$NON-NLS-1$
 			crv.getAddress().setCity("Musterstadt"); //$NON-NLS-1$
 			crv.setEmailAddress("Ingo.Mustermann@mail.org"); //$NON-NLS-1$
+			addWorkAddress(crv);
 			customers.add(crv);
 			if (crv.getEmailAddress() != null) {
 				email2customer.put(crv.getEmailAddress(), crv);
@@ -158,5 +163,6 @@ public class CustomerRepository implements ICustomerRepository {
 		workAddress.setCity("Frankfurt"); //$NON-NLS-1$
 		workAddress.setStreet((customer.getAddress().getStreet()));
 		workAddress.setZipCode((customer.getAddress().getZipCode()));
+		customer.setWorkAddress(workAddress);
 	}
 }
