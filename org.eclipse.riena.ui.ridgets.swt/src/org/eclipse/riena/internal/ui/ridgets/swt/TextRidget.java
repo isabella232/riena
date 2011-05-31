@@ -31,6 +31,7 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Text;
 
+import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -64,13 +65,15 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	private String textValue = EMPTY_STRING;
 	private boolean isDirectWriting;
 	private IConverter inputConverter;
+	private final static boolean DEFAULT_DIRECTWRITING = RienaStatus.getDefaultTextRidgetDirectWritingEnabled();
 
 	public TextRidget() {
 		crKeyListener = new CRKeyListener();
 		focusListener = new FocusManager();
 		modifyListener = new SyncModifyListener();
 		verifyListener = new ValidationListener();
-		isDirectWriting = false;
+		isDirectWriting = DEFAULT_DIRECTWRITING;
+
 		addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				forceTextToControl(textValue);

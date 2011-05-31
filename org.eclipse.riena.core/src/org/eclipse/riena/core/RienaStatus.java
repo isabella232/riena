@@ -26,6 +26,12 @@ public final class RienaStatus {
 	public static final String RIENA_DEVELOPMENT_SYSTEM_PROPERTY = "riena.development"; //$NON-NLS-1$
 
 	/**
+	 * This system property controls
+	 * {@code RienaStatus.getDefaultTextRidgetDirectWritingEnabled}
+	 */
+	public static final String RIENA_TEXT_RIDGET_DIRECTWRITING_PROPERTY = "riena.textridget.directwriting"; //$NON-NLS-1$
+
+	/**
 	 * This system property controls {@code RienaStatus.isTest()}
 	 */
 	public static final String RIENA_TEST_SYSTEM_PROPERTY = "riena.test"; //$NON-NLS-1$
@@ -35,6 +41,8 @@ public final class RienaStatus {
 	 * for the system property {@code RIENA_DEVELOPMENT_SYSTEM_PROPERTY}
 	 */
 	public static final String DEVELOPMENT_DEFAULT = "true"; //$NON-NLS-1$
+
+	public static final String DIRECTWRITING_DEFAULT = "false"; //$NON-NLS-1$
 
 	/**
 	 * This is the default value (i.e. if the value is not explicitly defined)
@@ -95,6 +103,21 @@ public final class RienaStatus {
 	 */
 	public static boolean isDevelopment() {
 		return Boolean.parseBoolean(System.getProperty(RIENA_DEVELOPMENT_SYSTEM_PROPERTY, DEVELOPMENT_DEFAULT));
+	}
+
+	/**
+	 * Checks if the systemproperty <code>riena.textridget.directwriting</code>
+	 * was given, that indicates that every TextRidget has per default
+	 * directwriting enabled.
+	 * 
+	 * @return <code>true</code> if per default directwriting is enabled in
+	 *         TextRidgets, otherwise <code>false</code>
+	 * 
+	 * @since 3.0
+	 */
+	public static boolean getDefaultTextRidgetDirectWritingEnabled() {
+		return Boolean
+				.parseBoolean(System.getProperty(RIENA_TEXT_RIDGET_DIRECTWRITING_PROPERTY, DIRECTWRITING_DEFAULT));
 	}
 
 	/**
