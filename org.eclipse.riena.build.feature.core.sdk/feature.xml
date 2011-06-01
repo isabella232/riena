@@ -2,7 +2,8 @@
 <feature
       id="org.eclipse.riena.build.feature.core.sdk"
       label="Riena Core Target Components"
-      version="3.0.0.qualifier">
+      version="3.0.0.qualifier"
+      provider-name="Eclipse.org - Riena">
 
    <description>
       This feature contains the corresponding components for Riena
@@ -610,6 +611,7 @@ Java and all Java-based trademarks are trademarks of Sun Microsystems, Inc. in t
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
    <plugin
          id="org.eclipse.riena.communication.client.ui.source"
          download-size="0"

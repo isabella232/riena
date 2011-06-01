@@ -3,7 +3,7 @@
       id="org.eclipse.riena.build.feature.sdk"
       label="Riena Target Components"
       version="3.0.0.qualifier"
-      provider-name="Eclipse.org">
+      provider-name="Eclipse.org - Riena">
 
    <description url="http://www.eclipse.org/riena">
       This is the feature used for the PDE Build of Riena.
