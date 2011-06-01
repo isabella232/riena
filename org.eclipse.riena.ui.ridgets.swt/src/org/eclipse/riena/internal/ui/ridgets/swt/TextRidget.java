@@ -31,7 +31,6 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
@@ -65,7 +64,28 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	private String textValue = EMPTY_STRING;
 	private boolean isDirectWriting;
 	private IConverter inputConverter;
-	private final static boolean DEFAULT_DIRECTWRITING = RienaStatus.getDefaultTextRidgetDirectWritingEnabled();
+	private final static boolean DEFAULT_DIRECTWRITING = getDefaultTextRidgetDirectWritingEnabled();
+
+	/**
+	 * This system property controls
+	 * {@code RienaStatus.getDefaultTextRidgetDirectWritingEnabled}
+	 */
+	private static final String RIENA_TEXT_RIDGET_DIRECTWRITING_PROPERTY = "riena.textridget.directwriting"; //$NON-NLS-1$
+
+	private static final String DIRECTWRITING_DEFAULT = "false"; //$NON-NLS-1$
+
+	/**
+	 * Checks if the systemproperty <code>riena.textridget.directwriting</code>
+	 * was given, that indicates that every TextRidget has per default
+	 * directwriting enabled.
+	 * 
+	 * @return <code>true</code> if per default directwriting is enabled in
+	 *         TextRidgets, otherwise <code>false</code>
+	 */
+	private static boolean getDefaultTextRidgetDirectWritingEnabled() {
+		return Boolean
+				.parseBoolean(System.getProperty(RIENA_TEXT_RIDGET_DIRECTWRITING_PROPERTY, DIRECTWRITING_DEFAULT));
+	}
 
 	public TextRidget() {
 		crKeyListener = new CRKeyListener();
