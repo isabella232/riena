@@ -48,12 +48,14 @@ public class NodeEventDelegation extends SimpleNavigationNodeAdapter implements 
 
 	private void contextUpdated(final INavigationNode<?> source) {
 		final List<IContextUpdateListener> toDelete = new ArrayList<IContextUpdateListener>();
-		for (final IContextUpdateListener listener : listeners) {
+
+		final List<IContextUpdateListener> listenersTmp = new ArrayList<IContextUpdateListener>(listeners);
+		for (final IContextUpdateListener listener : listenersTmp) {
 			if (listener.contextUpdated(source)) {
 				toDelete.add(listener);
 			}
 		}
-		listeners.removeAll(toDelete);
+		listenersTmp.removeAll(toDelete);
 	}
 
 	public List<Object> getActiveContexts(final List<Object> contexts) {

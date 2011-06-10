@@ -35,6 +35,7 @@ public class ProgressProviderBridge extends ProgressProvider {
 			ProgressProviderBridge.class);
 
 	private IProgressVisualizerLocator visualizerLocator;
+	private final Map<Job, IProgressVisualizer> jobToVisualizer = new HashMap<Job, IProgressVisualizer>();
 	private final Map<Job, UIProcess> jobUiProcess;
 
 	public ProgressProviderBridge() {
@@ -79,7 +80,13 @@ public class ProgressProviderBridge extends ProgressProvider {
 			uiprocess = createDefaultUIProcess(job);
 		}
 		final UICallbackDispatcher dispatcher = (UICallbackDispatcher) uiprocess.getAdapter(UICallbackDispatcher.class);
-		dispatcher.addUIMonitor(visualizerLocator.getProgressVisualizer(context));
+
+		IProgressVisualizer progressVisualizer = jobToVisualizer.get(job);
+		if (progressVisualizer == null) {
+			progressVisualizer = visualizerLocator.getProgressVisualizer(context);
+			jobToVisualizer.put(job, progressVisualizer);
+			dispatcher.addUIMonitor(progressVisualizer);
+		}
 		return dispatcher;
 	}
 

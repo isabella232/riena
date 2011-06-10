@@ -13,9 +13,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimerTask;
 
 import org.eclipse.core.runtime.Assert;
@@ -27,12 +25,10 @@ import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.DefaultProcessDetailC
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.IProcessDetailComparatorExtension;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.ProcessDetail;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.TimerUtil;
-import org.eclipse.riena.ui.core.IDisposable;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
 import org.eclipse.riena.ui.core.uiprocess.ProcessInfo;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
-import org.eclipse.riena.ui.ridgets.IContextUpdateListener;
 import org.eclipse.riena.ui.ridgets.IStatuslineUIProcessRidget;
 import org.eclipse.riena.ui.ridgets.IVisualContextManager;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
@@ -53,8 +49,6 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 	// the task triggering updates for pending processes
 	private TimerTask timedTrigger;
-
-	private IVisualContextManager contextLocator;
 
 	private Display display;
 
@@ -206,7 +200,8 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		 */
 		List<ProcessDetail> getPending() {
 			final List<ProcessDetail> pending = new ArrayList<ProcessDetail>();
-			for (final ProcessDetail pDetail : processDetails) {
+			final List<ProcessDetail> processDetailsTmp = new ArrayList<ProcessDetail>(processDetails);
+			for (final ProcessDetail pDetail : processDetailsTmp) {
 				if (pDetail.isPending()) {
 					pending.add(pDetail);
 				}
@@ -426,47 +421,8 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 				: ProcessState.FINISHED);
 		updateUserInterface();
 		checkTrigger();
-		checkStillNeeded(visualizer);
+		getProcessManager().unregister(getProcessManager().detailForVisualizer(visualizer));
 
-	}
-
-	private boolean checkStillNeeded(final IProgressVisualizer visualizer) {
-
-		// if context is disposed, unregister contextUpdateListener
-		final Object context = visualizer.getProcessInfo().getContext();
-
-		if (context instanceof IDisposable && ((IDisposable) context).isDisposed()) {
-			getProcessManager().unregister(getProcessManager().detailForVisualizer(visualizer));
-			unregisterContextUpdateListener(visualizer, false);
-			return false;
-		}
-
-		final List<Object> contexts = new ArrayList<Object>(1);
-		contexts.add(context);
-		final ProcessDetail detail = getProcessManager().detailForVisualizer(visualizer);
-		if (detail != null
-				&& (detail.getState() == ProcessState.FINISHED || detail.getState() == ProcessState.CANCELED)
-				&& contextLocator.getActiveContexts(contexts).size() == 1) {
-			getProcessManager().unregister(getProcessManager().detailForVisualizer(visualizer));
-			unregisterContextUpdateListener(visualizer, false);
-			return false;
-		}
-
-		return true;
-	}
-
-	private void unregisterContextUpdateListener(final IProgressVisualizer visualizer,
-			final boolean removeFromContextLocator) {
-		final IContextUpdateListener contextListener = visualizer2ContextListener.get(visualizer);
-		if (removeFromContextLocator) {
-			contextLocator.removeContextUpdateListener(contextListener, visualizer.getProcessInfo().getContext());
-		}
-		// clean memory
-		visualizer2ContextListener.remove(visualizer);
-	}
-
-	public void setContextLocator(final IVisualContextManager contextLocator) {
-		this.contextLocator = contextLocator;
 	}
 
 	public void addProgressVisualizer(final IProgressVisualizer visualizer) {
@@ -495,32 +451,6 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 			return;
 		}
 		getProcessManager().register(new ProcessDetail(timeStamp(), visualizer));
-		observeContext(visualizer);
-	}
-
-	private void observeContext(final IProgressVisualizer visualizer) {
-		final IContextUpdateListener listener = new IContextUpdateListener() {
-
-			public void beforeContextUpdate(final Object context) {
-			}
-
-			public boolean contextUpdated(final Object context) {
-				final boolean needed = checkStillNeeded(visualizer);
-				updateUserInterface();
-				return !needed;
-			}
-
-		};
-		final Object context = visualizer.getProcessInfo().getContext();
-		contextLocator.addContextUpdateListener(listener, context);
-		saveMapping(visualizer, listener);
-
-	}
-
-	private final Map<IProgressVisualizer, IContextUpdateListener> visualizer2ContextListener = new HashMap<IProgressVisualizer, IContextUpdateListener>();
-
-	private void saveMapping(final IProgressVisualizer visualizer, final IContextUpdateListener listener) {
-		visualizer2ContextListener.put(visualizer, listener);
 	}
 
 	/**
@@ -538,6 +468,18 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	}
 
 	public void removeProgressVisualizer(final IProgressVisualizer visualizer) {
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.ui.ridgets.IStatuslineUIProcessRidget#setContextLocator
+	 * (org.eclipse.riena.ui.ridgets.IVisualContextManager)
+	 */
+	public void setContextLocator(final IVisualContextManager contextLocator) {
+		// TODO Auto-generated method stub
 
 	}
 

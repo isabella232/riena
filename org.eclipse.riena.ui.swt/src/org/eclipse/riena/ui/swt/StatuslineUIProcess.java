@@ -534,8 +534,8 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 				final Integer progressBarWidth = 60;
 				FormData formData = new FormData();
 				formData.top = lastControl != null ? new FormAttachment(lastControl, 2) : new FormAttachment(5, 0);
-				formData.bottom = new FormAttachment(100, 0);
-				// formData.height = 14;
+				//				formData.bottom = new FormAttachment(100, 0);
+				formData.height = 14;
 				formData.width = LnfManager.getLnf().getIntegerSetting(
 						LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_WIDTH, 160)
 						- progressBarWidth;
@@ -544,8 +544,8 @@ public class StatuslineUIProcess extends AbstractStatuslineComposite {
 				formData = new FormData();
 				formData.top = lastControl != null ? new FormAttachment(lastControl, 2) : new FormAttachment(5, 0);
 				formData.left = new FormAttachment(label, 3);
-				formData.bottom = new FormAttachment(100, 0);
-				// formData.height = 14;
+				//				formData.bottom = new FormAttachment(100, 0);
+				formData.height = 14;
 				formData.width = progressBarWidth;
 				bar.setLayoutData(formData);
 
