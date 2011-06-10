@@ -55,7 +55,7 @@ public class NodeEventDelegation extends SimpleNavigationNodeAdapter implements 
 				toDelete.add(listener);
 			}
 		}
-		listenersTmp.removeAll(toDelete);
+		listeners.removeAll(toDelete);
 	}
 
 	public List<Object> getActiveContexts(final List<Object> contexts) {
