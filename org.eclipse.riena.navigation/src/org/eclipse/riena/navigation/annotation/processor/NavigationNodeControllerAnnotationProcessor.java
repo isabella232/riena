@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.eclipse.riena.core.singleton.SingletonProvider;
 import org.eclipse.riena.navigation.INavigationNodeController;
@@ -41,6 +42,8 @@ public final class NavigationNodeControllerAnnotationProcessor {
 		return NNCAP.getInstance();
 	}
 
+	private final Map<INavigationNodeController, ?> alreadyProcessed = new WeakHashMap<INavigationNodeController, Object>();
+
 	private NavigationNodeControllerAnnotationProcessor() {
 		// singleton
 	}
@@ -53,6 +56,12 @@ public final class NavigationNodeControllerAnnotationProcessor {
 	 *            the {@link INavigationNodeController} to process
 	 */
 	public void processAnnotations(final INavigationNodeController navigationNodeController) {
+		synchronized (alreadyProcessed) {
+			if (alreadyProcessed.containsKey(navigationNodeController)) {
+				return;
+			}
+			alreadyProcessed.put(navigationNodeController, null);
+		}
 		processAnnotations(navigationNodeController, navigationNodeController.getClass());
 	}
 
