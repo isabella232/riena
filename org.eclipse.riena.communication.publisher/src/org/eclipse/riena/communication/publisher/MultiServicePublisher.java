@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.publisher;
 
-import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.*;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceEvent;
@@ -35,10 +33,6 @@ public class MultiServicePublisher {
 	private String protocol;
 
 	private IServicePublishBinder binder;
-
-	// public static final String FILTER_REMOTE = "(&(" + PROP_IS_REMOTE +
-	// "=true)("
-	// + PROP_REMOTE_PROTOCOL + "=*)" + ")";
 
 	public MultiServicePublisher() {
 		super();
@@ -88,8 +82,6 @@ public class MultiServicePublisher {
 		} catch (final InvalidSyntaxException e) {
 			e.printStackTrace();
 		}
-
-		return;
 	}
 
 	public void bind(final IServicePublishBinder binder) {
@@ -108,9 +100,9 @@ public class MultiServicePublisher {
 			usedProtocol = CommunicationUtil.accessProperty(
 					serviceReference.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL), null);
 		}
-		final String path = CommunicationUtil.accessProperty(serviceReference.getProperty(PROP_REMOTE_PATH), null);
+		final String path = CommunicationUtil.accessProperty(
+				serviceReference.getProperty(RSDPublisherProperties.PROP_REMOTE_PATH), null);
 		binder.publish(serviceReference, path, usedProtocol);
-
 	}
 
 	private void unpublish(final ServiceReference serviceReference) {
