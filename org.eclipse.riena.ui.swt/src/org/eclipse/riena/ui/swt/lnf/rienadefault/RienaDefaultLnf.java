@@ -375,7 +375,7 @@ public class RienaDefaultLnf implements ILnfCustomizer {
 				return new Integer(strgValue);
 			} catch (final NumberFormatException e) {
 				if (Beans.isDesignTime()) { // in case of design time we return a "0" so that dependent code does not fail
-					return new Integer(0);
+					return Integer.valueOf(0);
 				} else {
 					return null;
 				}
