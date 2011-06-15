@@ -14,6 +14,10 @@
             handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.ActionCallbackAnnotationHandler">
       </annotationHandler>
       <annotationHandler
+            annotation="org.eclipse.riena.ui.ridgets.annotation.OnClick"
+            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.ClickAnnotationHandler">
+      </annotationHandler>
+      <annotationHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnSelectionChange"
             handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.SelectionChangedAnnotationHandler">
       </annotationHandler>
@@ -36,6 +40,10 @@
       <annotationHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnActionCallbacks"
             handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.ActionCallbacksAnnotationHandler">
+      </annotationHandler>
+      <annotationHandler
+            annotation="org.eclipse.riena.ui.ridgets.annotation.OnClicks"
+            handler="org.eclipse.riena.internal.ui.ridgets.annotation.handler.ClicksAnnotationHandler">
       </annotationHandler>
       <annotationHandler
             annotation="org.eclipse.riena.ui.ridgets.annotation.OnDoubleClicks"

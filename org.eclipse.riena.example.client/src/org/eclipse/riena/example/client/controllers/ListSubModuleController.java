@@ -31,8 +31,10 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
+import org.eclipse.riena.ui.ridgets.annotation.OnClick;
 import org.eclipse.riena.ui.ridgets.annotation.OnDoubleClick;
 import org.eclipse.riena.ui.ridgets.annotation.OnPropertyChange;
+import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 
 /**
  * Controller for the {@link TextSubModuleView} example.
@@ -135,6 +137,11 @@ public class ListSubModuleController extends SubModuleController {
 	@OnActionCallback(ridgetId = "buttonSort")
 	public void dumpDoubleClickedItem() {
 		System.out.println("List of selected item(s): " + listPersons.getSelection()); //$NON-NLS-1$
+	}
+
+	@OnClick(ridgetId = "listPersons")
+	public void dumpClickedItem(final ClickEvent clickEvent) {
+		System.out.println("Clicked item: " + listPersons.getSelection()); //$NON-NLS-1$
 	}
 
 	@OnActionCallback(ridgetId = "buttonAdd")
