@@ -12,13 +12,21 @@ package org.eclipse.riena.ui.swt;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
+import org.osgi.service.log.LogService;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.widgets.Composite;
 
+import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.util.Millis;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -29,9 +37,12 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public class StatuslineTime extends AbstractStatuslineComposite {
 
 	protected SimpleDateFormat format;
-	private Date date;
 	private CLabel timeLabel;
-	private Timer timer;
+
+	private final StatuslineUpdateJob updateJob = new StatuslineUpdateJob();
+
+	private final static long A_SECOND = Millis.seconds(1);
+	private final static Logger LOGGER = Log4r.getLogger(StatuslineTime.class);
 
 	/**
 	 * Creates a new instance of <code>StatuslineTime</code>.
@@ -43,39 +54,21 @@ public class StatuslineTime extends AbstractStatuslineComposite {
 	 *            the style of widget to construct
 	 */
 	public StatuslineTime(final Composite parent, final int style) {
-
 		super(parent, style | SWT.NO_FOCUS);
-		timer = new Timer();
-		final StatuslineUpdateTask task = new StatuslineUpdateTask();
-		timer.scheduleAtFixedRate(task, 0, 1000);
-
+		updateTime();
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.swt.AbstractStatuslineComposite#createContents()
-	 */
 	@Override
 	protected void createContents() {
-
 		timeLabel = new CLabel(this, SWT.LEFT);
 		timeLabel.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.STATUSLINE_BACKGROUND));
-		updateTime();
-
 	}
 
-	/**
-	 * @see org.eclipse.swt.widgets.Widget#dispose()
-	 */
 	@Override
 	public void dispose() {
 
 		super.dispose();
-
-		if (timer != null) {
-			timer.cancel();
-			timer = null;
-		}
-
+		updateJob.cancel();
 		SwtUtilities.dispose(timeLabel);
 
 	}
@@ -99,36 +92,41 @@ public class StatuslineTime extends AbstractStatuslineComposite {
 	 */
 	private void updateTime() {
 
-		if (date == null) {
-			date = new Date();
-		}
-		date.setTime(System.currentTimeMillis());
-		final String timeStrg = getFormat().format(date);
+		final String timeStrg = getFormat().format(new Date());
 		if ((timeLabel != null) && (!timeLabel.isDisposed())) {
 			timeLabel.setText(timeStrg);
 		}
+		updateJob.schedule(A_SECOND);
 
 	}
 
 	/**
-	 * This task updates the time.
+	 * This job updates the time.
 	 */
-	private class StatuslineUpdateTask extends TimerTask {
+	private class StatuslineUpdateJob extends Job {
 
-		/**
-		 * @see java.util.TimerTask#run()
-		 */
-		@Override
-		public void run() {
-			if (!isDisposed() && !getDisplay().isDisposed()) {
-				getDisplay().asyncExec(new Runnable() {
-					public void run() {
-						updateTime();
-					}
-				});
-			}
+		public StatuslineUpdateJob() {
+			super("StatuslineUpdater"); //$NON-NLS-1$
+			setSystem(true);
 		}
 
+		@Override
+		protected IStatus run(final IProgressMonitor monitor) {
+			if (!isDisposed() && !getDisplay().isDisposed()) {
+				try {
+					getDisplay().asyncExec(new Runnable() {
+						public void run() {
+							if (!monitor.isCanceled()) {
+								updateTime();
+							}
+						}
+					});
+				} catch (final SWTException e) {
+					LOGGER.log(LogService.LOG_DEBUG, "StatuslineUpdateJob failed because of a disposed display.", e); //$NON-NLS-1$
+				}
+			}
+			return Status.OK_STATUS;
+		}
 	}
 
 }
