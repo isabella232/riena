@@ -168,13 +168,13 @@
 		<repository>
 			<id>rcp-target</id>
 			<layout>p2</layout>
-			<url>file:////C:/build/targets/eclipse-3.7RC3/org.eclipse.rcp.source-3.7RC3</url>
+			<url>file:////C:/build/targets/eclipse-3.7RC4/org.eclipse.rcp.source-3.7RC4</url>
 		</repository>
 
 		<repository>
 			<id>equinox-target</id>
 			<layout>p2</layout>
-			<url>file:////C:/build/targets/eclipse-3.7RC3/equinox-SDK-3.7RC3</url>
+			<url>file:////C:/build/targets/eclipse-3.7RC4/equinox-SDK-3.7RC4</url>
 		</repository>
 
 		<repository>
