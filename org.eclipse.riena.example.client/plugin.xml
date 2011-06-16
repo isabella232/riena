@@ -1198,7 +1198,7 @@
    <extension point="org.eclipse.riena.monitor.client.collectors">
       <collector
             category="LogCollector"
-            class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=1,2; triggerRange=1,2; async=true; filterClass=org.eclipse.riena.example.client.monitor.LogServiceCollectorFilter"
+            class="org.eclipse.riena.monitor.client.LogServiceCollector: collectRange=1,2; triggerRange=1,2; async=true"
             maxItems="50">
       </collector>
       <collector
