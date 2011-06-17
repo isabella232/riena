@@ -34,7 +34,7 @@ public final class NodeFactory {
 		return result;
 	}
 
-	public static ISubModuleNode createSubMobule(final NavigationNodeId nodeId, final String caption,
+	public static ISubModuleNode createSubModule(final NavigationNodeId nodeId, final String caption,
 			final IModuleNode parent, final String viewId) {
 		final ISubModuleNode result = new SubModuleNode(nodeId, caption);
 		// path found via org.eclipse.riena.ui.swt.imagePaths in plugin.xml

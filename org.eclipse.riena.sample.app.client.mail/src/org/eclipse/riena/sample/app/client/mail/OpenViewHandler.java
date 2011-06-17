@@ -12,7 +12,6 @@ package org.eclipse.riena.sample.app.client.mail;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.IHandler;
 
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IApplicationNode;
@@ -23,7 +22,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 /**
  * Creates a new module group with an associated message view.
  */
-public class OpenViewHandler extends AbstractHandler implements IHandler {
+public class OpenViewHandler extends AbstractHandler {
 
 	private int count = 0;
 
@@ -35,11 +34,11 @@ public class OpenViewHandler extends AbstractHandler implements IHandler {
 		final IModuleNode moduleAccount1 = NodeFactory.createModule(
 				new NavigationNodeId("account", Integer.toString(count)), //$NON-NLS-1$
 				title, group);
-		NodeFactory.createSubMobule(
+		NodeFactory.createSubModule(
 				new NavigationNodeId("Inbox", Integer.toString(count)), "Inbox", moduleAccount1, View.ID); //$NON-NLS-1$ //$NON-NLS-2$
-		NodeFactory.createSubMobule(
+		NodeFactory.createSubModule(
 				new NavigationNodeId("Drafts", Integer.toString(count)), "Drafts", moduleAccount1, View.ID); //$NON-NLS-1$ //$NON-NLS-2$
-		NodeFactory.createSubMobule(
+		NodeFactory.createSubModule(
 				new NavigationNodeId("Sent", Integer.toString(count)), "Sent", moduleAccount1, View.ID); //$NON-NLS-1$ //$NON-NLS-2$
 		return null;
 	}
