@@ -81,10 +81,9 @@ public class SwtViewProvider {
 				found = true;
 			}
 		}
-		Assert.isLegal(found,
-				"Cannot register node with id " + node.getNodeId().getTypeId() + ":" + node.getNodeId().getInstanceId() //$NON-NLS-1$ //$NON-NLS-2$ 
-						+ " because a different node with the same id is already registered."); //$NON-NLS-1$
 
+		Assert.isLegal(found, "Cannot register node " + node //$NON-NLS-1$  
+				+ " because a different node with the same id is already registered."); //$NON-NLS-1$
 		return swtViewId;
 	}
 
