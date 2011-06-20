@@ -70,6 +70,9 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 /**
  * View of a module.
  */
+/**
+ *
+ */
 public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 	private static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
@@ -403,7 +406,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 				return ((INavigationNode<?>) element).getLabel();
 			}
 		});
-		setTreeBackGround();
+		setTreeBackground();
 
 	}
 
@@ -449,8 +452,17 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		fireUpdated(null);
 	}
 
+	/**
+	 * @deprecated use {@link setTreeBackground} instead
+	 */
+	@Deprecated
 	protected void setTreeBackGround() {
+		// TODO: When removing the deprecated method in the future don't forget to move the content to the new method ;-)
 		subModuleTree.setBackground(LnfManager.getLnf().getColor("SubModuleTree.background")); //$NON-NLS-1$
+	}
+
+	protected void setTreeBackground() {
+		setTreeBackGround();
 	}
 
 	Composite getBody() {

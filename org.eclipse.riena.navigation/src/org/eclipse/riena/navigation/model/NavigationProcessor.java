@@ -908,12 +908,12 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			INavigationNode<?> brotherToActivate = null;
 			if (parentOfToDispose != null) {
 				final List<?> childrenOfParentOfToDispose = parentOfToDispose.getChildren();
-				final List<INavigationNode<?>> activateableNode = getActivateableNodes(childrenOfParentOfToDispose);
+				final List<INavigationNode<?>> activatableNode = getActivatableNodes(childrenOfParentOfToDispose);
 				if (childrenOfParentOfToDispose.size() > 1) {
 					// there must be a least 2 children: the disposed will be
 					// removed
 					// get the first child which is not the one to remove
-					for (final INavigationNode<?> nextChild : activateableNode) {
+					for (final INavigationNode<?> nextChild : activatableNode) {
 						if (!nextChild.equals(toDispose)) {
 							brotherToActivate = nextChild;
 							break;
@@ -947,17 +947,17 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 	 *            list of node
 	 * @return filtered list
 	 */
-	private List<INavigationNode<?>> getActivateableNodes(final List<?> nodes) {
-		final List<INavigationNode<?>> activateableNodes = new LinkedList<INavigationNode<?>>();
+	private List<INavigationNode<?>> getActivatableNodes(final List<?> nodes) {
+		final List<INavigationNode<?>> activatableNodes = new LinkedList<INavigationNode<?>>();
 		for (final Object node : nodes) {
 			if (node instanceof INavigationNode<?>) {
 				final INavigationNode<?> naviNode = (INavigationNode<?>) node;
 				if (naviNode.isVisible() && naviNode.isEnabled()) {
-					activateableNodes.add(naviNode);
+					activatableNodes.add(naviNode);
 				}
 			}
 		}
-		return activateableNodes;
+		return activatableNodes;
 	}
 
 	/**
