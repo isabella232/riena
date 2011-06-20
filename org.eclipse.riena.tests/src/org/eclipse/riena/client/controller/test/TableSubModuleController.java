@@ -104,12 +104,12 @@ public class TableSubModuleController extends SubModuleController {
 			@Override
 			public Image getImage(final Object element) {
 				if (((WordNode) element).isUpperCase()) {
-					return StatusMeter.imageFinished().width(16).gradientStartColor(green).gradientEndColor(darkGreen)
-							.getImage();
-				} else {
-					final int value = (int) ((WordNode) element).getAQuota();
-					return StatusMeter.imageDefault().width(16).value(value).getImage();
+					return new Image(Display.getCurrent(), StatusMeter.imageFinished().width(16)
+							.gradientStartColor(green).gradientEndColor(darkGreen).getImageData());
 				}
+				final int value = (int) ((WordNode) element).getAQuota();
+				return new Image(Display.getCurrent(), StatusMeter.imageDefault().width(16).value(value).getImageData());
+
 			}
 		});
 	}
