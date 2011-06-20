@@ -434,7 +434,7 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 
 			public void run() {
 				try {
-					updateUi();
+					updateUI();
 				} catch (final Exception e) {
 					Service.get(Activator.getDefault().getContext(), IExceptionHandlerManager.class).handleException(e);
 				}
@@ -446,8 +446,21 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 	/**
 	 * called on the user interface thread as the result of a call to
 	 * {@link #notifyUpdateUI()}
+	 * 
+	 * @deprecated use {@link updateUI} instead.
 	 */
+	@Deprecated
 	public void updateUi() {
+	}
+
+	/**
+	 * called on the user interface thread as the result of a call to
+	 * {@link #notifyUpdateUI()}
+	 * 
+	 * @since 4.0
+	 */
+	protected void updateUI() {
+		updateUi();
 	}
 
 }
