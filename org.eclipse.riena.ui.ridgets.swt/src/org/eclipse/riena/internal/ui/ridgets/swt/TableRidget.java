@@ -25,7 +25,10 @@ import org.eclipse.core.databinding.UpdateListStrategy;
 import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.beans.BeansObservables;
 import org.eclipse.core.databinding.beans.PojoObservables;
+import org.eclipse.core.databinding.observable.list.IListChangeListener;
 import org.eclipse.core.databinding.observable.list.IObservableList;
+import org.eclipse.core.databinding.observable.list.ListChangeEvent;
+import org.eclipse.core.databinding.observable.list.ListDiffEntry;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
@@ -36,6 +39,7 @@ import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -92,7 +96,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private final Listener itemEraser;
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener clickForwarder;
-	private final TableTooltipManager tooltipManager;
+	private TableTooltipManager tooltipManager;
 	private final ColumnSortListener sortListener;
 	private ListenerList<IClickListener> clickListeners;
 	private ListenerList<IActionListener> doubleClickListeners;
@@ -129,12 +133,12 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private final Map<Integer, IColumnFormatter> formatterMap;
 	private boolean moveableColumns;
 	private ControlListener columnResizeListener;
+	private boolean nativeToolTip = true;
 
 	public TableRidget() {
 		itemEraser = new TableItemEraser();
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		clickForwarder = new ClickForwarder();
-		tooltipManager = new TableTooltipManager();
 		sortListener = new ColumnSortListener();
 		isSortedAscending = true;
 		sortedColumn = -1;
@@ -161,7 +165,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	protected void bindUIControl() {
 		final Table control = getUIControl();
 		if (control != null) {
-			viewer = new TableViewer(control);
+			viewer = new TableRidgetTableViewer(this);
 			configureControl(control);
 
 			if (viewerObservables != null) {
@@ -196,11 +200,30 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 			control.addSelectionListener(selectionTypeEnforcer);
 			control.addMouseListener(clickForwarder);
+			updateToolTipSupport();
 			final SWTFacade facade = SWTFacade.getDefault();
-			tooltipManager.init(control);
-			facade.addMouseTrackListener(control, tooltipManager);
-			facade.addMouseMoveListener(control, tooltipManager);
 			facade.addEraseItemListener(control, itemEraser);
+		}
+	}
+
+	private void updateToolTipSupport() {
+		final SWTFacade facade = SWTFacade.getDefault();
+		if (isNativeToolTip()) {
+			TableRidgetToolTipSupport.disable();
+			if (tooltipManager == null) {
+				tooltipManager = new TableTooltipManager();
+				tooltipManager.init(getUIControl());
+			}
+			facade.addMouseTrackListener(getUIControl(), tooltipManager);
+			facade.addMouseMoveListener(getUIControl(), tooltipManager);
+		} else {
+			if (tooltipManager != null) {
+				facade.removeMouseTrackListener(getUIControl(), tooltipManager);
+				facade.removeMouseMoveListener(getUIControl(), tooltipManager);
+			}
+			if (viewer instanceof TableRidgetTableViewer) {
+				TableRidgetToolTipSupport.enableFor(viewer);
+			}
 		}
 	}
 
@@ -221,8 +244,10 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			control.removeSelectionListener(selectionTypeEnforcer);
 			control.removeMouseListener(clickForwarder);
 			final SWTFacade facade = SWTFacade.getDefault();
-			facade.removeMouseTrackListener(control, tooltipManager);
-			facade.removeMouseMoveListener(control, tooltipManager);
+			if (tooltipManager != null) {
+				facade.removeMouseTrackListener(control, tooltipManager);
+				facade.removeMouseMoveListener(control, tooltipManager);
+			}
 			facade.removeEraseItemListener(control, itemEraser);
 		}
 		viewer = null;
@@ -465,6 +490,17 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		}
 	}
 
+	public boolean isNativeToolTip() {
+		return nativeToolTip;
+	}
+
+	public void setNativeToolTip(final boolean nativeToolTip) {
+		if (this.nativeToolTip != nativeToolTip) {
+			this.nativeToolTip = nativeToolTip;
+			updateToolTipSupport();
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void updateFromModel() {
@@ -605,6 +641,19 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	private void configureViewer(final TableViewer viewer) {
 		final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
+		final TableRidgetLabelProvider labelProvider = createLabelProvider(viewerCP);
+		viewer.setLabelProvider(labelProvider);
+		viewer.setContentProvider(viewerCP);
+		viewer.setInput(viewerObservables);
+	}
+
+	/**
+	 * Creates the label provider of this table.
+	 * 
+	 * @param viewerCP
+	 * @return label provider
+	 */
+	private TableRidgetLabelProvider createLabelProvider(final ObservableListContentProvider viewerCP) {
 		IObservableMap[] attrMap;
 		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
 			attrMap = BeansObservables.observeMaps(viewerCP.getKnownElements(), rowClass, renderingMethods);
@@ -612,9 +661,24 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			attrMap = PojoObservables.observeMaps(viewerCP.getKnownElements(), rowClass, renderingMethods);
 		}
 		final IColumnFormatter[] formatters = getColumnFormatters(attrMap.length);
-		viewer.setLabelProvider(new TableRidgetLabelProvider(attrMap, formatters));
-		viewer.setContentProvider(viewerCP);
-		viewer.setInput(viewerObservables);
+		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMap, formatters);
+		viewerObservables.addListChangeListener(new IListChangeListener() {
+			public void handleListChange(final ListChangeEvent event) {
+				if ((event.diff == null) && (!event.diff.isEmpty())) {
+					for (final ListDiffEntry diffEntry : event.diff.getDifferences()) {
+						if (!diffEntry.isAddition()) {
+							// an element of the table was removed, 
+							// dispose the according image (stored inside the label provider) 
+							final Object deletedElement = diffEntry.getElement();
+							if (deletedElement != null) {
+								labelProvider.disposeImageOfElement(deletedElement);
+							}
+						}
+					}
+				}
+			}
+		});
+		return labelProvider;
 	}
 
 	private void disposeMultipleSelectionBinding() {
@@ -642,12 +706,16 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	}
 
 	private void refreshViewer(final TableViewer viewer) {
+		final IBaseLabelProvider labelProvider = viewer.getLabelProvider();
+		if (labelProvider != null) {
+			((TableRidgetLabelProvider) labelProvider).disposeImages();
+		}
 		viewer.getControl().setRedraw(false); // prevent flicker during update
 		final StructuredSelection currentSelection = new StructuredSelection(getSelection());
 		try {
-			final TableRidgetLabelProvider labelProvider = (TableRidgetLabelProvider) viewer.getLabelProvider();
-			final IColumnFormatter[] formatters = getColumnFormatters(labelProvider.getColumnCount());
-			labelProvider.setFormatters(formatters);
+			final TableRidgetLabelProvider tableLabelProvider = (TableRidgetLabelProvider) labelProvider;
+			final IColumnFormatter[] formatters = getColumnFormatters(tableLabelProvider.getColumnCount());
+			tableLabelProvider.setFormatters(formatters);
 			viewer.setInput(viewerObservables);
 		} finally {
 			viewer.setSelection(currentSelection);
@@ -853,7 +921,14 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			if (item != null) {
 				final int column = SwtUtilities.findColumn(item.getParent(), mousePt);
 				if (column != -1) {
-					result = item.getText(column);
+					final IBaseLabelProvider labelProvider = viewer.getLabelProvider();
+					if (labelProvider != null) {
+						final Object element = item.getData();
+						result = ((TableRidgetLabelProvider) labelProvider).getToolTipText(element, column);
+					}
+					if (result == null) {
+						result = item.getText(column);
+					}
 				}
 			}
 			return result;

@@ -376,12 +376,13 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 			windowShell.getDisplay().syncExec(new Runnable() {
 
 				public void run() {
-					final Shell shell = getUIControl().getWindow().getShell();
+					final Shell shell = getWindowShell();
 					if (shell != null && !shell.isDisposed()) {
 						getUIControl().setDescription(getCurrentProcessInfo().getNote());
 						getUIControl().setTitle(getCurrentProcessInfo().getTitle());
 						getUIControl().setCancelVisible(getCurrentProcessInfo().isCancelVisible());
 						getUIControl().setCancelEnabled(getCurrentProcessInfo().isCancelEnabled());
+						getUIControl().pack();
 						// show the progress
 						reinitializeProgress();
 

@@ -23,7 +23,7 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -103,13 +103,43 @@ public class TableSubModuleController extends SubModuleController {
 			}
 
 			@Override
-			public Image getImage(final Object element) {
+			public String getToolTip(final Object element) {
 				if (((WordNode) element).isUpperCase()) {
-					return StatusMeter.imageFinished().width(16).gradientStartColor(green)
-							.gradientEndColor(darkGreen).getImage();
+					// return "Uppercase"; //$NON-NLS-1$
+					return null;
 				} else {
 					final int value = (int) ((WordNode) element).getAQuota();
-					return StatusMeter.imageDefault().width(16).value(value).getImage();
+					return "approx. " + value + "%"; //$NON-NLS-1$//$NON-NLS-2$
+				}
+			}
+
+			@Override
+			public Color getToolTipForegroundColor(final Object element) {
+				if (((WordNode) element).isUpperCase()) {
+					return Display.getDefault().getSystemColor(SWT.COLOR_BLACK);
+				} else {
+					return Display.getDefault().getSystemColor(SWT.COLOR_BLUE);
+				}
+			}
+
+			@Override
+			public Color getToolTipBackgroundColor(final Object element) {
+				return Display.getDefault().getSystemColor(SWT.COLOR_WHITE);
+			}
+
+			//			@Override
+			//			public Image getToolTipImage(final Object element) {
+			//				return LnfManager.getLnf().getImage(LnfKeyConstants.STATUSLINE_INFO_ICON);
+			//			}
+
+			@Override
+			public ImageData getImage(final Object element) {
+				if (((WordNode) element).isUpperCase()) {
+					return StatusMeter.imageFinished().width(16).gradientStartColor(green).gradientEndColor(darkGreen)
+							.getImageData();
+				} else {
+					final int value = (int) ((WordNode) element).getAQuota();
+					return StatusMeter.imageDefault().width(16).value(value).getImageData();
 				}
 			}
 		});
@@ -121,6 +151,7 @@ public class TableSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 		table = getRidget(ITableRidget.class, "table"); //$NON-NLS-1$
+		table.setNativeToolTip(false);
 		final IToggleButtonRidget buttonPrintSelection = getRidget(IToggleButtonRidget.class, "buttonPrintSelection"); //$NON-NLS-1$
 		final IActionRidget buttonAddSibling = getRidget(IActionRidget.class, "buttonAddSibling"); //$NON-NLS-1$
 		buttonRename = getRidget(IActionRidget.class, "buttonRename"); //$NON-NLS-1$

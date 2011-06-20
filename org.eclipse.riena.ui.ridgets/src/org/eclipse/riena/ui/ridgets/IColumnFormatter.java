@@ -19,6 +19,9 @@ package org.eclipse.riena.ui.ridgets;
  * <p>
  * <i> Note: not every property will be used for every kind of table Ridget!
  * </i>
+ * <p>
+ * <i> Note: the tool tip properties (except toolTip) are only used if the table
+ * Ridget does not use native tool tips. </i>
  * 
  * @see ITableRidget#setColumnFormatter(int, ColumnFormatter)
  * @see ITreeTableRidget#setColumnFormatter(int, ColumnFormatter)
@@ -36,7 +39,7 @@ public interface IColumnFormatter {
 	String getText(Object element);
 
 	/**
-	 * Returns the image for a column's row.
+	 * Returns the image or image data for a column's row.
 	 * 
 	 * @param element
 	 *            the row element
@@ -108,5 +111,98 @@ public interface IColumnFormatter {
 	 * @since 2.0
 	 */
 	int getLeftIndent(Object element);
+
+	/**
+	 * Get the text displayed in the tool tip for object.
+	 * 
+	 * @param element
+	 *            the element for which the tool tip is shown
+	 * @return the {@link String} or <code>null</code> if there is not text to
+	 *         display
+	 */
+	String getToolTip(Object element);
+
+	/**
+	 * Get the image displayed in the tool tip for object.
+	 * 
+	 * @param element
+	 *            the element for which the tool tip is shown
+	 * @return image or <code>null</code> if there is not image.
+	 */
+	Object getToolTipImage(Object element);
+
+	/**
+	 * Return the background color used for the tool tip
+	 * 
+	 * @param element
+	 *            the element for which the tool tip is shown
+	 * 
+	 * @return the color used or <code>null</code> if you want to use the
+	 *         default color
+	 */
+	Object getToolTipBackgroundColor(Object element);
+
+	/**
+	 * The foreground color used to display the the text in the tool tip
+	 * 
+	 * @param element
+	 *            the element for which the tool tip is shown
+	 * @return the color used or <code>null</code> if you want to use the
+	 *         default color
+	 */
+	Object getToolTipForegroundColor(Object element);
+
+	/**
+	 * Get the font used to display the tool tip
+	 * 
+	 * @param element
+	 *            the element for which the tool tip is shown
+	 * @return font or <code>null</code> if the default font is to be used.
+	 */
+	Object getToolTipFont(Object element);
+
+	/**
+	 * Return the amount of pixels in x and y direction you want the tool tip to
+	 * pop up from the mouse pointer. The default shift is 10px right and 0px
+	 * below your mouse cursor. Be aware of the fact that you should at least
+	 * position the tool tip 1px right to your mouse cursor else click events
+	 * may not get propagated properly.
+	 * 
+	 * @param element
+	 *            the element for which the tool tip is shown
+	 * 
+	 * @return x- and y-pixels (point) to shift of the tool tip or
+	 *         <code>null</code> if the default shift should be used.
+	 */
+	Object getToolTipShift(Object element);
+
+	/**
+	 * The time in milliseconds the tool tip is shown for.
+	 * 
+	 * @param element
+	 *            the element for which the tool tip is shown
+	 * 
+	 * @return time in milliseconds the tool tip is shown for
+	 */
+	int getToolTipTimeDisplayed(Object element);
+
+	/**
+	 * The time in milliseconds until the tool tip is displayed.
+	 * 
+	 * @param element
+	 *            the element for which the tool tip is shown
+	 * @return time in milliseconds until the tool tip is displayed
+	 */
+	int getToolTipDisplayDelayTime(Object element);
+
+	/**
+	 * The {@link SWT} style used to create the {@link CLabel} (see there for
+	 * supported styles). By default {@link SWT#SHADOW_NONE} is used.
+	 * 
+	 * @param element
+	 *            the element for which the tool tip is shown
+	 * @return the style used to create the label
+	 */
+	int getToolTipStyle(Object element);
 
 }

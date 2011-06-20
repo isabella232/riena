@@ -170,4 +170,14 @@ public class ListRidget extends AbstractListRidget {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This Ridget only supports native tool tips (SWT tool tips). Because of
+	 * this the method has no effect.
+	 */
+	public void setNativeToolTip(final boolean nativeToolTip) {
+		// do nothing
+	}
+
 }

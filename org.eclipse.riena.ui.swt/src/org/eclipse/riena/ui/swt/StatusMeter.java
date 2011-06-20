@@ -148,14 +148,14 @@ public class StatusMeter {
 		}
 
 		/**
-		 * Returns a StatusMeter as image.
+		 * Returns a StatusMeter as image (data).
 		 * 
-		 * @return An image according to the values set to the builder
+		 * @return An image (data) according to the values set to the builder
 		 * @throws IllegalArgumentException
 		 *             if conditions that are described in the setter methods
 		 *             are violated
 		 */
-		public Image getImage() {
+		public ImageData getImageData() {
 			if (width <= 0 || height <= 0) {
 				throw new IllegalArgumentException("Width and height must be values greater than 0 to draw."); //$NON-NLS-1$
 			}
@@ -176,12 +176,12 @@ public class StatusMeter {
 
 			// TODO sma@2010-08-17 Is this the Riena way?
 			final Display display = Display.getCurrent();
-			final Image image = GCFacade.getDefault().createImage(display, width, height);
+			final Image tempImage = GCFacade.getDefault().createImage(display, width, height);
 
 			//final Image image = new Image(display, width, height);
 			//final GC gc = new GC(image);
 
-			final GC gc = GCFacade.getDefault().createGCFromImage(image);
+			final GC gc = GCFacade.getDefault().createGCFromImage(tempImage);
 
 			final int start = margin + indent + BORDER_WIDTH;
 			final int end = width - (margin * 2) - BORDER_WIDTH - 1;
@@ -214,11 +214,12 @@ public class StatusMeter {
 			gc.drawLine(start - BORDER_WIDTH, margin + BORDER_WIDTH, start - BORDER_WIDTH, bottom - BORDER_WIDTH);
 			gc.drawLine(end + BORDER_WIDTH, margin + BORDER_WIDTH, end + BORDER_WIDTH, bottom - BORDER_WIDTH);
 
+			final ImageData imageData = tempImage.getImageData();
 			gc.dispose();
+			tempImage.dispose();
 
-			final ImageData imageData = image.getImageData();
 			imageData.transparentPixel = imageData.palette.getPixel(transparentColor.getRGB());
-			return new Image(display, imageData);
+			return imageData;
 		}
 
 		/**

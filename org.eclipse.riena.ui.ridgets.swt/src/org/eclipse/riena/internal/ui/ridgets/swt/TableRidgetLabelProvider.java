@@ -10,17 +10,33 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.databinding.viewers.ObservableMapLabelProvider;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableFontProvider;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
+import org.eclipse.riena.internal.ui.swt.utils.ShellHelper;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Label provider that formats the columns of a {@link TableRidget}.
@@ -41,9 +57,12 @@ import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 public class TableRidgetLabelProvider extends ObservableMapLabelProvider implements ITableColorProvider,
 		ITableFontProvider {
 
+	private final static Logger LOGGER = Log4r.getLogger(ShellHelper.class);
+
 	private final int numColumns;
 	private final IObservableMap[] attributeMap;
 	private IColumnFormatter[] formatters;
+	private Map<Object, Image> imageMap;
 
 	/**
 	 * Create a new instance
@@ -74,6 +93,7 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		System.arraycopy(attributeMap, 0, this.attributeMap, 0, this.attributeMap.length);
 		this.formatters = new IColumnFormatter[formatters.length];
 		System.arraycopy(formatters, 0, this.formatters, 0, this.formatters.length);
+		imageMap = new HashMap<Object, Image>();
 	}
 
 	@Override
@@ -87,7 +107,21 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 		if (columnIndex < attributeMap.length) {
 			final IColumnFormatter formatter = this.formatters[columnIndex];
 			if (formatter != null) {
-				result = (Image) formatter.getImage(element);
+				final Object formatterImage = formatter.getImage(element);
+				if (formatterImage instanceof Image) {
+					result = (Image) formatterImage;
+				} else if (formatterImage instanceof ImageData) {
+					final ImageData formatterImageData = (ImageData) formatterImage;
+					final Display display = getDisplay();
+					if (display != null) {
+						final Image oldImage = imageMap.get(element);
+						if (!SwtUtilities.isDisposed(oldImage)) {
+							oldImage.dispose();
+						}
+						result = new Image(display, formatterImageData);
+						imageMap.put(element, result);
+					}
+				}
 			}
 			if (result == null) {
 				final Object value = attributeMap[columnIndex].get(element);
@@ -102,13 +136,57 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	}
 
 	@Override
+	public void dispose() {
+		super.dispose();
+		disposeImages();
+		imageMap = null;
+	}
+
+	/**
+	 * Disposes all the images that this label provider has created.
+	 */
+	public void disposeImages() {
+		for (final Map.Entry<Object, Image> entry : imageMap.entrySet()) {
+			final Image image = entry.getValue();
+			if (!SwtUtilities.isDisposed(image)) {
+				image.dispose();
+			}
+		}
+		imageMap.clear();
+	}
+
+	/**
+	 * Disposes the image of the given element if the image was create from this
+	 * label provider.
+	 * 
+	 * @param element
+	 *            an element that was deleted
+	 */
+	public void disposeImageOfElement(final Object element) {
+		final Image image = imageMap.get(element);
+		if (image == null) {
+			LOGGER.log(LogService.LOG_WARNING, "No image found for element: " + element.toString()); //$NON-NLS-1$
+			return;
+		}
+		image.dispose();
+		imageMap.remove(element);
+	}
+
+	private Display getDisplay() {
+		final Shell shell = RcpUtilities.getWorkbenchShell();
+		if ((shell == null) || shell.isDisposed()) {
+			LOGGER.log(LogService.LOG_WARNING, "No shell of the application found!"); //$NON-NLS-1$
+			return null;
+		}
+		return shell.getDisplay();
+	}
+
+	@Override
 	public String getColumnText(final Object element, final int columnIndex) {
 		String result = null;
-		if (columnIndex < formatters.length) {
-			final IColumnFormatter formatter = this.formatters[columnIndex];
-			if (formatter != null) {
-				result = formatter.getText(element);
-			}
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		if (formatter != null) {
+			result = formatter.getText(element);
 		}
 		if (result == null) {
 			result = super.getColumnText(element, columnIndex);
@@ -117,31 +195,25 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	}
 
 	public Color getForeground(final Object element, final int columnIndex) {
-		if (columnIndex < formatters.length) {
-			final IColumnFormatter formatter = this.formatters[columnIndex];
-			if (formatter != null) {
-				return (Color) formatter.getForeground(element);
-			}
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		if (formatter != null) {
+			return (Color) formatter.getForeground(element);
 		}
 		return null;
 	}
 
 	public Color getBackground(final Object element, final int columnIndex) {
-		if (columnIndex < formatters.length) {
-			final IColumnFormatter formatter = this.formatters[columnIndex];
-			if (formatter != null) {
-				return (Color) formatter.getBackground(element);
-			}
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		if (formatter != null) {
+			return (Color) formatter.getBackground(element);
 		}
 		return null;
 	}
 
 	public Font getFont(final Object element, final int columnIndex) {
-		if (columnIndex < formatters.length) {
-			final IColumnFormatter formatter = this.formatters[columnIndex];
-			if (formatter != null) {
-				return (Font) formatter.getFont(element);
-			}
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		if (formatter != null) {
+			return (Font) formatter.getFont(element);
 		}
 		return null;
 	}
@@ -159,6 +231,201 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 			return attributeMap[columnIndex].get(element);
 		}
 		return null;
+	}
+
+	/**
+	 * Get the text displayed in the tool tip for object.
+	 * 
+	 * <p>
+	 * <b>If {@link #getToolTipText(Object)} and
+	 * {@link #getToolTipImage(Object)} both return <code>null</code> the
+	 * control is set back to standard behavior</b>
+	 * </p>
+	 * 
+	 * @param element
+	 *            the element for which the tool tip is shown
+	 * @param columnIndex
+	 *            column index for which the tool tip is shown
+	 * @return the {@link String} or <code>null</code> if there is not text to
+	 *         display
+	 */
+	public String getToolTipText(final Object element, final int columnIndex) {
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		if (formatter != null) {
+			return formatter.getToolTip(element);
+		}
+		return null;
+	}
+
+	/**
+	 * Get the image displayed in the tool tip for object.
+	 * 
+	 * <p>
+	 * <b>If {@link #getToolTipText(Object)} and
+	 * {@link #getToolTipImage(Object)} both return <code>null</code> the
+	 * control is set back to standard behavior</b>
+	 * </p>
+	 * 
+	 * @param object
+	 *            the element for which the tool tip is shown
+	 * @param columnIndex
+	 *            column index for which the tool tip is shown
+	 * @return {@link Image} or <code>null</code> if there is not image.
+	 */
+
+	public Image getToolTipImage(final Object object, final int columnIndex) {
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		if (formatter != null) {
+			final Object image = formatter.getToolTipImage(object);
+			if (image instanceof Image) {
+				return (Image) image;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Return the background color used for the tool tip
+	 * 
+	 * @param object
+	 *            the {@link Object} for which the tool tip is shown
+	 * @param columnIndex
+	 *            column index for which the tool tip is shown
+	 * 
+	 * @return the {@link Color} used or <code>null</code> if you want to use
+	 *         the default color {@link SWT#COLOR_INFO_BACKGROUND}
+	 * @see SWT#COLOR_INFO_BACKGROUND
+	 */
+	public Color getToolTipBackgroundColor(final Object object, final int columnIndex) {
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		if (formatter != null) {
+			final Object color = formatter.getToolTipBackgroundColor(object);
+			if (color instanceof Color) {
+				return (Color) color;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * The foreground color used to display the the text in the tool tip
+	 * 
+	 * @param object
+	 *            the {@link Object} for which the tool tip is shown
+	 * @param columnIndex
+	 *            column index for which the tool tip is shown
+	 * @return the {@link Color} used or <code>null</code> if you want to use
+	 *         the default color {@link SWT#COLOR_INFO_FOREGROUND}
+	 * @see SWT#COLOR_INFO_FOREGROUND
+	 */
+	public Color getToolTipForegroundColor(final Object object, final int columnIndex) {
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		if (formatter != null) {
+			final Object color = formatter.getToolTipForegroundColor(object);
+			if (color instanceof Color) {
+				return (Color) color;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Get the {@link Font} used to display the tool tip
+	 * 
+	 * @param object
+	 *            the element for which the tool tip is shown
+	 * @param columnIndex
+	 *            column index for which the tool tip is shown
+	 * @return {@link Font} or <code>null</code> if the default font is to be
+	 *         used.
+	 */
+	public Font getToolTipFont(final Object object, final int columnIndex) {
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		if (formatter != null) {
+			final Object font = formatter.getToolTipFont(object);
+			if (font instanceof Font) {
+				return (Font) font;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Return the amount of pixels in x and y direction you want the tool tip to
+	 * pop up from the mouse pointer. The default shift is 10px right and 0px
+	 * below your mouse cursor. Be aware of the fact that you should at least
+	 * position the tool tip 1px right to your mouse cursor else click events
+	 * may not get propagated properly.
+	 * 
+	 * @param object
+	 *            the element for which the tool tip is shown
+	 * @param columnIndex
+	 *            column index for which the tool tip is shown
+	 * @return {@link Point} to shift of the tool tip or <code>null</code> if
+	 *         the default shift should be used.
+	 */
+	public Point getToolTipShift(final Object object, final int columnIndex) {
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		if (formatter != null) {
+			final Object point = formatter.getToolTipShift(object);
+			if (point instanceof Point) {
+				return (Point) point;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * The time in milliseconds the tool tip is shown for.
+	 * 
+	 * @param object
+	 *            the {@link Object} for which the tool tip is shown
+	 * @param columnIndex
+	 *            column index for which the tool tip is shown
+	 * @return time in milliseconds the tool tip is shown for
+	 */
+	public int getToolTipTimeDisplayed(final Object object, final int columnIndex) {
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		if (formatter != null) {
+			return formatter.getToolTipTimeDisplayed(object);
+		}
+		return 0;
+	}
+
+	/**
+	 * The time in milliseconds until the tool tip is displayed.
+	 * 
+	 * @param object
+	 *            the {@link Object} for which the tool tip is shown
+	 * @param columnIndex
+	 *            column index for which the tool tip is shown
+	 * @return time in milliseconds until the tool tip is displayed
+	 */
+	public int getToolTipDisplayDelayTime(final Object object, final int columnIndex) {
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		if (formatter != null) {
+			return formatter.getToolTipDisplayDelayTime(object);
+		}
+		return 0;
+	}
+
+	/**
+	 * The {@link SWT} style used to create the {@link CLabel} (see there for
+	 * supported styles). By default {@link SWT#SHADOW_NONE} is used.
+	 * 
+	 * @param object
+	 *            the element for which the tool tip is shown
+	 * @param columnIndex
+	 *            column index for which the tool tip is shown
+	 * @return the style used to create the label
+	 * @see CLabel
+	 */
+	public int getToolTipStyle(final Object object, final int columnIndex) {
+		final IColumnFormatter formatter = getFormatter(columnIndex);
+		if (formatter != null) {
+			return formatter.getToolTipStyle(object);
+		}
+		return SWT.SHADOW_NONE;
 	}
 
 	// protected methods

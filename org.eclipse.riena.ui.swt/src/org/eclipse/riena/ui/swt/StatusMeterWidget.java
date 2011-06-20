@@ -14,6 +14,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
@@ -32,6 +34,7 @@ public final class StatusMeterWidget extends Canvas {
 	private int minimum = 0;
 
 	private final StatusMeterBuilder builder = StatusMeter.widgetDefault();
+	private Image image;
 
 	/**
 	 * Creates a {@link StatusMeterWidget} without a style.
@@ -58,10 +61,23 @@ public final class StatusMeterWidget extends Canvas {
 				final Rectangle bounds = getBounds();
 
 				if (bounds.width != 0 && bounds.height != 0) {
-					e.gc.drawImage(builder.width(bounds.width).height(bounds.height).getImage(), 0, 0);
+					if (image != null) {
+						image.dispose();
+					}
+					final ImageData imageData = builder.width(bounds.width).height(bounds.height).getImageData();
+					image = new Image(getDisplay(), imageData);
+					e.gc.drawImage(image, 0, 0);
 				}
 			}
 		});
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		if (image != null) {
+			image.dispose();
+		}
 	}
 
 	/**

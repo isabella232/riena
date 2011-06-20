@@ -207,4 +207,16 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 *            otherwise.
 	 */
 	void setMoveableColumns(boolean moveableColumns);
+
+	/**
+	 * You can decided between native (SWT) and none native (JFace) tool tips.
+	 * <p>
+	 * The JFace tool tips can be customized with {@link IColumnFormatter}.
+	 * 
+	 * @param nativeToolTip
+	 *            {@code true} (default) native/SWT tool tip; {@code false} none
+	 *            native/JFace tool tip
+	 */
+	void setNativeToolTip(final boolean nativeToolTip);
+
 }

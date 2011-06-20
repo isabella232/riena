@@ -13,7 +13,6 @@ package org.eclipse.riena.ui.swt.uiprocess;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
@@ -40,6 +39,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	private ProcessUpdateThread processUpdateThread;
 
 	private String name;
+	private Rectangle initBounds;
 
 	public UIProcessControl(final Shell parentShell) {
 		Assert.isNotNull(parentShell);
@@ -109,7 +109,6 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	 */
 	public void showProcessing() {
 		startProcessing();
-
 	}
 
 	/**
@@ -124,8 +123,8 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 				getProgressBar().setMaximum(100);
 			}
 
-			if (null != getPercentLabel() && !getPercentLabel().isDisposed()) {
-				getPercentLabel().setText(""); //$NON-NLS-1$
+			if (null != getPercentControl() && !getPercentControl().isDisposed()) {
+				getPercentControl().setText(""); //$NON-NLS-1$
 			}
 
 			if (processUpdateThread == null || !processUpdateThread.isAlive()) {
@@ -210,12 +209,12 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		stopProcessing();
 		final int percentValue = calcSelection(value, maxValue);
 		if (getWindow().getShell() != null && !getWindow().getShell().isDisposed()) {
-			getPercentLabel().setText(String.valueOf(percentValue) + " %"); //$NON-NLS-1$
+			getPercentControl().setText(String.valueOf(percentValue) + " %"); //$NON-NLS-1$
 			getProgressBar().setSelection(percentValue);
 		}
 	}
 
-	private Label getPercentLabel() {
+	private Label getPercentControl() {
 		return processWindow.getPercent();
 	}
 
@@ -235,6 +234,14 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 
 	public void setDescription(final String text) {
 		processWindow.setDescription(text);
+	}
+
+	public String getDescription() {
+		final String text = processWindow.getDescription().getText();
+		if (text == null) {
+			return ""; //$NON-NLS-1$
+		}
+		return text;
 	}
 
 	public void setTitle(final String text) {
@@ -295,8 +302,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	 * @since 3.0
 	 */
 	public void setCancelVisible(final boolean cancelVisible) {
-		getCancelButton().setVisible(cancelVisible);
-
+		processWindow.setCancelVisible(cancelVisible);
 	}
 
 	/**
@@ -306,14 +312,46 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 	 * @since 3.0
 	 */
 	public void setCancelEnabled(final boolean cancelEnabled) {
-		getCancelButton().setEnabled(cancelEnabled);
-
+		processWindow.setCancelEnabled(cancelEnabled);
 	}
 
-	/**
-	 * return the cancelButton of the {@link UIProcessWindow}
-	 */
-	private Button getCancelButton() {
-		return processWindow.getCancelButton();
+	public void pack() {
+		if (initBounds == null) {
+			final Shell shell = getWindow().getShell();
+			shell.pack();
+			final Rectangle bounds = shell.getBounds();
+			final Rectangle constrainedShellBounds = getConstrainedShellBounds(bounds);
+			if (!bounds.equals(constrainedShellBounds)) {
+				shell.setBounds(constrainedShellBounds);
+				shell.layout();
+			}
+			initBounds = shell.getBounds();
+		}
 	}
+
+	protected Rectangle getConstrainedShellBounds(final Rectangle preferredSize) {
+		final Rectangle result = new Rectangle(preferredSize.x, preferredSize.y, preferredSize.width,
+				preferredSize.height);
+
+		final Shell shell = getWindow().getShell();
+		final Rectangle bounds = shell.getMonitor().getClientArea();
+		bounds.x += 10;
+		bounds.y += 10;
+		bounds.height -= 20;
+		bounds.width -= 20;
+
+		if (result.height > bounds.height) {
+			result.height = bounds.height;
+		}
+
+		if (result.width > bounds.width) {
+			result.width = bounds.width;
+		}
+
+		result.x = Math.max(bounds.x, Math.min(result.x, bounds.x + bounds.width - result.width));
+		result.y = Math.max(bounds.y, Math.min(result.y, bounds.y + bounds.height - result.height));
+
+		return result;
+	}
+
 }

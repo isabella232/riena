@@ -13,7 +13,6 @@ package org.eclipse.riena.ui.ridgets.swt;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
@@ -37,7 +36,7 @@ public class ColumnFormatter implements IColumnFormatter {
 		return null;
 	}
 
-	public Image getImage(final Object element) {
+	public Object getImage(final Object element) {
 		return null;
 	}
 
@@ -59,6 +58,42 @@ public class ColumnFormatter implements IColumnFormatter {
 
 	public int getLeftIndent(final Object element) {
 		return 0;
+	}
+
+	public String getToolTip(final Object element) {
+		return null;
+	}
+
+	public Object getToolTipImage(final Object object) {
+		return null;
+	}
+
+	public Object getToolTipBackgroundColor(final Object element) {
+		return null;
+	}
+
+	public Object getToolTipForegroundColor(final Object element) {
+		return null;
+	}
+
+	public Object getToolTipFont(final Object element) {
+		return null;
+	}
+
+	public Object getToolTipShift(final Object element) {
+		return null;
+	}
+
+	public int getToolTipTimeDisplayed(final Object element) {
+		return 0;
+	}
+
+	public int getToolTipDisplayDelayTime(final Object element) {
+		return 0;
+	}
+
+	public int getToolTipStyle(final Object element) {
+		return SWT.SHADOW_NONE;
 	}
 
 }
