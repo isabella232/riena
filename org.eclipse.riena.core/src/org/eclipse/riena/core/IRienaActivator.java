@@ -12,8 +12,6 @@ package org.eclipse.riena.core;
 
 import org.osgi.framework.BundleContext;
 
-import org.eclipse.equinox.log.Logger;
-
 /**
  * The {@code IRienaActivator} defines the contract for riena based activators.
  */
@@ -25,28 +23,4 @@ public interface IRienaActivator {
 	 * @return
 	 */
 	BundleContext getContext();
-
-	/**
-	 * Get a logger for the specified name.<br>
-	 * <b>Hint:</b>The log levels are defined in <code>LogService</code>.
-	 * 
-	 * @deprecated Please use {@code Log4r.getLogger()} instead.
-	 * 
-	 * @param name
-	 * @return the logger
-	 */
-	@Deprecated
-	Logger getLogger(String name);
-
-	/**
-	 * Get a logger for the specified class.<br>
-	 * <b>Hint:</b>The log levels are defined in <code>LogService</code>.
-	 * 
-	 * @deprecated Please use {@code Log4r.getLogger()} instead.
-	 * 
-	 * @param clazz
-	 * @return the logger
-	 */
-	@Deprecated
-	Logger getLogger(Class<?> clazz);
 }

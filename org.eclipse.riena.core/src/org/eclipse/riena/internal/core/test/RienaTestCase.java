@@ -160,16 +160,6 @@ public abstract class RienaTestCase extends TestCase {
 	}
 
 	/**
-	 * Enable/Disable printing.
-	 * 
-	 * @param print
-	 * @Deprecated Has been replaced by Eclipse´s trace facility.
-	 */
-	@Deprecated
-	protected void setPrint(final boolean print) {
-	}
-
-	/**
 	 * Check whether trace is switched on or not.
 	 * 
 	 * @return tracing?

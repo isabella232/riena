@@ -27,13 +27,6 @@ import org.eclipse.riena.core.util.StringUtils;
  */
 public final class RienaLocations {
 
-	/**
-	 * @deprecated {@code RienaLocations} does no longer postfix the location
-	 *             with "riena"!
-	 */
-	@Deprecated
-	public static final String RIENA_NAME = "riena"; //$NON-NLS-1$
-
 	private final static Logger LOGGER = Log4r.getLogger(RienaLocations.class);
 
 	private RienaLocations() {

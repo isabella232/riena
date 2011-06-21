@@ -13,8 +13,6 @@ package org.eclipse.riena.core;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import org.eclipse.equinox.log.Logger;
-
 /**
  * Abstract base class for riena activators.<br>
  * It provides all descendant classes access to the bundle context.
@@ -50,31 +48,4 @@ public abstract class RienaActivator implements BundleActivator, IRienaActivator
 		return context;
 	}
 
-	/**
-	 * Get a logger for the specified name.<br>
-	 * <b>Hint:</b>The log levels are defined in <code>LogService</code>.
-	 * 
-	 * @deprecated Please use {@code Log4r.getLogger()} instead.
-	 * 
-	 * @param name
-	 * @return the logger
-	 */
-	@Deprecated
-	public Logger getLogger(final String name) {
-		return Log4r.getLogger(this, name);
-	}
-
-	/**
-	 * Get a logger for the specified class.<br>
-	 * <b>Hint:</b>The log levels are defined in <code>LogService</code>.
-	 * 
-	 * @deprecated Please use {@code Log4r.getLogger()} instead.
-	 * 
-	 * @param clazz
-	 * @return the logger
-	 */
-	@Deprecated
-	public Logger getLogger(final Class<?> clazz) {
-		return Log4r.getLogger(this, clazz);
-	}
 }
