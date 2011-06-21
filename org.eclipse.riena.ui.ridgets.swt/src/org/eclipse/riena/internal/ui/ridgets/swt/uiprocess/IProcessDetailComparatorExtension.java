@@ -17,11 +17,8 @@ import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
  * Extension interface for {@link ProcessDetail} comparators.
- * <p>
- * <b>Note:</b> The "org.eclipse.riena.ui.ridgets.swt.processdetail" is
- * deprecated.
  */
-@ExtensionInterface(id = "processDetailComparator,org.eclipse.riena.ui.ridgets.swt.processdetail")
+@ExtensionInterface(id = "processDetailComparator")
 public interface IProcessDetailComparatorExtension {
 
 	/**
