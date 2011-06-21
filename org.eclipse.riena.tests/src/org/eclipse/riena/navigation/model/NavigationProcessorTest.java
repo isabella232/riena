@@ -241,9 +241,10 @@ public class NavigationProcessorTest extends RienaTestCase {
 	}
 
 	/**
-	 * Tests the <i>private</i> method {@code getActivateableNodes}.
+	 * Tests the <i>private</i> method {@code getActivatableNodes}.
 	 */
-	public void testGetActivateableNodes() {
+
+	public void testGetActivatableNodes() {
 
 		NavigationNodeId id = new NavigationNodeId("4711");
 		final SubModuleNode node = new SubModuleNode(id);
@@ -264,7 +265,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		nodes.add(node4);
 
 		List<INavigationNode<?>> activateableNodes = ReflectionUtils.invokeHidden(navigationProcessor,
-				"getActivateableNodes", nodes);
+				"getActivatableNodes", nodes);
 		assertTrue(activateableNodes.size() == 4);
 		assertTrue(activateableNodes.contains(node));
 		assertTrue(activateableNodes.contains(node2));
@@ -274,7 +275,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		node2.addMarker(new DisabledMarker());
 		node3.addMarker(new HiddenMarker());
 		node3.addMarker(new OutputMarker());
-		activateableNodes = ReflectionUtils.invokeHidden(navigationProcessor, "getActivateableNodes", nodes);
+		activateableNodes = ReflectionUtils.invokeHidden(navigationProcessor, "getActivatableNodes", nodes);
 		assertTrue(activateableNodes.size() == 2);
 		assertTrue(activateableNodes.contains(node));
 		assertFalse(activateableNodes.contains(node2));
