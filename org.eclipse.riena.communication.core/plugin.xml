@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-   <extension-point id="remoteservicefactory" name="Remote Service Factoriesy" schema="schema/remoteservicefactory.exsd"/>
-   <extension-point id="proxyselector" name="ProxySelector configuration" schema="schema/proxyselector.exsd"/>
-
    <extension-point id="ssl" name="SSL configuration" schema="schema/sslConf.exsd"/>
    <extension-point id="remoteServiceFactories" name="Remote Service Factories" schema="schema/remoteServiceFactories.exsd"/>
    <extension-point id="proxySelectors" name="ProxySelector configuration" schema="schema/proxySelectors.exsd"/>

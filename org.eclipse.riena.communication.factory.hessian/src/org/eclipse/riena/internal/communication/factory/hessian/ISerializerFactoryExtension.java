@@ -14,12 +14,8 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 /**
  * Extension interface for defining Riena specific serializer factories.
- * <p>
- * <b>Note:</b> The
- * "org.eclipse.riena.communication.hessian.AbstractSerializerFactory" is
- * deprecated.
  */
-@ExtensionInterface(id = "serializerFactories,org.eclipse.riena.communication.hessian.AbstractSerializerFactory")
+@ExtensionInterface(id = "serializerFactories")
 public interface ISerializerFactoryExtension {
 
 	/**
