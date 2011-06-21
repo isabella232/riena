@@ -16,13 +16,9 @@ import org.eclipse.riena.monitor.client.IStore;
 
 /**
  * Extension interface for the {@code IStore} definition.
- * <p>
- * <b>Note:</b> The "org.eclipse.riena.monitor.store" is @deprecated.
  */
-@ExtensionInterface
+@ExtensionInterface(id = "store")
 public interface IStoreExtension {
-
-	String ID = "org.eclipse.riena.monitor.store,store"; //$NON-NLS-1$
 
 	/**
 	 * Return the descriptive name of the store.

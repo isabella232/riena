@@ -83,7 +83,7 @@ import org.eclipse.riena.monitor.common.Collectible;
  * Example extension:
  * 
  * <pre>
- * &lt;extension point=&quot;org.eclipse.riena.monitor.store&quot;&gt;
+ * &lt;extension point=&quot;org.eclipse.riena.monitor.client.store&quot;&gt;
  *     &lt;store
  *           name=&quot;SimpleStore&quot;
  *           class=&quot;org.eclipse.riena.monitor.client.SimpleStore:cleanupDelay=120 s&quot;&gt;

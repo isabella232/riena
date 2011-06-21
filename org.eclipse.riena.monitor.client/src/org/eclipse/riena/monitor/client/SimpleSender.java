@@ -51,7 +51,7 @@ import org.eclipse.riena.monitor.common.IReceiver;
  * Example extension:
  * 
  * <pre>
- * &lt;extension point=&quot;org.eclipse.riena.monitor.sender&quot;&gt;
+ * &lt;extension point=&quot;org.eclipse.riena.monitor.client.sender&quot;&gt;
  *       &lt;sender
  *             name=&quot;SimpleSender&quot;
  *             class=&quot;org.eclipse.riena.monitor.client.SimpleSender:retryTime=20 m&quot;&gt;

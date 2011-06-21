@@ -17,10 +17,8 @@ import org.eclipse.riena.monitor.client.ICollector;
 /**
  * Extension interface for {@code ICollector} definitions.
  */
-@ExtensionInterface
+@ExtensionInterface(id = "collectors")
 public interface ICollectorExtension {
-
-	String ID = "org.eclipse.riena.monitor.collectors,collectors"; //$NON-NLS-1$
 
 	/**
 	 * Return the name of the category this collector belongs to.

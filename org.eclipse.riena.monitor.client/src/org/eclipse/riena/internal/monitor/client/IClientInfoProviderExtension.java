@@ -17,10 +17,8 @@ import org.eclipse.riena.monitor.client.IClientInfoProvider;
 /**
  * Extension interface for the {@code IClientInfoProvider} definition.
  */
-@ExtensionInterface
+@ExtensionInterface(id = "clientInfoProvider")
 public interface IClientInfoProviderExtension {
-
-	String ID = "org.eclipse.riena.monitor.clientinfoprovider,clientInfoProvider"; //$NON-NLS-1$
 
 	/**
 	 * Return the descriptive name of the client info provider.

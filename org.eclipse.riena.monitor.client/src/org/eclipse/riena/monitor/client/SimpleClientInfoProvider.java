@@ -40,7 +40,7 @@ import org.eclipse.riena.internal.monitor.client.Activator;
  * For example:
  * 
  * <pre>
- * &lt;extension point=&quot;org.eclipse.riena.monitor.clientinfoprovider&quot;&gt;
+ * &lt;extension point=&quot;org.eclipse.riena.monitor.client.clientInfoProvider&quot;&gt;
  *       &lt;clientInfoProvider
  *             name=&quot;SimpleClientInfoProvider&quot;
  *             class=&quot;org.eclipse.riena.monitor.client.SimpleClientInfoProvider:user.name,x-host.name&quot;&gt;
