@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.ridgets.swt;
+package org.eclipse.riena.ui.swt.facades.internal;
 
 import java.util.Collection;
 
@@ -27,6 +27,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.util.StringUtils;
+import org.eclipse.riena.internal.ui.ridgets.swt.TableRidgetLabelProvider;
+import org.eclipse.riena.internal.ui.ridgets.swt.TableRidgetTableViewer;
 import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -133,7 +135,9 @@ public class TableRidgetToolTipSupport extends ColumnViewerToolTipSupport {
 	@Override
 	public void deactivate() {
 		super.deactivate();
-		resetToolTip(viewer.getTable());
+		if (viewer != null) {
+			resetToolTip(viewer.getTable());
+		}
 	}
 
 	/**

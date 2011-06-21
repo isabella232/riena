@@ -84,6 +84,7 @@ import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
+import org.eclipse.riena.ui.swt.facades.TableRidgetToolTipSupportFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -208,8 +209,8 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 
 	private void updateToolTipSupport() {
 		final SWTFacade facade = SWTFacade.getDefault();
-		if (isNativeToolTip()) {
-			TableRidgetToolTipSupport.disable();
+		if (isNativeToolTip() && TableRidgetToolTipSupportFacade.getDefault().isSupported()) {
+			TableRidgetToolTipSupportFacade.getDefault().disable();
 			if (tooltipManager == null) {
 				tooltipManager = new TableTooltipManager();
 				tooltipManager.init(getUIControl());
@@ -222,7 +223,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 				facade.removeMouseMoveListener(getUIControl(), tooltipManager);
 			}
 			if (viewer instanceof TableRidgetTableViewer) {
-				TableRidgetToolTipSupport.enableFor(viewer);
+				TableRidgetToolTipSupportFacade.getDefault().enableFor(viewer);
 			}
 		}
 	}
