@@ -19,6 +19,7 @@ import org.osgi.service.log.LogService;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaActivator;
 import org.eclipse.riena.core.RienaConstants;
 
@@ -45,7 +46,7 @@ public class Activator extends RienaActivator {
 		super.start(context);
 		Activator.plugin = this;
 
-		logger = getLogger(Activator.class);
+		logger = Log4r.getLogger(Activator.class);
 		logger.log(LogService.LOG_INFO, "start hessian support on server"); //$NON-NLS-1$
 
 		publisher = new HessianRemoteServicePublisher();
