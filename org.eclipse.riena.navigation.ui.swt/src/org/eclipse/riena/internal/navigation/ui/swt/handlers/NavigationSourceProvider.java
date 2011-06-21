@@ -121,36 +121,6 @@ public class NavigationSourceProvider extends AbstractSourceProvider {
 	}
 
 	/**
-	 * Returns the name of the variable for the given node.
-	 * 
-	 * @param node
-	 *            navigation node
-	 * @return name of variable
-	 * 
-	 * @deprecated use <code>getChangedSourceNameForNode(INavigationNode)</code>
-	 *             instead. Add "Id" if you want the variable name for the
-	 *             NodeId
-	 */
-	@Deprecated
-	public String getPovidesSourceName(final INavigationNode<?> node) {
-		if (node == null) {
-			return null;
-		}
-
-		if (node instanceof ISubApplicationNode) {
-			return ACTIVE_SUB_APPLICATION_NODE_ID;
-		} else if (node instanceof IModuleGroupNode) {
-			return ACTIVE_MODULE_GROUP_NODE_ID;
-		} else if (node instanceof IModuleNode) {
-			return ACTIVE_MODULE_NODE_ID;
-		} else if (node instanceof ISubModuleNode) {
-			return ACTIVE_SUB_MODULE_NODE_ID;
-		}
-
-		throw new NavigationModelFailure("Unsupported instance of INavigationNode: " + node); //$NON-NLS-1$
-	}
-
-	/**
 	 * This method should be called if a node was activated so that the value of
 	 * the source can be updated.
 	 * <p>

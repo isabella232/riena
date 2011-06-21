@@ -13,7 +13,6 @@ package org.eclipse.riena.navigation.ui.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.listener.ModuleNodeListener;
@@ -114,11 +113,6 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 		if (getWindowRidget() != null) {
 			getWindowRidget().setActive(getNavigationNode().isActivated());
 		}
-	}
-
-	@Deprecated
-	public boolean isPresentGroupMember() {
-		return ((IModuleGroupNode) getNavigationNode().getParent()).isPresentGroupNode();
 	}
 
 	public boolean hasSingleLeafChild() {

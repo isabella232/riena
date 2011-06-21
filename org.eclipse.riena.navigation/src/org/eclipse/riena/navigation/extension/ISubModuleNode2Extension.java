@@ -50,15 +50,6 @@ public interface ISubModuleNode2Extension extends INode2Extension {
 	String getViewId();
 
 	/**
-	 * Returns the controller that controls the UI widgets in the view through
-	 * Ridgets.
-	 * 
-	 * @return controller of the sub module
-	 */
-	@Deprecated
-	Class<? extends IController> getController();
-
-	/**
 	 * Returns a new instance for the controller instance each time this method
 	 * is called.
 	 * 
