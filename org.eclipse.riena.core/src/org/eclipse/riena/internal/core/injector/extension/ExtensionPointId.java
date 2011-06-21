@@ -22,7 +22,7 @@ import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.StringUtils;
 
 /**
- * A extension point is is in general a simple string. However, the extension
+ * A extension point is in general a simple string. However, the extension
  * injector supports multiple ´compatible´ extension point id's for a single
  * ´update´ method. These id's will be treated as if they were one!.
  * <p>
