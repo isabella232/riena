@@ -27,17 +27,16 @@ import org.eclipse.riena.security.common.session.Session;
  */
 public interface ISessionStore {
 
-	//	String SESSION_STORE_ID = "spirit.securityimplementation.server.SessionStore"; //$NON-NLS-1$
-
 	/**
-	 * reads the sessions for one principal from the store TODO should be
-	 * Subject see bug 312640
+	 * reads the sessions for one principal from the store
 	 * 
 	 * @param principal
 	 *            principal for which sessions should be read
 	 * @return an array of session objects
 	 * @deprecated
 	 */
+	// TODO should be  Subject see bug 312640
+	// TODO can this be removed? Same for the read()
 	@Deprecated
 	Session[] read(Principal principal);
 
