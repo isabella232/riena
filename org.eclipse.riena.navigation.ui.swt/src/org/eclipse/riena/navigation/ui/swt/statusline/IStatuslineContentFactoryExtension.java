@@ -15,10 +15,8 @@ import org.eclipse.riena.ui.swt.IStatusLineContentFactory;
 
 /**
  * Extension interface for the configuration of the status line.
- * <p>
- * <b>Note:</b> The "org.eclipse.riena.ui.swt.statusline" is @deprecated.
  */
-@ExtensionInterface(id = "org.eclipse.riena.ui.swt.statusline,statusLine")
+@ExtensionInterface(id = "statusLine")
 public interface IStatuslineContentFactoryExtension {
 
 	/**

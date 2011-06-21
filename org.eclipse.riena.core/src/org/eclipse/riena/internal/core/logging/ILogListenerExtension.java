@@ -20,7 +20,7 @@ import org.eclipse.riena.core.injector.extension.MapName;
 /**
  * Define a {@code LogListener}.
  */
-@ExtensionInterface(id = "logListeners,org.eclipse.riena.core.logging.listeners")
+@ExtensionInterface(id = "logListeners")
 public interface ILogListenerExtension {
 
 	/**

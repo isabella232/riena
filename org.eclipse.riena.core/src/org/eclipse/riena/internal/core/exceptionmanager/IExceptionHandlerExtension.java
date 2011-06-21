@@ -16,11 +16,9 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
- * Definition for the ExceptionHandlers that are defined
- * <p>
- * <b>Note:</b> The "org.eclipse.riena.core.exception.handlers" is @deprecated.
+ * Definition of the ExceptionHandlers.
  */
-@ExtensionInterface(id = "exceptionHandlers,org.eclipse.riena.core.exception.handlers")
+@ExtensionInterface(id = "exceptionHandlers")
 public interface IExceptionHandlerExtension {
 
 	/**

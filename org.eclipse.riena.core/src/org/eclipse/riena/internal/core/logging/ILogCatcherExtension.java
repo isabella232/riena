@@ -17,7 +17,7 @@ import org.eclipse.riena.core.logging.ILogCatcher;
 /**
  * Defines an {@code ILogCatcher}.
  */
-@ExtensionInterface(id = "logCatchers,org.eclipse.riena.core.logging.catchers")
+@ExtensionInterface(id = "logCatchers")
 public interface ILogCatcherExtension {
 
 	/**

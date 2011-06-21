@@ -15,10 +15,8 @@ import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 /**
  * To avoid problems with bundle dependencies (e.g. cycles) the classes of the
  * different rules of the UI Filters are defined with extensions.
- * <p>
- * <b>Note:</b> The "org.eclipse.riena.filter.rulemapper" is @deprecated.
  */
-@ExtensionInterface(id = "org.eclipse.riena.filter.rulemapper,ruleMapper")
+@ExtensionInterface(id = "ruleMapper")
 public interface IRuleMapperExtension {
 
 	/**
