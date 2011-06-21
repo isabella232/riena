@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core;
 
-import static org.eclipse.riena.communication.core.publisher.RSDPublisherProperties.*;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
@@ -25,6 +23,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.communication.core.publisher.IServicePublishEventDispatcher;
 import org.eclipse.riena.communication.core.publisher.IServicePublisher;
+import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
 import org.eclipse.riena.core.util.VariableManagerUtil;
 
@@ -52,13 +51,6 @@ public class RemoteServiceDescription {
 		 * The "remote" OSGi Service was registered
 		 */
 		REGISTERED,
-		/**
-		 * The "remote" OSGi Service was modified
-		 * 
-		 * @deprecated no longer be used
-		 */
-		@Deprecated
-		MODIFIED,
 		/**
 		 * The "remote" OSGi Service was unregistered
 		 */
@@ -118,8 +110,10 @@ public class RemoteServiceDescription {
 		this.serviceRef = serviceRef;
 		this.serviceBundle = serviceRef.getBundle();
 		this.service = serviceBundle.getBundleContext().getService(serviceRef);
-		this.path = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PATH), path);
-		this.protocol = CommunicationUtil.accessProperty(serviceRef.getProperty(PROP_REMOTE_PROTOCOL), protocol);
+		this.path = CommunicationUtil.accessProperty(serviceRef.getProperty(RSDPublisherProperties.PROP_REMOTE_PATH),
+				path);
+		this.protocol = CommunicationUtil.accessProperty(
+				serviceRef.getProperty(RSDPublisherProperties.PROP_REMOTE_PROTOCOL), protocol);
 		this.serviceInterfaceClass = serviceBundle.loadClass(interfaceName);
 		this.serviceClassLoader = new ServiceClassLoader(serviceBundle);
 	}
@@ -205,7 +199,6 @@ public class RemoteServiceDescription {
 	 * The state of the service. Values are:<br>
 	 * <br>
 	 * {@link #REGISTERED}<br>
-	 * {@link #MODIFIED}<br>
 	 * {@link #UNREGISTERED}<br>
 	 * 
 	 * @return the current state of the service
