@@ -187,22 +187,6 @@ public class ExtensionDescriptor {
 	}
 
 	/**
-	 * @return the minOccurences
-	 */
-	@Deprecated
-	public int getMinOccurences() {
-		return minOccurrences;
-	}
-
-	/**
-	 * @return the maxOccurences
-	 */
-	@Deprecated
-	public int getMaxOccurences() {
-		return maxOccurrences;
-	}
-
-	/**
 	 * @return the minOccurrences
 	 */
 	int getMinOccurrences() {
