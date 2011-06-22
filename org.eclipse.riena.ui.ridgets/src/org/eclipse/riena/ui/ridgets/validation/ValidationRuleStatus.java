@@ -71,26 +71,6 @@ public final class ValidationRuleStatus {
 	 *            blocked.
 	 * @param message
 	 *            A message.
-	 * @param source
-	 *            <b>is UNUSED</b>
-	 * @return An ERROR status; never null.
-	 * 
-	 * @deprecated use {@link #error(boolean, String)}
-	 */
-	@Deprecated
-	public static IStatus error(final boolean blocker, final String message, final IValidator source) {
-		return error(blocker, message);
-	}
-
-	/**
-	 * Returns an ERROR status
-	 * 
-	 * @param blocker
-	 *            Indicates whether the effects of the input that lead to the
-	 *            error status must be undone i.e. whether the input must be
-	 *            blocked.
-	 * @param message
-	 *            A message.
 	 * 
 	 * @return An ERROR status; never null.
 	 * 
