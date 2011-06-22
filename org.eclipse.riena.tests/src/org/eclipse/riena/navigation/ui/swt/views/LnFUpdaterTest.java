@@ -51,7 +51,7 @@ public class LnFUpdaterTest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		shell = new Shell();
-		lnFUpdater = new LnFUpdater();
+		lnFUpdater = ReflectionUtils.newInstanceHidden(LnFUpdater.class);
 		final Map<String, Object> resourceCache = ReflectionUtils.getHidden(lnFUpdater, "RESOURCE_CACHE");
 		resourceCache.clear();
 	}
