@@ -50,7 +50,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  * This class updates the properties of the UI controls according the settings
  * of the current Look&Feel.
  */
-public class LnFUpdater {
+public final class LnFUpdater {
 
 	private static final Map<String, Object> RESOURCE_CACHE = LRUHashMap.createSynchronizedLRUHashMap(200);
 	private static final Object NULL_RESOURCE = new Object();
@@ -94,19 +94,9 @@ public class LnFUpdater {
 	}
 
 	/**
-	 * use {@link LnfUpdater#getInstance()} instead.
+	 * Do not instantiate directly
 	 */
-	@Deprecated
-	public LnFUpdater() {
-		super();
-	}
-
-	/**
-	 * @since 1.2
-	 * @deprecated
-	 */
-	@Deprecated
-	public static void addControlsAfterBind(final Class<? extends Control> controlClass) {
+	private LnFUpdater() {
 	}
 
 	/**
