@@ -20,48 +20,16 @@ import org.eclipse.riena.security.sessionservice.SessionEntry;
 
 /**
  * Store for sessions in the memory (<code>HashMap</code>s)
- * 
  */
 public class MemoryStore implements ISessionStore {
 
 	private final HashMap<String, SessionEntry> sessionTable = new HashMap<String, SessionEntry>();
 	private final HashMap<Principal, SessionList> userTable = new HashMap<Principal, SessionList>();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.security.sessionservice.ISessionStore#read(java.security
-	 * .Principal)
-	 */
-	public synchronized Session[] read(final Principal principal) {
-		final SessionList sl = userTable.get(principal);
-		final SessionEntry[] entries = sl.entries();
-		final Session[] sessions = new Session[entries.length];
-		for (int i = 0; i < entries.length; i++) {
-			sessions[i] = entries[i].getSession();
-		}
-		return sessions;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.security.sessionservice.ISessionStore#read(org.eclipse
-	 * .riena.security.common.session.Session)
-	 */
 	public synchronized SessionEntry read(final Session session) {
 		return sessionTable.get(session.getSessionId());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.security.sessionservice.ISessionStore#write(org.eclipse
-	 * .riena.security.sessionservice.SessionEntry)
-	 */
 	public synchronized void write(final SessionEntry entry) {
 		sessionTable.put(entry.getSession().getSessionId(), entry);
 		for (final Principal p : entry.getPrincipals().toArray(new Principal[entry.getPrincipals().size()])) {
@@ -75,15 +43,6 @@ public class MemoryStore implements ISessionStore {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.security.sessionservice.ISessionStore#delete(org.eclipse
-	 * .riena.security.common.session.Session)
-	 * 
-	 * @pre session!=null
-	 */
 	public synchronized void delete(final Session session) {
 		// Assert.isTrue(session != null,"session must not be null" );
 
@@ -95,21 +54,6 @@ public class MemoryStore implements ISessionStore {
 		for (final Principal p : entry.getPrincipals().toArray(new Principal[entry.getPrincipals().size()])) {
 			final SessionList sl = userTable.get(p);
 			sl.removeEntry(session);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.security.sessionservice.ISessionStore#delete(java.security
-	 * .Principal)
-	 */
-	public synchronized void delete(final Principal principal) {
-		final SessionList sl = userTable.get(principal);
-		final SessionEntry[] entries = sl.entries();
-		for (final SessionEntry entrie : entries) {
-			delete(entrie.getSession());
 		}
 	}
 

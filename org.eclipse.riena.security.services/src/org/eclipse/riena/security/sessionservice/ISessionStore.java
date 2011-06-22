@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.security.sessionservice;
 
-import java.security.Principal;
-
 import org.eclipse.riena.security.common.session.Session;
 
 /**
@@ -26,19 +24,6 @@ import org.eclipse.riena.security.common.session.Session;
  * 
  */
 public interface ISessionStore {
-
-	/**
-	 * reads the sessions for one principal from the store
-	 * 
-	 * @param principal
-	 *            principal for which sessions should be read
-	 * @return an array of session objects
-	 * @deprecated
-	 */
-	// TODO should be  Subject see bug 312460
-	// TODO can this be removed? Same for the read()
-	@Deprecated
-	Session[] read(Principal principal);
 
 	/**
 	 * reads the session entry object for a session
@@ -62,14 +47,5 @@ public interface ISessionStore {
 	 * @param session
 	 */
 	void delete(Session session);
-
-	/**
-	 * deletes the session entries for a principal
-	 * 
-	 * @param principal
-	 * @deprecated
-	 */
-	@Deprecated
-	void delete(Principal principal);
 
 }
