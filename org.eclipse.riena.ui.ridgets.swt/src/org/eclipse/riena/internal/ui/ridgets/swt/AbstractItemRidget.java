@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import java.beans.EventHandler;
-
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.ui.menus.CommandContributionItem;
@@ -107,14 +105,6 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 
 	public final void addListener(final IActionListener listener) {
 		getActionObserver().addListener(listener);
-	}
-
-	/**
-	 * @deprecated use {@link #addListener(IActionListener)}
-	 */
-	@Deprecated
-	public final void addListener(final Object target, final String action) {
-		addListener(EventHandler.create(IActionListener.class, target, action));
 	}
 
 	public final void removeListener(final IActionListener listener) {

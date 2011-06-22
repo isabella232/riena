@@ -41,28 +41,6 @@ public interface IActionRidget extends IRidget {
 	void addListener(IActionListener listener);
 
 	/**
-	 * Add an action listener to call back. This method is equal to calling
-	 * #addListener(java.beans.EventHandler.create(IActionListener.class,
-	 * target, method))
-	 * <p>
-	 * Adding the same listener several times has no effect.
-	 * 
-	 * @param target
-	 *            the object to notify
-	 * @param action
-	 *            the method on {@code target} to invoke
-	 * @see java.beans.EventHandler#create(Class, Object, String)
-	 * 
-	 * @deprecated use {@link #addListener(IActionListener)} or
-	 *             {@code
-	 *             IActionListener listener =
-	 *             EventHandler.create(IActionListener.class, target, action);
-	 *             this.addListener(listener);}
-	 */
-	@Deprecated
-	void addListener(Object target, String action);
-
-	/**
 	 * Remove an action listener.
 	 * 
 	 * @param listener

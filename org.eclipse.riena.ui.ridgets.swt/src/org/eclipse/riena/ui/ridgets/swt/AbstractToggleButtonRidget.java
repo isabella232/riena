@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt;
 
-import java.beans.EventHandler;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -84,15 +83,6 @@ public abstract class AbstractToggleButtonRidget extends AbstractValueRidget imp
 	}
 
 	public void addListener(final IActionListener listener) {
-		actionObserver.addListener(listener);
-	}
-
-	/**
-	 * @deprecated use {@link #addListener(IActionListener)}
-	 */
-	@Deprecated
-	public void addListener(final Object target, final String action) {
-		final IActionListener listener = EventHandler.create(IActionListener.class, target, action);
 		actionObserver.addListener(listener);
 	}
 
