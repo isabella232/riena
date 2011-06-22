@@ -54,7 +54,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleChoiceRidget {
 
-	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
+	private final static LnFUpdater LNF_UPDATER = LnFUpdater.getInstance();
 
 	/** The list of available options. */
 	private final WritableList optionsObservable;

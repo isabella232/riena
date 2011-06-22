@@ -53,7 +53,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public class MultipleChoiceRidget extends AbstractChoiceRidget implements IMultipleChoiceRidget {
 
-	private final static LnFUpdater LNF_UPDATER = new LnFUpdater();
+	private final static LnFUpdater LNF_UPDATER = LnFUpdater.getInstance();
 
 	/** The list of available options. */
 	private final WritableList optionsObservable;

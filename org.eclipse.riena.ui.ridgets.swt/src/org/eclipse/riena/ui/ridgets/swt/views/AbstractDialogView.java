@@ -69,7 +69,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
  */
 public abstract class AbstractDialogView extends Dialog {
 
-	private static final LnFUpdater LNF_UPDATER = new LnFUpdater();
+	private static final LnFUpdater LNF_UPDATER = LnFUpdater.getInstance();
 
 	private final RienaWindowRenderer dlgRenderer;
 	private final ControlledView controlledView;
