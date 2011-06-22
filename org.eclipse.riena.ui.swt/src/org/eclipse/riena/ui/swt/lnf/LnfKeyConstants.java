@@ -142,8 +142,7 @@ public final class LnfKeyConstants {
 	 * @since 1.2
 	 */
 	public static final String SUB_APPLICATION_SWITCHER_PASSIVE_FOREGROUND = "SubApplicationSwitcher.passiveForeground"; //$NON-NLS-1$
-	@Deprecated
-	public static final String SUB_APPLICATION_SWITCHER_FOREGROUND = SUB_APPLICATION_SWITCHER_ACTIVE_FOREGROUND;
+
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
@@ -287,6 +286,7 @@ public final class LnfKeyConstants {
 	 *      Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND = "EmbeddedTitlebar.foreground"; //$NON-NLS-1$
+
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
@@ -295,8 +295,7 @@ public final class LnfKeyConstants {
 	 *      Riena Wiki</a>
 	 */
 	public static final String EMBEDDED_TITLEBAR_PASSIVE_FOREGROUND = "EmbeddedTitlebar.passiveForeground"; //$NON-NLS-1$
-	@Deprecated
-	public static final String EMBEDDED_TITLEBAR_FOREGROUND = EMBEDDED_TITLEBAR_ACTIVE_FOREGROUND;
+
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
