@@ -188,15 +188,6 @@ public class UIProcess extends PlatformObject implements IUIMonitor {
 		updateProcessConfiguration();
 	}
 
-	/**
-	 * @return
-	 * @deprecated This should use {@code UISynchronizer.createSynchronizer()}
-	 */
-	@Deprecated
-	public static IUISynchronizer getSynchronizerFromExtensionPoint() {
-		return UISynchronizer.createSynchronizer();
-	}
-
 	private void updateProcessConfiguration() {
 		configureProcessInfo();
 	}
