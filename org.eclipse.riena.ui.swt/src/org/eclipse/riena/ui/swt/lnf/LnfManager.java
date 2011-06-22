@@ -125,18 +125,6 @@ public final class LnfManager {
 	}
 
 	/**
-	 * Return the current L&F class name.
-	 * 
-	 * @return the lnfClassName
-	 * 
-	 * @deprecated This was only needed for unit tests!! We should abandon it.
-	 */
-	@Deprecated
-	public static String getLnfClassName() {
-		return LMI.getInstance().getLnfClassName();
-	}
-
-	/**
 	 * Disposes (uninitializes) the current look and feel.
 	 */
 	public static void dispose() {

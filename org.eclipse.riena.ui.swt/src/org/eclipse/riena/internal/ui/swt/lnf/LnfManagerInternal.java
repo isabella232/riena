@@ -161,18 +161,6 @@ public final class LnfManagerInternal {
 	}
 
 	/**
-	 * Return the current L&F class name.
-	 * 
-	 * @return the lnfClassName
-	 * 
-	 * @deprecated This was only needed for unit tests!! We should abandon it.
-	 */
-	@Deprecated
-	public String getLnfClassName() {
-		return getLnf().getClass().getName();
-	}
-
-	/**
 	 * Disposes (uninitializes) the current look and feel.
 	 */
 	public void dispose() {
