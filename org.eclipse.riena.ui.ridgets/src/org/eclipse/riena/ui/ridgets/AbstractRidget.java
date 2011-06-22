@@ -95,18 +95,6 @@ public abstract class AbstractRidget implements IRidget {
 		return controller;
 	}
 
-	/**
-	 * This was never implemented.
-	 * 
-	 * @return false always
-	 * 
-	 * @deprecated - this was never implemented - do not call
-	 */
-	@Deprecated
-	public final boolean isBlocked() {
-		return false;
-	}
-
 	public void removeFocusListener(final IFocusListener listener) {
 		focusListeners.remove(listener);
 	}
@@ -123,13 +111,6 @@ public abstract class AbstractRidget implements IRidget {
 		} else {
 			propertyChangeSupport.removePropertyChangeListener(propertyName, propertyChangeListener);
 		}
-	}
-
-	/**
-	 * @deprecated - this was never implemented - do not call
-	 */
-	@Deprecated
-	public final void setBlocked(final boolean blocked) {
 	}
 
 	/**

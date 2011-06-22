@@ -26,12 +26,6 @@ import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 public interface IRidget {
 
 	/**
-	 * @deprecated never implemented - do not use
-	 */
-	@Deprecated
-	String PROPERTY_BLOCKED = "blocked"; //$NON-NLS-1$
-
-	/**
 	 * The name of the PropertyChangeEvent that will be fired when the ridget's
 	 * tooltip is changed ({@value} ).
 	 */
@@ -137,16 +131,6 @@ public interface IRidget {
 	boolean hasFocus();
 
 	/**
-	 * This was never implemented.
-	 * 
-	 * @return false always
-	 * 
-	 * @deprecated - this was never implemented - do not call
-	 */
-	@Deprecated
-	boolean isBlocked();
-
-	/**
 	 * Returns whether the ridget is enabled or disabled.
 	 * 
 	 * @return Indicates whether the ridget is enabled.
@@ -207,14 +191,6 @@ public interface IRidget {
 	 * visible.
 	 */
 	void requestFocus();
-
-	/**
-	 * This was never implemented.
-	 * 
-	 * @deprecated - this was never implemented - do not call
-	 */
-	@Deprecated
-	void setBlocked(boolean blocked);
 
 	/**
 	 * Set the controller instance holding this ridget.
