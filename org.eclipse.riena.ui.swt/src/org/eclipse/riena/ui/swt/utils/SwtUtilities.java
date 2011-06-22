@@ -133,22 +133,6 @@ public final class SwtUtilities {
 	}
 
 	/**
-	 * Disposes the given resource, if the resource is not null and isn't
-	 * already disposed.
-	 * 
-	 * @param resource
-	 *            resource to dispose
-	 * 
-	 * @deprecated Use {@code dispose()} instead
-	 */
-	@Deprecated
-	public static void disposeResource(final Resource resource) {
-		if (!isDisposed(resource)) {
-			resource.dispose();
-		}
-	}
-
-	/**
 	 * Disposes the given widget, if the widget is not {@code null} and isn't
 	 * already disposed.
 	 * 
@@ -158,22 +142,6 @@ public final class SwtUtilities {
 	 * @since 3.0
 	 */
 	public static void dispose(final Widget widget) {
-		if (!isDisposed(widget)) {
-			widget.dispose();
-		}
-	}
-
-	/**
-	 * Disposes the given widget, if the widget is not {@code null} and isn't
-	 * already disposed.
-	 * 
-	 * @param widget
-	 *            widget to dispose
-	 * 
-	 * @deprecated Use {@code dispose()} instead
-	 */
-	@Deprecated
-	public static void disposeWidget(final Widget widget) {
 		if (!isDisposed(widget)) {
 			widget.dispose();
 		}
