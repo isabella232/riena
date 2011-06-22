@@ -35,7 +35,7 @@ public interface ISessionStore {
 	 * @return an array of session objects
 	 * @deprecated
 	 */
-	// TODO should be  Subject see bug 312640
+	// TODO should be  Subject see bug 312460
 	// TODO can this be removed? Same for the read()
 	@Deprecated
 	Session[] read(Principal principal);
