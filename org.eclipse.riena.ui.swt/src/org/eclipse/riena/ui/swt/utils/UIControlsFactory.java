@@ -219,11 +219,6 @@ public class UIControlsFactory {
 		return registerConstruction(new Button(parent, SWT.CHECK));
 	}
 
-	@Deprecated
-	public static Button createButtonCheck(final Composite parent, final String bindingId) {
-		return bind(createButtonCheck(parent), bindingId);
-	}
-
 	/**
 	 * Creates a checkbox {@link Button}.
 	 * 
@@ -254,11 +249,6 @@ public class UIControlsFactory {
 	 */
 	public static Button createButtonRadio(final Composite parent) {
 		return registerConstruction(new Button(parent, SWT.RADIO));
-	}
-
-	@Deprecated
-	public static Button createButtonRadio(final Composite parent, final String bindingId) {
-		return bind(createButtonRadio(parent), bindingId);
 	}
 
 	/**
@@ -292,11 +282,6 @@ public class UIControlsFactory {
 	 */
 	public static Button createButtonToggle(final Composite parent) {
 		return registerConstruction(new Button(parent, SWT.TOGGLE));
-	}
-
-	@Deprecated
-	public static Button createButtonToggle(final Composite parent, final String bindingId) {
-		return bind(createButtonToggle(parent), bindingId);
 	}
 
 	/**
