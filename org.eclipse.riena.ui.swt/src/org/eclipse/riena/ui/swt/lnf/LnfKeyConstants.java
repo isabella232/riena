@@ -626,9 +626,6 @@ public final class LnfKeyConstants {
 	 */
 	public static final String DIALOG_GRAB_CORNER_IMAGE = "Dialog.grabCornerImage"; //$NON-NLS-1$
 
-	@Deprecated
-	public static final String DEFAULT_NODE_ICON = "defaultNode.icon"; //$NON-NLS-1$
-
 	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
@@ -838,12 +835,7 @@ public final class LnfKeyConstants {
 	 * @since 1.2
 	 */
 	public static final String DISABLED_MARKER_STANDARD_ALPHA = "DisabledMarker.standardAlpha"; //$NON-NLS-1$
-	/**
-	 * @since 1.2
-	 * @deprecated unused
-	 */
-	@Deprecated
-	public static final String DISABLED_MARKER_COMPLEX_ALPHA = "DisabledMarker.complexAlpha"; //$NON-NLS-1$
+
 	/**
 	 * This constants turns the advanced disabled marker rendering on (
 	 * {@code true}) or off ({@code false}).<br>

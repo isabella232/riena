@@ -391,7 +391,6 @@ public class RienaDefaultTheme implements ILnfTheme {
 				IMAGE_RESTORE_INACTIVE_ICON));
 		lnf.putLnfResource(LnfKeyConstants.DIALOG_GRAB_CORNER_IMAGE, new ImageLnfResource(DIALOG_IMAGE_GRAB_CORNER));
 
-		lnf.putLnfResource(LnfKeyConstants.DEFAULT_NODE_ICON, new ImageLnfResource(IMAGE_DEFAULT_NODE_ICON));
 		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(
 				IMAGE_EMPTY_DOCUMENT));
 		lnf.putLnfResource(LnfKeyConstants.WORKAREA_TREE_DOCUMENT_LEAF_ICON, new ImageLnfResource(IMAGE_EMPTY_DOCUMENT));
