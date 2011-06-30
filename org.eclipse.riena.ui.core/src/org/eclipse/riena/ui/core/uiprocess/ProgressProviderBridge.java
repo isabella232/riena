@@ -29,6 +29,7 @@ import org.eclipse.riena.core.singleton.SingletonProvider;
  * A job can be presented by several instances of {@link ProgressProvider}. This
  * one delegates to those providers.
  */
+@SuppressWarnings("restriction")
 public class ProgressProviderBridge extends ProgressProvider {
 
 	private static final SingletonProvider<ProgressProviderBridge> PPB = new SingletonProvider<ProgressProviderBridge>(
@@ -78,6 +79,7 @@ public class ProgressProviderBridge extends ProgressProvider {
 		final Object context = getContext(job);
 		if (uiprocess == null) {
 			uiprocess = createDefaultUIProcess(job);
+			registerMapping(job, uiprocess);
 		}
 		final UICallbackDispatcher dispatcher = (UICallbackDispatcher) uiprocess.getAdapter(UICallbackDispatcher.class);
 

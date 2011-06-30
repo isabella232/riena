@@ -95,7 +95,9 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 				@Override
 				public void done(final IJobChangeEvent event) {
 					super.done(event);
-					jobDone();
+					jobDone(job);
+					job.removeJobChangeListener(this);
+					jobListener = null;
 				}
 			};
 			job.addJobChangeListener(jobListener);
@@ -141,7 +143,7 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 		};
 	}
 
-	private void jobDone() {
+	private void jobDone(final Job job) {
 		synchronize(new Runnable() {
 
 			public void run() {
@@ -152,7 +154,6 @@ public class UICallbackDispatcher extends ProgressProvider implements IUIMonitor
 						Service.get(Activator.getDefault().getContext(), IExceptionHandlerManager.class)
 								.handleException(e);
 					}
-
 				}
 			}
 		});
