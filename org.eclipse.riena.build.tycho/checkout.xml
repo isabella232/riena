@@ -5,28 +5,13 @@
                    
      ====================================================================== -->
 <project name="org.eclipse.riena.toolbox.build.tycho" default="checkout">
-
-	<property name="TOOLS" value=":pserver:anonymous@dev.eclipse.org:/cvsroot/tools" />
 	<property name="RT" value=":pserver:anonymous@dev.eclipse.org:/cvsroot/rt" />
-	<property name="ECLIPSE" value=":pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse" />
-	<property name="TECHNOLOGY" value=":pserver:anonymous@dev.eclipse.org:/cvsroot/technology" />
-	<!-- <property name="CHECKOUT_DIR" value="c:/tmp/checkout" />
-	<property name="TARGET_DIR" value="c:/tmp/target" /> -->
+	<property name="CHECKOUT_DIR" value="checkout" />
+	<property name="TARGET_DIR" value="target" />
 
 	<!-- ############################################################################################################ -->
 
 	
-	<target name="checkoutEclipse" description="check out Riena projects">
-			<login cvsRoot="${ECLIPSE}" />
-			<checkout cvsroot="${ECLIPSE}" package="org.eclipse.core.net" tag="I20110511-0800" />
-			<checkout cvsroot="${ECLIPSE}" package="org.eclipse.core.variables" tag="v20110511" />
-			<checkout cvsroot="${ECLIPSE}" package="e4/org.eclipse.e4.ui/bundles/org.pushingpixels.trident" tag="v20100204-1500" />
-		</target>
-
-		<target name="checkoutTechnology" description="check out Riena projects">
-			<login cvsRoot="${TECHNOLOGY}" />
-			<checkout cvsroot="${TECHNOLOGY}" package="org.eclipse.swt.nebula/org.eclipse.nebula.widgets.compositetable" />
-		</target>
 
 		<target name="checkoutRT" description="check out Riena projects">
 			<login cvsRoot="${RT}" />
@@ -92,16 +77,7 @@
 			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.ui.workarea" />
 		</target>
 
-		<target name="checkoutTools" description="check out Riena projects">
-			<login cvsRoot="${TOOLS}" />
-
-			<checkout cvsroot="${TOOLS}" package="org.eclipse.orbit/javax.servlet" tag="v2_5" />
-			<checkout cvsroot="${TOOLS}" package="org.eclipse.orbit/org.apache.log4j" tag="v1_2_13" />
-			<checkout cvsroot="${TOOLS}" package="org.eclipse.orbit/org.junit" tag="v3_8_2" />
-			<checkout cvsroot="${TOOLS}" package="org.eclipse.orbit/org.apache.commons.beanutils" tag="v1_7_0" />
-			<checkout cvsroot="${TOOLS}" package="org.eclipse.orbit/org.apache.oro" tag="v2_0_8" />
-			<checkout cvsroot="${TOOLS}" package="org.eclipse.orbit/org.easymock" tag="v2_4" />
-		</target>
+		
 	
 	
 	<!-- ############################################################################################################ -->
@@ -136,38 +112,18 @@
 
 
 	<target name="move">
-		<move todir="${TARGET_DIR}/org.eclipse.core.net" includeemptydirs="true" overwrite="true">
-			<fileset dir="${CHECKOUT_DIR}/org.eclipse.core.net" defaultexcludes="no">
-					<include name="**" />
-			</fileset>
-		</move>
 		
-		<move todir="${TARGET_DIR}/org.eclipse.core.variables" includeemptydirs="true" overwrite="true">
-			<fileset dir="${CHECKOUT_DIR}/org.eclipse.core.variables" defaultexcludes="no">
-						<include name="**" />
-			</fileset>
-		</move>
 		
 		<move todir="${TARGET_DIR}" includeemptydirs="true" overwrite="true">
-			<fileset dir="${CHECKOUT_DIR}/e4/org.eclipse.e4.ui/bundles/" defaultexcludes="no">
-				<include name="**" />
-			</fileset>
-
-			<fileset dir="${CHECKOUT_DIR}/org.eclipse.swt.nebula/" defaultexcludes="no">
-				<include name="**" />
-			</fileset>
-
-			<fileset dir="${CHECKOUT_DIR}/org.eclipse.riena/" defaultexcludes="no">
-				<include name="**" />
-			</fileset>
-			
-			<fileset dir="${CHECKOUT_DIR}/org.eclipse.orbit/" defaultexcludes="no">
+				<fileset dir="${CHECKOUT_DIR}/org.eclipse.riena/" defaultexcludes="no">
 				<include name="**" />
 			</fileset>
 		</move>
 	</target>
 
-	<target name="checkout" depends="clean, checkoutRT, checkoutEclipse, checkoutTechnology, checkoutTools, move, copyCommunicationCoreManifest " />
+	
+	
+	<target name="checkout" depends="clean, checkoutRT,  move, copyCommunicationCoreManifest " />
 
 
 	<!-- ############################################################################################################ -->
