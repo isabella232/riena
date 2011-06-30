@@ -26,7 +26,11 @@ import org.eclipse.swt.widgets.TypedListener;
 
 /**
  * This helper class supports the {@link MenuManger}.
+ * 
+ * 
  */
+
+// FIXME MenuManagerHelper is a utility-class and should be final with private constructor and static methods
 public class MenuManagerHelper {
 
 	/**
