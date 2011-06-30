@@ -84,6 +84,14 @@ public class DefaultActionManagerTest extends TestCase {
 		assertEquals(null, shell.getDefaultButton());
 	}
 
+	public void testUnboundRidgets() {
+		actionMan.addAction(rShell, rButton1);
+		rText2.setUIControl(null);
+		actionMan.addAction(rText2, rButton2);
+		actionMan.activate();
+
+	}
+
 	public void testNestedDefaultButtons() {
 		assertNull(shell.getDefaultButton());
 

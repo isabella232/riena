@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -86,18 +87,39 @@ public final class DefaultActionManager implements IDefaultActionManager, Listen
 			shell = ((Control) windowRidget.getUIControl()).getShell();
 			display = shell.getDisplay();
 			control2button = new HashMap<Control, Button>();
+			final HashSet<IRidget> toRemove = new HashSet<IRidget>();
 			for (final Entry<IRidget, IActionRidget> entry : ridget2button.entrySet()) {
-				final Control control = (Control) entry.getKey().getUIControl();
-				Assert.isNotNull(control);
+				final IRidget focusRidget = entry.getKey();
+				final Control control = (Control) focusRidget.getUIControl();
+				if (null == control) {
+					toRemove.add(focusRidget);
+					continue;
+				}
 
 				final Button button = (Button) entry.getValue().getUIControl();
-				Assert.isNotNull(button);
+				if (null == button) {
+					toRemove.add(focusRidget);
+					continue;
+				}
 
 				control2button.put(control, button);
 			}
+			cleanRidgetMapping(toRemove);
 			updateDefaultButton(display.getFocusControl());
 			display.removeFilter(SWT.FocusIn, this);
 			display.addFilter(SWT.FocusIn, this);
+		}
+	}
+
+	/**
+	 * Removes unbound ridgets from ridget mapping
+	 * 
+	 * @param toRemove
+	 *            set of ridgets to remove
+	 */
+	private void cleanRidgetMapping(final HashSet<IRidget> toRemove) {
+		for (final IRidget remove : toRemove) {
+			ridget2button.remove(remove);
 		}
 	}
 
