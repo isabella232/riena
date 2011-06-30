@@ -216,6 +216,7 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * @param nativeToolTip
 	 *            {@code true} (default) native/SWT tool tip; {@code false} none
 	 *            native/JFace tool tip
+	 * @since 4.0
 	 */
 	void setNativeToolTip(final boolean nativeToolTip);
 

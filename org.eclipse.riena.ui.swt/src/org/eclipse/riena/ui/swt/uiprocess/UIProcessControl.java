@@ -236,6 +236,9 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		processWindow.setDescription(text);
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public String getDescription() {
 		final String text = processWindow.getDescription().getText();
 		if (text == null) {
@@ -315,6 +318,9 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		processWindow.setCancelEnabled(cancelEnabled);
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public void pack() {
 		if (initBounds == null) {
 			final Shell shell = getWindow().getShell();
@@ -329,6 +335,9 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 		}
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	protected Rectangle getConstrainedShellBounds(final Rectangle preferredSize) {
 		final Rectangle result = new Rectangle(preferredSize.x, preferredSize.y, preferredSize.width,
 				preferredSize.height);

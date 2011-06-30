@@ -461,6 +461,9 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		subModuleTree.setBackground(LnfManager.getLnf().getColor("SubModuleTree.background")); //$NON-NLS-1$
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	protected void setTreeBackground() {
 		setTreeBackGround();
 	}

@@ -154,6 +154,7 @@ public class StatusMeter {
 		 * @throws IllegalArgumentException
 		 *             if conditions that are described in the setter methods
 		 *             are violated
+		 * @since 4.0
 		 */
 		public ImageData getImageData() {
 			if (width <= 0 || height <= 0) {

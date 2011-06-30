@@ -13,7 +13,7 @@ package org.eclipse.riena.ui.swt.facades;
 import org.eclipse.jface.viewers.ColumnViewer;
 
 /**
- *
+ * @since 4.0
  */
 public abstract class TableRidgetToolTipSupportFacade {
 
