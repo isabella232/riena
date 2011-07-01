@@ -27,6 +27,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
@@ -78,14 +80,19 @@ public abstract class AbstractDialogView extends Dialog {
 	private boolean isClosing;
 
 	private static Shell getShellByGuessing() {
-		Shell result = null;
 		if (PlatformUI.isWorkbenchRunning()) {
-			result = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+			final IWorkbench workbench = PlatformUI.getWorkbench();
+			if (workbench != null) {
+				final IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
+				if (activeWorkbenchWindow != null) {
+					return activeWorkbenchWindow.getShell();
+				}
+			}
 		} else if (Display.getCurrent() != null) {
-			result = Display.getCurrent().getActiveShell();
+			return Display.getCurrent().getActiveShell();
 		}
-		// may return null, but that is ok; Dialog does not req. a parent shell
-		return result;
+		// may return null, but that is ok; Dialog does not require a parent shell
+		return null;
 	}
 
 	/**
