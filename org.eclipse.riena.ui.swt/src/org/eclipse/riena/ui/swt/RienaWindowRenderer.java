@@ -47,6 +47,7 @@ public class RienaWindowRenderer {
 	private final Window dialog;
 	private Composite centerComposite;
 	private DialogTitleBarMouseListener mouseListener;
+	private final DialogTitleBarRenderer renderer;
 	private Composite topComposite;
 	private boolean paintTitlebar;
 
@@ -60,6 +61,7 @@ public class RienaWindowRenderer {
 					new LnfRendererExtension(new DialogTitleBarRenderer(), LnfKeyConstants.DIALOG_RENDERER) };
 			LnfManager.getLnf().update(extensions);
 		}
+		renderer = createDialogTitleBarRenderer();
 	}
 
 	/**
@@ -248,7 +250,7 @@ public class RienaWindowRenderer {
 	/**
 	 * This listener paints the dialog title.
 	 */
-	private static final class DialogTitlePaintListener implements PaintListener {
+	private final class DialogTitlePaintListener implements PaintListener {
 
 		private final boolean canClose;
 		private final boolean canMax;
@@ -264,8 +266,7 @@ public class RienaWindowRenderer {
 			if (e.getSource() instanceof Control) {
 				final Control control = (Control) e.getSource();
 				final Rectangle dialogBounds = control.getBounds();
-				final DialogTitleBarRenderer renderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(
-						LnfKeyConstants.DIALOG_RENDERER);
+
 				renderer.setShell(control.getShell());
 				final Rectangle bounds = new Rectangle(0, 0, dialogBounds.width, renderer.getHeight());
 				renderer.setBounds(bounds);
@@ -280,16 +281,15 @@ public class RienaWindowRenderer {
 	private final class DialogTitleBarMouseListener extends AbstractTitleBarMouseListener {
 		@Override
 		protected AbstractTitleBarRenderer getTitleBarRenderer() {
-			return (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(LnfKeyConstants.DIALOG_RENDERER);
+			return renderer;
 		}
 
-		//		@Override
-		//		public void mouseUp(final MouseEvent e) {
-		//			super.mouseUp(e);
-		//			if (isClosingCancel) {
-		//				
-		//			}
-		//		}
+	}
+
+	private DialogTitleBarRenderer createDialogTitleBarRenderer() {
+		final DialogTitleBarRenderer renderer = (DialogTitleBarRenderer) LnfManager.getLnf().getRenderer(
+				LnfKeyConstants.DIALOG_RENDERER);
+		return ReflectionUtils.newInstance(renderer.getClass());
 	}
 
 }
