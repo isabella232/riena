@@ -21,7 +21,7 @@ import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 
 /**
  * This composite contains a Table widget (the "master") of n columns, as well
- * as new, remove and update buttons. It also contains an arbitratry composite
+ * as new, remove and update buttons. It also contains an arbitrary composite
  * (the "details"), which is updated automatically when the selected row in the
  * table changes.
  * <p>
