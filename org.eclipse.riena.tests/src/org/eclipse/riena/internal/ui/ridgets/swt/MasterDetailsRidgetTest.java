@@ -169,7 +169,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setUIControl(new Table(getShell(), SWT.MULTI));
 			fail();
 		} catch (final RuntimeException rex) {
-			ok("does not allow SWT.MULTI");
+			ok("does not allow Table-Widget");
 		}
 	}
 
