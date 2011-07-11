@@ -119,6 +119,7 @@ public interface IColumnFormatter {
 	 *            the element for which the tool tip is shown
 	 * @return the {@link String} or <code>null</code> if there is not text to
 	 *         display
+	 * @since 4.0
 	 */
 	String getToolTip(Object element);
 
@@ -128,6 +129,7 @@ public interface IColumnFormatter {
 	 * @param element
 	 *            the element for which the tool tip is shown
 	 * @return image or <code>null</code> if there is not image.
+	 * @since 4.0
 	 */
 	Object getToolTipImage(Object element);
 
@@ -139,6 +141,7 @@ public interface IColumnFormatter {
 	 * 
 	 * @return the color used or <code>null</code> if you want to use the
 	 *         default color
+	 * @since 4.0
 	 */
 	Object getToolTipBackgroundColor(Object element);
 
@@ -149,6 +152,7 @@ public interface IColumnFormatter {
 	 *            the element for which the tool tip is shown
 	 * @return the color used or <code>null</code> if you want to use the
 	 *         default color
+	 * @since 4.0
 	 */
 	Object getToolTipForegroundColor(Object element);
 
@@ -158,6 +162,7 @@ public interface IColumnFormatter {
 	 * @param element
 	 *            the element for which the tool tip is shown
 	 * @return font or <code>null</code> if the default font is to be used.
+	 * @since 4.0
 	 */
 	Object getToolTipFont(Object element);
 
@@ -173,6 +178,7 @@ public interface IColumnFormatter {
 	 * 
 	 * @return x- and y-pixels (point) to shift of the tool tip or
 	 *         <code>null</code> if the default shift should be used.
+	 * @since 4.0
 	 */
 	Object getToolTipShift(Object element);
 
@@ -183,6 +189,7 @@ public interface IColumnFormatter {
 	 *            the element for which the tool tip is shown
 	 * 
 	 * @return time in milliseconds the tool tip is shown for
+	 * @since 4.0
 	 */
 	int getToolTipTimeDisplayed(Object element);
 
@@ -192,6 +199,7 @@ public interface IColumnFormatter {
 	 * @param element
 	 *            the element for which the tool tip is shown
 	 * @return time in milliseconds until the tool tip is displayed
+	 * @since 4.0
 	 */
 	int getToolTipDisplayDelayTime(Object element);
 
@@ -202,6 +210,7 @@ public interface IColumnFormatter {
 	 * @param element
 	 *            the element for which the tool tip is shown
 	 * @return the style used to create the label
+	 * @since 4.0
 	 */
 	int getToolTipStyle(Object element);
 
