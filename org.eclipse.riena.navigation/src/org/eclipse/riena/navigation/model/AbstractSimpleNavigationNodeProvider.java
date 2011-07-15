@@ -172,7 +172,9 @@ public abstract class AbstractSimpleNavigationNodeProvider implements INavigatio
 					targetNode = targetNodes[0];
 				}
 			} else {
-				throw new ExtensionPointFailure("No assembler found for ID=" + targetId.getTypeId()); //$NON-NLS-1$
+				if (getRootNode(sourceNode).isActivated()) {
+					throw new ExtensionPointFailure("No assembler found for ID=" + targetId.getTypeId()); //$NON-NLS-1$
+				}
 			}
 		} else {
 			prepareExistingNode(sourceNode, targetNode, argument);
