@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IPageLayout;
+import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
@@ -71,6 +72,8 @@ import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
  * View of a sub-application.
@@ -642,6 +645,23 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 	}
 
+	private IPerspectiveDescriptor getActivePerspective() {
+		final IWorkbenchPage page = getActivePage();
+		if (page != null) {
+			// get the active perspective
+			return page.getPerspective();
+		}
+		return null;
+	}
+
+	private String getActivePerspectiveId() {
+		final IPerspectiveDescriptor perspective = getActivePerspective();
+		if (perspective == null) {
+			return null;
+		}
+		return perspective.getId();
+	}
+
 	/**
 	 * Hides the view in the active page.
 	 * 
@@ -714,7 +734,14 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			if (viewPart == null) {
 				// open view but don't activate it and don't bring it to top
 				viewPart = page.showView(id, secondary, IWorkbenchPage.VIEW_VISIBLE);
-
+			}
+			if ((viewPart != null) && (currentPrepared != null)) {
+				final String perspectiveId = getActivePerspectiveId();
+				final ISubApplicationNode subApp = currentPrepared.getParentOfType(ISubApplicationNode.class);
+				final IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(subApp);
+				if (!StringUtils.equals(perspectiveId, def.getViewId().toString())) {
+					LOGGER.log(LogService.LOG_ERROR, "Wrong perspective!!!");
+				}
 			}
 
 			/*
