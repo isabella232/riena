@@ -95,6 +95,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	private Object[] rowValuesUnsorted;
 	private Class<? extends Object> rowBeanClass;
 	private Class<? extends Object> rowRidgetClass;
+	private String[] columnHeaders;
 
 	private boolean isSortedAscending;
 	private int sortedColumn;
@@ -186,6 +187,12 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	public void bindToModel(final IObservableList rowObservables, final Class<? extends Object> rowClass,
 			final Class<? extends Object> rowRidgetClass) {
 		Assert.isLegal(IRowRidget.class.isAssignableFrom(rowRidgetClass));
+		bindToModel(rowObservables, rowClass, rowRidgetClass, null);
+	}
+
+	public void bindToModel(final IObservableList rowObservables, final Class<? extends Object> rowClass,
+			final Class<? extends Object> rowRidgetClass, final String[] columnHeaders) {
+		Assert.isLegal(IRowRidget.class.isAssignableFrom(rowRidgetClass));
 
 		unbindUIControl();
 
@@ -194,19 +201,31 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		rowValuesUnsorted = null;
 		this.rowBeanClass = rowClass;
 		this.rowRidgetClass = rowRidgetClass;
+		if (columnHeaders != null) {
+			this.columnHeaders = new String[columnHeaders.length];
+			System.arraycopy(columnHeaders, 0, this.columnHeaders, 0, this.columnHeaders.length);
+		} else {
+			this.columnHeaders = null;
+		}
 
 		bindUIControl();
 	}
 
 	public void bindToModel(final Object listHolder, final String listPropertyName,
-			final Class<? extends Object> rowClass, final Class<? extends Object> rowRidgetClass) {
+			final Class<? extends Object> rowClass, final Class<? extends Object> rowRidgetClass,
+			final String[] columnHeaders) {
 		IObservableList rowBeansObservables;
 		if (AbstractSWTWidgetRidget.isBean(rowClass)) {
 			rowBeansObservables = BeansObservables.observeList(listHolder, listPropertyName);
 		} else {
 			rowBeansObservables = PojoObservables.observeList(listHolder, listPropertyName);
 		}
-		bindToModel(rowBeansObservables, rowClass, rowRidgetClass);
+		bindToModel(rowBeansObservables, rowClass, rowRidgetClass, columnHeaders);
+	}
+
+	public void bindToModel(final Object listHolder, final String listPropertyName,
+			final Class<? extends Object> rowClass, final Class<? extends Object> rowRidgetClass) {
+		bindToModel(listHolder, listPropertyName, rowClass, rowRidgetClass, null);
 	}
 
 	@Override
@@ -520,10 +539,29 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 		}
 	}
 
+	/**
+	 * Sets the text of every column header.
+	 */
+	private void updateHeader() {
+		if (columnHeaders == null) {
+			return;
+		}
+		final AbstractNativeHeader header = getHeader();
+		if (header != null) {
+			final TableColumn[] columns = header.getColumns();
+			for (int i = 0; i < columns.length; i++) {
+				if (i < columnHeaders.length) {
+					columns[i].setText(columnHeaders[i]);
+				}
+			}
+		}
+	}
+
 	private void updateControl(final CompositeTable control) {
 		control.setRedraw(false);
 		try {
 			control.setNumRowsInCollection(rowValues.length);
+			updateHeader();
 			applyComparator();
 			updateSelection();
 		} finally {

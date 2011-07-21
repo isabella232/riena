@@ -124,6 +124,35 @@ public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
 		}
 	}
 
+	public void testBindToModelWithColumnHeader() {
+		final Shell shell = new Shell(SWT.SYSTEM_MODAL | SWT.ON_TOP);
+		try {
+			shell.setLayout(new RowLayout(SWT.VERTICAL));
+			final CompositeTable widget = (CompositeTable) createWidget(shell);
+
+			final ICompositeTableRidget ridget = (ICompositeTableRidget) createRidget();
+			ridget.setUIControl(widget);
+
+			final MyModel model = new MyModel();
+			ridget.bindToModel(model, "persons", Person.class, RowRidget.class, new String[] { "First Name",
+					"Last Name" });
+			ridget.updateFromModel();
+
+			shell.setSize(130, 100);
+			shell.setLocation(0, 0);
+			shell.open();
+			UITestHelper.readAndDispatch(getWidget());
+
+			assertNotNull(widget.getRowControls());
+			assertEquals(model.getPersons().size(), widget.getRowControls().length);
+			final AbstractNativeHeader header = (AbstractNativeHeader) widget.getHeader();
+			assertEquals("First Name", header.getColumns()[0].getText());
+			assertEquals("Last Name", header.getColumns()[1].getText());
+		} finally {
+			shell.dispose();
+		}
+	}
+
 	@Override
 	public void testUpdateSingleSelectionFromRidgetOnRebind() {
 		final ISelectableIndexedRidget ridget = getRidget();
