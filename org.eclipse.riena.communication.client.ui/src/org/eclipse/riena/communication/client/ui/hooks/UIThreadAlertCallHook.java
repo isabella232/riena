@@ -10,13 +10,15 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.client.ui.hooks;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.riena.communication.core.hooks.CallContext;
 import org.eclipse.riena.communication.core.hooks.ICallHook;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaStatus;
-import org.eclipse.swt.widgets.Display;
-import org.osgi.service.log.LogService;
 
 /**
  * This call hook may be used at development time to get log information, if
@@ -39,8 +41,8 @@ public class UIThreadAlertCallHook implements ICallHook {
 	public void beforeCall(final CallContext context) {
 
 		if (RienaStatus.isDevelopment() && LOGGER.isLoggable(LogService.LOG_DEBUG) && Display.getCurrent() != null) {
-			LOGGER.log(LogService.LOG_DEBUG, "Service " + context.getInterfaceName() + "." + context.getMethodName()
-					+ " is running on the user-interface thread. This may cause the ui freeze.");
+			LOGGER.log(LogService.LOG_DEBUG, "Service " + context.getInterfaceName() + "." + context.getMethodName() //$NON-NLS-1$ //$NON-NLS-2$
+					+ " is running on the user-interface thread. This may cause the ui freeze."); //$NON-NLS-1$
 		}
 	}
 
