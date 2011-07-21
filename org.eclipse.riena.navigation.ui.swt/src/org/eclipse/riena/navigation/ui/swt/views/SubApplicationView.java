@@ -72,7 +72,6 @@ import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.ridgets.uibinding.IControlRidgetMapper;
 import org.eclipse.riena.ui.swt.uiprocess.UIProcessControl;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
-import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
@@ -654,14 +653,6 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 		return null;
 	}
 
-	private String getActivePerspectiveId() {
-		final IPerspectiveDescriptor perspective = getActivePerspective();
-		if (perspective == null) {
-			return null;
-		}
-		return perspective.getId();
-	}
-
 	/**
 	 * Hides the view in the active page.
 	 * 
@@ -714,6 +705,30 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	}
 
 	/**
+	 * Returns the perspective of the given sub-application.
+	 * 
+	 * @param subApp
+	 *            node of the sub-application
+	 * @return perspective of sub-application or {@code null} if no perspective
+	 *         was found
+	 */
+	private IPerspectiveDescriptor getPerspectiveOfSubApplication(final ISubApplicationNode subApp) {
+
+		final Object subAppIdObject = WorkareaManager.getInstance().getDefinition(getNavigationNode()).getViewId();
+		final String subAppId = String.valueOf(subAppIdObject);
+		final IPerspectiveDescriptor[] perspectives = PlatformUI.getWorkbench().getPerspectiveRegistry()
+				.getPerspectives();
+		for (final IPerspectiveDescriptor perspective : perspectives) {
+			if (StringUtils.equals(subAppId, perspective.getId())) {
+				return perspective;
+			}
+		}
+
+		return null;
+
+	}
+
+	/**
 	 * Prepares a view so that is can be shown.
 	 * 
 	 * @param id
@@ -732,15 +747,18 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 				viewPart = SwtViewProvider.getInstance().getRegisteredView(id);
 			}
 			if (viewPart == null) {
+				final IPerspectiveDescriptor activePerspective = getActivePerspective();
+				final IPerspectiveDescriptor subAppPerspective = getPerspectiveOfSubApplication(getNavigationNode());
+				if (subAppPerspective != null) {
+					page.setPerspective(subAppPerspective);
+				} else {
+					LOGGER.log(LogService.LOG_WARNING, "No perspective found for sub application: " //$NON-NLS-1$
+							+ getNavigationNode());
+				}
 				// open view but don't activate it and don't bring it to top
 				viewPart = page.showView(id, secondary, IWorkbenchPage.VIEW_VISIBLE);
-			}
-			if ((viewPart != null) && (currentPrepared != null)) {
-				final String perspectiveId = getActivePerspectiveId();
-				final ISubApplicationNode subApp = currentPrepared.getParentOfType(ISubApplicationNode.class);
-				final IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(subApp);
-				if (!StringUtils.equals(perspectiveId, def.getViewId().toString())) {
-					LOGGER.log(LogService.LOG_ERROR, "Wrong perspective!!!");
+				if (subAppPerspective != null) {
+					page.setPerspective(activePerspective);
 				}
 			}
 
