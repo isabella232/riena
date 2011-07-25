@@ -69,11 +69,10 @@ public class ChoiceSubModuleControllerTest extends AbstractSubModuleControllerTe
 		final IMultipleChoiceRidget compositeCarExtras = getController().getRidget(IMultipleChoiceRidget.class,
 				"compositeCarExtras"); //$NON-NLS-1$
 
-		// TODO: fails due to annotated listener methods -> https://bugs.eclipse.org/bugs/show_bug.cgi?id=343234
-		//		assertEquals(compositeCarModel.getSelection(), ChoiceSubModuleController.CarModels.BMW);
-		//		assertEquals(compositeCarExtras.getSelection().size(), 1);
-		//		assertEquals(compositeCarExtras.getSelection().get(0), CarOptions.PDCS);
-		//		assertEquals(getController().getCarConfig().getPrice(), 135200);
+		assertEquals(compositeCarModel.getSelection(), ChoiceSubModuleController.CarModels.BMW);
+		assertEquals(compositeCarExtras.getSelection().size(), 1);
+		assertEquals(compositeCarExtras.getSelection().get(0), CarOptions.PDCS);
+		assertEquals(getController().getCarConfig().getPrice(), 135200);
 	}
 
 	public void testReset() {

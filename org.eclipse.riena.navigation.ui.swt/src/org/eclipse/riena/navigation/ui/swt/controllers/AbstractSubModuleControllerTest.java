@@ -26,6 +26,7 @@ import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.ui.ridgets.annotation.processor.RidgetContainerAnnotationProcessor;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
@@ -45,7 +46,7 @@ public abstract class AbstractSubModuleControllerTest<C extends IController> ext
 	protected void setUp() throws Exception {
 
 		super.setUp();
-		System.getProperties().put(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "true"); //$NON-NLS-1$
+		System.getProperties().put(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, Boolean.TRUE.toString());
 
 		// only used to get the initial mappings
 		SwtControlRidgetMapper.getInstance();
@@ -65,6 +66,7 @@ public abstract class AbstractSubModuleControllerTest<C extends IController> ext
 		controller.configureRidgets();
 		controller.afterBind();
 
+		RidgetContainerAnnotationProcessor.getInstance().processAnnotations(controller);
 	}
 
 	@Override
