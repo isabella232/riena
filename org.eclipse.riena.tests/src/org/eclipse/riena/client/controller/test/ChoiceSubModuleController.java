@@ -27,14 +27,14 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
-import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IMultipleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ISingleChoiceRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.annotation.OnActionCallback;
 
 /**
- * Controller for the example.
+ * Controller for the {@link ChoiceSubModuleView} example.
  */
 @SuppressWarnings("restriction")
 public class ChoiceSubModuleController extends SubModuleController {
@@ -50,45 +50,40 @@ public class ChoiceSubModuleController extends SubModuleController {
 		return carConfig;
 	}
 
-	/**
-	 * Binds and updates the ridgets.
-	 * 
-	 * @see org.eclipse.riena.ui.ridgets.IRidgetContainer#configureRidgets()
-	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public void configureRidgets() {
 
-		final SingleChoiceRidget compositeCarModel = getRidget(SingleChoiceRidget.class, "compositeCarModel"); //$NON-NLS-1$
+		compositeCarModel = getRidget(SingleChoiceRidget.class, "compositeCarModel"); //$NON-NLS-1$
 		compositeCarModel.bindToModel(toList(CarModels.values()),
 				BeansObservables.observeValue(carConfig, CarConfig.PROP_MODEL));
 		compositeCarModel.addMarker(new MandatoryMarker());
 		compositeCarModel.updateFromModel();
 
-		final IMultipleChoiceRidget compositeCarExtras = getRidget(IMultipleChoiceRidget.class, "compositeCarExtras"); //$NON-NLS-1$
+		compositeCarExtras = getRidget(IMultipleChoiceRidget.class, "compositeCarExtras"); //$NON-NLS-1$
 		final String[] labels = { "Front Machine Guns", "Self Destruct Button", "Underwater Package", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				"Park Distance Control System", }; //$NON-NLS-1$
 		compositeCarExtras.bindToModel(toList(CarOptions.values()), Arrays.asList(labels), carConfig,
 				CarConfig.PROP_OPTIONS);
 		compositeCarExtras.updateFromModel();
 
-		final ISingleChoiceRidget compositeCarWarranty = getRidget(ISingleChoiceRidget.class, "compositeCarWarranty"); //$NON-NLS-1$
+		compositeCarWarranty = getRidget(ISingleChoiceRidget.class, "compositeCarWarranty"); //$NON-NLS-1$
 		compositeCarWarranty.bindToModel(toList(CarWarranties.values()),
 				BeansObservables.observeValue(carConfig, CarConfig.PROP_WARRANTY));
 		compositeCarWarranty.addMarker(new MandatoryMarker());
 		compositeCarWarranty.updateFromModel();
 
-		final IMultipleChoiceRidget compositeCarPlates = getRidget(IMultipleChoiceRidget.class, "compositeCarPlates"); //$NON-NLS-1$
+		compositeCarPlates = getRidget(IMultipleChoiceRidget.class, "compositeCarPlates"); //$NON-NLS-1$
 		compositeCarPlates
 				.bindToModel(toList(carPlates), PojoObservables.observeList(carConfig, CarConfig.PROP_PLATES));
 		compositeCarPlates.addMarker(new MandatoryMarker());
 		compositeCarPlates.updateFromModel();
 
-		final ISingleChoiceRidget compositeColor = getRidget(ISingleChoiceRidget.class, "compositeColor"); //$NON-NLS-1$
+		compositeColor = getRidget(ISingleChoiceRidget.class, "compositeColor"); //$NON-NLS-1$
 		compositeColor.bindToModel(carConfig, "colors", carConfig, CarConfig.PROP_COLOR); //$NON-NLS-1$
 		compositeColor.updateFromModel();
 
-		final ISingleChoiceRidget compositeSunroof = getRidget(ISingleChoiceRidget.class, "compositeSunroof"); //$NON-NLS-1$
+		compositeSunroof = getRidget(ISingleChoiceRidget.class, "compositeSunroof"); //$NON-NLS-1$
 		final String[] roofLabels = { "yes", "no" }; //$NON-NLS-1$ //$NON-NLS-2$
 		compositeSunroof.bindToModel(toList(new Boolean[] { true, false }), toList(roofLabels), carConfig,
 				CarConfig.PROP_SUNROOF);
@@ -102,28 +97,9 @@ public class ChoiceSubModuleController extends SubModuleController {
 
 		final IActionRidget buttonPreset = getRidget(IActionRidget.class, "buttonPreset"); //$NON-NLS-1$
 		buttonPreset.setText("&Quick Config"); //$NON-NLS-1$
-		buttonPreset.addListener(new IActionListener() {
-			public void callback() {
-				compositeCarModel.setSelection(CarModels.BMW);
-				compositeCarExtras.setSelection(Arrays.asList(new CarOptions[] { CarOptions.PDCS }));
-				compositeCarWarranty.setSelection(CarWarranties.EXTENDED);
-				compositeCarPlates.setSelection(Arrays.asList(new String[] { carPlates[0] }));
-			}
-		});
 		final IActionRidget buttonReset = getRidget(IActionRidget.class, "buttonReset"); //$NON-NLS-1$
 
 		buttonReset.setText("&Reset"); //$NON-NLS-1$
-		buttonReset.addListener(new IActionListener() {
-			public void callback() {
-				carConfig.reset();
-				compositeCarModel.updateFromModel();
-				compositeCarExtras.updateFromModel();
-				compositeCarWarranty.updateFromModel();
-				compositeCarPlates.updateFromModel();
-				compositeSunroof.updateFromModel();
-				compositeColor.updateFromModel();
-			}
-		});
 
 		getNavigationNode().addListener(new SubModuleNodeListener() {
 			@Override
@@ -139,6 +115,25 @@ public class ChoiceSubModuleController extends SubModuleController {
 			}
 		});
 
+	}
+
+	@OnActionCallback(ridgetId = "buttonPreset")
+	public void onPreset() {
+		compositeCarModel.setSelection(CarModels.BMW);
+		compositeCarExtras.setSelection(Arrays.asList(new CarOptions[] { CarOptions.PDCS }));
+		compositeCarWarranty.setSelection(CarWarranties.EXTENDED);
+		compositeCarPlates.setSelection(Arrays.asList(new String[] { carPlates[0] }));
+	}
+
+	@OnActionCallback(ridgetId = "buttonReset")
+	public void onReset() {
+		carConfig.reset();
+		compositeCarModel.updateFromModel();
+		compositeCarExtras.updateFromModel();
+		compositeCarWarranty.updateFromModel();
+		compositeCarPlates.updateFromModel();
+		compositeSunroof.updateFromModel();
+		compositeColor.updateFromModel();
 	}
 
 	private WritableList toList(final Object[] values) {
@@ -297,4 +292,10 @@ public class ChoiceSubModuleController extends SubModuleController {
 	}
 
 	private final String[] carPlates = { "JM5B0ND", "1 SPY", "MNY PNY", "BN D07", "Q RULE2", "MI64EVR" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	private SingleChoiceRidget compositeCarModel;
+	private IMultipleChoiceRidget compositeCarExtras;
+	private ISingleChoiceRidget compositeCarWarranty;
+	private IMultipleChoiceRidget compositeCarPlates;
+	private ISingleChoiceRidget compositeSunroof;
+	private ISingleChoiceRidget compositeColor;
 }
