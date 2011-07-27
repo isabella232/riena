@@ -925,14 +925,15 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		Assert.isTrue(!isInvalid(), "must not be an invalid transaction"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		// check if a delta entry was found
-		boolean isRegistered = changesInTransaction.get(object.getObjectId()) != null;
-		// if not and a parent exist, ask parent and if it finds one, add it to
-		// the references in this transaction
-		if (!isRegistered && parentTransaction != null) {
-			isRegistered = parentTransaction.isRegistered(object);
+		if (changesInTransaction.get(object.getObjectId()) != null)
+			return true;
+		// look for delta entry in parent and add business object to this transaction's references
+		if (parentTransaction != null) {
 			keepReferenceOf(object);
+			return parentTransaction.isRegistered(object);
 		}
-		return isRegistered;
+		// nothing was found -> object was not registered
+		return false;
 	}
 
 	private boolean isRegistered(final IObjectId object) {
@@ -940,13 +941,14 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		Assert.isTrue(!isInvalid(), "must not be an invalid transaction"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		// check if a delta entry was found
-		boolean isRegistered = changesInTransaction.get(object) != null;
-		// if not and a parent exist, ask parent and if it finds one, add it to
-		// the references in this transaction
-		if (!isRegistered && parentTransaction != null) {
-			isRegistered = parentTransaction.isRegistered(object);
+		if (changesInTransaction.get(object) != null)
+			return true;
+		// look for delta entry in parent and add business object to this transaction's references
+		if (parentTransaction != null) {
+			return parentTransaction.isRegistered(object);
 		}
-		return isRegistered;
+		// nothing was found -> object was not registered
+		return false;
 	}
 
 	/**
