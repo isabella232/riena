@@ -26,11 +26,21 @@ public class RienaStatusTest extends RienaTestCase {
 		final String savedValue = System.getProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY);
 		try {
 			System.clearProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY);
-			assertTrue(RienaStatus.isDevelopment());
+
+			// Unfortunately this can not be tested because the default value will be retrieved on RienaStatus class load time!
+			//
+			//			System.setProperty("osgi.dev", "");
+			//			assertTrue(RienaStatus.isDevelopment());
+			//
+			//			System.clearProperty("osgi.dev");
+			//			assertFalse(RienaStatus.isDevelopment());
+
 			System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, "false");
 			assertFalse(RienaStatus.isDevelopment());
+
 			System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, "true");
 			assertTrue(RienaStatus.isDevelopment());
+
 		} finally {
 			if (savedValue != null) {
 				System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, savedValue);

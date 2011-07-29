@@ -34,7 +34,7 @@ public final class RienaStatus {
 	 * This is the default value (i.e. if the value is not explicitly defined)
 	 * for the system property {@code RIENA_DEVELOPMENT_SYSTEM_PROPERTY}
 	 */
-	public static final String DEVELOPMENT_DEFAULT = "true"; //$NON-NLS-1$
+	public static final String DEVELOPMENT_DEFAULT = inOsgiDevMode();
 
 	/**
 	 * This is the default value (i.e. if the value is not explicitly defined)
@@ -89,12 +89,18 @@ public final class RienaStatus {
 	 * </ul>
 	 * <b>Note:</b> This property is controlled by the system property
 	 * "riena.development". If <b>NOT</b> defined it defaults to
-	 * <code>true</code>.
+	 * {@code System.getProperty("osgi.dev") != null}.<br>
+	 * This means that the default value is {@code true} while you are within
+	 * the Eclipse IDE otherwise it is {@code false}.
 	 * 
 	 * @return is development or not?
 	 */
 	public static boolean isDevelopment() {
 		return Boolean.parseBoolean(System.getProperty(RIENA_DEVELOPMENT_SYSTEM_PROPERTY, DEVELOPMENT_DEFAULT));
+	}
+
+	private static String inOsgiDevMode() {
+		return Boolean.toString(System.getProperty("osgi.dev") != null); //$NON-NLS-1$
 	}
 
 	/**
