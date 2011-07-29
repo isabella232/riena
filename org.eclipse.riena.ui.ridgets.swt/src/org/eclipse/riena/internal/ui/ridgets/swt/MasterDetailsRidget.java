@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.core.util.ObjectUtils;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
+import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
@@ -59,6 +60,9 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 		if (control != null) {
 			final Table table = control.getTable();
 			table.removeSelectionListener(dirtyDetailsChecker);
+		}
+		for (final IRidget ridget : getRidgets()) {
+			ridget.setUIControl(null);
 		}
 	}
 
