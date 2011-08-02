@@ -73,6 +73,23 @@ The values &apos;!&apos; and &apos;*&apos; have a special internal meaning and s
                   This exception handler will be called before the exception handler specified by this attribute. If not set than the specified exception handler will be called before all other exception handlers.
 The value &apos;!&apos; has a special internal meaning and should not be used.
                </documentation>
+               <appInfo>
+                  <meta.attribute deprecated="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="preHandlers" type="string">
+            <annotation>
+               <documentation>
+                  a comma separated list of handler names that should be executed before this handler. A single &apos;*&apos; denotes that all other handlers should be executed before this handler.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="postHandlers" type="string">
+            <annotation>
+               <documentation>
+                  a comma separated list of handler names that should be executed after this handler. A single &apos;*&apos; denotes that all other handlers should be executed after this handler.
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

@@ -39,11 +39,10 @@
    </extension>
    <extension
          point="org.eclipse.riena.core.exceptionHandlers">
-      <!-- The "!" attribute value for the before attribute makes this handler the last handler in the chain -->
       <exceptionHandler
-            before="!"
             class="org.eclipse.riena.internal.core.exceptionhandler.SimpleExceptionHandler"
-            name="Simple riena core handler">
+            name="Simple riena core handler"
+            preHandlers="*">
       </exceptionHandler>
    </extension>
    

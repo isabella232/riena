@@ -12,68 +12,48 @@ package org.eclipse.riena.core.exception;
 
 import org.eclipse.equinox.log.Logger;
 
+import org.eclipse.riena.core.util.StringUtils;
+
 /**
  * Test class for ExceptionHandler
  */
 public class TestExceptionHandler implements IExceptionHandler {
 
 	private final String name;
-	private final String before;
-	private IExceptionHandler.Action action = IExceptionHandler.Action.NOT_HANDLED;
-	private Throwable throwable;
+	private final String exceptionMessageTrigger;
+	private Action action;
 
-	public TestExceptionHandler(final String name, final String before, final IExceptionHandler.Action action) {
+	private static String handledName;
+
+	public static String getHandledName() {
+		return handledName;
+	}
+
+	public TestExceptionHandler(final String name, final String exceptionMessageTrigger) {
 		this.name = name;
-		this.before = before;
-		if (action != null) {
-			this.action = action;
-		}
+		this.exceptionMessageTrigger = exceptionMessageTrigger;
+		handledName = null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.core.exception.IExceptionHandler#getBefore()
-	 */
-	public String getBefore() {
-		return before;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.core.exception.IExceptionHandler#getName()
-	 */
-	public String getName() {
-		return name;
-	}
-
-	Throwable getThrowable() {
-		return throwable;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.core.exception.IExceptionHandler#handleCaught(java.
-	 * lang.Throwable, java.lang.Object, org.eclipse.equinox.log.Logger)
-	 */
 	public IExceptionHandler.Action handleException(final Throwable t, final String msg, final Logger logger) {
-		throwable = t;
+		action = StringUtils.equals(t.getMessage(), exceptionMessageTrigger) ? Action.OK : Action.NOT_HANDLED;
+		if (action == Action.OK) {
+			handledName = name;
+		}
 		return action;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.core.exception.IExceptionHandler#handleUncaught(java
-	 * .lang.Throwable, java.lang.Object, org.eclipse.equinox.log.Logger)
-	 */
 	public IExceptionHandler.Action handleUncaught(final Throwable t, final String msg, final Logger logger) {
-		throwable = t;
+		action = StringUtils.equals(t.getMessage(), exceptionMessageTrigger) ? Action.OK : Action.NOT_HANDLED;
+		if (action == Action.OK) {
+			handledName = name;
+		}
 		return action;
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 
 }
