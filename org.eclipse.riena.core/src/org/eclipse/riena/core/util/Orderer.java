@@ -100,8 +100,13 @@ public class Orderer<T> {
 			return Collections.emptyList();
 		}
 		final Map<Ordering<T>, Node<T>> nodeMap = new HashMap<Ordering<T>, Node<T>>();
-		initializeGraph(nodeMap);
-		return trailer.getOrder();
+		try {
+			initializeGraph(nodeMap);
+			return trailer.getOrder();
+		} catch (final OrdererFailure e) {
+			throw new OrdererFailure("Found a conflict within Orderings [" + StringUtils.join(orderingsList, ",") //$NON-NLS-1$ //$NON-NLS-2$
+					+ "]. " + e.getMessage()); //$NON-NLS-1$
+		}
 	}
 
 	private void initializeGraph(final Map<Ordering<T>, Node<T>> nodeMap) {
@@ -298,9 +303,6 @@ public class Orderer<T> {
 
 		private static final long serialVersionUID = 5018828794366775202L;
 
-		/**
-		 * @param msg
-		 */
 		public OrdererFailure(final String msg) {
 			super(msg);
 		}
