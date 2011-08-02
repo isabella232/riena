@@ -925,8 +925,9 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		Assert.isTrue(!isInvalid(), "must not be an invalid transaction"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		// check if a delta entry was found
-		if (changesInTransaction.get(object.getObjectId()) != null)
+		if (changesInTransaction.get(object.getObjectId()) != null) {
 			return true;
+		}
 		// look for delta entry in parent and add business object to this transaction's references
 		if (parentTransaction != null) {
 			keepReferenceOf(object);
@@ -941,8 +942,9 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		Assert.isTrue(!isInvalid(), "must not be an invalid transaction"); //$NON-NLS-1$
 		checkPreRegisteredClean();
 		// check if a delta entry was found
-		if (changesInTransaction.get(object) != null)
+		if (changesInTransaction.get(object) != null) {
 			return true;
+		}
 		// look for delta entry in parent and add business object to this transaction's references
 		if (parentTransaction != null) {
 			return parentTransaction.isRegistered(object);
@@ -1186,81 +1188,28 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		final boolean savedCleanModus = cleanModus;
 		cleanModus = false;
 
-		// while over all changes in the objectTransaction
+		// iterate through all changes in the objectTransaction
 		for (final TransactionDelta delta : changesInTransaction.values()) {
 			final ITransactedObject usedObject = lookupObjectById(delta.getObjectId());
-			// if (delta.getstate().equals(State.DELETED)) {
-			// involvedTransactedObjects.remove(usedObject.getObjectId());
-			// continue;
-			// }
-			// while over all properties or relation changes for one
+			// iterate through all properties or relation changes for one
 			// transactedobject
 			for (final AbstractBaseChange cEntry : delta.getChanges().values()) {
 				final String refName = cEntry.getRelationName();
-				// single (1:1) property or relation change
-				if (cEntry instanceof SingleChange) {
-					try {
-						if (refName.equals("sys::oid") || refName.equals("sys::oldoid")) { //$NON-NLS-1$ //$NON-NLS-2$
+				try {
+					if (cEntry instanceof SingleChange) {
+						if (refName.equals("sys::oid") || refName.equals("sys::oldoid") || refName.equals("sys::version")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 							continue;
 						}
-						if (refName.equals("sys::version")) { //$NON-NLS-1$
-							continue;
-						}
-						// get the current value from the bean, which should ask
-						// the objectTransaction
-						// Method getMethod = findMethod( usedObject.getClass(),
-						// refName, "get", null );
-						// Object value = getMethod.invoke( usedObject, new
-						// Object[] {} );
-						Object value = ((SingleChange) cEntry).getChildObject();
-						if (value instanceof IObjectId) {
-							value = lookupObjectById((IObjectId) value);
-						}
-						// set it into the bean using clean modus, so no
-						// objectTransaction is involved
-						final Method setMethod = findMethod(usedObject.getClass(), refName, "set", value); //$NON-NLS-1$
-						cleanModus = true;
-						setMethod.invoke(usedObject, new Object[] { value });
-						cleanModus = false;
-					} catch (final IllegalAccessException e) {
-						throw new ObjectTransactionFailure("access to field blocked field " + refName + " in object " //$NON-NLS-1$ //$NON-NLS-2$
-								+ usedObject, e);
-					} catch (final InvocationTargetException e2) {
-						throw new ObjectTransactionFailure("problem while accessing field blocked field " + refName //$NON-NLS-1$
-								+ " in object " + usedObject, e2); //$NON-NLS-1$
+						applySingleChangeToBean(usedObject, cEntry, refName);
+					} else {
+						applyMultipleChangeToBean(usedObject, cEntry, refName);
 					}
-
-				} else {
-					try {
-						cleanModus = true;
-						Method addMethod = null;
-						Method removeMethod = null;
-						final List<MultipleChangeEntry> changes = ((MultipleChange) cEntry).getEntries();
-						for (final MultipleChangeEntry singleEntry : changes) {
-							if (singleEntry.getState().equals(State.ADDED)) {
-								final Object value = lookupObjectById((IObjectId) singleEntry.getChildObject());
-								if (addMethod == null) {
-									addMethod = findMethod(usedObject.getClass(), refName, "add", value); //$NON-NLS-1$
-								}
-								addMethod.invoke(usedObject, new Object[] { value });
-							} else {
-								if (singleEntry.getState().equals(State.REMOVED)) {
-									final Object value = lookupObjectById((IObjectId) singleEntry.getChildObject());
-									if (removeMethod == null) {
-										removeMethod = findMethod(usedObject.getClass(), refName, "remove", value); //$NON-NLS-1$
-									}
-									removeMethod.invoke(usedObject, new Object[] { value });
-								}
-							}
-						}
-						cleanModus = false;
-					} catch (final IllegalAccessException e) {
-						throw new ObjectTransactionFailure("access to field blocked field " + refName + " in object " //$NON-NLS-1$ //$NON-NLS-2$
-								+ usedObject, e);
-					} catch (final InvocationTargetException e2) {
-						throw new ObjectTransactionFailure("problem while accessing field blocked field " + refName //$NON-NLS-1$
-								+ " in object " + usedObject, e2); //$NON-NLS-1$
-					}
+				} catch (final IllegalAccessException e) {
+					throw new ObjectTransactionFailure("access to field blocked field " + refName + " in object " //$NON-NLS-1$ //$NON-NLS-2$
+							+ usedObject, e);
+				} catch (final InvocationTargetException e2) {
+					throw new ObjectTransactionFailure("problem while accessing field blocked field " + refName //$NON-NLS-1$
+							+ " in object " + usedObject, e2); //$NON-NLS-1$
 				}
 			}
 		}
@@ -1268,10 +1217,9 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 		// do a second iterate and remove deleted objects from involved object
 		// list
 		for (final TransactionDelta delta : changesInTransaction.values()) {
-			final ITransactedObject usedObject = lookupObjectById(delta.getObjectId());
 			if (delta.getState().equals(State.DELETED)) {
+				final ITransactedObject usedObject = lookupObjectById(delta.getObjectId());
 				involvedTransactedObjects.remove(usedObject.getObjectId());
-				continue;
 			}
 		}
 		cleanModus = savedCleanModus;
@@ -1285,6 +1233,57 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 			for (final ITransactedObject object : arrayValues) {
 				setObjectState(object, State.CLEAN);
 			}
+		}
+	}
+
+	private void applyMultipleChangeToBean(final ITransactedObject usedObject, final AbstractBaseChange cEntry,
+			final String refName) throws IllegalAccessException, InvocationTargetException {
+		cleanModus = true;
+		Method addMethod = null;
+		Method removeMethod = null;
+		for (final MultipleChangeEntry singleEntry : ((MultipleChange) cEntry).getEntries()) {
+			if (singleEntry.getState().equals(State.ADDED)) {
+				final Object value = lookupObjectById((IObjectId) singleEntry.getChildObject());
+				if (addMethod == null) {
+					addMethod = findMethod(usedObject.getClass(), refName, "add", value); //$NON-NLS-1$
+				}
+				addMethod.invoke(usedObject, new Object[] { value });
+			} else if (singleEntry.getState().equals(State.REMOVED)) {
+				final Object value = lookupObjectById((IObjectId) singleEntry.getChildObject());
+				if (removeMethod == null) {
+					removeMethod = findMethod(usedObject.getClass(), refName, "remove", value); //$NON-NLS-1$
+				}
+				removeMethod.invoke(usedObject, new Object[] { value });
+			}
+		}
+		cleanModus = false;
+	}
+
+	private void applySingleChangeToBean(final ITransactedObject usedObject, final AbstractBaseChange cEntry,
+			final String refName) {
+		try {
+			// get the current value from the bean, which should ask
+			// the objectTransaction
+			// Method getMethod = findMethod( usedObject.getClass(),
+			// refName, "get", null );
+			// Object value = getMethod.invoke( usedObject, new
+			// Object[] {} );
+			Object value = ((SingleChange) cEntry).getChildObject();
+			if (value instanceof IObjectId) {
+				value = lookupObjectById((IObjectId) value);
+			}
+			// set it into the bean using clean modus, so no
+			// objectTransaction is involved
+			final Method setMethod = findMethod(usedObject.getClass(), refName, "set", value); //$NON-NLS-1$
+			cleanModus = true;
+			setMethod.invoke(usedObject, new Object[] { value });
+			cleanModus = false;
+		} catch (final IllegalAccessException e) {
+			throw new ObjectTransactionFailure("access to field blocked field " + refName + " in object " //$NON-NLS-1$ //$NON-NLS-2$
+					+ usedObject, e);
+		} catch (final InvocationTargetException e2) {
+			throw new ObjectTransactionFailure("problem while accessing field blocked field " + refName //$NON-NLS-1$
+					+ " in object " + usedObject, e2); //$NON-NLS-1$
 		}
 	}
 
@@ -1353,7 +1352,6 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 
 	/**
 	 * invalidate this objectTransaction
-	 * 
 	 */
 	@SuppressWarnings("unused")
 	// currently unused thats why it is private but maybe we need it later
