@@ -256,7 +256,9 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * @since 3.0
 	 */
 	protected void registerView() {
-		SwtViewProvider.getInstance().registerView(getViewSite().getId(), this);
+		if (getViewSite() != null) {
+			SwtViewProvider.getInstance().registerView(getViewSite().getId(), this);
+		}
 	}
 
 	@Override
@@ -273,9 +275,11 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	 * @since 3.0
 	 */
 	protected void destroyView() {
-		final String id = getViewSite().getId();
 		super.dispose();
-		SwtViewProvider.getInstance().unregisterView(id);
+		if (getViewSite() != null) {
+			final String id = getViewSite().getId();
+			SwtViewProvider.getInstance().unregisterView(id);
+		}
 	}
 
 	/**
