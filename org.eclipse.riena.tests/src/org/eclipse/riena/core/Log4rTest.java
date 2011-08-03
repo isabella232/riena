@@ -43,55 +43,60 @@ public class Log4rTest extends RienaTestCase {
 	public void testWithContext() {
 		final Logger logger = Log4r.getLogger(Activator.getDefault(), Log4rTest.class);
 		assertNotNull(logger);
-		assertFalse("ConsoleLogger".equals(logger.getClass().getSimpleName()));
-		assertFalse("NullLogger".equals(logger.getClass().getSimpleName()));
+		assertNotSame("ConsoleLogger", logger.getClass().getSimpleName());
+		assertNotSame("NullLogger", logger.getClass().getSimpleName());
 	}
 
 	public void testWithOutContextNoRienaDefaultLogging() {
 		final Logger logger = Log4r.getLogger(null, Log4rTest.class);
 		assertNotNull(logger);
-		assertTrue("ConsoleLogger".equals(logger.getClass().getSimpleName()));
+		final String expectedLogger = isInOsgiDevMode() ? "ConsoleLogger" : "ExtendedLogServiceImpl";
+		assertEquals(expectedLogger, logger.getClass().getSimpleName());
 	}
 
 	public void testWithOutContextWithRienaDefaultLoggingFalse() {
 		System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, Boolean.FALSE.toString());
 		final Logger logger = Log4r.getLogger(null, Log4rTest.class);
 		assertNotNull(logger);
-		assertTrue("NullLogger".equals(logger.getClass().getSimpleName()));
+		assertEquals("NullLogger", logger.getClass().getSimpleName());
 	}
 
 	public void testWithOutContextWithRienaDefaultLoggingTrue() {
 		System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, Boolean.TRUE.toString());
 		final Logger logger = Log4r.getLogger(null, Log4rTest.class);
 		assertNotNull(logger);
-		assertTrue("ConsoleLogger".equals(logger.getClass().getSimpleName()));
+		assertEquals("ConsoleLogger", logger.getClass().getSimpleName());
 	}
 
 	public void testWithContextByName() {
 		final Logger logger = Log4r.getLogger(Activator.getDefault(), Log4rTest.class.getName());
 		assertNotNull(logger);
-		assertFalse("ConsoleLogger".equals(logger.getClass().getSimpleName()));
-		assertFalse("NullLogger".equals(logger.getClass().getSimpleName()));
+		assertNotSame("ConsoleLogger", logger.getClass().getSimpleName());
+		assertNotSame("NullLogger", logger.getClass().getSimpleName());
 	}
 
 	public void testWithOutContextNoRienaDefaultLoggingByName() {
 		final Logger logger = Log4r.getLogger(null, Log4rTest.class.getName());
 		assertNotNull(logger);
-		assertTrue("ConsoleLogger".equals(logger.getClass().getSimpleName()));
+		final String expectedLogger = isInOsgiDevMode() ? "ConsoleLogger" : "ExtendedLogServiceImpl";
+		assertEquals(expectedLogger, logger.getClass().getSimpleName());
 	}
 
 	public void testWithOutContextWithRienaDefaultLoggingFalseByName() {
 		System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, Boolean.FALSE.toString());
 		final Logger logger = Log4r.getLogger(null, Log4rTest.class.getName());
 		assertNotNull(logger);
-		assertTrue("NullLogger".equals(logger.getClass().getSimpleName()));
+		assertEquals("NullLogger", logger.getClass().getSimpleName());
 	}
 
 	public void testWithOutContextWithRienaDefaultLoggingTrueByName() {
 		System.setProperty(RienaStatus.RIENA_DEVELOPMENT_SYSTEM_PROPERTY, Boolean.TRUE.toString());
 		final Logger logger = Log4r.getLogger(null, Log4rTest.class.getName());
 		assertNotNull(logger);
-		assertTrue("ConsoleLogger".equals(logger.getClass().getSimpleName()));
+		assertEquals("ConsoleLogger", logger.getClass().getSimpleName());
 	}
 
+	private boolean isInOsgiDevMode() {
+		return System.getProperty("osgi.dev") != null; //$NON-NLS-1$
+	}
 }
