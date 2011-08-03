@@ -50,7 +50,7 @@ public class Log4rTest extends RienaTestCase {
 	public void testWithOutContextNoRienaDefaultLogging() {
 		final Logger logger = Log4r.getLogger(null, Log4rTest.class);
 		assertNotNull(logger);
-		final String expectedLogger = isInOsgiDevMode() ? "ConsoleLogger" : "ExtendedLogServiceImpl";
+		final String expectedLogger = isInOsgiDevMode() ? "ConsoleLogger" : "NullLogger";
 		assertEquals(expectedLogger, logger.getClass().getSimpleName());
 	}
 
@@ -78,7 +78,7 @@ public class Log4rTest extends RienaTestCase {
 	public void testWithOutContextNoRienaDefaultLoggingByName() {
 		final Logger logger = Log4r.getLogger(null, Log4rTest.class.getName());
 		assertNotNull(logger);
-		final String expectedLogger = isInOsgiDevMode() ? "ConsoleLogger" : "ExtendedLogServiceImpl";
+		final String expectedLogger = isInOsgiDevMode() ? "ConsoleLogger" : "NullLogger";
 		assertEquals(expectedLogger, logger.getClass().getSimpleName());
 	}
 
