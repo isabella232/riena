@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Table;
 
 import org.eclipse.riena.core.util.ObjectUtils;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
-import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
@@ -60,14 +59,16 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 	}
 
 	@Override
+	/**
+	 * Do not unbind detail ridgets here as this method is called after details ridgets are bound and before master is bound. 
+	 * TODO This callback has to be renamed!
+	 */
 	protected void unbindUIControl() {
+
 		final MasterDetailsComposite control = getUIControl();
 		if (control != null) {
 			final Table table = control.getTable();
 			table.removeSelectionListener(dirtyDetailsChecker);
-		}
-		for (final IRidget ridget : getRidgets()) {
-			ridget.setUIControl(null);
 		}
 	}
 
