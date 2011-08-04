@@ -60,38 +60,65 @@ public class ColumnFormatter implements IColumnFormatter {
 		return 0;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public String getToolTip(final Object element) {
 		return null;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public Object getToolTipImage(final Object object) {
 		return null;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public Object getToolTipBackgroundColor(final Object element) {
 		return null;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public Object getToolTipForegroundColor(final Object element) {
 		return null;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public Object getToolTipFont(final Object element) {
 		return null;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public Object getToolTipShift(final Object element) {
 		return null;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public int getToolTipTimeDisplayed(final Object element) {
 		return 0;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public int getToolTipDisplayDelayTime(final Object element) {
 		return 0;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public int getToolTipStyle(final Object element) {
 		return SWT.SHADOW_NONE;
 	}

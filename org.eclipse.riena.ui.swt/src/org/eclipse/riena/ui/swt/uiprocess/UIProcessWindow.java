@@ -134,6 +134,9 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 		return percent;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public Text getDescription() {
 		return description;
 	}
@@ -194,6 +197,7 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 
 	/**
 	 * @param cancelVisible
+	 * @since 4.0
 	 */
 	protected void setCancelVisible(final boolean cancelVisible) {
 		if (this.cancelVisible != cancelVisible) {
@@ -206,6 +210,7 @@ public class UIProcessWindow extends ApplicationWindow implements IUIProcessWind
 
 	/**
 	 * @param cancelEnabled
+	 * @since 4.0
 	 */
 	protected void setCancelEnabled(final boolean cancelEnabled) {
 		if (this.cancelEnabled != cancelEnabled) {
