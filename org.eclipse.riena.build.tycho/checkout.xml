@@ -15,6 +15,7 @@
 
 		<target name="checkoutRT" description="check out Riena projects">
 			<login cvsRoot="${RT}" />
+			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.build3" />
 			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.communication.client.ui" />
 			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.security.ui" />
 			<checkout cvsroot="${RT}" package="org.eclipse.riena/org.eclipse.riena.demo.client.rcp" />

@@ -53,8 +53,9 @@
 
 	<properties>
 		<indigo-site>http://download.eclipse.org/releases/indigo/</indigo-site>
+		<prebuild-site>file:/${basedir}/../org.eclipse.riena.build3/prebuild</prebuild-site>
 		<project-build-sourceEncoding>UTF-8</project-build-sourceEncoding>
-		<tycho-version>0.12.0</tycho-version>
+		<tycho-version>0.13.0-SNAPSHOT</tycho-version>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<junit-version>3.8.2</junit-version>
 	</properties>
@@ -182,12 +183,25 @@
 			<layout>p2</layout>
 			<url>${indigo-site}</url>
 		</repository>
+		
+		<repository>
+			<id>prebuild-site</id>
+			<layout>p2</layout>
+			<url>${prebuild-site}</url>
+		</repository>
+		
+		
 	</repositories>
 
 	<pluginRepositories>
 		<pluginRepository>
 			<id>sonatype.org</id>
 			<url>https://repository.sonatype.org/content/repositories/tycho-014/</url>
+		</pluginRepository>
+		
+		<pluginRepository>
+			<id>tycho snapshots</id>
+			<url>https://repository.sonatype.org/content/repositories/snapshots/</url>
 		</pluginRepository>
 	</pluginRepositories>
 
