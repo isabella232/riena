@@ -37,7 +37,6 @@ import org.eclipse.riena.navigation.IJumpTargetListener.JumpTargetState;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationContext;
-import org.eclipse.riena.navigation.INavigationHistory;
 import org.eclipse.riena.navigation.INavigationHistoryEvent;
 import org.eclipse.riena.navigation.INavigationHistoryListener;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -55,18 +54,20 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 /**
  * Default implementation for the navigation processor
  */
-public class NavigationProcessor implements INavigationProcessor, INavigationHistory {
+public class NavigationProcessor implements INavigationProcessor {
 
-	private static int maxStacksize = 40;
+	private List<ISubModuleNode> collNodes;
 	private final Stack<INavigationNode<?>> histBack = new Stack<INavigationNode<?>>();
 	private final Stack<INavigationNode<?>> histForward = new Stack<INavigationNode<?>>();
 	private final Map<INavigationNode<?>, Stack<JumpContext>> jumpTargets = new HashMap<INavigationNode<?>, Stack<JumpContext>>();
 	private final Map<INavigationNode<?>, List<IJumpTargetListener>> jumpTargetListeners = new HashMap<INavigationNode<?>, List<IJumpTargetListener>>();
 	private final Map<INavigationNode<?>, INavigationNode<?>> navigationMap = new HashMap<INavigationNode<?>, INavigationNode<?>>();
 	private final List<INavigationHistoryListener> navigationListener = new Vector<INavigationHistoryListener>();
-	private static boolean debugNaviProc = Trace.isOn(NavigationProcessor.class, "debug"); //$NON-NLS-1$
+
+	private final static int MAX_HISTORY_LENGTH = 40;
+
+	private final static boolean DEBUG_NAVIGATION_PROCESSOR = Trace.isOn(NavigationProcessor.class, "debug"); //$NON-NLS-1$
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), NavigationProcessor.class);
-	private List<ISubModuleNode> collNodes;
 
 	public void activate(final INavigationNode<?> toActivate) {
 		if (toActivate != null) {
@@ -74,7 +75,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			collNodes = collectCollapsedNodes(moduleNode);
 
 			if (toActivate.isActivated()) {
-				if (debugNaviProc) {
+				if (DEBUG_NAVIGATION_PROCESSOR) {
 					LOGGER.log(
 							LogService.LOG_DEBUG,
 							"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is already activated --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
@@ -85,12 +86,12 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 				// the same sub module will be activated on activation of
 				// the toActivate, in any case there is nothing to do
 			} else {
-				if (debugNaviProc) {
+				if (DEBUG_NAVIGATION_PROCESSOR) {
 					LOGGER.log(LogService.LOG_DEBUG,
 							"NaviProc: - activate triggered for Node " + toActivate.getNodeId()); //$NON-NLS-1$
 				}
 				if (!toActivate.isVisible() || !toActivate.isEnabled()) {
-					if (debugNaviProc) {
+					if (DEBUG_NAVIGATION_PROCESSOR) {
 						LOGGER.log(
 								LogService.LOG_DEBUG,
 								"NaviProc: - activate triggered for Node " + toActivate.getNodeId() + "but is not visible or not enabled --> NOP"); //$NON-NLS-1$//$NON-NLS-2$
@@ -236,7 +237,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		if (histBack.isEmpty() || !histBack.peek().equals(toActivate)) {
 			histBack.push(toActivate);
 			// limit the stack size and remove older elements
-			if (histBack.size() > maxStacksize) {
+			if (histBack.size() > MAX_HISTORY_LENGTH) {
 				histBack.remove(histBack.firstElement());
 			}
 			fireBackHistoryChangedEvent();
@@ -1124,20 +1125,20 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 
 	private void activate(final INavigationContext context) {
 		for (final INavigationNode<?> nextToActivate : context.getToActivate()) {
-			if (debugNaviProc) {
+			if (DEBUG_NAVIGATION_PROCESSOR) {
 				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - beforeActivate: " + nextToActivate.getNodeId()); //$NON-NLS-1$
 			}
 			nextToActivate.onBeforeActivate(context);
 		}
 		for (final INavigationNode<?> nextToActivate : context.getToActivate()) {
-			if (debugNaviProc) {
+			if (DEBUG_NAVIGATION_PROCESSOR) {
 				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - activate: " + nextToActivate.getNodeId()); //$NON-NLS-1$
 			}
 			nextToActivate.activate(context);
 			setAsSelectedChild(nextToActivate);
 		}
 		for (final INavigationNode<?> nextToActivate : copyReverse(context.getToActivate())) {
-			if (debugNaviProc) {
+			if (DEBUG_NAVIGATION_PROCESSOR) {
 				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - onAfterActivate: " + nextToActivate.getNodeId()); //$NON-NLS-1$
 			}
 			nextToActivate.onAfterActivate(context);
@@ -1149,7 +1150,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		for (final INavigationNode<?> nextToDeactivate : copyReverse(context.getToDeactivate())) {
 			if (nextToDeactivate.isActivated()) {
 				previouslyActivatedNodes.add(nextToDeactivate);
-				if (debugNaviProc) {
+				if (DEBUG_NAVIGATION_PROCESSOR) {
 					LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - beforeDeactivate: " + nextToDeactivate.getNodeId()); //$NON-NLS-1$
 				}
 				nextToDeactivate.onBeforeDeactivate(context);
@@ -1158,7 +1159,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		for (final INavigationNode<?> nextToDeactivate : context.getToDeactivate()) {
 			// check for activated to make this method usable for disposing
 			if (previouslyActivatedNodes.contains(nextToDeactivate)) {
-				if (debugNaviProc) {
+				if (DEBUG_NAVIGATION_PROCESSOR) {
 					LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - deactivate: " + nextToDeactivate.getNodeId()); //$NON-NLS-1$
 				}
 				nextToDeactivate.deactivate(context);
@@ -1166,7 +1167,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 		for (final INavigationNode<?> nextToDeactivate : context.getToDeactivate()) {
 			if (previouslyActivatedNodes.contains(nextToDeactivate)) {
-				if (debugNaviProc) {
+				if (DEBUG_NAVIGATION_PROCESSOR) {
 					LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - onAfterDeactivate: " + nextToDeactivate.getNodeId()); //$NON-NLS-1$
 				}
 				nextToDeactivate.onAfterDeactivate(context);
@@ -1180,7 +1181,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 		}
 		for (final INavigationNode<?> nextToDispose : context.getToDeactivate()) {
 			// check for activated to make this method usable for disposing
-			if (debugNaviProc) {
+			if (DEBUG_NAVIGATION_PROCESSOR) {
 				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - dispos: " + nextToDispose.getNodeId()); //$NON-NLS-1$
 			}
 			nextToDispose.dispose(context);
@@ -1466,7 +1467,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			final INavigationNode<?> current = histBack.pop();// skip self
 			fireBackHistoryChangedEvent();
 			histForward.push(current);
-			if (histForward.size() > maxStacksize) {
+			if (histForward.size() > MAX_HISTORY_LENGTH) {
 				histForward.remove(histForward.firstElement());
 			}
 			fireForewardHistoryChangedEvent();
@@ -1497,7 +1498,7 @@ public class NavigationProcessor implements INavigationProcessor, INavigationHis
 			fireForewardHistoryChangedEvent();
 			if (current != null) {
 				histBack.push(current);
-				if (histBack.size() > maxStacksize) {
+				if (histBack.size() > MAX_HISTORY_LENGTH) {
 					histBack.remove(histBack.firstElement());
 				}
 				activate(current);
