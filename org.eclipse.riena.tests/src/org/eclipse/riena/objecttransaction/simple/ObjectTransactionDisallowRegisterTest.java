@@ -30,13 +30,13 @@ public class ObjectTransactionDisallowRegisterTest extends RienaTestCase {
 		objectTransaction.allowRegister(false);
 
 		Addresse addresse = new Addresse(true);
-		assertTrue("kunde must not be registered", !objectTransaction.isRegistered(addresse));
+		assertTrue("addresse must not be registered", !objectTransaction.isRegistered(addresse));
 
 		objectTransaction.allowRegister(true);
 		addresse = new Addresse(true);
-		assertTrue("kunde must be registered", objectTransaction.isRegistered(addresse));
+		assertTrue("addresse must be registered", objectTransaction.isRegistered(addresse));
 
-		showStatus("testSimpleAllNew", objectTransaction);
+		showStatus("testSimpleAllowRegister", objectTransaction);
 	}
 
 	private void showStatus(final String testName, final IObjectTransaction objectTransaction) {

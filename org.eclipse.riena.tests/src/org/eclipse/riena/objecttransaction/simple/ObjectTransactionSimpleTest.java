@@ -140,9 +140,9 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 		addresse.setOrt("Frankfurt");
 		addresse.setPlz("60000");
 		addresse.setStrasse("Münchnerstr.");
-		assertTrue("ort in addresse ist nicht Frankfurt", addresse.getOrt().equals("Frankfurt"));
-		assertTrue("plz in addresse ist nicht 60000", addresse.getPlz().equals("60000"));
-		assertTrue("strasse ist nicht Münchnerstr.", addresse.getStrasse().equals("Münchnerstr."));
+		assertTrue("ort in addresse should be Frankfurt", addresse.getOrt().equals("Frankfurt"));
+		assertTrue("plz in addresse should be 60000", addresse.getPlz().equals("60000"));
+		assertTrue("strasse should be Münchnerstr.", addresse.getStrasse().equals("Münchnerstr."));
 
 		objectTransaction.registerAsDeleted(kunde.getAddresse());
 		addresse = new Addresse(true);
@@ -151,13 +151,13 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 		addresse.setPlz("80000");
 		addresse.setStrasse("Leopoldstrasse");
 
-		assertTrue("ort in addresse ist nicht München", addresse.getOrt().equals("München"));
-		assertTrue("plz in addresse ist nicht 80000", addresse.getPlz().equals("80000"));
-		assertTrue("strasse ist nicht Leopoldstrasse", addresse.getStrasse().equals("Leopoldstrasse"));
+		assertTrue("ort in addresse should be München", addresse.getOrt().equals("München"));
+		assertTrue("plz in addresse should be 80000", addresse.getPlz().equals("80000"));
+		assertTrue("strasse should be Leopoldstrasse", addresse.getStrasse().equals("Leopoldstrasse"));
 
 		kunde.setAddresse(addresse);
 
-		assertTrue("address ist nicht gesetzt", kunde.getAddresse() != null);
+		assertTrue("address should be set", kunde.getAddresse() != null);
 
 		showStatus("testSimpleExistingKundeAllNewChangingAddresse", objectTransaction);
 	}
@@ -221,7 +221,6 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 
 		final IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance()
 				.createSubObjectTransaction(objectTransaction);
-		subObjectTransaction.toString();
 		kunde.setVorname("jane");
 		kunde.setNachname("Stewart");
 		assertTrue("vorname=jane", kunde.getVorname().equals("jane"));
@@ -253,7 +252,7 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 
 		final IObjectTransaction subObjectTransaction = ObjectTransactionFactory.getInstance()
 				.createSubObjectTransaction(objectTransaction);
-		subObjectTransaction.toString();
+		//		subObjectTransaction.toString(); // ??
 		kunde.setVorname("jane");
 		kunde.setNachname("Stewart");
 
@@ -266,9 +265,9 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 		addresse.setPlz("60000");
 		addresse.setStrasse("Münchnerstr.");
 
-		assertTrue("ort in addresse ist nicht Frankfurt", addresse.getOrt().equals("Frankfurt"));
-		assertTrue("plz in addresse ist nicht 60000", addresse.getPlz().equals("60000"));
-		assertTrue("strasse ist nicht Münchnerstr.", addresse.getStrasse().equals("Münchnerstr."));
+		assertTrue("ort in addresse should be Frankfurt", addresse.getOrt().equals("Frankfurt"));
+		assertTrue("plz in addresse should be 60000", addresse.getPlz().equals("60000"));
+		assertTrue("strasse should be Münchnerstr.", addresse.getStrasse().equals("Münchnerstr."));
 
 		showStatus("testSimpleWithNewKundeAndSubTransactionWithNewAddress objectTransaction", objectTransaction);
 		showStatus("testSimpleWithNewKundeAndSubTransactionWithNewAddress subObjectTransaction", subObjectTransaction);
@@ -316,9 +315,9 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 		addresse.setStrasse("Leopoldstrasse");
 		kunde.setAddresse(addresse);
 
-		assertTrue("ort in addresse ist nicht München", addresse.getOrt().equals("München"));
-		assertTrue("plz in addresse ist nicht 80000", addresse.getPlz().equals("80000"));
-		assertTrue("strasse ist nicht Leopoldstrasse", addresse.getStrasse().equals("Leopoldstrasse"));
+		assertTrue("ort in addresse should be München", addresse.getOrt().equals("München"));
+		assertTrue("plz in addresse should be 80000", addresse.getPlz().equals("80000"));
+		assertTrue("strasse should be Leopoldstrasse", addresse.getStrasse().equals("Leopoldstrasse"));
 
 		showStatus("testSimpleWithNewKundeAndSubTransactionWithChangedAddress objectTransaction", objectTransaction);
 		showStatus("testSimpleWithNewKundeAndSubTransactionWithChangedAddress subObjectTransaction",
@@ -366,18 +365,18 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 		addresse.setPlz("80000");
 		addresse.setStrasse("Leopoldstrasse");
 		kunde.setAddresse(addresse);
-		assertTrue("ort in addresse ist nicht München", addresse.getOrt().equals("München"));
-		assertTrue("plz in addresse ist nicht 80000", addresse.getPlz().equals("80000"));
-		assertTrue("strasse ist nicht Leopoldstrasse", addresse.getStrasse().equals("Leopoldstrasse"));
+		assertTrue("ort in addresse should be München", addresse.getOrt().equals("München"));
+		assertTrue("plz in addresse should be 80000", addresse.getPlz().equals("80000"));
+		assertTrue("strasse should be Leopoldstrasse", addresse.getStrasse().equals("Leopoldstrasse"));
 
 		subObjectTransaction.commit();
 
 		assertTrue("vorname=jane", kunde.getVorname().equals("jane"));
 		assertTrue("nachname=Stewart", kunde.getNachname().equals("Stewart"));
 
-		assertTrue("ort in addresse ist nicht München", addresse.getOrt().equals("München"));
-		assertTrue("plz in addresse ist nicht 80000", addresse.getPlz().equals("80000"));
-		assertTrue("strasse ist nicht Leopoldstrasse", addresse.getStrasse().equals("Leopoldstrasse"));
+		assertTrue("ort in addresse should be München", addresse.getOrt().equals("München"));
+		assertTrue("plz in addresse should be 80000", addresse.getPlz().equals("80000"));
+		assertTrue("strasse should be Leopoldstrasse", addresse.getStrasse().equals("Leopoldstrasse"));
 
 		showStatus("testSimpleWithNewKundeAndSubTransactionWithChangedAddressAndCommit objectTransaction",
 				objectTransaction);
@@ -461,13 +460,13 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 
 		kunde.removeVertrag("0815");
 
-		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0816") == v2);
-		assertTrue("nicht existierender Vertrag gefunden", kunde.getVertrag("0815") == null);
+		assertTrue("No such Vertrag found in Kunde", kunde.getVertrag("0816") == v2);
+		assertTrue("This Vertrag should not exist", kunde.getVertrag("0815") == null);
 
 		objectTransaction.registerAsDeleted(v1);
 
-		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0816") == v2);
-		assertTrue("nicht existierender Vertrag gefunden", kunde.getVertrag("0815") == null);
+		assertTrue("No such Vertrag found in Kunde", kunde.getVertrag("0816") == v2);
+		assertTrue("This Vertrag should not exist", kunde.getVertrag("0815") == null);
 
 		showStatus("testSimpleWithExistingKundeUndNewAndRemoveVertraege2 objectTransaction", objectTransaction);
 	}
@@ -494,15 +493,15 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 
 		kunde.removeVertrag("0815");
 
-		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0816") == v2);
+		assertTrue("No such Vertrag found in Kunde", kunde.getVertrag("0816") == v2);
 		assertTrue("nicht existierender Vertrag 0815 gefunden", kunde.getVertrag("0815") == null);
 
 		objectTransaction.registerAsDeleted(v1);
 
-		assertTrue("falscher oder keine Vertrag beim Kunden gefunden", kunde.getVertrag("0816") == v2);
-		assertTrue("nicht existierender Vertrag gefunden", kunde.getVertrag("0815") == null);
+		assertTrue("No such Vertrag found in Kunde", kunde.getVertrag("0816") == v2);
+		assertTrue("This Vertrag should not exist", kunde.getVertrag("0815") == null);
 
-		showStatus("testSimpleWithExistingKundeUndNewAndRemoveVertraege2 objectTransaction", objectTransaction);
+		showStatus("testSimpleWithExistingKundeUndNewAndRemoveVertraege3 objectTransaction", objectTransaction);
 	}
 
 	/**
@@ -802,12 +801,15 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 		v2.setVertragsBeschreibung("noch ein Vertrag");
 		kunde.addVertrag(v2);
 
-		assertTrue("Es gibt nicht 2 Verträge sondern :" + kunde.listVertrag().length, kunde.listVertrag().length == 2);
+		assertTrue("Expected to have 2 Vertrag objects, but had " + kunde.listVertrag().length,
+				kunde.listVertrag().length == 2);
 
 		subObjectTransaction.commit();
-		assertTrue("Es gibt nicht 2 Vertrag sondern :" + kunde.listVertrag().length, kunde.listVertrag().length == 2);
+		assertTrue("Expected to have 2 Vertrag objects, but had " + kunde.listVertrag().length,
+				kunde.listVertrag().length == 2);
 		objectTransaction.commitToObjects();
-		assertTrue("Es gibt nicht 2 Vertrag sondern :" + kunde.listVertrag().length, kunde.listVertrag().length == 2);
+		assertTrue("Expected to have 2 Vertrag objects, but had " + kunde.listVertrag().length,
+				kunde.listVertrag().length == 2);
 
 		showStatus("testSimpleWithExistingKundeUndAddVertragInSubTransactionAndCommit objectTransaction",
 				objectTransaction);
@@ -824,8 +826,8 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 		final Kunde kunde = new Kunde("4711");
 		kunde.setVorname("john");
 		kunde.setNachname("Miller");
-		assertTrue("vorname=john", kunde.getVorname().equals("john"));
-		assertTrue("nachname=Miller", kunde.getNachname().equals("Miller"));
+		assertTrue("vorname should be john", kunde.getVorname().equals("john"));
+		assertTrue("nachname should be Miller", kunde.getNachname().equals("Miller"));
 
 		// making changes to the object
 		objectTransaction.setCleanModus(false);
@@ -865,8 +867,8 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 		final Kunde kunde = new Kunde("4711");
 		kunde.setVorname("john");
 		kunde.setNachname("Miller");
-		assertTrue("vorname=john", kunde.getVorname().equals("john"));
-		assertTrue("nachname=Miller", kunde.getNachname().equals("Miller"));
+		assertEquals("vorname should be john", "john", kunde.getVorname());
+		assertEquals("nachname should be Miller", "Miller", kunde.getNachname());
 
 		Vertrag v1 = new Vertrag("0815");
 		v1.setVertragsBeschreibung("mein erster Vertrag");
@@ -905,12 +907,12 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 		v2.setVertragsBeschreibung("noch ein Vertrag");
 		kunde2.addVertrag(v2);
 
-		// apply the changes from the other objecttransaction extract
+		// apply the changes from the other objecttransaction's extract
 		objectTransaction2.setCleanModus(false);
 		objectTransaction2.importExtract(extract);
 		// ---> properties have changed
-		assertTrue("vorname=john", kunde2.getVorname().equals("jane"));
-		assertTrue("nachname=Miller", kunde2.getNachname().equals("Stewart"));
+		assertTrue("vorname should be jane", kunde2.getVorname().equals("jane"));
+		assertTrue("nachname should be Stewart", kunde2.getNachname().equals("Stewart"));
 		assertTrue("vertrag 0815 must return null", kunde2.getVertrag("0815") == null);
 		kunde2.removeVertrag("0816");
 	}
@@ -965,9 +967,9 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 		kunde.setVorname("john");
 		kunde.setNachname("Miller");
 		objectTransaction.setCleanModus(false);
-		assertTrue("kunde ist nicht CLEAN", objectTransaction.isState(kunde, State.CLEAN));
+		assertTrue("kunde should be CLEAN", objectTransaction.isState(kunde, State.CLEAN));
 		kunde.setVorname("jim");
-		assertTrue("kunde ist nicht MODIFIED", objectTransaction.isState(kunde, State.MODIFIED));
+		assertTrue("kunde should be MODIFIED", objectTransaction.isState(kunde, State.MODIFIED));
 		IObjectTransactionExtract extract = objectTransaction.exportExtract();
 
 		// simulate remote system with new objecttransaction
@@ -977,21 +979,21 @@ public class ObjectTransactionSimpleTest extends RienaTestCase {
 		final Kunde kunde2 = new Kunde("4711");
 		kunde2.setVorname("john");
 		kunde2.setNachname("Miller");
-		assertTrue("kunde2 ist nicht CLEAN", objectTransaction2.isState(kunde2, State.CLEAN));
+		assertTrue("kunde2 should be CLEAN", objectTransaction2.isState(kunde2, State.CLEAN));
 		objectTransaction2.setCleanModus(false);
 		objectTransaction2.importExtract(extract);
-		assertTrue("kunde2 ist nicht MODIFIED", objectTransaction2.isState(kunde2, State.MODIFIED));
+		assertTrue("kunde2 should be MODIFIED", objectTransaction2.isState(kunde2, State.MODIFIED));
 		objectTransaction2.commitToObjects();
-		assertTrue("kunde2 ist nicht CLEAN", objectTransaction2.isState(kunde2, State.CLEAN));
+		assertTrue("kunde2 should be CLEAN", objectTransaction2.isState(kunde2, State.CLEAN));
 		objectTransaction2.setVersionUpdate(kunde2, "2");
-		assertTrue("kunde2 ist nicht MODIFIED", objectTransaction2.isState(kunde2, State.MODIFIED));
+		assertTrue("kunde2 should be MODIFIED", objectTransaction2.isState(kunde2, State.MODIFIED));
 		extract = objectTransaction2.exportExtract();
 
 		// back on my localsystem
 		objectTransaction.commitToObjects();
-		assertTrue("kunde ist nicht CLEAN", objectTransaction.isState(kunde, State.CLEAN));
+		assertTrue("kunde should be CLEAN", objectTransaction.isState(kunde, State.CLEAN));
 		objectTransaction.importExtract(extract);
-		assertTrue("kunde ist nicht MODIFIED", objectTransaction.isState(kunde, State.MODIFIED));
+		assertTrue("kunde should be MODIFIED", objectTransaction.isState(kunde, State.MODIFIED));
 
 		showStatus("testUpdateVersion", objectTransaction);
 	}
