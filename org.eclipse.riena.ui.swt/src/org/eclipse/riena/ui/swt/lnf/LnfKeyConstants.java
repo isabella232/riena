@@ -930,6 +930,15 @@ public final class LnfKeyConstants {
 	public static final String NAVIGATION_SCROLL_BAR = "navigation.scroll.bar"; //$NON-NLS-1$
 
 	/**
+	 * Property to make the navigation area a fast view. The SubModule will then
+	 * take all the space in the SubApplication and the navigation will overlap
+	 * this area until set invisible again.
+	 * 
+	 * @since 4.0
+	 */
+	public static final String NAVIGATION_FAST_VIEW = "navigation.fast.view"; //$NON-NLS-1$
+
+	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
 	 * @see <a href=

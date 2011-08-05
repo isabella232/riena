@@ -437,6 +437,10 @@
             name="Exit">
       </command>
       <command
+            id="org.eclipse.riena.example.client.toggleNavigationVisibility"
+            name="Navigation">
+      </command>
+      <command
             id="org.eclipse.riena.example.client.closeModuleCommand"
             name="Close Module">
       </command>
@@ -660,6 +664,21 @@
                   mnemonic="F"
                   style="push">
             </command>
+            <command
+                  commandId="org.eclipse.riena.example.client.toggleNavigationVisibility"
+                  id="toggleNavigationVisibility"
+                  label="Toggle Navigation"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+		            <with
+		                  variable="activeModuleNode">
+		               <test
+		                     property="org.eclipse.riena.navigation.model.isFastView">
+		               </test>
+		            </with>
+               </visibleWhen>
+            </command>
          </toolbar>
       </menuContribution>
    </extension>
@@ -668,6 +687,10 @@
       <handler
             class="org.eclipse.riena.example.client.handler.ExitHandler"
             commandId="org.eclipse.riena.example.client.exitCommand">
+      </handler>
+      <handler
+            class="org.eclipse.riena.navigation.ui.swt.handlers.ShowHideNavigationHandler"
+            commandId="org.eclipse.riena.example.client.toggleNavigationVisibility">
       </handler>
       <handler
             class="org.eclipse.riena.example.client.handler.CloseModuleHandler"
@@ -1452,6 +1475,13 @@
             id="org.eclipse.riena.example.client.closablePropertyTester"
             namespace="org.eclipse.riena.navigation.model"
             properties="isClosable"
+            type="org.eclipse.riena.navigation.INavigationNode">
+      </propertyTester>
+      <propertyTester
+            class="org.eclipse.riena.example.client.FastViewPropertyTester"
+            id="org.eclipse.riena.example.client.fastViewPropertyTester"
+            namespace="org.eclipse.riena.navigation.model"
+            properties="isFastView"
             type="org.eclipse.riena.navigation.INavigationNode">
       </propertyTester>
    </extension>

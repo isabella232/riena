@@ -22,6 +22,7 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.eclipse.ui.keys.IBindingService;
+import org.eclipse.ui.presentations.AbstractPresentationFactory;
 import org.eclipse.ui.statushandlers.AbstractStatusHandler;
 import org.eclipse.ui.statushandlers.StatusAdapter;
 
@@ -40,6 +41,7 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 
 	private final ApplicationController controller;
 	private final IAdvisorHelper advisorHelper;
+	private final AbstractPresentationFactory presentationFactory;
 
 	/**
 	 * @noreference This constructor is not intended to be referenced by
@@ -48,11 +50,12 @@ public class ApplicationAdvisor extends WorkbenchAdvisor {
 	public ApplicationAdvisor(final ApplicationController controller, final IAdvisorHelper factory) {
 		this.controller = controller;
 		this.advisorHelper = factory;
+		presentationFactory = new TitlelessStackPresentationFactory();
 	}
 
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(final IWorkbenchWindowConfigurer configurer) {
-		configurer.setPresentationFactory(new TitlelessStackPresentationFactory());
+		configurer.setPresentationFactory(presentationFactory);
 		final WorkbenchWindowAdvisor workbenchWindowAdvisor = new ApplicationViewAdvisor(configurer, controller,
 				advisorHelper);
 		Wire.instance(workbenchWindowAdvisor).andStart(Activator.getDefault().getContext());

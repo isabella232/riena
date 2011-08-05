@@ -18,13 +18,12 @@ import org.eclipse.ui.presentations.AbstractPresentationFactory;
 import org.eclipse.ui.presentations.IStackPresentationSite;
 import org.eclipse.ui.presentations.StackPresentation;
 
+import org.eclipse.riena.navigation.ApplicationNodeManager;
+import org.eclipse.riena.navigation.ISubApplicationNode;
+
 public class TitlelessStackPresentationFactory extends AbstractPresentationFactory {
 
-	private final Map<IStackPresentationSite, StackPresentation> presentations;
-
-	public TitlelessStackPresentationFactory() {
-		presentations = new HashMap<IStackPresentationSite, StackPresentation>();
-	}
+	private final static Map<IStackPresentationSite, StackPresentation> PRESENTATIONS = new HashMap<IStackPresentationSite, StackPresentation>();
 
 	/**
 	 * @see org.eclipse.ui.presentations.AbstractPresentationFactory#createEditorPresentation(org.eclipse.swt.widgets.Composite,
@@ -55,14 +54,30 @@ public class TitlelessStackPresentationFactory extends AbstractPresentationFacto
 	}
 
 	private StackPresentation getPresentation(final Composite parent, final IStackPresentationSite site) {
-		if (presentations.get(site) == null) {
-			presentations.put(site, new TitlelessStackPresentation(parent, site));
+		if (PRESENTATIONS.get(site) == null) {
+			PRESENTATIONS.put(site, new TitlelessStackPresentation(parent, site));
 		}
 		return getPresentation(site);
 	}
 
 	public StackPresentation getPresentation(final IStackPresentationSite site) {
-		return presentations.get(site);
+		return PRESENTATIONS.get(site);
 	}
 
+	/**
+	 * @since 4.0
+	 */
+	public static TitlelessStackPresentation getActiveTitlelessStackPresentation() {
+		final ISubApplicationNode activeSubApplicationNode = ApplicationNodeManager.locateActiveSubApplicationNode();
+		for (final StackPresentation stackPresenation : PRESENTATIONS.values()) {
+			if (stackPresenation instanceof TitlelessStackPresentation) {
+				final TitlelessStackPresentation titlelessStackPresenation = (TitlelessStackPresentation) stackPresenation;
+				final ISubApplicationNode subApplicationNode = titlelessStackPresenation.getSubApplicationNode();
+				if (subApplicationNode != null && activeSubApplicationNode.equals(subApplicationNode)) {
+					return titlelessStackPresenation;
+				}
+			}
+		}
+		return null;
+	}
 }

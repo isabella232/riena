@@ -20,7 +20,10 @@ import java.util.Map;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -44,13 +47,16 @@ import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.ModuleController;
+import org.eclipse.riena.navigation.ui.swt.ApplicationUtility;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.EmbeddedBorderRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
+import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
+import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -115,12 +121,28 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		navigationMainComposite.setLayout(new FormLayout());
 		navigationMainComposite.setBackground(NAVIGATION_BACKGROUND);
 		navigationCompositeDelegation = createNavigationCompositeDelegation(parent, navigationMainComposite);
+		final boolean fastView = ApplicationUtility.isNavigationFastViewEnabled();
 		final FormData formData = new FormData();
-		formData.top = new FormAttachment(0, 0);
-		formData.left = new FormAttachment(0, 0);
-		formData.right = new FormAttachment(100, 0);
-		formData.bottom = new FormAttachment(100, navigationCompositeDelegation.getBottomOffest());
+		formData.top = new FormAttachment(0, fastView ? AbstractNavigationCompositeDeligation.BORDER_MARGIN : 0);
+		formData.left = new FormAttachment(0, fastView ? AbstractNavigationCompositeDeligation.BORDER_MARGIN : 0);
+		formData.right = new FormAttachment(100, fastView ? -AbstractNavigationCompositeDeligation.BORDER_MARGIN : 0);
+		formData.bottom = new FormAttachment(100, navigationCompositeDelegation.getBottomOffest()
+				- (fastView ? AbstractNavigationCompositeDeligation.BORDER_MARGIN : 0));
 		navigationMainComposite.setLayoutData(formData);
+		if (fastView) {
+			SWTFacade.getDefault().addPaintListener(parent, new PaintListener() {
+				public void paintControl(final PaintEvent e) {
+
+					final SubModuleViewRenderer viewRenderer = (SubModuleViewRenderer) LnfManager.getLnf().getRenderer(
+							"SubModuleView.renderer"); //$NON-NLS-1$
+					if (viewRenderer != null) {
+						final Rectangle bounds = parent.getBounds();
+						viewRenderer.setBounds(bounds);
+						viewRenderer.paint(e.gc, null);
+					}
+				}
+			});
+		}
 	}
 
 	/**

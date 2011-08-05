@@ -22,6 +22,10 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.presentations.IPresentablePart;
@@ -34,9 +38,12 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
+import org.eclipse.riena.navigation.ui.swt.ApplicationUtility;
+import org.eclipse.riena.navigation.ui.swt.component.SubApplicationSwitcherWidget;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.ModuleGroupRenderer;
 import org.eclipse.riena.navigation.ui.swt.lnf.renderer.SubModuleViewRenderer;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
+import org.eclipse.riena.navigation.ui.swt.views.AbstractNavigationCompositeDeligation;
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
 import org.eclipse.riena.ui.swt.UIConstants;
@@ -75,6 +82,7 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
  * </pre>
  */
 public class TitlelessStackPresentation extends StackPresentation {
+	private static boolean navigationVisible;
 
 	/**
 	 * @since 3.0
@@ -137,6 +145,10 @@ public class TitlelessStackPresentation extends StackPresentation {
 		this.parent = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		createPlaceHolder(parent);
 		createSubModuleViewArea();
+		if (isNavigationFastViewEnabled()) {
+			final CloseNavigationMouseListener closeNavigationMouseListener = new CloseNavigationMouseListener();
+			parent.getDisplay().addFilter(SWT.MouseDown, closeNavigationMouseListener);
+		}
 	}
 
 	private void createPlaceHolder(final Composite parent) {
@@ -180,9 +192,20 @@ public class TitlelessStackPresentation extends StackPresentation {
 		public void afterActivated(final ISubModuleNode source) {
 			current.setBounds(calcSubModuleInnerBounds());
 			current.setVisible(true);
+			if (ApplicationUtility.isNavigationFastViewEnabled()) {
+				setNavigationVisible(navigationVisible);
+			}
 			hideComposite(placeHolder);
 			redrawSubModuleTitle();
 			current.getControl().moveAbove(placeHolder != null ? placeHolder : null);
+		}
+
+		@Override
+		public void afterDeactivated(final ISubModuleNode source) {
+			super.afterDeactivated(source);
+			if (ApplicationUtility.isNavigationFastViewEnabled()) {
+				navigationVisible = isNavigationVisible();
+			}
 		}
 
 	}
@@ -228,7 +251,13 @@ public class TitlelessStackPresentation extends StackPresentation {
 		return null;
 	}
 
-	private ISubApplicationNode getSubApplicationNode() {
+	/**
+	 * @since 4.0
+	 */
+	public ISubApplicationNode getSubApplicationNode() {
+		if (navigation == null) {
+			return null;
+		}
 		return (ISubApplicationNode) findDataObject(navigation.getControl(), PROPERTY_SUBAPPLICATION_NODE);
 	}
 
@@ -270,7 +299,9 @@ public class TitlelessStackPresentation extends StackPresentation {
 		final Rectangle navi = calcNavigationBounds(parent);
 		toSelect.setBounds(navi);
 		redrawSubModuleTitle();
-		toSelect.setVisible(true);
+		if (!isNavigationFastViewEnabled()) {
+			toSelect.setVisible(true);
+		}
 	}
 
 	/**
@@ -403,7 +434,8 @@ public class TitlelessStackPresentation extends StackPresentation {
 	private Rectangle calcSubModuleOuterBounds() {
 		final Rectangle naviBounds = calcNavigationBounds(parent);
 
-		final int x = naviBounds.x + naviBounds.width + getNavigationSubModuleGap();
+		final int x = isNavigationFastViewEnabled() ? getShellSubModuleGap() : naviBounds.x + naviBounds.width
+				+ getNavigationSubModuleGap();
 		final int y = naviBounds.y;
 		final int width = parent.getBounds().width - x - getShellSubModuleGap();
 		final int height = naviBounds.height;
@@ -422,13 +454,18 @@ public class TitlelessStackPresentation extends StackPresentation {
 		try {
 			final Point size = getModuleGroupRenderer().computeSize(gc, SWT.DEFAULT, SWT.DEFAULT);
 			final int x = getShellNavigationGap();
-			final int width = size.x;
+			final int width = size.x
+					+ (isNavigationFastViewEnabled() ? 2 * AbstractNavigationCompositeDeligation.BORDER_MARGIN : 0);
 			final int height = parent.getBounds().height - PADDING_BOTTOM
 					- LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
 			return new Rectangle(x, 0, width, height);
 		} finally {
 			gc.dispose();
 		}
+	}
+
+	private static boolean isNavigationFastViewEnabled() {
+		return ApplicationUtility.isNavigationFastViewEnabled();
 	}
 
 	/**
@@ -585,5 +622,58 @@ public class TitlelessStackPresentation extends StackPresentation {
 	private static int getShellSubModuleGap() {
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		return lnf.getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_SUB_MODULE_HORIZONTAL_GAP, DEFAULT_PADDING_RIGHT);
+	}
+
+	/**
+	 * Sets the visibility of the navigation, if the Property
+	 * {@link LnfKeyConstants#NAVIGATION_FAST_VIEW} is set to true.
+	 * 
+	 * @since 4.0
+	 */
+	public void setNavigationVisible(final boolean visible) {
+		if (isNavigationFastViewEnabled()) {
+			navigation.setVisible(visible);
+		}
+	}
+
+	/**
+	 * Returns the visibility of the navigation.
+	 * 
+	 * @return the visibility of the navigation. Always false if the property
+	 *         {@link LnfKeyConstants#NAVIGATION_FAST_VIEW} is set to false.
+	 * 
+	 * @since 4.0
+	 */
+	public boolean isNavigationVisible() {
+		if (isNavigationFastViewEnabled()) {
+			return navigation.getControl().isVisible();
+		}
+		return true;
+	}
+
+	private final class CloseNavigationMouseListener implements Listener {
+		public void handleEvent(final Event event) {
+			if (event.button == 1 && navigation != null && isNavigationVisible()
+					&& isSelectedWidgetAllowedToCloseNavigation(event.widget)) {
+				final Point widgetLocationOnDisplay = ((Control) event.widget).toDisplay(new Point(0, 0));
+				final Rectangle mouseLocation = event.getBounds();
+				final Control navigationControl = navigation.getControl();
+				final Rectangle navigationBounds = navigationControl.getBounds();
+				final Point navigationLocationOnDisplay = navigationControl.toDisplay(0, 0);
+				final Point mousePositionOnDisplay = new Point(mouseLocation.x + widgetLocationOnDisplay.x,
+						mouseLocation.y + widgetLocationOnDisplay.y);
+				// TODO cleanup
+				if (mousePositionOnDisplay.x > navigationLocationOnDisplay.x + navigationBounds.width
+						|| mousePositionOnDisplay.y > navigationLocationOnDisplay.y + navigationBounds.height
+						|| mousePositionOnDisplay.y < navigationLocationOnDisplay.y) {
+					setNavigationVisible(false);
+				}
+			}
+		}
+
+		private boolean isSelectedWidgetAllowedToCloseNavigation(final Widget widget) {
+			return widget instanceof Control && !(widget instanceof ToolBar)
+					&& !(widget instanceof SubApplicationSwitcherWidget);
+		}
 	}
 }
