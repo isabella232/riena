@@ -19,7 +19,7 @@ package org.eclipse.riena.sample.app.client.rcpmail;
  */
 public interface ICommandIds {
 
-	public static final String CMD_OPEN = "org.eclipse.riena.sample.app.client.rcpmail.open"; //$NON-NLS-1$
-	public static final String CMD_OPEN_MESSAGE = "org.eclipse.riena.sample.app.client.rcpmail.openMessage"; //$NON-NLS-1$
+	String CMD_OPEN = "org.eclipse.riena.sample.app.client.rcpmail.open"; //$NON-NLS-1$
+	String CMD_OPEN_MESSAGE = "org.eclipse.riena.sample.app.client.rcpmail.openMessage"; //$NON-NLS-1$
 
 }
