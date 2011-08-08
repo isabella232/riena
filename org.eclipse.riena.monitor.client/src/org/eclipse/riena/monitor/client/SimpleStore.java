@@ -372,8 +372,6 @@ public class SimpleStore implements IStore, IExecutableExtension {
 	 */
 	private class Cleaner extends Job {
 
-		private boolean canceled;
-
 		public Cleaner() {
 			super("SimpleStoreCleaner"); //$NON-NLS-1$
 			setUser(false);
@@ -385,25 +383,19 @@ public class SimpleStore implements IStore, IExecutableExtension {
 
 		@Override
 		protected IStatus run(final IProgressMonitor monitor) {
-			if (canceled) {
+			if (monitor.isCanceled()) {
 				return Status.OK_STATUS;
 			}
 			LOGGER.log(LogService.LOG_DEBUG, "Store Cleaner started"); //$NON-NLS-1$
 			monitor.beginTask("Cleanup", IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 			clean();
 			monitor.done();
-			if (!canceled) {
+			if (!monitor.isCanceled()) {
 				// reschedule for periodic work
 				schedule(cleanupDelay);
 			}
 			LOGGER.log(LogService.LOG_DEBUG, "Store Cleaner ended"); //$NON-NLS-1$
 			return Status.OK_STATUS;
-		}
-
-		@Override
-		protected void canceling() {
-			super.canceling();
-			canceled = true;
 		}
 
 		private void clean() {
