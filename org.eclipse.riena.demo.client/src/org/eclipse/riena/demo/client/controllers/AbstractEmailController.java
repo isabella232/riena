@@ -47,8 +47,7 @@ public class AbstractEmailController extends SubModuleController {
 		this.mailDemoService = mailDemoService;
 	}
 
-	public void unbind(@SuppressWarnings("unused")
-	final IEmailService mailDemoService) {
+	public void unbind(final IEmailService mailDemoService) {
 		this.mailDemoService = null;
 	}
 
@@ -57,8 +56,7 @@ public class AbstractEmailController extends SubModuleController {
 		this.customerDemoService = customerDemoService;
 	}
 
-	public void unbind(@SuppressWarnings("unused")
-	final ICustomerService customerDemoService) {
+	public void unbind(final ICustomerService customerDemoService) {
 		this.customerDemoService = null;
 	}
 

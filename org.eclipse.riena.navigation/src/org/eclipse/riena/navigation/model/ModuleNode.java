@@ -141,7 +141,6 @@ public class ModuleNode extends NavigationNode<IModuleNode, ISubModuleNode, IMod
 	 */
 	private int getVisibleChildCount(final INavigationNode<?> node) {
 		int result = 0;
-		@SuppressWarnings("unchecked")
 		final Iterator<INavigationNode<?>> childIter = (Iterator<INavigationNode<?>>) node.getChildren().iterator();
 		while (childIter.hasNext()) {
 			final INavigationNode<?> child = childIter.next();

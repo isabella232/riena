@@ -218,7 +218,6 @@ public class PingVisitor {
 		collectAdditionalPingables(pingable.getClass(), pingable, pingableList);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void collectAdditionalPingables(final Class<?> clazz, final IPingable pingable,
 			final Set<IPingable> pingableList) {
 		try {

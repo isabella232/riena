@@ -32,7 +32,6 @@ public class PermissionsSerializerFactory extends AbstractRienaSerializerFactory
 
 	private static final String PERMISSIONS_FIELD_NAME = "permissions"; //$NON-NLS-1$
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Deserializer getDeserializer(final Class cl) throws HessianProtocolException {
 		if (cl != Permissions.class) {
@@ -41,7 +40,6 @@ public class PermissionsSerializerFactory extends AbstractRienaSerializerFactory
 		return new PermissionsDeserializer();
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		if (cl != Permissions.class) {
@@ -83,13 +81,11 @@ public class PermissionsSerializerFactory extends AbstractRienaSerializerFactory
 
 	private static class PermissionsDeserializer extends AbstractDeserializer {
 
-		@SuppressWarnings("rawtypes")
 		@Override
 		public Class getType() {
 			return Permissions.class;
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public Object readObject(final AbstractHessianInput in, final String[] fieldNames) throws IOException {
 			final int ref = in.addRef(null);

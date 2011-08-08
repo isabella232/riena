@@ -29,7 +29,6 @@ public class EclipsePersistenceIndirectListSerializerFactory extends AbstractRie
 
 	private static final String ORG_ECLIPSE_PERSISTENCE_INDIRECTION_INDIRECT_LIST = "org.eclipse.persistence.indirection.IndirectList"; //$NON-NLS-1$
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Deserializer getDeserializer(final Class cl) throws HessianProtocolException {
 		return null;

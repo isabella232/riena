@@ -25,7 +25,6 @@ import org.eclipse.riena.navigation.model.NavigationModelFailure;
  * subtree to the root node. Usually it should not be necessary to subclass
  * NodePositioner.
  */
-@SuppressWarnings("unchecked")
 public abstract class NodePositioner {
 
 	public final static String POSITIONING_ORDINALITY_KEY = NodePositioner.class.getName()

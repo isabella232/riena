@@ -321,7 +321,6 @@ public class SonarController extends SubModuleController {
 	 * 
 	 * @return the tree structure as a flattened List.
 	 */
-	@SuppressWarnings("unchecked")
 	protected List<PingResultTreeNode> flattenTree() {
 		final PingableTreeNode[] nodes = getRootNodes();
 		if (nodes == null || nodes.length == 0) {

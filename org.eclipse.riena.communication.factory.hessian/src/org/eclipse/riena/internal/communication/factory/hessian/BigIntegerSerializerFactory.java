@@ -26,7 +26,6 @@ import com.caucho.hessian.io.Serializer;
  */
 public class BigIntegerSerializerFactory extends AbstractRienaSerializerFactory {
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Deserializer getDeserializer(final Class cl) throws HessianProtocolException {
 		if (cl == BigInteger.class) {
@@ -49,7 +48,6 @@ public class BigIntegerSerializerFactory extends AbstractRienaSerializerFactory 
 		return null;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		if (cl == BigInteger.class) {

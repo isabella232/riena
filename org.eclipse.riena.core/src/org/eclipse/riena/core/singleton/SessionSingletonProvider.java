@@ -91,7 +91,6 @@ public class SessionSingletonProvider<S> extends SingletonProvider<S> {
 		return IS_RAP_AVAILABLE ? getRAPInstance() : super.getInstance();
 	}
 
-	@SuppressWarnings("unchecked")
 	private S getRAPInstance() {
 		try {
 			final S rapSingleton = (S) getInstanceMethod.invoke(sessionSingletonBaseClass, singletonClass);

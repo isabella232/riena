@@ -140,7 +140,6 @@ public final class AssembliesConverter {
 		return node2Exts;
 	}
 
-	@SuppressWarnings("unchecked")
 	private static SubModuleNode2Extension convert(final ISubModuleNodeExtension nodeExt) {
 		final SubModuleNode2Extension node2Ext = new SubModuleNode2Extension();
 		node2Ext.setController(nodeExt.getController());

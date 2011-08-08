@@ -17,14 +17,11 @@ import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.JavaDeserializer;
 import com.caucho.hessian.io.Serializer;
 
-import org.eclipse.riena.internal.communication.factory.hessian.AbstractRienaSerializerFactory;
-
 /**
  * A hessian de/serializer for the {@code UUID} class.
  */
 public class UUIDSerializerFactory extends AbstractRienaSerializerFactory {
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Deserializer getDeserializer(final Class cl) throws HessianProtocolException {
 		if (cl != UUID.class) {
@@ -38,7 +35,6 @@ public class UUIDSerializerFactory extends AbstractRienaSerializerFactory {
 		};
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		return null;

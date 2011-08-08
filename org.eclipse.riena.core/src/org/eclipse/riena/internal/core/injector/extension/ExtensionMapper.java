@@ -102,7 +102,6 @@ public final class ExtensionMapper {
 	 * @throws IllegalArgumentException
 	 *             if extension point is not existent
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> T[] map(final boolean symbolReplace, final ExtensionDescriptor extensionDesc,
 			final Class<T> componentType, final boolean nonSpecific) {
 		final IExtensionRegistry extensionRegistry = RegistryFactory.getRegistry();

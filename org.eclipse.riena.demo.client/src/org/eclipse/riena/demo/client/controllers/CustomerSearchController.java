@@ -39,8 +39,7 @@ public class CustomerSearchController extends SubModuleController {
 		this.customerDemoService = customerDemoService;
 	}
 
-	public void unbind(@SuppressWarnings("unused")
-	final ICustomerService customerDemoService) {
+	public void unbind(final ICustomerService customerDemoService) {
 		this.customerDemoService = null;
 	}
 

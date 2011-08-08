@@ -75,7 +75,6 @@ public final class ContextProxy implements InvocationHandler {
 	 *            the context to work on with this proxy
 	 * @return the Proxy
 	 */
-	@SuppressWarnings({ "unchecked" })
 	public static <T> T cover(final T pObject, final IContextHolder pContextProvider) {
 		Assert.isNotNull(pObject, "The object to proxy must not be null"); //$NON-NLS-1$
 		Assert.isNotNull(pContextProvider, "The context carrier must not be null"); //$NON-NLS-1$
@@ -96,7 +95,6 @@ public final class ContextProxy implements InvocationHandler {
 	 *            the context to work on with this proxy
 	 * @return the Proxy
 	 */
-	@SuppressWarnings({ "unchecked" })
 	public static <T extends IContextHolder> T cover(final T pContextProvider) {
 		Assert.isNotNull(pContextProvider, "The context carrier must not be null"); //$NON-NLS-1$
 		return (T) Proxy.newProxyInstance(pContextProvider.getClass().getClassLoader(),

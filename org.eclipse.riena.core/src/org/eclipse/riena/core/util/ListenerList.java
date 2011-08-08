@@ -130,7 +130,6 @@ public class ListenerList<L> implements Iterable<L> {
 	 * @param listener
 	 *            the non-<code>null</code> listener to add
 	 */
-	@SuppressWarnings("unchecked")
 	public synchronized void add(final L listener) {
 		// This method is synchronized to protect against multiple threads
 		// adding or removing listeners concurrently. This does not block

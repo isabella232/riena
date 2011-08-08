@@ -29,7 +29,6 @@ import org.eclipse.riena.core.util.Nop;
  */
 public class JavaPermissionSerializerFactory extends AbstractRienaSerializerFactory {
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Deserializer getDeserializer(final Class cl) throws HessianProtocolException {
 		if (!Permission.class.isAssignableFrom(cl)) {
@@ -38,7 +37,6 @@ public class JavaPermissionSerializerFactory extends AbstractRienaSerializerFact
 		return new JavaPermissionDeserializer(cl);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		if (!Permission.class.isAssignableFrom(cl)) {
@@ -137,7 +135,6 @@ public class JavaPermissionSerializerFactory extends AbstractRienaSerializerFact
 			}
 		}
 
-		@SuppressWarnings("unchecked")
 		private Constructor<Permission> getConstructor() throws HessianProtocolException {
 			try {
 				return getType().getConstructor(String.class, String.class);

@@ -161,7 +161,6 @@ public final class ReflectionUtils {
 	 * @pre interfaze != null
 	 * @pre invocationHandler != null
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> T newInstance(final Class<T> interfaze, final InvocationHandler invocationHandler) {
 		Assert.isNotNull(interfaze, "interfaceName must be given"); //$NON-NLS-1$
 		Assert.isNotNull(invocationHandler, "invocationHandler must be given"); //$NON-NLS-1$
@@ -232,7 +231,6 @@ public final class ReflectionUtils {
 	 * @pre methodName != null
 	 * @pre expectedException != null
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T extends Throwable> Object invoke(final Object instance, final String methodName,
 			final Class<T> expectedException, final Object... args) throws T {
 		Assert.isNotNull(expectedException, "expectedException should not be null!"); //$NON-NLS-1$
@@ -264,7 +262,6 @@ public final class ReflectionUtils {
 	 * @pre methodName != null
 	 * @pre expectedException != null
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T extends Throwable> Object invokeHidden(final Object instance, final String methodName,
 			final Class<T> expectedException, final Object... args) throws T {
 		Assert.isNotNull(expectedException, "expectedException should not be null!"); //$NON-NLS-1$
@@ -296,7 +293,6 @@ public final class ReflectionUtils {
 	 * @pre instance != null
 	 * @pre methodName != null
 	 */
-	@SuppressWarnings("unchecked")
 	private static <T> T invoke(final boolean open, final Object instance, final String methodName,
 			final Object... args) {
 		Assert.isNotNull(instance, "instance must be given!"); //$NON-NLS-1$
@@ -376,7 +372,6 @@ public final class ReflectionUtils {
 	 * @pre instance != null
 	 * @pre fieldName != null
 	 */
-	@SuppressWarnings("unchecked")
 	@IgnoreFindBugs(value = "DP_DO_INSIDE_DO_PRIVILEGED", justification = "only intended for unit tests")
 	public static <T> T getHidden(final Object instance, final String fieldName) {
 		Assert.isNotNull(instance, "instance must be given!"); //$NON-NLS-1$
@@ -470,7 +465,8 @@ public final class ReflectionUtils {
 				if (expectedParameterTypes.length == clazzes.length) {
 					boolean stop = false;
 					for (int j = 0; j < expectedParameterTypes.length && !stop; j++) {
-						if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j]) && clazzes[j] != NULL_PARAMETER_TYPE) {
+						if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j])
+								&& clazzes[j] != NULL_PARAMETER_TYPE) {
 							stop = true;
 						}
 					}
@@ -518,7 +514,8 @@ public final class ReflectionUtils {
 					if (expectedParameterTypes.length == clazzes.length) {
 						boolean stop = false;
 						for (int j = 0; j < expectedParameterTypes.length && !stop; j++) {
-							if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j]) && clazzes[j] != NULL_PARAMETER_TYPE) {
+							if (!expectedParameterTypes[j].isAssignableFrom(clazzes[j])
+									&& clazzes[j] != NULL_PARAMETER_TYPE) {
 								stop = true;
 							}
 						}
@@ -611,7 +608,6 @@ public final class ReflectionUtils {
 		throw new NoSuchFieldException("Could not find field " + fieldName + " within class " + clazz + "."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
-	@SuppressWarnings("unchecked")
 	private static <T> Class<T> loadClass(final String className) {
 		ClassNotFoundException cnfe = null;
 		try {

@@ -20,7 +20,6 @@ public class TypecastingObject extends PlatformObject implements ITypecastingAda
 	/**
 	 * Cast the object to the requested class
 	 */
-	@SuppressWarnings("unchecked")
 	public <T> T getTypecastedAdapter(final Class<T> pClass) {
 		return (T) getAdapter(pClass);
 	}

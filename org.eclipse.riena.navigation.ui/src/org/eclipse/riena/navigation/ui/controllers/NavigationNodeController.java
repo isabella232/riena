@@ -220,7 +220,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	/**
 	 * @since 2.0
 	 */
-	@SuppressWarnings("unchecked")
 	public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
 		R ridget = getRidget(id);
 

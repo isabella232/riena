@@ -33,7 +33,6 @@ public final class ArraysUtil {
 	 * @param to
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public static <T> T[] copyRange(final T[] source, final int from, final int to) {
 		Assert.isLegal(source != null, "source array must no be null."); //$NON-NLS-1$
 		final int length = to - from;

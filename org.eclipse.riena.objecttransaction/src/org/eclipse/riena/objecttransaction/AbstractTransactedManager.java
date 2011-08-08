@@ -140,7 +140,6 @@ public abstract class AbstractTransactedManager {
 	 *            the covered object
 	 * @return
 	 */
-	@SuppressWarnings({ "unchecked" })
 	// During uncovering the object will be automatically castet
 	public final <T> T uncover(final T pCovered) {
 		T result = null;

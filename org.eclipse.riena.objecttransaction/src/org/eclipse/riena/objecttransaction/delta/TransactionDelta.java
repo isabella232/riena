@@ -219,7 +219,6 @@ public class TransactionDelta implements Cloneable {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public Object clone() throws CloneNotSupportedException {
 		final TransactionDelta delta = (TransactionDelta) super.clone();
 		delta.referenceChanges = (Map<String, AbstractBaseChange>) ((HashMap<String, AbstractBaseChange>) referenceChanges)
