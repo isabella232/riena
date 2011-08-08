@@ -161,12 +161,12 @@ public class GenerationalListenerList<E> implements Iterable<E> {
 	}
 
 	private void gc() {
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> GC <<<<<<<<<<<<<<<<<<<<<");
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> GC <<<<<<<<<<<<<<<<<<<<<"); //$NON-NLS-1$
 		Entry<E> next = head;
 		Entry<E> before = next;
 		while (next != null) {
 			if (next.isRemoved()) {
-				System.out.println("Removing: " + next.item);
+				System.out.println("Removing: " + next.item); //$NON-NLS-1$
 				before.nextEntry = next.nextEntry;
 			}
 			before = next;
@@ -179,7 +179,7 @@ public class GenerationalListenerList<E> implements Iterable<E> {
 	 * {@link java.util.List#add(Object)}
 	 */
 	public boolean add(final E o) {
-		Assert.isLegal(o != null, "o nust not be null");
+		Assert.isLegal(o != null, "o nust not be null"); //$NON-NLS-1$
 		size++;
 		final Entry<E> entry = new Entry<E>(o, generation);
 		tail.nextEntry = entry;
@@ -199,7 +199,7 @@ public class GenerationalListenerList<E> implements Iterable<E> {
 		if (!printStats) {
 			return;
 		}
-		System.out.println(statsListNumber + " - add: " + statsAdded + ", remove: " + statsRemoved + ", iterator: "
+		System.out.println(statsListNumber + " - add: " + statsAdded + ", remove: " + statsRemoved + ", iterator: " //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				+ statsIterated);
 
 	}
@@ -273,8 +273,8 @@ public class GenerationalListenerList<E> implements Iterable<E> {
 
 		@Override
 		public String toString() {
-			return "Entry [item=" + item + ", addedGeneration=" + addedGeneration + ", removedGeneration="
-					+ removedGeneration + "]";
+			return "Entry [item=" + item + ", addedGeneration=" + addedGeneration + ", removedGeneration=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					+ removedGeneration + "]"; //$NON-NLS-1$
 		}
 
 	}
@@ -329,10 +329,10 @@ public class GenerationalListenerList<E> implements Iterable<E> {
 	// helpers for testing/debugging, not API but needs to be public to be accessible by Junit Plug-in test
 	public void printDebugList(final String header) {
 		Entry<E> next = head;
-		System.out.println(header + "(debug)");
+		System.out.println(header + "(debug)"); //$NON-NLS-1$
 		while (next != null) {
 			if (next != head) {
-				System.out.println(" - " + next);
+				System.out.println(" - " + next); //$NON-NLS-1$
 			}
 			next = next.nextEntry;
 		}
@@ -344,7 +344,7 @@ public class GenerationalListenerList<E> implements Iterable<E> {
 		System.out.println(header);
 		while (next != null) {
 			if (next != head && next.isVisible(generation)) {
-				System.out.println(" - " + next);
+				System.out.println(" - " + next); //$NON-NLS-1$
 			}
 			next = next.nextEntry;
 		}
