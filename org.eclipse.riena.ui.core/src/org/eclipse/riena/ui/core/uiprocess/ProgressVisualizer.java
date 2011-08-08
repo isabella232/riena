@@ -107,7 +107,6 @@ public class ProgressVisualizer extends PlatformObject implements IProgressVisua
 	}
 
 	@Override
-	@SuppressWarnings("rawtypes")
 	public Object getAdapter(final Class adapter) {
 		if (adapter == IProcessInfoAware.class || adapter == IProgressVisualizer.class) {
 			return this;

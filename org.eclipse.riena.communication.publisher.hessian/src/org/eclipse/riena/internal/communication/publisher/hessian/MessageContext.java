@@ -31,7 +31,6 @@ public class MessageContext implements IServiceMessageContext {
 		this.httpRes = httpRes;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<String> getRequestHeaderValue(final String name) {
 		final Enumeration<String> enumeration = httpReq.getHeaders(name);
 		final List<String> hValues = new ArrayList<String>();
@@ -42,7 +41,6 @@ public class MessageContext implements IServiceMessageContext {
 		return hValues;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Map<String, List<String>> listRequestHeaders() {
 		final Map<String, List<String>> headers = new HashMap<String, List<String>>();
 		final Enumeration<String> enumHeaders = httpReq.getHeaderNames();

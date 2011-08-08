@@ -39,7 +39,6 @@ public abstract class AbstractRidgetContainerAnnotationHandler implements IRidge
 				+ ridget.getClass().getName() + "' with id '" + ridget.getID() + "'."); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	@SuppressWarnings("unchecked")
 	protected <L> L createListener(final Class<L> listenerClazz, final String listenerMethodName, final Object target,
 			final Method targetMethod) {
 		return (L) Proxy.newProxyInstance(target.getClass().getClassLoader(), new Class[] { listenerClazz },

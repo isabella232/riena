@@ -246,7 +246,6 @@ public final class TestUtils {
 	/**
 	 * Print all markers in this markable.
 	 */
-	@SuppressWarnings("unchecked")
 	public static void printMarkers(final IMarkable markable) {
 		final Collection<IMarker> markers = (Collection<IMarker>) markable.getMarkers();
 		System.out.println(String.format("Have %d markers::", markers.size())); //$NON-NLS-1$

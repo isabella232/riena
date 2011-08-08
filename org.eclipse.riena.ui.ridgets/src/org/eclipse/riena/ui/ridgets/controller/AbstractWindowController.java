@@ -147,7 +147,6 @@ public abstract class AbstractWindowController implements IController, IContext 
 		return context.get(key);
 	}
 
-	@SuppressWarnings("unchecked")
 	public <R extends IRidget> R getRidget(final String id) {
 		return (R) ridgets.get(id);
 	}
@@ -155,7 +154,6 @@ public abstract class AbstractWindowController implements IController, IContext 
 	/**
 	 * @since 2.0
 	 */
-	@SuppressWarnings("unchecked")
 	public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
 		R ridget = getRidget(id);
 
@@ -195,7 +193,6 @@ public abstract class AbstractWindowController implements IController, IContext 
 	/**
 	 * @return The window ridget.
 	 */
-	@SuppressWarnings("unchecked")
 	public IWindowRidget getWindowRidget() {
 		if (RienaStatus.isTest() && windowRidget == null) {
 			final Class<IWindowRidget> mappedRidgetClazz = (Class<IWindowRidget>) ClassRidgetMapper.getInstance()

@@ -74,7 +74,6 @@ public abstract class AbstractRidgetController implements IController {
 		// does nothing and is not called automatically
 	}
 
-	@SuppressWarnings("unchecked")
 	public final <R extends IRidget> R getRidget(final String id) {
 		return (R) map.get(id);
 	}

@@ -1014,7 +1014,6 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 		}
 
-		@SuppressWarnings("unchecked")
 		public <R extends IRidget> R getRidget(final String id) {
 			return (R) AbstractMasterDetailsRidget.this.getRidget(id);
 		}
