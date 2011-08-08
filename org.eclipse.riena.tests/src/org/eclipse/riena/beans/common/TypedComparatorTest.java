@@ -27,9 +27,9 @@ public class TypedComparatorTest extends TestCase {
 
 		final TypedComparator<String> tc = new TypedComparator<String>();
 		assertEquals(0, tc.compare(null, null));
-		assertEquals(1, tc.compare("test", null));
-		assertEquals(1, tc.compare("", null));
-		assertEquals(-1, tc.compare(null, "test"));
-		assertEquals(-1, tc.compare(null, ""));
+		assertEquals(1, tc.compare("test", null)); //$NON-NLS-1$
+		assertEquals(1, tc.compare("", null)); //$NON-NLS-1$
+		assertEquals(-1, tc.compare(null, "test")); //$NON-NLS-1$
+		assertEquals(-1, tc.compare(null, "")); //$NON-NLS-1$
 	}
 }

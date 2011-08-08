@@ -38,22 +38,22 @@ public class ComboSubModuleControllerTest extends AbstractSubModuleControllerTes
 	}
 
 	public void testNoSelection() {
-		final IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne");
+		final IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne"); //$NON-NLS-1$
 		combo.setSelection(null);
 		assertEquals(-1, combo.getSelectionIndex());
 		assertEquals(null, combo.getSelection());
 	}
 
 	public void testSaveName() {
-		final ITextRidget textFirst = getController().getRidget(ITextRidget.class, "textFirst");
-		final ITextRidget textLast = getController().getRidget(ITextRidget.class, "textLast");
-		final IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne");
-		final IActionRidget saveButton = getController().getRidget(IActionRidget.class, "buttonSave");
+		final ITextRidget textFirst = getController().getRidget(ITextRidget.class, "textFirst"); //$NON-NLS-1$
+		final ITextRidget textLast = getController().getRidget(ITextRidget.class, "textLast"); //$NON-NLS-1$
+		final IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne"); //$NON-NLS-1$
+		final IActionRidget saveButton = getController().getRidget(IActionRidget.class, "buttonSave"); //$NON-NLS-1$
 
 		// set new name and save
 		final Person newPerson = (Person) combo.getSelection();
-		textFirst.setText("Jane");
-		textLast.setText("Fonda");
+		textFirst.setText("Jane"); //$NON-NLS-1$
+		textLast.setText("Fonda"); //$NON-NLS-1$
 
 		saveButton.fireAction();
 
@@ -61,9 +61,9 @@ public class ComboSubModuleControllerTest extends AbstractSubModuleControllerTes
 	}
 
 	private void basicTestComboSelection(final int index) {
-		final ITextRidget textFirst = getController().getRidget(ITextRidget.class, "textFirst");
-		final ITextRidget textLast = getController().getRidget(ITextRidget.class, "textLast");
-		final IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne");
+		final ITextRidget textFirst = getController().getRidget(ITextRidget.class, "textFirst"); //$NON-NLS-1$
+		final ITextRidget textLast = getController().getRidget(ITextRidget.class, "textLast"); //$NON-NLS-1$
+		final IComboRidget combo = getController().getRidget(IComboRidget.class, "comboOne"); //$NON-NLS-1$
 		final List<Person> expected = PersonFactory.createPersonList();
 
 		combo.setSelection(index);
