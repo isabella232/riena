@@ -26,7 +26,7 @@ public class PingFingerprintTest extends RienaTestCase {
 	public void testPingFingerprintIPingable() {
 		try {
 			new PingFingerprint(null);
-			fail("Expected precondition violation");
+			fail("Expected precondition violation"); //$NON-NLS-1$
 		} catch (final Exception e) {
 			ok();
 		}
@@ -43,18 +43,18 @@ public class PingFingerprintTest extends RienaTestCase {
 	public void testPingFingerprintIPingableBoolean() {
 		try {
 			new PingFingerprint(null, true);
-			fail("Expected precondition violation");
+			fail("Expected precondition violation"); //$NON-NLS-1$
 		} catch (final Exception e) {
 			ok();
 		}
 		final IPingable pingable = new DefaultPingable() {
 		};
 
-		assertEquals("PingFingerprint[" + pingable.getClass().getName() + "]",
+		assertEquals("PingFingerprint[" + pingable.getClass().getName() + "]", //$NON-NLS-1$ //$NON-NLS-2$
 				new PingFingerprint(pingable, true).toString());
 
 		assertEquals(
-				"PingFingerprint[" + pingable.getClass().getName() + "#" + System.identityHashCode(pingable) + "]",
+				"PingFingerprint[" + pingable.getClass().getName() + "#" + System.identityHashCode(pingable) + "]", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				new PingFingerprint(pingable, false).toString());
 	}
 
@@ -65,13 +65,13 @@ public class PingFingerprintTest extends RienaTestCase {
 	public void testEqualsAndHash() {
 		final IPingable pingable = new DefaultPingable() {
 		};
-		final PingFingerprint fingerprintA = new PingFingerprint(pingable, "a");
-		final PingFingerprint fingerprintB = new PingFingerprint(pingable, "b");
+		final PingFingerprint fingerprintA = new PingFingerprint(pingable, "a"); //$NON-NLS-1$
+		final PingFingerprint fingerprintB = new PingFingerprint(pingable, "b"); //$NON-NLS-1$
 		final PingFingerprint fingerprintAOtherPingable = new PingFingerprint(new DefaultPingable() {
-		}, "a");
+		}, "a"); //$NON-NLS-1$
 
 		checkEqualsAndHashCode(true, fingerprintA, fingerprintA);
-		checkEqualsAndHashCode(true, fingerprintA, new PingFingerprint(pingable, "a"));
+		checkEqualsAndHashCode(true, fingerprintA, new PingFingerprint(pingable, "a")); //$NON-NLS-1$
 		checkEqualsAndHashCode(false, fingerprintA, fingerprintB);
 		checkEqualsAndHashCode(false, fingerprintA, fingerprintAOtherPingable);
 		checkEqualsAndHashCode(false, fingerprintA, new Integer(3));

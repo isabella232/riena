@@ -39,11 +39,11 @@ public class CoreNetProxySelectorTest extends RienaTestCase {
 	public void testPac() {
 		TestServer server = null;
 		try {
-			server = new TestServer(80, getFile("pac42.js").getParentFile());
+			server = new TestServer(80, getFile("pac42.js").getParentFile()); //$NON-NLS-1$
 			final ProxySelector selector = new CoreNetProxySelector();
-			final List<Proxy> proxies = selector.select(new URI("http://www.eclipse.org"));
+			final List<Proxy> proxies = selector.select(new URI("http://www.eclipse.org")); //$NON-NLS-1$
 			assertEquals(2, proxies.size());
-			assertEquals("idproxy", ((InetSocketAddress) proxies.get(0).address()).getHostName());
+			assertEquals("idproxy", ((InetSocketAddress) proxies.get(0).address()).getHostName()); //$NON-NLS-1$
 			assertEquals(3128, ((InetSocketAddress) proxies.get(0).address()).getPort());
 		} catch (final Throwable e) {
 			fail();

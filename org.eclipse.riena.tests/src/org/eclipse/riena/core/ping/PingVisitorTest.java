@@ -61,14 +61,9 @@ public class PingVisitorTest extends RienaTestCase {
 		}
 
 		public static RuntimeException newException() {
-			return new RuntimeException("ping");
+			return new RuntimeException("ping"); //$NON-NLS-1$
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.eclipse.riena.core.ping.IPingable#getPingFingerprint()
-		 */
 		public PingFingerprint getPingFingerprint() {
 			return new PingFingerprint(this, false);
 		}
@@ -85,11 +80,11 @@ public class PingVisitorTest extends RienaTestCase {
 
 		protected void pingDB() {
 			if (pingdbCalled) {
-				throw new AssertionError("pingDB() already called on " + getPingFingerprint());
+				throw new AssertionError("pingDB() already called on " + getPingFingerprint()); //$NON-NLS-1$
 			}
 			pingdbCalled = true;
 			if (pingDBFail) {
-				throw new RuntimeException("pingDB");
+				throw new RuntimeException("pingDB"); //$NON-NLS-1$
 			}
 		}
 
@@ -122,7 +117,7 @@ public class PingVisitorTest extends RienaTestCase {
 		}
 
 		protected void pingarassabum() {
-			throw new AssertionError("Not allowed");
+			throw new AssertionError("Not allowed"); //$NON-NLS-1$
 		}
 	}
 
@@ -180,7 +175,7 @@ public class PingVisitorTest extends RienaTestCase {
 
 		mock4.letPingFail();
 		final PingMethodAdapter mock3PingDB = new PingMethodAdapter(mock3,
-				PingMockWithPingMethods.class.getDeclaredMethod("pingDB"));
+				PingMockWithPingMethods.class.getDeclaredMethod("pingDB")); //$NON-NLS-1$
 
 		PingVisitor visitor = new PingVisitor();
 		visitor = visitor.ping(mock1);
@@ -201,7 +196,7 @@ public class PingVisitorTest extends RienaTestCase {
 		assertResultContainsAll(mock3Result.getNestedResults(), mock4, mock5, mock3PingDB);
 
 		final PingResult mock4Result = getPingResultFor(mock4, mock3Result.getNestedResults());
-		assertPingFailureContains(mock4Result, "RuntimeException", "ping");
+		assertPingFailureContains(mock4Result, "RuntimeException", "ping"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertResultContainsAll(mock4Result.getNestedResults());
 
 		final PingResult mock5Result = getPingResultFor(mock5, mock3Result.getNestedResults());
@@ -237,7 +232,7 @@ public class PingVisitorTest extends RienaTestCase {
 		((PingMockWithPingMethods) mock3).letPingDBFail();
 
 		final PingMethodAdapter mock3PingDB = new PingMethodAdapter(mock3,
-				PingMockWithPingMethods.class.getDeclaredMethod("pingDB"));
+				PingMockWithPingMethods.class.getDeclaredMethod("pingDB")); //$NON-NLS-1$
 
 		PingVisitor visitor = new PingVisitor();
 		visitor = visitor.ping(mock1);
@@ -266,7 +261,7 @@ public class PingVisitorTest extends RienaTestCase {
 		assertResultContainsAll(mock5Result.getNestedResults());
 
 		final PingResult mock3PingDBResult = getPingResultFor(mock3PingDB, mock3Result.getNestedResults());
-		assertPingFailureContains(mock3PingDBResult, "RuntimeException", "pingDB");
+		assertPingFailureContains(mock3PingDBResult, "RuntimeException", "pingDB"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertResultContainsAll(mock3PingDBResult.getNestedResults());
 	}
 
@@ -503,7 +498,7 @@ public class PingVisitorTest extends RienaTestCase {
 			private final IPingable pingable1 = mock2;
 		};
 		final PingMethodAdapter mock3PingDB = new PingMethodAdapter(mock3,
-				PingMockWithPingMethods.class.getDeclaredMethod("pingDB"));
+				PingMockWithPingMethods.class.getDeclaredMethod("pingDB")); //$NON-NLS-1$
 
 		PingVisitor visitor = new PingVisitor();
 		visitor = visitor.ping(mock1);
@@ -549,7 +544,7 @@ public class PingVisitorTest extends RienaTestCase {
 	private PingResult assertResultContains(final Iterable<PingResult> resultList, final IPingable expected) {
 		final PingResult pingResult = getPingResultFor(expected, resultList);
 		if (pingResult == null) {
-			fail("Pingable " + expected + " not contained in " + resultList);
+			fail("Pingable " + expected + " not contained in " + resultList); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return pingResult;
 	}
@@ -564,9 +559,9 @@ public class PingVisitorTest extends RienaTestCase {
 	}
 
 	private void assertPingFailureContains(final PingResult pingResult, final String... failureParts) {
-		assertNotNull("expected failures '" + failureParts + "' but is <null>", pingResult.getPingFailure());
+		assertNotNull("expected failures '" + failureParts + "' but is <null>", pingResult.getPingFailure()); //$NON-NLS-1$ //$NON-NLS-2$
 		for (final String part : failureParts) {
-			assertTrue(part + " not contained in failure message '" + pingResult.getPingFailure() + "'", pingResult
+			assertTrue(part + " not contained in failure message '" + pingResult.getPingFailure() + "'", pingResult //$NON-NLS-1$ //$NON-NLS-2$
 					.getPingFailure().contains(part));
 		}
 	}

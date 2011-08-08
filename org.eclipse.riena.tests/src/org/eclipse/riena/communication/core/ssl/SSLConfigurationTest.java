@@ -36,129 +36,129 @@ public class SSLConfigurationTest extends RienaTestCase {
 		printTestName();
 
 		final SSLConfiguration config = new SSLConfiguration();
-		assertNull(ReflectionUtils.getHidden(config, "protocol"));
-		assertNull(ReflectionUtils.getHidden(config, "keystore"));
-		assertNull(ReflectionUtils.getHidden(config, "password"));
-		assertNull(ReflectionUtils.getHidden(config, "hostnameVerifier"));
+		assertNull(ReflectionUtils.getHidden(config, "protocol")); //$NON-NLS-1$
+		assertNull(ReflectionUtils.getHidden(config, "keystore")); //$NON-NLS-1$
+		assertNull(ReflectionUtils.getHidden(config, "password")); //$NON-NLS-1$
+		assertNull(ReflectionUtils.getHidden(config, "hostnameVerifier")); //$NON-NLS-1$
 	}
 
 	public void testOneConfiguration() {
 		printTestName();
-		addPluginXml(SSLConfigurationTest.class, "plugin.xml");
+		addPluginXml(SSLConfigurationTest.class, "plugin.xml"); //$NON-NLS-1$
 
 		try {
 			final SSLConfiguration config = new SSLConfiguration();
 			Wire.instance(config).andStart(getContext());
 
-			assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1");
-			assertEquals(ReflectionUtils.getHidden(config, "keystore"), "#jre-cacerts#");
-			assertEquals(ReflectionUtils.getHidden(config, "password"), "changeit");
-			assertNotNull(ReflectionUtils.getHidden(config, "hostnameVerifier"));
-			assertEquals(ReflectionUtils.getHidden(config, "hostnameVerifier").getClass(),
+			assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1"); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(ReflectionUtils.getHidden(config, "keystore"), "#jre-cacerts#"); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(ReflectionUtils.getHidden(config, "password"), "changeit"); //$NON-NLS-1$ //$NON-NLS-2$
+			assertNotNull(ReflectionUtils.getHidden(config, "hostnameVerifier")); //$NON-NLS-1$
+			assertEquals(ReflectionUtils.getHidden(config, "hostnameVerifier").getClass(), //$NON-NLS-1$
 					SSLConfiguration.StrictHostnameVerifier.class);
 		} finally {
-			removeExtension("org.eclipse.riena.communication.core.ssl.test");
+			removeExtension("org.eclipse.riena.communication.core.ssl.test"); //$NON-NLS-1$
 		}
 	}
 
 	public void testOneConfigurationWithEncryptedPassword() {
 		printTestName();
-		addPluginXml(SSLConfigurationTest.class, "pluginWithEncryptedPassword.xml");
+		addPluginXml(SSLConfigurationTest.class, "pluginWithEncryptedPassword.xml"); //$NON-NLS-1$
 
 		try {
 			final SSLConfiguration config = new SSLConfiguration();
 			Wire.instance(config).andStart(getContext());
 
-			assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1");
-			assertEquals(ReflectionUtils.getHidden(config, "keystore"), "#jre-cacerts#");
-			assertEquals(ReflectionUtils.getHidden(config, "password"), "cae3c55508eaa369d5c8870398c90a64"); // not encrypted yet!!
-			assertNotNull(ReflectionUtils.getHidden(config, "hostnameVerifier"));
-			assertEquals(ReflectionUtils.getHidden(config, "hostnameVerifier").getClass(),
+			assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1"); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(ReflectionUtils.getHidden(config, "keystore"), "#jre-cacerts#"); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(ReflectionUtils.getHidden(config, "password"), "cae3c55508eaa369d5c8870398c90a64"); // not encrypted yet!! //$NON-NLS-1$ //$NON-NLS-2$
+			assertNotNull(ReflectionUtils.getHidden(config, "hostnameVerifier")); //$NON-NLS-1$
+			assertEquals(ReflectionUtils.getHidden(config, "hostnameVerifier").getClass(), //$NON-NLS-1$
 					SSLConfiguration.StrictHostnameVerifier.class);
 		} finally {
-			removeExtension("org.eclipse.riena.communication.core.ssl.test");
+			removeExtension("org.eclipse.riena.communication.core.ssl.test"); //$NON-NLS-1$
 		}
 	}
 
 	public void testOneConfigurationWithHostnameVerifier() {
 		printTestName();
-		addPluginXml(SSLConfigurationTest.class, "pluginWithHostnameVerifier.xml");
+		addPluginXml(SSLConfigurationTest.class, "pluginWithHostnameVerifier.xml"); //$NON-NLS-1$
 
 		try {
 			final SSLConfiguration config = new SSLConfiguration();
 			Wire.instance(config).andStart(getContext());
 
-			assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1");
-			assertEquals(ReflectionUtils.getHidden(config, "keystore"), "#jre-cacerts#");
-			assertEquals(ReflectionUtils.getHidden(config, "password"), "changeit");
-			assertEquals(ReflectionUtils.getHidden(config, "hostnameVerifier").getClass(), TestHostnameVerifier.class);
+			assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1"); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(ReflectionUtils.getHidden(config, "keystore"), "#jre-cacerts#"); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(ReflectionUtils.getHidden(config, "password"), "changeit"); //$NON-NLS-1$ //$NON-NLS-2$
+			assertEquals(ReflectionUtils.getHidden(config, "hostnameVerifier").getClass(), TestHostnameVerifier.class); //$NON-NLS-1$
 		} finally {
-			removeExtension("org.eclipse.riena.communication.core.ssl.test");
+			removeExtension("org.eclipse.riena.communication.core.ssl.test"); //$NON-NLS-1$
 		}
 	}
 
 	public void testLocateKeystoreJreCacerts() {
 		printTestName();
-		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "#jre-cacerts#", "changeit");
+		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "#jre-cacerts#", "changeit"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		final SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
-		assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1");
-		assertEquals(ReflectionUtils.getHidden(config, "keystore"), "#jre-cacerts#");
-		assertEquals(ReflectionUtils.getHidden(config, "password"), "changeit");
-		assertNotNull(ReflectionUtils.getHidden(config, "hostnameVerifier"));
-		assertEquals(ReflectionUtils.getHidden(config, "hostnameVerifier").getClass(),
+		assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(ReflectionUtils.getHidden(config, "keystore"), "#jre-cacerts#"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(ReflectionUtils.getHidden(config, "password"), "changeit"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertNotNull(ReflectionUtils.getHidden(config, "hostnameVerifier")); //$NON-NLS-1$
+		assertEquals(ReflectionUtils.getHidden(config, "hostnameVerifier").getClass(), //$NON-NLS-1$
 				SSLConfiguration.StrictHostnameVerifier.class);
 	}
 
 	public void testLocateKeystoreJreCacertsEncryptedPassword() {
 		printTestName();
-		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "#jre-cacerts#",
-				"cae3c55508eaa369d5c8870398c90a64", "true");
+		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "#jre-cacerts#", //$NON-NLS-1$ //$NON-NLS-2$
+				"cae3c55508eaa369d5c8870398c90a64", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 		final SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
-		assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1");
-		assertEquals(ReflectionUtils.getHidden(config, "keystore"), "#jre-cacerts#");
-		assertEquals(ReflectionUtils.getHidden(config, "password"), "cae3c55508eaa369d5c8870398c90a64"); // not encrypted yet!!
-		assertNotNull(ReflectionUtils.getHidden(config, "hostnameVerifier"));
-		assertEquals(ReflectionUtils.getHidden(config, "hostnameVerifier").getClass(),
+		assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(ReflectionUtils.getHidden(config, "keystore"), "#jre-cacerts#"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(ReflectionUtils.getHidden(config, "password"), "cae3c55508eaa369d5c8870398c90a64"); // not encrypted yet!! //$NON-NLS-1$ //$NON-NLS-2$
+		assertNotNull(ReflectionUtils.getHidden(config, "hostnameVerifier")); //$NON-NLS-1$
+		assertEquals(ReflectionUtils.getHidden(config, "hostnameVerifier").getClass(), //$NON-NLS-1$
 				SSLConfiguration.StrictHostnameVerifier.class);
 	}
 
 	public void testGetPasswordCharsNotEncrypted() {
 		final SSLConfiguration config = new SSLConfiguration();
-		final char[] password = ReflectionUtils.invokeHidden(config, "getPasswordChars", "changeit", "false");
-		assertEquals("changeit", new String(password));
+		final char[] password = ReflectionUtils.invokeHidden(config, "getPasswordChars", "changeit", "false"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertEquals("changeit", new String(password)); //$NON-NLS-1$
 	}
 
 	public void testGetPasswordCharsEncrypted() {
 		final SSLConfiguration config = new SSLConfiguration();
-		final char[] password = ReflectionUtils.invokeHidden(config, "getPasswordChars",
-				"cae3c55508eaa369d5c8870398c90a64", "true");
-		assertEquals("changeit", new String(password));
+		final char[] password = ReflectionUtils.invokeHidden(config, "getPasswordChars", //$NON-NLS-1$
+				"cae3c55508eaa369d5c8870398c90a64", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("changeit", new String(password)); //$NON-NLS-1$
 	}
 
 	public void testLocateKeystoreJreCacertsAndCustomHostnameVerifier() {
 		printTestName();
 		final HostnameVerifier hostnameVerifier = new TestHostnameVerifier();
-		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "#jre-cacerts#", "changeit",
+		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "#jre-cacerts#", "changeit", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				hostnameVerifier);
 		final SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
-		assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1");
-		assertEquals(ReflectionUtils.getHidden(config, "keystore"), "#jre-cacerts#");
-		assertEquals(ReflectionUtils.getHidden(config, "password"), "changeit");
-		assertEquals(ReflectionUtils.getHidden(config, "hostnameVerifier"), hostnameVerifier);
+		assertEquals(ReflectionUtils.getHidden(config, "protocol"), "TLSv1"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(ReflectionUtils.getHidden(config, "keystore"), "#jre-cacerts#"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(ReflectionUtils.getHidden(config, "password"), "changeit"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(ReflectionUtils.getHidden(config, "hostnameVerifier"), hostnameVerifier); //$NON-NLS-1$
 	}
 
 	public void testLocateKeystoreFile() {
 		printTestName();
 		final String jreDir = System.getProperty("java.home"); //$NON-NLS-1$
-		final File cacertFile = new File(new File(new File(new File(jreDir), "lib"), "security"), "cacerts");
+		final File cacertFile = new File(new File(new File(new File(jreDir), "lib"), "security"), "cacerts"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", cacertFile.toString(), "changeit");
+		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", cacertFile.toString(), "changeit"); //$NON-NLS-1$ //$NON-NLS-2$
 		final SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
@@ -166,8 +166,8 @@ public class SSLConfigurationTest extends RienaTestCase {
 
 	public void testLocateKeystoreResource() {
 		printTestName();
-		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1",
-				"/org/eclipse/riena/communication/core/ssl/cacerts", "changeit");
+		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", //$NON-NLS-1$
+				"/org/eclipse/riena/communication/core/ssl/cacerts", "changeit"); //$NON-NLS-1$ //$NON-NLS-2$
 		final SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
@@ -175,7 +175,7 @@ public class SSLConfigurationTest extends RienaTestCase {
 
 	public void testLocateKeystoreEntry() {
 		printTestName();
-		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "/keystore/cacerts", "changeit");
+		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "/keystore/cacerts", "changeit"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		final SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());
@@ -184,11 +184,11 @@ public class SSLConfigurationTest extends RienaTestCase {
 	public void testLocateKeystoreUrl() throws IOException {
 		printTestName();
 		final String jreDir = System.getProperty("java.home"); //$NON-NLS-1$
-		final File cacertDir = new File(new File(new File(jreDir), "lib"), "security");
+		final File cacertDir = new File(new File(new File(jreDir), "lib"), "security"); //$NON-NLS-1$ //$NON-NLS-2$
 		final TestServer nano = new TestServer(8888, cacertDir);
 
-		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "http://localhost:8888/cacerts",
-				"changeit");
+		final ISSLPropertiesExtension properties = new SSLProperties("TLSv1", "http://localhost:8888/cacerts", //$NON-NLS-1$ //$NON-NLS-2$
+				"changeit"); //$NON-NLS-1$
 		final SSLConfiguration config = new SSLConfiguration();
 		config.configure(properties);
 		assertTrue(config.isConfigured());

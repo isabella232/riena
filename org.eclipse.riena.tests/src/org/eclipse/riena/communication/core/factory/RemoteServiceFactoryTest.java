@@ -31,11 +31,6 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 
 	private RemoteServiceRegistry remoteServiceRegistry = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.tests.RienaTestCase#setUp()
-	 */
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -56,20 +51,15 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 		remoteServiceRegistry = null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.tests.RienaTestCase#tearDown()
-	 */
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		final BundleContext context = Activator.getDefault().getContext();
-		ServiceReference serviceReference;
+		ServiceReference<?> serviceReference;
 		// hack to unregister services from previous testcases that are still hanging around
 		while ((serviceReference = context.getServiceReference(IRSFTest.class.getName())) != null) {
-			final ServiceRegistration registration = (ServiceRegistration) ReflectionUtils.getHidden(serviceReference,
-					"registration");
+			final ServiceRegistration<?> registration = (ServiceRegistration<?>) ReflectionUtils.getHidden(
+					serviceReference, "registration"); //$NON-NLS-1$
 			registration.unregister();
 		}
 	}
@@ -77,65 +67,65 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 	public void testUnregister() throws Exception {
 		final BundleContext context = Activator.getDefault().getContext();
 		final IRemoteServiceRegistration createAndRegisterProxy = new RemoteServiceFactory().createAndRegisterProxy(
-				IRSFTest.class, "http://localhost", "hessian", context);
+				IRSFTest.class, "http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
 		final Object service = context.getService(context.getServiceReference(IRSFTest.class.getName()));
 		assertNotNull(service);
 		createAndRegisterProxy.unregister();
-		final ServiceReference serviceReference = context.getServiceReference(IRSFTest.class.getName());
-		assertNull("assuming that serviceReference is null when unregister is called", serviceReference);
-		assertFalse("asssuming that service is no longer in registry if service proxy is gone",
-				remoteServiceRegistry.hasServiceForUrl("http://localhost"));
+		final ServiceReference<?> serviceReference = context.getServiceReference(IRSFTest.class.getName());
+		assertNull("assuming that serviceReference is null when unregister is called", serviceReference); //$NON-NLS-1$
+		assertFalse("asssuming that service is no longer in registry if service proxy is gone", //$NON-NLS-1$
+				remoteServiceRegistry.hasServiceForUrl("http://localhost")); //$NON-NLS-1$
 	}
 
 	public void testUnregisterForOtherBundle() throws Exception {
 		final BundleContext context = org.eclipse.riena.internal.communication.console.Activator.getDefault()
 				.getContext();
 		final IRemoteServiceRegistration createAndRegisterProxy = new RemoteServiceFactory().createAndRegisterProxy(
-				IRSFTest.class, "http://localhost", "hessian", context);
+				IRSFTest.class, "http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
 		final Object service = context.getService(context.getServiceReference(IRSFTest.class.getName()));
 		assertNotNull(service);
 		createAndRegisterProxy.unregister();
-		final ServiceReference serviceReference = context.getServiceReference(IRSFTest.class.getName());
-		assertNull("assuming that serviceReference is null when unregister is called", serviceReference);
-		assertFalse("asssuming that service is no longer in registry if service proxy is gone",
-				remoteServiceRegistry.hasServiceForUrl("http://localhost"));
+		final ServiceReference<?> serviceReference = context.getServiceReference(IRSFTest.class.getName());
+		assertNull("assuming that serviceReference is null when unregister is called", serviceReference); //$NON-NLS-1$
+		assertFalse("asssuming that service is no longer in registry if service proxy is gone", //$NON-NLS-1$
+				remoteServiceRegistry.hasServiceForUrl("http://localhost")); //$NON-NLS-1$
 	}
 
 	public void testUnregisterForOtherBundleAndStopOtherBundle() throws Exception {
-		super.startBundle("org.eclipse.riena.communication.console");
+		super.startBundle("org.eclipse.riena.communication.console"); //$NON-NLS-1$
 		final BundleContext context = org.eclipse.riena.internal.communication.console.Activator.getDefault()
 				.getContext();
-		new RemoteServiceFactory().createAndRegisterProxy(IRSFTest.class, "http://localhost", "hessian", context);
+		new RemoteServiceFactory().createAndRegisterProxy(IRSFTest.class, "http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
 		final Object service = context.getService(context.getServiceReference(IRSFTest.class.getName()));
 		assertNotNull(service);
 		context.getBundle().stop();
-		final ServiceReference serviceReference = Activator.getDefault().getContext()
+		final ServiceReference<?> serviceReference = Activator.getDefault().getContext()
 				.getServiceReference(IRSFTest.class.getName());
-		assertNull("assuming that serviceReference is null when bundle is stopped", serviceReference);
-		assertFalse("asssuming that service is no longer in registry if service proxy is gone",
-				remoteServiceRegistry.hasServiceForUrl("http://localhost"));
+		assertNull("assuming that serviceReference is null when bundle is stopped", serviceReference); //$NON-NLS-1$
+		assertFalse("asssuming that service is no longer in registry if service proxy is gone", //$NON-NLS-1$
+				remoteServiceRegistry.hasServiceForUrl("http://localhost")); //$NON-NLS-1$
 	}
 
 	public void testUnregisterForOtherBundleAndStopOtherBundleAndUnregister() throws Exception {
-		super.startBundle("org.eclipse.riena.communication.console");
+		super.startBundle("org.eclipse.riena.communication.console"); //$NON-NLS-1$
 		final BundleContext context = org.eclipse.riena.internal.communication.console.Activator.getDefault()
 				.getContext();
 		final IRemoteServiceRegistration createAndRegisterProxy = new RemoteServiceFactory().createAndRegisterProxy(
-				IRSFTest.class, "http://localhost", "hessian", context);
+				IRSFTest.class, "http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
 		final Object service = context.getService(context.getServiceReference(IRSFTest.class.getName()));
 		assertNotNull(service);
 		context.getBundle().stop();
 		try {
 			createAndRegisterProxy.unregister();
-			fail("unregister of proxy for dead context should not be possible");
+			fail("unregister of proxy for dead context should not be possible"); //$NON-NLS-1$
 		} catch (final IllegalStateException e) {
-			ok("expected exception");
+			ok("expected exception"); //$NON-NLS-1$
 		}
-		final ServiceReference serviceReference = Activator.getDefault().getContext()
+		final ServiceReference<?> serviceReference = Activator.getDefault().getContext()
 				.getServiceReference(IRSFTest.class.getName());
-		assertNull("assuming that serviceReference is null when bundle is stopped and unregister is called",
+		assertNull("assuming that serviceReference is null when bundle is stopped and unregister is called", //$NON-NLS-1$
 				serviceReference);
-		assertFalse("asssuming that service is no longer in registry if service proxy is gone",
-				remoteServiceRegistry.hasServiceForUrl("http://localhost"));
+		assertFalse("asssuming that service is no longer in registry if service proxy is gone", //$NON-NLS-1$
+				remoteServiceRegistry.hasServiceForUrl("http://localhost")); //$NON-NLS-1$
 	}
 }

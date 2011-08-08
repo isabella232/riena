@@ -26,7 +26,7 @@ public class Base16UtilTest extends RienaTestCase {
 	 */
 	public void testOddStringLength() {
 		try {
-			Base16Util.toBytes("1");
+			Base16Util.toBytes("1"); //$NON-NLS-1$
 			fail();
 		} catch (final IllegalArgumentException e) {
 			ok();

@@ -36,12 +36,12 @@ import org.eclipse.riena.sample.app.common.attachment.IAttachmentService;
 @ManualTestCase
 public final class AttachmentClientITest extends RienaTestCase {
 
-	private static final String STRING1 = "das sind testdaten, die wir mal einfach so verschicken um et+das sind "
-			+ "testdaten, die wir mal einfach so verschicken um et";
-	private static final String STRING2 = "first+das sind testdaten, die wir mal einfach so verschicken um et+second+"
-			+ "das sind testdaten, die wir mal einfach so verschicken um et+third+2";
-	private static final String TESTDATA1 = "das sind testdaten, die wir mal einfach so verschicken um etwas zu testen.";
-	private static final String TESTDATA2 = "das sind testdaten, die wir mal einfach so verschicken um etwas zu testen. (2.test)";
+	private static final String STRING1 = "das sind testdaten, die wir mal einfach so verschicken um et+das sind " //$NON-NLS-1$
+			+ "testdaten, die wir mal einfach so verschicken um et"; //$NON-NLS-1$
+	private static final String STRING2 = "first+das sind testdaten, die wir mal einfach so verschicken um et+second+" //$NON-NLS-1$
+			+ "das sind testdaten, die wir mal einfach so verschicken um et+third+2"; //$NON-NLS-1$
+	private static final String TESTDATA1 = "das sind testdaten, die wir mal einfach so verschicken um etwas zu testen."; //$NON-NLS-1$
+	private static final String TESTDATA2 = "das sind testdaten, die wir mal einfach so verschicken um etwas zu testen. (2.test)"; //$NON-NLS-1$
 	private IAttachmentService attachService;
 	private IRemoteServiceRegistration regAttachmentService;
 
@@ -52,7 +52,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		regAttachmentService = Register.remoteProxy(IAttachmentService.class)
-				.usingUrl("http://localhost:8080/hessian/AttachmentService").withProtocol("hessian")
+				.usingUrl("http://localhost:8080/hessian/AttachmentService").withProtocol("hessian") //$NON-NLS-1$ //$NON-NLS-2$
 				.andStart(Activator.getDefault().getContext());
 		attachService = (IAttachmentService) Activator
 				.getDefault()
@@ -79,9 +79,9 @@ public final class AttachmentClientITest extends RienaTestCase {
 	public void testSendSimpleFile() throws IOException {
 		final Attachment attachment = new Attachment(setupTestFile(TESTDATA1));
 		final String str = attachService.sendSingleAttachment(attachment);
-		assertTrue("expecting a certain string",
-				str != null && str.equals("das sind testdaten, die wir mal einfach so verschicken um et"));
-		trace("testSendSimpleFile " + str);
+		assertTrue("expecting a certain string", //$NON-NLS-1$
+				str != null && str.equals("das sind testdaten, die wir mal einfach so verschicken um et")); //$NON-NLS-1$
+		trace("testSendSimpleFile " + str); //$NON-NLS-1$
 	}
 
 	/**
@@ -93,8 +93,8 @@ public final class AttachmentClientITest extends RienaTestCase {
 		final Attachment attachment = new Attachment(setupTestFile(TESTDATA1));
 		final Attachment attachment2 = new Attachment(setupTestFile(TESTDATA2));
 		final String str = attachService.sendTwoAttachments(attachment, attachment2);
-		assertTrue("expecting a certain string", str != null && str.equals(STRING1));
-		trace("testSendTwoFiles " + str);
+		assertTrue("expecting a certain string", str != null && str.equals(STRING1)); //$NON-NLS-1$
+		trace("testSendTwoFiles " + str); //$NON-NLS-1$
 	}
 
 	/**
@@ -105,9 +105,9 @@ public final class AttachmentClientITest extends RienaTestCase {
 	public void testSendFileAndData() throws IOException {
 		final Attachment attachment = new Attachment(setupTestFile(TESTDATA1));
 		final Attachment attachment2 = new Attachment(setupTestFile(TESTDATA2));
-		final String str = attachService.sendAttachmentsAndData("first", attachment, "second", attachment2, "third", 2);
-		assertTrue("expecting a certain string", str != null && str.equals(STRING2));
-		trace("testSendFileAndData " + str);
+		final String str = attachService.sendAttachmentsAndData("first", attachment, "second", attachment2, "third", 2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertTrue("expecting a certain string", str != null && str.equals(STRING2)); //$NON-NLS-1$
+		trace("testSendFileAndData " + str); //$NON-NLS-1$
 	}
 
 	/**
@@ -115,15 +115,15 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 */
 	public void testReturn() throws IOException {
 		final Attachment attachment = attachService.returnAttachment();
-		trace("testReturn as String " + readAttachmentStart(attachment));
+		trace("testReturn as String " + readAttachmentStart(attachment)); //$NON-NLS-1$
 	}
 
 	/**
 	 * @throws IOException
 	 */
 	public void testReturnOnRequest() throws IOException {
-		final Attachment attachment = attachService.returnAttachmentForRequest("validfilename");
-		trace("testReturn as String " + readAttachmentStart(attachment));
+		final Attachment attachment = attachService.returnAttachmentForRequest("validfilename"); //$NON-NLS-1$
+		trace("testReturn as String " + readAttachmentStart(attachment)); //$NON-NLS-1$
 	}
 
 	/**
@@ -131,8 +131,8 @@ public final class AttachmentClientITest extends RienaTestCase {
 	 */
 	public void testReturnOnRequestInvalidFile() throws IOException {
 		try {
-			attachService.returnAttachmentForRequest("invalidfilename");
-			fail("the requested file does not exist and the webservice should throw an exception");
+			attachService.returnAttachmentForRequest("invalidfilename"); //$NON-NLS-1$
+			fail("the requested file does not exist and the webservice should throw an exception"); //$NON-NLS-1$
 		} catch (final FileNotFoundException e) {
 			e.printStackTrace();
 			// expect exception
@@ -145,8 +145,8 @@ public final class AttachmentClientITest extends RienaTestCase {
 	public void testSendAndReturn() throws IOException {
 		final Attachment attachment = new Attachment(setupTestFile(TESTDATA1));
 		final Attachment attachment2 = attachService.sendAndReturnAttachment(attachment);
-		trace("testReturn as String " + readAttachmentStart(attachment2));
-		assertEquals("The webservice echos the request, how the result is not the same as it was sent in the request.",
+		trace("testReturn as String " + readAttachmentStart(attachment2)); //$NON-NLS-1$
+		assertEquals("The webservice echos the request, how the result is not the same as it was sent in the request.", //$NON-NLS-1$
 				readAttachmentStart(attachment), readAttachmentStart(attachment2));
 	}
 
@@ -217,11 +217,11 @@ public final class AttachmentClientITest extends RienaTestCase {
 			final InputStream input = attachment.readAsStream();
 			final int nbrBytes = input.read(byteArray, 0, byteArray.length);
 			if (nbrBytes < 1) {
-				throw new IOException("Empty Attachment.");
+				throw new IOException("Empty Attachment."); //$NON-NLS-1$
 			}
 			return new String(byteArray, 0, nbrBytes);
 		} catch (final IOException e) {
-			return "[can't read " + attachment + "]";
+			return "[can't read " + attachment + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -247,7 +247,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 		// TODO warning suppression. Ignoring FindBugs problem about
 		// hard coded reference to an absolute pathname. Appears to
 		// be ok for testing.
-		final File file = new File("/testattachments.txt");
+		final File file = new File("/testattachments.txt"); //$NON-NLS-1$
 		OutputStream out = null;
 		try {
 			out = new FileOutputStream(file);
@@ -261,7 +261,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 		// attachService.sendFile(new Attachment(file));
 		final boolean deleted = file.delete();
 		assertTrue(deleted);
-		assertFalse("file must be deleted by now", file.exists());
+		assertFalse("file must be deleted by now", file.exists()); //$NON-NLS-1$
 
 	}
 
@@ -286,28 +286,28 @@ public final class AttachmentClientITest extends RienaTestCase {
 		// attachService =
 		// ServiceAccessor.fetchService(PROXIEDATTACHMENTSERVICE,
 		// IAttachmentService.class);
-		System.out.println("generating 15 Mio bytes attachment");
+		System.out.println("generating 15 Mio bytes attachment"); //$NON-NLS-1$
 		final Attachment attachment = generateLargeAttachment(15000000);
-		System.out.println("sending it");
+		System.out.println("sending it"); //$NON-NLS-1$
 		final int i = attachService.sendAttachmentAndReturnSize(attachment);
-		System.out.println("done");
+		System.out.println("done"); //$NON-NLS-1$
 		assertTrue(i == 15000000);
 	}
 
 	public void testSendFileAndTestIfItIsClosed() throws Exception {
-		final File file = File.createTempFile("attachTest", null);
+		final File file = File.createTempFile("attachTest", null); //$NON-NLS-1$
 		final PrintWriter printWriter = new PrintWriter(new FileOutputStream(file));
-		printWriter.write("This text file is accessed in AttachmentTest to test the Attachment class.");
+		printWriter.write("This text file is accessed in AttachmentTest to test the Attachment class."); //$NON-NLS-1$
 		printWriter.close();
 		final Attachment attach = new Attachment(file);
 		assertTrue(file.exists());
 		// the object gets serialized
 		final AttachmentSerialized attach2 = (AttachmentSerialized) attach.writeReplace();
 		final ByteArrayDataSource byteArray = (ByteArrayDataSource) ReflectionUtils.getHidden(attach2,
-				"internalDataSource");
+				"internalDataSource"); //$NON-NLS-1$
 		final InputStream inputStream = byteArray.getInputStream();
 		while (inputStream.read() != -1) {
-			Nop.reason("nothing to do");
+			Nop.reason("nothing to do"); //$NON-NLS-1$
 		}
 		inputStream.close();
 		assertTrue(file.exists());
@@ -337,7 +337,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 	private File setupTestFile(final String string) {
 		File file;
 		try {
-			file = File.createTempFile("attachTest", null);
+			file = File.createTempFile("attachTest", null); //$NON-NLS-1$
 			final PrintWriter printWriter = new PrintWriter(new FileOutputStream(file));
 			printWriter.write(string);
 			printWriter.close();

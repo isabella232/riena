@@ -39,7 +39,7 @@ public class AttachmentTest extends RienaTestCase {
 	private File file;
 
 	private final static int BUFFER_SIZE = 20;
-	private final static String WRITE_BUFFER = "This text file is accessed in AttachmentTest to test the Attachment class.";
+	private final static String WRITE_BUFFER = "This text file is accessed in AttachmentTest to test the Attachment class."; //$NON-NLS-1$
 	private final static int FILE_SIZE = WRITE_BUFFER.length();
 
 	/**
@@ -48,7 +48,7 @@ public class AttachmentTest extends RienaTestCase {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		file = File.createTempFile("attachTest", null);
+		file = File.createTempFile("attachTest", null); //$NON-NLS-1$
 		final PrintWriter printWriter = new PrintWriter(new FileOutputStream(file));
 		printWriter.write(WRITE_BUFFER);
 		printWriter.close();
@@ -61,10 +61,10 @@ public class AttachmentTest extends RienaTestCase {
 	 *
 	 */
 	public void testConstruction() {
-		assertTrue("attachment does not have type FILE",
-				(Attachment.Type) ReflectionUtils.invokeHidden(attach, "getType") == Attachment.Type.FILE);
-		assertTrue("internal file object is not the passed parameter",
-				(File) ReflectionUtils.invokeHidden(attach, "getInternalFile") == file);
+		assertTrue("attachment does not have type FILE", //$NON-NLS-1$
+				(Attachment.Type) ReflectionUtils.invokeHidden(attach, "getType") == Attachment.Type.FILE); //$NON-NLS-1$
+		assertTrue("internal file object is not the passed parameter", //$NON-NLS-1$
+				(File) ReflectionUtils.invokeHidden(attach, "getInternalFile") == file); //$NON-NLS-1$
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class AttachmentTest extends RienaTestCase {
 			while ((incCounter = stream.read(b)) > 0) {
 				physicalFileCounter = physicalFileCounter + incCounter;
 			}
-			assertTrue("expecting attachment to be same size as physical file",
+			assertTrue("expecting attachment to be same size as physical file", //$NON-NLS-1$
 					physicalFileCounter == attachmentCounter);
 		} finally {
 			if (stream != null) {
@@ -99,7 +99,7 @@ public class AttachmentTest extends RienaTestCase {
 	 * @throws IOException
 	 */
 	public void testReadAsFile() throws IOException {
-		final File tmp = attach.readAsFile("tempxxx.txt");
+		final File tmp = attach.readAsFile("tempxxx.txt"); //$NON-NLS-1$
 		InputStream stream = null;
 		try {
 			stream = new FileInputStream(tmp);
@@ -109,11 +109,11 @@ public class AttachmentTest extends RienaTestCase {
 			while ((incCounter = stream.read(b)) > 0) {
 				physicalFileCounter = physicalFileCounter + incCounter;
 			}
-			assertTrue("filelength should be " + FILE_SIZE, physicalFileCounter == FILE_SIZE);
+			assertTrue("filelength should be " + FILE_SIZE, physicalFileCounter == FILE_SIZE); //$NON-NLS-1$
 			stream.close();
 			final boolean check = tmp.delete();
 			if (!check) {
-				System.out.println("temp file " + tmp.getAbsolutePath() + " could not be deleted.");
+				System.out.println("temp file " + tmp.getAbsolutePath() + " could not be deleted."); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		} finally {
 			if (stream != null) {
@@ -124,17 +124,17 @@ public class AttachmentTest extends RienaTestCase {
 
 	public void testReadURL() throws IOException {
 		try {
-			final SocketReader socketReader = new SocketReader(9999, this.getClass().getResource("test.txt"));
+			final SocketReader socketReader = new SocketReader(9999, this.getClass().getResource("test.txt")); //$NON-NLS-1$
 			socketReader.start();
-			final URL url = new URL("http://localhost:9999/test");
+			final URL url = new URL("http://localhost:9999/test"); //$NON-NLS-1$
 			final Attachment urlAttachment = new Attachment(url);
 			urlAttachment.readAsStream();
 			assertTrue(
-					"must only connect once for several calls to attachment but did connect:" + socketReader.getCount()
-							+ " times.", socketReader.getCount() == 1);
+					"must only connect once for several calls to attachment but did connect:" + socketReader.getCount() //$NON-NLS-1$
+							+ " times.", socketReader.getCount() == 1); //$NON-NLS-1$
 			socketReader.stop();
 		} catch (final SocketException e) {
-			Nop.reason("SocketException can happen in mavenbuild....thats ok");
+			Nop.reason("SocketException can happen in mavenbuild....thats ok"); //$NON-NLS-1$
 		}
 	}
 
@@ -171,7 +171,7 @@ public class AttachmentTest extends RienaTestCase {
 							try {
 								Thread.sleep(10);
 							} catch (final InterruptedException e) {
-								Nop.reason("nothing to do");
+								Nop.reason("nothing to do"); //$NON-NLS-1$
 							}
 						}
 						// then read until there is no more input
@@ -184,7 +184,7 @@ public class AttachmentTest extends RienaTestCase {
 									// some time to come up with some input
 									Thread.sleep(200);
 								} catch (final InterruptedException e) {
-									Nop.reason("ignore");
+									Nop.reason("ignore"); //$NON-NLS-1$
 								}
 							}
 						}
@@ -200,7 +200,7 @@ public class AttachmentTest extends RienaTestCase {
 							output.write(buffer, 0, len);
 						}
 					} catch (final IOException e) {
-						Nop.reason("");
+						Nop.reason(""); //$NON-NLS-1$
 					} finally {
 						if (input != null) {
 							input.close();
@@ -214,7 +214,7 @@ public class AttachmentTest extends RienaTestCase {
 					}
 				}
 			} catch (final IOException e) {
-				Nop.reason("serverSocket did not work");
+				Nop.reason("serverSocket did not work"); //$NON-NLS-1$
 			}
 		}
 

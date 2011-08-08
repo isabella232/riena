@@ -27,7 +27,7 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 public class ByteArrayDataSourceTest extends RienaTestCase {
 
 	private IDataSource dataSourceMock;
-	private final static String NAME = "Test";
+	private final static String NAME = "Test"; //$NON-NLS-1$
 
 	/**
 	 * @see junit.framework.TestCase#setUp()
@@ -124,7 +124,7 @@ public class ByteArrayDataSourceTest extends RienaTestCase {
 		setUpDataSourceMock(length);
 		final long before = System.currentTimeMillis();
 		final ByteArrayDataSource dataSource = new ByteArrayDataSource(dataSourceMock);
-		println("Run with " + length + " bytes took " + (System.currentTimeMillis() - before) + " ms.");
+		println("Run with " + length + " bytes took " + (System.currentTimeMillis() - before) + " ms."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		assertEquals(getInputStream(length), dataSource.getInputStream());
 		assertEquals(NAME, dataSource.getName());
 	}

@@ -27,7 +27,7 @@ public class FunctionResolverTest extends RienaTestCase {
 
 	public void testResolveNoFunction() throws CoreException, IOException {
 		try {
-			VariableManagerUtil.substitute("${fn:}");
+			VariableManagerUtil.substitute("${fn:}"); //$NON-NLS-1$
 			fail();
 		} catch (final CoreException e) {
 			ok();
@@ -36,7 +36,7 @@ public class FunctionResolverTest extends RienaTestCase {
 
 	public void testResolveUnknownFunction() throws CoreException, IOException {
 		try {
-			VariableManagerUtil.substitute("${fn:LetsHaveFun,vale}");
+			VariableManagerUtil.substitute("${fn:LetsHaveFun,vale}"); //$NON-NLS-1$
 			fail();
 		} catch (final CoreException e) {
 			ok();
@@ -44,10 +44,10 @@ public class FunctionResolverTest extends RienaTestCase {
 	}
 
 	public void testResolveToFile() throws CoreException, IOException {
-		final String property = System.getProperty("osgi.instance.area");
+		final String property = System.getProperty("osgi.instance.area"); //$NON-NLS-1$
 		final URL url = new URL(property);
 		final String expected = new File(url.getPath()).getCanonicalPath().replace('\\', '/');
 		assertEquals(expected,
-				VariableManagerUtil.substitute("${fn:toFile,${java.system.property:osgi.instance.area}}"));
+				VariableManagerUtil.substitute("${fn:toFile,${java.system.property:osgi.instance.area}}")); //$NON-NLS-1$
 	}
 }

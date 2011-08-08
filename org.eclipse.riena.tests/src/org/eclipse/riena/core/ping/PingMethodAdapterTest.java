@@ -38,11 +38,11 @@ public class PingMethodAdapterTest extends RienaTestCase {
 		}
 
 		public Method getPingDiesUndDasMethod() throws Exception {
-			return this.getClass().getMethod("pingDiesUndDas", new Class[0]);
+			return this.getClass().getMethod("pingDiesUndDas", new Class[0]); //$NON-NLS-1$
 		}
 
 		public Method getNonePingMethod() throws Exception {
-			return this.getClass().getMethod("dummyMethod", new Class[0]);
+			return this.getClass().getMethod("dummyMethod", new Class[0]); //$NON-NLS-1$
 		}
 
 		public void dummyMethod() {
@@ -60,13 +60,13 @@ public class PingMethodAdapterTest extends RienaTestCase {
 	public void testPingMethodAdapter() throws Exception {
 		try {
 			new PingMethodAdapter(pingableMock, null);
-			fail("Expected precondition violation");
+			fail("Expected precondition violation"); //$NON-NLS-1$
 		} catch (final Exception e) {
 			ok();
 		}
 		try {
 			new PingMethodAdapter(null, pingableMock.getPingDiesUndDasMethod());
-			fail("Expected precondition violation");
+			fail("Expected precondition violation"); //$NON-NLS-1$
 		} catch (final Exception e) {
 			ok();
 		}
@@ -131,8 +131,8 @@ public class PingMethodAdapterTest extends RienaTestCase {
 	 */
 	public void testToString() throws Exception {
 		final PingMethodAdapter adapter = new PingMethodAdapter(pingableMock, pingableMock.getPingDiesUndDasMethod());
-		assertEquals("PingMethodAdapter[pingable=" + pingableMock + ", method="
-				+ pingableMock.getPingDiesUndDasMethod().getName() + "]", adapter.toString());
+		assertEquals("PingMethodAdapter[pingable=" + pingableMock + ", method=" //$NON-NLS-1$ //$NON-NLS-2$
+				+ pingableMock.getPingDiesUndDasMethod().getName() + "]", adapter.toString()); //$NON-NLS-1$
 	}
 
 }

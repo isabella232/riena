@@ -33,19 +33,19 @@ public class Base64Test extends RienaTestCase {
 	 */
 	final private static int RANDOM_ITERATIONS = 1000;
 
-	final private static String DECODED1 = "sample^^*";
-	final private static String ENCODED1 = "c2FtcGxlXl4q";
+	final private static String DECODED1 = "sample^^*"; //$NON-NLS-1$
+	final private static String ENCODED1 = "c2FtcGxlXl4q"; //$NON-NLS-1$
 
-	final private static String DECODED2 = "lazy frog jumped over sleeping dog";
-	final private static String ENCODED2 = "bGF6eSBmcm9nIGp1bXBlZCBvdmVyIHNsZWVwaW5nIGRvZw==";
+	final private static String DECODED2 = "lazy frog jumped over sleeping dog"; //$NON-NLS-1$
+	final private static String ENCODED2 = "bGF6eSBmcm9nIGp1bXBlZCBvdmVyIHNsZWVwaW5nIGRvZw=="; //$NON-NLS-1$
 
 	final private static byte[] DECODED3 = { 5, 0, 0, 12, 32, 1, 127, (byte) 0xFF };
-	final private static String ENCODED3 = "BQAADCABf/8=";
+	final private static String ENCODED3 = "BQAADCABf/8="; //$NON-NLS-1$
 
 	final private static byte[] EDGE_CASE_DECODED = new byte[0];
-	final private static String EDGE_CASE_ENCODED = "";
+	final private static String EDGE_CASE_ENCODED = ""; //$NON-NLS-1$
 
-	final private static String BAD_ENCODIN_INVALID_CHARS = "M\05S4y\tM\n\rzQ=\r\n";
+	final private static String BAD_ENCODIN_INVALID_CHARS = "M\05S4y\tM\n\rzQ=\r\n"; //$NON-NLS-1$
 
 	/**
 	 * Tests encoding using hand-calculated examples.

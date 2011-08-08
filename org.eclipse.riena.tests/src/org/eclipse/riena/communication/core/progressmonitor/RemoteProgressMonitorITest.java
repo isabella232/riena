@@ -43,7 +43,7 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		regAttachmentService = Register.remoteProxy(IAttachmentService.class)
-				.usingUrl("http://localhost:8080/hessian/AttachmentService").withProtocol("hessian")
+				.usingUrl("http://localhost:8080/hessian/AttachmentService").withProtocol("hessian") //$NON-NLS-1$ //$NON-NLS-2$
 				.andStart(Activator.getDefault().getContext());
 		attachService = (IAttachmentService) Activator
 				.getDefault()
@@ -155,15 +155,15 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 		private boolean responseDividable = true;
 
 		public void validate(final int requests, final int responses) {
-			assertTrue("start method not called", start);
-			assertTrue("end method not called", end);
+			assertTrue("start method not called", start); //$NON-NLS-1$
+			assertTrue("end method not called", end); //$NON-NLS-1$
 			// request count and response count can be larger with with larger size, the protocol overhead gets more (which is included in the count)
 			if (requests != -1) {
-				assertTrue("expected " + requests + " but was " + requestCount + " for number of requestEvents",
+				assertTrue("expected " + requests + " but was " + requestCount + " for number of requestEvents", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						requests <= requestCount);
 			}
 			if (responses != -1) {
-				assertTrue("expected " + responses + " but was " + responseCount + " for number of responseEvents",
+				assertTrue("expected " + responses + " but was " + responseCount + " for number of responseEvents", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 						responses <= responseCount);
 			}
 		}
@@ -175,7 +175,7 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 					requestDivideable = false;
 				} else {
 					assertTrue(
-							"expected bytesProcess in request to be always dividable by 512 (expect in the last call) :"
+							"expected bytesProcess in request to be always dividable by 512 (expect in the last call) :" //$NON-NLS-1$
 									+ event.getBytesProcessed(), event.getBytesProcessed() % 512 == 0);
 				}
 			}
@@ -190,7 +190,7 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 					responseDividable = false;
 				} else {
 					assertTrue(
-							"expected bytesProcess in response to be always dividable by 512 (expect in the last call) :"
+							"expected bytesProcess in response to be always dividable by 512 (expect in the last call) :" //$NON-NLS-1$
 									+ event.getBytesProcessed(), event.getBytesProcessed() % 512 == 0);
 				}
 			}
@@ -200,13 +200,13 @@ public final class RemoteProgressMonitorITest extends RienaTestCase {
 
 		public void start() {
 			assertFalse(start);
-			System.out.println("start");
+			System.out.println("start"); //$NON-NLS-1$
 			start = true;
 		}
 
 		public void end() {
 			assertFalse(end);
-			System.out.println("end");
+			System.out.println("end"); //$NON-NLS-1$
 			end = true;
 		}
 	}

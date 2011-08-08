@@ -28,16 +28,16 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 @NonUITestCase
 public class ManualProxySelectorTest extends TestCase {
 
-	private static Proxy proxy1 = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("test1", 8080));
-	private static Proxy proxy2 = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("test2", 8080));
-	private static Proxy proxy3 = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("test3", 8080));
-	private static Proxy proxy4 = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("test4", 8080));
+	private static Proxy proxy1 = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("test1", 8080)); //$NON-NLS-1$
+	private static Proxy proxy2 = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("test2", 8080)); //$NON-NLS-1$
+	private static Proxy proxy3 = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("test3", 8080)); //$NON-NLS-1$
+	private static Proxy proxy4 = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("test4", 8080)); //$NON-NLS-1$
 	private static URI http;
 	private static URI socks;
 	static {
 		try {
-			http = new URI("http://web.de");
-			socks = new URI("socks://web.de");
+			http = new URI("http://web.de"); //$NON-NLS-1$
+			socks = new URI("socks://web.de"); //$NON-NLS-1$
 		} catch (final URISyntaxException e) {
 			fail(e.toString());
 		}
@@ -52,7 +52,7 @@ public class ManualProxySelectorTest extends TestCase {
 
 	public void testUniversal() throws CoreException {
 		final ManualProxySelector selector = new ManualProxySelector();
-		selector.setInitializationData(null, null, "http://test1:8080,http://test2:8080");
+		selector.setInitializationData(null, null, "http://test1:8080,http://test2:8080"); //$NON-NLS-1$
 		final List<Proxy> proxies = selector.select(http);
 		assertEquals(2, proxies.size());
 		assertEquals(proxy1, proxies.get(0));
@@ -61,7 +61,7 @@ public class ManualProxySelectorTest extends TestCase {
 
 	public void testSpecific() throws CoreException {
 		final ManualProxySelector selector = new ManualProxySelector();
-		selector.setInitializationData(null, null, "http=http://test1:8080,http=http://test2:8080");
+		selector.setInitializationData(null, null, "http=http://test1:8080,http=http://test2:8080"); //$NON-NLS-1$
 		List<Proxy> proxies = selector.select(http);
 		assertEquals(2, proxies.size());
 		assertEquals(proxy1, proxies.get(0));
@@ -74,7 +74,7 @@ public class ManualProxySelectorTest extends TestCase {
 	public void testUniversalAndSpecific() throws CoreException {
 		final ManualProxySelector selector = new ManualProxySelector();
 		selector.setInitializationData(null, null,
-				"http://test1:8080,http://test2:8080,http=http://test3:8080,http=http://test4:8080");
+				"http://test1:8080,http://test2:8080,http=http://test3:8080,http=http://test4:8080"); //$NON-NLS-1$
 		List<Proxy> proxies = selector.select(http);
 		assertEquals(2, proxies.size());
 		assertEquals(proxy3, proxies.get(0));
@@ -86,9 +86,9 @@ public class ManualProxySelectorTest extends TestCase {
 	}
 
 	public void testConfigurationBySystemProperty() throws CoreException {
-		System.setProperty(ManualProxySelector.RIENA_MANUAL_PROXIES, "http://test1:8080,http://test2:8080");
+		System.setProperty(ManualProxySelector.RIENA_MANUAL_PROXIES, "http://test1:8080,http://test2:8080"); //$NON-NLS-1$
 		final ManualProxySelector selector = new ManualProxySelector();
-		selector.setInitializationData(null, null, "http://test3:8080;http://test4:8080");
+		selector.setInitializationData(null, null, "http://test3:8080;http://test4:8080"); //$NON-NLS-1$
 		final List<Proxy> proxies = selector.select(http);
 		assertEquals(2, proxies.size());
 		assertEquals(proxy1, proxies.get(0));

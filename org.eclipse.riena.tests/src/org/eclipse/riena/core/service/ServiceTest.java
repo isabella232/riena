@@ -32,11 +32,11 @@ public class ServiceTest extends RienaTestCase {
 				null);
 
 		ITestService service = Service.get(ITestService.class);
-		assertEquals("Hallo Welt", service.hello("Welt"));
+		assertEquals("Hallo Welt", service.hello("Welt")); //$NON-NLS-1$ //$NON-NLS-2$
 		reg2.unregister();
 
 		service = Service.get(ITestService.class);
-		assertEquals("Hello World", service.hello("World"));
+		assertEquals("Hello World", service.hello("World")); //$NON-NLS-1$ //$NON-NLS-2$
 		reg1.unregister();
 
 		service = Service.get(ITestService.class);
@@ -45,20 +45,20 @@ public class ServiceTest extends RienaTestCase {
 
 	public void testServiceGetWithFilter() {
 		final Dictionary<String, String> dict1 = new Hashtable<String, String>();
-		dict1.put("kind", "1");
+		dict1.put("kind", "1"); //$NON-NLS-1$ //$NON-NLS-2$
 		final ServiceRegistration reg1 = getContext().registerService(ITestService.class.getName(), new TestService1(),
 				dict1);
 
 		final Dictionary<String, String> dict2 = new Hashtable<String, String>();
-		dict2.put("kind", "2");
+		dict2.put("kind", "2"); //$NON-NLS-1$ //$NON-NLS-2$
 		final ServiceRegistration reg2 = getContext().registerService(ITestService.class.getName(), new TestService2(),
 				dict2);
 
-		ITestService service = Service.get(ITestService.class, "(kind=1)");
-		assertEquals("Hello Welt", service.hello("Welt"));
+		ITestService service = Service.get(ITestService.class, "(kind=1)"); //$NON-NLS-1$
+		assertEquals("Hello Welt", service.hello("Welt")); //$NON-NLS-1$ //$NON-NLS-2$
 
-		service = Service.get(ITestService.class, "(kind=2)");
-		assertEquals("Hallo World", service.hello("World"));
+		service = Service.get(ITestService.class, "(kind=2)"); //$NON-NLS-1$
+		assertEquals("Hallo World", service.hello("World")); //$NON-NLS-1$ //$NON-NLS-2$
 		reg2.unregister();
 		reg1.unregister();
 

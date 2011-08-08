@@ -16,7 +16,7 @@ package org.eclipse.riena.core.service;
 public class TestService1 implements ITestService {
 
 	public String hello(final String thing) {
-		return "Hello " + thing;
+		return "Hello " + thing; //$NON-NLS-1$
 	}
 
 }

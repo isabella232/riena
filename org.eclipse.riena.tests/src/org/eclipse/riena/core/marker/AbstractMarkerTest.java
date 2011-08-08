@@ -35,13 +35,13 @@ public class AbstractMarkerTest extends RienaTestCase {
 	public void testToString() {
 
 		AbstractMarker marker = new DummyMarker();
-		assertEquals("DummyMarker[attributes={unique=true}]", marker.toString());
+		assertEquals("DummyMarker[attributes={unique=true}]", marker.toString()); //$NON-NLS-1$
 
-		marker.setAttribute("att", "val");
-		assertEquals("DummyMarker[attributes={unique=true, att=val}]", marker.toString());
+		marker.setAttribute("att", "val"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("DummyMarker[attributes={unique=true, att=val}]", marker.toString()); //$NON-NLS-1$
 
 		marker = new DummyMarker(false);
-		assertEquals("DummyMarker[attributes={}]", marker.toString());
+		assertEquals("DummyMarker[attributes={}]", marker.toString()); //$NON-NLS-1$
 
 	}
 
@@ -51,34 +51,34 @@ public class AbstractMarkerTest extends RienaTestCase {
 	public void testSetAttribute() {
 
 		final DummyMarker marker = new DummyMarker();
-		assertNull(marker.getAttribute("lastname"));
+		assertNull(marker.getAttribute("lastname")); //$NON-NLS-1$
 
 		marker.reset();
-		marker.setAttribute("lastname", "Gate");
-		assertEquals("Gate", marker.getAttribute("lastname"));
+		marker.setAttribute("lastname", "Gate"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Gate", marker.getAttribute("lastname")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertTrue(marker.isChangeFired());
 
 		marker.reset();
-		marker.setAttribute("lastname", "Ballmer");
-		assertEquals("Ballmer", marker.getAttribute("lastname"));
+		marker.setAttribute("lastname", "Ballmer"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Ballmer", marker.getAttribute("lastname")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertTrue(marker.isChangeFired());
 
 		marker.reset();
-		marker.setAttribute("lastname", null);
-		assertNull(marker.getAttribute("lastname"));
+		marker.setAttribute("lastname", null); //$NON-NLS-1$
+		assertNull(marker.getAttribute("lastname")); //$NON-NLS-1$
 		assertTrue(marker.isChangeFired());
 
 		marker.reset();
-		marker.setAttribute("lastname", 12);
-		assertEquals(Integer.valueOf(12), marker.getAttribute("lastname"));
+		marker.setAttribute("lastname", 12); //$NON-NLS-1$
+		assertEquals(Integer.valueOf(12), marker.getAttribute("lastname")); //$NON-NLS-1$
 		assertTrue(marker.isChangeFired());
 
 		marker.reset();
 		try {
 			marker.setAttribute(null, 12);
-			fail("Exception expected");
+			fail("Exception expected"); //$NON-NLS-1$
 		} catch (final Exception e) {
-			ok("Exception expected");
+			ok("Exception expected"); //$NON-NLS-1$
 		}
 		assertFalse(marker.isChangeFired());
 
@@ -91,13 +91,13 @@ public class AbstractMarkerTest extends RienaTestCase {
 
 		final DummyMarker marker = new DummyMarker();
 
-		assertEquals("unkown", marker.getAttribute("lastname", "unkown"));
+		assertEquals("unkown", marker.getAttribute("lastname", "unkown")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		marker.setAttribute("lastname", "Gate");
-		assertEquals("Gate", marker.getAttribute("lastname", "unkown"));
+		marker.setAttribute("lastname", "Gate"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("Gate", marker.getAttribute("lastname", "unkown")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		marker.setAttribute("lastname", null);
-		assertEquals("unkown", marker.getAttribute("lastname", "unkown"));
+		marker.setAttribute("lastname", null); //$NON-NLS-1$
+		assertEquals("unkown", marker.getAttribute("lastname", "unkown")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 	}
 

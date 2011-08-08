@@ -30,12 +30,12 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 public class CompoundProxySelectorTest extends RienaTestCase {
 
 	private static URI uri;
-	private final static Proxy PROXY_1 = TestUtil.newProxy("test1.de");
-	private final static Proxy PROXY_2 = TestUtil.newProxy("test2.de");
+	private final static Proxy PROXY_1 = TestUtil.newProxy("test1.de"); //$NON-NLS-1$
+	private final static Proxy PROXY_2 = TestUtil.newProxy("test2.de"); //$NON-NLS-1$
 
 	static {
 		try {
-			uri = new URI("http://www.eclipse.org");
+			uri = new URI("http://www.eclipse.org"); //$NON-NLS-1$
 		} catch (final URISyntaxException e) {
 			fail();
 		}
@@ -47,7 +47,7 @@ public class CompoundProxySelectorTest extends RienaTestCase {
 			new CompoundProxySelector(null);
 			fail();
 		} catch (final IllegalArgumentException e) {
-			Nop.reason("ok - expected");
+			Nop.reason("ok - expected"); //$NON-NLS-1$
 		}
 	}
 
@@ -58,7 +58,7 @@ public class CompoundProxySelectorTest extends RienaTestCase {
 			compoundPS.select(null);
 			fail();
 		} catch (final IllegalArgumentException e) {
-			Nop.reason("ok - expected");
+			Nop.reason("ok - expected"); //$NON-NLS-1$
 		}
 	}
 

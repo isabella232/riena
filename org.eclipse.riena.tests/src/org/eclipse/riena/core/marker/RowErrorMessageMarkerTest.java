@@ -12,6 +12,7 @@ package org.eclipse.riena.core.marker;
 
 import junit.framework.TestCase;
 
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 
@@ -23,38 +24,38 @@ public class RowErrorMessageMarkerTest extends TestCase {
 
 	public void testCons() {
 		try {
-			new RowErrorMessageMarker("", null);
+			new RowErrorMessageMarker("", null); //$NON-NLS-1$
 			fail();
 		} catch (final RuntimeException rex) {
-			// expected
+			Nop.reason("expected"); //$NON-NLS-1$
 		}
 	}
 
 	public void testGetMessage() {
-		final RowErrorMessageMarker marker1 = new RowErrorMessageMarker("msg", new Object());
+		final RowErrorMessageMarker marker1 = new RowErrorMessageMarker("msg", new Object()); //$NON-NLS-1$
 
-		assertEquals("msg", marker1.getMessage());
+		assertEquals("msg", marker1.getMessage()); //$NON-NLS-1$
 
 		final RowErrorMessageMarker marker2 = new RowErrorMessageMarker(null, new Object());
 
-		assertEquals("", marker2.getMessage());
+		assertEquals("", marker2.getMessage()); //$NON-NLS-1$
 
-		final RowErrorMessageMarker marker3 = new RowErrorMessageMarker("", new Object());
+		final RowErrorMessageMarker marker3 = new RowErrorMessageMarker("", new Object()); //$NON-NLS-1$
 
-		assertEquals("", marker3.getMessage());
+		assertEquals("", marker3.getMessage()); //$NON-NLS-1$
 	}
 
 	public void testGetRowValue() {
 		final Object value1 = new Object();
-		final RowErrorMessageMarker marker1 = new RowErrorMessageMarker("msg", value1);
+		final RowErrorMessageMarker marker1 = new RowErrorMessageMarker("msg", value1); //$NON-NLS-1$
 
 		assertSame(value1, marker1.getRowValue());
 	}
 
 	public void testEquals() {
 		final Object value1 = new Object();
-		final RowErrorMessageMarker marker1 = new RowErrorMessageMarker("aaa", value1);
-		final RowErrorMessageMarker marker2 = new RowErrorMessageMarker("bbb", value1);
+		final RowErrorMessageMarker marker1 = new RowErrorMessageMarker("aaa", value1); //$NON-NLS-1$
+		final RowErrorMessageMarker marker2 = new RowErrorMessageMarker("bbb", value1); //$NON-NLS-1$
 		final RowErrorMessageMarker marker3 = new RowErrorMessageMarker(null, value1);
 
 		assertEquals(marker1, marker2);
@@ -62,7 +63,7 @@ public class RowErrorMessageMarkerTest extends TestCase {
 		assertEquals(marker1, marker2);
 
 		final Object value2 = new Object();
-		final RowErrorMessageMarker marker4 = new RowErrorMessageMarker("aaa", value2);
+		final RowErrorMessageMarker marker4 = new RowErrorMessageMarker("aaa", value2); //$NON-NLS-1$
 		final RowErrorMessageMarker marker5 = new RowErrorMessageMarker(null, value2);
 
 		assertFalse(marker1.equals(marker4));
@@ -73,8 +74,8 @@ public class RowErrorMessageMarkerTest extends TestCase {
 
 	public void testHashCode() {
 		final Object value1 = new Object();
-		final RowErrorMessageMarker marker1 = new RowErrorMessageMarker("aaa", value1);
-		final RowErrorMessageMarker marker2 = new RowErrorMessageMarker("bbb", value1);
+		final RowErrorMessageMarker marker1 = new RowErrorMessageMarker("aaa", value1); //$NON-NLS-1$
+		final RowErrorMessageMarker marker2 = new RowErrorMessageMarker("bbb", value1); //$NON-NLS-1$
 		final RowErrorMessageMarker marker3 = new RowErrorMessageMarker(null, value1);
 
 		final int hc1 = marker1.hashCode();
@@ -82,7 +83,7 @@ public class RowErrorMessageMarkerTest extends TestCase {
 		assertEquals(hc1, marker3.hashCode());
 
 		final Object value2 = new Object();
-		final RowErrorMessageMarker marker4 = new RowErrorMessageMarker("aaa", value2);
+		final RowErrorMessageMarker marker4 = new RowErrorMessageMarker("aaa", value2); //$NON-NLS-1$
 		final RowErrorMessageMarker marker5 = new RowErrorMessageMarker(null, value2);
 
 		assertEquals(marker4.hashCode(), marker5.hashCode());

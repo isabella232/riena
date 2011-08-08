@@ -22,13 +22,13 @@ import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 public class ArraysUtilTest extends RienaTestCase {
 
 	public void testCopy() {
-		final String[] source = new String[] { "1", "2", "3", "4" };
+		final String[] source = new String[] { "1", "2", "3", "4" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		assertTrue(Arrays.equals(new String[] {}, ArraysUtil.copyRange(source, 0, 0)));
-		assertTrue(Arrays.equals(new String[] { "1" }, ArraysUtil.copyRange(source, 0, 1)));
-		assertTrue(Arrays.equals(new String[] { "1", "2" }, ArraysUtil.copyRange(source, 0, 2)));
-		assertTrue(Arrays.equals(new String[] { "2" }, ArraysUtil.copyRange(source, 1, 2)));
-		assertTrue(Arrays.equals(new String[] { "3", "4" }, ArraysUtil.copyRange(source, 2, 4)));
-		assertTrue(Arrays.equals(new String[] { "1", "2", "3", "4" }, ArraysUtil.copyRange(source, 0, 4)));
+		assertTrue(Arrays.equals(new String[] { "1" }, ArraysUtil.copyRange(source, 0, 1))); //$NON-NLS-1$
+		assertTrue(Arrays.equals(new String[] { "1", "2" }, ArraysUtil.copyRange(source, 0, 2))); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(Arrays.equals(new String[] { "2" }, ArraysUtil.copyRange(source, 1, 2))); //$NON-NLS-1$
+		assertTrue(Arrays.equals(new String[] { "3", "4" }, ArraysUtil.copyRange(source, 2, 4))); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(Arrays.equals(new String[] { "1", "2", "3", "4" }, ArraysUtil.copyRange(source, 0, 4))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
 	public void testCopyFailNullArray() {
@@ -42,7 +42,7 @@ public class ArraysUtilTest extends RienaTestCase {
 
 	public void testCopyFailNegativeSize() {
 		try {
-			final String[] source = new String[] { "1", "2", "3", "4" };
+			final String[] source = new String[] { "1", "2", "3", "4" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 			ArraysUtil.copyRange(source, 0, 5);
 			fail();
 		} catch (final IllegalArgumentException e) {

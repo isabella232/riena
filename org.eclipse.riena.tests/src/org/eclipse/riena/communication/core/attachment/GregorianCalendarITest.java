@@ -40,7 +40,7 @@ public final class GregorianCalendarITest extends RienaTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		regCalenderService = Register.remoteProxy(ITestGregorianCalendar.class)
-				.usingUrl("http://localhost:8080/hessian/TestGregorianCalendarWS").withProtocol("hessian")
+				.usingUrl("http://localhost:8080/hessian/TestGregorianCalendarWS").withProtocol("hessian") //$NON-NLS-1$ //$NON-NLS-2$
 				.andStart(getContext());
 		calendarService = (ITestGregorianCalendar) getContext().getService(
 				getContext().getServiceReference(ITestGregorianCalendar.class.getName()));
@@ -64,9 +64,9 @@ public final class GregorianCalendarITest extends RienaTestCase {
 	}
 
 	public void testDiffDate() throws ParseException {
-		final DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-		final Date from = dateFormat.parse("6.1.2007");
-		final Date till = dateFormat.parse("7.1.2007");
+		final DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); //$NON-NLS-1$
+		final Date from = dateFormat.parse("6.1.2007"); //$NON-NLS-1$
+		final Date till = dateFormat.parse("7.1.2007"); //$NON-NLS-1$
 		final long diff = calendarService.diffTimes2(from, till);
 		assertEquals(24L * 60L * 60L * 1000L, diff);
 	}

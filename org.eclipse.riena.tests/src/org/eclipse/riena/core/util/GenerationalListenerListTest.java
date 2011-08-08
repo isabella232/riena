@@ -29,63 +29,63 @@ public class GenerationalListenerListTest extends RienaTestCase {
 	}
 
 	public void testIsEmptyAfterAddAndRemove() {
-		list.add("one");
+		list.add("one"); //$NON-NLS-1$
 		assertEquals(1, list.size());
-		list.remove("one");
+		list.remove("one"); //$NON-NLS-1$
 		assertTrue(list.isEmpty());
-		assertFalse(list.contains("one"));
+		assertFalse(list.contains("one")); //$NON-NLS-1$
 		expect(list.iterator(), NOTHING);
 	}
 
 	public void testAddIterateRemoveIterateAdd() {
-		list.add("one");
+		list.add("one"); //$NON-NLS-1$
 		final Iterator<String> iteratorAfterAdd = list.iterator();
-		list.remove("one");
-		list.printDebugList("t0");
-		list.printList("t0");
+		list.remove("one"); //$NON-NLS-1$
+		list.printDebugList("t0"); //$NON-NLS-1$
+		list.printList("t0"); //$NON-NLS-1$
 		final Iterator<String> iteratorAfterRemove = list.iterator();
-		list.add("one");
-		list.printDebugList("t1");
-		list.printList("t1");
-		expect(iteratorAfterAdd, "one");
+		list.add("one"); //$NON-NLS-1$
+		list.printDebugList("t1"); //$NON-NLS-1$
+		list.printList("t1"); //$NON-NLS-1$
+		expect(iteratorAfterAdd, "one"); //$NON-NLS-1$
 		expect(iteratorAfterRemove, NOTHING);
-		list.printDebugList("t2");
-		list.printList("t2");
+		list.printDebugList("t2"); //$NON-NLS-1$
+		list.printList("t2"); //$NON-NLS-1$
 	}
 
 	public void testAddAddAddIterateRemoveWhileIteratingIterate() {
-		list.add("one");
-		list.add("two");
-		list.add("three");
+		list.add("one"); //$NON-NLS-1$
+		list.add("two"); //$NON-NLS-1$
+		list.add("three"); //$NON-NLS-1$
 		final Iterator<String> iteratorAfterAdd = list.iterator();
 		boolean once = true;
 		for (final String s : list) {
 			if (once) {
 				once = false;
-				list.remove("two");
+				list.remove("two"); //$NON-NLS-1$
 			}
 		}
-		expect(iteratorAfterAdd, "one", "two", "three");
+		expect(iteratorAfterAdd, "one", "two", "three"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		final Iterator<String> iteratorAfterRemove = list.iterator();
-		expect(iteratorAfterRemove, "one", "three");
+		expect(iteratorAfterRemove, "one", "three"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void testGCedList() {
 		final GenerationalListenerList<String> gcList = new GenerationalListenerList<String>(1, 0.0f, 1);
 
-		gcList.add("one");
+		gcList.add("one"); //$NON-NLS-1$
 		final Iterator<String> iteratorAfterAdd = gcList.iterator();
-		gcList.remove("one");
-		gcList.printDebugList("t0");
-		gcList.printList("t0");
+		gcList.remove("one"); //$NON-NLS-1$
+		gcList.printDebugList("t0"); //$NON-NLS-1$
+		gcList.printList("t0"); //$NON-NLS-1$
 		final Iterator<String> iteratorAfterRemove = gcList.iterator();
-		gcList.add("one");
-		gcList.printDebugList("t1");
-		gcList.printList("t1");
-		expect(iteratorAfterAdd, "one");
+		gcList.add("one"); //$NON-NLS-1$
+		gcList.printDebugList("t1"); //$NON-NLS-1$
+		gcList.printList("t1"); //$NON-NLS-1$
+		expect(iteratorAfterAdd, "one"); //$NON-NLS-1$
 		expect(iteratorAfterRemove, NOTHING);
-		gcList.printDebugList("t2");
-		gcList.printList("t2");
+		gcList.printDebugList("t2"); //$NON-NLS-1$
+		gcList.printList("t2"); //$NON-NLS-1$
 	}
 
 	private void expect(final Iterator<String> iterator, final String... expectations) {

@@ -39,10 +39,10 @@ public class ProxySelectorConfigurationTest extends RienaTestCase {
 	public void testOneProxySelectorConfigAndRestore() throws URISyntaxException {
 		final ProxySelector defaultPS = ProxySelector.getDefault();
 		final ProxySelectorConfiguration config = new ProxySelectorConfiguration();
-		config.configure(new IProxySelectorExtension[] { new ProxySelectorExtension(100, "test", new TestProxySelector(
-				TestUtil.newProxy("test.de"))) });
+		config.configure(new IProxySelectorExtension[] { new ProxySelectorExtension(100, "test", new TestProxySelector( //$NON-NLS-1$
+				TestUtil.newProxy("test.de"))) }); //$NON-NLS-1$
 		assertNotSame(defaultPS, ProxySelector.getDefault());
-		assertEquals("test.de", getHost(0));
+		assertEquals("test.de", getHost(0)); //$NON-NLS-1$
 		config.configure(null);
 		assertSame(defaultPS, ProxySelector.getDefault());
 	}
@@ -52,11 +52,11 @@ public class ProxySelectorConfigurationTest extends RienaTestCase {
 		final ProxySelector defaultPS = ProxySelector.getDefault();
 		final ProxySelectorConfiguration config = new ProxySelectorConfiguration();
 		config.configure(new IProxySelectorExtension[] {
-				new ProxySelectorExtension(100, "test1", new TestProxySelector(TestUtil.newProxy("test1.de"))),
-				new ProxySelectorExtension(10, "test2", new TestProxySelector(TestUtil.newProxy("test2.de"))) });
+				new ProxySelectorExtension(100, "test1", new TestProxySelector(TestUtil.newProxy("test1.de"))), //$NON-NLS-1$ //$NON-NLS-2$
+				new ProxySelectorExtension(10, "test2", new TestProxySelector(TestUtil.newProxy("test2.de"))) }); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotSame(defaultPS, ProxySelector.getDefault());
-		assertEquals("test2.de", getHost(0));
-		assertEquals("test1.de", getHost(1));
+		assertEquals("test2.de", getHost(0)); //$NON-NLS-1$
+		assertEquals("test1.de", getHost(1)); //$NON-NLS-1$
 		config.configure(null);
 		assertSame(defaultPS, ProxySelector.getDefault());
 	}
@@ -66,11 +66,11 @@ public class ProxySelectorConfigurationTest extends RienaTestCase {
 		final ProxySelector defaultPS = ProxySelector.getDefault();
 		final ProxySelectorConfiguration config = new ProxySelectorConfiguration();
 		config.configure(new IProxySelectorExtension[] {
-				new ProxySelectorExtension(10, "test1", new TestProxySelector(TestUtil.newProxy("test1.de"))),
-				new ProxySelectorExtension(100, "test2", new TestProxySelector(TestUtil.newProxy("test2.de"))) });
+				new ProxySelectorExtension(10, "test1", new TestProxySelector(TestUtil.newProxy("test1.de"))), //$NON-NLS-1$ //$NON-NLS-2$
+				new ProxySelectorExtension(100, "test2", new TestProxySelector(TestUtil.newProxy("test2.de"))) }); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotSame(defaultPS, ProxySelector.getDefault());
-		assertEquals("test1.de", getHost(0));
-		assertEquals("test2.de", getHost(1));
+		assertEquals("test1.de", getHost(0)); //$NON-NLS-1$
+		assertEquals("test2.de", getHost(1)); //$NON-NLS-1$
 		config.configure(null);
 		assertSame(defaultPS, ProxySelector.getDefault());
 	}
@@ -80,7 +80,7 @@ public class ProxySelectorConfigurationTest extends RienaTestCase {
 	}
 
 	private Proxy getProxy(final int indexInProxyList) throws URISyntaxException {
-		return ProxySelector.getDefault().select(new URI("http://www.eclipse.org")).get(indexInProxyList);
+		return ProxySelector.getDefault().select(new URI("http://www.eclipse.org")).get(indexInProxyList); //$NON-NLS-1$
 	}
 
 	@SuppressWarnings("restriction")
