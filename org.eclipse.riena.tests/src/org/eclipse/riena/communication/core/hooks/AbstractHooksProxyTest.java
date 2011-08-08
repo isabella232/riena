@@ -29,49 +29,49 @@ public class AbstractHooksProxyTest extends RienaTestCase {
 
 	public void testProxySameInterfaceAsDelegate() {
 		final IAdder adder = (IAdder) newHooksProxy(new Adder());
-		assertEquals("Hello World", adder.add("Hello ", "World"));
-		assertEquals("12", adder.add((Number) 1, (Number) 2));
-		assertEquals("3", adder.add(1, 2));
+		assertEquals("Hello World", adder.add("Hello ", "World")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertEquals("12", adder.add((Number) 1, (Number) 2)); //$NON-NLS-1$
+		assertEquals("3", adder.add(1, 2)); //$NON-NLS-1$
 		assertMethodTableUsage(false, adder);
 	}
 
 	public void testProxySameInterfaceAsDelegateWithSubject() {
 		final IAdder adder = (IAdder) newHooksProxy(new Adder(), new Subject());
-		assertEquals("Hello World", adder.add("Hello ", "World"));
-		assertEquals("12", adder.add((Number) 1, (Number) 2));
-		assertEquals("3", adder.add(1, 2));
+		assertEquals("Hello World", adder.add("Hello ", "World")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertEquals("12", adder.add((Number) 1, (Number) 2)); //$NON-NLS-1$
+		assertEquals("3", adder.add(1, 2)); //$NON-NLS-1$
 		assertMethodTableUsage(false, adder);
 	}
 
 	public void testProxyCallsProxyWithSameInterface() {
 		final IAdder adder = (IAdder) newHooksProxy(newHooksProxy(new Adder()));
-		assertEquals("Hello World", adder.add("Hello ", "World"));
-		assertEquals("12", adder.add((Number) 1, (Number) 2));
-		assertEquals("3", adder.add(1, 2));
+		assertEquals("Hello World", adder.add("Hello ", "World")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertEquals("12", adder.add((Number) 1, (Number) 2)); //$NON-NLS-1$
+		assertEquals("3", adder.add(1, 2)); //$NON-NLS-1$
 		assertMethodTableUsage(false, adder);
 	}
 
 	public void testProxyCallsProxyWithSameInterfaceWithSubject() {
 		final IAdder adder = (IAdder) newHooksProxy(newHooksProxy(new Adder(), new Subject()));
-		assertEquals("Hello World", adder.add("Hello ", "World"));
-		assertEquals("12", adder.add((Number) 1, (Number) 2));
-		assertEquals("3", adder.add(1, 2));
+		assertEquals("Hello World", adder.add("Hello ", "World")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertEquals("12", adder.add((Number) 1, (Number) 2)); //$NON-NLS-1$
+		assertEquals("3", adder.add(1, 2)); //$NON-NLS-1$
 		assertMethodTableUsage(false, adder);
 	}
 
 	public void testProxyCallsObjectWithSameMethodButNotInInterface() {
 		final IAdder adder = (IAdder) newHooksProxy(new FreeAdder());
-		assertEquals("Hello World", adder.add("Hello ", "World"));
-		assertEquals("12", adder.add((Number) 1, (Number) 2));
-		assertEquals("3", adder.add(1, 2));
+		assertEquals("Hello World", adder.add("Hello ", "World")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertEquals("12", adder.add((Number) 1, (Number) 2)); //$NON-NLS-1$
+		assertEquals("3", adder.add(1, 2)); //$NON-NLS-1$
 		assertMethodTableUsage(true, adder);
 	}
 
 	public void testProxyCallsObjectWithSameMethodButNotInInterfaceWithSubject() {
 		final IAdder adder = (IAdder) newHooksProxy(new FreeAdder(), new Subject());
-		assertEquals("Hello World", adder.add("Hello ", "World"));
-		assertEquals("12", adder.add((Number) 1, (Number) 2));
-		assertEquals("3", adder.add(1, 2));
+		assertEquals("Hello World", adder.add("Hello ", "World")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		assertEquals("12", adder.add((Number) 1, (Number) 2)); //$NON-NLS-1$
+		assertEquals("3", adder.add(1, 2)); //$NON-NLS-1$
 		assertMethodTableUsage(true, adder);
 	}
 
@@ -95,10 +95,10 @@ public class AbstractHooksProxyTest extends RienaTestCase {
 	private void assertMethodTableUsage(final boolean expected, final Object proxy) {
 		final InvocationHandler handler = Proxy.getInvocationHandler(proxy);
 		try {
-			final AtomicReference<?> ref = ReflectionUtils.getHidden(handler, "methodTableRef");
+			final AtomicReference<?> ref = ReflectionUtils.getHidden(handler, "methodTableRef"); //$NON-NLS-1$
 			assertEquals(expected, ref.get() != null);
 		} catch (final ReflectionFailure f) {
-			System.err.println("Culd not access 'methodTableRef' field.");
+			System.err.println("Culd not access 'methodTableRef' field."); //$NON-NLS-1$
 		}
 	}
 }

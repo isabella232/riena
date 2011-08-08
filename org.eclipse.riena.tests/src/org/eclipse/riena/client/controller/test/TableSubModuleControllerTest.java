@@ -35,7 +35,7 @@ public class TableSubModuleControllerTest extends AbstractSubModuleControllerTes
 		// select and delete one item
 		table.setSelection(table.getOption(0));
 
-		assertEquals("[Adventure]", table.getSelection().toString());
+		assertEquals("[Adventure]", table.getSelection().toString()); //$NON-NLS-1$
 
 		buttonDelete.fireAction();
 		assertEquals(count - 1, table.getOptionCount());
@@ -69,7 +69,7 @@ public class TableSubModuleControllerTest extends AbstractSubModuleControllerTes
 
 		buttonAdd.fireAction();
 		assertEquals(count + 1, table.getOptionCount());
-		assertEquals("A_NEW_SIBLING", table.getOption(count).toString());
+		assertEquals("A_NEW_SIBLING", table.getOption(count).toString()); //$NON-NLS-1$
 
 		table.clearSelection();
 		assertTrue(buttonAdd.isEnabled());

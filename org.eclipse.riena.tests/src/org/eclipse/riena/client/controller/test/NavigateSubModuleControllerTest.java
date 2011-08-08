@@ -30,14 +30,14 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 /**
  * Tests for the NavigateSubModuleController.
  */
-@SuppressWarnings({ "restriction", "unchecked" })
+@SuppressWarnings("unchecked")
 @NonUITestCase
 public class NavigateSubModuleControllerTest extends AbstractSubModuleControllerTest<NavigateSubModuleController> {
 
 	@Override
 	protected NavigateSubModuleController createController(final ISubModuleNode node) {
 		final NavigateSubModuleController newInst = new NavigateSubModuleController();
-		node.setNodeId(new NavigationNodeId("org.eclipse.riena.example.navigate"));
+		node.setNodeId(new NavigationNodeId("org.eclipse.riena.example.navigate")); //$NON-NLS-1$
 		newInst.setNavigationNode(node);
 		return newInst;
 	}
@@ -46,13 +46,13 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 
 		expect(
 				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
-						eq(new NavigationNodeId("org.eclipse.riena.example.navigate.comboAndList")),
+						eq(new NavigationNodeId("org.eclipse.riena.example.navigate.comboAndList")), //$NON-NLS-1$
 						(NavigationArgument) notNull())).andReturn(
-				createNavigationNode("org.eclipse.riena.example.navigate.comboAndList"));
+				createNavigationNode("org.eclipse.riena.example.navigate.comboAndList")); //$NON-NLS-1$
 
 		replay(getMockNavigationProcessor());
 
-		final IActionRidget navigateToComboButton = getController().getRidget(IActionRidget.class, "comboAndList");
+		final IActionRidget navigateToComboButton = getController().getRidget(IActionRidget.class, "comboAndList"); //$NON-NLS-1$
 		navigateToComboButton.fireAction();
 
 		verify(getMockNavigationProcessor());
@@ -70,28 +70,30 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 	 */
 	public void testNavigateToRidgetWithCompare() {
 		final PersonModificationBean bean = new PersonModificationBean();
-		bean.setPerson(new Person("Doe", "Jane"));
+		bean.setPerson(new Person("Doe", "Jane")); //$NON-NLS-1$ //$NON-NLS-2$
 
 		expect(
 				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
-						eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
-						cmp(new NavigationArgument(bean, "textFirst"), new Comparator<NavigationArgument>() {
+						eq(new NavigationNodeId("org.eclipse.riena.example.combo")), //$NON-NLS-1$
+						cmp(new NavigationArgument(bean, "textFirst"), new Comparator<NavigationArgument>() { //$NON-NLS-1$
 
-							public int compare(final NavigationArgument o1, final NavigationArgument o2) {
-								if (o1.getParameter() instanceof PersonModificationBean
-										&& o2.getParameter() instanceof PersonModificationBean) {
-									return comparePersonModificationBeans((PersonModificationBean) o1.getParameter(),
-											(PersonModificationBean) o2.getParameter());
-								} else {
-									return -1;
-								}
-							}
+									public int compare(final NavigationArgument o1, final NavigationArgument o2) {
+										if (o1.getParameter() instanceof PersonModificationBean
+												&& o2.getParameter() instanceof PersonModificationBean) {
+											return comparePersonModificationBeans(
+													(PersonModificationBean) o1.getParameter(),
+													(PersonModificationBean) o2.getParameter());
+										} else {
+											return -1;
+										}
+									}
 
-						}, LogicalOperator.EQUAL))).andReturn(createNavigationNode("org.eclipse.riena.example.combo"));
+								}, LogicalOperator.EQUAL))).andReturn(
+				createNavigationNode("org.eclipse.riena.example.combo")); //$NON-NLS-1$
 
 		replay(getMockNavigationProcessor());
 		final IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class,
-				"btnNavigateToRidget");
+				"btnNavigateToRidget"); //$NON-NLS-1$
 		navigateToNavigateRidget.fireAction();
 		verify(getMockNavigationProcessor());
 	}
@@ -107,13 +109,13 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 	public void testNavigateToRidgetWithNotNull() {
 		expect(
 				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
-						eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
-						new NavigationArgument(notNull(), "textFirst"))).andReturn(
-				createNavigationNode("org.eclipse.riena.example.combo"));
+						eq(new NavigationNodeId("org.eclipse.riena.example.combo")), //$NON-NLS-1$
+						new NavigationArgument(notNull(), "textFirst"))).andReturn( //$NON-NLS-1$
+				createNavigationNode("org.eclipse.riena.example.combo")); //$NON-NLS-1$
 
 		replay(getMockNavigationProcessor());
 		final IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class,
-				"btnNavigateToRidget");
+				"btnNavigateToRidget"); //$NON-NLS-1$
 		navigateToNavigateRidget.fireAction();
 		verify(getMockNavigationProcessor());
 	}
@@ -128,17 +130,17 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 	 */
 	public void testNavigateToRidgetWithEquals() {
 		final PersonModificationBean bean = new PersonModificationBean();
-		bean.setPerson(new Person("Doe", "Jane"));
+		bean.setPerson(new Person("Doe", "Jane")); //$NON-NLS-1$ //$NON-NLS-2$
 
 		expect(
 				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
-						eq(new NavigationNodeId("org.eclipse.riena.example.combo")),
-						eq(new NavigationArgument(bean, "textFirst")))).andReturn(
-				createNavigationNode("org.eclipse.riena.example.combo"));
+						eq(new NavigationNodeId("org.eclipse.riena.example.combo")), //$NON-NLS-1$
+						eq(new NavigationArgument(bean, "textFirst")))).andReturn( //$NON-NLS-1$
+				createNavigationNode("org.eclipse.riena.example.combo")); //$NON-NLS-1$
 
 		replay(getMockNavigationProcessor());
 		final IActionRidget navigateToNavigateRidget = getController().getRidget(IActionRidget.class,
-				"btnNavigateToRidget");
+				"btnNavigateToRidget"); //$NON-NLS-1$
 		navigateToNavigateRidget.fireAction();
 		verify(getMockNavigationProcessor());
 	}
@@ -148,11 +150,11 @@ public class NavigateSubModuleControllerTest extends AbstractSubModuleController
 		naviAgr.setNodePositioner(NodePositioner.ADD_BEGINNING);
 		expect(
 				getMockNavigationProcessor().navigate(eq(getController().getNavigationNode()),
-						eq(new NavigationNodeId("org.eclipse.riena.example.navigate.firstmodule")), eq(naviAgr)))
-				.andReturn(createNavigationNode("org.eclipse.riena.example.navigate.firstmodule"));
+						eq(new NavigationNodeId("org.eclipse.riena.example.navigate.firstmodule")), eq(naviAgr))) //$NON-NLS-1$
+				.andReturn(createNavigationNode("org.eclipse.riena.example.navigate.firstmodule")); //$NON-NLS-1$
 
 		replay(getMockNavigationProcessor());
-		final IActionRidget navigateFirstModule = getController().getRidget(IActionRidget.class, "openAsFirstModule");
+		final IActionRidget navigateFirstModule = getController().getRidget(IActionRidget.class, "openAsFirstModule"); //$NON-NLS-1$
 		navigateFirstModule.fireAction();
 		verify(getMockNavigationProcessor());
 	}

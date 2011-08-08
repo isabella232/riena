@@ -224,7 +224,7 @@ public class NavigateSubModuleController extends SubModuleController {
 	private class JumpToTargetSubModule implements IActionListener {
 
 		public void callback() {
-			getNavigationNode().jump(new NavigationNodeId("4"));
+			getNavigationNode().jump(new NavigationNodeId("4")); //$NON-NLS-1$
 
 		}
 	}
@@ -232,7 +232,7 @@ public class NavigateSubModuleController extends SubModuleController {
 	private class JumpToTargetModule implements IActionListener {
 
 		public void callback() {
-			getNavigationNode().jump(new NavigationNodeId("test"));
+			getNavigationNode().jump(new NavigationNodeId("test")); //$NON-NLS-1$
 
 		}
 	}

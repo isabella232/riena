@@ -26,9 +26,9 @@ public class OrderedCallHooksExecutorTest extends RienaTestCase {
 		List<DummyCallHook> before = new ArrayList<OrderedCallHooksExecutorTest.DummyCallHook>();
 		List<DummyCallHook> after = new ArrayList<OrderedCallHooksExecutorTest.DummyCallHook>();
 		DummyCallHook ch1 = new DummyCallHook(before, after);
-		ExtensionBean b1 = new ExtensionBean("a", "", "b", ch1);
+		ExtensionBean b1 = new ExtensionBean("a", "", "b", ch1); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		DummyCallHook ch2 = new DummyCallHook(before, after);
-		ExtensionBean b2 = new ExtensionBean("b", "", "", ch2);
+		ExtensionBean b2 = new ExtensionBean("b", "", "", ch2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
 		final OrderedCallHooksExecuter exec = new OrderedCallHooksExecuter();
 		exec.update(new ICallHookExtension[] { b1, b2 });
@@ -43,8 +43,8 @@ public class OrderedCallHooksExecutorTest extends RienaTestCase {
 		after = new ArrayList<OrderedCallHooksExecutorTest.DummyCallHook>();
 		ch1 = new DummyCallHook(before, after);
 		ch2 = new DummyCallHook(before, after);
-		b1 = new ExtensionBean("a", "b", "", ch1);
-		b2 = new ExtensionBean("b", "", "", ch2);
+		b1 = new ExtensionBean("a", "b", "", ch1); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		b2 = new ExtensionBean("b", "", "", ch2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		exec.update(new ICallHookExtension[] { b1, b2 });
 		exec.beforeCall(null);
 		assertEquals(ch1, before.get(1));
@@ -57,8 +57,8 @@ public class OrderedCallHooksExecutorTest extends RienaTestCase {
 		after = new ArrayList<OrderedCallHooksExecutorTest.DummyCallHook>();
 		ch1 = new DummyCallHook(before, after);
 		ch2 = new DummyCallHook(before, after);
-		b1 = new ExtensionBean("a", "", "", ch1);
-		b2 = new ExtensionBean("b", "", "a", ch2);
+		b1 = new ExtensionBean("a", "", "", ch1); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		b2 = new ExtensionBean("b", "", "a", ch2); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		exec.update(new ICallHookExtension[] { b1, b2 });
 		exec.beforeCall(null);
 		assertEquals(ch1, before.get(1));

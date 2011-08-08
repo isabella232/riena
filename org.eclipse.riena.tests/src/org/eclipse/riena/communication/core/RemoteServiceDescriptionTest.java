@@ -21,7 +21,7 @@ import org.eclipse.riena.internal.tests.Activator;
 public class RemoteServiceDescriptionTest extends RienaTestCase {
 
 	public void testNonDefaultCreationObjectClass() throws ClassNotFoundException {
-		final Object service = "Service";
+		final Object service = "Service"; //$NON-NLS-1$
 		final RemoteServiceDescription rsd = new RemoteServiceDescription(String.class, null, null, Activator
 				.getDefault().getBundle());
 		rsd.setService(service);
@@ -38,15 +38,15 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 	}
 
 	public void testNonDefaultCreationPropRemoteProtocol() {
-		final Object service = "Service";
-		final RemoteServiceDescription rsd = new RemoteServiceDescription(String.class, null, "hessian", Activator
+		final Object service = "Service"; //$NON-NLS-1$
+		final RemoteServiceDescription rsd = new RemoteServiceDescription(String.class, null, "hessian", Activator //$NON-NLS-1$
 				.getDefault().getBundle());
 		rsd.setService(service);
 
 		assertNotNull(rsd.getBundle());
 		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundle().getSymbolicName());
 		assertNull(rsd.getPath());
-		assertEquals("hessian", rsd.getProtocol());
+		assertEquals("hessian", rsd.getProtocol()); //$NON-NLS-1$
 		assertTrue(service == rsd.getService());
 		assertNotNull(rsd.getServiceInterfaceClassName());
 		assertNull(rsd.getURL());
@@ -56,7 +56,7 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 	}
 
 	public void testNonDefaultCreationPropRemotePath() {
-		final Object service = "Service";
+		final Object service = "Service"; //$NON-NLS-1$
 		final RemoteServiceDescription rsd = new RemoteServiceDescription(String.class, null, null, Activator
 				.getDefault().getBundle());
 		rsd.setService(service);
@@ -74,7 +74,7 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 	}
 
 	public void testNonDefaultCreationPropConfigId() {
-		final Object service = "Service";
+		final Object service = "Service"; //$NON-NLS-1$
 		final RemoteServiceDescription rsd = new RemoteServiceDescription(String.class, null, null, Activator
 				.getDefault().getBundle());
 		rsd.setService(service);
@@ -92,7 +92,7 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 	}
 
 	public void testNonDefaultCreationPropElse() {
-		final Object service = "Service";
+		final Object service = "Service"; //$NON-NLS-1$
 		final RemoteServiceDescription rsd = new RemoteServiceDescription(String.class, null, null, Activator
 				.getDefault().getBundle());
 		rsd.setService(service);
@@ -110,15 +110,15 @@ public class RemoteServiceDescriptionTest extends RienaTestCase {
 	}
 
 	public void testNonDefaultCreationAllTheStuff() {
-		final Object service = "Service";
-		final RemoteServiceDescription rsd = new RemoteServiceDescription(String.class, null, "hessian", Activator
+		final Object service = "Service"; //$NON-NLS-1$
+		final RemoteServiceDescription rsd = new RemoteServiceDescription(String.class, null, "hessian", Activator //$NON-NLS-1$
 				.getDefault().getBundle());
 		rsd.setService(service);
 
 		assertNotNull(rsd.getBundle());
 		assertEquals(Activator.getDefault().getBundle().getSymbolicName(), rsd.getBundle().getSymbolicName());
 		//		assertEquals("/server/here", rsd.getPath());
-		assertEquals("hessian", rsd.getProtocol());
+		assertEquals("hessian", rsd.getProtocol()); //$NON-NLS-1$
 		assertTrue(service == rsd.getService());
 		assertEquals(String.class.getName(), rsd.getServiceInterfaceClassName());
 		assertNull(rsd.getURL());

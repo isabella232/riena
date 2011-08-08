@@ -24,7 +24,7 @@ public class NavigationSubModuleControllerTest extends AbstractSubModuleControll
 	@Override
 	protected NavigationSubModuleController createController(final ISubModuleNode node) {
 		final NavigationSubModuleController newInst = new NavigationSubModuleController();
-		node.setNodeId(new NavigationNodeId("org.eclipse.riena.example.navigation"));
+		node.setNodeId(new NavigationNodeId("org.eclipse.riena.example.navigation")); //$NON-NLS-1$
 		newInst.setNavigationNode(node);
 
 		return newInst;

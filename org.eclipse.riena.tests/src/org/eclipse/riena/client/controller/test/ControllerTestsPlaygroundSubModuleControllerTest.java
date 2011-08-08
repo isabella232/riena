@@ -54,15 +54,15 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 	@Override
 	protected ControllerTestsPlaygroundSubModuleController createController(final ISubModuleNode node) {
 		final ControllerTestsPlaygroundSubModuleController newInst = new ControllerTestsPlaygroundSubModuleController();
-		node.setNodeId(new NavigationNodeId("org.eclipse.riena.example.marker"));
+		node.setNodeId(new NavigationNodeId("org.eclipse.riena.example.marker")); //$NON-NLS-1$
 		newInst.setNavigationNode(node);
 		return newInst;
 	}
 
 	public void testScaleSpinner() {
-		final ITraverseRidget scale = getController().getRidget(ITraverseRidget.class, "celsiusScale");
-		final ISpinnerRidget fahrenheitSpinner = getController().getRidget(ISpinnerRidget.class, "fahrenheitSpinner");
-		final ISliderRidget kelvinSlider = getController().getRidget(ISliderRidget.class, "kelvinSlider");
+		final ITraverseRidget scale = getController().getRidget(ITraverseRidget.class, "celsiusScale"); //$NON-NLS-1$
+		final ISpinnerRidget fahrenheitSpinner = getController().getRidget(ISpinnerRidget.class, "fahrenheitSpinner"); //$NON-NLS-1$
+		final ISliderRidget kelvinSlider = getController().getRidget(ISliderRidget.class, "kelvinSlider"); //$NON-NLS-1$
 
 		assertEquals(0, scale.getValue());
 		assertEquals(32, fahrenheitSpinner.getValue());
@@ -88,19 +88,19 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 	}
 
 	public void testCombo() {
-		final IComboRidget comboAge = getController().getRidget(IComboRidget.class, "ageCombo");
-		final IComboRidget cComboAge = getController().getRidget(CComboRidget.class, "ageCCombo");
-		final ITextRidget comboText = getController().getRidget(ITextRidget.class, "comboTextField");
-		final ILabelRidget comboLabel = getController().getRidget(ILabelRidget.class, "comboLabel");
-		final IActionRidget addToComboButton = getController().getRidget(IActionRidget.class, "addToComboButton");
-		final List<String> ages = new ArrayList<String>(Arrays.asList(new String[] { "<none>", "young", "moderate",
-				"aged", "old" }));
+		final IComboRidget comboAge = getController().getRidget(IComboRidget.class, "ageCombo"); //$NON-NLS-1$
+		final IComboRidget cComboAge = getController().getRidget(CComboRidget.class, "ageCCombo"); //$NON-NLS-1$
+		final ITextRidget comboText = getController().getRidget(ITextRidget.class, "comboTextField"); //$NON-NLS-1$
+		final ILabelRidget comboLabel = getController().getRidget(ILabelRidget.class, "comboLabel"); //$NON-NLS-1$
+		final IActionRidget addToComboButton = getController().getRidget(IActionRidget.class, "addToComboButton"); //$NON-NLS-1$
+		final List<String> ages = new ArrayList<String>(Arrays.asList(new String[] { "<none>", "young", "moderate", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"aged", "old" })); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// test default values
 		assertNull(comboAge.getSelection());
 		assertNull(cComboAge.getSelection());
-		assertEquals("", comboText.getText());
-		assertEquals("<none>", comboLabel.getText());
+		assertEquals("", comboText.getText()); //$NON-NLS-1$
+		assertEquals("<none>", comboLabel.getText()); //$NON-NLS-1$
 
 		// test selection of comboAge and the proper update of comboLabel
 		comboAge.setSelection(ages.get(1));
@@ -110,14 +110,14 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 		assertEquals(ages.get(1), comboLabel.getText());
 
 		// test adding a new item via the textField
-		comboText.setText("too old");
+		comboText.setText("too old"); //$NON-NLS-1$
 		addToComboButton.fireAction();
 		assertEquals(5, comboAge.getSelectionIndex());
 		assertEquals(5, cComboAge.getSelectionIndex());
-		assertEquals("too old", comboAge.getSelection());
-		assertEquals("too old", cComboAge.getSelection());
-		assertEquals("too old", comboLabel.getText());
-		assertEquals("", comboText.getText());
+		assertEquals("too old", comboAge.getSelection()); //$NON-NLS-1$
+		assertEquals("too old", cComboAge.getSelection()); //$NON-NLS-1$
+		assertEquals("too old", comboLabel.getText()); //$NON-NLS-1$
+		assertEquals("", comboText.getText()); //$NON-NLS-1$
 
 		// test selection of cComboAge and the proper update of comboLabel
 		cComboAge.setSelection(ages.get(2));
@@ -129,11 +129,11 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 	}
 
 	public void testTable() {
-		final ITableRidget table = getController().getRidget(ITableRidget.class, "multiTable");
-		final IActionRidget copySelectionButton = getController().getRidget(IActionRidget.class, "copySelectionButton");
-		final IListRidget list = getController().getRidget(IListRidget.class, "tableList");
+		final ITableRidget table = getController().getRidget(ITableRidget.class, "multiTable"); //$NON-NLS-1$
+		final IActionRidget copySelectionButton = getController().getRidget(IActionRidget.class, "copySelectionButton"); //$NON-NLS-1$
+		final IListRidget list = getController().getRidget(IListRidget.class, "tableList"); //$NON-NLS-1$
 		final IToggleButtonRidget selectAllToggleButton = getController().getRidget(IToggleButtonRidget.class,
-				"toggleButton");
+				"toggleButton"); //$NON-NLS-1$
 
 		assertFalse(selectAllToggleButton.isSelected());
 
@@ -172,8 +172,8 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 	}
 
 	public void testMasterDetails() {
-		final IMasterDetailsRidget master = getController().getRidget(IMasterDetailsRidget.class, "master");
-		final IActionRidget enableDisableButton = getController().getRidget(IActionRidget.class, "enableDisable");
+		final IMasterDetailsRidget master = getController().getRidget(IMasterDetailsRidget.class, "master"); //$NON-NLS-1$
+		final IActionRidget enableDisableButton = getController().getRidget(IActionRidget.class, "enableDisable"); //$NON-NLS-1$
 		assertNull(master.getSelection());
 
 		assertTrue(master.isEnabled());
@@ -184,18 +184,18 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 	}
 
 	public void testDateTime() throws Exception {
-		final IDateTimeRidget dtDate = getController().getRidget(IDateTimeRidget.class, "dtDate");
-		final IDateTimeRidget dtTime = getController().getRidget(IDateTimeRidget.class, "dtTime");
-		final IDateTimeRidget dtDateOnly = getController().getRidget(IDateTimeRidget.class, "dtDateOnly");
-		final IDateTimeRidget dtTimeOnly = getController().getRidget(IDateTimeRidget.class, "dtTimeOnly");
-		final IDateTimeRidget dtCal = getController().getRidget(IDateTimeRidget.class, "dtCal");
-		final ITextRidget txt1 = getController().getRidget(ITextRidget.class, "txt1");
-		final ITextRidget txt2 = getController().getRidget(ITextRidget.class, "txt2");
-		final ITextRidget txt3 = getController().getRidget(ITextRidget.class, "txt3");
-		final ITextRidget txt4 = getController().getRidget(ITextRidget.class, "txt4");
+		final IDateTimeRidget dtDate = getController().getRidget(IDateTimeRidget.class, "dtDate"); //$NON-NLS-1$
+		final IDateTimeRidget dtTime = getController().getRidget(IDateTimeRidget.class, "dtTime"); //$NON-NLS-1$
+		final IDateTimeRidget dtDateOnly = getController().getRidget(IDateTimeRidget.class, "dtDateOnly"); //$NON-NLS-1$
+		final IDateTimeRidget dtTimeOnly = getController().getRidget(IDateTimeRidget.class, "dtTimeOnly"); //$NON-NLS-1$
+		final IDateTimeRidget dtCal = getController().getRidget(IDateTimeRidget.class, "dtCal"); //$NON-NLS-1$
+		final ITextRidget txt1 = getController().getRidget(ITextRidget.class, "txt1"); //$NON-NLS-1$
+		final ITextRidget txt2 = getController().getRidget(ITextRidget.class, "txt2"); //$NON-NLS-1$
+		final ITextRidget txt3 = getController().getRidget(ITextRidget.class, "txt3"); //$NON-NLS-1$
+		final ITextRidget txt4 = getController().getRidget(ITextRidget.class, "txt4"); //$NON-NLS-1$
 
 		// test if the binding between the TextRidget and the DateTimeRidget works
-		final long now = ReflectionUtils.getHidden(getController(), "now");
+		final long now = ReflectionUtils.getHidden(getController(), "now"); //$NON-NLS-1$
 		final TypedBean<Date> date = new TypedBean<Date>(new Date(now));
 		assertEquals(date.getValue(), dtDate.getDate());
 		assertEquals(date.getValue(), dtTime.getDate());
@@ -223,13 +223,13 @@ public class ControllerTestsPlaygroundSubModuleControllerTest extends
 		assertEquals(cal.getTime().toString(), txt4.getText());
 
 		// test if the setting of a date via the DateTextRidget works
-		final IDateTextRidget dateTextRidget = getController().getRidget(IDateTextRidget.class, "dateText");
-		final IActionRidget dateTimeButton = getController().getRidget(IActionRidget.class, "dateTimeButton");
+		final IDateTextRidget dateTextRidget = getController().getRidget(IDateTextRidget.class, "dateText"); //$NON-NLS-1$
+		final IActionRidget dateTimeButton = getController().getRidget(IActionRidget.class, "dateTimeButton"); //$NON-NLS-1$
 
-		dateTextRidget.setText("31.03.1980");
-		assertEquals("31.03.1980", dateTextRidget.getText());
-		final DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-		final Date newDate = df.parse("31.03.1980");
+		dateTextRidget.setText("31.03.1980"); //$NON-NLS-1$
+		assertEquals("31.03.1980", dateTextRidget.getText()); //$NON-NLS-1$
+		final DateFormat df = new SimpleDateFormat("dd.MM.yyyy"); //$NON-NLS-1$
+		final Date newDate = df.parse("31.03.1980"); //$NON-NLS-1$
 		dateTimeButton.fireAction();
 		assertEquals(newDate, dtDate.getDate());
 		assertEquals(newDate, dtDateOnly.getDate());

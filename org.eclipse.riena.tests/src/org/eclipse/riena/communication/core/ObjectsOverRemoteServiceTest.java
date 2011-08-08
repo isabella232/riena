@@ -34,7 +34,7 @@ public class ObjectsOverRemoteServiceTest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		regTestObjectTypesService = Register.remoteProxy(ITestObjectsOverRemoteService.class)
-				.usingUrl("http://localhost:8080/hessian/TestObjectTypesWS").withProtocol("hessian")
+				.usingUrl("http://localhost:8080/hessian/TestObjectTypesWS").withProtocol("hessian") //$NON-NLS-1$ //$NON-NLS-2$
 				.andStart(Activator.getDefault().getContext());
 		testObjectTypesService = Service.get(ITestObjectsOverRemoteService.class);
 	}
@@ -68,7 +68,7 @@ public class ObjectsOverRemoteServiceTest extends RienaTestCase {
 			assertTrue(e instanceof RuntimeException);
 			return;
 		}
-		fail("should never get here");
+		fail("should never get here"); //$NON-NLS-1$
 	}
 
 	public void testInvalidMap() {
@@ -78,11 +78,11 @@ public class ObjectsOverRemoteServiceTest extends RienaTestCase {
 			assertTrue(e instanceof RuntimeException);
 			return;
 		}
-		fail("should never get here");
+		fail("should never get here"); //$NON-NLS-1$
 	}
 
 	public void testSendObject() {
-		testObjectTypesService.sendObject("Hello");
+		testObjectTypesService.sendObject("Hello"); //$NON-NLS-1$
 	}
 
 	public void testSendInvalidObject() {
@@ -92,24 +92,24 @@ public class ObjectsOverRemoteServiceTest extends RienaTestCase {
 			assertTrue(e instanceof RuntimeException);
 			return;
 		}
-		fail("should never get here");
+		fail("should never get here"); //$NON-NLS-1$
 	}
 
 	public void testSendMap() {
 		final HashMap<String, String> map = new HashMap<String, String>();
-		map.put("Hello", "world");
+		map.put("Hello", "world"); //$NON-NLS-1$ //$NON-NLS-2$
 		testObjectTypesService.sendMap(map);
 	}
 
 	public void testSendInvalidMap() {
 		try {
 			final HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("Hello", new TestClientObject());
+			map.put("Hello", new TestClientObject()); //$NON-NLS-1$
 			testObjectTypesService.sendMap(map);
 		} catch (final Exception e) {
 			assertTrue(e instanceof RuntimeException);
 			return;
 		}
-		fail("should never get here");
+		fail("should never get here"); //$NON-NLS-1$
 	}
 }

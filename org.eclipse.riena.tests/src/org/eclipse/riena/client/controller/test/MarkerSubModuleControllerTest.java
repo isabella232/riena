@@ -59,7 +59,7 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 	protected MarkerSubModuleController createController(final ISubModuleNode node) {
 
 		final MarkerSubModuleController newInst = new MarkerSubModuleController();
-		node.setNodeId(new NavigationNodeId("org.eclipse.riena.example.marker"));
+		node.setNodeId(new NavigationNodeId("org.eclipse.riena.example.marker")); //$NON-NLS-1$
 		newInst.setNavigationNode(node);
 
 		return newInst;
@@ -84,21 +84,21 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		assertFalse(checkHiddenParent.isSelected());
 
 		final ITextRidget textName = getController().getRidget(ITextRidget.class, "textName"); //$NON-NLS-1$
-		assertEquals("Chateau Schaedelbrummer", textName.getText());
+		assertEquals("Chateau Schaedelbrummer", textName.getText()); //$NON-NLS-1$
 
 		final IDecimalTextRidget textPrice = getController().getRidget(IDecimalTextRidget.class, "textPrice"); //$NON-NLS-1$
-		assertEquals(TestUtils.getLocalizedNumber("-29,99"), textPrice.getText());
+		assertEquals(TestUtils.getLocalizedNumber("-29,99"), textPrice.getText()); //$NON-NLS-1$
 		final INumericTextRidget textAmount = getController().getRidget(INumericTextRidget.class, "textAmount"); //$NON-NLS-1$
-		assertEquals(TestUtils.getLocalizedNumber("1.001"), textAmount.getText());
+		assertEquals(TestUtils.getLocalizedNumber("1.001"), textAmount.getText()); //$NON-NLS-1$
 
 		final IDateTextRidget textDate = getController().getRidget(IDateTextRidget.class, "textDate"); //$NON-NLS-1$
-		assertEquals("04.12.2008", textDate.getText());
+		assertEquals("04.12.2008", textDate.getText()); //$NON-NLS-1$
 
 		final IDateTimeRidget dtDate = getController().getRidget(IDateTimeRidget.class, "dtDate"); //$NON-NLS-1$
-		if ("US".equals(Locale.getDefault().getCountry())) {
-			assertEquals("12/4/08 12:00 AM", dtDate.getText());
+		if ("US".equals(Locale.getDefault().getCountry())) { //$NON-NLS-1$
+			assertEquals("12/4/08 12:00 AM", dtDate.getText()); //$NON-NLS-1$
 		} else {
-			assertEquals("04.12.08 00:00", dtDate.getText());
+			assertEquals("04.12.08 00:00", dtDate.getText()); //$NON-NLS-1$
 		}
 		final Calendar cal = Calendar.getInstance();
 		cal.clear();
@@ -106,17 +106,17 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		assertEquals(cal.getTime(), dtDate.getDate());
 
 		final IComboRidget comboAge = getController().getRidget(IComboRidget.class, "comboAge"); //$NON-NLS-1$
-		assertEquals("young", comboAge.getSelection());
+		assertEquals("young", comboAge.getSelection()); //$NON-NLS-1$
 
 		final ISingleChoiceRidget choiceType = getController().getRidget(ISingleChoiceRidget.class, "choiceType"); //$NON-NLS-1$
-		assertEquals("red", choiceType.getSelection());
+		assertEquals("red", choiceType.getSelection()); //$NON-NLS-1$
 
 		final IMultipleChoiceRidget choiceFlavor = getController().getRidget(IMultipleChoiceRidget.class,
 				"choiceFlavor"); //$NON-NLS-1$
 		assertNotNull(choiceFlavor.getSelection());
 		assertEquals(2, choiceFlavor.getSelection().size());
-		assertEquals("dry", choiceFlavor.getSelection().get(0));
-		assertEquals("spicy", choiceFlavor.getSelection().get(1));
+		assertEquals("dry", choiceFlavor.getSelection().get(0)); //$NON-NLS-1$
+		assertEquals("spicy", choiceFlavor.getSelection().get(1)); //$NON-NLS-1$
 
 		final IToggleButtonRidget buttonToggleA = getController().getRidget(IToggleButtonRidget.class, "buttonToggleA"); //$NON-NLS-1$
 		assertTrue(buttonToggleA.isSelected());
@@ -145,78 +145,78 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 		treePersons.updateFromModel();
 
 		final IToggleButtonRidget mandatoryToggle = getController().getRidget(IToggleButtonRidget.class,
-				"checkMandatory");
+				"checkMandatory"); //$NON-NLS-1$
 		assertFalse(mandatoryToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertFalse("failed on: " + ridget, ridget.isMandatory());
+			assertFalse("failed on: " + ridget, ridget.isMandatory()); //$NON-NLS-1$
 		}
 
 		mandatoryToggle.setSelected(true);
 		assertTrue(mandatoryToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertTrue("failed on: " + ridget, ridget.isMandatory());
+			assertTrue("failed on: " + ridget, ridget.isMandatory()); //$NON-NLS-1$
 		}
 	}
 
 	public void testErrorMarkerOptions() {
-		final IToggleButtonRidget errorToggle = getController().getRidget(IToggleButtonRidget.class, "checkError");
+		final IToggleButtonRidget errorToggle = getController().getRidget(IToggleButtonRidget.class, "checkError"); //$NON-NLS-1$
 		assertFalse(errorToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertFalse("failed on: " + ridget, ridget.isErrorMarked());
+			assertFalse("failed on: " + ridget, ridget.isErrorMarked()); //$NON-NLS-1$
 		}
 
 		errorToggle.setSelected(true);
 		assertTrue(errorToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertTrue("failed on: " + ridget, ridget.isErrorMarked());
+			assertTrue("failed on: " + ridget, ridget.isErrorMarked()); //$NON-NLS-1$
 		}
 	}
 
 	public void testDisabledMarkerOptions() {
 		final IToggleButtonRidget disabledToggle = getController()
-				.getRidget(IToggleButtonRidget.class, "checkDisabled");
+				.getRidget(IToggleButtonRidget.class, "checkDisabled"); //$NON-NLS-1$
 		assertFalse(disabledToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertTrue("failed on: " + ridget, ridget.isEnabled());
+			assertTrue("failed on: " + ridget, ridget.isEnabled()); //$NON-NLS-1$
 		}
 
 		disabledToggle.setSelected(true);
 		assertTrue(disabledToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertFalse("failed on: " + ridget, ridget.isEnabled());
+			assertFalse("failed on: " + ridget, ridget.isEnabled()); //$NON-NLS-1$
 		}
 
-		assertFalse(getController().getRidget(IActionRidget.class, "buttonPush").isEnabled());
+		assertFalse(getController().getRidget(IActionRidget.class, "buttonPush").isEnabled()); //$NON-NLS-1$
 	}
 
 	public void testOutputMarkerOptions() {
-		final IToggleButtonRidget outputToggle = getController().getRidget(IToggleButtonRidget.class, "checkOutput");
+		final IToggleButtonRidget outputToggle = getController().getRidget(IToggleButtonRidget.class, "checkOutput"); //$NON-NLS-1$
 		assertFalse(outputToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertFalse("failed on: " + ridget, ridget.isOutputOnly());
+			assertFalse("failed on: " + ridget, ridget.isOutputOnly()); //$NON-NLS-1$
 		}
 
 		outputToggle.setSelected(true);
 		assertTrue(outputToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertTrue("failed on: " + ridget, ridget.isOutputOnly());
+			assertTrue("failed on: " + ridget, ridget.isOutputOnly()); //$NON-NLS-1$
 		}
 	}
 
 	public void testHiddenMarkerOptions() {
-		final IToggleButtonRidget hiddenToggle = getController().getRidget(IToggleButtonRidget.class, "checkHidden");
+		final IToggleButtonRidget hiddenToggle = getController().getRidget(IToggleButtonRidget.class, "checkHidden"); //$NON-NLS-1$
 		assertFalse(hiddenToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertTrue("failed on: " + ridget, ridget.isVisible());
+			assertTrue("failed on: " + ridget, ridget.isVisible()); //$NON-NLS-1$
 		}
 
 		hiddenToggle.setSelected(true);
 		assertTrue(hiddenToggle.isSelected());
 		for (final IMarkableRidget ridget : getAllMarkableRidgets()) {
-			assertFalse("failed on: " + ridget, ridget.isVisible());
+			assertFalse("failed on: " + ridget, ridget.isVisible()); //$NON-NLS-1$
 		}
 
-		assertFalse(getController().getRidget(IActionRidget.class, "buttonPush").isVisible());
+		assertFalse(getController().getRidget(IActionRidget.class, "buttonPush").isVisible()); //$NON-NLS-1$
 	}
 
 	public void testList() {
@@ -276,10 +276,10 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 	}
 
 	public void testMarkers() {
-		basicTestMarkers(getController().getRidget(ITextRidget.class, "textName"), "testString"); //$NON-NLS-1$
-		basicTestMarkers(getController().getRidget(IDecimalTextRidget.class, "textPrice"), "123"); //$NON-NLS-1$
-		basicTestMarkers(getController().getRidget(INumericTextRidget.class, "textAmount"), "123"); //$NON-NLS-1$
-		basicTestMarkers(getController().getRidget(IDateTextRidget.class, "textDate"), "01.01.1980"); //$NON-NLS-1$
+		basicTestMarkers(getController().getRidget(ITextRidget.class, "textName"), "testString"); //$NON-NLS-1$ //$NON-NLS-2$
+		basicTestMarkers(getController().getRidget(IDecimalTextRidget.class, "textPrice"), "123"); //$NON-NLS-1$ //$NON-NLS-2$
+		basicTestMarkers(getController().getRidget(INumericTextRidget.class, "textAmount"), "123"); //$NON-NLS-1$ //$NON-NLS-2$
+		basicTestMarkers(getController().getRidget(IDateTextRidget.class, "textDate"), "01.01.1980"); //$NON-NLS-1$ //$NON-NLS-2$
 		basicTestMarkers(getController().getRidget(IDateTimeRidget.class, "dtDate")); //$NON-NLS-1$
 		basicTestMarkers(getController().getRidget(IComboRidget.class, "comboAge")); //$NON-NLS-1$
 		basicTestMarkers(getController().getRidget(ISingleChoiceRidget.class, "choiceType")); //$NON-NLS-1$
@@ -376,20 +376,20 @@ public class MarkerSubModuleControllerTest extends AbstractSubModuleControllerTe
 	private List<IMarkableRidget> getAllMarkableRidgets() {
 		final List<IMarkableRidget> markableRidgets = new ArrayList<IMarkableRidget>();
 
-		markableRidgets.add(getController().getRidget(ITextRidget.class, "textName"));
-		markableRidgets.add(getController().getRidget(IDecimalTextRidget.class, "textPrice"));
-		markableRidgets.add(getController().getRidget(INumericTextRidget.class, "textAmount"));
-		markableRidgets.add(getController().getRidget(IDateTextRidget.class, "textDate"));
-		markableRidgets.add(getController().getRidget(IDateTimeRidget.class, "dtDate"));
-		markableRidgets.add(getController().getRidget(IComboRidget.class, "comboAge"));
-		markableRidgets.add(getController().getRidget(ISingleChoiceRidget.class, "choiceType"));
-		markableRidgets.add(getController().getRidget(IMultipleChoiceRidget.class, "choiceFlavor"));
-		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonToggleA"));
-		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonToggleB"));
-		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonRadioA"));
-		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonRadioB"));
-		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonCheckA"));
-		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonCheckB"));
+		markableRidgets.add(getController().getRidget(ITextRidget.class, "textName")); //$NON-NLS-1$
+		markableRidgets.add(getController().getRidget(IDecimalTextRidget.class, "textPrice")); //$NON-NLS-1$
+		markableRidgets.add(getController().getRidget(INumericTextRidget.class, "textAmount")); //$NON-NLS-1$
+		markableRidgets.add(getController().getRidget(IDateTextRidget.class, "textDate")); //$NON-NLS-1$
+		markableRidgets.add(getController().getRidget(IDateTimeRidget.class, "dtDate")); //$NON-NLS-1$
+		markableRidgets.add(getController().getRidget(IComboRidget.class, "comboAge")); //$NON-NLS-1$
+		markableRidgets.add(getController().getRidget(ISingleChoiceRidget.class, "choiceType")); //$NON-NLS-1$
+		markableRidgets.add(getController().getRidget(IMultipleChoiceRidget.class, "choiceFlavor")); //$NON-NLS-1$
+		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonToggleA")); //$NON-NLS-1$
+		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonToggleB")); //$NON-NLS-1$
+		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonRadioA")); //$NON-NLS-1$
+		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonRadioB")); //$NON-NLS-1$
+		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonCheckA")); //$NON-NLS-1$
+		markableRidgets.add(getController().getRidget(IToggleButtonRidget.class, "buttonCheckB")); //$NON-NLS-1$
 
 		return markableRidgets;
 	}
