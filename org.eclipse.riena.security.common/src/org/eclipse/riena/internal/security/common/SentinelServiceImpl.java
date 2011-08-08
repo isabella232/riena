@@ -19,6 +19,7 @@ import java.util.Set;
 
 import javax.security.auth.Subject;
 
+import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.riena.security.common.ISubjectHolder;
 import org.eclipse.riena.security.common.authorization.IAuthorizationService;
 import org.eclipse.riena.security.common.authorization.IPermissionCache;
@@ -34,6 +35,7 @@ public class SentinelServiceImpl implements ISentinelService {
 	private ISubjectHolder subjectHolder;
 	private IAuthorizationService authService;
 
+	@InjectService
 	public void bind(final IPermissionCache permCache) {
 		this.permCache = permCache;
 	}
@@ -44,6 +46,7 @@ public class SentinelServiceImpl implements ISentinelService {
 		}
 	}
 
+	@InjectService
 	public void bind(final ISubjectHolder subjectHolder) {
 		this.subjectHolder = subjectHolder;
 	}
@@ -54,6 +57,7 @@ public class SentinelServiceImpl implements ISentinelService {
 		}
 	}
 
+	@InjectService
 	public void bind(final IAuthorizationService authService) {
 		this.authService = authService;
 	}
