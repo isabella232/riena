@@ -489,8 +489,10 @@ public class ObjectTransactionImpl implements IObjectTransaction {
 	public void setReference(final ITransactedObject object, final String refName, final Object newValue) {
 		Assert.isNotNull(object, "object must not be null"); //$NON-NLS-1$
 		Assert.isNotNull(object.getObjectId(), "ObjectId of object must not be null"); //$NON-NLS-1$
-		Assert.isTrue(!(newValue instanceof ITransactedObject),
-				"setReference for Object must not pass a \"hidden\" ITransactedObject"); //$NON-NLS-1$
+		if (newValue instanceof ITransactedObject) {
+			setReference(object, refName, (ITransactedObject) newValue);
+			return;
+		}
 		checkPreRegisteredClean();
 		if (!isCleanModus()) {
 			Assert.isTrue(isRegistered(object), "object must be registered"); //$NON-NLS-1$
