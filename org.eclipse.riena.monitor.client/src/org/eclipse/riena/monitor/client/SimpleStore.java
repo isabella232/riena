@@ -384,16 +384,17 @@ public class SimpleStore implements IStore, IExecutableExtension {
 		@Override
 		protected IStatus run(final IProgressMonitor monitor) {
 			if (monitor.isCanceled()) {
-				return Status.OK_STATUS;
+				return Status.CANCEL_STATUS;
 			}
 			LOGGER.log(LogService.LOG_DEBUG, "Store Cleaner started"); //$NON-NLS-1$
 			monitor.beginTask("Cleanup", IProgressMonitor.UNKNOWN); //$NON-NLS-1$
 			clean();
 			monitor.done();
-			if (!monitor.isCanceled()) {
-				// reschedule for periodic work
-				schedule(cleanupDelay);
+			if (monitor.isCanceled()) {
+				return Status.CANCEL_STATUS;
 			}
+			// reschedule for periodic work
+			schedule(cleanupDelay);
 			LOGGER.log(LogService.LOG_DEBUG, "Store Cleaner ended"); //$NON-NLS-1$
 			return Status.OK_STATUS;
 		}
