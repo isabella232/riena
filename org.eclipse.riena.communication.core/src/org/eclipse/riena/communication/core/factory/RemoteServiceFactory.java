@@ -20,6 +20,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
@@ -79,7 +80,8 @@ public class RemoteServiceFactory {
 		synchronized (RemoteServiceFactory.class) {
 			if (!wired) {
 				wired = true;
-				Wire.instance(this).andStart(Activator.getDefault().getContext());
+				Assert.isNotNull(Wire.instance(this).andStart(), "Wiring of " + RemoteServiceFactory.class.getName() //$NON-NLS-1$
+						+ " was not possible because this bundle has not been started."); //$NON-NLS-1$
 			}
 		}
 	}
