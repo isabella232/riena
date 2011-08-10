@@ -53,7 +53,7 @@ public @interface InjectExtension {
 	boolean specific() default false;
 
 	/**
-	 * If {@code true} symbols (VariablManager) will not be replaced
+	 * If {@code true} symbols (VariableManager) will not be replaced
 	 */
 	boolean doNotReplaceSymbols() default false;
 
