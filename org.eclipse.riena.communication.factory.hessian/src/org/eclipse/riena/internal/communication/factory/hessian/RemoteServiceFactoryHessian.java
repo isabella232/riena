@@ -26,6 +26,7 @@ import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorList;
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorRegistry;
+import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.InjectService;
 
 /**
@@ -75,6 +76,20 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 			return serviceReference;
 		} catch (final MalformedURLException e) {
 			throw new RuntimeException("MalformedURLException for endpoint '" + endpoint + ".", e); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	}
+
+	@InjectExtension(min = 0, max = 1)
+	public void update(final IRemoteServiceFactoryHessianExtension extension) {
+		if (extension == null) {
+			return;
+		}
+		rienaHessianProxyFactory.setZipClientRequest(extension.isZipClientRequest());
+		if (extension.getReadTimeout() > 0) {
+			rienaHessianProxyFactory.setReadTimeout(extension.getReadTimeout());
+		}
+		if (extension.getConnectTimeout() > 0) {
+			rienaHessianProxyFactory.setConnectTimeout(extension.getConnectTimeout());
 		}
 	}
 

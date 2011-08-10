@@ -31,26 +31,11 @@ import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
 public class RienaHessianProxyFactory extends HessianProxyFactory {
 
 	private ICallMessageContextAccessor mca;
-	private final static ThreadLocal<HttpURLConnection> CONNECTIONS = new ThreadLocal<HttpURLConnection>();
 	private static boolean transferDataChunked = false; // set chunking to FALSE by default overwriting the hessian default
-	private static boolean zipClientRequest = false;
-	private static boolean propertiesInitialized = false;
-	private static final String RIENA_COMMUNICATION_ZIP_PROPERTY = "riena.communication.zip"; //$NON-NLS-1$
+	private int connectTimeout = -1;
+	private boolean isZipClientRequest = false;
 
-	/**
-	 * @param zipClientRequest
-	 *            the zipClientRequest to set
-	 */
-	public static void setZipClientRequest(final boolean zipClientRequest) {
-		RienaHessianProxyFactory.zipClientRequest = zipClientRequest;
-	}
-
-	/**
-	 * @return the zipClientRequest
-	 */
-	public static boolean isZipClientRequest() {
-		return zipClientRequest;
-	}
+	private final static ThreadLocal<HttpURLConnection> CONNECTIONS = new ThreadLocal<HttpURLConnection>();
 
 	public RienaHessianProxyFactory() {
 		super();
@@ -59,11 +44,6 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 		setHessian2Request(true);
 		setHessian2Reply(true);
 		setChunkedPost(transferDataChunked);
-
-		if (!propertiesInitialized) {
-			zipClientRequest = Boolean.getBoolean(RIENA_COMMUNICATION_ZIP_PROPERTY);
-			propertiesInitialized = true;
-		}
 	}
 
 	/**
@@ -87,6 +67,18 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 		RienaHessianProxyFactory.transferDataChunked = transferDataChunked;
 	}
 
+	public void setConnectTimeout(final int connectTimeout) {
+		this.connectTimeout = connectTimeout;
+	}
+
+	/**
+	 * @param zipClientRequest
+	 *            the zipClientRequest to set
+	 */
+	public void setZipClientRequest(final boolean isZipClientRequest) {
+		this.isZipClientRequest = isZipClientRequest;
+	}
+
 	@Override
 	protected URLConnection openConnection(final URL url) throws IOException {
 		URLConnection connection;
@@ -101,6 +93,9 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 		} else {
 			connection = super.openConnection(url);
 		}
+		if (connectTimeout > 0) {
+			connection.setConnectTimeout(connectTimeout);
+		}
 		final Map<String, List<String>> headers = mc.listRequestHeaders();
 		if (headers != null) {
 			for (final Map.Entry<String, List<String>> entry : headers.entrySet()) {
@@ -111,11 +106,8 @@ public class RienaHessianProxyFactory extends HessianProxyFactory {
 				}
 			}
 		}
-		if (isZipClientRequest()) {
+		if (isZipClientRequest) {
 			connection.addRequestProperty("Content-Encoding", "x-hessian-gzip"); //$NON-NLS-1$//$NON-NLS-2$
-		}
-
-		if (isZipClientRequest()) {
 			connection = new GZippingHttpURLConnectionWrapper((HttpURLConnection) connection);
 		}
 		CONNECTIONS.set((HttpURLConnection) connection);

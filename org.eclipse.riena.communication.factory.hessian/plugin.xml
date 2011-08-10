@@ -5,6 +5,7 @@
 		id="serializerFactories"
 		name="Hessian Serializer Factories"
 		schema="schema/serializerFactories.exsd" />
+ <extension-point id="configuration" name="Configuration for the remote service factory for hessian" schema="schema/configuration.exsd"/>
 		
 	<extension
 		id="org.eclipse.riena.communication.hessian.PrincipalSerializerFactory"
