@@ -221,8 +221,8 @@ public class GZippingHttpURLConnectionWrapper extends HttpURLConnection {
 
 	@Override
 	public OutputStream getOutputStream() throws IOException {
-		this.myGZIPOutputStream = new GZIPOutputStream(connection.getOutputStream());
-		return this.myGZIPOutputStream;
+		myGZIPOutputStream = new GZIPOutputStream(connection.getOutputStream());
+		return myGZIPOutputStream;
 	}
 
 	public GZIPOutputStream getUsedGZIPOutputStream() {
