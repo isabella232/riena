@@ -13,10 +13,38 @@ package org.eclipse.riena.internal.communication.factory.hessian;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 import com.caucho.hessian.client.HessianRuntimeException;
+import com.caucho.hessian.io.SerializerFactory;
 
+/**
+ * The {@code RienaHessianWatchDog} is a java.util.logging {@code Handler}. Its
+ * purpose is to watch the logging events and bark (throw an exception) if a
+ * certain <i>warning</i> message has been logged. Riena treats this
+ * <i>warning</i> message as an error!
+ */
 final class RienaHessianWatchDog extends Handler {
+
+	private static final Handler WATCH_DOG = new RienaHessianWatchDog();
+
+	/**
+	 * Install the watch dog.
+	 */
+	public static void install() {
+		getSerializerFactoryLogger().addHandler(WATCH_DOG);
+	}
+
+	/**
+	 * Uninstall the watch dog.
+	 */
+	public static void uninstall() {
+		getSerializerFactoryLogger().removeHandler(WATCH_DOG);
+	}
+
+	private static Logger getSerializerFactoryLogger() {
+		return Logger.getLogger(SerializerFactory.class.getName());
+	}
 
 	@Override
 	public void publish(final LogRecord record) {
@@ -34,6 +62,6 @@ final class RienaHessianWatchDog extends Handler {
 	}
 
 	@Override
-	public void close() throws SecurityException {
+	public void close() {
 	}
 }
