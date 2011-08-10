@@ -22,9 +22,11 @@ import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
  */
 public class ProxyFactory {
 
+	public static final String DEFAULT_COMMUNICATION_PROTOCOL = "hessian"; //$NON-NLS-1$
+
 	private final Class<?> clazz;
 	private String url;
-	private String protocol;
+	private String protocol = DEFAULT_COMMUNICATION_PROTOCOL;
 
 	/**
 	 * @param clazz
@@ -46,6 +48,9 @@ public class ProxyFactory {
 	}
 
 	/**
+	 * Specify the communication protocol. If not given, i.e. the method is not
+	 * called, "hessian" will be assumed.
+	 * 
 	 * @param protocol
 	 *            as string i.e. "hessian"
 	 * @return
