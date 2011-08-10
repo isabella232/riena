@@ -17,12 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
-
-import com.caucho.hessian.io.SerializerFactory;
 
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
@@ -56,32 +50,6 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 		messageContextAccessor = new CallMsgCtxAcc();
 		rienaHessianProxyFactory = new RienaHessianProxyFactory();
 		rienaHessianProxyFactory.setCallMessageContextAccessor(messageContextAccessor);
-		final Logger logger = Logger.getLogger(SerializerFactory.class.getName());
-		logger.addHandler(watchDog);
-	}
-
-	private final Handler watchDog = new RienaHessianWatchDog();
-
-	private final static class RienaHessianWatchDog extends Handler {
-
-		@Override
-		public void publish(final LogRecord record) {
-			if (record.getLevel() != Level.WARNING) {
-				return;
-			}
-			if (record.getMessage().contains("Hessian/Burlap: '") //$NON-NLS-1$
-					&& record.getMessage().contains("' is an unknown class in ")) { //$NON-NLS-1$
-				throw new RuntimeException(record.getMessage());
-			}
-		}
-
-		@Override
-		public void flush() {
-		}
-
-		@Override
-		public void close() throws SecurityException {
-		}
 	}
 
 	public IRemoteServiceReference createProxy(final RemoteServiceDescription endpoint) {
@@ -292,4 +260,5 @@ public class RemoteServiceFactoryHessian implements IRemoteServiceFactory {
 
 		}
 	}
+
 }
