@@ -36,6 +36,7 @@ public abstract class AbstractRidget implements IRidget {
 
 	private final ListenerList<IFocusListener> focusListeners;
 	private IRidgetContainer controller;
+	private boolean ignoreBindingError;
 
 	/**
 	 * Constructor.
@@ -125,6 +126,33 @@ public abstract class AbstractRidget implements IRidget {
 		// Do nothing by default
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 3.0
+	 */
+	public void forceMarkerUpdate() {
+		firePropertyChange(COMMAND_UPDATE, false, true);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 4.0
+	 */
+	public void setIgnoreBindingError(final boolean ignore) {
+		ignoreBindingError = ignore;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 4.0
+	 */
+	public boolean isIgnoreBindingError() {
+		return ignoreBindingError;
+	}
+
 	// protected methods
 	////////////////////
 
@@ -211,13 +239,6 @@ public abstract class AbstractRidget implements IRidget {
 			result = (listeners[i] == listener);
 		}
 		return result;
-	}
-
-	/**
-	 * @since 3.0
-	 */
-	public void forceMarkerUpdate() {
-		firePropertyChange(COMMAND_UPDATE, false, true);
 	}
 
 }

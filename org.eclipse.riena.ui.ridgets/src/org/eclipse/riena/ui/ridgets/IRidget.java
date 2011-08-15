@@ -265,4 +265,30 @@ public interface IRidget {
 	 */
 	void updateFromModel();
 
+	/**
+	 * Sets whether the method {@code updateAllRidgetsFromModel()} of the class
+	 * {@code SubModuleController} should ignore binding errors. If the method
+	 * should ignore the binding errors, the binding exceptions will be caught
+	 * in the method {@code updateAllRidgetsFromModel()} and logged.
+	 * 
+	 * @param {@code true} if the binding error should be ignored; {@code false}
+	 *        if the binding errors should be forwarded.
+	 * 
+	 * @since 4.0
+	 */
+	void setIgnoreBindingError(boolean ignore);
+
+	/**
+	 * Returns whether the method {@code updateAllRidgetsFromModel()} of the
+	 * class {@code SubModuleController} should ignore binding errors. If the
+	 * method should ignore the binding errors, the binding exceptions will be
+	 * caught in the method {@code updateAllRidgetsFromModel()} and logged.
+	 * 
+	 * @return {@code true} if the binding error should be ignored;
+	 *         {@code false} if the binding errors should be forwarded.
+	 * 
+	 * @since 4.0
+	 */
+	boolean isIgnoreBindingError();
+
 }

@@ -12,6 +12,13 @@ package org.eclipse.riena.navigation.ui.controllers;
 
 import java.util.Iterator;
 
+import org.osgi.service.log.LogService;
+
+import org.eclipse.core.databinding.BindingException;
+import org.eclipse.equinox.log.Logger;
+
+import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.internal.ui.ridgets.Activator;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -29,6 +36,8 @@ import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
  * Default implementation for a SubModuleController.
  */
 public class SubModuleController extends NavigationNodeController<ISubModuleNode> {
+
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubModuleController.class);
 
 	/**
 	 * The ID of the window ridget in this controller ("windowRidget").
@@ -239,16 +248,17 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		final Iterator<? extends IRidget> iter = getRidgets().iterator();
 		while (iter.hasNext()) {
 			final IRidget ridget = iter.next();
-			/*
-			 * if (RienaStatus.isDevelopment()) { try {
-			 * ridget.updateFromModel(); } catch (final BindingException ex) {
-			 * LOGGER.log( LogService.LOG_WARNING,
-			 * "Update from the model was unsuccessful for the ridget: " +
-			 * ridget + ", with id: " + ridget.getID()); //$NON-NLS-1$
-			 * //$NON-NLS-2$ } } else {
-			 */
-			ridget.updateFromModel();
-			//			}
+			if (ridget.isIgnoreBindingError()) {
+				try {
+					ridget.updateFromModel();
+				} catch (final BindingException ex) {
+					String message = "Update from the model was unsuccessful for the ridget: "; //$NON-NLS-1$
+					message += ridget + ", with id: " + ridget.getID(); //$NON-NLS-1$
+					LOGGER.log(LogService.LOG_DEBUG, message);
+				}
+			} else {
+				ridget.updateFromModel();
+			}
 		}
 	}
 
