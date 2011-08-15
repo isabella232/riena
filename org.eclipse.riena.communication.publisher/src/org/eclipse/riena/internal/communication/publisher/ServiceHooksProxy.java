@@ -72,12 +72,18 @@ public class ServiceHooksProxy extends AbstractHooksProxy implements InvocationH
 		try {
 			return super.invoke(proxy, method, args);
 		} catch (final InvocationTargetException e) {
+			if (context != null) {
+				context.setTargetException(e.getTargetException());
+			}
 			throw e.getTargetException();
 		} finally {
 			// context might be null, but serviceHooks were injected during invoke
 			if (context != null) {
 				for (final IServiceHook sHook : serviceHooks) {
 					sHook.afterService(context);
+				}
+				if (context.getTargetException() != null) {
+					throw context.getTargetException();
 				}
 			}
 		}

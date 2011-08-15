@@ -20,7 +20,7 @@ import javax.servlet.http.Cookie;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 
 /**
- * A ServiceContext is used to give ServiceHooks metainformation about the
+ * A ServiceContext is used to give ServiceHooks meta-information about the
  * remote service call that is currently in progress. A new ServiceContext
  * object is instantiated for each and every remote service call.
  * 
@@ -36,6 +36,7 @@ public class ServiceContext {
 	private final Method method;
 	private final Object service;
 	private final IServiceMessageContext messageContext;
+	private Throwable targetException;
 	private HashMap<String, Object> properties;
 
 	public ServiceContext(final RemoteServiceDescription rsd, final Method method, final Object service,
@@ -158,5 +159,31 @@ public class ServiceContext {
 	 */
 	public void addCookie(final Cookie cookie) {
 		messageContext.addResponseHeader("Set-Cookie", cookie.getName() + "=" + cookie.getValue()); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	/**
+	 * This property will be set by the communication layer (server side) if an
+	 * exception occurred while executing the remote service.<br>
+	 * It can be queried by the afterService() method of the
+	 * {@code IServiceHook}. Additionally a {@code IServiceHook} can exchange
+	 * the exception with a different one. In this case the changed exception
+	 * will be thrown, i.e. transmitted to the client.
+	 * 
+	 * @since 4.0
+	 */
+	public Throwable getTargetException() {
+		return targetException;
+	}
+
+	/**
+	 * Set a <i>new</i> target exception. This exception will be thrown and
+	 * transmitted to the client.<br>
+	 * However, setting a {@code null} exception has no effect. The original
+	 * exception will be thrown.
+	 * 
+	 * @since 4.0
+	 */
+	public void setTargetException(final Throwable targetException) {
+		this.targetException = targetException;
 	}
 }
