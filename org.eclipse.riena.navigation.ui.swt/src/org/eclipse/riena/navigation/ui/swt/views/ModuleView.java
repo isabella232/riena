@@ -70,9 +70,6 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 /**
  * View of a module.
  */
-/**
- *
- */
 public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 	private static final String WINDOW_RIDGET = "windowRidget"; //$NON-NLS-1$
@@ -970,6 +967,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			subModuleTree.setEnabled(true);
 			if (treeHasFocus) {
 				subModuleTree.setFocus();
+				treeHasFocus = false;
 			}
 		}
 

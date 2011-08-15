@@ -150,6 +150,21 @@ public class ModuleViewTest extends RienaTestCase {
 		node.setBlocked(false);
 
 		assertUnBlockedState(title, body, tree, waitCursor);
+
+		shell.open();
+
+		tree.setFocus();
+		node.setBlocked(true);
+		assertFalse(tree.isFocusControl());
+		node.setBlocked(false);
+		assertTrue(tree.isFocusControl());
+
+		title.setFocus();
+		node.setBlocked(true);
+		assertFalse(tree.isFocusControl());
+		node.setBlocked(false);
+		assertFalse(tree.isFocusControl());
+
 	}
 
 	private void assertUnBlockedState(final EmbeddedTitleBar title, final Composite body, final Tree tree,
