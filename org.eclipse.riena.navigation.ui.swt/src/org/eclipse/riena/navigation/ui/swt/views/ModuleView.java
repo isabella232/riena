@@ -943,6 +943,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		private Cursor titleOldCursor;
 		private Cursor bodyOldCursor;
 		private boolean isBlocked;
+		private boolean treeHasFocus;
 
 		public void block() {
 			if (!isBlocked) {
@@ -954,6 +955,7 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 				}
 				bodyOldCursor = body.getCursor();
 				body.setCursor(getWaitCursor());
+				treeHasFocus = subModuleTree.isFocusControl();
 				subModuleTree.setEnabled(false);
 				isBlocked = true;
 			}
@@ -966,7 +968,9 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 			title.setEnabled(getNavigationNode().isEnabled());
 			body.setCursor(bodyOldCursor);
 			subModuleTree.setEnabled(true);
-			subModuleTree.setFocus();
+			if (treeHasFocus) {
+				subModuleTree.setFocus();
+			}
 		}
 
 		private boolean disableTitle() {
