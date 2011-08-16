@@ -21,11 +21,21 @@ import org.eclipse.riena.ui.ridgets.nls.Messages;
  */
 public class NotEmpty implements IValidator {
 
+	private String message;
+
+	public NotEmpty() {
+		// default constructor
+	}
+
+	public NotEmpty(final String message) {
+		this.message = message;
+	}
+
 	public IStatus validate(final Object value) {
 		if (value instanceof String && !Utils.isEmpty((String) value)) {
 			return ValidationRuleStatus.ok();
 		}
-		return ValidationRuleStatus.error(false, Messages.NotEmpty_error_empty);
+		return ValidationRuleStatus.error(false, null != message ? message : Messages.NotEmpty_error_empty);
 	}
 
 }
