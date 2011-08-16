@@ -413,6 +413,14 @@ public class NavigationNodeControllerTest extends RienaTestCase {
 
 		public void setController(final IRidgetContainer controller) {
 		}
+
+		public void setIgnoreBindingError(final boolean ignore) {
+		}
+
+		public boolean isIgnoreBindingError() {
+			return false;
+		}
+
 	}
 
 	private static final class FTPropertyChangeListener implements PropertyChangeListener {

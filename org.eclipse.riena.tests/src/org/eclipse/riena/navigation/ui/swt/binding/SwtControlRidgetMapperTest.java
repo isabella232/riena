@@ -412,6 +412,13 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 
 		public void setController(final IRidgetContainer controller) {
 		}
+
+		public void setIgnoreBindingError(final boolean ignore) {
+		}
+
+		public boolean isIgnoreBindingError() {
+			return false;
+		}
 	}
 
 	/**
@@ -500,6 +507,13 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		}
 
 		public void setController(final IRidgetContainer controller) {
+		}
+
+		public void setIgnoreBindingError(final boolean ignore) {
+		}
+
+		public boolean isIgnoreBindingError() {
+			return false;
 		}
 	}
 
@@ -602,6 +616,13 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		}
 
 		public void setController(final IRidgetContainer controller) {
+		}
+
+		public void setIgnoreBindingError(final boolean ignore) {
+		}
+
+		public boolean isIgnoreBindingError() {
+			return false;
 		}
 	}
 
@@ -707,6 +728,16 @@ public class SwtControlRidgetMapperTest extends RienaTestCase {
 		}
 
 		public void setController(final IRidgetContainer controller) {
+		}
+
+		public void setIgnoreBindingError(final boolean ignore) {
+			// TODO Auto-generated method stub
+
+		}
+
+		public boolean isIgnoreBindingError() {
+			// TODO Auto-generated method stub
+			return false;
 		}
 	}
 
