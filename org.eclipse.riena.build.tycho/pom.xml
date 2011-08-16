@@ -55,7 +55,7 @@
 		<indigo-site>http://download.eclipse.org/releases/indigo/</indigo-site>
 		<prebuild-site>file:/${basedir}/../org.eclipse.riena.build3/prebuild</prebuild-site>
 		<project-build-sourceEncoding>UTF-8</project-build-sourceEncoding>
-		<tycho-version>0.13.0-SNAPSHOT</tycho-version>
+		<tycho-version>0.12.0</tycho-version>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<junit-version>3.8.2</junit-version>
 	</properties>
@@ -163,10 +163,8 @@
 
 
 	<repositories>
-
-
 		<!-- uncomment to build against local targets instead of indigo updatesite -->
-		<repository>
+		<!-- <repository>
 			<id>rcp-target</id>
 			<layout>p2</layout>
 			<url>file:////C:/build/targets/eclipse-3.7RC4/rcp</url>
@@ -176,7 +174,7 @@
 			<id>equinox-target</id>
 			<layout>p2</layout>
 			<url>file:////C:/build/targets/eclipse-3.7RC4/equinox</url>
-		</repository>
+		</repository> -->
 
 		<repository>
 			<id>indigo</id>
