@@ -65,7 +65,7 @@ public final class LnFUpdater {
 	private final Composite shellComposite = new Composite(new Shell(), SWT.NONE);
 	private final Map<Class<? extends Control>, String> simpleNames = new HashMap<Class<? extends Control>, String>();
 	private final Map<Class<? extends Control>, List<PropertyDescriptor>> controlProperties = new HashMap<Class<? extends Control>, List<PropertyDescriptor>>();
-	private final Map<Class<? extends Control>, Map<String, Object>> defaultPropertyValues = new HashMap<Class<? extends Control>, Map<String, Object>>();
+	private final Map<String, Map<String, Object>> defaultPropertyValues = new HashMap<String, Map<String, Object>>();
 	private final List<PropertyDescriptor> emptyDescriptors = Collections.emptyList();
 
 	private boolean dirtyLayout;
@@ -420,7 +420,8 @@ public final class LnFUpdater {
 	private Object getDefaultPropertyValue(final Control control, final PropertyDescriptor property) {
 
 		final Class<? extends Control> controlClass = control.getClass();
-		Map<String, Object> defaultValues = defaultPropertyValues.get(controlClass);
+		final String mapKey = createDefaultPropertiesClassKey(controlClass, control.getStyle());
+		Map<String, Object> defaultValues = defaultPropertyValues.get(mapKey);
 		if (defaultValues == null) {
 			final Control defaultControl = createDefaultControl(controlClass, control.getStyle());
 			if (defaultControl != null) {
@@ -434,7 +435,7 @@ public final class LnFUpdater {
 					}
 				}
 				defaultControl.dispose();
-				defaultPropertyValues.put(controlClass, defaultValues);
+				defaultPropertyValues.put(mapKey, defaultValues);
 			} else {
 				LOGGER.log(LogService.LOG_ERROR, "Cannot create an instance of \"" + controlClass.getName() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 			}
@@ -864,6 +865,10 @@ public final class LnFUpdater {
 			}
 		}
 		return ignoreProperty(controlClass.getSuperclass(), property);
+	}
+
+	private String createDefaultPropertiesClassKey(final Class<? extends Control> controlClass, final int style) {
+		return controlClass.toString() + "#" + style; //$NON-NLS-1$
 	}
 
 }
