@@ -75,10 +75,10 @@ public class SwtExampleApplication extends SwtApplication {
 		subjectHolder.setSubject(subject);
 		final Permissions p = new Permissions();
 		/*
-		 * sample for Permission controled UIFilters. Enable code to add
-		 * permission.
+		 * sample for Permission controlled UIFilters. Disable code to add
+		 * filter to Buttons-Demo in Playground
 		 */
-		//		p.add(new RuntimePermission("navi", "newx"));
+		p.add(new RuntimePermission("navi", "newx")); //$NON-NLS-1$ //$NON-NLS-2$
 		pmCache.putPermissions(principal, p);
 	}
 

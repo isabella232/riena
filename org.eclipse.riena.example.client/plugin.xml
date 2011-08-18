@@ -1102,6 +1102,16 @@
    </extension>
    <extension
          point="org.eclipse.riena.ui.filter.uiFilters">
+           <filter
+            filterId="rienaExample.newx">
+         <nodeId
+               id="*/org.eclipse.riena.example.buttons">
+         </nodeId>
+         <ruleMarkerRidget
+               marker="disabled"
+               ridgetId="*button*">
+         </ruleMarkerRidget>
+      </filter>
       <filter
             filterId="rienaExample.offline">
          <nodeId
@@ -1177,12 +1187,48 @@
       <filter
             filterId="rienaExample.navigation">
          <nodeId
-               id="*/newx">
+               id="/application">
          </nodeId>
-         <ruleMarkerRidget
+         <ruleMarkerNavigation
+               marker="hidden"
+               nodeId="/application/*/org.eclipse.riena.example.sharedViews">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="hidden"
+               nodeId="/application/*/org.eclipse.riena.example.uiProcesses">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
                marker="disabled"
-               ridgetId="*/*/newx/*">
-         </ruleMarkerRidget>
+               nodeId="/application/*/logcollectorModule">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="disabled"
+               nodeId="/application/*/org.eclipse.riena.example.tree">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="disabled"
+               nodeId="/application/*/org.eclipse.riena.example.treeTable">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="hidden"
+               nodeId="/application/*/org.eclipse.riena.example.table">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="disabled"
+               nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterridget">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="disabled"
+               nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filternavigation">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="hidden"
+               nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filteraction">
+         </ruleMarkerNavigation>
+         <ruleMarkerNavigation
+               marker="hidden"
+               nodeId="/application/*/org.eclipse.riena.example.filters/*/org.eclipse.riena.example.filterdefinition">
+         </ruleMarkerNavigation>
       </filter>
       <filter
             filterId="rienaExample.ridget01">
@@ -1488,7 +1534,7 @@
    <extension
          point="org.eclipse.riena.security.ui.permissionFilterMapping">
       <mapping
-            filterID="rienaExample.navigation"
+            filterID="rienaExample.newx"
             permissionAction="newx"
             permissionClass="java.lang.RuntimePermission"
             permissionName="navi">
