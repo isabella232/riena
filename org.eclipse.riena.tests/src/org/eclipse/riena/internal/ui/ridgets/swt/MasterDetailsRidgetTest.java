@@ -857,12 +857,21 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.suggestNewEntry();
 
-		assertEquals("", widget.txtColumn1.getText());
-		assertEquals("", widget.txtColumn2.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.txtColumn2.isEnabled());
 		assertFalse(widget.getButtonApply().isEnabled());
 		assertFalse(areDetailsChanged(ridget));
+	}
+
+	public void testSuggestNewEntryFirstRidgetHasFocus() {
+		bindToModel(true);
+		final MasterDetailsRidget ridget = getRidget();
+		final ITextRidget firstDetailsRidget = ((MDDelegate) ridget.getDelegate()).txtColumn1;
+		assertFalse(firstDetailsRidget.hasFocus());
+		ridget.suggestNewEntry();
+		assertTrue(firstDetailsRidget.hasFocus());
 	}
 
 	public void testSuggestNewEntryObjectFalse() {
@@ -875,7 +884,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(widget.getButtonApply().isEnabled());
 		assertFalse(areDetailsChanged(ridget));
 
-		final MDBean newEntry = new MDBean("col1", "col2");
+		final MDBean newEntry = new MDBean("col1", "col2"); //$NON-NLS-1$ //$NON-NLS-2$
 		ridget.suggestNewEntry(newEntry, false);
 
 		assertEquals("col1", widget.txtColumn1.getText());

@@ -424,6 +424,14 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				setEnabled(false, true); // directy writing -> disable apply
 				updateDetails(editable);
 			}
+
+			// set focus to first ridget in detailsarea
+			final Collection<? extends IRidget> ridgets = detailRidgets.getRidgets();
+			if (!ridgets.isEmpty()) {
+				final IRidget[] array = ridgets.toArray(new IRidget[ridgets.size()]);
+				array[ridgets.size() - 1].requestFocus();
+			}
+
 		} finally {
 			ignoreChanges = false;
 		}
