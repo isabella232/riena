@@ -13,6 +13,7 @@ package org.eclipse.riena.internal.ui.swt.utils;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
@@ -46,12 +47,59 @@ public class ShellHelper {
 				}
 			} else {
 				restoreBounds = shell.getBounds();
-				final Rectangle clientBounds = shell.getMonitor().getClientArea();
+				final Rectangle clientBounds = calcMaxBounds(shell);
 				shell.setBounds(clientBounds);
 			}
 		} else {
 			shell.setMaximized(shell.getMaximized());
 		}
+	}
+
+	/**
+	 * Calculates the maximal bounds for the given shell.
+	 * <p>
+	 * If the task bar of the operation system (Windwos) is hidden, the maximal
+	 * bounds for the shell are reduced by one pixel a every side.
+	 * 
+	 * @param shell
+	 *            the shell which maximal bounds should be returned
+	 * @return maximal bounds of the shell
+	 */
+	public static Rectangle calcMaxBounds(final Shell shell) {
+		final Rectangle clientBounds = shell.getMonitor().getClientArea();
+		final Rectangle newBounds = new Rectangle(clientBounds.x, clientBounds.y, clientBounds.width,
+				clientBounds.height);
+		if (isTaskbarHidden()) {
+			newBounds.x += 1;
+			newBounds.y += 1;
+			newBounds.width -= 2;
+			newBounds.height -= 2;
+		}
+		return newBounds;
+	}
+
+	/**
+	 * Returns whether the task bar of the operation system (Windows) is hidden
+	 * or not.
+	 * <p>
+	 * Because there is no API to check these, the bounds of the client area and
+	 * the monitor will be compared. If they are identical, it will be expected
+	 * that the task bar is hidden.
+	 * 
+	 * @return {@code true} if task bar is hidden; otherwise {@code false}
+	 */
+	private static boolean isTaskbarHidden() {
+		if (!Util.isWindows()) {
+			return false;
+		}
+		final Shell shell = RcpUtilities.getWorkbenchShell();
+		if (shell == null) {
+			LOGGER.log(LogService.LOG_WARNING, "No shell of the application found!"); //$NON-NLS-1$
+			return false;
+		}
+		final Rectangle clientBounds = shell.getMonitor().getClientArea();
+		final Rectangle monitorBounds = shell.getMonitor().getBounds();
+		return clientBounds.equals(monitorBounds);
 	}
 
 	/**
@@ -83,8 +131,13 @@ public class ShellHelper {
 			return false;
 		}
 		if (isShellTitleless()) {
-			final Rectangle clientBounds = shell.getMonitor().getClientArea();
-			return clientBounds.equals(shell.getBounds());
+			Rectangle clientBounds = shell.getMonitor().getClientArea();
+			if (clientBounds.equals(shell.getBounds())) {
+				return true;
+			} else {
+				clientBounds = calcMaxBounds(shell);
+				return clientBounds.equals(shell.getBounds());
+			}
 		} else {
 			return shell.getMaximized();
 		}

@@ -32,20 +32,20 @@ public class ShellHelperTest extends TestCase {
 		final ShellHelper helper = new ShellHelper();
 
 		Shell shell = new Shell(SWT.NO_TRIM);
-		boolean ret = ReflectionUtils.invokeHidden(helper, "isTitleless", shell);
+		boolean ret = ReflectionUtils.invokeHidden(helper, "isTitleless", shell); //$NON-NLS-1$
 		assertTrue(ret);
 		shell.dispose();
 
-		ret = ReflectionUtils.invokeHidden(helper, "isTitleless", shell);
+		ret = ReflectionUtils.invokeHidden(helper, "isTitleless", shell); //$NON-NLS-1$
 		assertFalse(ret);
 
 		shell = new Shell(SWT.SHELL_TRIM);
-		ret = ReflectionUtils.invokeHidden(helper, "isTitleless", shell);
+		ret = ReflectionUtils.invokeHidden(helper, "isTitleless", shell); //$NON-NLS-1$
 		assertFalse(ret);
 		shell.dispose();
 
 		shell = new Shell(SWT.NO_TRIM | SWT.TITLE | SWT.CLOSE);
-		ret = ReflectionUtils.invokeHidden(helper, "isTitleless", shell);
+		ret = ReflectionUtils.invokeHidden(helper, "isTitleless", shell); //$NON-NLS-1$
 		assertTrue(ret);
 
 	}

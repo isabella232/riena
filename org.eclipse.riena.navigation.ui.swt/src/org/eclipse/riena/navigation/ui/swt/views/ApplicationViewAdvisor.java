@@ -52,6 +52,7 @@ import org.eclipse.riena.internal.navigation.ui.swt.Activator;
 import org.eclipse.riena.internal.navigation.ui.swt.CoolbarUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.IAdvisorHelper;
 import org.eclipse.riena.internal.navigation.ui.swt.RestoreFocusOnEscListener;
+import org.eclipse.riena.internal.ui.swt.utils.ShellHelper;
 import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleGroupNode;
 import org.eclipse.riena.navigation.IModuleNode;
@@ -221,11 +222,63 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	public void postWindowOpen() {
 		super.postWindowOpen();
 		doInitialBinding();
+		updateApplicationSize(getWindowConfigurer());
 		if (titleComposite != null) {
 			// Redraw so that the active tab is displayed correct
 			titleComposite.setRedraw(false);
 			titleComposite.setRedraw(true);
 		}
+	}
+
+	/**
+	 * Updates the size of the application window (if necessary) according to
+	 * the dimension of the display.
+	 * 
+	 * @param configurer
+	 */
+	private void updateApplicationSize(final IWorkbenchWindowConfigurer configurer) {
+
+		final Shell shell = configurer.getWindow().getShell();
+		final Rectangle maxBounds = ShellHelper.calcMaxBounds(shell);
+
+		boolean update = false;
+		int x = shell.getLocation().x;
+		int width = shell.getBounds().width;
+		if (width > maxBounds.width) {
+			x = maxBounds.x;
+			width = maxBounds.width;
+			LOGGER.log(LogService.LOG_WARNING,
+					"The width of the application is greater than the maximum width which is " //$NON-NLS-1$
+							+ width);
+			update = true;
+		}
+
+		int y = shell.getLocation().y;
+		int height = shell.getBounds().height;
+		if (height > maxBounds.height) {
+			y = maxBounds.y;
+			height = maxBounds.height;
+			LOGGER.log(LogService.LOG_WARNING,
+					"The height of the application is greater than the maximum height which is " //$NON-NLS-1$
+							+ height);
+			update = true;
+		}
+		final Point minSize = shell.getMinimumSize();
+		if (minSize.x > maxBounds.width) {
+			minSize.x = maxBounds.width;
+			update = true;
+		}
+		if (minSize.y > maxBounds.height) {
+			minSize.y = maxBounds.height;
+			update = true;
+		}
+
+		if (update) {
+			shell.setLocation(x, y);
+			shell.setMinimumSize(minSize);
+			shell.setSize(width, height);
+		}
+
 	}
 
 	/**
