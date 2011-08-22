@@ -27,6 +27,9 @@ public class NotEmpty implements IValidator {
 		// default constructor
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public NotEmpty(final String message) {
 		this.message = message;
 	}
