@@ -10,22 +10,21 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 import junit.framework.TestCase;
 
+import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.riena.core.RienaStatus;
+import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.ComboRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.EmbeddedTitleBarRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
+import org.eclipse.riena.internal.ui.ridgets.swt.MultipleChoiceRidget;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleNode;
@@ -156,33 +155,48 @@ public class SubModuleControllerTest extends TestCase {
 
 		final Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
-		ReflectionUtils.invokeHidden(realm, "setDefault", realm);
+		ReflectionUtils.invokeHidden(realm, "setDefault", realm); //$NON-NLS-1$
 
 		final SubModuleNode node = new SubModuleNode();
 		node.setNavigationProcessor(new NavigationProcessor());
 		final SubModuleController controller = new SubModuleController(node);
 
 		final LabelRidget labelRidget = new LabelRidget();
-		controller.addRidget("label", labelRidget);
+		controller.addRidget("label", labelRidget); //$NON-NLS-1$
 		assertNotNull(controller.getRidgets());
 		assertEquals(1, controller.getRidgets().size());
 
 		final ComboRidget comboRidget = new ComboRidget();
-		controller.addRidget("combo ridget", comboRidget);
+		controller.addRidget("combo ridget", comboRidget); //$NON-NLS-1$
 		assertNotNull(controller.getRidgets());
 		assertEquals(2, controller.getRidgets().size());
 
-		if (RienaStatus.isDevelopment()) {
-			final PrintStream beforeErr = System.err;
-			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			final PrintStream err = new PrintStream(baos);
-			System.setErr(err);
+		try {
 			controller.updateAllRidgetsFromModel();
-			System.setErr(beforeErr);
-			final String string = baos.toString();
-			assertEquals(String.format("Expected 'unsucessful' in '%s'", string), true, string.contains("unsuccessful"));
-			assertEquals(String.format("Expected 'ridget' in '%s'", string), true, string.contains("ridget"));
+		} catch (final BindingException e) {
+			fail("unexpected BindingException: " + e.getMessage()); //$NON-NLS-1$
 		}
+
+		final MultipleChoiceRidget multipleChoiceRidget = new MultipleChoiceRidget();
+		controller.addRidget("multi choice ridget", multipleChoiceRidget); //$NON-NLS-1$
+		assertNotNull(controller.getRidgets());
+		assertEquals(3, controller.getRidgets().size());
+
+		multipleChoiceRidget.setIgnoreBindingError(false);
+		try {
+			controller.updateAllRidgetsFromModel();
+			fail("BindingException expected!"); //$NON-NLS-1$
+		} catch (final BindingException e) {
+			Nop.reason("BindingException is expected"); //$NON-NLS-1$
+		}
+
+		multipleChoiceRidget.setIgnoreBindingError(true);
+		try {
+			controller.updateAllRidgetsFromModel();
+		} catch (final BindingException e) {
+			fail("unexpected BindingException: " + e.getMessage()); //$NON-NLS-1$
+		}
+
 	}
 
 	/**
