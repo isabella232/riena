@@ -300,8 +300,15 @@ public class ImageButton extends Composite {
 	public void setEnabled(final boolean enabled) {
 		super.setEnabled(enabled);
 		setPressed(false);
-		setHover(false);
+		if (enabled) {
+			Point mousePoint = getDisplay().getCursorLocation();
+			mousePoint = toControl(mousePoint);
+			setHover(isOverButton(mousePoint));
+		} else {
+			setHover(false);
+		}
 		setFocused(false);
+
 	}
 
 	/**
@@ -575,6 +582,19 @@ public class ImageButton extends Composite {
 	 */
 	private boolean isFocused() {
 		return focused;
+	}
+
+	/**
+	 * Returns whether the given point is inside or outside the bounds of the
+	 * button.
+	 * 
+	 * @param point
+	 *            position of the mouse pointer
+	 * @return {@code true} if point is inside the button; otherwise
+	 *         {@code false}
+	 */
+	private boolean isOverButton(final Point point) {
+		return (point.x <= getBounds().width && point.x >= 0) && (point.y <= getBounds().height && point.y >= 0);
 	}
 
 	/**
@@ -967,19 +987,6 @@ public class ImageButton extends Composite {
 				}
 			}
 			return false;
-		}
-
-		/**
-		 * Returns whether the given point is inside or outside the bounds of
-		 * the button.
-		 * 
-		 * @param point
-		 *            position of the mouse pointer
-		 * @return {@code true} if point is inside the button; otherwise
-		 *         {@code false}
-		 */
-		private boolean isOverButton(final Point point) {
-			return (point.x <= getBounds().width && point.x >= 0) && (point.y <= getBounds().height && point.y >= 0);
 		}
 
 	}
