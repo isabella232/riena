@@ -42,7 +42,7 @@ import org.eclipse.riena.communication.core.zipsupport.ReusableBufferedInputStre
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.service.Service;
-import org.eclipse.riena.internal.communication.factory.hessian.RienaSerializerFactory;
+import org.eclipse.riena.internal.communication.factory.hessian.serializer.RienaSerializerFactory;
 import org.eclipse.riena.internal.communication.publisher.hessian.Activator;
 import org.eclipse.riena.internal.communication.publisher.hessian.HessianRemoteServicePublisher;
 import org.eclipse.riena.internal.communication.publisher.hessian.MessageContext;
