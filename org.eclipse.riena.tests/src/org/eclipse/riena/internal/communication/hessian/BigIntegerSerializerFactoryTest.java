@@ -12,19 +12,28 @@ package org.eclipse.riena.internal.communication.hessian;
 
 import java.math.BigInteger;
 
-import org.eclipse.riena.internal.communication.factory.hessian.BigIntegerSerializerFactory;
+import org.eclipse.riena.internal.communication.factory.hessian.serializer.BigIntegerSerializerFactory;
 
 /**
  * Test the {@code BigIntegerSerializerFactory} class.
  */
 public class BigIntegerSerializerFactoryTest extends AbstractSerializerFactoryTestCase {
 
-	public void testBigIntegerFail() {
+	public void testBigIntegerFailString42() {
 		assertFalse(isBackAndForthOk(new BigInteger("42"), HessianSerializerVersion.Two, BigInteger.class));
 	}
 
-	public void testBigInteger() {
+	public void testBigIntegerString42() {
 		assertTrue(isBackAndForthOk(new BigInteger("42"), HessianSerializerVersion.Two, BigInteger.class,
+				new BigIntegerSerializerFactory()));
+	}
+
+	public void testBigIntegerFailValueOf5() {
+		assertFalse(isBackAndForthOk(BigInteger.valueOf(5), HessianSerializerVersion.Two, BigInteger.class));
+	}
+
+	public void testBigIntegerValueOf5() {
+		assertTrue(isBackAndForthOk(BigInteger.valueOf(5), HessianSerializerVersion.Two, BigInteger.class,
 				new BigIntegerSerializerFactory()));
 	}
 }

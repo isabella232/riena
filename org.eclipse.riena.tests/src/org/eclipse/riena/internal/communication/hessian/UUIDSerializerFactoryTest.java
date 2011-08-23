@@ -15,7 +15,7 @@ import java.util.UUID;
 
 import javax.security.auth.login.LoginException;
 
-import org.eclipse.riena.internal.communication.factory.hessian.UUIDSerializerFactory;
+import org.eclipse.riena.internal.communication.factory.hessian.serializer.UUIDSerializerFactory;
 
 /**
  * Test the {@code UUIDSerializerFactory} class.

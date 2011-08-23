@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.hessian;
 
-import org.eclipse.riena.internal.communication.factory.hessian.StacktraceElementSerializerFactory;
+import org.eclipse.riena.internal.communication.factory.hessian.serializer.StacktraceElementSerializerFactory;
 
 /**
  * Test the {@code StacktraceElementSerializerFactory} class.

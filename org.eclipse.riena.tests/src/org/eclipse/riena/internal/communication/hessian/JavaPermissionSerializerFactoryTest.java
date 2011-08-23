@@ -13,7 +13,7 @@ package org.eclipse.riena.internal.communication.hessian;
 import java.io.FilePermission;
 import java.security.Permission;
 
-import org.eclipse.riena.internal.communication.factory.hessian.JavaPermissionSerializerFactory;
+import org.eclipse.riena.internal.communication.factory.hessian.serializer.JavaPermissionSerializerFactory;
 
 /**
  * Test the {@code JavaPermissionSerializerFactory} class.

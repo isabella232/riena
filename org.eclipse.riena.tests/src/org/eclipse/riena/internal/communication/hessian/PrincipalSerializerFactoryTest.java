@@ -24,7 +24,7 @@ import com.sun.security.auth.NTSidGroupPrincipal;
 import com.sun.security.auth.NTSidPrimaryGroupPrincipal;
 import com.sun.security.auth.NTSidUserPrincipal;
 
-import org.eclipse.riena.internal.communication.factory.hessian.PrincipalSerializerFactory;
+import org.eclipse.riena.internal.communication.factory.hessian.serializer.PrincipalSerializerFactory;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 
 /**

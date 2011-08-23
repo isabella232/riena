@@ -12,7 +12,7 @@ package org.eclipse.riena.internal.communication.hessian;
 
 import java.util.GregorianCalendar;
 
-import org.eclipse.riena.internal.communication.factory.hessian.GregorianCalendarSerializerFactory;
+import org.eclipse.riena.internal.communication.factory.hessian.serializer.GregorianCalendarSerializerFactory;
 
 /**
  * Test the {@code GregorianCalendarSerializerFactory} class.
