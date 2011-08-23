@@ -54,14 +54,35 @@
          </documentation>
       </annotation>
       <complexType>
-         <attribute name="implementation" type="string" use="required">
+         <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
                   The implementing class for a serializer factory
                </documentation>
                <appInfo>
-                  <meta.attribute kind="java" basedOn="org.eclipse.riena.internal.communication.factory.hessian.AbstractRienaSerializerFactory:"/>
+                  <meta.attribute kind="java" basedOn="org.eclipse.riena.communication.factory.hessian.AbstractRienaSerializerFactory:"/>
                </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The unique name of the serializer factory. This name can be referenced from the attributes preFactories and postFactories.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="preFactories" type="string">
+            <annotation>
+               <documentation>
+                  a comma separated list of serializer factory names that should be executed before this serializer factory. A single &apos;*&apos; denotes that all other serializer factories should be executed before this serializer factory.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="postFactories" type="string">
+            <annotation>
+               <documentation>
+                  a comma separated list of serializer factory names that should be executed after this serializer factory. A single &apos;*&apos; denotes that all other serializer factories should be executed after this serializer factory.
+               </documentation>
             </annotation>
          </attribute>
       </complexType>

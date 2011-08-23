@@ -8,31 +8,41 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.communication.factory.hessian;
+package org.eclipse.riena.internal.communication.factory.hessian.serializer;
 
-import java.util.UUID;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
+import com.caucho.hessian.io.CalendarHandle;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.JavaDeserializer;
 import com.caucho.hessian.io.Serializer;
 
+import org.eclipse.riena.communication.factory.hessian.serializer.AbstractRienaSerializerFactory;
+
 /**
- * A hessian de/serializer for the {@code UUID} class.
+ * Deserializer for the {@code GregorianCalendar}.
  */
-public class UUIDSerializerFactory extends AbstractRienaSerializerFactory {
+public class GregorianCalendarSerializerFactory extends AbstractRienaSerializerFactory {
 
 	@Override
 	public Deserializer getDeserializer(final Class cl) throws HessianProtocolException {
-		if (cl != UUID.class) {
-			return null;
+		if (cl == CalendarHandle.class) {
+			return new JavaDeserializer(cl) {
+
+				@Override
+				public Class getType() {
+					return GregorianCalendar.class;
+				}
+
+				@Override
+				protected Object instantiate() throws Exception {
+					return new CalendarHandle(Calendar.class, 0);
+				}
+			};
 		}
-		return new JavaDeserializer(cl) {
-			@Override
-			protected Object instantiate() throws Exception {
-				return new UUID(0, 0);
-			}
-		};
+		return null;
 	}
 
 	@Override

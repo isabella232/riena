@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.communication.factory.hessian;
+package org.eclipse.riena.internal.communication.factory.hessian.serializer;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,6 +18,8 @@ import com.caucho.hessian.io.AbstractSerializer;
 import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.Serializer;
+
+import org.eclipse.riena.communication.factory.hessian.serializer.AbstractRienaSerializerFactory;
 
 /**
  * Serializer for the {@code org.eclipse.persistence.indirection.IndirectList}.
@@ -34,7 +36,6 @@ public class EclipsePersistenceIndirectListSerializerFactory extends AbstractRie
 		return null;
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		if (!cl.getName().equals(ORG_ECLIPSE_PERSISTENCE_INDIRECTION_INDIRECT_LIST)) {
@@ -47,7 +48,7 @@ public class EclipsePersistenceIndirectListSerializerFactory extends AbstractRie
 				if (out.addRef(obj)) {
 					return;
 				}
-				final List list = (List) obj;
+				final List<?> list = (List<?>) obj;
 				final boolean hasEnd = out.writeListBegin(list.size(), null);
 
 				for (final Object value : list) {

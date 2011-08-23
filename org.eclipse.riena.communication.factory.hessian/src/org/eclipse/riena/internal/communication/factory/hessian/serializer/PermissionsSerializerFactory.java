@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.communication.factory.hessian;
+package org.eclipse.riena.internal.communication.factory.hessian.serializer;
 
 import java.io.IOException;
 import java.security.Permission;
@@ -23,6 +23,7 @@ import com.caucho.hessian.io.Deserializer;
 import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.Serializer;
 
+import org.eclipse.riena.communication.factory.hessian.serializer.AbstractRienaSerializerFactory;
 import org.eclipse.riena.core.util.Iter;
 
 /**

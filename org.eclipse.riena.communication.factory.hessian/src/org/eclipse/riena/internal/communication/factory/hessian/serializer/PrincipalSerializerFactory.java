@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.communication.factory.hessian;
+package org.eclipse.riena.internal.communication.factory.hessian.serializer;
 
 import java.lang.reflect.Constructor;
 import java.security.Principal;
@@ -18,6 +18,7 @@ import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.JavaDeserializer;
 import com.caucho.hessian.io.Serializer;
 
+import org.eclipse.riena.communication.factory.hessian.serializer.AbstractRienaSerializerFactory;
 import org.eclipse.riena.core.util.Nop;
 
 /**
@@ -43,10 +44,6 @@ public class PrincipalSerializerFactory extends AbstractRienaSerializerFactory {
 		return null;
 	}
 
-	/**
-	 * @param cl
-	 * @return
-	 */
 	private Constructor<?> getStringConstructor(final Class<?> cl) {
 		try {
 			return cl.getConstructor(String.class);
@@ -61,11 +58,6 @@ public class PrincipalSerializerFactory extends AbstractRienaSerializerFactory {
 	@Override
 	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		return null;
-	}
-
-	@Override
-	public int getSalience() {
-		return GENERIC;
 	}
 
 }

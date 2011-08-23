@@ -8,9 +8,8 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.communication.factory.hessian;
+package org.eclipse.riena.internal.communication.factory.hessian.serializer;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -21,30 +20,34 @@ import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.Serializer;
 import com.caucho.hessian.io.SerializerFactory;
 
+import org.eclipse.riena.communication.factory.hessian.serializer.AbstractRienaSerializerFactory;
+import org.eclipse.riena.core.util.Orderer;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.internal.communication.factory.hessian.Activator;
 
 /**
  * The {@code RienaSerializerFactory} is a delegating
  * {@code AbstractSerializerFactory}. It´s main purpose is to act like a regular
  * {@code AbstractSerializerFactory} but internally (not visible to hessian) it
- * manages a configurable list of {@code AbstractRienaSerializerFactory} and
- * takes care of their ´salience´.<br>
+ * manages a configurable, ordered list of
+ * {@code AbstractRienaSerializerFactory}.
+ * 
+ * @since 4.0
  */
 public class RienaSerializerFactory extends AbstractSerializerFactory {
 
-	private List<AbstractRienaSerializerFactory> serializerFactories = new ArrayList<AbstractRienaSerializerFactory>();
+	private List<AbstractRienaSerializerFactory> serializerFactories = Collections.emptyList();
 
 	public RienaSerializerFactory() {
-		prepareHessianSerializerFactory();
 		Wire.instance(this).andStart(Activator.getDefault().getContext());
 	}
 
 	@Override
 	public Deserializer getDeserializer(final Class cl) throws HessianProtocolException {
 		synchronized (this) {
-			for (final AbstractRienaSerializerFactory serializerFactory : serializerFactories) {
+			for (final AbstractSerializerFactory serializerFactory : serializerFactories) {
 				final Deserializer deserializer = serializerFactory.getDeserializer(cl);
 				if (deserializer != null) {
 					return deserializer;
@@ -57,7 +60,7 @@ public class RienaSerializerFactory extends AbstractSerializerFactory {
 	@Override
 	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		synchronized (this) {
-			for (final AbstractRienaSerializerFactory serializerFactory : serializerFactories) {
+			for (final AbstractSerializerFactory serializerFactory : serializerFactories) {
 				final Serializer serializer = serializerFactory.getSerializer(cl);
 				if (serializer != null) {
 					return serializer;
@@ -69,29 +72,33 @@ public class RienaSerializerFactory extends AbstractSerializerFactory {
 
 	@InjectExtension
 	public void update(final ISerializerFactoryExtension[] serializerFactoryDefinitions) {
-		final List<AbstractRienaSerializerFactory> rienaSerializerFactories = new ArrayList<AbstractRienaSerializerFactory>(
-				serializerFactoryDefinitions.length);
+		final Orderer<AbstractRienaSerializerFactory> orderer = new Orderer<AbstractRienaSerializerFactory>();
 		for (final ISerializerFactoryExtension serializerFactoryExtension : serializerFactoryDefinitions) {
-			rienaSerializerFactories.add(serializerFactoryExtension.createImplementation());
+			orderer.add(serializerFactoryExtension.newSerializerFactory(), serializerFactoryExtension.getName(),
+					serializerFactoryExtension.getPreSerializerFactories(),
+					serializerFactoryExtension.getPostSerializerFactories());
 		}
-		// sort and than make active
-		Collections.sort(rienaSerializerFactories, new AbstractRienaSerializerFactory.SalienceComparator());
-		synchronized (this) {
-			serializerFactories = rienaSerializerFactories;
-		}
-	}
-
-	/**
-	 * Tweak the hessian {@code SerializerFactory}, i.e. remove stuff we think
-	 * we can do better.
-	 */
-	private void prepareHessianSerializerFactory() {
-		final HashMap<?, ?> staticDeSerMap = ReflectionUtils.getHidden(SerializerFactory.class,
+		// order ..
+		final List<AbstractRienaSerializerFactory> tempOrdered = orderer.getOrderedObjects();
+		// .. get those static maps from the hessian {@code SerializerFactory} ..
+		final HashMap<Class<?>, ?> staticDeserializerMap = ReflectionUtils.getHidden(SerializerFactory.class,
 				"_staticDeserializerMap"); //$NON-NLS-1$
-		staticDeSerMap.remove(java.io.InputStream.class);
-		staticDeSerMap.remove(StackTraceElement.class);
-		final HashMap<?, ?> staticSerMap = ReflectionUtils.getHidden(SerializerFactory.class, "_staticSerializerMap"); //$NON-NLS-1$
-		staticSerMap.remove(java.io.InputStream.class);
+		final HashMap<Class<?>, ?> staticSerializerMap = ReflectionUtils.getHidden(SerializerFactory.class,
+				"_staticSerializerMap"); //$NON-NLS-1$
+
+		synchronized (this) {
+			// .. tweak the static hessian maps
+			for (final AbstractRienaSerializerFactory serializerFactory : tempOrdered) {
+				for (final Class<?> replaced : serializerFactory.getReplacedDeserializerTypes()) {
+					staticDeserializerMap.remove(replaced);
+				}
+				for (final Class<?> replaced : serializerFactory.getReplacedSerializerTypes()) {
+					staticSerializerMap.remove(replaced);
+				}
+			}
+			// .. and make active
+			serializerFactories = tempOrdered;
+		}
 	}
 
 }

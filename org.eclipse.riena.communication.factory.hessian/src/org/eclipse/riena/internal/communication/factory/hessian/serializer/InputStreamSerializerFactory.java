@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.communication.factory.hessian;
+package org.eclipse.riena.internal.communication.factory.hessian.serializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -23,20 +23,14 @@ import com.caucho.hessian.io.HessianProtocolException;
 import com.caucho.hessian.io.Serializer;
 
 import org.eclipse.riena.communication.core.RemoteFailure;
+import org.eclipse.riena.communication.factory.hessian.serializer.AbstractRienaSerializerFactory;
 
 /**
  * SerializerFactory used to serialize and deserialize InputStream, used for the
- * Attachment object.
+ * attachment object.
  */
 public class InputStreamSerializerFactory extends AbstractRienaSerializerFactory {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.caucho.hessian.io.AbstractSerializerFactory#getDeserializer(java.
-	 * lang.Class)
-	 */
 	@Override
 	public Deserializer getDeserializer(final Class cl) throws HessianProtocolException {
 		if (isInputStream(cl)) {
@@ -57,13 +51,6 @@ public class InputStreamSerializerFactory extends AbstractRienaSerializerFactory
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.caucho.hessian.io.AbstractSerializerFactory#getSerializer(java.lang
-	 * .Class)
-	 */
 	@Override
 	public Serializer getSerializer(final Class cl) throws HessianProtocolException {
 		if (isInputStream(cl)) {
@@ -106,11 +93,11 @@ public class InputStreamSerializerFactory extends AbstractRienaSerializerFactory
 		return null;
 	}
 
-	private boolean isInputStream(final Class cl) {
+	private boolean isInputStream(final Class<?> cl) {
 		if (cl == InputStream.class) {
 			return true;
 		}
-		Class superCl = cl;
+		Class<?> superCl = cl;
 		while (superCl != null && superCl != Object.class) {
 			superCl = superCl.getSuperclass();
 			if (superCl == InputStream.class) {
@@ -121,8 +108,13 @@ public class InputStreamSerializerFactory extends AbstractRienaSerializerFactory
 	}
 
 	@Override
-	public int getSalience() {
-		return GENERIC;
+	public Class<?>[] getReplacedSerializerTypes() {
+		return new Class<?>[] { InputStream.class };
+	}
+
+	@Override
+	public Class<?>[] getReplacedDeserializerTypes() {
+		return new Class<?>[] { InputStream.class };
 	}
 
 }

@@ -11,7 +11,8 @@
 		id="org.eclipse.riena.communication.hessian.PrincipalSerializerFactory"
 		point="org.eclipse.riena.communication.factory.hessian.serializerFactories">
 		<factory
-			implementation="org.eclipse.riena.internal.communication.factory.hessian.PrincipalSerializerFactory">
+			name="RienaPrincipalSerializerFactory"
+			class="org.eclipse.riena.internal.communication.factory.hessian.serializer.PrincipalSerializerFactory">
 		</factory>
 	</extension>
 	
@@ -19,7 +20,8 @@
 		id="org.eclipse.riena.communication.hessian.InputSerializerFactory"
 		point="org.eclipse.riena.communication.factory.hessian.serializerFactories">
 		<factory
-			implementation="org.eclipse.riena.internal.communication.factory.hessian.InputStreamSerializerFactory">
+			name="RienaInputStreamSerializerFactory"
+			class="org.eclipse.riena.internal.communication.factory.hessian.serializer.InputStreamSerializerFactory">
 		</factory>
 	</extension>
 
@@ -27,7 +29,8 @@
 		id="org.eclipse.riena.communication.hessian.StacktraceElementSerializerFactory"
 		point="org.eclipse.riena.communication.factory.hessian.serializerFactories">
 		<factory
-			implementation="org.eclipse.riena.internal.communication.factory.hessian.StacktraceElementSerializerFactory">
+			name="RienaStacktraceElementSerializerFactory"
+			class="org.eclipse.riena.internal.communication.factory.hessian.serializer.StacktraceElementSerializerFactory">
 		</factory>
 	</extension>
 	
@@ -35,7 +38,8 @@
 		id="org.eclipse.riena.communication.hessian.GregorianCalendarSerializerFactory"
 		point="org.eclipse.riena.communication.factory.hessian.serializerFactories">
 		<factory
-			implementation="org.eclipse.riena.internal.communication.factory.hessian.GregorianCalendarSerializerFactory">
+			name="RienaGregorianCalendarSerializerFactory"
+			class="org.eclipse.riena.internal.communication.factory.hessian.serializer.GregorianCalendarSerializerFactory">
 		</factory>
 	</extension>
 	
@@ -43,7 +47,8 @@
 		id="org.eclipse.riena.communication.hessian.PermissionsSerializerFactory"
 		point="org.eclipse.riena.communication.factory.hessian.serializerFactories">
 		<factory
-			implementation="org.eclipse.riena.internal.communication.factory.hessian.PermissionsSerializerFactory">
+			name="RienaPermissionsSerializerFactory"
+			class="org.eclipse.riena.internal.communication.factory.hessian.serializer.PermissionsSerializerFactory">
 		</factory>
 	</extension>
 
@@ -51,7 +56,8 @@
 		id="org.eclipse.riena.communication.hessian.JavaPermissionSerializerFactory"
 		point="org.eclipse.riena.communication.factory.hessian.serializerFactories">
 		<factory
-			implementation="org.eclipse.riena.internal.communication.factory.hessian.JavaPermissionSerializerFactory">
+			name="RienaJavaPermissionSerializerFactory"
+			class="org.eclipse.riena.internal.communication.factory.hessian.serializer.JavaPermissionSerializerFactory">
 		</factory>
 	</extension>
 
@@ -59,7 +65,8 @@
        id="org.eclipse.riena.communication.hessian.BigIntegerSerializerFactory"
        point="org.eclipse.riena.communication.factory.hessian.serializerFactories">
 		<factory
-			implementation="org.eclipse.riena.internal.communication.factory.hessian.BigIntegerSerializerFactory">
+			name="RienaBigIntegerSerializerFactory"
+			class="org.eclipse.riena.internal.communication.factory.hessian.serializer.BigIntegerSerializerFactory">
 		</factory>
 	</extension>
 	
@@ -67,7 +74,8 @@
          id="org.eclipse.riena.internal.communication.factory.hessian.UUIDSerializerFactory"
          point="org.eclipse.riena.communication.factory.hessian.serializerFactories">
       <factory
-            implementation="org.eclipse.riena.internal.communication.factory.hessian.UUIDSerializerFactory">
+			name="RienaUUIDSerializerFactory"
+            class="org.eclipse.riena.internal.communication.factory.hessian.serializer.UUIDSerializerFactory">
       </factory>
     </extension>
 
@@ -75,7 +83,8 @@
        id="org.eclipse.riena.communication.hessian.ELIndirectListSerializerFactory"
        point="org.eclipse.riena.communication.factory.hessian.serializerFactories">
 		<factory
-			implementation="org.eclipse.riena.internal.communication.factory.hessian.EclipsePersistenceIndirectListSerializerFactory">
+			name="RienaEclipsePersistenceIndirectListSerializerFactory"
+			class="org.eclipse.riena.internal.communication.factory.hessian.serializer.EclipsePersistenceIndirectListSerializerFactory">
 		</factory>
 	</extension>
 

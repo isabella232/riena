@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.communication.factory.hessian;
+package org.eclipse.riena.internal.communication.factory.hessian.serializer;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -22,6 +22,7 @@ import com.caucho.hessian.io.JavaDeserializer;
 import com.caucho.hessian.io.JavaSerializer;
 import com.caucho.hessian.io.Serializer;
 
+import org.eclipse.riena.communication.factory.hessian.serializer.AbstractRienaSerializerFactory;
 import org.eclipse.riena.core.util.Nop;
 
 /**
@@ -43,11 +44,6 @@ public class JavaPermissionSerializerFactory extends AbstractRienaSerializerFact
 			return null;
 		}
 		return new JavaPermissionSerializer(cl);
-	}
-
-	@Override
-	public int getSalience() {
-		return GENERIC;
 	}
 
 	private static final String ACTIONS_FIELD = "actions"; //$NON-NLS-1$

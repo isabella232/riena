@@ -27,6 +27,7 @@ import com.caucho.hessian.io.Hessian2Output;
 
 import org.eclipse.riena.communication.core.hooks.ICallMessageContext;
 import org.eclipse.riena.communication.core.hooks.ICallMessageContextAccessor;
+import org.eclipse.riena.internal.communication.factory.hessian.serializer.RienaSerializerFactory;
 
 public class RienaHessianProxyFactory extends HessianProxyFactory {
 
