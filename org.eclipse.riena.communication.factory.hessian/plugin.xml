@@ -95,5 +95,12 @@
 			remoteServiceFactory="org.eclipse.riena.internal.communication.factory.hessian.RemoteServiceFactoryHessian">
 		</factory>
 	</extension>
+ <extension
+       point="org.eclipse.riena.communication.factory.hessian.serializerFactories">
+    <factory
+          class="org.eclipse.riena.internal.communication.factory.hessian.serializer.XMLGregorianCalendarSerializerFactory"
+          name="RienaXMLGregorianCalendarSerializer">
+    </factory>
+ </extension>
 
 </plugin>
