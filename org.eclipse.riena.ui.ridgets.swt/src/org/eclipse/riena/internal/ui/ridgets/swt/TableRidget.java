@@ -45,6 +45,9 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -96,8 +99,9 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 	private final Listener itemEraser;
 	private final SelectionListener selectionTypeEnforcer;
 	private final MouseListener clickForwarder;
-	private TableTooltipManager tooltipManager;
 	private final ColumnSortListener sortListener;
+	private final KeyListener keyListener;
+	private TableTooltipManager tooltipManager;
 	private ListenerList<IClickListener> clickListeners;
 	private ListenerList<IActionListener> doubleClickListeners;
 
@@ -140,6 +144,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		clickForwarder = new ClickForwarder();
 		sortListener = new ColumnSortListener();
+		keyListener = new TableKeyListener();
 		isSortedAscending = true;
 		sortedColumn = -1;
 		sortableColumnsMap = new HashMap<Integer, Boolean>();
@@ -200,6 +205,7 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 			}
 			control.addSelectionListener(selectionTypeEnforcer);
 			control.addMouseListener(clickForwarder);
+			control.addKeyListener(keyListener);
 			updateToolTipSupport();
 			final SWTFacade facade = SWTFacade.getDefault();
 			facade.addEraseItemListener(control, itemEraser);
@@ -943,6 +949,21 @@ public class TableRidget extends AbstractSelectableIndexedRidget implements ITab
 		private void resetToolTip(final Table table) {
 			if (table.getToolTipText() == null || !table.getToolTipText().equals(defaultToolTip)) {
 				table.setToolTipText(defaultToolTip);
+			}
+		}
+	}
+
+	/**
+	 * Notifies the double-click listeners when either a space or CR has been
+	 * pressed.
+	 */
+	private final class TableKeyListener extends KeyAdapter {
+
+		@Override
+		public void keyPressed(final KeyEvent e) {
+			if (e.character == ' ' || e.character == SWT.CR) {
+				// the passed event (null) will not be read by the ClickForwarder 
+				clickForwarder.mouseDoubleClick(null);
 			}
 		}
 	}
