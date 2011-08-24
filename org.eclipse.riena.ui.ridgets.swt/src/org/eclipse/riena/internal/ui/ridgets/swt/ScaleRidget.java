@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Scale;
 
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
  * Ridget for a SWT {@link Scale} widget.
@@ -33,7 +32,7 @@ public class ScaleRidget extends AbstractTraverseRidget implements ITraverseRidg
 
 	@Override
 	public void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, Scale.class);
+		checkType(uiControl, Scale.class);
 	}
 
 	// helping methods

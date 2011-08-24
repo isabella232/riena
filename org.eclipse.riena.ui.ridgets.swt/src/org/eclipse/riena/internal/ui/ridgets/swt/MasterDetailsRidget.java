@@ -22,7 +22,6 @@ import org.eclipse.riena.core.util.ObjectUtils;
 import org.eclipse.riena.ui.ridgets.IMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractMasterDetailsRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.AbstractMasterDetailsComposite;
 import org.eclipse.riena.ui.swt.MasterDetailsComposite;
 
@@ -46,7 +45,7 @@ public class MasterDetailsRidget extends AbstractMasterDetailsRidget implements 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
 		super.checkUIControl(uiControl);
-		AbstractSWTRidget.assertType(uiControl, MasterDetailsComposite.class);
+		checkType(uiControl, MasterDetailsComposite.class);
 	}
 
 	@Override

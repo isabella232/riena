@@ -82,7 +82,6 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITreeRidget;
 import org.eclipse.riena.ui.ridgets.ITreeTableRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
@@ -174,7 +173,7 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, Tree.class);
+		checkType(uiControl, Tree.class);
 	}
 
 	@Override

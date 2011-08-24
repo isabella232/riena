@@ -15,7 +15,6 @@ import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.swt.graphics.Color;
 
 import org.eclipse.riena.example.ping.client.widgets.ProgressBarWidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractValueRidget;
 
 /**
@@ -71,7 +70,7 @@ public class ProgressbarRidget extends AbstractValueRidget {
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, ProgressBarWidget.class);
+		checkType(uiControl, ProgressBarWidget.class);
 	}
 
 	@Override

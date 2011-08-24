@@ -26,7 +26,6 @@ import org.eclipse.swt.graphics.Color;
 
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
  * Ridget for {@link CCombo} widgets.
@@ -75,7 +74,7 @@ public class CComboRidget extends AbstractComboRidget {
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, CCombo.class);
+		checkType(uiControl, CCombo.class);
 		if (uiControl != null) {
 			final int style = ((CCombo) uiControl).getStyle();
 			if ((style & SWT.READ_ONLY) == 0) {

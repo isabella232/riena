@@ -18,7 +18,6 @@ import org.eclipse.swt.widgets.Spinner;
 
 import org.eclipse.riena.ui.ridgets.ISpinnerRidget;
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
  * Ridget for a SWT {@link Spinner} widget.
@@ -47,7 +46,7 @@ public class SpinnerRidget extends AbstractTraverseRidget implements ISpinnerRid
 
 	@Override
 	public void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, Spinner.class);
+		checkType(uiControl, Spinner.class);
 	}
 
 	public int getDigits() {

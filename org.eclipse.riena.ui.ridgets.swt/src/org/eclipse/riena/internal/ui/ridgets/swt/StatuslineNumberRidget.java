@@ -97,7 +97,7 @@ public class StatuslineNumberRidget extends AbstractSWTRidget implements IStatus
 	 */
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, StatuslineNumber.class);
+		checkType(uiControl, StatuslineNumber.class);
 	}
 
 	/**

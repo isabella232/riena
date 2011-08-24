@@ -15,7 +15,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ProgressBar;
 
 import org.eclipse.riena.ui.ridgets.ITraverseRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
  * Ridget for a SWT {@link ProgressBar} widget.
@@ -33,7 +32,7 @@ public class ProgressBarRidget extends AbstractTraverseRidget implements ITraver
 
 	@Override
 	public void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, ProgressBar.class);
+		checkType(uiControl, ProgressBar.class);
 	}
 
 	@Override

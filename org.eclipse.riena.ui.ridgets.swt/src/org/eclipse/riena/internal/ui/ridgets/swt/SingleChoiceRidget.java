@@ -100,7 +100,7 @@ public class SingleChoiceRidget extends AbstractChoiceRidget implements ISingleC
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, ChoiceComposite.class);
+		checkType(uiControl, ChoiceComposite.class);
 		if (uiControl != null) {
 			final ChoiceComposite composite = (ChoiceComposite) uiControl;
 			Assert.isTrue(!composite.isMultipleSelection(), "expected single selection ChoiceComposite"); //$NON-NLS-1$

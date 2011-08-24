@@ -24,7 +24,6 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IBrowserRidget;
 import org.eclipse.riena.ui.ridgets.listener.ILocationListener;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractValueRidget;
 import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
 import org.eclipse.riena.ui.swt.facades.BrowserFacade;
@@ -60,7 +59,7 @@ public class BrowserRidget extends AbstractValueRidget implements IBrowserRidget
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, Browser.class);
+		checkType(uiControl, Browser.class);
 	}
 
 	@Override

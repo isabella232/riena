@@ -14,7 +14,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Label;
 
 import org.eclipse.riena.ui.ridgets.swt.AbstractLabelRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
  * Ridget for an SWT {@link Label} widget.
@@ -31,7 +30,7 @@ public class LabelRidget extends AbstractLabelRidget {
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, Label.class);
+		checkType(uiControl, Label.class);
 	}
 
 	@Override

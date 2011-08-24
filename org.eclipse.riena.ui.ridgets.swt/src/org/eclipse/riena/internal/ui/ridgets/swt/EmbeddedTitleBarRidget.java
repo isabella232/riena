@@ -115,7 +115,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, EmbeddedTitleBar.class);
+		checkType(uiControl, EmbeddedTitleBar.class);
 	}
 
 	@Override

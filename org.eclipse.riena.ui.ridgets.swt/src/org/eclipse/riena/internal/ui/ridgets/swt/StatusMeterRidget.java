@@ -16,7 +16,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.ui.ridgets.IStatusMeterRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.StatusMeterWidget;
 
 /**
@@ -40,7 +39,7 @@ public class StatusMeterRidget extends AbstractTraverseRidget implements IStatus
 
 	@Override
 	public void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, StatusMeterWidget.class);
+		checkType(uiControl, StatusMeterWidget.class);
 	}
 
 	@Override

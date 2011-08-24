@@ -56,7 +56,7 @@ public class ImageButtonRidget extends AbstractActionRidget {
 	 */
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		assertType(uiControl, ImageButton.class);
+		checkType(uiControl, ImageButton.class);
 	}
 
 	/**

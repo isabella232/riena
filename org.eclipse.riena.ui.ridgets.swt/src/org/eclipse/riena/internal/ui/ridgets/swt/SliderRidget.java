@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Slider;
 
 import org.eclipse.riena.ui.ridgets.ISliderRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
  * Ridget for a SWT {@link Slider} widget.
@@ -115,7 +114,7 @@ public class SliderRidget extends AbstractTraverseRidget implements ISliderRidge
 
 	@Override
 	public void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, Slider.class);
+		checkType(uiControl, Slider.class);
 	}
 
 	public int getThumb() {

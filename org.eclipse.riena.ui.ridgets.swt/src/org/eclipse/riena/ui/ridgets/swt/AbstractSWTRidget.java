@@ -10,10 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt;
 
-import org.eclipse.core.databinding.BindingException;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.riena.ui.core.marker.HiddenMarker;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
@@ -31,25 +29,6 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 
 	private final FocusManager focusManager;
 	private boolean focusable;
-
-	/**
-	 * Checks that the given uiControl is assignable to the the given type.
-	 * 
-	 * @param uiControl
-	 *            a uiControl, may be null
-	 * @param type
-	 *            a class instance (non-null)
-	 * @throws BindingException
-	 *             if the uiControl is not of the given type
-	 */
-	public static void assertType(final Object uiControl, final Class<?> type) {
-		if ((uiControl != null) && !(type.isAssignableFrom(uiControl.getClass()))) {
-			final String expectedClassName = type.getSimpleName();
-			final String controlClassName = uiControl.getClass().getSimpleName();
-			throw new BindingException("uiControl of  must be a " + expectedClassName + " but was a " //$NON-NLS-1$ //$NON-NLS-2$
-					+ controlClassName);
-		}
-	}
 
 	/**
 	 * @since 3.0

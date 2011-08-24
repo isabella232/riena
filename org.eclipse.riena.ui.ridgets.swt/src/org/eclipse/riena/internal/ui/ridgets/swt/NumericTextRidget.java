@@ -42,7 +42,6 @@ import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.marker.NegativeMarker;
 import org.eclipse.riena.ui.ridgets.INumericTextRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.ToStringConverterFactory;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
@@ -242,7 +241,7 @@ public class NumericTextRidget extends TextRidget implements INumericTextRidget 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
 		super.checkUIControl(uiControl);
-		AbstractSWTRidget.assertType(uiControl, Text.class);
+		checkType(uiControl, Text.class);
 		if (uiControl != null) {
 			final int style = ((Text) uiControl).getStyle();
 			if ((style & SWT.SINGLE) == 0) {

@@ -58,7 +58,7 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		assertType(uiControl, MenuItem.class);
+		checkType(uiControl, MenuItem.class);
 		if (isMenu((MenuItem) uiControl)) {
 			throw new BindingException("Menu item is a cascade menu item!"); //$NON-NLS-1$
 		}

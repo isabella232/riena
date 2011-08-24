@@ -14,7 +14,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.ICompositeRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
  * Ridget for an SWT {@link Composite}.
@@ -38,7 +37,7 @@ public class CompositeRidget extends AbstractCompositeRidget implements IComposi
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, Composite.class);
+		checkType(uiControl, Composite.class);
 	}
 
 	@Override

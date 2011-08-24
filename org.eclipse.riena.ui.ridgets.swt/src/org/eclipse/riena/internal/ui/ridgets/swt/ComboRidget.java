@@ -21,7 +21,6 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
 
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
  * Ridget for {@link Combo} widgets.
@@ -53,7 +52,7 @@ public class ComboRidget extends AbstractComboRidget {
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, Combo.class);
+		checkType(uiControl, Combo.class);
 		if (uiControl != null) {
 			final int style = ((Combo) uiControl).getStyle();
 			if ((style & SWT.READ_ONLY) == 0) {

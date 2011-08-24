@@ -46,7 +46,7 @@ public class ToolItemRidget extends AbstractItemRidget implements IToolItemRidge
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		assertType(uiControl, ToolItem.class);
+		checkType(uiControl, ToolItem.class);
 	}
 
 	@Override

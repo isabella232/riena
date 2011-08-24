@@ -466,7 +466,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, AbstractMasterDetailsComposite.class);
+		checkType(uiControl, AbstractMasterDetailsComposite.class);
 	}
 
 	protected abstract void bindTableToModel(IObservableList rowObservables, Class<? extends Object> rowClass,

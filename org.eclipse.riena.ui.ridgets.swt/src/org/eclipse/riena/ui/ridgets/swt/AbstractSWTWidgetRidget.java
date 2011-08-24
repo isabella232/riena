@@ -58,25 +58,6 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	private Listener visibilityListener;
 
 	/**
-	 * Checks that the given uiControl is assignable to the the given type.
-	 * 
-	 * @param uiControl
-	 *            a uiControl, may be null
-	 * @param type
-	 *            a class instance (non-null)
-	 * @throws BindingException
-	 *             if the uiControl is not of the given type
-	 */
-	public static void assertType(final Object uiControl, final Class<?> type) {
-		if ((uiControl != null) && !(type.isAssignableFrom(uiControl.getClass()))) {
-			final String expectedClassName = type.getSimpleName();
-			final String controlClassName = uiControl.getClass().getSimpleName();
-			throw new BindingException("uiControl of  must be a " + expectedClassName + " but was a " //$NON-NLS-1$ //$NON-NLS-2$
-					+ controlClassName);
-		}
-	}
-
-	/**
 	 * Return true if an instance of the given {@code clazz} is a bean, false
 	 * otherwise.
 	 * <p>

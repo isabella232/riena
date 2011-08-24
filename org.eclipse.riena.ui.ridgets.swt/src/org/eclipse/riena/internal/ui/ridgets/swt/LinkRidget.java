@@ -26,7 +26,6 @@ import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.ILinkRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractValueRidget;
 import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
 
@@ -57,7 +56,7 @@ public class LinkRidget extends AbstractValueRidget implements ILinkRidget {
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, Link.class);
+		checkType(uiControl, Link.class);
 	}
 
 	@Override

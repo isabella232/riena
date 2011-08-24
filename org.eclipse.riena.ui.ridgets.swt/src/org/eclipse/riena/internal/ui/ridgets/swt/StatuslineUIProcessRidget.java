@@ -31,7 +31,6 @@ import org.eclipse.riena.ui.core.uiprocess.UIProcess;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineUIProcessRidget;
 import org.eclipse.riena.ui.ridgets.IVisualContextManager;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.Statusline;
 import org.eclipse.riena.ui.swt.StatuslineUIProcess;
 import org.eclipse.riena.ui.swt.uiprocess.ProcessState;
@@ -267,7 +266,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	}
 
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, StatuslineUIProcess.class);
+		checkType(uiControl, StatuslineUIProcess.class);
 	}
 
 	protected void bindUIControl() {

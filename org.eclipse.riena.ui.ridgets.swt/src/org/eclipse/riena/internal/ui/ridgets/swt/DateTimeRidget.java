@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractEditableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 
 /**
  * Ridget for {@link DateTime} widgets.
@@ -54,7 +53,7 @@ public class DateTimeRidget extends AbstractEditableRidget implements IDateTimeR
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTWidgetRidget.assertType(uiControl, DateTime.class);
+		checkType(uiControl, DateTime.class);
 	}
 
 	@Override

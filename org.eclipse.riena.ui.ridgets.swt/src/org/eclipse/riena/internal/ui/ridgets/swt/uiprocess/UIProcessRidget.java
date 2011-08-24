@@ -179,7 +179,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	}
 
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, UIProcessControl.class);
+		checkType(uiControl, UIProcessControl.class);
 
 	}
 

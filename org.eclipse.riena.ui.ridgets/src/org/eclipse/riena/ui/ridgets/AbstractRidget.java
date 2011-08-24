@@ -13,6 +13,7 @@ package org.eclipse.riena.ui.ridgets;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.core.util.ListenerList;
@@ -44,6 +45,26 @@ public abstract class AbstractRidget implements IRidget {
 	public AbstractRidget() {
 		propertyChangeSupport = new PropertyChangeSupport(this);
 		focusListeners = new ListenerList<IFocusListener>(IFocusListener.class);
+	}
+
+	/**
+	 * Checks that the given uiControl is assignable to the the given type.
+	 * 
+	 * @param uiControl
+	 *            a uiControl, may be null
+	 * @param type
+	 *            a class instance (non-null)
+	 * @throws BindingException
+	 *             if the uiControl is not of the given type
+	 * @since 4.0
+	 */
+	final protected void checkType(final Object uiControl, final Class<?> type) {
+		if ((uiControl != null) && !(type.isAssignableFrom(uiControl.getClass()))) {
+			final String expectedClassName = type.getSimpleName();
+			final String controlClassName = uiControl.getClass().getSimpleName();
+			throw new BindingException("uiControl of  must be a " + expectedClassName + " but was a " //$NON-NLS-1$ //$NON-NLS-2$
+					+ controlClassName);
+		}
 	}
 
 	public void addFocusListener(final IFocusListener listener) {

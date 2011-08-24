@@ -97,7 +97,7 @@ public class MultipleChoiceRidget extends AbstractChoiceRidget implements IMulti
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, ChoiceComposite.class);
+		checkType(uiControl, ChoiceComposite.class);
 		if (uiControl != null) {
 			final ChoiceComposite composite = (ChoiceComposite) uiControl;
 			Assert.isTrue(composite.isMultipleSelection(), "expected multiple selection ChoiceComposite"); //$NON-NLS-1$

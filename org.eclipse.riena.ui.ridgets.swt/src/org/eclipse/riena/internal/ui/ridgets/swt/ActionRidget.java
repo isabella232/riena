@@ -41,7 +41,7 @@ public class ActionRidget extends AbstractActionRidget {
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		assertType(uiControl, Button.class);
+		checkType(uiControl, Button.class);
 	}
 
 	@Override

@@ -21,7 +21,6 @@ import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.IFlashDelegate;
 
@@ -68,7 +67,7 @@ public class CompletionComboRidget extends AbstractComboRidget {
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, CompletionCombo.class);
+		checkType(uiControl, CompletionCombo.class);
 	}
 
 	@Override

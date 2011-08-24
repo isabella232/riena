@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.List;
 
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractListRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
 
 /**
@@ -38,7 +37,7 @@ public class ListRidget extends AbstractListRidget {
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, List.class);
+		checkType(uiControl, List.class);
 	}
 
 	@Override

@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractToggleButtonRidget;
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
 
@@ -58,7 +57,7 @@ public class ToggleButtonRidget extends AbstractToggleButtonRidget {
 
 	@Override
 	protected void checkUIControl(final Object uiControl) {
-		AbstractSWTRidget.assertType(uiControl, Button.class);
+		checkType(uiControl, Button.class);
 		if (uiControl != null) {
 			final Button button = (Button) uiControl;
 			if (!(hasStyle(button, SWT.CHECK) || hasStyle(button, SWT.RADIO) || hasStyle(button, SWT.TOGGLE))) {
