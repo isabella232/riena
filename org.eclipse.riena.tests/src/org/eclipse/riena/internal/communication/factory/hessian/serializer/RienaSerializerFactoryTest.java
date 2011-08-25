@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.communication.factory.hessian.serializer;
 
-import org.eclipse.riena.internal.communication.factory.hessian.serializer.RienaSerializerFactory;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
