@@ -457,6 +457,11 @@ public final class LnfKeyConstants {
 	public static final String DISABLED_MARKER_BACKGROUND = "DisabledMarker.backgroundColor"; //$NON-NLS-1$
 
 	/**
+	 * @since 4.0
+	 */
+	public static final String DISABLED_BACKGROUND = "Disabled.backgroundColor"; //$NON-NLS-1$
+
+	/**
 	 * Font keys
 	 */
 	public static final String TITLELESS_SHELL_FONT = "TitlelessShell.font"; //$NON-NLS-1$
