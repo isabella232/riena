@@ -61,6 +61,7 @@ public final class LnFUpdater {
 	 * System property defining if properties of views are updated.
 	 */
 	private static final String PROPERTY_RIENA_LNF_UPDATE_VIEW = "riena.lnf.update.view"; //$NON-NLS-1$
+	private static final String[] ANYWAY_SET_PROPERTIES = new String[] { "background", "foreground" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	private final Composite shellComposite = new Composite(new Shell(), SWT.NONE);
 	private final Map<Class<? extends Control>, String> simpleNames = new HashMap<Class<? extends Control>, String>();
@@ -215,8 +216,9 @@ public final class LnFUpdater {
 			if (newValue == null) {
 				continue;
 			}
+			final boolean anyway = isAnywayProperty(property);
 			final Object currentValue = getPropertyValue(control, property);
-			if (valuesEquals(currentValue, newValue)) {
+			if (anyway && valuesEquals(currentValue, newValue)) {
 				continue;
 			}
 			if (hasNoDefaultValue(control, property, currentValue)) {
@@ -225,7 +227,9 @@ public final class LnFUpdater {
 			try {
 				final Method setter = property.getWriteMethod();
 				setter.invoke(control, newValue);
-				setDirtyLayout(true);
+				if (!anyway) {
+					setDirtyLayout(true);
+				}
 			} catch (final IllegalArgumentException e) {
 				LOGGER.log(LogService.LOG_WARNING, getErrorMessage(control, property), e);
 			} catch (final IllegalAccessException e) {
@@ -871,4 +875,21 @@ public final class LnFUpdater {
 		return controlClass.toString() + "#" + style; //$NON-NLS-1$
 	}
 
+	/**
+	 * Checks, if the value of the given property should set also if the control
+	 * already has the new value.
+	 * 
+	 * @param property
+	 * @return {@code true} set anyway; {@code false} set only if the value are
+	 *         different
+	 */
+	private boolean isAnywayProperty(final PropertyDescriptor property) {
+		final String propName = property.getName();
+		for (final String anywayPropName : ANYWAY_SET_PROPERTIES) {
+			if (propName.equals(anywayPropName)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
