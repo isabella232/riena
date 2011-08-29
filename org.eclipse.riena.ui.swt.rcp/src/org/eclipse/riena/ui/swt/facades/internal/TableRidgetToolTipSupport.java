@@ -21,6 +21,7 @@ import org.eclipse.jface.viewers.ViewerRow;
 import org.eclipse.jface.window.ToolTip;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
@@ -124,7 +125,7 @@ public class TableRidgetToolTipSupport extends ColumnViewerToolTipSupport {
 	}
 
 	private void init() {
-		final Table table = viewer.getTable();
+		final Control table = viewer.getTable();
 		if (table != null) {
 			final String tableToolTip = table.getToolTipText();
 			defaultToolTip = tableToolTip;
@@ -240,7 +241,7 @@ public class TableRidgetToolTipSupport extends ColumnViewerToolTipSupport {
 		return null;
 	}
 
-	private void resetToolTip(final Table table) {
+	private void resetToolTip(final Control table) {
 		if (table == null) {
 			return;
 		}
