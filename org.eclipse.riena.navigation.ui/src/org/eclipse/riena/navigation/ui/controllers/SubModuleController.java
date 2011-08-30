@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.osgi.service.log.LogService;
@@ -25,7 +26,9 @@ import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
+import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IComplexRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -181,6 +184,30 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 */
 	public void setInitialFocus(final IRidget ridget) {
 		this.initialFocus = ridget;
+	}
+
+	@Override
+	public void setBlocked(final boolean blocked) {
+		super.setBlocked(blocked);
+		resetFocusRequest(getRidgets());
+	}
+
+	private void resetFocusRequest(final Collection<? extends IRidget> collection) {
+		for (final IRidget ridget : collection) {
+
+			if (ridget instanceof IComplexRidget) {
+				resetFocusRequest(((IComplexRidget) ridget).getRidgets());
+			} else {
+				if (ridget instanceof AbstractRidget) {
+					if (((AbstractRidget) ridget).isRetryRequestFocus()) {
+						if (!getNavigationNode().isBlocked()) {
+							ridget.requestFocus();
+						}
+						((AbstractRidget) ridget).setRetryRequestFocus(false);
+					}
+				}
+			}
+		}
 	}
 
 	@Override

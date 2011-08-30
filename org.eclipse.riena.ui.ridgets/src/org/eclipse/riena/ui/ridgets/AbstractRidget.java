@@ -38,6 +38,7 @@ public abstract class AbstractRidget implements IRidget {
 	private final ListenerList<IFocusListener> focusListeners;
 	private IRidgetContainer controller;
 	private boolean ignoreBindingError;
+	private boolean retryRequestFocus;
 
 	/**
 	 * Constructor.
@@ -260,6 +261,25 @@ public abstract class AbstractRidget implements IRidget {
 			result = (listeners[i] == listener);
 		}
 		return result;
+	}
+
+	/**
+	 * TODO SKR
+	 * 
+	 * @return
+	 * @since 4.0
+	 */
+	public boolean isRetryRequestFocus() {
+		return retryRequestFocus;
+	}
+
+	/**
+	 * TODO SKR
+	 * 
+	 * @since 4.0
+	 */
+	public void setRetryRequestFocus(final boolean retryRequestFocus) {
+		this.retryRequestFocus = retryRequestFocus;
 	}
 
 }

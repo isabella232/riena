@@ -52,7 +52,7 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 		if (isFocusable()) {
 			if (getUIControl() != null) {
 				final Control control = getUIControl();
-				control.setFocus();
+				setRetryRequestFocus(!control.setFocus());
 			}
 		}
 	}
