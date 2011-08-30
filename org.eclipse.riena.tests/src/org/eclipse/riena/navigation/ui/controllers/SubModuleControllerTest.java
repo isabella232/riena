@@ -38,6 +38,30 @@ import org.eclipse.riena.ui.ridgets.IWindowRidget;
 @NonUITestCase
 public class SubModuleControllerTest extends TestCase {
 
+	public void testRestoreFocusFromRidgetAfterBlock() {
+		final Display display = Display.getDefault();
+		final Shell shell = new Shell(display);
+		shell.pack();
+		shell.setVisible(true);
+
+		final Realm realm = SWTObservables.getRealm(display);
+		assertNotNull(realm);
+		ReflectionUtils.invokeHidden(realm, "setDefault", realm); //$NON-NLS-1$
+
+		final SubModuleNode node = new SubModuleNode();
+		node.setNavigationProcessor(new NavigationProcessor());
+		final SubModuleController controller = new SubModuleController(node);
+
+		final LabelRidget labelRidget = new LabelRidget();
+		labelRidget.setRetryRequestFocus(true);
+		controller.addRidget("label", labelRidget); //$NON-NLS-1$
+
+		controller.setBlocked(true);
+		labelRidget.setRetryRequestFocus(true);
+		controller.setBlocked(false);
+		assertFalse(labelRidget.isRetryRequestFocus());
+	}
+
 	/**
 	 * Tests the method {@code getFullTitle()}.
 	 */

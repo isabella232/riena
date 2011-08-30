@@ -52,6 +52,8 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 		if (isFocusable()) {
 			if (getUIControl() != null) {
 				final Control control = getUIControl();
+				// if setFocus() fails because e.g. the parent is disabled
+				// the state has to be saved, so it can be restored in submoduleController.unblockView()
 				setRetryRequestFocus(!control.setFocus());
 			}
 		}

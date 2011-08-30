@@ -264,9 +264,10 @@ public abstract class AbstractRidget implements IRidget {
 	}
 
 	/**
-	 * TODO SKR
+	 * Returns <code>true</code> if retryFocusRequest has been set otherwise
+	 * <code>false</code>
 	 * 
-	 * @return
+	 * @return the retryRequestFocus flag
 	 * @since 4.0
 	 */
 	public boolean isRetryRequestFocus() {
@@ -274,7 +275,9 @@ public abstract class AbstractRidget implements IRidget {
 	}
 
 	/**
-	 * TODO SKR
+	 * Marks this ridget, that a call to requestFocus() failed, because e.g. the
+	 * parent is disabled. Afterwards this flag can be checked to restore the
+	 * focus.
 	 * 
 	 * @since 4.0
 	 */

@@ -189,14 +189,24 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	@Override
 	public void setBlocked(final boolean blocked) {
 		super.setBlocked(blocked);
-		resetFocusRequest(getRidgets());
+		restoreFocusRequestFromRidget(getRidgets());
 	}
 
-	private void resetFocusRequest(final Collection<? extends IRidget> collection) {
+	/**
+	 * Checks all ridgets recursively in this controller, if a previous call to
+	 * setFocus() failed and tries to set the focus again.
+	 * <p>
+	 * SWT has the limitation that it doesn't set the focus if the parent
+	 * composite is disabled. Therefore we have to try to restore the first
+	 * previous call to setFocus(), while the view is blocked.
+	 * 
+	 * @param collection
+	 *            the collection to check
+	 */
+	private void restoreFocusRequestFromRidget(final Collection<? extends IRidget> collection) {
 		for (final IRidget ridget : collection) {
-
 			if (ridget instanceof IComplexRidget) {
-				resetFocusRequest(((IComplexRidget) ridget).getRidgets());
+				restoreFocusRequestFromRidget(((IComplexRidget) ridget).getRidgets());
 			} else {
 				if (ridget instanceof AbstractRidget) {
 					if (((AbstractRidget) ridget).isRetryRequestFocus()) {
