@@ -638,6 +638,9 @@ public class ImageButton extends Composite {
 	 *            e an event containing information about the paint
 	 */
 	private void onPaint(final PaintEvent event) {
+
+		updateHoverState();
+
 		if (hoverButton != null && hoverButton.isVisible()) {
 			return;
 		}
@@ -648,6 +651,7 @@ public class ImageButton extends Composite {
 			final GC gc = event.gc;
 			gc.drawImage(image, pos.x, pos.y);
 		}
+
 	}
 
 	/**
@@ -768,6 +772,28 @@ public class ImageButton extends Composite {
 				hoverButton.setImage(getImageToDraw());
 			}
 		}
+	}
+
+	/**
+	 * Updates the hover state (flag/property {@code hover}).
+	 * <p>
+	 * The update is necessary if the button (or a parent of the button) was
+	 * disabled. After the button was disabled a mouse exit will be fired and so
+	 * the hover state will be false. After the button was enabled no mouse
+	 * event will be fired and so the hover state won't be true. Because of this
+	 * problem at other situations this method must be called to update the
+	 * hover state.
+	 */
+	private void updateHoverState() {
+
+		if (isEnabled()) {
+			Point mousePoint = getDisplay().getCursorLocation();
+			mousePoint = toControl(mousePoint);
+			setHover(isOverButton(mousePoint));
+		} else {
+			setHover(false);
+		}
+
 	}
 
 	// helping classes
