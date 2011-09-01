@@ -13,12 +13,14 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.util.EventListener;
 
 import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
+import org.eclipse.riena.ui.swt.ImageButton;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 
 /**
@@ -84,6 +86,11 @@ public class DisabledMarkerVisualizer {
 	}
 
 	private void updatePaintListener(final Control control, final boolean enabled) {
+
+		if (dontAddDisabledPainter(control)) {
+			return;
+		}
+
 		removePaintlistener(control);
 
 		if (!enabled) {
@@ -97,6 +104,16 @@ public class DisabledMarkerVisualizer {
 				updatePaintListener(child, enabled);
 			}
 		}
+	}
+
+	protected boolean dontAddDisabledPainter(final Control control) {
+		if (control instanceof ImageButton) {
+			return true;
+		}
+		if (control instanceof Button) {
+			return true;
+		}
+		return false;
 	}
 
 	private Control[] getChildren(final Composite parent) {
