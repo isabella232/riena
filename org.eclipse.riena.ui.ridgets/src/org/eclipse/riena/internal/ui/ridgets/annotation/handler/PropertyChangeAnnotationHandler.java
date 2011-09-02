@@ -18,6 +18,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.annotation.OnPropertyChange;
 import org.eclipse.riena.ui.ridgets.annotation.handler.AbstractRidgetContainerAnnotationHandler;
+import org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMethodsGuard;
 
 /**
  * Annotation handler for {@code @OnPropertyChange}
@@ -27,7 +28,7 @@ import org.eclipse.riena.ui.ridgets.annotation.handler.AbstractRidgetContainerAn
 public class PropertyChangeAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
-			final Object target, final Method targetMethod) {
+			final Object target, final Method targetMethod, final AnnotatedOverriddenMethodsGuard guard) {
 
 		if (annotation instanceof OnPropertyChange) {
 			final OnPropertyChange propertyChangeAnnotation = ((OnPropertyChange) annotation);

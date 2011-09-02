@@ -71,19 +71,19 @@ public final class RidgetContainerAnnotationProcessor {
 	 *            the object whose annotation method should be handled
 	 */
 	public void processAnnotations(final IRidgetContainer ridgetContainer, final Object target) {
-		processAnnotations(ridgetContainer, target, target.getClass());
+		processAnnotations(ridgetContainer, target, target.getClass(), new AnnotatedOverriddenMethodsGuard());
 	}
 
 	private void processAnnotations(final IRidgetContainer ridgetContainer, final Object target,
-			final Class<?> targetClass) {
+			final Class<?> targetClass, final AnnotatedOverriddenMethodsGuard guard) {
 		if (targetClass == Object.class) {
 			return;
 		}
-		processAnnotations(ridgetContainer, target, targetClass.getSuperclass());
+		processAnnotations(ridgetContainer, target, targetClass.getSuperclass(), guard);
 
 		for (final Method targetMethod : targetClass.getDeclaredMethods()) {
 			for (final Annotation annotation : targetMethod.getAnnotations()) {
-				handle(annotation, ridgetContainer, target, targetMethod);
+				handle(annotation, ridgetContainer, target, targetMethod, guard);
 			}
 		}
 	}
@@ -95,12 +95,14 @@ public final class RidgetContainerAnnotationProcessor {
 	 * @param ridgetContainer
 	 * @param target
 	 * @param targetMethod
+	 * 
+	 * @since 4.0
 	 */
 	public void handle(final Annotation annotation, final IRidgetContainer ridgetContainer, final Object target,
-			final Method targetMethod) {
+			final Method targetMethod, final AnnotatedOverriddenMethodsGuard guard) {
 		final IRidgetContainerAnnotationHandler handler = handlerMap.get(annotation.annotationType());
-		if (handler != null) {
-			handler.handleAnnotation(annotation, ridgetContainer, target, targetMethod);
+		if (handler != null && guard.add(annotation, targetMethod)) {
+			handler.handleAnnotation(annotation, ridgetContainer, target, targetMethod, guard);
 		}
 	}
 

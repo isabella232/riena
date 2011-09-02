@@ -18,6 +18,7 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.annotation.OnClick;
 import org.eclipse.riena.ui.ridgets.annotation.handler.AbstractRidgetContainerAnnotationHandler;
+import org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMethodsGuard;
 import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 
 /**
@@ -28,7 +29,7 @@ import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 public class ClickAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
-			final Object target, final Method targetMethod) {
+			final Object target, final Method targetMethod, final AnnotatedOverriddenMethodsGuard guard) {
 
 		if (annotation instanceof OnClick) {
 			final IRidget ridget = getRidget(annotation, targetMethod, ridgetContainer,

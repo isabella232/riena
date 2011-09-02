@@ -14,6 +14,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMethodsGuard;
 
 /**
  * Handler for method annotations in {@link IRidgetContainer}s. The handler is
@@ -40,7 +41,12 @@ public interface IRidgetContainerAnnotationHandler {
 	 *            receiver
 	 * @param targetMethod
 	 *            the annotated method
+	 * @param guard
+	 *            this is used to guard for creating multiple listeners for
+	 *            overridden methods. This usually can be ignored, it is only
+	 *            required for nested annotations.
+	 * @since 4.0
 	 */
-	void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer, final Object target,
-			final Method targetMethod);
+	void handleAnnotation(Annotation annotation, IRidgetContainer ridgetContainer, Object target, Method targetMethod,
+			AnnotatedOverriddenMethodsGuard guard);
 }

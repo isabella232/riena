@@ -18,6 +18,7 @@ import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISelectionObservable;
 import org.eclipse.riena.ui.ridgets.annotation.OnSelectionChange;
 import org.eclipse.riena.ui.ridgets.annotation.handler.AbstractRidgetContainerAnnotationHandler;
+import org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMethodsGuard;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 
 /**
@@ -28,7 +29,7 @@ import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 public class SelectionChangedAnnotationHandler extends AbstractRidgetContainerAnnotationHandler {
 
 	public void handleAnnotation(final Annotation annotation, final IRidgetContainer ridgetContainer,
-			final Object target, final Method targetMethod) {
+			final Object target, final Method targetMethod, final AnnotatedOverriddenMethodsGuard guard) {
 
 		if (annotation instanceof OnSelectionChange) {
 			final IRidget ridget = getRidget(annotation, targetMethod, ridgetContainer,
