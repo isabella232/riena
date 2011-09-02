@@ -92,6 +92,10 @@ public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidge
 		return title;
 	}
 
+	public String getIcon() {
+		return icon;
+	}
+
 	@Override
 	public Shell getUIControl() {
 		return (Shell) super.getUIControl();

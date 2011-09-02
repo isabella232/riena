@@ -28,15 +28,16 @@ public interface IWindowRidget extends IRidget {
 	 * If a default action is available and enabled, it will be invoked whenever
 	 * the user presses ENTER within the window.
 	 * <p>
-	 * Activation / deactivation of the mapping can be changed via the lifecycle
-	 * methods of the returned {@link IDefaultActionManager} instance. The
-	 * caller (typically the controller) may be responsible for activation,
-	 * deactivation and disposal of the returned {@link IDefaultActionManager}
-	 * instance. <b>The exact requirements may vary between implementations</b>.
-	 * Consult the javadoc of the implementation.
+	 * Activation / deactivation of the mapping can be changed via the
+	 * life-cycle methods of the returned {@link IDefaultActionManager}
+	 * instance. The caller (typically the controller) may be responsible for
+	 * activation, deactivation and disposal of the returned
+	 * {@link IDefaultActionManager} instance. <b>The exact requirements may
+	 * vary between implementations</b>. Consult the javadoc of the
+	 * implementation.
 	 * <p>
 	 * Note: the algorithm stops at the first match. It will check the most
-	 * specific (innermost) ridget first and check the most general (outremost)
+	 * specific (innermost) ridget first and check the most general (outermost)
 	 * ridget last.
 	 * 
 	 * @param focusRidget
@@ -112,10 +113,28 @@ public interface IWindowRidget extends IRidget {
 	void setIcon(String icon);
 
 	/**
-	 * Sets the window-title of the Ridget.
+	 * Returns the icon of the title bar.
+	 * 
+	 * @return icon
+	 * 
+	 * @since 4.0
+	 */
+	String getIcon();
+
+	/**
+	 * Sets the window-title.
 	 * 
 	 * @param title
 	 *            a non null String
 	 */
 	void setTitle(String title);
+
+	/**
+	 * Returns the window-title.
+	 * 
+	 * @return text of title
+	 * 
+	 * @since 4.0
+	 */
+	String getTitle();
 }
