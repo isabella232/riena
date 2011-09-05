@@ -2,6 +2,7 @@
 <?eclipse version="3.2"?>
 <plugin>
    <extension-point id="processDetailComparator" name="PrecessDetail comparator" schema="schema/processDetailComparator.exsd"/>
+   <extension-point id="renderDisabledStateWidgets" name="renderDisabledStateWidgets" schema="schema/renderDisabledStateWidgets.exsd"/>
    <extension
          point="org.eclipse.riena.ui.swt.lnfMarkerSupport">
       <markerSupport
@@ -12,6 +13,18 @@
             class="org.eclipse.riena.ui.ridgets.swt.BorderMarkerSupport"
             id="borderMarkerSupport">
       </markerSupport>
+   </extension>
+   <extension
+         point="org.eclipse.riena.ui.ridgets.swt.renderDisabledStateWidgets">
+      <widget
+            class="org.eclipse.swt.widgets.Button">
+      </widget>
+      <widget
+            class="org.eclipse.riena.ui.swt.ImageButton">
+      </widget>
+      <widget
+            class="org.eclipse.swt.widgets.Label">
+      </widget>
    </extension>
 
 </plugin>

@@ -13,14 +13,14 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import java.util.EventListener;
 
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
+import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.MarkerSupport;
-import org.eclipse.riena.ui.swt.ImageButton;
 import org.eclipse.riena.ui.swt.facades.SWTFacade;
 
 /**
@@ -34,9 +34,11 @@ public class DisabledMarkerVisualizer {
 	private static boolean isRCP = SWTFacade.isRCP();
 	// the ridget
 	private final IRidget ridget;
+	private static IRenderDisabledStateWidget[] renderDisabledStateWidgets;
 
 	public DisabledMarkerVisualizer(final IRidget ridget) {
 		this.ridget = ridget;
+		Wire.instance(this).andStart();
 	}
 
 	/**
@@ -106,12 +108,22 @@ public class DisabledMarkerVisualizer {
 		}
 	}
 
+	/**
+	 * Checks if the given control/widget renders the disabled state by its own.
+	 * 
+	 * @param control
+	 *            control to check
+	 * @return {@code true} don't render disabled state with
+	 *         {@link DisabledMarkerVisualizer}, {@code false} use
+	 *         {@link DisabledMarkerVisualizer} to render disabled state
+	 */
 	protected boolean dontAddDisabledPainter(final Control control) {
-		if (control instanceof ImageButton) {
-			return true;
-		}
-		if (control instanceof Button) {
-			return true;
+		if (renderDisabledStateWidgets != null) {
+			for (final IRenderDisabledStateWidget renderDisabledStateWidget : renderDisabledStateWidgets) {
+				if (control.getClass().equals(renderDisabledStateWidget.getWidgetClass())) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -125,6 +137,11 @@ public class DisabledMarkerVisualizer {
 			result[1] = ReflectionUtils.getHidden(parent, "arrow"); //$NON-NLS-1$
 		}
 		return result;
+	}
+
+	@InjectExtension
+	public static void update(final IRenderDisabledStateWidget[] renderDisabledStateWidgets) {
+		DisabledMarkerVisualizer.renderDisabledStateWidgets = renderDisabledStateWidgets;
 	}
 
 }

@@ -15,11 +15,9 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
-import org.eclipse.swt.widgets.Label;
 
 import org.eclipse.riena.ui.swt.ChoiceComposite;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -42,13 +40,10 @@ public final class DisabledPainter implements PaintListener {
 	public void paintControl(final PaintEvent e) {
 		final GC gc = e.gc;
 		final Control control = (Control) e.widget;
-		if (control instanceof Button || control instanceof Label) {
-			return;
-		}
 		final Rectangle bounds = control.getBounds();
 
 		// fill basic background to draw over later
-		if (!(control instanceof Label || control instanceof Combo || control instanceof DateTime)) {
+		if (!(control instanceof Combo || control instanceof DateTime)) {
 			fillDisabledBackground(gc, bounds);
 		}
 
