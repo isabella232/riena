@@ -14,10 +14,12 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.eclipse.riena.internal.core.test.RienaTestCase;
+import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 
 /**
  * Test the {@code AnnotatedOverriddenMethodsGuard}.
  */
+@NonUITestCase
 public class AnnotatedOverriddenMethodsGuardTest extends RienaTestCase {
 
 	private AnnotatedOverriddenMethodsGuard guard = null;
