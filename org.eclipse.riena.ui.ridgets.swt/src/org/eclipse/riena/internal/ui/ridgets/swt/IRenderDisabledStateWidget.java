@@ -17,7 +17,7 @@ import org.eclipse.riena.core.injector.extension.MapName;
 
 /**
  * Extension to configure all the widgets that render the disabled state by
- * there own.
+ * their own.
  */
 @ExtensionInterface(id = "renderDisabledStateWidgets")
 public interface IRenderDisabledStateWidget {
