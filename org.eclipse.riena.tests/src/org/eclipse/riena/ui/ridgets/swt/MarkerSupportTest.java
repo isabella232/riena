@@ -23,7 +23,6 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -31,7 +30,6 @@ import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
-import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ICustomMarker;
@@ -122,9 +120,9 @@ public class MarkerSupportTest extends RienaTestCase {
 	public void testDisabledMarker() throws Exception {
 		final DefaultRealm realm = new DefaultRealm();
 		try {
-			final Label control = new Label(shell, SWT.NONE);
+			final Text control = new Text(shell, SWT.NONE);
 
-			final LabelRidget ridget = new LabelRidget();
+			final TextRidget ridget = new TextRidget();
 			ridget.setUIControl(control);
 			final BasicMarkerSupport msup = ReflectionUtils.invokeHidden(ridget, "createMarkerSupport");
 			final Object visualizer = ReflectionUtils

@@ -145,14 +145,15 @@ public class DisabledMarkerVisualizerTest extends RienaTestCase {
 		final Button button = UIControlsFactory.createButton(shell, "OK"); //$NON-NLS-1$
 		final Label label = UIControlsFactory.createLabel(shell, "Text"); //$NON-NLS-1$
 		final ImageButton imageButton = UIControlsFactory.createImageButton(shell, SWT.NONE);
+		IRenderDisabledStateWidget[] renderDisabledStateWidgets = new IRenderDisabledStateWidget[] {};
+		MyDisabledMarkerVisualizer.update(renderDisabledStateWidgets);
 		assertFalse(visualizer.dontAddDisabledPainter(text));
 		assertFalse(visualizer.dontAddDisabledPainter(button));
 		assertFalse(visualizer.dontAddDisabledPainter(label));
 		assertFalse(visualizer.dontAddDisabledPainter(imageButton));
 
-		final IRenderDisabledStateWidget[] renderDisabledStateWidgets = new IRenderDisabledStateWidget[] {
-				new MyRenderDisabledStateWidget(Button.class), new MyRenderDisabledStateWidget(Label.class),
-				new MyRenderDisabledStateWidget(ImageButton.class) };
+		renderDisabledStateWidgets = new IRenderDisabledStateWidget[] { new MyRenderDisabledStateWidget(Button.class),
+				new MyRenderDisabledStateWidget(Label.class), new MyRenderDisabledStateWidget(ImageButton.class) };
 		MyDisabledMarkerVisualizer.update(renderDisabledStateWidgets);
 		assertFalse(visualizer.dontAddDisabledPainter(text));
 		assertTrue(visualizer.dontAddDisabledPainter(button));
