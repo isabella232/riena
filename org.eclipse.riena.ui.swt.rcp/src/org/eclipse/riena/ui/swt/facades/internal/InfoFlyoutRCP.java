@@ -98,7 +98,7 @@ public class InfoFlyoutRCP extends InfoFlyout {
 
 	@Override
 	public void openFlyout() {
-		if (!isAnimationGoingOn()) {
+		if (!isAnimationGoingOn() && !shell.isDisposed()) {
 			latch = new CountDownLatch(1);
 			updateIconAndMessage();
 			updateLocation();
