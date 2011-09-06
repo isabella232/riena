@@ -14,6 +14,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Locale;
 
+import org.eclipse.core.databinding.conversion.IConverter;
+import org.eclipse.core.runtime.IStatus;
+
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.internal.ui.swt.test.TestUtils;
@@ -262,4 +265,43 @@ public class ValidRangeTest extends RienaTestCase {
 		assertTrue(rule.validate(value).isOK());
 	}
 
+	public void testDefaultErrorMessageConversionDouble() {
+		final double min = 1000D;
+		final double max = 10000000D;
+		final ValidRange rule = createRange(min, max);
+		final IStatus validate = rule.validate("10.000.000,01");
+		assertFalse(validate.isOK());
+		assertEquals("Value '10.000.000,01' out of range: [1.000..10.000.000].", validate.getMessage());
+	}
+
+	public void testDefaultErrorMessageConversionInteger() {
+		final int min = 1000;
+		final int max = 10000000;
+		final ValidRange rule = createRange(min, max);
+		final IStatus validate = rule.validate("10.000.000,01");
+		assertFalse(validate.isOK());
+		assertEquals("Value '10.000.000,01' out of range: [1.000..10.000.000].", validate.getMessage());
+	}
+
+	public void testCustomErrorMessageConversionInteger() {
+		final int min = 1;
+		final int max = 10;
+		final ValidRange rule = new ValidRange(min, max, new IConverter() {
+
+			public final Object convert(final Object fromObject) {
+				return fromObject.toString();
+			}
+
+			public Object getFromType() {
+				return Integer.class;
+			}
+
+			public Object getToType() {
+				return String.class;
+			}
+		});
+		final IStatus validate = rule.validate("11");
+		assertFalse(validate.isOK());
+		assertEquals("Value '11' out of range: [1..10].", validate.getMessage());
+	}
 }

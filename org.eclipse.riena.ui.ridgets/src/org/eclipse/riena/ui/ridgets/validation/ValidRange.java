@@ -19,6 +19,8 @@ import java.util.Locale;
 
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.databinding.conversion.IConverter;
+import org.eclipse.core.databinding.conversion.NumberToStringConverter;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -48,8 +50,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	private Number min;
 	private Number max;
 
-	//	private BigDecimal min;
-	//	private BigDecimal max;
+	private final IConverter converter;
 
 	/**
 	 * Constructs a range check rule for the default locate, with the range set
@@ -81,7 +82,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	}
 
 	/**
-	 * Constructs a range check rule for the given locale, with the ragne set to
+	 * Constructs a range check rule for the given locale, with the range set to
 	 * (min, max).
 	 * 
 	 * @param min
@@ -100,6 +101,60 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 	 *             the same class.
 	 */
 	public ValidRange(final Number min, final Number max, final Locale locale) {
+		this(min, max, locale, null);
+	}
+
+	/**
+	 * Constructs a range check rule for the given locale, with the range set to
+	 * (min, max).
+	 * 
+	 * @param min
+	 *            the minimum value
+	 * @param max
+	 *            the maximum value
+	 * @param converter
+	 *            a IConverter capable of converting the range min and max
+	 *            numbers to a string (only used for the error reporting)
+	 * 
+	 * @throws some_kind_of_runtime_exception
+	 *             if <tt>min &gt;= max</tt>.
+	 * @throws some_kind_of_runtime_exception
+	 *             if a parameter is <tt>null</tt>.
+	 * @throws some_kind_of_runtime_exception
+	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to
+	 *             the same class.
+	 * 
+	 * @since 4.0
+	 */
+	public ValidRange(final Number min, final Number max, final IConverter converter) {
+		this(min, max, Locale.getDefault(), converter);
+	}
+
+	/**
+	 * Constructs a range check rule for the given locale, with the range set to
+	 * (min, max).
+	 * 
+	 * @param min
+	 *            the minimum value
+	 * @param max
+	 *            the maximum value
+	 * @param locale
+	 *            the Locale to use for number formatting; never null.
+	 * @param converter
+	 *            a IConverter capable of converting the range min and max
+	 *            numbers to a string (only used for the error reporting)
+	 * 
+	 * @throws some_kind_of_runtime_exception
+	 *             if <tt>min &gt;= max</tt>.
+	 * @throws some_kind_of_runtime_exception
+	 *             if a parameter is <tt>null</tt>.
+	 * @throws some_kind_of_runtime_exception
+	 *             if a parameter <tt>min</tt> and <tt>max</tt> do not belong to
+	 *             the same class.
+	 * 
+	 * @since 4.0
+	 */
+	public ValidRange(final Number min, final Number max, final Locale locale, final IConverter converter) {
 		super(true, locale);
 		Assert.isNotNull(min, "parameter min must not be null"); //$NON-NLS-1$
 		Assert.isNotNull(max, "parameter max must not be null"); //$NON-NLS-1$
@@ -110,6 +165,7 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 		Assert.isLegal(toBigDecimal(this.min).compareTo(toBigDecimal(this.max)) <= 0,
 				"min " + this.min + " must be smaller or equal max " //$NON-NLS-1$ //$NON-NLS-2$
 						+ this.max);
+		this.converter = converter;
 	}
 
 	/**
@@ -149,18 +205,24 @@ public class ValidRange extends ValidDecimal implements IExecutableExtension {
 			}
 		}
 		if (validateRange(currentValue)) {
-			final String message = NLS.bind(Messages.ValidRange_error_outOfRange,
-					new Object[] { currentValue, min, max });
+			final String message = NLS.bind(Messages.ValidRange_error_outOfRange, new Object[] { convert(currentValue),
+					convert(min), convert(max) });
 			return ValidationRuleStatus.error(true, message);
 		}
 		return ValidationRuleStatus.ok();
+	}
+
+	private String convert(final Number number) {
+		if (converter == null) {
+			return (String) NumberToStringConverter.fromBigDecimal().convert(toBigDecimal(number));
+		}
+		return (String) converter.convert(number);
 	}
 
 	/**
 	 * @since 3.0
 	 */
 	protected boolean validateRange(final BigDecimal value) {
-
 		return value.compareTo(toBigDecimal(min, value)) < 0 || value.compareTo(toBigDecimal(max, value)) > 0;
 	}
 
