@@ -432,6 +432,13 @@
    </extension>
    <extension
          point="org.eclipse.ui.commands">
+         
+      <command
+         defaultHandler="org.eclipse.riena.example.client.handler.FocusFinderHandler"
+         id="de.compeople.scp.example.client.findfocus.command"
+         name="FindFocus">
+   	  </command>
+         
       <command
             id="org.eclipse.riena.example.client.exitCommand"
             name="Exit">
@@ -768,6 +775,10 @@
             lnfkey="ModuleGroup.renderer">
       </renderer>
    </extension>
+   
+   
+   
+   
    <extension
          point="org.eclipse.ui.bindings">
       <!-- example showing how to define own key bindings. See also: SwtExampleApplication#getKeyScheme() -->
@@ -776,6 +787,15 @@
             name="Riena Client Key Bindings"
             parentId="org.eclipse.riena.ui.defaultBindings">
       </scheme>
+      
+      
+      <key
+            commandId="de.compeople.scp.example.client.findfocus.command"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.riena.example.client.scheme"
+            sequence="F10">
+      </key>
+      
       <key
             commandId="org.eclipse.riena.example.client.exitCommand"
             contextId="org.eclipse.ui.contexts.window"
