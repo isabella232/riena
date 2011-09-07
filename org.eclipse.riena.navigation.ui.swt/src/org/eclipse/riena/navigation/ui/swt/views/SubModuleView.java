@@ -426,6 +426,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 					((IMarkableRidget) ridget).updateMarkers();
 				}
 			}
+			getController().restoreFocusRequestFromRidget(getController().getRidgets());
 		}
 	}
 

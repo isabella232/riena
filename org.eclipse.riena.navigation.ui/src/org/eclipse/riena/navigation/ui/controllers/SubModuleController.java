@@ -174,7 +174,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * <p>
 	 * If the value is null or if the ridget cannot receive the focus (because
 	 * it is not enabled / not visible / not focusable) then the first
-	 * ridget/widget that can receive the focus will ge the focus (i.e. same
+	 * ridget/widget that can receive the focus will get the focus (i.e. same
 	 * behavior as in standard RCP).
 	 * 
 	 * @param ridget
@@ -203,7 +203,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @param collection
 	 *            the collection to check
 	 */
-	private void restoreFocusRequestFromRidget(final Collection<? extends IRidget> collection) {
+	public void restoreFocusRequestFromRidget(final Collection<? extends IRidget> collection) {
 		for (final IRidget ridget : collection) {
 			if (ridget instanceof IComplexRidget) {
 				restoreFocusRequestFromRidget(((IComplexRidget) ridget).getRidgets());

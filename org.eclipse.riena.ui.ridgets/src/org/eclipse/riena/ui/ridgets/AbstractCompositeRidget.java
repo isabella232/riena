@@ -146,12 +146,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	public boolean isFocusable() {
-		for (final IRidget ridget : getRidgets()) {
-			if (ridget.isFocusable()) {
-				return true;
-			}
-		}
-		return false;
+		return null != getFirstFocusableRidget();
 	}
 
 	public boolean isVisible() {
@@ -169,9 +164,30 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	}
 
 	public void requestFocus() {
-		if (!getRidgets().isEmpty()) {
-			getRidgets().iterator().next().requestFocus();
+		final IRidget firstFocusableRidget = getFirstFocusableRidget();
+		if (null != firstFocusableRidget) {
+			firstFocusableRidget.requestFocus();
 		}
+	}
+
+	private IRidget getFirstFocusableRidget() {
+		for (final IRidget ridget : getRidgets()) {
+			if (ridget.isFocusable() && ridget.isEnabled()) {
+				if (ridget instanceof IMarkableRidget && ((IMarkableRidget) ridget).isOutputOnly()) {
+					continue;
+				}
+
+				if (ridget instanceof ILabelRidget) {
+					continue;
+				}
+
+				if (ridget instanceof IStatusMeterRidget) {
+					continue;
+				}
+				return ridget;
+			}
+		}
+		return null;
 	}
 
 	public void setEnabled(final boolean enabled) {

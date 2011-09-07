@@ -425,16 +425,37 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				updateDetails(editable);
 			}
 
-			// set focus to first ridget in detailsarea
-			final Collection<? extends IRidget> ridgets = detailRidgets.getRidgets();
-			if (!ridgets.isEmpty()) {
-				final IRidget[] array = ridgets.toArray(new IRidget[ridgets.size()]);
-				array[ridgets.size() - 1].requestFocus();
+			// set focus to first focusable ridget in detailsarea
+			if (!setFocusToFirstDetailsRidget()) {
+				getApplyButtonRidget().requestFocus();
 			}
 
 		} finally {
 			ignoreChanges = false;
 		}
+	}
+
+	/**
+	 * 
+	 */
+	private boolean setFocusToFirstDetailsRidget() {
+		final Collection<? extends IRidget> ridgets = detailRidgets.getRidgets();
+		final IRidget[] ridgetArray = ridgets.toArray(new IRidget[ridgets.size()]);
+
+		if (!ridgets.isEmpty()) {
+			for (int i = ridgetArray.length - 1; i >= 0; i--) {
+				final IRidget current = ridgetArray[i];
+				if (current.isEnabled() && current.isFocusable()) {
+					if (current instanceof IMarkableRidget && ((IMarkableRidget) current).isOutputOnly()) {
+						continue;
+					}
+
+					current.requestFocus();
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public final void updateApplyButton() {
