@@ -16,8 +16,9 @@
             <meta.element />
          </appInfo>
          <documentation>
-            Allows to define call hooks (instances of ICallHook) that get be called before the actual service call and after it. These hooks will be called on theclient side.
+            Allows to define call hooks (instances of ICallHook) which will be called before the actual service call and after it. These hooks will be called on the client side.
 The sequence in which those hooks get be called can be defined with the attributes preHooks and postHooks. Be very careful with this configuration possibility because it can lead to not resolvable tasks.
+However, the call hooks which have been defined as OSGi services (old configuration model) will not be ordered!
          </documentation>
       </annotation>
       <complexType>
@@ -111,7 +112,6 @@ The sequence in which those hooks get be called can be defined with the attribut
          &lt;callHook name=&quot;basic-auth&quot; class=&quot;org.eclipse.riena.security.common.BasicAuthenticationCallHook&quot;/&gt;
    &lt;/extension&gt;
 &lt;/plugin&gt;
-
       </documentation>
    </annotation>
 

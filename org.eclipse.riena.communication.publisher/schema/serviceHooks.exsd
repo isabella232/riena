@@ -16,8 +16,9 @@
             <meta.element />
          </appinfo>
          <documentation>
-            Allows to define service hooks (instances of IServiceHook) that get be called before the actual service call and after it. These hooks will be called on the server side.
+            Allows to define service hooks (instances of IServiceHook) which will be called before the actual service call and after it. These hooks will be called on the server side.
 The sequence in which those hooks get be called can be defined with the attributes preHooks and postHooks. Be very careful with this configuration possibility because it can lead to not resolvable tasks.
+However, the service hooks which have been defined as OSGi services (old configuration model) will not be ordered!
          </documentation>
       </annotation>
       <complexType>
@@ -111,7 +112,6 @@ The sequence in which those hooks get be called can be defined with the attribut
          &lt;serviceHook name=&quot;authorize&quot; class=&quot;de.compeople.scp.internal.security.server.AuthorizationServiceHook&quot;/&gt;
    &lt;/extension&gt;
 &lt;/plugin&gt;
-
       </documentation>
    </annotation>
 
