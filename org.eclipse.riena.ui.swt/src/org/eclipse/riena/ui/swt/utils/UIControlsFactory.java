@@ -955,7 +955,28 @@ public class UIControlsFactory {
 	 * @wbp.factory.parameter.source bindingId "myMasterDetailId"
 	 */
 	public static MasterDetailsComposite createMasterDetails(final Composite parent, final String bindingId) {
-		return bind(registerConstruction(new MasterDetailsComposite(parent, SWT.NONE)), bindingId);
+		return bind(createMasterDetails(parent), bindingId);
+	}
+
+	/**
+	 * Create a {@link MasterDetailsComposite} control with the SWT.NONE style.
+	 * 
+	 * @param parent
+	 *            the parent composite; never null
+	 * @param bindingId
+	 *            the binding property; never null; must not be empty. The given
+	 *            value will also be assigned to the Ridget that is paired to
+	 *            this control.
+	 * @param orientation
+	 *            SWT.TOP or SWT.BOTTOM, to create the details area at the top
+	 *            or bottom part of the composite
+	 * 
+	 * @wbp.factory.parameter.source bindingId "myMasterDetailId"
+	 * @since 4.0
+	 */
+	public static MasterDetailsComposite createMasterDetails(final Composite parent, final int orientation,
+			final String bindingId) {
+		return bind(registerConstruction(new MasterDetailsComposite(parent, SWT.NONE, orientation)), bindingId);
 	}
 
 	/**
