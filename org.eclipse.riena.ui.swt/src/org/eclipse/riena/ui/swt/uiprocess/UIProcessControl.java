@@ -10,13 +10,17 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.uiprocess;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.equinox.log.Logger;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
@@ -25,6 +29,8 @@ import org.eclipse.riena.ui.swt.utils.IPropertyNameProvider;
  * Control for showing a progress or process info window.
  */
 public class UIProcessControl implements IProgressControl, IPropertyNameProvider {
+
+	private final static Logger logger = Log4r.getLogger(UIProcessControl.class);
 
 	private static final int UPDATE_DELAY = 200;
 
@@ -183,7 +189,7 @@ public class UIProcessControl implements IProgressControl, IPropertyNameProvider
 			try {
 				Thread.sleep(UPDATE_DELAY);
 			} catch (final InterruptedException e) {
-				e.printStackTrace();
+				logger.log(LogService.LOG_ERROR, e.getMessage(), e);
 			}
 		}
 	}
