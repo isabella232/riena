@@ -181,7 +181,8 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		final boolean wire = !(method.isAnnotationPresent(DoNotWireExecutable.class) || Boolean
 				.getBoolean(ExtensionInjector.RIENA_EXTENSIONS_DONOTWIRE_SYSTEM_PROPERTY));
 		if (method.isAnnotationPresent(CreateLazy.class)) {
-			return Result.noCache(LazyExecutableExtension.newInstance(configurationElement, attributeName, wire));
+			return Result.noCache(LazyExecutableExtension.newInstance(returnType, configurationElement, attributeName,
+					wire));
 		}
 		final Object result = configurationElement.createExecutableExtension(attributeName);
 		if (wire) {

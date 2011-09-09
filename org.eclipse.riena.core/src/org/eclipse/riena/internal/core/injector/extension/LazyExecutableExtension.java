@@ -16,8 +16,8 @@ import java.lang.reflect.Proxy;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
 
-import org.eclipse.core.runtime.ContributorFactoryOSGi;
 import org.eclipse.core.runtime.IConfigurationElement;
 
 import org.eclipse.riena.core.wire.Wire;
@@ -28,70 +28,53 @@ import org.eclipse.riena.internal.core.Activator;
  */
 final class LazyExecutableExtension implements InvocationHandler {
 
+	private final BundleContext bundleContext;
 	private final IConfigurationElement configurationElement;
 	private final String attributeName;
 	private final boolean wire;
 	private volatile Object delegate;
 
-	/**
-	 * @param configurationElement
-	 * @param attributeName
-	 * @param wire
-	 * @return
-	 */
-	static Object newInstance(final IConfigurationElement configurationElement, final String attributeName,
-			final boolean wire) {
-		final String className = configurationElement.getAttribute(attributeName);
-		if (className == null) {
-			return null;
-		}
-		final Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
-		if (bundle == null) {
-			throw new IllegalStateException("Could not resolve bundle for configuration element " //$NON-NLS-1$
-					+ configurationElement.getName());
-		}
-		try {
-			final Class<?> clazz = bundle.loadClass(className);
-			final Class<?>[] interfaces = clazz.getInterfaces();
-			if (interfaces.length == 0) {
-				throw new IllegalStateException("Executable extension " + className + " within configuration element " //$NON-NLS-1$ //$NON-NLS-2$
-						+ configurationElement.getName() + " does not have any interfaces, but they are required."); //$NON-NLS-1$
-			}
-			return Proxy.newProxyInstance(clazz.getClassLoader(), interfaces, new LazyExecutableExtension(
-					configurationElement, attributeName, wire));
-		} catch (final ClassNotFoundException e) {
-			throw new IllegalStateException("Could not load class " + className + " from bundle " //$NON-NLS-1$ //$NON-NLS-2$
-					+ bundle.getSymbolicName(), e);
-		}
+	static Object newInstance(final Class<?> returnType, final IConfigurationElement configurationElement,
+			final String attributeName, final boolean wire) {
+		return Proxy.newProxyInstance(returnType.getClassLoader(), new Class[] { returnType },
+				new LazyExecutableExtension(getBundleContext(returnType), configurationElement, attributeName, wire));
 	}
 
-	private LazyExecutableExtension(final IConfigurationElement configurationElement, final String attributeName,
-			final boolean wire) {
+	private LazyExecutableExtension(final BundleContext bundleContext,
+			final IConfigurationElement configurationElement, final String attributeName, final boolean wire) {
+		this.bundleContext = bundleContext;
 		this.configurationElement = configurationElement;
 		this.attributeName = attributeName;
 		this.wire = wire;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
-	 * java.lang.reflect.Method, java.lang.Object[])
-	 */
 	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-		synchronized (this) {
-			if (delegate == null) {
-				delegate = configurationElement.createExecutableExtension(attributeName);
-				if (wire) {
-					// Try wiring the created executable extension
-					final Bundle bundle = ContributorFactoryOSGi.resolve(configurationElement.getContributor());
-					final BundleContext context = bundle != null ? bundle.getBundleContext() : Activator.getDefault()
-							.getContext();
-					Wire.instance(delegate).andStart(context);
+		// Double-check idiom for lazy initialization of instance fields (Joshua Bloch, Effective Java, Item 71)
+		Object temp = delegate;
+		if (temp == null) {
+			synchronized (this) {
+				temp = delegate;
+				if (temp == null) {
+					final Object temp2 = configurationElement.createExecutableExtension(attributeName);
+					if (wire) {
+						Wire.instance(temp2).andStart(bundleContext);
+					}
+					delegate = temp = temp2;
 				}
 			}
 		}
 		return method.invoke(delegate, args);
+	}
+
+	private static BundleContext getBundleContext(final Class<?> returnType) {
+		final Bundle bundle = FrameworkUtil.getBundle(returnType);
+		if (bundle != null) {
+			final BundleContext bundleContext = bundle.getBundleContext();
+			if (bundleContext != null) {
+				return bundleContext;
+			}
+		}
+		return Activator.getDefault().getContext();
 	}
 
 }
