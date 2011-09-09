@@ -251,7 +251,7 @@ public class Orderer<T> {
 		}
 
 		private void fillOrder(final List<T> result) {
-			if (result.contains(object)) {
+			if (contains(result, object)) {
 				return;
 			}
 			for (final Node<T> dependency : dependencies) {
@@ -260,6 +260,25 @@ public class Orderer<T> {
 			if (object != null) {
 				result.add(object);
 			}
+		}
+
+		/**
+		 * Avoid {@code List.contains()} because that calls {@code equals} which
+		 * in case that the object is a dynamic proxy implementing a lazy
+		 * creation pattern this might cause the object to be created which
+		 * might be too early.
+		 * 
+		 * @param result
+		 * @param object
+		 * @return
+		 */
+		private boolean contains(final List<T> result, final T object) {
+			for (final T o : result) {
+				if (o == object) {
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 
