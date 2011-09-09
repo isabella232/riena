@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.communication.core.factory;
 
 import org.eclipse.riena.communication.core.hooks.ICallHook;
+import org.eclipse.riena.core.injector.extension.CreateLazy;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 
@@ -48,6 +49,7 @@ public interface ICallHookExtension {
 	 * 
 	 * @return the call hook
 	 */
+	@CreateLazy
 	@MapName("class")
 	ICallHook getCallHook();
 }

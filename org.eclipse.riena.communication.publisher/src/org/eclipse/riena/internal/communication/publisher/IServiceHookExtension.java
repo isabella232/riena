@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.communication.publisher;
 
 import org.eclipse.riena.communication.core.hooks.IServiceHook;
+import org.eclipse.riena.core.injector.extension.CreateLazy;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
 
@@ -48,6 +49,7 @@ public interface IServiceHookExtension {
 	 * 
 	 * @return the service hook
 	 */
+	@CreateLazy
 	@MapName("class")
 	IServiceHook getServiceHook();
 }
