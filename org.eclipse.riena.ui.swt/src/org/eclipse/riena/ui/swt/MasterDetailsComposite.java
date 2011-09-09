@@ -35,18 +35,22 @@ public class MasterDetailsComposite extends AbstractMasterDetailsComposite {
 
 	/**
 	 * Creates a master detail composite with the given style and SWT.BOTTOM
-	 * orientation. See parent class for details.
+	 * orientation.
+	 * 
+	 * See parent class for details.
 	 * 
 	 * @see AbstractMasterDetailsComposite#AbstractMasterDetailsComposite(Composite,
-	 *      int, int)
+	 *      int)
 	 */
 	public MasterDetailsComposite(final Composite parent, final int style) {
 		this(parent, style, SWT.BOTTOM);
 	}
 
 	/**
-	 * Creates a master detail composite with the given style and SWT.BOTTOM
-	 * orientation. See parent class for details.
+	 * Create an instance of MasterDetailsComposite with the details area at the
+	 * top or bottom.
+	 * 
+	 * See parent class for details.
 	 * 
 	 * @see AbstractMasterDetailsComposite#AbstractMasterDetailsComposite(Composite,
 	 *      int, int)
