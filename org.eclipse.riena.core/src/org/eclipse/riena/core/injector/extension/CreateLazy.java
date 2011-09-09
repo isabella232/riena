@@ -17,9 +17,13 @@ import java.lang.annotation.Target;
 
 /**
  * Marks a <i>creator</i> method so that the returned instance is a proxy
- * instead of the real object. The real object will be created lazily on demand.<br>
+ * instead of the real object. The real object will be created lazily on demand,
+ * i.e. its first usage.<br>
+ * The first usage can also be generated while debugging because the debugger
+ * calls toString() on it!! This might result in undesired side effects.
+ * <p>
  * <b>Note:</b> This requires that the executable extension object implements an
- * interface that is compatible to the return type of the <i>create</i> method.
+ * interface that is compatible to the return type of the <i>create</i> method.<br>
  * 
  * <pre>
  * &#064;CreateLazy()
