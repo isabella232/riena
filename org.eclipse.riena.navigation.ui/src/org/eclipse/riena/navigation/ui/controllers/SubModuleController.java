@@ -202,6 +202,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * 
 	 * @param collection
 	 *            the collection to check
+	 * @since 4.0
 	 */
 	public void restoreFocusRequestFromRidget(final Collection<? extends IRidget> collection) {
 		for (final IRidget ridget : collection) {
