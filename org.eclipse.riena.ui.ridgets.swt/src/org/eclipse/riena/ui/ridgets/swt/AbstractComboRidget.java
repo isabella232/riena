@@ -50,6 +50,8 @@ import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.databinding.ConverterFactory;
+import org.eclipse.riena.ui.ridgets.holder.SelectableListHolder;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.swt.nls.Messages;
@@ -270,6 +272,19 @@ public abstract class AbstractComboRidget extends AbstractSWTRidget implements I
 		this.selectionValue = selectionValue;
 
 		bindUIControl();
+	}
+
+	/**
+	 * @since 4.0
+	 */
+	public void bindToModel(final SelectableListHolder<?> listHolder, final String renderMethodName) {
+		if (renderMethodName != null) {
+			final ConverterFactory<?, String> converterFactory = listHolder.getConverterFactory(renderMethodName);
+			setUIControlToModelConverter(converterFactory.createToFromConverter());
+			setModelToUIControlConverter(converterFactory.createFromToConverter());
+		}
+		bindToModel(listHolder, SelectableListHolder.PROP_LIST, listHolder.getGuessedType(), null, listHolder,
+				SelectableListHolder.SELECTION_PROPERTY);
 	}
 
 	public void bindToModel(final Object listHolder, final String listPropertyName,
