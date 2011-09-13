@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.ridgets.annotation.handler;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -77,10 +78,14 @@ public abstract class AbstractRidgetContainerAnnotationHandler implements IRidge
 			}
 
 			if (methodName.equals(listenerMethodName)) {
-				if (targetMethod.getParameterTypes().length == 0) {
-					return targetMethod.invoke(target);
-				} else {
-					return targetMethod.invoke(target, args);
+				try {
+					if (targetMethod.getParameterTypes().length == 0) {
+						return targetMethod.invoke(target);
+					} else {
+						return targetMethod.invoke(target, args);
+					}
+				} catch (final InvocationTargetException e) {
+					throw e.getTargetException();
 				}
 			}
 
