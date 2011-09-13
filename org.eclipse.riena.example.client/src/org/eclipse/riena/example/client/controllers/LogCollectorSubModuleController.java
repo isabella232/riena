@@ -13,7 +13,6 @@ package org.eclipse.riena.example.client.controllers;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.beans.common.StringBean;
-import org.eclipse.riena.beans.common.StringManager;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
@@ -24,14 +23,23 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.holder.SelectableEnumHolder;
 
 /**
  * Controller for the {@link ComboSubModuleView} example.
  */
 public class LogCollectorSubModuleController extends SubModuleController {
 
-	private final StringManager logLevels;
-	private final StringManager customLevels;
+	private enum LogLevel {
+		DEBUG, INFO, WARN, ERROR
+	};
+
+	private enum CustomLogLevel {
+		USAGE, STATS, SEND
+	};
+
+	private final SelectableEnumHolder<LogLevel> logLevels;
+	private final SelectableEnumHolder<CustomLogLevel> customLevels;
 	private final StringBean logMessageBean = new StringBean("Log text"); //$NON-NLS-1$
 	private final StringBean customMessageBean = new StringBean("Custom text"); //$NON-NLS-1$
 	private final StringBean exceptionBean = new StringBean(NullPointerException.class.getName());
@@ -49,16 +57,14 @@ public class LogCollectorSubModuleController extends SubModuleController {
 
 	public LogCollectorSubModuleController(final ISubModuleNode navigationNode) {
 		super(navigationNode);
-		logLevels = new StringManager("DEBUG", "INFO", "WARN", "ERROR"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		logLevels.setSelectedItem("DEBUG"); //$NON-NLS-1$
 
-		customLevels = new StringManager("USAGE", "STATS", "SEND"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		customLevels.setSelectedItem("USAGE"); //$NON-NLS-1$
+		logLevels = new SelectableEnumHolder<LogLevel>(LogLevel.class);
+		logLevels.setSelection(LogLevel.DEBUG);
+
+		customLevels = new SelectableEnumHolder<CustomLogLevel>(CustomLogLevel.class);
+		customLevels.setSelection(CustomLogLevel.USAGE);
 	}
 
-	/**
-	 * @see org.eclipse.riena.navigation.ui.controllers.SubModuleController#afterBind()
-	 */
 	@Override
 	public void afterBind() {
 		super.afterBind();
@@ -66,7 +72,7 @@ public class LogCollectorSubModuleController extends SubModuleController {
 	}
 
 	private void bindModels() {
-		logLevelCombo.bindToModel(logLevels, "items", String.class, null, logLevels, "selectedItem"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		logLevelCombo.bindToModel(logLevels, null);
 		logLevelCombo.updateFromModel();
 
 		logMessage.bindToModel(logMessageBean, "value"); //$NON-NLS-1$
@@ -75,7 +81,7 @@ public class LogCollectorSubModuleController extends SubModuleController {
 		logException.bindToModel(exceptionBean, "value"); //$NON-NLS-1$
 		logException.updateFromModel();
 
-		customLevelCombo.bindToModel(customLevels, "items", String.class, null, customLevels, "selectedItem"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		customLevelCombo.bindToModel(customLevels, null);
 		customLevelCombo.updateFromModel();
 
 		customMessage.bindToModel(customMessageBean, "value"); //$NON-NLS-1$
