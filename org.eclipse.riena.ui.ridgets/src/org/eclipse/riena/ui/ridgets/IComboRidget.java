@@ -14,6 +14,8 @@ import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 
+import org.eclipse.riena.ui.ridgets.holder.SelectableListHolder;
+
 /**
  * Ridget for a Combo (typically a read-only text widget with drop-down to
  * select from a list of choices).
@@ -76,6 +78,24 @@ public interface IComboRidget extends IMarkableRidget, ISelectionObservable {
 	 */
 	void bindToModel(Object listHolder, String listPropertyName, Class<? extends Object> rowClass,
 			String renderingMethod, Object selectionHolder, String selectionPropertyName);
+
+	/**
+	 * Binds the combo to the given list holder holding the objects and the
+	 * selection.
+	 * 
+	 * @param listHolder
+	 *            An object holding a list of values (objects) and the
+	 *            selection.
+	 * @param renderMethodName
+	 *            A zero-argument method name that is used to convert each model
+	 *            value into a String representation. This method MUST return an
+	 *            object that is not {@code null}. Additionally calling
+	 *            {@code toString()} on the result MUST NOT return {@code null}.<br/>
+	 *            If renderMethodName is {@code null}, then {@code toString()}
+	 *            is invoked on each model value by default.
+	 * @since 4.0
+	 */
+	void bindToModel(SelectableListHolder<?> listHolder, String renderMethodName);
 
 	/**
 	 * Returns the option that represents 'no selection'.
