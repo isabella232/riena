@@ -68,15 +68,13 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 *            a non-null class value
 	 */
 	public static boolean isBean(final Class<?> clazz) {
-		boolean result;
 		try {
 			// next line throws NoSuchMethodException, if no matching method found
 			clazz.getMethod("addPropertyChangeListener", PropertyChangeListener.class); //$NON-NLS-1$
-			result = true; // have bean
+			return true; // have bean
 		} catch (final NoSuchMethodException e) {
-			result = false; // have pojo
+			return false; // have pojo
 		}
-		return result;
 	}
 
 	/**
