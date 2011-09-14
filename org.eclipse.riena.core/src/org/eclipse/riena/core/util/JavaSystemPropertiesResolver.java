@@ -41,9 +41,6 @@ import org.eclipse.riena.core.RienaLocations;
  */
 public class JavaSystemPropertiesResolver implements IDynamicVariableResolver {
 
-	/*
-	 * {@inheritDoc}
-	 */
 	public String resolveValue(final IDynamicVariable variable, final String argument) throws CoreException {
 		if (argument == null) {
 			return null;
@@ -55,11 +52,6 @@ public class JavaSystemPropertiesResolver implements IDynamicVariableResolver {
 		return System.getProperty(argument);
 	}
 
-	/**
-	 * @param argument
-	 * @return
-	 * @throws CoreException
-	 */
 	private String lookForSyntheticProperties(final String argument) throws CoreException {
 		if (argument.equals(HOST_ADDRESS)) {
 			return getHostAddress();
