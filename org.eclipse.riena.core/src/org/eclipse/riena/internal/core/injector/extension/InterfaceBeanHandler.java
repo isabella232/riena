@@ -70,10 +70,6 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		}
 	}
 
-	/*
-	 * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
-	 * java.lang.reflect.Method, java.lang.Object[])
-	 */
 	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 		final MethodKind methodKind = MethodKind.of(method);
 		synchronized (resolved) {
@@ -201,8 +197,8 @@ final class InterfaceBeanHandler implements InvocationHandler {
 	}
 
 	private String within() {
-		return " with in interface '" + interfaceType.getName() + "' and bundle '"
-				+ ContributorFactoryOSGi.resolve(configurationElement.getContributor()) + "'";
+		return " with in interface '" + interfaceType.getName() + "' and bundle '" //$NON-NLS-1$ //$NON-NLS-2$
+				+ ContributorFactoryOSGi.resolve(configurationElement.getContributor()) + "'"; //$NON-NLS-1$
 	}
 
 	private Class<?> loadClass(final Bundle bundle, final String className) throws ClassNotFoundException {
@@ -225,10 +221,6 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		}
 	}
 
-	/*
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	public boolean proxiedEquals(final Object obj) {
 		try {
 			final InvocationHandler handler = Proxy.getInvocationHandler(obj);
@@ -241,20 +233,10 @@ final class InterfaceBeanHandler implements InvocationHandler {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
 	public int proxiedHashCode() {
 		return configurationElement.hashCode();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	public String proxiedToString() {
 		final StringBuilder bob = new StringBuilder("Dynamic proxy for "); //$NON-NLS-1$
 		bob.append(interfaceType.getName()).append(':');
@@ -372,10 +354,6 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			this.prefix = null;
 		}
 
-		/**
-		 * @param method
-		 * @return
-		 */
 		private static MethodKind of(final Method method) {
 			final String name = method.getName();
 			if (name.startsWith(GET.prefix)) {
@@ -388,11 +366,6 @@ final class InterfaceBeanHandler implements InvocationHandler {
 			return OTHER;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Enum#toString()
-		 */
 		@Override
 		public String toString() {
 			return prefix;
