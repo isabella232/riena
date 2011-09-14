@@ -12,6 +12,8 @@ package org.eclipse.riena.internal.core.exceptionmanager;
 
 import java.util.List;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
@@ -81,9 +83,14 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 
 	public IExceptionHandler.Action handleException(final Throwable t, final String msg, final Logger logger) {
 		for (final IExceptionHandler handler : handlers) {
-			final IExceptionHandler.Action action = handler.handleException(t, msg, logger);
-			if (action != IExceptionHandler.Action.NOT_HANDLED) {
-				return action;
+			try {
+				final IExceptionHandler.Action action = handler.handleException(t, msg, logger);
+				if (action != IExceptionHandler.Action.NOT_HANDLED) {
+					return action;
+				}
+			} catch (final Throwable t2) {
+				// if an exception handler throws an exception there is nothing we can do, log problem and try the next exception handler
+				LOGGER.log(LogService.LOG_ERROR, "exception handler 'handle' method throws exception", t2); //$NON-NLS-1$
 			}
 		}
 		return IExceptionHandler.Action.NOT_HANDLED;
