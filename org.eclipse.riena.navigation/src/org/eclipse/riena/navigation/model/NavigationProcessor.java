@@ -40,6 +40,7 @@ import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationHistoryEvent;
 import org.eclipse.riena.navigation.INavigationHistoryListener;
 import org.eclipse.riena.navigation.INavigationNode;
+import org.eclipse.riena.navigation.INavigationNode.State;
 import org.eclipse.riena.navigation.INavigationNodeProvider;
 import org.eclipse.riena.navigation.INavigationProcessor;
 import org.eclipse.riena.navigation.ISubApplicationNode;
@@ -269,6 +270,7 @@ public class NavigationProcessor implements INavigationProcessor {
 		// than no other module has to be activated
 		final INavigationNode<?> nodeToDispose = getNodeToDispose(toDispose);
 		if (nodeToDispose != null && !nodeToDispose.isDisposed()) {
+			final State nodeStartState = nodeToDispose.getState();
 			handleJumpsOnDispose(nodeToDispose);
 			final List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToDispose);
 			final List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToDispose);
@@ -276,6 +278,10 @@ public class NavigationProcessor implements INavigationProcessor {
 			if (allowsDeactivate(navigationContext)) {
 				if (allowsDispose(navigationContext)) {
 					if (allowsActivate(navigationContext)) {
+						if (nodeStartState != nodeToDispose.getState()) {
+							final String msg = String.format("State of node '%s' changed unexpected!", toDispose); //$NON-NLS-1$
+							throw new NavigationModelFailure(msg);
+						}
 						deactivate(navigationContext);
 						dispose(navigationContext);
 						activate(navigationContext);
@@ -1124,20 +1130,26 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	private void activate(final INavigationContext context) {
-		for (final INavigationNode<?> nextToActivate : context.getToActivate()) {
+		Assert.isNotNull(context);
+		Assert.isNotNull(context.getToActivate());
+		final List<INavigationNode<?>> nextNodesToActivate = context.getToActivate();
+		if (nextNodesToActivate.isEmpty()) {
+			LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - There is no node to activate!"); //$NON-NLS-1$
+		}
+		for (final INavigationNode<?> nextToActivate : nextNodesToActivate) {
 			if (DEBUG_NAVIGATION_PROCESSOR) {
 				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - beforeActivate: " + nextToActivate.getNodeId()); //$NON-NLS-1$
 			}
 			nextToActivate.onBeforeActivate(context);
 		}
-		for (final INavigationNode<?> nextToActivate : context.getToActivate()) {
+		for (final INavigationNode<?> nextToActivate : nextNodesToActivate) {
 			if (DEBUG_NAVIGATION_PROCESSOR) {
 				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - activate: " + nextToActivate.getNodeId()); //$NON-NLS-1$
 			}
 			nextToActivate.activate(context);
 			setAsSelectedChild(nextToActivate);
 		}
-		for (final INavigationNode<?> nextToActivate : copyReverse(context.getToActivate())) {
+		for (final INavigationNode<?> nextToActivate : copyReverse(nextNodesToActivate)) {
 			if (DEBUG_NAVIGATION_PROCESSOR) {
 				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - onAfterActivate: " + nextToActivate.getNodeId()); //$NON-NLS-1$
 			}
