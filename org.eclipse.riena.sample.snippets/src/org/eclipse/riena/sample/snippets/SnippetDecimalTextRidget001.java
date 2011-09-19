@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import org.eclipse.riena.beans.common.DoubleBean;
+import org.eclipse.riena.beans.common.TypedBean;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
@@ -59,7 +59,7 @@ public final class SnippetDecimalTextRidget001 {
 			dbc.bindValue(BeansObservables.observeValue(rOutput, ITextRidget.PROPERTY_TEXT), BeansObservables
 					.observeValue(rInput, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
 					UpdateValueStrategy.POLICY_NEVER), new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-			rInput.bindToModel(new DoubleBean(1234.56), DoubleBean.PROP_VALUE);
+			rInput.bindToModel(new TypedBean<Double>(1234.56), TypedBean.PROP_VALUE);
 			rInput.updateFromModel();
 
 			shell.setSize(300, 200);
