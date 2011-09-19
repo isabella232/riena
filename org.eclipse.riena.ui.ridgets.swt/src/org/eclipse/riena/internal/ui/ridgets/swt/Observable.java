@@ -14,10 +14,14 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 
+import org.osgi.service.log.LogService;
+
 import org.eclipse.core.databinding.beans.BeanProperties;
 import org.eclipse.core.databinding.beans.PojoProperties;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
+import org.eclipse.equinox.log.Logger;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 
 /**
@@ -30,6 +34,8 @@ public final class Observable {
 	private Observable() {
 		// utility class
 	}
+
+	private static final Logger LOGGER = Log4r.getLogger(Observable.class);
 
 	/**
 	 * Get a value observable for the given bean or pojo value holder with the
@@ -75,8 +81,8 @@ public final class Observable {
 				return value.getClass();
 			}
 		} catch (final Exception e) {
-			// TODO Logging? Exception? Hmm?
-			e.printStackTrace();
+			LOGGER.log(LogService.LOG_WARNING, "retrieving type information for value holder" + valueHolder.getClass() //$NON-NLS-1$
+					+ " failed", e); //$NON-NLS-1$
 		}
 
 		return null;
