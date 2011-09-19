@@ -12,8 +12,6 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import java.math.BigDecimal;
 
-import org.eclipse.core.databinding.beans.BeansObservables;
-import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.conversion.IConverter;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
@@ -21,7 +19,6 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.ridgets.IDecimalTextRidget;
 import org.eclipse.riena.ui.ridgets.ValueBindingSupport;
-import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -87,11 +84,7 @@ public class DecimalTextRidget extends NumericTextRidget implements IDecimalText
 
 	@Override
 	public void bindToModel(final Object valueHolder, final String valuePropertyName) {
-		if (AbstractSWTRidget.isBean(valueHolder.getClass())) {
-			bindToModel(BeansObservables.observeValue(valueHolder, valuePropertyName));
-		} else {
-			bindToModel(PojoObservables.observeValue(valueHolder, valuePropertyName));
-		}
+		bindToModel(Observable.forValue(valueHolder, valuePropertyName));
 	}
 
 	@Override
