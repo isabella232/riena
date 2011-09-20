@@ -70,7 +70,7 @@ public class DateTimeRidgetTest extends AbstractSWTRidgetTest {
 	public void testSetDate() {
 		final IDateTimeRidget ridget = getRidget();
 		final DateTime control = getWidget();
-		final TypedBean<Date> dateBean = new TypedBean<Date>(null);
+		final TypedBean<Date> dateBean = new TypedBean<Date>(Date.class);
 
 		expectNoPropertyChangeEvent();
 		ridget.bindToModel(dateBean, TypedBean.PROP_VALUE);
