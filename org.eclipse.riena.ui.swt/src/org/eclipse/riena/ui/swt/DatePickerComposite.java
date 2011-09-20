@@ -126,6 +126,12 @@ public class DatePickerComposite extends Composite {
 		updateBgColor(isEnabled());
 	}
 
+	@Override
+	public void setToolTipText(final String string) {
+		super.setToolTipText(string);
+		textfield.setToolTipText(string);
+	}
+
 	/**
 	 * Updates the enabled state of the picker button, based on the composite's
 	 * enabled state and the text fields editable state.
