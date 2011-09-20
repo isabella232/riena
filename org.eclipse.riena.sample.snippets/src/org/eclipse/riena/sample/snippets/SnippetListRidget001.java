@@ -41,7 +41,7 @@ public class SnippetListRidget001 {
 		listRidget.bindToModel(input, DayPojo.class, "english"); //$NON-NLS-1$
 		listRidget.updateFromModel();
 
-		final TypedBean<DayPojo> selection = new TypedBean<DayPojo>(null);
+		final TypedBean<DayPojo> selection = new TypedBean<DayPojo>(DayPojo.class);
 		selection.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				final DayPojo node = selection.getValue();
