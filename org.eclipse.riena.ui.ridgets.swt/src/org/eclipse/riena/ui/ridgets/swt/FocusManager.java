@@ -94,6 +94,7 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 			}
 			if (target == null) {
 				// trace("!! %s %d -> NO TARGET", e.widget, e.widget.hashCode());
+				ridget.fireFocusGained();
 			}
 		}
 	}
