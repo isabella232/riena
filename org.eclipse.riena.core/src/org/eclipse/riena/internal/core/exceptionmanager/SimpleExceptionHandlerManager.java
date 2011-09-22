@@ -34,7 +34,6 @@ import org.eclipse.riena.internal.core.Activator;
 public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 
 	private List<IExceptionHandler> handlers;
-	private static final String ALL = "*"; //$NON-NLS-1$
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleExceptionHandlerManager.class);
 
