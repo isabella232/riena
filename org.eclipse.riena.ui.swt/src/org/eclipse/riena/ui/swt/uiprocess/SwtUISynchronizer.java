@@ -26,6 +26,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.core.exception.IExceptionHandlerManager;
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
 
 /**
@@ -280,7 +282,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 				}
 			}
 		} catch (final Exception e) {
-			e.printStackTrace();
+			Service.get(IExceptionHandlerManager.class).handleException(e);
 		}
 
 	}
