@@ -28,6 +28,7 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.security.common.SecurityFailure;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 
 /**
@@ -39,13 +40,13 @@ public class TestLocalLoginModule implements LoginModule {
 	private Subject subject;
 	private CallbackHandler callbackHandler;
 
-	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), TestLocalLoginModule.class);
-
 	private String username;
 	private String password;
 
 	private static String checkedUsername;
 	private static String checkedPassword;
+
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), TestLocalLoginModule.class);
 
 	/**
 	 * @param string
@@ -57,35 +58,17 @@ public class TestLocalLoginModule implements LoginModule {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#abort()
-	 */
 	public boolean abort() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "abort");
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#commit()
-	 */
 	public boolean commit() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "commit");
 		subject.getPrincipals().add(new SimplePrincipal(username));
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.security.auth.spi.LoginModule#initialize(javax.security.auth.Subject
-	 * , javax.security.auth.callback.CallbackHandler, java.util.Map,
-	 * java.util.Map)
-	 */
 	public void initialize(final Subject subject, final CallbackHandler callbackHandler,
 			final Map<String, ?> sharedState, final Map<String, ?> options) {
 		if (callbackHandler == null) {
@@ -97,11 +80,6 @@ public class TestLocalLoginModule implements LoginModule {
 		this.callbackHandler = callbackHandler;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#login()
-	 */
 	public boolean login() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "login");
 		final Callback[] callbacks = new Callback[2];
@@ -123,19 +101,12 @@ public class TestLocalLoginModule implements LoginModule {
 
 			return false;
 		} catch (final IOException e) {
-			e.printStackTrace();
-			return false;
+			throw new SecurityFailure("Login failed", e);
 		} catch (final UnsupportedCallbackException e) {
-			e.printStackTrace();
-			return false;
+			throw new SecurityFailure("Login failed", e);
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#logout()
-	 */
 	public boolean logout() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "logout");
 		return false;

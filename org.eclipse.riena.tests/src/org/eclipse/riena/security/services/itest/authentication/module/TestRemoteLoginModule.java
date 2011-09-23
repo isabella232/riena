@@ -28,6 +28,7 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.tests.Activator;
+import org.eclipse.riena.security.common.SecurityFailure;
 import org.eclipse.riena.security.common.authentication.RemoteLoginProxy;
 
 /**
@@ -36,44 +37,22 @@ import org.eclipse.riena.security.common.authentication.RemoteLoginProxy;
  */
 public class TestRemoteLoginModule implements LoginModule {
 
-	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), TestRemoteLoginModule.class);
-
 	private CallbackHandler callbackHandler;
 
-	private String username;
-	private String password;
-	// AuthenticationTicket ticket;
 	private RemoteLoginProxy remoteLoginProxy;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#abort()
-	 */
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), TestRemoteLoginModule.class);
+
 	public boolean abort() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "abort");
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#commit()
-	 */
 	public boolean commit() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "commit");
 		return remoteLoginProxy.commit();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.security.auth.spi.LoginModule#initialize(javax.security.auth.Subject
-	 * , javax.security.auth.callback.CallbackHandler, java.util.Map,
-	 * java.util.Map)
-	 */
 	public void initialize(final Subject subject, final CallbackHandler callbackHandler,
 			final Map<String, ?> sharedState, final Map<String, ?> options) {
 		if (callbackHandler == null) {
@@ -85,11 +64,6 @@ public class TestRemoteLoginModule implements LoginModule {
 		this.remoteLoginProxy = new RemoteLoginProxy("CentralSecurity", subject);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#login()
-	 */
 	public boolean login() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "login");
 		final Callback[] callbacks = new Callback[2];
@@ -97,28 +71,17 @@ public class TestRemoteLoginModule implements LoginModule {
 		callbacks[1] = new PasswordCallback("password: ", false);
 		try {
 			callbackHandler.handle(callbacks);
-			username = ((NameCallback) callbacks[0]).getName();
+			final String username = ((NameCallback) callbacks[0]).getName();
 			final char[] password2 = ((PasswordCallback) callbacks[1]).getPassword();
-			if (password2 == null) {
-				password = null;
-			} else {
-				password = new String(password2);
-			}
+			final String password = (password2 == null) ? null : new String(password2);
 			return remoteLoginProxy.login(callbacks);
 		} catch (final IOException e) {
-			e.printStackTrace();
-			return false;
+			throw new SecurityFailure("Login failed", e);
 		} catch (final UnsupportedCallbackException e) {
-			e.printStackTrace();
-			return false;
+			throw new SecurityFailure("Login failed", e);
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#logout()
-	 */
 	public boolean logout() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "logout");
 		return remoteLoginProxy.logout();
