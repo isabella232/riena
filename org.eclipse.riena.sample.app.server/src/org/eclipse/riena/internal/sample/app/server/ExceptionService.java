@@ -33,14 +33,9 @@ import org.eclipse.riena.sample.app.common.exception.IExceptionService;
  * 
  */
 public class ExceptionService implements IExceptionService {
+
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), ExceptionService.class);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.riena.sample.app.common.exception.IExceptionService#getDate()
-	 */
 	public String getDate() {
 		final Calendar cld = Calendar.getInstance();
 
@@ -91,12 +86,6 @@ public class ExceptionService implements IExceptionService {
 	// return null;
 	// }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.riena.sample.app.common.exception.IExceptionService#
-	 * throwException(java.lang.String)
-	 */
 	public String throwException(final String name) throws Throwable {
 		Throwable exception = null;
 
@@ -140,9 +129,8 @@ public class ExceptionService implements IExceptionService {
 					+ " of type throwable"); //$NON-NLS-1$
 
 		} catch (final Exception e) {
-			e.printStackTrace();
 			// the requested class is not available
-			throw new Exception("ExceptionService: requested Exception '" + name + "' could not be found...."); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new Exception("ExceptionService: requested Exception '" + name + "' could not be found....", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		// thats the final result - throw it
@@ -153,29 +141,10 @@ public class ExceptionService implements IExceptionService {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.riena.sample.app.common.exception.IExceptionService#
-	 * throwNestedException()
-	 */
 	public String throwNestedException() throws Throwable {
-		try {
-			newNullPointerException();
-		} catch (final Exception e) {
-			final Exception x = new Exception(e);
-			x.printStackTrace();
-			throw new Exception(e);
-		}
-		return null;
+		throw new Exception(new NullPointerException("ExceptionService: Here is your requested nested Exception.")); //$NON-NLS-1$
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.eclipse.riena.sample.app.common.exception.IExceptionService#
-	 * throwRuntimeException(java.lang.String)
-	 */
 	public String throwRuntimeException(final String name) {
 		try {
 			this.throwException(name);
@@ -189,7 +158,4 @@ public class ExceptionService implements IExceptionService {
 		return null;
 	}
 
-	private String newNullPointerException() {
-		throw new NullPointerException("ExceptionService: Here is your requested nested Exception."); //$NON-NLS-1$
-	}
 }
