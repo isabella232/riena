@@ -15,7 +15,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.security.Permission;
 import java.security.Permissions;
 import java.security.Principal;
@@ -31,6 +30,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import org.eclipse.riena.security.authorizationservice.IPermissionStore;
+import org.eclipse.riena.security.common.SecurityFailure;
 import org.eclipse.riena.security.common.authorization.PermissionClassFactory;
 
 /**
@@ -53,12 +53,6 @@ public class FilePermissionStore implements IPermissionStore {
 		permissionTree = db.parse(new InputSource(inputStream));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.riena.security.simpleservices.authorizationservice.
-	 * IPermissionStore#loadPermissions(javax.security.auth.Subject)
-	 */
 	public Permissions loadPermissions(final Principal principal) {
 		final Permissions allPerms = new Permissions();
 		final NodeList nl = permissionTree.getDocumentElement().getElementsByTagName("principal"); //$NON-NLS-1$
@@ -77,8 +71,7 @@ public class FilePermissionStore implements IPermissionStore {
 					final String name = ePerm.getAttribute("name"); //$NON-NLS-1$
 					final String action = ePerm.getAttribute("action"); //$NON-NLS-1$
 					try {
-						// its not good to use Class.forName
-						// so we use a specific factory
+						// its not good to use Class.forName so we use a specific factory
 						final Class<?> permClass = PermissionClassFactory.retrieveClass(clazz);
 						Constructor<?> constr;
 						Permission perm;
@@ -98,22 +91,8 @@ public class FilePermissionStore implements IPermissionStore {
 						if (perm != null) {
 							allPerms.add(perm);
 						}
-					} catch (final ClassNotFoundException e) {
-						e.printStackTrace();
-					} catch (final SecurityException e) {
-						e.printStackTrace();
-					} catch (final NoSuchMethodException e) {
-						e.printStackTrace();
-					} catch (final NumberFormatException e) {
-						e.printStackTrace();
-					} catch (final IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (final InstantiationException e) {
-						e.printStackTrace();
-					} catch (final IllegalAccessException e) {
-						e.printStackTrace();
-					} catch (final InvocationTargetException e) {
-						e.printStackTrace();
+					} catch (final Exception e) {
+						throw new SecurityFailure("Creating permission '" + clazz + "' failed", e); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 				}
 			}
