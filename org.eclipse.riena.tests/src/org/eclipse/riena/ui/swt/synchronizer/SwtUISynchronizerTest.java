@@ -26,6 +26,7 @@ import org.eclipse.swt.graphics.DeviceData;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
+import org.eclipse.riena.core.exception.MurphysLawFailure;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
@@ -94,7 +95,7 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 			try {
 				Thread.sleep(sleepTime);
 			} catch (final InterruptedException e) {
-				e.printStackTrace();
+				throw new MurphysLawFailure("Sleeping failed", e);
 			}
 			done.set(true);
 			latch.countDown();
@@ -150,7 +151,7 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 			// wait for the job to concurrently execute
 			assertCalls = job.latch.await(10000, TimeUnit.MILLISECONDS);
 		} catch (final InterruptedException e) {
-			e.printStackTrace();
+			throw new MurphysLawFailure("Waiting failed", e);
 		}
 
 		// the job should have waked this thread
@@ -259,7 +260,7 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 			try {
 				Thread.sleep(80);
 			} catch (final InterruptedException e) {
-				e.printStackTrace();
+				throw new MurphysLawFailure("Sleeping failed", e);
 			}
 		}
 		assertNotNull(ReflectionUtils.getHidden(synchronizer, "displayObserver"));
@@ -267,7 +268,7 @@ public class SwtUISynchronizerTest extends RienaTestCase {
 			try {
 				dummyJob.latch.await(25 * 80 + taskDelay + 5000, TimeUnit.MILLISECONDS);
 			} catch (final InterruptedException e) {
-				e.printStackTrace();
+				throw new MurphysLawFailure("Waiting failed", e);
 			}
 		}
 		assertTrue(mockDisplay.asyncExecCalls > 1);
