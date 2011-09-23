@@ -227,7 +227,6 @@ public class ExceptionClientITest extends RienaTestCase {
 		} catch (final Throwable e) {
 			assertTrue(e instanceof Exception);
 			assertTrue(e.getCause() instanceof NullPointerException);
-			// e.printStackTrace();
 			assertTrue(e.getCause() != e);
 		}
 
