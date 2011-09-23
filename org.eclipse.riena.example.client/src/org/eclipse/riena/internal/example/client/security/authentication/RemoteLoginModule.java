@@ -36,42 +36,21 @@ import org.eclipse.riena.security.common.authentication.RemoteLoginProxy;
  */
 public class RemoteLoginModule implements LoginModule {
 
-	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RemoteLoginModule.class);
-
 	private CallbackHandler callbackHandler;
-
-	// AuthenticationTicket ticket;
 	private RemoteLoginProxy remoteLoginProxy;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#abort()
-	 */
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RemoteLoginModule.class);
+
 	public boolean abort() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "abort"); //$NON-NLS-1$
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#commit()
-	 */
 	public boolean commit() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "commit"); //$NON-NLS-1$
 		return remoteLoginProxy.commit();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.security.auth.spi.LoginModule#initialize(javax.security.auth.Subject
-	 * , javax.security.auth.callback.CallbackHandler, java.util.Map,
-	 * java.util.Map)
-	 */
 	public void initialize(final Subject subject, final CallbackHandler callbackHandler,
 			final Map<String, ?> sharedState, final Map<String, ?> options) {
 		if (callbackHandler == null) {
@@ -83,11 +62,6 @@ public class RemoteLoginModule implements LoginModule {
 		this.remoteLoginProxy = new RemoteLoginProxy("CentralSecurity", subject); //$NON-NLS-1$
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#login()
-	 */
 	public boolean login() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "login"); //$NON-NLS-1$
 		final Callback[] callbacks = new Callback[2];
@@ -97,19 +71,14 @@ public class RemoteLoginModule implements LoginModule {
 			callbackHandler.handle(callbacks);
 			return remoteLoginProxy.login(callbacks);
 		} catch (final IOException e) {
-			e.printStackTrace();
-			return false;
+			LOGGER.log(LogService.LOG_ERROR, "Login failed", e); //$NON-NLS-1$
+			throw new LoginException("Login failed because of " + e.getMessage()); //$NON-NLS-1$
 		} catch (final UnsupportedCallbackException e) {
-			e.printStackTrace();
-			return false;
+			LOGGER.log(LogService.LOG_ERROR, "Login failed", e); //$NON-NLS-1$
+			throw new LoginException("Login failed because of " + e.getMessage()); //$NON-NLS-1$
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#logout()
-	 */
 	public boolean logout() throws LoginException {
 		LOGGER.log(LogService.LOG_DEBUG, "logout");//$NON-NLS-1$
 		return remoteLoginProxy.logout();
