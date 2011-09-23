@@ -210,7 +210,6 @@ public class GenericObjectCacheTest extends RienaTestCase {
 				}
 			} catch (final Exception e) {
 				this.status.setLastException(e);
-				e.printStackTrace();
 			}
 		}
 	}

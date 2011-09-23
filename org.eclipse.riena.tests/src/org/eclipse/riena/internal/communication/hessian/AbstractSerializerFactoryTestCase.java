@@ -93,8 +93,7 @@ public abstract class AbstractSerializerFactoryTestCase extends RienaTestCase {
 			return expected.equals(inAndOut(expected, version, asReturnType, abstractSerializerFactories));
 		} catch (final IOException e) {
 			if (isTrace()) {
-				println("Comparing in and out caused an IOException: ");
-				e.printStackTrace();
+				println("Comparing in and out caused an IOException: " + e.getMessage());
 			}
 			return false;
 		}

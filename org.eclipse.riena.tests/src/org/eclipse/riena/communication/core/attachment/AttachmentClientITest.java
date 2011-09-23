@@ -134,8 +134,7 @@ public final class AttachmentClientITest extends RienaTestCase {
 			attachService.returnAttachmentForRequest("invalidfilename"); //$NON-NLS-1$
 			fail("the requested file does not exist and the webservice should throw an exception"); //$NON-NLS-1$
 		} catch (final FileNotFoundException e) {
-			e.printStackTrace();
-			// expect exception
+			ok(e.getMessage());
 		}
 	}
 
@@ -343,7 +342,6 @@ public final class AttachmentClientITest extends RienaTestCase {
 			printWriter.close();
 			return file;
 		} catch (final IOException e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
