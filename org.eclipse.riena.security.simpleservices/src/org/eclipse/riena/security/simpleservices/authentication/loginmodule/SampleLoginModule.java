@@ -30,6 +30,7 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.security.simpleservices.Activator;
+import org.eclipse.riena.security.common.SecurityFailure;
 import org.eclipse.riena.security.common.authentication.SimplePrincipal;
 
 /**
@@ -48,34 +49,15 @@ public class SampleLoginModule implements LoginModule {
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SampleLoginModule.class);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#abort()
-	 */
 	public boolean abort() throws LoginException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#commit()
-	 */
 	public boolean commit() throws LoginException {
 		subject.getPrincipals().add(new SimplePrincipal(username));
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.security.auth.spi.LoginModule#initialize(javax.security.auth.Subject
-	 * , javax.security.auth.callback.CallbackHandler, java.util.Map,
-	 * java.util.Map)
-	 */
 	public void initialize(final Subject subject, final CallbackHandler callbackHandler,
 			final Map<String, ?> sharedState, final Map<String, ?> options) {
 		this.subject = subject;
@@ -84,7 +66,7 @@ public class SampleLoginModule implements LoginModule {
 		try {
 			accounts = loadProperties((String) options.get("accounts.file")); //$NON-NLS-1$
 		} catch (final IOException e) {
-			e.printStackTrace();
+			throw new SecurityFailure("Reading account properties failed", e); //$NON-NLS-1$
 		}
 	}
 
@@ -95,11 +77,6 @@ public class SampleLoginModule implements LoginModule {
 		return properties;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#login()
-	 */
 	public boolean login() throws LoginException {
 		final Callback[] callbacks = new Callback[2];
 		callbacks[0] = new NameCallback("username: "); //$NON-NLS-1$
@@ -138,21 +115,15 @@ public class SampleLoginModule implements LoginModule {
 			//
 			//			return false;
 		} catch (final IOException e) {
-			e.printStackTrace();
-			return false;
+			LOGGER.log(LogService.LOG_ERROR, "Login failed", e); //$NON-NLS-1$
+			throw new LoginException("Login failed because of: " + e.getMessage()); //$NON-NLS-1$
 		} catch (final UnsupportedCallbackException e) {
-			e.printStackTrace();
-			return false;
+			LOGGER.log(LogService.LOG_ERROR, "Login failed", e); //$NON-NLS-1$
+			throw new LoginException("Login failed because of: " + e.getMessage()); //$NON-NLS-1$
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.security.auth.spi.LoginModule#logout()
-	 */
 	public boolean logout() throws LoginException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
