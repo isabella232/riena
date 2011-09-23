@@ -15,6 +15,7 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
+import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.internal.communication.core.Activator;
 
@@ -70,14 +71,14 @@ public class RemoteServiceBuilder {
 	 * {@link org.eclipse.riena.communication.core.IRemoteServiceRegistry}. The
 	 * "remote" service become registered as OSGi Service within this client
 	 * container. The property "riena.interface" defines the interface type and
-	 * OSGi Service name. The context holds the declarated properties for the
+	 * OSGi Service name. The context holds the declared properties for the
 	 * remote end point.
 	 * 
 	 * @param context
 	 */
 	protected void activate(final ComponentContext context) {
+		final String serviceClassName = (String) context.getProperties().get(RSDPublisherProperties.PROP_INTERFACE);
 		try {
-			final String serviceClassName = (String) context.getProperties().get(RSDPublisherProperties.PROP_INTERFACE);
 			final Class<?> serviceClass = Class.forName(serviceClassName);
 			final String path = (String) context.getProperties().get(RSDPublisherProperties.PROP_REMOTE_PATH);
 			final String protocol = (String) context.getProperties().get(RSDPublisherProperties.PROP_REMOTE_PROTOCOL);
@@ -86,7 +87,7 @@ public class RemoteServiceBuilder {
 			rsReg = factory.createAndRegisterProxy(serviceClass, path, protocol, Activator.getDefault().getContext());
 
 		} catch (final ClassNotFoundException e) {
-			e.printStackTrace();
+			throw new RemoteFailure("RemoteServiceBuilder could not load class '" + serviceClassName + "'", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
