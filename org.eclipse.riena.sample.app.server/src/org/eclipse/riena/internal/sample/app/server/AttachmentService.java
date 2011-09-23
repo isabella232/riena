@@ -253,8 +253,7 @@ public final class AttachmentService implements IAttachmentService {
 			printWriter.close();
 			return file;
 		} catch (final IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
+			throw new RuntimeException("IOException while setting up test file", e); //$NON-NLS-1$
 		}
 	}
 
