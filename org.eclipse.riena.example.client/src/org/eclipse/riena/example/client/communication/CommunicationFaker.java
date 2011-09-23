@@ -11,6 +11,7 @@
 package org.eclipse.riena.example.client.communication;
 
 import org.eclipse.riena.communication.core.progressmonitor.IRemoteProgressMonitorList;
+import org.eclipse.riena.core.exception.MurphysLawFailure;
 
 public class CommunicationFaker {
 
@@ -48,7 +49,7 @@ public class CommunicationFaker {
 		try {
 			Thread.sleep(50);
 		} catch (final InterruptedException e) {
-			e.printStackTrace();
+			throw new MurphysLawFailure("Sleeping failed", e); //$NON-NLS-1$
 		}
 	}
 }

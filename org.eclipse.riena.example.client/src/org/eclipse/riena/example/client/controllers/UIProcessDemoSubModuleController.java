@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
+import org.eclipse.riena.core.exception.MurphysLawFailure;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.uiprocess.UIProcess;
@@ -79,8 +80,8 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 				public boolean runJob(final IProgressMonitor monitor) {
 					try {
 						Thread.sleep(500);
-					} catch (final InterruptedException e1) {
-						e1.getCause(); // .ignore();
+					} catch (final InterruptedException e) {
+						throw new MurphysLawFailure("Sleeping failed", e); //$NON-NLS-1$
 					}
 					for (int i = 0; i < 10; i++) {
 						if (monitor.isCanceled()) {
@@ -90,7 +91,7 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 						try {
 							Thread.sleep(500);
 						} catch (final InterruptedException e) {
-							e.printStackTrace();
+							throw new MurphysLawFailure("Sleeping failed", e); //$NON-NLS-1$
 						}
 						setTitle("sample uiProcess worked [" + i + "]"); //$NON-NLS-1$ //$NON-NLS-2$
 						monitor.worked(1);
@@ -130,7 +131,7 @@ public class UIProcessDemoSubModuleController extends SubModuleController {
 						try {
 							Thread.sleep(500);
 						} catch (final InterruptedException e) {
-							e.printStackTrace();
+							throw new MurphysLawFailure("Sleeping failed", e); //$NON-NLS-1$
 						}
 						monitor.worked(1);
 						if (monitor.isCanceled()) {

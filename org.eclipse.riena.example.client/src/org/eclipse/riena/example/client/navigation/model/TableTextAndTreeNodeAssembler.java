@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.riena.core.exception.MurphysLawFailure;
 import org.eclipse.riena.example.client.controllers.TableSubModuleController;
 import org.eclipse.riena.example.client.controllers.TextSubModuleController;
 import org.eclipse.riena.example.client.controllers.TreeSubModuleController;
@@ -53,7 +54,7 @@ public class TableTextAndTreeNodeAssembler extends AbstractNavigationAssembler {
 		try {
 			Thread.sleep(3000);
 		} catch (final InterruptedException e) {
-			e.printStackTrace();
+			throw new MurphysLawFailure("Sleeping failed", e); //$NON-NLS-1$
 		}
 
 		final IModuleGroupNode node = new ModuleGroupNode(new NavigationNodeId(

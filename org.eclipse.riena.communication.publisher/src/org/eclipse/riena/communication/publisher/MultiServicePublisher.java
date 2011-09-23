@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.riena.communication.core.publisher.IServicePublishBinder;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
 import org.eclipse.riena.communication.core.util.CommunicationUtil;
+import org.eclipse.riena.core.exception.MurphysLawFailure;
 import org.eclipse.riena.core.injector.Inject;
 import org.eclipse.riena.internal.communication.publisher.Activator;
 
@@ -62,8 +63,8 @@ public class MultiServicePublisher {
 					publish(ref);
 				}
 			}
-		} catch (final InvalidSyntaxException e1) {
-			e1.printStackTrace();
+		} catch (final InvalidSyntaxException e) {
+			throw new MurphysLawFailure("Filter '" + filter + "' has invalid syntax", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		final ServiceListener listener = new ServiceListener() {
@@ -80,7 +81,7 @@ public class MultiServicePublisher {
 		try {
 			Activator.getDefault().getContext().addServiceListener(listener, filter);
 		} catch (final InvalidSyntaxException e) {
-			e.printStackTrace();
+			throw new MurphysLawFailure("Filter '" + filter + "' has invalid syntax", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

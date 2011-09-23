@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.riena.core.exception.MurphysLawFailure;
 import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
 import org.eclipse.riena.example.client.controllers.ListSubModuleController;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
@@ -90,7 +91,7 @@ public class ComboAndListNodeAssembler extends AbstractNavigationAssembler {
 		try {
 			Thread.sleep(i * 1000);
 		} catch (final InterruptedException e) {
-			e.printStackTrace();
+			throw new MurphysLawFailure("Sleeping failed", e); //$NON-NLS-1$
 		}
 	}
 

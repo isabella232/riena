@@ -41,6 +41,7 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 
+import org.eclipse.riena.core.exception.MurphysLawFailure;
 import org.eclipse.riena.core.util.IOUtils;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.Trace;
@@ -270,7 +271,7 @@ public abstract class RienaTestCase extends TestCase {
 				try {
 					job.join();
 				} catch (final InterruptedException e) {
-					e.printStackTrace();
+					throw new MurphysLawFailure("Joining jobs failed", e); //$NON-NLS-1$
 				}
 			}
 		}
