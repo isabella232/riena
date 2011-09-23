@@ -72,7 +72,6 @@ public class ExceptionService implements IExceptionService {
 	// + " of type throwable");
 	//
 	// } catch (Exception e) {
-	// e.printStackTrace();
 	// // the requested class is not available
 	// throw new RuntimeException("ExceptionService: requested Exception '" +
 	// name + "' could not be found....");
