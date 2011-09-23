@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.riena.core.exception.MurphysLawFailure;
 import org.eclipse.riena.sample.app.common.model.Address;
 import org.eclipse.riena.sample.app.common.model.BankData;
 import org.eclipse.riena.sample.app.common.model.Birth;
@@ -161,8 +162,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 		try {
 			customer.getBirth().setBirthDay(format.parse("01.04.1962")); //$NON-NLS-1$
 		} catch (final ParseException e) {
-			// TODO Throw exception
-			e.printStackTrace();
+			throw new MurphysLawFailure("Parsing date failed", e); //$NON-NLS-1$
 		}
 		customer.getBirth().setBirthPlace("Frankfurt"); //$NON-NLS-1$
 		customer.setBankData(new ArrayList<BankData>());
@@ -181,8 +181,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 		try {
 			customer.getBirth().setBirthDay(format.parse("01.04.1963")); //$NON-NLS-1$
 		} catch (final ParseException e) {
-			// TODO Throw exception
-			e.printStackTrace();
+			throw new MurphysLawFailure("Parsing date failed", e); //$NON-NLS-1$
 		}
 		customer.getBirth().setBirthPlace("Frankfurt"); //$NON-NLS-1$
 		customer.setBankData(new ArrayList<BankData>());
@@ -201,8 +200,7 @@ public class Customers implements ICustomers, ICustomerSearch {
 		try {
 			customer.getBirth().setBirthDay(format.parse("01.04.1964")); //$NON-NLS-1$
 		} catch (final ParseException e) {
-			// TODO Throw exception
-			e.printStackTrace();
+			throw new MurphysLawFailure("Parsing date failed", e); //$NON-NLS-1$
 		}
 		customer.getBirth().setBirthPlace("Frankfurt"); //$NON-NLS-1$
 		customer.setBankData(new ArrayList<BankData>());
