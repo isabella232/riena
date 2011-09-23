@@ -30,6 +30,7 @@ import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.beans.common.TypedBean;
 import org.eclipse.riena.core.RienaStatus;
+import org.eclipse.riena.core.exception.MurphysLawFailure;
 import org.eclipse.riena.internal.ui.ridgets.swt.CComboRidget;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.ValidationTime;
@@ -182,7 +183,7 @@ public class ControllerTestsPlaygroundSubModuleController extends SubModuleContr
 					dtDateOnly.setDate(newDate);
 					dtCal.setDate(newDate);
 				} catch (final ParseException e) {
-					e.printStackTrace();
+					throw new MurphysLawFailure("Date parse error", e); //$NON-NLS-1$
 				}
 			}
 		});
