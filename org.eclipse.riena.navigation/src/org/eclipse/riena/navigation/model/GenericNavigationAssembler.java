@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.CoreException;
 
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.navigation.AbstractNavigationAssembler;
+import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.IAssemblerProvider;
 import org.eclipse.riena.navigation.IGenericNavigationAssembler;
 import org.eclipse.riena.navigation.IModuleGroupNode;
@@ -459,9 +460,8 @@ public class GenericNavigationAssembler extends AbstractNavigationAssembler impl
 	protected String resolveVariables(final String string) {
 		try {
 			return VariableManagerUtil.substitute(string);
-		} catch (final CoreException ex) {
-			ex.printStackTrace();
-			return string;
+		} catch (final CoreException e) {
+			throw new ApplicationModelFailure("Resolving variables in '" + string + "' failed", e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 }
