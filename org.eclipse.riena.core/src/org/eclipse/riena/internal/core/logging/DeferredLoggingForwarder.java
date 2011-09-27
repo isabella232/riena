@@ -11,9 +11,14 @@
 package org.eclipse.riena.internal.core.logging;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
@@ -23,31 +28,37 @@ import org.eclipse.riena.internal.core.Activator;
 /**
  * The worker thread that delivers collected log events.
  */
-public class DeferredLoggingForwarder extends Thread {
+public class DeferredLoggingForwarder extends Job {
 
 	private final LoggerProvider loggerProvider;
 	private final BlockingQueue<DeferredLogEvent> queue;
+	private static final String WE_ARE_FAMILY = Activator.getDefault().getBundle().getSymbolicName();
 
-	/**
-	 * @param loggerProvider
-	 * @param queue
-	 */
 	public DeferredLoggingForwarder(final LoggerProvider loggerProvider, final BlockingQueue<DeferredLogEvent> queue) {
 		super("DeferredLoggingForwarder"); //$NON-NLS-1$
-		setDaemon(true);
+		setSystem(true);
 		this.loggerProvider = loggerProvider;
 		this.queue = queue;
 	}
 
 	@Override
-	public void run() {
-		while (true) {
-			DeferredLogEvent logEvent = null;
+	public boolean belongsTo(final Object family) {
+		return WE_ARE_FAMILY.equals(family);
+	}
+
+	@Override
+	protected IStatus run(final IProgressMonitor monitor) {
+		while (!monitor.isCanceled()) {
+			DeferredLogEvent logEvent;
 			try {
-				logEvent = queue.take();
+				logEvent = queue.poll(1, TimeUnit.MILLISECONDS);
 			} catch (final InterruptedException e1) {
 				Thread.currentThread().interrupt();
 				break;
+			}
+
+			if (logEvent == null) {
+				continue;
 			}
 
 			while (!loggerProvider.hasReadyLoggerMill()) {
@@ -66,6 +77,7 @@ public class DeferredLoggingForwarder extends Thread {
 						"Could not deliver defered log message.", e); //$NON-NLS-1$
 			}
 		}
+		return Status.CANCEL_STATUS;
 	}
 
 }

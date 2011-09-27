@@ -14,6 +14,7 @@ import java.lang.reflect.Proxy;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.log.Logger;
 
 /**
@@ -23,7 +24,7 @@ import org.eclipse.equinox.log.Logger;
  */
 public final class DeferringLoggerFactory {
 
-	private static Thread forwarder;
+	private static Job forwarder;
 	private static BlockingQueue<DeferredLogEvent> queue;
 
 	private DeferringLoggerFactory() {
@@ -35,7 +36,7 @@ public final class DeferringLoggerFactory {
 			if (queue == null) {
 				queue = new LinkedBlockingQueue<DeferredLogEvent>();
 				forwarder = new DeferredLoggingForwarder(loggerProvider, queue);
-				forwarder.start();
+				forwarder.schedule();
 			}
 		}
 		return (Logger) Proxy.newProxyInstance(Logger.class.getClassLoader(), new Class<?>[] { Logger.class },
