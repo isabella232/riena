@@ -18,9 +18,14 @@ import java.util.Map;
 
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.internal.core.Activator;
 
 /**
  * A {@code WeakRef} tracks instances with a {@code WeakReference}. When the
@@ -73,22 +78,33 @@ public class WeakRef<T> {
 	}
 
 	/**
-	 * The {@code Remover} thread waits for gc-ed instances and notifies the
+	 * The {@code Remover} job waits for gc-ed instances and notifies the
 	 * <i>owner</i> of the instance with its {@code Runnable}.
 	 */
-	private static class Remover extends Thread {
+	private static class Remover extends Job {
+
+		private static final int REMOVE_TIMEOUT = 1;
+		private static final String WE_ARE_FAMILY = Activator.getDefault().getBundle().getSymbolicName();
 
 		public Remover() {
 			super("WeakRef remover"); //$NON-NLS-1$
-			setDaemon(true);
-			start();
+			setSystem(true);
+			schedule();
 		}
 
 		@Override
-		public void run() {
+		public boolean belongsTo(final Object family) {
+			return WE_ARE_FAMILY.equals(family);
+		}
+
+		@Override
+		protected IStatus run(final IProgressMonitor monitor) {
 			try {
-				while (true) {
-					final Reference<?> removed = REF_QUEUE.remove();
+				while (!monitor.isCanceled()) {
+					final Reference<?> removed = REF_QUEUE.remove(REMOVE_TIMEOUT);
+					if (removed == null) {
+						continue;
+					}
 					Runnable runnable;
 					synchronized (REMOVE_ACTIONS) {
 						runnable = REMOVE_ACTIONS.remove(removed);
@@ -104,7 +120,9 @@ public class WeakRef<T> {
 			} catch (final InterruptedException e) {
 				LOGGER.log(LogService.LOG_ERROR, "WeakRef remover has been interrupted.", e); //$NON-NLS-1$
 				Thread.currentThread().interrupt();
+				return Status.CANCEL_STATUS;
 			}
+			return Status.CANCEL_STATUS;
 		}
 	}
 
