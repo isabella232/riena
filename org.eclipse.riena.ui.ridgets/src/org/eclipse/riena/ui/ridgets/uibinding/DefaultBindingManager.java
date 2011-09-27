@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.core.runtime.Assert;
-
 import org.eclipse.riena.core.util.ReflectionFailure;
 import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
@@ -180,8 +178,9 @@ public class DefaultBindingManager implements IBindingManager {
 				}
 			} else {
 				final IRidget ridget = getRidget(bindingProperty, controller);
-				Assert.isNotNull(ridget, "Null ridget for property: " + bindingProperty); //$NON-NLS-1$
-				bindRidget(ridget, control, unbind);
+				if (ridget != null) {
+					bindRidget(ridget, control, unbind);
+				}
 			}
 		}
 	}
