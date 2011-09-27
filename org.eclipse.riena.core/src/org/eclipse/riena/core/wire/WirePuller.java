@@ -34,6 +34,7 @@ import org.eclipse.riena.core.injector.InjectionFailure;
 import org.eclipse.riena.core.injector.extension.ExtensionInjector;
 import org.eclipse.riena.core.injector.service.ServiceInjector;
 import org.eclipse.riena.core.util.Iter;
+import org.eclipse.riena.core.util.WeakRef;
 import org.eclipse.riena.internal.core.ignore.IgnoreFindBugs;
 import org.eclipse.riena.internal.core.wire.ExtensionInjectorBuilder;
 import org.eclipse.riena.internal.core.wire.ServiceInjectorBuilder;
@@ -43,7 +44,7 @@ import org.eclipse.riena.internal.core.wire.ServiceInjectorBuilder;
  */
 public class WirePuller implements IStoppable {
 
-	private final Object bean;
+	private final WeakRef<?> beanRef;
 	private BundleContext context;
 	private List<IWiring> wirings;
 	private List<IStoppable> injections;
@@ -58,11 +59,17 @@ public class WirePuller implements IStoppable {
 	private static final Logger LOGGER = Log4r.getLogger(WirePuller.class);
 
 	/**
+	 * Create a 'wire puller' for the given bean.
+	 * 
 	 * @param bean
 	 */
 	WirePuller(final Object bean) {
 		Assert.isLegal(bean != null, "bean must exist"); //$NON-NLS-1$
-		this.bean = bean;
+		this.beanRef = new WeakRef<Object>(bean, new Runnable() {
+			public void run() {
+				stop();
+			}
+		});
 	}
 
 	/**
@@ -76,11 +83,16 @@ public class WirePuller implements IStoppable {
 	 * @since 3.0
 	 */
 	public synchronized WirePuller andStart() {
-		final Bundle bundle = FrameworkUtil.getBundle(bean.getClass());
+		final Class<?> beanClass = getBeanClass();
+		if (beanClass == null) {
+			LOGGER.log(LogService.LOG_WARNING, "Could not wire bean because it is aleady garbage collected."); //$NON-NLS-1$
+			return null;
+		}
+		final Bundle bundle = FrameworkUtil.getBundle(beanClass);
 		if (bundle != null) {
 			return andStart(bundle.getBundleContext());
 		}
-		LOGGER.log(LogService.LOG_WARNING, "Could not wire bean '" + bean.getClass() //$NON-NLS-1$
+		LOGGER.log(LogService.LOG_WARNING, "Could not wire bean '" + beanClass //$NON-NLS-1$
 				+ "' because there is no bundle context."); //$NON-NLS-1$
 		return null;
 	}
@@ -96,7 +108,7 @@ public class WirePuller implements IStoppable {
 		Assert.isLegal(context != null, "context must be given."); //$NON-NLS-1$
 		Assert.isLegal(state == State.PENDING, "state must be pending."); //$NON-NLS-1$
 		this.context = context;
-		if (!wire(bean.getClass())) {
+		if (!wire(getBean(), getBeanClass())) {
 			return this;
 		}
 		state = State.STARTED;
@@ -113,26 +125,25 @@ public class WirePuller implements IStoppable {
 			return;
 		}
 		context.removeBundleListener(bundleStoppingListener);
-		if (wirings != null) {
+		final Object bean = getBean();
+		if (bean != null && wirings != null) {
 			for (final IWiring wiring : wirings) {
 				wiring.unwire(bean, context);
 			}
 		}
-		if (injections != null) {
-			for (final IStoppable stoppable : Iter.ableReverse(injections)) {
-				stoppable.stop();
-			}
+		for (final IStoppable stoppable : Iter.ableReverse(injections)) {
+			stoppable.stop();
 		}
 		state = State.STOPPED;
 	}
 
-	private boolean wire(final Class<?> beanClass) {
-		if (beanClass == null || beanClass == Object.class) {
+	private boolean wire(final Object bean, final Class<?> beanClass) {
+		if (beanClass == null || bean == null || beanClass == Object.class) {
 			return false;
 		}
 		final IWiring wiring = getWiring(getWiringClass(beanClass));
 		add(wiring);
-		boolean hasWirings = wire(beanClass.getSuperclass());
+		boolean hasWirings = wire(bean, beanClass.getSuperclass());
 		if (wiring != null) {
 			wiring.wire(bean, context);
 			hasWirings = true;
@@ -233,10 +244,6 @@ public class WirePuller implements IStoppable {
 		injections.add(stoppable);
 	}
 
-	/**
-	 * @param context
-	 * @return
-	 */
 	private IWiring getWiring(final Class<? extends IWiring> wiringClass) {
 		if (wiringClass == null) {
 			return null;
@@ -250,9 +257,6 @@ public class WirePuller implements IStoppable {
 		}
 	}
 
-	/**
-	 * @return
-	 */
 	private Class<? extends IWiring> getWiringClass(final Class<?> beanClass) {
 		// If mocks are defined, we use them instead of the regular mechanism.
 		if (wiringMocks != null) {
@@ -279,6 +283,17 @@ public class WirePuller implements IStoppable {
 				stop();
 			}
 		}
+	}
+
+	// Deref bean
+	private Object getBean() {
+		return beanRef.get();
+	}
+
+	// Deref bean class
+	private Class<?> getBeanClass() {
+		final Object bean = getBean();
+		return bean == null ? null : bean.getClass();
 	}
 
 	/**
