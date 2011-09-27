@@ -17,6 +17,7 @@ import org.osgi.service.log.LogService;
 
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.SafeRunner;
+import org.eclipse.core.runtime.jobs.Job;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaConstants;
@@ -64,6 +65,7 @@ public class Activator extends RienaPlugin {
 	@Override
 	@IgnoreFindBugs(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "that is the eclipse way")
 	public void stop(final BundleContext context) throws Exception {
+		Job.getJobManager().cancel(getBundle().getSymbolicName());
 		active = false;
 		startupActionsExecuted = false;
 		Activator.plugin = null;
