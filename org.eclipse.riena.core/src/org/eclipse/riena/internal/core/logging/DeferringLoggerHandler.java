@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.core.logging;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.BlockingQueue;
 
@@ -32,11 +33,6 @@ public class DeferringLoggerHandler implements InvocationHandler {
 	private final BlockingQueue<DeferredLogEvent> queue;
 	private Logger logger = null;
 
-	/**
-	 * @param name
-	 * @param loggerProvider
-	 * @param queue
-	 */
 	DeferringLoggerHandler(final String name, final LoggerProvider loggerProvider,
 			final BlockingQueue<DeferredLogEvent> queue) {
 		this.name = name;
@@ -44,12 +40,6 @@ public class DeferringLoggerHandler implements InvocationHandler {
 		this.queue = queue;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
-	 * java.lang.reflect.Method, java.lang.Object[])
-	 */
 	public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
 		if (logger == null) {
 			// try to get real logger
@@ -58,7 +48,11 @@ public class DeferringLoggerHandler implements InvocationHandler {
 
 		// real logger available?
 		if (logger != null) {
-			return method.invoke(logger, args);
+			try {
+				return method.invoke(logger, args);
+			} catch (final InvocationTargetException e) {
+				throw e.getTargetException();
+			}
 		}
 
 		final DeferredLogEvent logEvent = new DeferredLogEvent(name, System.currentTimeMillis(), Thread.currentThread()
@@ -74,9 +68,6 @@ public class DeferringLoggerHandler implements InvocationHandler {
 		return null;
 	}
 
-	/**
-	 * @param logEvent
-	 */
 	private void queue(final DeferredLogEvent logEvent) {
 		try {
 			queue.put(logEvent);
