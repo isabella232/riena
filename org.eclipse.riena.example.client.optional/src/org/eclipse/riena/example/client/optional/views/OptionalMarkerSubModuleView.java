@@ -14,11 +14,14 @@ import java.util.Arrays;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.nebula.widgets.grid.Grid;
+import org.eclipse.nebula.widgets.grid.GridColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.nebula.widgets.compositetable.AbstractNativeHeader;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.nebula.widgets.compositetable.ResizableGridRowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -81,10 +84,13 @@ public class OptionalMarkerSubModuleView extends SubModuleView {
 	}
 
 	private Group createControlsGroup(final Composite parent) {
+
 		final Group group = UIControlsFactory.createGroup(parent, "UI-Controls:"); //$NON-NLS-1$
 		final int defaultVSpacing = new GridLayout().verticalSpacing;
 		GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(20, 20).spacing(10, defaultVSpacing)
 				.applyTo(group);
+
+		// CompositeTable
 
 		final Label labelCompTable = UIControlsFactory.createLabel(group, "Composite\nTable:"); //$NON-NLS-1$ 
 		GridDataFactory.fillDefaults().grab(false, true).applyTo(labelCompTable);
@@ -94,9 +100,36 @@ public class OptionalMarkerSubModuleView extends SubModuleView {
 		new Row(compTable, SWT.NONE);
 		compTable.setRunTime(true);
 		addUIControl(compTable, "compTable"); //$NON-NLS-1$
-		GridDataFactory.fillDefaults().grab(true, true).applyTo(compTable);
+		GridDataFactory.fillDefaults().grab(true, false).hint(SWT.DEFAULT, 150).applyTo(compTable);
+
+		// Grid
+
+		final Label labelGrid = UIControlsFactory.createLabel(group, "Grid:"); //$NON-NLS-1$ 
+		GridDataFactory.fillDefaults().grab(false, true).applyTo(labelGrid);
+
+		final Composite gridComposite = UIControlsFactory.createComposite(group);
+		GridLayoutFactory.fillDefaults().numColumns(3).equalWidth(false).applyTo(gridComposite);
+		GridDataFactory.fillDefaults().grab(true, true).applyTo(gridComposite);
+
+		final Grid grid = OptionalUIControlsFactory.createGrid(gridComposite, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL
+				| SWT.H_SCROLL, "grid"); //$NON-NLS-1$
+		grid.setHeaderVisible(true);
+		GridDataFactory.fillDefaults().grab(true, false).hint(SWT.DEFAULT, 150).span(3, 1).applyTo(grid);
+		final GridColumn columnWord = new GridColumn(grid, SWT.LEFT);
+		columnWord.setWidth(110);
+		final GridColumn columnUppercase = new GridColumn(grid, SWT.LEFT);
+		columnUppercase.setWidth(110);
+		final GridColumn columnACount = new GridColumn(grid, SWT.LEFT);
+		columnACount.setWidth(110);
+
+		final Button markBtn = UIControlsFactory.createButton(gridComposite, "Mark", "markRowBtn");
+		GridDataFactory.fillDefaults().grab(false, false).hint(80, SWT.DEFAULT).applyTo(markBtn);
+		final Button unmarkBtn = UIControlsFactory.createButton(gridComposite, "Unmark", "unmarkRowBtn");
+		GridDataFactory.fillDefaults().grab(false, false).hint(80, SWT.DEFAULT).indent(15, SWT.DEFAULT)
+				.applyTo(unmarkBtn);
 
 		return group;
+
 	}
 
 	private GridLayout createGridLayout(final int numColumns) {

@@ -5,7 +5,8 @@ Bundle-SymbolicName: org.eclipse.riena.example.client.optional;singleton:=true
 Bundle-Version: 4.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.eclipse.nebula.widgets.compositetable,
- org.eclipse.riena.client
+ org.eclipse.riena.client,
+ org.eclipse.nebula.widgets.grid;bundle-version="1.0.0"
 Export-Package: org.eclipse.riena.example.client.optional.controllers,
  org.eclipse.riena.example.client.optional.views
 Bundle-Vendor: Eclipse.org - Riena

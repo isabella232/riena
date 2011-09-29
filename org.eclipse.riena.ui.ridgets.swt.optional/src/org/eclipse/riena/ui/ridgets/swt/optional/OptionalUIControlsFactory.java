@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.swt.optional;
 
+import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.swt.nebula.widgets.compositetable.CompositeTable;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
@@ -48,6 +49,31 @@ public final class OptionalUIControlsFactory extends UIControlsFactory {
 	 */
 	public static CompositeTable createCompositeTable(final Composite parent, final int style) {
 		return registerConstruction(new CompositeTable(parent, style));
+	}
+
+	/**
+	 * Create a {@link Grid} control.
+	 * 
+	 * @param parent
+	 *            The parent composite; never null
+	 * @param style
+	 *            A combination of style bits that is legal for {@link Canvas}.
+	 *            The suggested default is SWT.NONE
+	 * @return Grid control
+	 * 
+	 * @since 4.0
+	 */
+	public static Grid createGrid(final Composite parent, final int style) {
+		return registerConstruction(new Grid(parent, style));
+	}
+
+	/**
+	 * TODO
+	 * 
+	 * @since 4.0
+	 */
+	public static Grid createGrid(final Composite parent, final int style, final String bindingId) {
+		return bind(createGrid(parent, style), bindingId);
 	}
 
 }

@@ -10,28 +10,43 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.optional.controllers;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.validation.IValidator;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jface.viewers.ColumnLayoutData;
+import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
+import org.eclipse.riena.beans.common.WordNode;
+import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.model.SimpleNavigationNodeAdapter;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.AttentionMarker;
+import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.IActionListener;
+import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRowRidget;
+import org.eclipse.riena.ui.ridgets.ISelectableRidget.SelectionType;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
+import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
+import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 import org.eclipse.riena.ui.ridgets.validation.ValidationRuleStatus;
 
 /**
@@ -41,12 +56,26 @@ public class OptionalMarkerSubModuleController extends SubModuleController {
 
 	@Override
 	public void configureRidgets() {
+
 		final ICompositeTableRidget compTable = getRidget(ICompositeTableRidget.class, "compTable"); //$NON-NLS-1$
 		final WritableList input = new WritableList(PersonFactory.createPersonList(), Person.class);
 		compTable.bindToModel(input, Person.class, RowRidget.class);
 		compTable.updateFromModel();
 
-		final IRidget[] markables = new IRidget[] { compTable };
+		final ITableRidget grid = getRidget(ITableRidget.class, "grid"); //$NON-NLS-1$
+		final List<WordNode> gridInput = createInput();
+		final String[] columnPropertyNames = { "word", "upperCase", "ACount", }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ 
+		final String[] columnHeaders = { "Word", "Uppercase", "Count" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final ColumnLayoutData[] widths = { new ColumnPixelData(125, false), new ColumnWeightData(2, false),
+				new ColumnWeightData(2, false) };
+		grid.setColumnWidths(widths);
+		grid.bindToModel(new WritableList(gridInput, WordNode.class), WordNode.class, columnPropertyNames,
+				columnHeaders);
+		grid.updateFromModel();
+		grid.setSelectionType(SelectionType.MULTI);
+		grid.setSelection(0);
+
+		final IRidget[] markables = new IRidget[] { compTable, grid };
 
 		final IToggleButtonRidget checkMandatory = getRidget(IToggleButtonRidget.class, "checkMandatory"); //$NON-NLS-1$
 		final IToggleButtonRidget checkError = getRidget(IToggleButtonRidget.class, "checkError"); //$NON-NLS-1$
@@ -110,7 +139,57 @@ public class OptionalMarkerSubModuleController extends SubModuleController {
 					node.removeMarker(marker);
 				}
 			}
+
+			@Override
+			public void afterActivated(final INavigationNode<?> source) {
+				super.afterActivated(source);
+				final ITableRidget grid = getRidget(ITableRidget.class, "grid"); //$NON-NLS-1$
+				final ColumnLayoutData[] widths = { new ColumnPixelData(125, false), new ColumnWeightData(2, false),
+						new ColumnWeightData(2, false) };
+				grid.setColumnWidths(widths);
+			}
 		});
+
+		final IActionRidget markButton = getRidget(IActionRidget.class, "markRowBtn"); //$NON-NLS-1$
+		markButton.addListener(new IActionListener() {
+			public void callback() {
+				final List<Object> selection = grid.getSelection();
+				for (final Object oneSelection : selection) {
+					final Object value = oneSelection;
+					final IMarker marker = new RowErrorMessageMarker("There is an error with: " + value, value); //$NON-NLS-1$
+					grid.addMarker(marker);
+				}
+			}
+		});
+		final IActionRidget unmarkButton = getRidget(IActionRidget.class, "unmarkRowBtn"); //$NON-NLS-1$
+		unmarkButton.addListener(new IActionListener() {
+			public void callback() {
+				final List<Object> selection = grid.getSelection();
+				for (final Object oneSelection : selection) {
+					final Object value = oneSelection;
+					final IMarker marker = new RowErrorMessageMarker(null, value);
+					grid.removeMarker(marker);
+				}
+			}
+		});
+
+		grid.addSelectionListener(new ISelectionListener() {
+			public void ridgetSelected(final SelectionEvent event) {
+				final boolean enabled = !event.getNewSelection().isEmpty();
+				markButton.setEnabled(enabled);
+				unmarkButton.setEnabled(enabled);
+			}
+		});
+
+		grid.addPropertyChangeListener(IRidget.PROPERTY_ENABLED, new PropertyChangeListener() {
+
+			public void propertyChange(final PropertyChangeEvent evt) {
+				final boolean enabled = grid.isEnabled();
+				markButton.setEnabled(enabled);
+				unmarkButton.setEnabled(enabled);
+			}
+		});
+
 	}
 
 	// helping classes
@@ -203,6 +282,20 @@ public class OptionalMarkerSubModuleController extends SubModuleController {
 		public IStatus validate(final Object value) {
 			return ValidationRuleStatus.error(false, ""); //$NON-NLS-1$
 		}
+	}
+
+	private List<WordNode> createInput() {
+		final String[] words = { "Adventure", "Acclimatisation", "Aardwark", "Binoculars", "Beverage", "Boredom", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+				"Ballistics", "Calculation", "Coexistence", "Cinnamon", "Celebration", "Disney", "Dictionary", "Delta", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+				"Desperate", "Elf", "Electronics", "Elwood", "Enemy" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		final ArrayList<WordNode> result = new ArrayList<WordNode>(words.length);
+		for (final String word : words) {
+			final WordNode node = new WordNode(word);
+			result.add(node);
+		}
+		result.get(0).setUpperCase(true);
+		result.get(1).setUpperCase(true);
+		return result;
 	}
 
 	/**

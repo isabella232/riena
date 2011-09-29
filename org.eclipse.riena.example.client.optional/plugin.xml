@@ -10,6 +10,10 @@
             class="org.eclipse.riena.example.client.optional.views.OptionalMarkerSubModuleView"
             id="org.eclipse.riena.example.client.optional.views.OptionalMarkerSubModuleView"
             name="org.eclipse.riena.example.client.optional.views.OptionalMarkerSubModuleView"/>
+    <view allowMultiple="true"
+            class="org.eclipse.riena.example.client.optional.views.GridSubModuleView"
+            id="org.eclipse.riena.example.client.optional.views.GridSubModuleView"
+            name="org.eclipse.riena.example.client.optional.views.GridSubModuleView"/>
   </extension>
   <extension
           point="org.eclipse.riena.navigation.assemblies2">
@@ -33,6 +37,14 @@
                       viewId="org.eclipse.riena.example.client.optional.views.CompositeTableSubModuleView">
                 </subModule>
                 <subModule
+                      closable="true"
+                      controller="org.eclipse.riena.example.client.optional.controllers.GridSubModuleController"
+                      name="Grid"
+                      nodeId="org.eclipse.riena.example.client.optional.grid"
+                      sharedView="false"
+                      viewId="org.eclipse.riena.example.client.optional.views.GridSubModuleView">
+                </subModule>
+                <subModule
                       closable="false"
                       controller="org.eclipse.riena.example.client.optional.controllers.OptionalMarkerSubModuleController"
                       expanded="false"
@@ -46,5 +58,11 @@
              </module>
           </moduleGroup>
        </assembly2>
+  </extension>
+  <extension
+        point="org.eclipse.riena.ui.ridgets.swt.renderDisabledStateWidgets">
+     <widget
+           class="org.eclipse.riena.internal.ui.ridgets.swt.optional.AmpelAuswahlWidget">
+     </widget>
   </extension>
 </plugin>
