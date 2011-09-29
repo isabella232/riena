@@ -85,16 +85,15 @@ public class TableSubModuleController extends SubModuleController {
 		table.updateFromModel();
 		table.setComparator(1, new TypedComparator<String>());
 		table.setComparator(2, new TypedComparator<Boolean>());
+		table.setColumnSortable(3, false);
+		table.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
+		table.setSelection(0);
 		table.setColumnFormatter(4, new NumberColumnFormatter(Float.class, 2) {
 			@Override
 			protected Number getValue(final Object element) {
 				return ((WordNode) element).getAQuota();
 			}
 		});
-		table.setColumnSortable(3, false);
-		table.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
-		table.setSelection(0);
-
 		table.setColumnFormatter(0, new ColumnFormatter() {
 			@Override
 			public String getText(final Object element) {

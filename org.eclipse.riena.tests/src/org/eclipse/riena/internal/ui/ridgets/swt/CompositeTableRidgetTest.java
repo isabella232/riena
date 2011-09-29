@@ -55,7 +55,7 @@ import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 /**
  * Tests of the class {@link CompositeTableRidget}.
  */
-public class CompositeTableRidgetTest extends AbstractTableRidgetTest {
+public class CompositeTableRidgetTest extends AbstractTableListRidgetTest {
 
 	@Override
 	protected Widget createWidget(final Composite parent) {

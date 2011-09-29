@@ -77,8 +77,13 @@ public abstract class AbstractRidgetTestCase extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		final Display display = Display.getDefault();
+		Display display = Display.getDefault();
+		if (null != display) {
+			display.close();
+			display.dispose();
 
+		}
+		display = new Display();
 		final Realm realm = SWTObservables.getRealm(display);
 		assertNotNull(realm);
 		ReflectionUtils.invokeHidden(realm, "setDefault", realm);

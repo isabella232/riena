@@ -20,19 +20,19 @@ import org.eclipse.riena.ui.common.ISortableByColumn;
  * Changes the result of the given <tt>comparator</tt> according to the
  * <tt>sortedAscending</tt> setting in the ridget.
  */
-public final class SortableComparator implements Comparator<Object> {
+public final class SortableComparator<T> implements Comparator<T> {
 
 	private final ISortableByColumn ridget;
-	private final Comparator<Object> orgComparator;
+	private final Comparator<T> orgComparator;
 
-	public SortableComparator(final ISortableByColumn ridget, final Comparator<Object> comparator) {
+	public SortableComparator(final ISortableByColumn ridget, final Comparator<T> comparator) {
 		Assert.isNotNull(ridget);
 		Assert.isNotNull(comparator);
 		this.ridget = ridget;
 		orgComparator = comparator;
 	}
 
-	public int compare(final Object o1, final Object o2) {
+	public int compare(final T o1, final T o2) {
 		final int result = orgComparator.compare(o1, o2);
 		return ridget.isSortedAscending() ? result : result * -1;
 	}

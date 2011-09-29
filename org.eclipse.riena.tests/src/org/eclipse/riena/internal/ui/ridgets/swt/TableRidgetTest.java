@@ -51,7 +51,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 /**
  * Tests of the class {@link TableRidget}.
  */
-public class TableRidgetTest extends AbstractTableRidgetTest {
+public class TableRidgetTest extends AbstractTableListRidgetTest {
 
 	@Override
 	protected Table createWidget(final Composite parent) {
@@ -79,8 +79,8 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 	@Override
 	protected void bindRidgetToModel() {
-		getRidget().bindToModel(manager, "persons", Person.class, new String[] { "firstname", "lastname" },
-				new String[] { "First Name", "Last Name" });
+		getRidget().bindToModel(manager, "persons", Person.class, new String[] { "firstname", "lastname" }, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				new String[] { "First Name", "Last Name" }); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	// test methods
@@ -109,17 +109,17 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 		final TableColumn[] columns = control.getColumns();
 		assertEquals(2, columns.length);
-		assertEquals("First Name", columns[0].getText());
-		assertEquals("Last Name", columns[1].getText());
+		assertEquals("First Name", columns[0].getText()); //$NON-NLS-1$
+		assertEquals("Last Name", columns[1].getText()); //$NON-NLS-1$
 		assertTrue(control.getHeaderVisible());
 	}
 
 	public void testTableColumnsNumAndHeaderWithMismatch() {
-		final String[] properties1 = new String[] { "firstname", "lastname" };
-		final String[] headers1 = new String[] { "First Name" };
+		final String[] properties1 = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] headers1 = new String[] { "First Name" }; //$NON-NLS-1$
 
 		try {
-			getRidget().bindToModel(manager, "persons", Person.class, properties1, headers1);
+			getRidget().bindToModel(manager, "persons", Person.class, properties1, headers1); //$NON-NLS-1$
 			fail();
 		} catch (final RuntimeException rex) {
 			ok();
@@ -131,12 +131,12 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		final Table control = getWidget();
 
 		control.setHeaderVisible(true);
-		control.getColumn(0).setText("foo");
-		control.getColumn(1).setText("bar");
+		control.getColumn(0).setText("foo"); //$NON-NLS-1$
+		control.getColumn(1).setText("bar"); //$NON-NLS-1$
 
-		final String[] properties1 = new String[] { "firstname", "lastname" };
+		final String[] properties1 = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
 		// null should hide the headers
-		ridget.bindToModel(manager, "persons", Person.class, properties1, null);
+		ridget.bindToModel(manager, "persons", Person.class, properties1, null); //$NON-NLS-1$
 
 		assertFalse(control.getHeaderVisible());
 	}
@@ -145,15 +145,15 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		final ITableRidget ridget = getRidget();
 		final Table control = getWidget();
 
-		control.getColumn(0).setText("foo");
-		control.getColumn(1).setText("bar");
+		control.getColumn(0).setText("foo"); //$NON-NLS-1$
+		control.getColumn(1).setText("bar"); //$NON-NLS-1$
 
-		final String[] properties1 = new String[] { "firstname", "lastname" };
-		final String[] headers = new String[] { "First Name", null };
-		ridget.bindToModel(manager, "persons", Person.class, properties1, headers);
+		final String[] properties1 = new String[] { "firstname", "lastname" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] headers = new String[] { "First Name", null }; //$NON-NLS-1$
+		ridget.bindToModel(manager, "persons", Person.class, properties1, headers); //$NON-NLS-1$
 
-		assertEquals("First Name", control.getColumn(0).getText());
-		assertEquals("", control.getColumn(1).getText());
+		assertEquals("First Name", control.getColumn(0).getText()); //$NON-NLS-1$
+		assertEquals("", control.getColumn(1).getText()); //$NON-NLS-1$
 	}
 
 	public void testUpdateFromModel() {
@@ -225,11 +225,11 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		assertTrue(ridget.containsOption(person3));
 
 		assertFalse(ridget.containsOption(null));
-		assertFalse(ridget.containsOption(new Person("", "")));
+		assertFalse(ridget.containsOption(new Person("", ""))); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final java.util.List<Person> persons = Arrays.asList(new Person[] { person3 });
 		final PersonManager manager = new PersonManager(persons);
-		ridget.bindToModel(manager, "persons", Person.class, new String[] { "firstname", "lastname" }, null);
+		ridget.bindToModel(manager, "persons", Person.class, new String[] { "firstname", "lastname" }, null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		ridget.updateFromModel();
 
 		assertFalse(ridget.containsOption(person1));
@@ -361,34 +361,34 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 
 		final int lastItemIndex = control.getItemCount() - 1;
 
-		assertEquals("John", control.getItem(0).getText(0));
-		assertEquals("Frank", control.getItem(lastItemIndex).getText(0));
+		assertEquals("John", control.getItem(0).getText(0)); //$NON-NLS-1$
+		assertEquals("Frank", control.getItem(lastItemIndex).getText(0)); //$NON-NLS-1$
 
 		ridget.setComparator(0, comparator);
 
-		assertEquals("John", control.getItem(0).getText(0));
-		assertEquals("Frank", control.getItem(lastItemIndex).getText(0));
+		assertEquals("John", control.getItem(0).getText(0)); //$NON-NLS-1$
+		assertEquals("Frank", control.getItem(lastItemIndex).getText(0)); //$NON-NLS-1$
 
 		ridget.setSortedColumn(0);
 
-		assertEquals("Frank", control.getItem(0).getText(0));
-		assertEquals("John", control.getItem(lastItemIndex).getText(0));
+		assertEquals("Frank", control.getItem(0).getText(0)); //$NON-NLS-1$
+		assertEquals("John", control.getItem(lastItemIndex).getText(0)); //$NON-NLS-1$
 
 		ridget.setComparator(0, null);
 
-		assertEquals("John", control.getItem(0).getText(0));
-		assertEquals("Frank", control.getItem(lastItemIndex).getText(0));
+		assertEquals("John", control.getItem(0).getText(0)); //$NON-NLS-1$
+		assertEquals("Frank", control.getItem(lastItemIndex).getText(0)); //$NON-NLS-1$
 
 		ridget.setComparator(1, comparator);
 		ridget.setSortedColumn(1);
 
-		assertEquals("Doe", control.getItem(0).getText(1));
-		assertEquals("Zappa", control.getItem(lastItemIndex).getText(1));
+		assertEquals("Doe", control.getItem(0).getText(1)); //$NON-NLS-1$
+		assertEquals("Zappa", control.getItem(lastItemIndex).getText(1)); //$NON-NLS-1$
 
 		ridget.setSortedAscending(false);
 
-		assertEquals("Zappa", control.getItem(0).getText(1));
-		assertEquals("Doe", control.getItem(lastItemIndex).getText(1));
+		assertEquals("Zappa", control.getItem(0).getText(1)); //$NON-NLS-1$
+		assertEquals("Doe", control.getItem(lastItemIndex).getText(1)); //$NON-NLS-1$
 
 	}
 
@@ -475,7 +475,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		final Table control = getWidget();
 		final TableRidget ridget = getRidget();
 
-		ridget.bindToModel(manager, "persons", Person.class, new String[] { "lastname", "firstname" }, null);
+		ridget.bindToModel(manager, "persons", Person.class, new String[] { "lastname", "firstname" }, null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		ridget.updateFromModel();
 		final int lastItemIndex = control.getItemCount() - 1;
 
@@ -486,20 +486,20 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		ridget.setSortedColumn(0);
 
 		assertTrue(ridget.isSortedAscending());
-		assertEquals("Doe", control.getItem(0).getText(0));
-		assertEquals("Zappa", control.getItem(lastItemIndex).getText(0));
+		assertEquals("Doe", control.getItem(0).getText(0)); //$NON-NLS-1$
+		assertEquals("Zappa", control.getItem(lastItemIndex).getText(0)); //$NON-NLS-1$
 
 		ridget.setSortedAscending(false);
 
 		assertFalse(ridget.isSortedAscending());
-		assertEquals("Zappa", control.getItem(0).getText(0));
-		assertEquals("Doe", control.getItem(lastItemIndex).getText(0));
+		assertEquals("Zappa", control.getItem(0).getText(0)); //$NON-NLS-1$
+		assertEquals("Doe", control.getItem(lastItemIndex).getText(0)); //$NON-NLS-1$
 
 		ridget.setSortedAscending(true);
 
 		assertTrue(ridget.isSortedAscending());
-		assertEquals("Doe", control.getItem(0).getText(0));
-		assertEquals("Zappa", control.getItem(lastItemIndex).getText(0));
+		assertEquals("Doe", control.getItem(0).getText(0)); //$NON-NLS-1$
+		assertEquals("Zappa", control.getItem(lastItemIndex).getText(0)); //$NON-NLS-1$
 
 		ridget.setComparator(0, null);
 
@@ -847,12 +847,12 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		assertEquals(0, control.getColumnCount());
 
 		final String[] columns3 = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME, Person.PROPERTY_BIRTHDAY };
-		ridget.bindToModel(manager, "persons", Person.class, columns3, null);
+		ridget.bindToModel(manager, "persons", Person.class, columns3, null); //$NON-NLS-1$
 
 		assertEquals(3, control.getColumnCount());
 
 		final String[] columns1 = { Person.PROPERTY_FIRSTNAME };
-		ridget.bindToModel(manager, "persons", Person.class, columns1, null);
+		ridget.bindToModel(manager, "persons", Person.class, columns1, null); //$NON-NLS-1$
 
 		assertEquals(1, control.getColumnCount());
 	}
@@ -868,7 +868,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		getShell().setLayout(null);
 		control.setSize(300, 100);
 		final String[] columns3 = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME, Person.PROPERTY_BIRTHDAY };
-		ridget.bindToModel(manager, "persons", Person.class, columns3, null);
+		ridget.bindToModel(manager, "persons", Person.class, columns3, null); //$NON-NLS-1$
 
 		assertEquals(null, control.getParent().getLayout());
 		assertEquals(null, control.getLayout());
@@ -886,16 +886,16 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		ridget.setUIControl(control);
 
 		final String[] columns3 = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME, Person.PROPERTY_BIRTHDAY };
-		ridget.bindToModel(manager, "persons", Person.class, columns3, null);
+		ridget.bindToModel(manager, "persons", Person.class, columns3, null); //$NON-NLS-1$
 
 		final Class<?> shellLayout = getShell().getLayout().getClass();
 		assertSame(shellLayout, control.getParent().getLayout().getClass());
 		assertTrue(control.getLayout() instanceof TableLayout);
 
-		int totalWidthOfColumns = 0;
-		for (int i = 0; i < 3; i++) {
-			totalWidthOfColumns += control.getColumn(i).getWidth();
-		}
+		//		int totalWidthOfColumns = 0;
+		//		for (int i = 0; i < 3; i++) {
+		//			totalWidthOfColumns += control.getColumn(i).getWidth();
+		//		}
 		TestUtils.assertColumnWidths(control, 3);
 	}
 
@@ -912,7 +912,7 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		getShell().setLayout(new TableColumnLayout());
 
 		final String[] columns3 = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME, Person.PROPERTY_BIRTHDAY };
-		ridget.bindToModel(manager, "persons", Person.class, columns3, null);
+		ridget.bindToModel(manager, "persons", Person.class, columns3, null); //$NON-NLS-1$
 
 		assertTrue(control.getParent().getLayout() instanceof TableColumnLayout);
 		assertEquals(null, control.getLayout());
@@ -932,24 +932,24 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 			ridget.setColumnWidths(new Object[] { null });
 			fail();
 		} catch (final RuntimeException rex) {
-			assertTrue(rex.getMessage().contains("null"));
+			assertTrue(rex.getMessage().contains("null")); //$NON-NLS-1$
 		}
 
 		try {
 			ridget.setColumnWidths(new Object[] { new Object() });
 			fail();
 		} catch (final RuntimeException rex) {
-			assertTrue(rex.getMessage().contains("Object"));
+			assertTrue(rex.getMessage().contains("Object")); //$NON-NLS-1$
 		}
 
 		ridget.setColumnWidths(new Object[] { new ColumnPixelData(20), new ColumnPixelData(40), new ColumnPixelData(60) });
 		final String[] columns3 = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME, Person.PROPERTY_BIRTHDAY };
-		ridget.bindToModel(manager, "persons", Person.class, columns3, null);
+		ridget.bindToModel(manager, "persons", Person.class, columns3, null); //$NON-NLS-1$
 
 		final int[] expected = { 20, 40, 60 };
 		for (int i = 0; i < 3; i++) {
 			final int actual = control.getColumn(i).getWidth();
-			final String msg = String.format("col #%d, exp:%d, act:%d", i, expected[i], actual);
+			final String msg = String.format("col #%d, exp:%d, act:%d", i, expected[i], actual); //$NON-NLS-1$
 			assertEquals(msg, expected[i], actual);
 		}
 	}
@@ -968,12 +968,12 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		ridget.setUIControl(control);
 
 		final String[] columns3 = { Person.PROPERTY_FIRSTNAME, Person.PROPERTY_LASTNAME, Person.PROPERTY_BIRTHDAY };
-		ridget.bindToModel(manager, "persons", Person.class, columns3, null);
+		ridget.bindToModel(manager, "persons", Person.class, columns3, null); //$NON-NLS-1$
 		ridget.updateFromModel();
 
 		for (int i = 0; i < 3; i++) {
 			final int actual = control.getColumn(i).getWidth();
-			final String msg = String.format("col #%d, exp:%d, act:%d", i, widths[i], actual);
+			final String msg = String.format("col #%d, exp:%d, act:%d", i, widths[i], actual); //$NON-NLS-1$
 			assertEquals(msg, widths[i], actual);
 		}
 	}
@@ -986,26 +986,26 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		final Table control = createWidget(getShell());
 		ridget.setUIControl(control);
 
-		final StringPojo word1 = new StringPojo("eclipse");
-		final StringPojo word2 = new StringPojo("riena");
+		final StringPojo word1 = new StringPojo("eclipse"); //$NON-NLS-1$
+		final StringPojo word2 = new StringPojo("riena"); //$NON-NLS-1$
 		final WritableList values = new WritableList(Arrays.asList(word1, word2), StringPojo.class);
-		final String[] columns = { "value" };
+		final String[] columns = { "value" }; //$NON-NLS-1$
 		ridget.bindToModel(values, StringPojo.class, columns, null);
 		ridget.updateFromModel();
 
-		assertEquals("eclipse", control.getItem(0).getText());
-		assertEquals("riena", control.getItem(1).getText());
+		assertEquals("eclipse", control.getItem(0).getText()); //$NON-NLS-1$
+		assertEquals("riena", control.getItem(1).getText()); //$NON-NLS-1$
 
-		word1.setValue("alpha");
-		word2.setValue("beta");
+		word1.setValue("alpha"); //$NON-NLS-1$
+		word2.setValue("beta"); //$NON-NLS-1$
 
-		assertEquals("eclipse", control.getItem(0).getText());
-		assertEquals("riena", control.getItem(1).getText());
+		assertEquals("eclipse", control.getItem(0).getText()); //$NON-NLS-1$
+		assertEquals("riena", control.getItem(1).getText()); //$NON-NLS-1$
 
 		ridget.refresh(null);
 
-		assertEquals("alpha", control.getItem(0).getText());
-		assertEquals("beta", control.getItem(1).getText());
+		assertEquals("alpha", control.getItem(0).getText()); //$NON-NLS-1$
+		assertEquals("beta", control.getItem(1).getText()); //$NON-NLS-1$
 	}
 
 	/**
@@ -1016,26 +1016,26 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 		final Table control = createWidget(getShell());
 		ridget.setUIControl(control);
 
-		final StringPojo word1 = new StringPojo("eclipse");
-		final StringPojo word2 = new StringPojo("riena");
+		final StringPojo word1 = new StringPojo("eclipse"); //$NON-NLS-1$
+		final StringPojo word2 = new StringPojo("riena"); //$NON-NLS-1$
 		final WritableList values = new WritableList(Arrays.asList(word1, word2), StringPojo.class);
-		final String[] columns = { "value" };
+		final String[] columns = { "value" }; //$NON-NLS-1$
 		ridget.bindToModel(values, StringPojo.class, columns, null);
 		ridget.updateFromModel();
 
-		assertEquals("eclipse", control.getItem(0).getText());
-		assertEquals("riena", control.getItem(1).getText());
+		assertEquals("eclipse", control.getItem(0).getText()); //$NON-NLS-1$
+		assertEquals("riena", control.getItem(1).getText()); //$NON-NLS-1$
 
-		word1.setValue("alpha");
-		word2.setValue("beta");
+		word1.setValue("alpha"); //$NON-NLS-1$
+		word2.setValue("beta"); //$NON-NLS-1$
 
-		assertEquals("eclipse", control.getItem(0).getText());
-		assertEquals("riena", control.getItem(1).getText());
+		assertEquals("eclipse", control.getItem(0).getText()); //$NON-NLS-1$
+		assertEquals("riena", control.getItem(1).getText()); //$NON-NLS-1$
 
 		ridget.refresh(word1);
 
-		assertEquals("alpha", control.getItem(0).getText());
-		assertEquals("riena", control.getItem(1).getText());
+		assertEquals("alpha", control.getItem(0).getText()); //$NON-NLS-1$
+		assertEquals("riena", control.getItem(1).getText()); //$NON-NLS-1$
 	}
 
 	public void testRowErrorMessageMarker() {
@@ -1132,14 +1132,14 @@ public class TableRidgetTest extends AbstractTableRidgetTest {
 	@Override
 	protected Object getRowValue(final int i) {
 		// return getRidget().getRowObservables().get(i);
-		final IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
+		final IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables"); //$NON-NLS-1$
 		return rowObservables.get(i);
 	}
 
 	@Override
 	protected int[] getSelectedRows() {
 		// IObservableList rowObservables = getRidget().getRowObservables();
-		final IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables");
+		final IObservableList rowObservables = ReflectionUtils.invokeHidden(getRidget(), "getRowObservables"); //$NON-NLS-1$
 		final Object[] elements = getRidget().getMultiSelectionObservable().toArray();
 		final int[] result = new int[elements.length];
 		for (int i = 0; i < elements.length; i++) {

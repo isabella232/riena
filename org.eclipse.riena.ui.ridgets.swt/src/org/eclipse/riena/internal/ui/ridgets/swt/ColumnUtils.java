@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.util.Util;
@@ -18,11 +19,8 @@ import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.swt.widgets.Widget;
 
 /**
@@ -60,7 +58,8 @@ public final class ColumnUtils {
 	 *            distributed equally to all columns
 	 */
 	public static void applyColumnWidths(final Table control, final ColumnLayoutData[] columnWidths) {
-		applyColumnWidths(control, columnWidths, control.getColumnCount());
+		Assert.isNotNull(control);
+		applyColumnWidths(new TableWrapper(control), columnWidths);
 	}
 
 	/**
@@ -93,7 +92,13 @@ public final class ColumnUtils {
 	 *            distributed equally to all columns
 	 */
 	public static void applyColumnWidths(final Tree control, final ColumnLayoutData[] columnWidths) {
-		applyColumnWidths(control, columnWidths, control.getColumnCount());
+		Assert.isNotNull(control);
+		applyColumnWidths(new TreeWrapper(control), columnWidths);
+	}
+
+	public static void applyColumnWidths(final ITableTreeWrapper controlWrapper, final ColumnLayoutData[] columnWidths) {
+		Assert.isNotNull(controlWrapper);
+		applyColumnWidths(controlWrapper, columnWidths, controlWrapper.getColumnCount());
 	}
 
 	/**
@@ -129,8 +134,8 @@ public final class ColumnUtils {
 	// helping methods
 	//////////////////
 
-	private static void applyColumnWidths(final Composite control, final ColumnLayoutData[] columnWidths,
-			final int expectedCols) {
+	private static void applyColumnWidths(final ITableTreeWrapper controlWrapper,
+			final ColumnLayoutData[] columnWidths, final int expectedCols) {
 		final ColumnLayoutData[] columnData;
 		if (columnWidths == null || columnWidths.length != expectedCols) {
 			columnData = new ColumnLayoutData[expectedCols];
@@ -140,6 +145,7 @@ public final class ColumnUtils {
 		} else {
 			columnData = columnWidths;
 		}
+		final Composite control = controlWrapper.getControl();
 		final Composite parent = control.getParent();
 		if (control.getLayout() instanceof TableLayout) {
 			// TableLayout: use columnData instance for each column, apply to control
@@ -154,7 +160,7 @@ public final class ColumnUtils {
 			// TreeColumnLayout: use columnData instance for each column, apply to parent
 			final TreeColumnLayout layout = getOrCreateTreeColumnLayout(parent);
 			for (int index = 0; index < expectedCols; index++) {
-				final Widget column = getColumn(control, index);
+				final Widget column = controlWrapper.getColumn(index);
 				layout.setColumnData(column, columnData[index]);
 			}
 			parent.setLayout(layout);
@@ -164,7 +170,7 @@ public final class ColumnUtils {
 			// TableColumnLayout: use columnData instance for each column, apply to parent
 			final TableColumnLayout layout = getOrCreateTableColumnLayout(parent);
 			for (int index = 0; index < expectedCols; index++) {
-				final Widget column = getColumn(control, index);
+				final Widget column = controlWrapper.getColumn(index);
 				layout.setColumnData(column, columnData[index]);
 			}
 			parent.setLayout(layout);
@@ -185,7 +191,7 @@ public final class ColumnUtils {
 					if (pixelData.addTrim) {
 						width = width + getColumnTrim();
 					}
-					configureColumn(control, index, width, data.resizable);
+					configureColumn(controlWrapper, index, width, data.resizable);
 					widthRemaining = widthRemaining - width;
 				} else if (data instanceof ColumnWeightData) {
 					totalWeights = totalWeights + ((ColumnWeightData) data).weight;
@@ -196,31 +202,16 @@ public final class ColumnUtils {
 				if (columnData[index] instanceof ColumnWeightData) {
 					final ColumnWeightData data = (ColumnWeightData) columnData[index];
 					final int width = Math.max(data.minimumWidth, data.weight * slice);
-					configureColumn(control, index, width, data.resizable);
+					configureColumn(controlWrapper, index, width, data.resizable);
 				}
 			}
 		}
 	}
 
-	private static void configureColumn(final Control control, final int index, final int width, final boolean resizable) {
-		final Widget column = getColumn(control, index);
-		if (column instanceof TreeColumn) {
-			((TreeColumn) column).setWidth(width);
-			((TreeColumn) column).setResizable(resizable);
-		} else if (column instanceof TableColumn) {
-			((TableColumn) column).setWidth(width);
-			((TableColumn) column).setResizable(resizable);
-		}
-	}
-
-	private static Widget getColumn(final Control control, final int index) {
-		if (control instanceof Table) {
-			return ((Table) control).getColumn(index);
-		}
-		if (control instanceof Tree) {
-			return ((Tree) control).getColumn(index);
-		}
-		throw new IllegalArgumentException("unsupported type: " + control); //$NON-NLS-1$
+	private static void configureColumn(final ITableTreeWrapper controlWrapper, final int index, final int width,
+			final boolean resizable) {
+		controlWrapper.setWidth(index, width);
+		controlWrapper.setResizable(index, resizable);
 	}
 
 	private static int getColumnTrim() {

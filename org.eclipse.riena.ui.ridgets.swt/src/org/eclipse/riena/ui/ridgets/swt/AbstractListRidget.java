@@ -304,7 +304,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		throw new UnsupportedOperationException();
 	}
 
-	public void setComparator(final int columnIndex, final Comparator<Object> comparator) {
+	public void setComparator(final int columnIndex, final Comparator<?> comparator) {
 		Assert.isLegal(columnIndex == 0, "columnIndex out of bounds (must be 0)"); //$NON-NLS-1$
 		if (comparator != null) {
 			final SortableComparator sortableComparator = new SortableComparator(this, comparator);

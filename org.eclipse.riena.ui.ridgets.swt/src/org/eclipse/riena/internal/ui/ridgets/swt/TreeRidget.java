@@ -934,7 +934,9 @@ public class TreeRidget extends AbstractSelectableRidget implements ITreeRidget 
 		@Override
 		protected void handleTreeExpand(final org.eclipse.swt.events.TreeEvent event) {
 			if (getUIControl() != null) {
-				super.handleTreeExpand(event);
+				if (!event.item.isDisposed()) {
+					super.handleTreeExpand(event);
+				}
 			}
 		}
 

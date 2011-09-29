@@ -39,7 +39,7 @@ import org.eclipse.riena.ui.tests.base.TestSingleSelectionBean;
  * Tests for the class {@link AbstractSelectableRidget} and
  * {@link AbstractSelectableIndexedRidget} for table/list based implementations.
  */
-public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
+public abstract class AbstractTableListRidgetTest extends AbstractSWTRidgetTest {
 
 	protected PersonManager manager;
 	protected Person person1;
@@ -64,6 +64,20 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		getRidget().bindMultiSelectionToModel(multiSelectionBean, TestMultiSelectionBean.PROPERTY_SELECTION);
 		getRidget().updateFromModel();
 		UITestHelper.readAndDispatch(getWidget());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.riena.internal.ui.ridgets.swt.AbstractRidgetTestCase#tearDown
+	 * ()
+	 */
+	@Override
+	protected void tearDown() throws Exception {
+		UITestHelper.readAndDispatch(getWidget());
+		super.tearDown();
+
 	}
 
 	protected abstract void bindRidgetToModel();
@@ -118,7 +132,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 	public void testClearSelectionWhenSelectionIsRemovedFromModel() {
 		final ISelectableIndexedRidget ridget = getRidget();
 
-		ridget.bindSingleSelectionToModel(manager, "selectedPerson");
+		ridget.bindSingleSelectionToModel(manager, "selectedPerson"); //$NON-NLS-1$
 		ridget.setSelection(person2);
 
 		assertSame(person2, ridget.getSelection().get(0));
@@ -439,7 +453,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testUpdateMultiSelectionFromModelWithNoBoundControl() {
 		if (!supportsMulti()) {
-			System.out.println("skipping testUpdateMultiSelectionFromModelWithNoBoundControl() for " + getRidget());
+			System.out.println("skipping testUpdateMultiSelectionFromModelWithNoBoundControl() for " + getRidget()); //$NON-NLS-1$
 			return;
 		}
 		final ISelectableIndexedRidget ridget = getRidget();
@@ -491,7 +505,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testUpdateMultiSelectionFromModelWithBoundControl() {
 		if (!supportsMulti()) {
-			System.out.println("skipping testUpdateMultiSelectionFromModelWithBoundControl() for " + getRidget());
+			System.out.println("skipping testUpdateMultiSelectionFromModelWithBoundControl() for " + getRidget()); //$NON-NLS-1$
 			return;
 		}
 		final ISelectableIndexedRidget ridget = getRidget();
@@ -516,6 +530,32 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		assertNotNull(ridget.getUIControl());
 		assertEquals(1, ridget.getSelection().size());
 		assertEquals(person1, ridget.getSelection().get(0));
+	}
+
+	public void testUpdateMultiSelectionFromControl() {
+		if (!supportsMulti()) {
+			return;
+		}
+		final ISelectableIndexedRidget ridget = getRidget();
+
+		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
+
+		assertNull(singleSelectionBean.getSelection());
+		assertTrue(multiSelectionBean.getSelectionList().isEmpty());
+
+		setUIControlRowSelectionInterval(1, 2);
+
+		assertEquals(getRowValue(1), singleSelectionBean.getSelection());
+		assertEquals(2, multiSelectionBean.getSelectionList().size());
+		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
+		assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(1));
+
+		setUIControlRowSelection(new int[] { 0, 2 });
+
+		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
+		assertEquals(2, multiSelectionBean.getSelectionList().size());
+		assertEquals(getRowValue(0), multiSelectionBean.getSelectionList().get(0));
+		assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(1));
 	}
 
 	public void testUpdateMultiSelectionCustomBinding() {
@@ -554,33 +594,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(getRowValue(2), customMultiSelectionObservable.get(1));
 	}
 
-	public void testUpdateMultiSelectionFromControl() {
-		if (!supportsMulti()) {
-			return;
-		}
-		final ISelectableIndexedRidget ridget = getRidget();
-
-		ridget.setSelectionType(ITableRidget.SelectionType.MULTI);
-
-		assertNull(singleSelectionBean.getSelection());
-		assertTrue(multiSelectionBean.getSelectionList().isEmpty());
-
-		setUIControlRowSelectionInterval(1, 2);
-
-		assertEquals(getRowValue(1), singleSelectionBean.getSelection());
-		assertEquals(2, multiSelectionBean.getSelectionList().size());
-		assertEquals(getRowValue(1), multiSelectionBean.getSelectionList().get(0));
-		assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(1));
-
-		setUIControlRowSelection(new int[] { 0, 2 });
-
-		assertEquals(getRowValue(0), singleSelectionBean.getSelection());
-		assertEquals(2, multiSelectionBean.getSelectionList().size());
-		assertEquals(getRowValue(0), multiSelectionBean.getSelectionList().get(0));
-		assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(1));
-	}
-
-	public void testUpdateMultiSelectionFromModel() {
+	public void testUpdateMultiSelection2FromModel() {
 		if (!supportsMulti()) {
 			return;
 		}
@@ -613,7 +627,7 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(getRowValue(2), multiSelectionBean.getSelectionList().get(1));
 	}
 
-	public void testUpdateMultiSelectionFromModelWhenUnbound() {
+	public void testUpdateMultiSelection3FromModelWhenUnbound() {
 		if (!supportsMulti()) {
 			return;
 		}
@@ -980,35 +994,35 @@ public abstract class AbstractTableRidgetTest extends AbstractSWTRidgetTest {
 	private Collection<Person> createPersonList() {
 		final Collection<Person> newList = new ArrayList<Person>();
 
-		Person person = new Person("Doe", "John");
+		Person person = new Person("Doe", "John"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(1);
 		newList.add(person);
 
-		person = new Person("Jackson", "Janet");
+		person = new Person("Jackson", "Janet"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(1);
 		newList.add(person);
 
-		person = new Person("Jackson", "Jermaine");
+		person = new Person("Jackson", "Jermaine"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(1);
 		newList.add(person);
 
-		person = new Person("Jackson", "John");
+		person = new Person("Jackson", "John"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(3);
 		newList.add(person);
 
-		person = new Person("JJ Jr. Shabadoo", "Joey");
+		person = new Person("JJ Jr. Shabadoo", "Joey"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(3);
 		newList.add(person);
 
-		person = new Person("Johnson", "Jack");
+		person = new Person("Johnson", "Jack"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(2);
 		newList.add(person);
 
-		person = new Person("Johnson", "Jane");
+		person = new Person("Johnson", "Jane"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(3);
 		newList.add(person);
 
-		person = new Person("Zappa", "Frank");
+		person = new Person("Zappa", "Frank"); //$NON-NLS-1$ //$NON-NLS-2$
 		person.setEyeColor(2);
 		newList.add(person);
 

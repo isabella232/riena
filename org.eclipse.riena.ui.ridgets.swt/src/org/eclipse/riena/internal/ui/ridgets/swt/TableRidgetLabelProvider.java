@@ -438,11 +438,11 @@ public class TableRidgetLabelProvider extends ObservableMapLabelProvider impleme
 	// helping methods
 	//////////////////
 
-	int getColumnCount() {
+	public int getColumnCount() {
 		return this.formatters.length;
 	}
 
-	void setFormatters(final IColumnFormatter[] formatters) {
+	public void setFormatters(final IColumnFormatter[] formatters) {
 		Assert.isLegal(numColumns == formatters.length, String.format("expected %d formatters, got %d", numColumns, //$NON-NLS-1$
 				formatters.length));
 		this.formatters = new IColumnFormatter[formatters.length];

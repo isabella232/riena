@@ -41,7 +41,7 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 /**
  * Tests of the class {@link ListRidget}.
  */
-public class ListRidgetTest extends AbstractTableRidgetTest {
+public class ListRidgetTest extends AbstractTableListRidgetTest {
 
 	@Override
 	protected List createWidget(final Composite parent) {

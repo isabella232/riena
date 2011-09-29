@@ -196,7 +196,7 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * @throws RuntimeException
 	 *             if columnIndex is out of range
 	 */
-	void setComparator(int columnIndex, Comparator<Object> comparator);
+	void setComparator(int columnIndex, Comparator<?> comparator);
 
 	/**
 	 * Set to true, if this table should allow columns to be re-arranged by the

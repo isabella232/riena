@@ -284,7 +284,7 @@ public class TextRidget extends AbstractEditableRidget implements ITextRidget {
 	 */
 	public synchronized void setText(final String text) {
 		final String oldValue = textValue;
-		textValue = text != null ? text : ""; //$NON-NLS-1$
+		textValue = text != null ? text : EMPTY_STRING;
 		forceTextToControl(textValue);
 		disableMandatoryMarkers(isNotEmpty(textValue));
 		final IStatus onEdit = checkOnEditRules(textValue, new ValidationCallback(false));

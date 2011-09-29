@@ -20,9 +20,9 @@ import org.eclipse.riena.ui.ridgets.swt.SortableComparator;
 /**
  * This comparator uses the values of the column the table is sorted by.
  */
-final class TableComparator extends ViewerComparator {
+public final class TableComparator extends ViewerComparator {
 
-	TableComparator(final SortableComparator comparator) {
+	public TableComparator(final SortableComparator comparator) {
 		super(comparator);
 	}
 
