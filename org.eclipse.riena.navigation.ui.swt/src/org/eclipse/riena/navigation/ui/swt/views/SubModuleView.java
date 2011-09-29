@@ -792,6 +792,13 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		@Override
 		public void activated(final ISubModuleNode source) {
 			if (source.equals(getNavigationNode())) {
+				if (SwtUtilities.isDisposed(parentComposite)) {
+					/*
+					 * Do not bind disposed views. TODO For disposed views this
+					 * listener should be unregistered.
+					 */
+					return;
+				}
 				doBinding();
 			}
 		}
