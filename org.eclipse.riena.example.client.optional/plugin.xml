@@ -59,10 +59,4 @@
           </moduleGroup>
        </assembly2>
   </extension>
-  <extension
-        point="org.eclipse.riena.ui.ridgets.swt.renderDisabledStateWidgets">
-     <widget
-           class="org.eclipse.riena.internal.ui.ridgets.swt.optional.AmpelAuswahlWidget">
-     </widget>
-  </extension>
 </plugin>
