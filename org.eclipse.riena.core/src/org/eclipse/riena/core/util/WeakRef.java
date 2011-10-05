@@ -84,7 +84,7 @@ public class WeakRef<T> {
 	private static class Remover extends Job {
 
 		private static final int REMOVE_TIMEOUT = 1;
-		private static final String WE_ARE_FAMILY = Activator.getDefault().getBundle().getSymbolicName();
+		private static final String WE_ARE_FAMILY = Activator.PLUGIN_ID;
 
 		public Remover() {
 			super("WeakRef remover"); //$NON-NLS-1$

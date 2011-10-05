@@ -65,7 +65,7 @@ public class Activator extends RienaPlugin {
 	@Override
 	@IgnoreFindBugs(value = "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", justification = "that is the eclipse way")
 	public void stop(final BundleContext context) throws Exception {
-		Job.getJobManager().cancel(getBundle().getSymbolicName());
+		Job.getJobManager().cancel(PLUGIN_ID);
 		active = false;
 		startupActionsExecuted = false;
 		Activator.plugin = null;
@@ -133,6 +133,10 @@ public class Activator extends RienaPlugin {
 		private void logStage() {
 			Log4r.getLogger(StartupBundleListener.class).log(LogService.LOG_INFO,
 					"Riena is running in stage '" + RienaStatus.getStage() + "'."); //$NON-NLS-1$ //$NON-NLS-2$
+			final String reportUnresolvedBundles = RienaStatus.reportUnresolvedBundles();
+			if (reportUnresolvedBundles != null) {
+				Log4r.getLogger(StartupBundleListener.class).log(LogService.LOG_ERROR, reportUnresolvedBundles);
+			}
 		}
 
 		private BundleContext getContextSave() {

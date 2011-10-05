@@ -32,7 +32,7 @@ public class DeferredLoggingForwarder extends Job {
 
 	private final LoggerProvider loggerProvider;
 	private final BlockingQueue<DeferredLogEvent> queue;
-	private static final String WE_ARE_FAMILY = Activator.getDefault().getBundle().getSymbolicName();
+	private static final String WE_ARE_FAMILY = Activator.PLUGIN_ID;
 
 	public DeferredLoggingForwarder(final LoggerProvider loggerProvider, final BlockingQueue<DeferredLogEvent> queue) {
 		super("DeferredLoggingForwarder"); //$NON-NLS-1$
