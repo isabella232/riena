@@ -276,7 +276,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 
 		// dispatch events
 		try {
-			while (!condition.call()) {
+			while (!(condition.call() || isWorkbenchShutdown() || currentDisplay.isDisposed())) {
 				if (!currentDisplay.readAndDispatch()) {
 					currentDisplay.sleep();
 				}
