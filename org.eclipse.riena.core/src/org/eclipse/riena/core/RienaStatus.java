@@ -10,7 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.core;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
+import org.osgi.framework.FrameworkUtil;
+
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.osgi.framework.internal.core.AbstractBundle;
 
 import org.eclipse.riena.core.util.VariableManagerUtil;
 import org.eclipse.riena.internal.core.Activator;
@@ -129,4 +135,43 @@ public final class RienaStatus {
 			return UNKNOWN_STAGE;
 		}
 	}
+
+	/**
+	 * Create a "nice" report with a list of all unresolved bundles and their
+	 * possible cause for not becoming resolved.
+	 * 
+	 * @return the report or {@code null} if all bundles were resolved
+	 * 
+	 * @since 4.0
+	 */
+	@SuppressWarnings("restriction")
+	public static String reportUnresolvedBundles() {
+		final Bundle coreBundle = FrameworkUtil.getBundle(RienaStatus.class);
+		if (coreBundle == null) {
+			return "Could not resolve Riena core bundle."; //$NON-NLS-1$
+		}
+		final BundleContext bundleContext = coreBundle.getBundleContext();
+		if (bundleContext == null) {
+			return "Could not get Riena bundle context."; //$NON-NLS-1$
+		}
+		final StringBuilder bob = new StringBuilder();
+		for (final Bundle bundle : bundleContext.getBundles()) {
+			if (bundle.getState() < Bundle.RESOLVED) {
+				if (bob.length() == 0) {
+					bob.append("Unresolved bundles:").append("\n"); //$NON-NLS-1$//$NON-NLS-2$
+				}
+				bob.append(" - ").append(bundle.getSymbolicName()).append(" is not resolved"); //$NON-NLS-1$ //$NON-NLS-2$
+				if (bundle instanceof AbstractBundle) {
+					final BundleException resolutionFailureException = ((AbstractBundle) bundle)
+							.getResolutionFailureException();
+					if (resolutionFailureException != null) {
+						bob.append(" because: ").append(resolutionFailureException.getMessage()); //$NON-NLS-1$
+					}
+				}
+				bob.append("\n"); //$NON-NLS-1$
+			}
+		}
+		return bob.length() == 0 ? null : bob.toString();
+	}
+
 }
