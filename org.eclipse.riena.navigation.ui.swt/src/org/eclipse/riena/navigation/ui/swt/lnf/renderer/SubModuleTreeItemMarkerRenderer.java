@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import org.eclipse.riena.core.marker.IMarker;
@@ -51,9 +52,6 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 		flasherSupport = new FlasherSupportForRenderer(this, new MarkerUpdater());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void paint(final GC gc, final Object value) {
 
@@ -172,9 +170,6 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 
 	}
 
-	/**
-	 * @see org.eclipse.riena.ui.swt.lnf.ILnfRenderer#dispose()
-	 */
 	public void dispose() {
 		item = null;
 		flasherSupport = null;
@@ -186,11 +181,11 @@ public class SubModuleTreeItemMarkerRenderer extends AbstractLnfRenderer {
 	 */
 	private class MarkerUpdater implements Runnable {
 
-		/**
-		 * @see java.lang.Runnable#run()
-		 */
 		public void run() {
-			item.getParent().redraw();
+			final Tree parent = item.getParent();
+			if (!parent.isDisposed()) {
+				parent.redraw();
+			}
 		}
 	}
 
