@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.marker;
 
-import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.ui.core.marker.UIProcessFinishedMarker;
 import org.eclipse.riena.ui.core.uiprocess.IProgressVisualizer;
@@ -27,8 +26,6 @@ public class UIProcessFinishedObserver implements IProgressVisualizerObserver {
 
 	private final INavigationNode<?> baseNode;
 
-	private final IMarker uiProcessFinishedMarker;
-
 	private final IUIProcessMarkupStrategy markupStrategy;
 
 	/**
@@ -40,7 +37,6 @@ public class UIProcessFinishedObserver implements IProgressVisualizerObserver {
 	 */
 	public UIProcessFinishedObserver(final INavigationNode<?> baseNode, final IUIProcessMarkupStrategy markupStrategy) {
 		this.baseNode = baseNode;
-		uiProcessFinishedMarker = new UIProcessFinishedMarker();
 		this.markupStrategy = markupStrategy;
 	}
 
@@ -53,7 +49,7 @@ public class UIProcessFinishedObserver implements IProgressVisualizerObserver {
 	}
 
 	public void finalUpdateUI(final IProgressVisualizer visualizer) {
-		getMarkupStrategy().applyUIProcessMarker(getBaseNode(), uiProcessFinishedMarker);
+		getMarkupStrategy().applyUIProcessMarker(getBaseNode(), new UIProcessFinishedMarker());
 	}
 
 	private IUIProcessMarkupStrategy getMarkupStrategy() {
