@@ -11,14 +11,22 @@
 package org.eclipse.riena.internal.ui.ridgets.swt.optional;
 
 import org.eclipse.nebula.jface.gridviewer.GridTableViewer;
+import org.eclipse.nebula.widgets.grid.Grid;
 
 /**
- * 
+ * A viewer of a {@link Grid} control that also know the corresponding Ridget.
  */
 public class GridRidgetGridTableViewer extends GridTableViewer {
 
 	private final GridRidget gridRidget;
 
+	/**
+	 * Creates a grid viewer on the grid control that's binded with the given
+	 * Ridget.
+	 * 
+	 * @param gridRidget
+	 *            Ridget of the {@link Grid}
+	 */
 	public GridRidgetGridTableViewer(final GridRidget gridRidget) {
 		super(gridRidget.getUIControl());
 		this.gridRidget = gridRidget;

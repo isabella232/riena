@@ -12,7 +12,11 @@ package org.eclipse.riena.internal.tests;
 
 import org.osgi.framework.BundleContext;
 
+import org.eclipse.nebula.widgets.grid.Grid;
+
 import org.eclipse.riena.core.RienaPlugin;
+import org.eclipse.riena.internal.ui.ridgets.swt.optional.GridRidget;
+import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
  * The plugin class controls the plug-in life cycle
@@ -41,6 +45,7 @@ public class Activator extends RienaPlugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		Activator.plugin = this;
+		SwtControlRidgetMapper.getInstance().addMapping(Grid.class, GridRidget.class);
 	}
 
 	/*

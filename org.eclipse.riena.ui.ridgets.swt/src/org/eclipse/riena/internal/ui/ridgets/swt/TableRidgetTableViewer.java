@@ -13,14 +13,23 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerRow;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Table;
 
 /**
- *
+ * A viewer of a SWT {@link Table} control that also know the corresponding
+ * Ridget.
  */
 public class TableRidgetTableViewer extends TableViewer {
 
 	private final TableRidget tableRidget;
 
+	/**
+	 * Creates a table viewer on the SWT table that's binded with the given
+	 * Ridget.
+	 * 
+	 * @param tableRidget
+	 *            Ridget of the {@link Table}
+	 */
 	public TableRidgetTableViewer(final TableRidget tableRidget) {
 		super(tableRidget.getUIControl());
 		this.tableRidget = tableRidget;

@@ -18,7 +18,7 @@ import java.util.Locale;
 import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.PersonFactory;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-import org.eclipse.riena.internal.ui.swt.test.TestUtils;
+import org.eclipse.riena.internal.ui.swt.utils.TestUtils;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.ui.swt.controllers.AbstractSubModuleControllerTest;

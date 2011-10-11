@@ -8,7 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.internal.ui.swt.test;
+package org.eclipse.riena.internal.ui.swt.utils;
 
 import java.text.DecimalFormatSymbols;
 import java.util.Collection;
@@ -17,6 +17,7 @@ import java.util.Locale;
 
 import junit.framework.Assert;
 
+import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
@@ -25,6 +26,7 @@ import org.eclipse.swt.widgets.Tree;
 
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
@@ -288,6 +290,8 @@ public final class TestUtils {
 			return ((Tree) control).getColumn(colIndex).getWidth();
 		} else if (control instanceof Table) {
 			return ((Table) control).getColumn(colIndex).getWidth();
+		} else if (control instanceof Grid) {
+			return ((Grid) control).getColumn(colIndex).getWidth();
 		}
 		throw new IllegalArgumentException("unsupported control: " + control); //$NON-NLS-1$
 	}

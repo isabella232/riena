@@ -12,7 +12,7 @@ package org.eclipse.riena.internal.ui.ridgets.swt;
 
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
-import org.eclipse.riena.internal.ui.swt.test.TestUtils;
+import org.eclipse.riena.internal.ui.swt.utils.TestUtils;
 
 /**
  * Tests for the {@link NumericString} class.
