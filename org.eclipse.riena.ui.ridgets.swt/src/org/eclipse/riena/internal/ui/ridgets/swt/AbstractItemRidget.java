@@ -22,6 +22,7 @@ import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * Ridget of an item (e.g. menu item).
@@ -159,7 +160,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	protected CommandContributionItem getContributionItem() {
 
 		final Item uiItem = getUIControl();
-		if ((uiItem == null) || uiItem.isDisposed()) {
+		if (SwtUtilities.isDisposed(uiItem)) {
 			return null;
 		}
 
@@ -254,7 +255,7 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 	 */
 	void createItem() {
 		final Item uiItem = getUIControl();
-		if ((uiItem == null) || (uiItem.isDisposed())) {
+		if (SwtUtilities.isDisposed(uiItem)) {
 			getItemProperties().createItem();
 		}
 	}
