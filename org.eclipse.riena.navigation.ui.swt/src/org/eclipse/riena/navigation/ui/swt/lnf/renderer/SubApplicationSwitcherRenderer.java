@@ -89,10 +89,12 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 		for (final SubApplicationItem item : getVisibleItems()) {
 			initItemRenderer(tabRenderer, item);
 			final Point size = tabRenderer.computeSize(gc, null);
-			y = getBounds().height - size.y;
-			tabRenderer.setBounds(x, y, size.x, size.y);
 			if (!item.isActivated()) {
+				y = getBounds().height - size.y;
+				tabRenderer.setBounds(x, y, size.x, size.y);
 				tabRenderer.paint(gc, control);
+				// reset bounds, paint may have changed them 
+				tabRenderer.setBounds(x, y, size.x, size.y);
 				item.setBounds(tabRenderer.getBounds());
 			}
 			x += size.x;
@@ -107,6 +109,8 @@ public class SubApplicationSwitcherRenderer extends AbstractLnfRenderer {
 				y = getBounds().height - size.y;
 				tabRenderer.setBounds(x, y, size.x, size.y);
 				tabRenderer.paint(gc, control);
+				// reset bounds, paint may have changed them 
+				tabRenderer.setBounds(x, y, size.x, size.y);
 				item.setBounds(tabRenderer.getBounds());
 			}
 			x += size.x;
