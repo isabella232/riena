@@ -116,10 +116,16 @@ public class NavigationProcessor implements INavigationProcessor {
 				INavigationContext navigationContext = new NavigationContext(null, toActivateList, toDeactivateList);
 				if (allowsDeactivate(navigationContext)) {
 					if (allowsActivate(navigationContext)) {
+						// the activation chain may have changed -> update context
+						navigationContext = new NavigationContext(null, getNodesToActivateOnActivation(toActivate),
+								getNodesToDeactivateOnActivation(toActivate));
 						deactivate(navigationContext);
 						activate(navigationContext);
 					} else {
 						final INavigationNode<?> currentActive = getActiveChild(toActivate.getParent());
+						if (currentActive == null) {
+							return;
+						}
 						toActivateList.clear();
 						toActivateList.add(currentActive);
 						toDeactivateList.clear();
@@ -548,7 +554,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	/*
-	 * unregisters the given node as and all of it´s children as jump targets
+	 * unregisters the given node as and all of itï¿½s children as jump targets
 	 * and sources recursively
 	 */
 	private void handleJumpsOnDispose(final INavigationNode<?> node) {
