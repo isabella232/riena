@@ -414,7 +414,7 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 	}
 
 	/**
-	 * cleanly remove the visualizer from the it´s container and udpdate user
+	 * cleanly remove the visualizer from the it´s container and update user
 	 * interface
 	 */
 	public void removeProgressVisualizer(final IProgressVisualizer visualizer) {
@@ -424,6 +424,9 @@ public class UIProcessRidget extends AbstractRidget implements IUIProcessRidget 
 		if (getCurrentVisualizer() != null) {
 			updateUi();
 		}
+		//remove context listener to avoid memory leaks 
+		final Object context = visualizer.getProcessInfo().getContext();
+		contextLocator.removeContextUpdateListener(contextChangeHandler, context);
 	}
 
 	private void cleanContext() {
