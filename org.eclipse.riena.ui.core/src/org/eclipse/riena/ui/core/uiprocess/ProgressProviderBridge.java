@@ -74,6 +74,11 @@ public class ProgressProviderBridge extends ProgressProvider {
 		return provider.createMonitor(job);
 	}
 
+	/**
+	 * Locates a {@link ProgressProvider} for the given {@link Job}.The instance
+	 * will be of type {@link UICallbackDispatcher} which dispatches job state
+	 * changes to riena API process listeners.
+	 */
 	private ProgressProvider queryProgressProvider(final Job job) {
 		UIProcess uiprocess = jobUiProcess.get(job);
 		final Object context = getContext(job);
@@ -96,6 +101,10 @@ public class ProgressProviderBridge extends ProgressProvider {
 		return job.getProperty(UIProcess.PROPERTY_CONTEXT);
 	}
 
+	/**
+	 * Create a default instance of {@link UIProcess} wrapping the given
+	 * {@link Job}
+	 */
 	private UIProcess createDefaultUIProcess(final Job job) {
 		return new UIProcess(job);
 	}
@@ -123,6 +132,11 @@ public class ProgressProviderBridge extends ProgressProvider {
 		return new ArrayList<UIProcess>(jobUiProcess.values());
 	}
 
+	/**
+	 * Observes the state of jobs. Scheduled jobs will be assigned to an
+	 * instance of {@link UIProcess}. To avoid memory leaks jobs need to be
+	 * unregistered from internal mappings.
+	 */
 	private final class JobObserver extends JobChangeAdapter {
 
 		@Override
@@ -132,5 +146,12 @@ public class ProgressProviderBridge extends ProgressProvider {
 				createDefaultUIProcess(job);
 			}
 		}
+
+		@Override
+		public void done(final IJobChangeEvent event) {
+			final Job job = event.getJob();
+			jobToVisualizer.remove(job);
+		}
+
 	}
 }
