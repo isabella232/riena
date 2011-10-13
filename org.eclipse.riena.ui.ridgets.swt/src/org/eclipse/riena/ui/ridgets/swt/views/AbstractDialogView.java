@@ -18,7 +18,6 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -31,6 +30,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import org.eclipse.riena.internal.ui.swt.utils.ShellHelper;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.swt.GrabCorner;
 import org.eclipse.riena.ui.swt.RienaWindowRenderer;
@@ -136,7 +136,7 @@ public abstract class AbstractDialogView extends Dialog {
 		// because the controller can add some data that influences the size of some widgets (e.g. ChoiceComposite)
 		initializeBounds();
 
-		centerWindow(getShell());
+		ShellHelper.center(getShell());
 
 		getShell().addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(final DisposeEvent e) {
@@ -323,19 +323,6 @@ public abstract class AbstractDialogView extends Dialog {
 		controlledView.initialize(getController());
 		controlledView.bind(getController());
 	}
-
-	private void centerWindow(final Shell dialogShell) {
-		if (dialogShell != null && dialogShell.getParent() != null) {
-			final Rectangle parentShellBounds = dialogShell.getParent().getBounds();
-			final Rectangle dialogShellBounds = dialogShell.getBounds();
-			final int leftMargin = parentShellBounds.x + (parentShellBounds.width - dialogShellBounds.width) / 2;
-			final int topMargin = parentShellBounds.y + (parentShellBounds.height - dialogShellBounds.height) / 2;
-			dialogShell.setLocation(leftMargin, topMargin);
-		}
-	}
-
-	// helping classes
-	//////////////////
 
 	private static final class ControlledView extends AbstractControlledView<AbstractWindowController> {
 		@Override

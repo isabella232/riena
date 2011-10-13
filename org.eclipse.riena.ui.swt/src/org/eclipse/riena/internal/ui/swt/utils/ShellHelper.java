@@ -13,9 +13,13 @@ package org.eclipse.riena.internal.ui.swt.utils;
 import org.osgi.service.log.LogService;
 
 import org.eclipse.equinox.log.Logger;
+import org.eclipse.jface.util.Geometry;
 import org.eclipse.jface.util.Util;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.Log4r;
@@ -175,6 +179,54 @@ public class ShellHelper {
 			return false;
 		}
 		return isTitleless(shell);
+	}
+
+	/**
+	 * centers the given shell on the current screen
+	 * 
+	 * @param shell
+	 */
+	public static void center(final Shell shell) {
+		if (shell != null) {
+			final Rectangle surroundingBounds = getSurroundingBounds(shell);
+			final Rectangle shellBounds = shell.getBounds();
+			final int leftMargin = surroundingBounds.x + (surroundingBounds.width - shellBounds.width) / 2;
+			final int topMargin = surroundingBounds.y + (surroundingBounds.height - shellBounds.height) / 2;
+			shell.setLocation(leftMargin, topMargin);
+		}
+	}
+
+	private static Rectangle getSurroundingBounds(final Shell shell) {
+		return shell.getParent() != null ? shell.getParent().getBounds() : getClosestMonitor(shell.getDisplay(),
+				shell.getLocation()).getBounds();
+	}
+
+	public static Monitor getClosestMonitor(final Shell shell) {
+		return getClosestMonitor(shell.getDisplay(), shell.getLocation());
+	}
+
+	/**
+	 * This is a slightly modified version of @see Window.getClosestMonitor()
+	 */
+	private static Monitor getClosestMonitor(final Display toSearch, final Point toFind) {
+		int closest = Integer.MAX_VALUE;
+
+		Monitor result = toSearch.getPrimaryMonitor();
+
+		for (final Monitor current : toSearch.getMonitors()) {
+			final Rectangle clientArea = current.getBounds();
+
+			if (clientArea.contains(toFind)) {
+				return current;
+			}
+
+			final int distance = Geometry.distanceSquared(Geometry.centerPoint(clientArea), toFind);
+			if (distance < closest) {
+				closest = distance;
+				result = current;
+			}
+		}
+		return result;
 	}
 
 }
