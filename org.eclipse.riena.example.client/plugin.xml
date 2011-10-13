@@ -1560,4 +1560,10 @@
             permissionName="navi">
       </mapping>
    </extension>
+   <extension
+         point="org.eclipse.riena.navigation.ui.swt.windowNavigator">
+      <navigator
+            navigatorClass="org.eclipse.riena.example.client.views.ExampleWindowNavigator">
+      </navigator>
+   </extension>
 </plugin>
