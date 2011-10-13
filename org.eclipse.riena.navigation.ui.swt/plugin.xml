@@ -6,6 +6,7 @@
    <extension-point id="moduleView" name="ModuleView Definition" schema="schema/moduleView.exsd"/>
    <extension-point id="moduleGroupView" name="ModuleGroupView definition" schema="schema/moduleGroupView.exsd"/>
    <extension-point id="statusLine" name="StatusLine configuration" schema="schema/statusLine.exsd"/>
+   <extension-point id="windowNavigator" name="Window Navigator" schema="schema/windowNavigator.exsd"/>
 
    <extension
          point="org.eclipse.ui.views">

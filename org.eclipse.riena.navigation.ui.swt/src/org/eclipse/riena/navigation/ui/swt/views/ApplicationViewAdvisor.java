@@ -133,6 +133,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	// content factory for delegation of content creation from the statusline
 	private IStatusLineContentFactory statuslineContentFactory;
 
+	protected IWindowNavigator windowNavigator;
+
 	/**
 	 * The application window size minimum.
 	 */
@@ -163,6 +165,16 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		}
 	}
 
+	@InjectExtension(min = 0, max = 1)
+	public void updateWindowNavigator(final IWindowNavigatorExtension windowNavigatorExtension) {
+		this.windowNavigator = windowNavigatorExtension == null ? new DefaultWindowNavigator()
+				: windowNavigatorExtension.createWindowNavigator();
+	}
+
+	protected IWindowNavigator getWindowNavigator() {
+		return windowNavigator;
+	}
+
 	@Override
 	public final ActionBarAdvisor createActionBarAdvisor(final IActionBarConfigurer configurer) {
 		return advisorHelper.createActionBarAdvisor(configurer);
@@ -186,7 +198,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		final RestoreFocusOnEscListener focusListener = new RestoreFocusOnEscListener(shell);
 		focusListener.addControl(RestoreFocusOnEscListener.findCoolBar(menuBarComposite));
 		focusListener.addControl(RestoreFocusOnEscListener.findCoolBar(coolBarComposite));
-
 	}
 
 	private void createInfoFlyout(final Composite mainComposite) {
@@ -201,7 +212,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			titleComposite.dispose();
 			titleComposite = null;
 		}
-
 	}
 
 	@Override
@@ -212,9 +222,11 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	@Override
 	public void postWindowCreate() {
 		super.postWindowCreate();
+		final Shell shell = getWindowConfigurer().getWindow().getShell();
 		if (SWTFacade.isRAP()) {
-			final Shell shell = getWindowConfigurer().getWindow().getShell();
 			shell.setMaximized(true);
+		} else {
+			getWindowNavigator().beforeOpen(shell);
 		}
 	}
 
@@ -222,12 +234,20 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	public void postWindowOpen() {
 		super.postWindowOpen();
 		doInitialBinding();
-		updateApplicationSize(getWindowConfigurer());
+		final IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
+		updateApplicationSize(configurer);
+
 		if (titleComposite != null) {
 			// Redraw so that the active tab is displayed correct
 			titleComposite.setRedraw(false);
 			titleComposite.setRedraw(true);
 		}
+	}
+
+	@Override
+	public boolean preWindowShellClose() {
+		getWindowNavigator().beforeClose(getWindowConfigurer().getWindow().getShell());
+		return super.preWindowShellClose();
 	}
 
 	/**
@@ -278,7 +298,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 			shell.setMinimumSize(minSize);
 			shell.setSize(width, height);
 		}
-
 	}
 
 	/**
