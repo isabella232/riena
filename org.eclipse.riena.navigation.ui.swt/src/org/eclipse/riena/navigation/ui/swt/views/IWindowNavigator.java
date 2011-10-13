@@ -15,6 +15,8 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * Implementations can implement a custom strategy for the initial size and
  * position of the main window.
+ * 
+ * @since 4.0
  */
 public interface IWindowNavigator {
 
