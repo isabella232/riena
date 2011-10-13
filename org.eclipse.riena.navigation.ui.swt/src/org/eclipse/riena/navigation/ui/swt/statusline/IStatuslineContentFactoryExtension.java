@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.statusline;
 
+import org.eclipse.riena.core.injector.extension.CreateLazy;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.ui.swt.IStatusLineContentFactory;
 
@@ -24,6 +25,7 @@ public interface IStatuslineContentFactoryExtension {
 	 * 
 	 * @return a new {@code IStatusLineContentFactory}
 	 */
+	@CreateLazy
 	IStatusLineContentFactory createFactory();
 
 }

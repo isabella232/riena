@@ -133,7 +133,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	// content factory for delegation of content creation from the statusline
 	private IStatusLineContentFactory statuslineContentFactory;
 
-	protected IWindowNavigator windowNavigator;
+	private IWindowNavigator windowNavigator;
 
 	/**
 	 * The application window size minimum.
@@ -157,21 +157,30 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		binding.addUIControl(control, propertyName);
 	}
 
-	@InjectExtension()
-	public void bindStatuslineContentFactory(
-			final IStatuslineContentFactoryExtension[] statuslineContentFactoryExtensions) {
-		if (statuslineContentFactoryExtensions.length > 0) {
-			this.statuslineContentFactory = statuslineContentFactoryExtensions[0].createFactory();
-		}
+	/**
+	 * @since 4.0
+	 */
+	@InjectExtension(min = 0, max = 1)
+	public void updateStatuslineContentFactory(
+			final IStatuslineContentFactoryExtension statuslineContentFactoryExtension) {
+		this.statuslineContentFactory = statuslineContentFactoryExtension == null ? new DefaultStatuslineContentFactory()
+				: statuslineContentFactoryExtension.createFactory();
 	}
 
+	public IStatusLineContentFactory getStatuslineContentFactory() {
+		return statuslineContentFactory;
+	}
+
+	/**
+	 * @since 4.0
+	 */
 	@InjectExtension(min = 0, max = 1)
 	public void updateWindowNavigator(final IWindowNavigatorExtension windowNavigatorExtension) {
 		this.windowNavigator = windowNavigatorExtension == null ? new DefaultWindowNavigator()
 				: windowNavigatorExtension.createWindowNavigator();
 	}
 
-	protected IWindowNavigator getWindowNavigator() {
+	private IWindowNavigator getWindowNavigator() {
 		return windowNavigator;
 	}
 
@@ -396,10 +405,7 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 	}
 
 	private void createStatusLine(final Composite shell, final Composite grabCorner) {
-		IStatusLineContentFactory statusLineFactory = getStatuslineContentFactory();
-		if (statusLineFactory == null) {
-			statusLineFactory = new DefaultStatuslineContentFactory();
-		}
+		final IStatusLineContentFactory statusLineFactory = getStatuslineContentFactory();
 		final Statusline statusLine = new Statusline(shell, SWT.None, StatuslineSpacer.class, statusLineFactory);
 		final FormData fd = new FormData();
 		fd.height = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
@@ -894,10 +900,6 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 				}
 			}
 		}
-	}
-
-	public IStatusLineContentFactory getStatuslineContentFactory() {
-		return statuslineContentFactory;
 	}
 
 }
