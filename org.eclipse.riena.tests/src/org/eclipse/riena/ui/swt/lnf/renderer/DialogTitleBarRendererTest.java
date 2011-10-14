@@ -45,9 +45,9 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		renderer = new OpenDialogTitleBarRenderer();
 		shell = new Shell();
 		gc = new GC(shell);
+		renderer = new OpenDialogTitleBarRenderer();
 		renderer.setShell(shell);
 		renderer.setBounds(0, 0, 100, 100);
 		originalLnf = LnfManager.getLnf();
@@ -55,8 +55,8 @@ public class DialogTitleBarRendererTest extends RienaTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		shell.dispose();
 		renderer.dispose();
+		shell.dispose();
 		LnfManager.setLnf(originalLnf);
 
 		super.tearDown();
