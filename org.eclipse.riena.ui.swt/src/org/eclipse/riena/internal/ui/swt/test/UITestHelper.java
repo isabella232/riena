@@ -50,8 +50,7 @@ public final class UITestHelper {
 	}
 
 	public static void readAndDispatch(final Widget control) {
-		final Display display = control.getDisplay();
-		while (display.readAndDispatch()) {
+		while (!control.isDisposed() && control.getDisplay().readAndDispatch()) {
 			Nop.reason("keep going"); //$NON-NLS-1$
 		}
 	}
