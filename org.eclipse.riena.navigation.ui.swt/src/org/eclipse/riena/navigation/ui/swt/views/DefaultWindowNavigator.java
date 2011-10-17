@@ -16,6 +16,8 @@ import org.eclipse.riena.internal.ui.swt.utils.ShellHelper;
 
 /**
  * This will center the shell on the current screen.
+ * 
+ * @since 4.0
  */
 public class DefaultWindowNavigator implements IWindowNavigator {
 

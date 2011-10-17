@@ -17,6 +17,8 @@ import org.eclipse.riena.core.injector.extension.MapName;
 /**
  * The definition for the window navigator of the main window (see also
  * <code>IWindowNavigator</code>).
+ * 
+ * @since 4.0
  */
 @ExtensionInterface(id = "windowNavigator")
 public interface IWindowNavigatorExtension {
