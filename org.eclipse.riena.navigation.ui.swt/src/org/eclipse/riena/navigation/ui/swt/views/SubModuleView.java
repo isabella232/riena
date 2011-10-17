@@ -345,7 +345,7 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 	}
 
 	private IRidget getFocusRidget() {
-		return currentController != null ? currentController.getInitialFocus() : null;
+		return currentController != null ? currentController.getFocusableRidget() : null;
 	}
 
 	public void unbind() {

@@ -31,6 +31,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComplexRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
+import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
@@ -133,6 +134,28 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 */
 	public IRidget getInitialFocus() {
 		return initialFocus;
+	}
+
+	/**
+	 * Returns the ridget that should get the focus. If a ridget is set via
+	 * {@see setInitialFocus}, it will be returned. Otherwise a ridget which can
+	 * receive the focus is searched, if none is found null is returned.
+	 * 
+	 * @return a IRidget instance or null.
+	 * @since 4.0
+	 */
+	public IRidget getFocusableRidget() {
+		if (getInitialFocus() != null) {
+			return getInitialFocus();
+		}
+		for (final IRidget ridget : getRidgets()) {
+			final boolean markable = ridget instanceof IMarkableRidget;
+			if (ridget.isFocusable() && ridget.isEnabled() && ridget.isVisible()
+					&& (!markable || (markable && !((IMarkableRidget) ridget).isOutputOnly()))) {
+				return ridget;
+			}
+		}
+		return null;
 	}
 
 	/**
