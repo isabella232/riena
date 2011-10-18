@@ -210,6 +210,11 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * @param item
 	 */
 	private void createRidget(final IController controller, final Item item) {
+
+		if (item.isDisposed()) {
+			return;
+		}
+
 		if (isSeparator(item)) {
 			// no ridget for separator
 			// and
@@ -257,6 +262,7 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * @param controller
 	 */
 	private void createRidgets(final IController controller) {
+
 		// items of Riena "menu bar"
 		final List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites(getShell());
 		for (final MenuCoolBarComposite menuBarComp : menuCoolBarComposites) {
