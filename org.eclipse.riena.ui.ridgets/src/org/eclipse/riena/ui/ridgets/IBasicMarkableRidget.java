@@ -18,7 +18,7 @@ import org.eclipse.riena.core.marker.IMarker;
 /**
  * A Ridget with a basic support for markers.
  */
-public interface IBasicMarkableRidget extends IRidget, IMarkable {
+public interface IBasicMarkableRidget extends IRidget, IMarkable, IClickableRidget {
 
 	/**
 	 * The name of the PropertyChangeEvent that will be fired if a marker was

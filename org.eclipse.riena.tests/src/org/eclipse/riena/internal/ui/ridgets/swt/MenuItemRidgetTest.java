@@ -30,10 +30,10 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
  */
 public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 
-	private final static String ICON_ECLIPSE = "eclipse.gif";
+	private final static String ICON_ECLIPSE = "eclipse.gif"; //$NON-NLS-1$
 
-	private final static String LABEL = "testlabel";
-	private final static String LABEL2 = "testlabel2";
+	private final static String LABEL = "testlabel"; //$NON-NLS-1$
+	private final static String LABEL2 = "testlabel2"; //$NON-NLS-1$
 
 	@Override
 	protected MenuItemRidget createRidget() {
@@ -43,9 +43,9 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 	@Override
 	protected MenuItem createWidget(final Composite parent) {
 		final Menu menu = new Menu(parent);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(menu, "menu");
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(menu, "menu"); //$NON-NLS-1$
 		final MenuItem item = new MenuItem(menu, SWT.NONE);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, "item");
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(item, "item"); //$NON-NLS-1$
 		return item;
 	}
 
@@ -63,22 +63,22 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 	public void testIsVisible() {
 		getShell().open();
 
-		assertTrue("Fails for " + getRidget(), getRidget().isVisible());
-		assertFalse("Fails for " + getRidget(), getWidget().isDisposed());
+		assertTrue("Fails for " + getRidget(), getRidget().isVisible()); //$NON-NLS-1$
+		assertFalse("Fails for " + getRidget(), getWidget().isDisposed()); //$NON-NLS-1$
 
 		getRidget().setVisible(false);
 
-		assertFalse("Fails for " + getRidget(), getRidget().isVisible());
+		assertFalse("Fails for " + getRidget(), getRidget().isVisible()); //$NON-NLS-1$
 		// widget expected to be hidden by disposing it:
-		assertTrue("Fails for " + getRidget(), getWidget().isDisposed());
+		assertTrue("Fails for " + getRidget(), getWidget().isDisposed()); //$NON-NLS-1$
 
 		getRidget().setVisible(true);
 
-		assertTrue("Fails for " + getRidget(), getRidget().isVisible());
+		assertTrue("Fails for " + getRidget(), getRidget().isVisible()); //$NON-NLS-1$
 		// dispose of old widget cannot be undone:
-		assertTrue("Fails for " + getRidget(), getWidget().isDisposed());
+		assertTrue("Fails for " + getRidget(), getWidget().isDisposed()); //$NON-NLS-1$
 		// but a new widget should have been created:
-		assertFalse("Fails for " + getRidget(), getRidget().getUIControl().isDisposed());
+		assertFalse("Fails for " + getRidget(), getRidget().getUIControl().isDisposed()); //$NON-NLS-1$
 	}
 
 	/**
@@ -87,9 +87,9 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 	public void testMenuItemRidget() {
 
 		final MenuItemRidget item = new MenuItemRidget();
-		final boolean textAlreadyInitialized = ReflectionUtils.getHidden(item, "textAlreadyInitialized");
+		final boolean textAlreadyInitialized = ReflectionUtils.getHidden(item, "textAlreadyInitialized"); //$NON-NLS-1$
 		assertFalse(textAlreadyInitialized);
-		final boolean useRidgetIcon = ReflectionUtils.getHidden(item, "useRidgetIcon");
+		final boolean useRidgetIcon = ReflectionUtils.getHidden(item, "useRidgetIcon"); //$NON-NLS-1$
 		assertFalse(useRidgetIcon);
 
 	}
@@ -103,10 +103,10 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 		final MenuItemRidget ridget = getRidget();
 		final MenuItem widget = getWidget();
 
-		ridget.setText("");
+		ridget.setText(""); //$NON-NLS-1$
 
-		assertEquals("", ridget.getText());
-		assertEquals("", widget.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
+		assertEquals("", widget.getText()); //$NON-NLS-1$
 
 		try {
 			ridget.setText(null);
@@ -185,19 +185,19 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 		final MenuItemRidget ridget = getRidget();
 		final MenuItem widget = ridget.getUIControl();
 
-		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false);
-		ReflectionUtils.setHidden(ridget, "text", null);
-		widget.setText("Hello!");
+		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false); //$NON-NLS-1$
+		ReflectionUtils.setHidden(ridget, "text", null); //$NON-NLS-1$
+		widget.setText("Hello!"); //$NON-NLS-1$
 
-		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {});
-		assertEquals("Hello!", ridget.getText());
-		assertEquals("Hello!", widget.getText());
-		assertTrue((Boolean) ReflectionUtils.getHidden(ridget, "textAlreadyInitialized"));
+		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {}); //$NON-NLS-1$
+		assertEquals("Hello!", ridget.getText()); //$NON-NLS-1$
+		assertEquals("Hello!", widget.getText()); //$NON-NLS-1$
+		assertTrue((Boolean) ReflectionUtils.getHidden(ridget, "textAlreadyInitialized")); //$NON-NLS-1$
 
-		widget.setText("World");
-		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {});
-		assertEquals("Hello!", ridget.getText());
-		assertEquals("World", widget.getText());
+		widget.setText("World"); //$NON-NLS-1$
+		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {}); //$NON-NLS-1$
+		assertEquals("Hello!", ridget.getText()); //$NON-NLS-1$
+		assertEquals("World", widget.getText()); //$NON-NLS-1$
 	}
 
 	public void testAddListener() {
@@ -253,6 +253,20 @@ public class MenuItemRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(ridget.isEnabled());
 		assertTrue(item.isEnabled());
 		assertEquals(0, ((IBasicMarkableRidget) ridget).getMarkersOfType(DisabledMarker.class).size());
+	}
+
+	@Override
+	public void testAddClickListener() {
+
+		final MenuItemRidget ridget = getRidget();
+		try {
+			final FTClickListener listener1 = new FTClickListener();
+			ridget.addClickListener(listener1);
+			fail();
+		} catch (final UnsupportedOperationException uoe) {
+			ok();
+		}
+
 	}
 
 }

@@ -52,7 +52,6 @@ import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
-import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 
 /**
  * An abstract Ridget for lists that does not depend on the class
@@ -61,7 +60,6 @@ import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget implements IListRidget {
 	protected SelectionListener selectionTypeEnforcer;
 	protected final MouseListener doubleClickForwarder;
-	private ListenerList<IClickListener> clickListeners;
 	private ListenerList<IActionListener> doubleClickListeners;
 
 	private DataBindingContext dbc;
@@ -118,14 +116,6 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 				}
 			}
 		});
-	}
-
-	public void addClickListener(final IClickListener listener) {
-		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
-		if (clickListeners == null) {
-			clickListeners = new ListenerList<IClickListener>(IClickListener.class);
-		}
-		clickListeners.add(listener);
 	}
 
 	public void addDoubleClickListener(final IActionListener listener) {
@@ -259,12 +249,6 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		final AbstractListViewer viewer = getViewer();
 		if (viewer != null) {
 			viewer.refresh(node, true);
-		}
-	}
-
-	public void removeClickListener(final IClickListener listener) {
-		if (clickListeners != null) {
-			clickListeners.remove(listener);
 		}
 	}
 
@@ -464,6 +448,21 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		}
 	}
 
+	/**
+	 * @since 4.0
+	 */
+	@Override
+	protected ClickEvent createClickEvent(final MouseEvent e) {
+		Object rowData;
+		final int index = getUIControlSelectionIndex();
+		if (index > -1) {
+			rowData = getViewer().getElementAt(index);
+		} else {
+			rowData = null;
+		}
+		return new ClickEvent(AbstractListRidget.this, e.button, 0, rowData);
+	}
+
 	protected abstract void updateEnabled(boolean isEnabled);
 
 	// helping methods
@@ -498,15 +497,6 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 * Notifies doubleClickListeners when the bound widget is clicked.
 	 */
 	private final class ClickForwarder extends MouseAdapter {
-		@Override
-		public void mouseDown(final MouseEvent e) {
-			if (clickListeners != null) {
-				final ClickEvent event = createClickEvent(e);
-				for (final IClickListener listener : clickListeners.getListeners()) {
-					listener.callback(event);
-				}
-			}
-		}
 
 		@Override
 		public void mouseDoubleClick(final MouseEvent e) {
@@ -517,19 +507,6 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 			}
 		}
 
-		// helping methods
-		//////////////////
-
-		private ClickEvent createClickEvent(final MouseEvent e) {
-			Object rowData;
-			final int index = getUIControlSelectionIndex();
-			if (index > -1) {
-				rowData = getViewer().getElementAt(index);
-			} else {
-				rowData = null;
-			}
-			return new ClickEvent(0, e.button, rowData);
-		}
 	}
 
 	/**

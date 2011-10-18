@@ -15,7 +15,10 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IMessageBoxRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
+import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 
 /**
  * Controller for the {@link TextSubModuleView} example.
@@ -39,6 +42,17 @@ public class TextSubModuleController extends SubModuleController {
 		final ITextRidget textModel1 = getRidget("textModel1"); //$NON-NLS-1$
 		textModel1.setText("type something"); //$NON-NLS-1$
 		textModel1.setOutputOnly(true);
+		textModel1.addClickListener(new IClickListener() {
+			public void callback(final ClickEvent event) {
+				if (event.getButton() == 1) {
+					final IMessageBoxRidget messageBox = getRidget("messageBox");
+					messageBox.setTitle("Value");
+					messageBox.setText("The value of the text field: " + textModel1.getText());
+					messageBox.show();
+				}
+			}
+		});
+
 		final ITextRidget textField = getRidget("textField"); //$NON-NLS-1$
 		textField.bindToModel(textModel1, ITextRidget.PROPERTY_TEXT);
 		textField.updateFromModel();

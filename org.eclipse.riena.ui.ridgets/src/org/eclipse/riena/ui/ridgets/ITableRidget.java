@@ -15,24 +15,11 @@ import java.util.Comparator;
 import org.eclipse.core.databinding.observable.list.IObservableList;
 
 import org.eclipse.riena.ui.common.ISortableByColumn;
-import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
-import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 
 /**
  * Ridget for a table.
  */
 public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColumn {
-
-	/**
-	 * Adds the listener to the collection of listeners who will be notified
-	 * when a row is clicked. The listener will receive information about the
-	 * column, mouse button, row via a {@link ClickEvent}.
-	 * 
-	 * @param listener
-	 *            a non-null {@link IClickListener} instance
-	 * @since 2.0
-	 */
-	void addClickListener(IClickListener listener);
 
 	/**
 	 * Adds the listener to the collection of listeners who will be notified
@@ -130,16 +117,6 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * @since 2.0
 	 */
 	void refresh(Object node);
-
-	/**
-	 * Removes the listener from the collection of listeners who will be
-	 * notified when a row is clicked.
-	 * 
-	 * @param listener
-	 *            a non-null {@link IClickListener} instance
-	 * @since 2.0
-	 */
-	void removeClickListener(IClickListener listener);
 
 	/**
 	 * Removes the listener from the collection of listeners who will be

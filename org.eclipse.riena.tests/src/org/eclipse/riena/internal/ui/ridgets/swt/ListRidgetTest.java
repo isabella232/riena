@@ -153,6 +153,7 @@ public class ListRidgetTest extends AbstractTableListRidgetTest {
 		assertEquals(2, control.getSelectionCount());
 	}
 
+	@Override
 	public void testAddClickListener() {
 		final IListRidget ridget = getRidget();
 		ridget.updateFromModel();
@@ -176,26 +177,35 @@ public class ListRidgetTest extends AbstractTableListRidgetTest {
 		control.setSelection(clickedRow);
 		final Event mdEvent = new Event();
 		mdEvent.widget = control;
-		mdEvent.type = SWT.MouseDown;
 		mdEvent.button = 2;
+		mdEvent.type = SWT.MouseDown;
 		control.notifyListeners(SWT.MouseDown, mdEvent);
+		mdEvent.type = SWT.MouseUp;
+		control.notifyListeners(SWT.MouseUp, mdEvent);
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(1, listener2.getCount());
 
 		ClickEvent event = listener2.getEvent();
+		assertEquals(getRidget(), event.getSource());
 		assertEquals(2, event.getButton());
 		assertEquals(0, event.getColumnIndex());
 		assertSame(person3, event.getRow());
 
 		ridget.removeClickListener(listener1);
+		mdEvent.type = SWT.MouseDown;
 		control.notifyListeners(SWT.MouseDown, mdEvent);
+		mdEvent.type = SWT.MouseUp;
+		control.notifyListeners(SWT.MouseUp, mdEvent);
 
 		assertEquals(1, listener1.getCount());
 		assertEquals(2, listener2.getCount());
 
 		control.deselectAll();
+		mdEvent.type = SWT.MouseDown;
 		control.notifyListeners(SWT.MouseDown, mdEvent);
+		mdEvent.type = SWT.MouseUp;
+		control.notifyListeners(SWT.MouseUp, mdEvent);
 
 		event = listener2.getEvent();
 		assertEquals(3, listener2.getCount());

@@ -26,7 +26,6 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 	 * sub-module view.
 	 */
 	private static final String IS_SUB_MODULE_VIEW_COMPOSITE = "isSubModuleViewComposite"; //$NON-NLS-1$
-
 	private final FocusManager focusManager;
 	private boolean focusable;
 
@@ -61,8 +60,8 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 
 	@Override
 	public boolean hasFocus() {
-		if (getUIControl() != null) {
-			final Control control = getUIControl();
+		final Control control = getUIControl();
+		if (!SwtUtilities.isDisposed(control)) {
 			return control.isFocusControl();
 		}
 		return false;
@@ -224,4 +223,5 @@ public abstract class AbstractSWTRidget extends AbstractSWTWidgetRidget {
 			getUIControl().setToolTipText(getToolTipText());
 		}
 	}
+
 }

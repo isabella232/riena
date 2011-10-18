@@ -72,6 +72,8 @@ public class TextSubModuleView extends SubModuleView {
 		UIControlsFactory.createButton(parent, "setLabel", "setlabel"); //$NON-NLS-1$ //$NON-NLS-2$
 		UIControlsFactory.createLabel(parent, "set ParentLabel:"); //$NON-NLS-1$
 		UIControlsFactory.createButton(parent, "setParentLabel", "setparentlabel"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		addUIControl(UIControlsFactory.createMessageBox(parent), "messageBox");
 	}
 
 }

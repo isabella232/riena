@@ -617,6 +617,20 @@ public class CompositeTableRidgetTest extends AbstractTableListRidgetTest {
 		assertEquals(person1, ridget.getSelection().get(0));
 	}
 
+	@Override
+	public void testAddClickListener() {
+
+		final ICompositeTableRidget ridget = getRidget();
+		try {
+			final FTClickListener listener1 = new FTClickListener();
+			ridget.addClickListener(listener1);
+			fail();
+		} catch (final UnsupportedOperationException uoe) {
+			ok();
+		}
+
+	}
+
 	// helping methods
 	//////////////////
 

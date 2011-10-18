@@ -21,6 +21,7 @@ import org.eclipse.riena.ui.core.resource.IconManagerProvider;
 import org.eclipse.riena.ui.core.resource.IconSize;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
@@ -262,6 +263,16 @@ public abstract class AbstractItemRidget extends AbstractSWTWidgetRidget impleme
 
 	public void fireAction() {
 		actionObserver.widgetSelected(null);
+	}
+
+	@Override
+	public void addClickListener(final IClickListener listener) {
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
+	}
+
+	@Override
+	public void removeClickListener(final IClickListener listener) {
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 
 }

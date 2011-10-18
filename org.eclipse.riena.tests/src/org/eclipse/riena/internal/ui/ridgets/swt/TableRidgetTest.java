@@ -257,6 +257,7 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 		assertEquals(2, control.getSelectionCount());
 	}
 
+	@Override
 	public void testAddClickListener() {
 		final TableRidget ridget = getRidget();
 		ridget.updateFromModel();
@@ -288,17 +289,27 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 		mdEvent.y = row2.getBounds().y + 1;
 		control.notifyListeners(SWT.MouseDown, mdEvent);
 
+		assertEquals(0, listener1.getCount());
+		assertEquals(0, listener2.getCount());
+
+		mdEvent.type = SWT.MouseUp;
+		control.notifyListeners(SWT.MouseUp, mdEvent);
+
 		assertEquals(1, listener1.getCount());
 		assertEquals(1, listener2.getCount());
 
 		final ClickEvent event = listener2.getEvent();
+		assertEquals(ridget, event.getSource());
 		assertEquals(2, event.getButton());
 		assertEquals(0, event.getColumnIndex());
 		assertEquals(row2.getData(), event.getRow());
 
 		ridget.removeClickListener(listener1);
 
+		mdEvent.type = SWT.MouseDown;
 		control.notifyListeners(SWT.MouseDown, mdEvent);
+		mdEvent.type = SWT.MouseUp;
+		control.notifyListeners(SWT.MouseUp, mdEvent);
 
 		assertEquals(1, listener1.getCount());
 	}

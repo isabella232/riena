@@ -51,6 +51,7 @@ import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRowRidget;
+import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableIndexedRidget;
@@ -411,6 +412,30 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 	 */
 	@Override
 	public void removeSelectionListener(final ISelectionListener selectionListener) {
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
+	}
+
+	/**
+	 * {@link CompositeTableRidget} does currently not support this operation,
+	 * because the CompositeTable dosn't fire mouse events.
+	 * 
+	 * @throws UnsupportedOperationException
+	 *             when invoked
+	 */
+	@Override
+	public void addClickListener(final IClickListener listener) {
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
+	}
+
+	/**
+	 * {@link CompositeTableRidget} does currently not support this operation,
+	 * because the CompositeTable dosn't fire mouse events.
+	 * 
+	 * @throws UnsupportedOperationException
+	 *             when invoked
+	 */
+	@Override
+	public void removeClickListener(final IClickListener listener) {
 		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
 	}
 

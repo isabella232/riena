@@ -12,6 +12,8 @@ package org.eclipse.riena.ui.ridgets;
 
 import org.eclipse.core.databinding.conversion.IConverter;
 
+import org.eclipse.riena.ui.ridgets.listener.IClickListener;
+
 /**
  * Ridget for a text field.
  */
@@ -83,5 +85,15 @@ public interface ITextRidget extends IEditableRidget, IMarkableRidget {
 	 *            what that means is implementation specific.
 	 */
 	void setText(String text);
+
+	/**
+	 * @since 4.0
+	 */
+	void addClickListener(IClickListener listener);
+
+	/**
+	 * @since 4.0
+	 */
+	void removeClickListener(IClickListener listener);
 
 }

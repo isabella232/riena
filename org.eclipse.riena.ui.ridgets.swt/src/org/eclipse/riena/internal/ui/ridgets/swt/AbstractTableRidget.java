@@ -65,8 +65,6 @@ import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
-import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableIndexedRidget;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
@@ -92,7 +90,6 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	private final Map<Integer, IColumnFormatter> formatterMap;
 	private final MouseListener clickForwarder;
 	private final TableKeyListener keyListener;
-	private ListenerList<IClickListener> clickListeners;
 	private ListenerList<IActionListener> doubleClickListeners;
 
 	/*
@@ -122,7 +119,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		sortableColumnsMap = new HashMap<Integer, Boolean>();
 		comparatorMap = new HashMap<Integer, Comparator<?>>();
 		// listener
-		clickForwarder = new ClickForwarder();
+		clickForwarder = new DoubleClickForwarder();
 		keyListener = new TableKeyListener();
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
@@ -242,8 +239,6 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	protected abstract AbstractTableViewer createTableViewer();
 
 	protected abstract ITableTreeWrapper createTableWrapper();
-
-	protected abstract ClickEvent createClickEvent(final MouseEvent e);
 
 	/**
 	 * {@inheritDoc}
@@ -518,14 +513,6 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		}
 	}
 
-	public void addClickListener(final IClickListener listener) {
-		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
-		if (clickListeners == null) {
-			clickListeners = new ListenerList<IClickListener>(IClickListener.class);
-		}
-		clickListeners.add(listener);
-	}
-
 	public void addDoubleClickListener(final IActionListener listener) {
 		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
 		if (doubleClickListeners == null) {
@@ -537,12 +524,6 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	public void removeDoubleClickListener(final IActionListener listener) {
 		if (doubleClickListeners != null) {
 			doubleClickListeners.remove(listener);
-		}
-	}
-
-	public void removeClickListener(final IClickListener listener) {
-		if (clickListeners != null) {
-			clickListeners.remove(listener);
 		}
 	}
 
@@ -671,20 +652,10 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	// ////////////////
 
 	/**
-	 * Notifies single- and double-click listeners when the bound widget is
+	 * Notifies double-click listeners when the bound widget is
 	 * clicked.
 	 */
-	private final class ClickForwarder extends MouseAdapter {
-
-		@Override
-		public void mouseDown(final MouseEvent e) {
-			if (clickListeners != null) {
-				final ClickEvent event = createClickEvent(e);
-				for (final IClickListener listener : clickListeners.getListeners()) {
-					listener.callback(event);
-				}
-			}
-		}
+	private final class DoubleClickForwarder extends MouseAdapter {
 
 		@Override
 		public void mouseDoubleClick(final MouseEvent e) {

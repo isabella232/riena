@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.marker.IMarker;
@@ -23,7 +25,9 @@ import org.eclipse.riena.internal.ui.swt.test.UITestHelper;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
+import org.eclipse.riena.ui.ridgets.IClickableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
 
@@ -263,4 +267,107 @@ public abstract class AbstractSWTRidgetTest extends AbstractRidgetTestCase {
 
 		assertEquals(0, ridget.getHiddenMarkerTypes().size());
 	}
+
+	public void testAddClickListener() {
+
+		if (!(getRidget() instanceof IClickableRidget)) {
+			return;
+		}
+		final IClickableRidget ridget = (IClickableRidget) getRidget();
+
+		try {
+			ridget.addClickListener(null);
+			fail();
+		} catch (final RuntimeException npe) {
+			ok();
+		}
+
+		final FTClickListener listener1 = new FTClickListener();
+		ridget.addClickListener(listener1);
+
+		final FTClickListener listener2 = new FTClickListener();
+		ridget.addClickListener(listener2);
+		ridget.addClickListener(listener2);
+
+		Event mdEvent = new Event();
+		final Widget control = getWidget();
+		mdEvent.widget = control;
+		mdEvent.type = SWT.MouseDown;
+		mdEvent.button = 2;
+		control.notifyListeners(SWT.MouseDown, mdEvent);
+
+		assertEquals(0, listener1.getCount());
+		assertEquals(0, listener2.getCount());
+
+		mdEvent.type = SWT.MouseUp;
+		control.notifyListeners(SWT.MouseUp, mdEvent);
+
+		assertEquals(1, listener1.getCount());
+		assertEquals(1, listener2.getCount());
+
+		final ClickEvent event = listener2.getEvent();
+		assertEquals(ridget, event.getSource());
+		assertEquals(2, event.getButton());
+		assertEquals(-1, event.getColumnIndex());
+		assertNull(event.getRow());
+
+		ridget.removeClickListener(listener1);
+
+		mdEvent.type = SWT.MouseDown;
+		control.notifyListeners(SWT.MouseDown, mdEvent);
+		mdEvent.type = SWT.MouseUp;
+		control.notifyListeners(SWT.MouseUp, mdEvent);
+
+		assertEquals(1, listener1.getCount());
+
+		// left mouse button
+
+		mdEvent = new Event();
+		mdEvent.widget = control;
+		mdEvent.type = SWT.MouseDown;
+		mdEvent.button = 1;
+		control.notifyListeners(SWT.MouseDown, mdEvent);
+
+		assertEquals(2, listener2.getCount());
+
+		mdEvent.type = SWT.MouseUp;
+		control.notifyListeners(SWT.MouseUp, mdEvent);
+
+		assertEquals(3, listener2.getCount());
+
+		// different mouse buttons at down and up
+
+		mdEvent = new Event();
+		mdEvent.widget = control;
+		mdEvent.type = SWT.MouseDown;
+		mdEvent.button = 1;
+		control.notifyListeners(SWT.MouseDown, mdEvent);
+
+		assertEquals(3, listener2.getCount());
+
+		mdEvent.type = SWT.MouseUp;
+		mdEvent.button = 2;
+		control.notifyListeners(SWT.MouseUp, mdEvent);
+
+		assertEquals(3, listener2.getCount());
+
+		// Ridget is disabled
+
+		getRidget().setEnabled(false);
+
+		mdEvent = new Event();
+		mdEvent.widget = control;
+		mdEvent.type = SWT.MouseDown;
+		mdEvent.button = 1;
+		control.notifyListeners(SWT.MouseDown, mdEvent);
+
+		assertEquals(3, listener2.getCount());
+
+		mdEvent.type = SWT.MouseUp;
+		control.notifyListeners(SWT.MouseUp, mdEvent);
+
+		assertEquals(3, listener2.getCount());
+
+	}
+
 }

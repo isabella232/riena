@@ -41,7 +41,7 @@ public class MenuItemRidget extends AbstractItemRidget implements IMenuItemRidge
 	protected void bindUIControl() {
 		super.bindUIControl();
 		final MenuItem menuItem = getUIControl();
-		if ((menuItem != null) && (!menuItem.isDisposed())) {
+		if (!SwtUtilities.isDisposed(menuItem)) {
 			menuItem.addSelectionListener(getActionObserver());
 		}
 	}

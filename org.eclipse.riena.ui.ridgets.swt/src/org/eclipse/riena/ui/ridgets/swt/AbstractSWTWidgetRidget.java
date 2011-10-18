@@ -19,7 +19,11 @@ import java.util.Set;
 import org.eclipse.core.databinding.BindingException;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
@@ -27,6 +31,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.core.marker.DisabledMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
@@ -36,6 +41,8 @@ import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
+import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
+import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 import org.eclipse.riena.ui.ridgets.uibinding.IBindingPropertyLocator;
 import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
@@ -47,6 +54,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
  */
 public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements IBasicMarkableRidget {
 
+	private ListenerList<IClickListener> clickListeners;
 	private Widget uiControl;
 	private String toolTip = null;
 	private ErrorMessageMarker errorMarker;
@@ -56,6 +64,7 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	private HiddenMarker hiddenMarker;
 	private AbstractMarkerSupport markerSupport;
 	private Listener visibilityListener;
+	private ClickForwarder mouseListener;
 
 	/**
 	 * Return true if an instance of the given {@code clazz} is a bean, false
@@ -92,6 +101,26 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 			((MandatoryMarker) marker).setDisabled(isDisableMandatoryMarker());
 		}
 		markerSupport.addMarker(marker);
+	}
+
+	/**
+	 * @since 4.0
+	 */
+	public void addClickListener(final IClickListener listener) {
+		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
+		if (clickListeners == null) {
+			clickListeners = new ListenerList<IClickListener>(IClickListener.class);
+		}
+		clickListeners.add(listener);
+	}
+
+	/**
+	 * @since 4.0
+	 */
+	public void removeClickListener(final IClickListener listener) {
+		if (clickListeners != null) {
+			clickListeners.remove(listener);
+		}
 	}
 
 	public String getID() {
@@ -453,6 +482,11 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 			if (getUIControl() instanceof Control) {
 				addHierarchyVisibilityListener(((Control) getUIControl()).getParent(), visibilityListener);
 			}
+			mouseListener = new ClickForwarder();
+			if (getUIControl() instanceof Control) {
+				final Control control = (Control) getUIControl();
+				control.addMouseListener(mouseListener);
+			}
 		}
 	}
 
@@ -476,8 +510,12 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	 * unbound from the ridget.
 	 */
 	protected void uninstallListeners() {
-		if (getUIControl() instanceof Control && visibilityListener != null) {
-			removeHierarchyVisibilityListener(((Control) getUIControl()).getParent(), visibilityListener);
+		if (getUIControl() instanceof Control) {
+			final Control control = (Control) getUIControl();
+			if (visibilityListener != null) {
+				removeHierarchyVisibilityListener(control.getParent(), visibilityListener);
+			}
+			control.removeMouseListener(mouseListener);
 		}
 	}
 
@@ -488,6 +526,13 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		if (markerSupport != null) {
 			markerSupport.updateMarkers();
 		}
+	}
+
+	/**
+	 * @since 4.0
+	 */
+	protected ClickEvent createClickEvent(final MouseEvent e) {
+		return new ClickEvent(this, e.button);
 	}
 
 	// helping methods
@@ -538,6 +583,77 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 						}
 					}
 				});
+			}
+		}
+
+	}
+
+	/**
+	 * Listener of mouse events.
+	 */
+	private final class ClickForwarder implements MouseListener {
+
+		private int pressedBtn;
+
+		public ClickForwarder() {
+		}
+
+		public void mouseDoubleClick(final MouseEvent e) {
+			pressedBtn = -1;
+		}
+
+		public void mouseDown(final MouseEvent e) {
+			pressedBtn = -1;
+			if (!isEnabled()) {
+				return;
+			}
+			final Point point = new Point(e.x, e.y);
+			if (isOverWidget(point)) {
+				pressedBtn = e.button;
+			}
+		}
+
+		public void mouseUp(final MouseEvent e) {
+			if (!isEnabled()) {
+				pressedBtn = -1;
+				return;
+			}
+			final Point point = new Point(e.x, e.y);
+			if ((e.button == pressedBtn) && (isOverWidget(point))) {
+				fireClickEvent(e);
+			}
+			pressedBtn = -1;
+		}
+
+		/**
+		 * Returns whether the given point is inside or outside the bounds of
+		 * the widget.
+		 * 
+		 * @param point
+		 *            position of the mouse pointer
+		 * @return {@code true} if point is inside the widget; otherwise
+		 *         {@code false}
+		 */
+		private boolean isOverWidget(final Point point) {
+			if (SwtUtilities.isDisposed(getUIControl())) {
+				return false;
+			}
+			if (getUIControl() instanceof Control) {
+				final Control control = (Control) getUIControl();
+				final Rectangle widgetBounds = control.getBounds();
+				return (point.x <= widgetBounds.width && point.x >= 0)
+						&& (point.y <= widgetBounds.height && point.y >= 0);
+			} else {
+				return true;
+			}
+		}
+
+		private void fireClickEvent(final MouseEvent e) {
+			if (clickListeners != null) {
+				final ClickEvent event = createClickEvent(e);
+				for (final IClickListener listener : clickListeners.getListeners()) {
+					listener.callback(event);
+				}
 			}
 		}
 

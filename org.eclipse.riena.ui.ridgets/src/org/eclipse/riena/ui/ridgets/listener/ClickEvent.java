@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.ridgets.listener;
 
+import org.eclipse.riena.ui.ridgets.IRidget;
+
 /**
  * Instances of this class provide information about a mouse click.
  * 
@@ -17,24 +19,45 @@ package org.eclipse.riena.ui.ridgets.listener;
  */
 public final class ClickEvent {
 
-	private final int columnIndex;
+	private final IRidget source;
 	private final int button;
+	private final int columnIndex;
 	private final Object rowData;
+
+	/**
+	 * Create a new instance of this class.
+	 * <p>
+	 * Without index of column and row data.
+	 * 
+	 * @param source
+	 *            the source ridget
+	 * @param button
+	 *            the mouse button used; 1 for the first button, 2 for the 2nd,
+	 *            3 for the 3rd, etc.
+	 * @since 4.0
+	 */
+	public ClickEvent(final IRidget source, final int button) {
+		this(source, button, -1, null);
+	}
 
 	/**
 	 * Create a new instance of this class
 	 * 
-	 * @param columnIndex
-	 *            the 0-based index of a column, or -1
+	 * @param source
+	 *            the source ridget
 	 * @param button
 	 *            the mouse button used; 1 for the first button, 2 for the 2nd,
 	 *            3 for the 3rd, etc.
+	 * @param columnIndex
+	 *            the 0-based index of a column, or -1
 	 * @param rowData
 	 *            the row clicked, or null if no row / column was determined
+	 * @since 4.0
 	 */
-	public ClickEvent(final int columnIndex, final int button, final Object rowData) {
-		this.columnIndex = columnIndex;
+	public ClickEvent(final IRidget source, final int button, final int columnIndex, final Object rowData) {
+		this.source = source;
 		this.button = button;
+		this.columnIndex = columnIndex;
 		this.rowData = rowData;
 	}
 
@@ -64,9 +87,20 @@ public final class ClickEvent {
 		return rowData;
 	}
 
+	/**
+	 * Returns the Ridget that fires this event.
+	 * 
+	 * @return the source Ridget
+	 * 
+	 * @since 4.0
+	 */
+	public IRidget getSource() {
+		return source;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("ClickEvent [columnIndex=%d, button=%d, rowData=%s]", columnIndex, button, String //$NON-NLS-1$
+		return String.format("ClickEvent [button=%d, columnIndex=%d, rowData=%s]", button, columnIndex, String //$NON-NLS-1$
 				.valueOf(rowData));
 	}
 

@@ -298,7 +298,7 @@ public class TableRidget extends AbstractTableRidget {
 		// x = 0 gets us an item even not using SWT.FULL_SELECTION
 		final Item item = getItem(new Point(0, e.y));
 		final Object rowData = item != null ? item.getData() : null;
-		final ClickEvent event = new ClickEvent(colIndex, e.button, rowData);
+		final ClickEvent event = new ClickEvent(this, e.button, colIndex, rowData);
 		return event;
 	}
 
