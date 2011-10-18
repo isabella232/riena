@@ -22,19 +22,6 @@ import org.eclipse.riena.ui.common.ISortableByColumn;
 public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColumn {
 
 	/**
-	 * Adds the listener to the collection of listeners who will be notified
-	 * when the bound control is double-clicked.
-	 * <p>
-	 * Adding the same listener several times has no effect.
-	 * 
-	 * @param listener
-	 *            a non-null {@link IActionListener} instance
-	 * @throws RuntimeException
-	 *             if listener is null
-	 */
-	void addDoubleClickListener(IActionListener listener);
-
-	/**
 	 * Binds the table to the model data.
 	 * 
 	 * @param rowObservables
@@ -117,17 +104,6 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * @since 2.0
 	 */
 	void refresh(Object node);
-
-	/**
-	 * Removes the listener from the collection of listeners who will be
-	 * notified when the bound control is double-clicked.
-	 * 
-	 * @param listener
-	 *            a non-null {@link IActionListener} instance
-	 * @throws RuntimeException
-	 *             if listener is null
-	 */
-	void removeDoubleClickListener(IActionListener listener);
 
 	/**
 	 * Set the {@link ColumnFormatter} to be used for the column at columnIndex.

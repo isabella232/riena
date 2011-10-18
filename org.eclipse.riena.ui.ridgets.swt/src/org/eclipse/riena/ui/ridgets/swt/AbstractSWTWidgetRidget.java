@@ -40,6 +40,7 @@ import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.core.marker.OutputMarker;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.AbstractRidget;
+import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
 import org.eclipse.riena.ui.ridgets.listener.IClickListener;
@@ -55,6 +56,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements IBasicMarkableRidget {
 
 	private ListenerList<IClickListener> clickListeners;
+	private ListenerList<IActionListener> doubleClickListeners;
 	private Widget uiControl;
 	private String toolTip = null;
 	private ErrorMessageMarker errorMarker;
@@ -120,6 +122,26 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 	public void removeClickListener(final IClickListener listener) {
 		if (clickListeners != null) {
 			clickListeners.remove(listener);
+		}
+	}
+
+	/**
+	 * @since 4.0
+	 */
+	public void addDoubleClickListener(final IActionListener listener) {
+		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
+		if (doubleClickListeners == null) {
+			doubleClickListeners = new ListenerList<IActionListener>(IActionListener.class);
+		}
+		doubleClickListeners.add(listener);
+	}
+
+	/**
+	 * @since 4.0
+	 */
+	public void removeDoubleClickListener(final IActionListener listener) {
+		if (doubleClickListeners != null) {
+			doubleClickListeners.remove(listener);
 		}
 	}
 
@@ -535,6 +557,13 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 		return new ClickEvent(this, e.button);
 	}
 
+	/**
+	 * @since 4.0
+	 */
+	protected MouseListener getClickForwarder() {
+		return mouseListener;
+	}
+
 	// helping methods
 	//////////////////
 
@@ -595,11 +624,16 @@ public abstract class AbstractSWTWidgetRidget extends AbstractRidget implements 
 
 		private int pressedBtn;
 
-		public ClickForwarder() {
-		}
-
 		public void mouseDoubleClick(final MouseEvent e) {
 			pressedBtn = -1;
+			if (!isEnabled()) {
+				return;
+			}
+			if (doubleClickListeners != null) {
+				for (final IActionListener listener : doubleClickListeners.getListeners()) {
+					listener.callback();
+				}
+			}
 		}
 
 		public void mouseDown(final MouseEvent e) {

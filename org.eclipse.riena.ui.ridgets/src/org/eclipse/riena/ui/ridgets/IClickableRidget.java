@@ -43,4 +43,28 @@ public interface IClickableRidget {
 	 */
 	void removeClickListener(IClickListener listener);
 
+	/**
+	 * Adds the listener to the collection of listeners who will be notified
+	 * when the bound control is double-clicked.
+	 * <p>
+	 * Adding the same listener several times has no effect.
+	 * 
+	 * @param listener
+	 *            a non-null {@link IActionListener} instance
+	 * @throws RuntimeException
+	 *             if listener is null
+	 */
+	void addDoubleClickListener(IActionListener listener);
+
+	/**
+	 * Removes the listener from the collection of listeners who will be
+	 * notified when the bound control is double-clicked.
+	 * 
+	 * @param listener
+	 *            a non-null {@link IActionListener} instance
+	 * @throws RuntimeException
+	 *             if listener is null
+	 */
+	void removeDoubleClickListener(IActionListener listener);
+
 }

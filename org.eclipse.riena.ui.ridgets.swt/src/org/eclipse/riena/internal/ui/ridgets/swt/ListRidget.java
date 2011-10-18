@@ -73,7 +73,6 @@ public class ListRidget extends AbstractListRidget {
 			updateEnabled(isEnabled());
 
 			control.addSelectionListener(selectionTypeEnforcer);
-			control.addMouseListener(doubleClickForwarder);
 		}
 	}
 
@@ -84,7 +83,6 @@ public class ListRidget extends AbstractListRidget {
 		final List control = getUIControl();
 		if (control != null) {
 			control.removeSelectionListener(selectionTypeEnforcer);
-			control.removeMouseListener(doubleClickForwarder);
 		}
 		viewer = null;
 	}

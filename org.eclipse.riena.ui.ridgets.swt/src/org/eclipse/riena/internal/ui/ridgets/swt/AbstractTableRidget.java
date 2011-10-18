@@ -45,9 +45,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -57,10 +54,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Widget;
 
-import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
-import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
@@ -88,9 +83,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	private final Map<Integer, Boolean> sortableColumnsMap;
 	private final Map<Integer, Comparator<?>> comparatorMap;
 	private final Map<Integer, IColumnFormatter> formatterMap;
-	private final MouseListener clickForwarder;
 	private final TableKeyListener keyListener;
-	private ListenerList<IActionListener> doubleClickListeners;
 
 	/*
 	 * Binds the viewer's multiple selection to the multiple selection
@@ -119,7 +112,6 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		sortableColumnsMap = new HashMap<Integer, Boolean>();
 		comparatorMap = new HashMap<Integer, Comparator<?>>();
 		// listener
-		clickForwarder = new DoubleClickForwarder();
 		keyListener = new TableKeyListener();
 		selectionTypeEnforcer = new SelectionTypeEnforcer();
 		addPropertyChangeListener(IMarkableRidget.PROPERTY_OUTPUT_ONLY, new PropertyChangeListener() {
@@ -331,7 +323,6 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 			dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
 					UpdateValueStrategy.POLICY_UPDATE).setAfterGetValidator(new OutputAwareValidator(this)),
 					new UpdateValueStrategy(UpdateValueStrategy.POLICY_UPDATE));
-			control.addMouseListener(clickForwarder);
 			control.addKeyListener(keyListener);
 			updateToolTipSupport();
 			// viewer to to multi-selection binding
@@ -351,7 +342,6 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		}
 		final Control control = getUIControl();
 		if (control != null) {
-			control.removeMouseListener(clickForwarder);
 			control.removeKeyListener(keyListener);
 		}
 		viewer = null;
@@ -513,20 +503,6 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		}
 	}
 
-	public void addDoubleClickListener(final IActionListener listener) {
-		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
-		if (doubleClickListeners == null) {
-			doubleClickListeners = new ListenerList<IActionListener>(IActionListener.class);
-		}
-		doubleClickListeners.add(listener);
-	}
-
-	public void removeDoubleClickListener(final IActionListener listener) {
-		if (doubleClickListeners != null) {
-			doubleClickListeners.remove(listener);
-		}
-	}
-
 	public boolean isNativeToolTip() {
 		return nativeToolTip;
 	}
@@ -652,22 +628,6 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	// ////////////////
 
 	/**
-	 * Notifies double-click listeners when the bound widget is
-	 * clicked.
-	 */
-	private final class DoubleClickForwarder extends MouseAdapter {
-
-		@Override
-		public void mouseDoubleClick(final MouseEvent e) {
-			if (doubleClickListeners != null) {
-				for (final IActionListener listener : doubleClickListeners.getListeners()) {
-					listener.callback();
-				}
-			}
-		}
-	}
-
-	/**
 	 * Enforces selection in the control:
 	 * <ul>
 	 * <li>disallows selection changes when the ridget is "output only"</li>
@@ -708,7 +668,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		public void keyPressed(final KeyEvent e) {
 			if (e.character == ' ' || e.character == SWT.CR) {
 				// the passed event (null) will not be read by the ClickForwarder 
-				clickForwarder.mouseDoubleClick(null);
+				getClickForwarder().mouseDoubleClick(null);
 			}
 		}
 	}

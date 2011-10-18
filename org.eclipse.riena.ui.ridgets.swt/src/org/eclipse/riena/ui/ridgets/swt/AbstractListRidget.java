@@ -38,15 +38,11 @@ import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.viewers.AbstractListViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.ViewerComparator;
-import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionListener;
 
-import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.internal.ui.ridgets.swt.OutputAwareValidator;
 import org.eclipse.riena.ui.common.ISortableByColumn;
-import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.ridgets.IListRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
@@ -59,8 +55,6 @@ import org.eclipse.riena.ui.ridgets.listener.ClickEvent;
  */
 public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget implements IListRidget {
 	protected SelectionListener selectionTypeEnforcer;
-	protected final MouseListener doubleClickForwarder;
-	private ListenerList<IActionListener> doubleClickListeners;
 
 	private DataBindingContext dbc;
 	private Binding viewerSSB;
@@ -88,7 +82,6 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	private ViewerComparator comparator;
 
 	public AbstractListRidget() {
-		doubleClickForwarder = new ClickForwarder();
 		isSortedAscending = true;
 		sortedColumn = -1;
 		getSingleSelectionObservable().addValueChangeListener(new IValueChangeListener() {
@@ -116,14 +109,6 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 				}
 			}
 		});
-	}
-
-	public void addDoubleClickListener(final IActionListener listener) {
-		Assert.isNotNull(listener, "listener is null"); //$NON-NLS-1$
-		if (doubleClickListeners == null) {
-			doubleClickListeners = new ListenerList<IActionListener>(IActionListener.class);
-		}
-		doubleClickListeners.add(listener);
 	}
 
 	public void bindToModel(final IObservableList rowValues, final Class<? extends Object> rowClass,
@@ -249,12 +234,6 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		final AbstractListViewer viewer = getViewer();
 		if (viewer != null) {
 			viewer.refresh(node, true);
-		}
-	}
-
-	public void removeDoubleClickListener(final IActionListener listener) {
-		if (doubleClickListeners != null) {
-			doubleClickListeners.remove(listener);
 		}
 	}
 
@@ -492,22 +471,6 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 
 	// helping classes
 	// ////////////////
-
-	/**
-	 * Notifies doubleClickListeners when the bound widget is clicked.
-	 */
-	private final class ClickForwarder extends MouseAdapter {
-
-		@Override
-		public void mouseDoubleClick(final MouseEvent e) {
-			if (doubleClickListeners != null) {
-				for (final IActionListener listener : doubleClickListeners.getListeners()) {
-					listener.callback();
-				}
-			}
-		}
-
-	}
 
 	/**
 	 * Generates the labels (i.e. strings) shown in the list.
