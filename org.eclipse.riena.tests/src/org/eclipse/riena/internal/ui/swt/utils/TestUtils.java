@@ -17,7 +17,6 @@ import java.util.Locale;
 
 import junit.framework.Assert;
 
-import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
@@ -290,9 +289,11 @@ public final class TestUtils {
 			return ((Tree) control).getColumn(colIndex).getWidth();
 		} else if (control instanceof Table) {
 			return ((Table) control).getColumn(colIndex).getWidth();
-		} else if (control instanceof Grid) {
-			return ((Grid) control).getColumn(colIndex).getWidth();
 		}
+		//		} else if (control instanceof Grid) {
+		//			return ((Grid) control).getColumn(colIndex).getWidth();
+		//		}
+		// FIXME uncomented Grid
 		throw new IllegalArgumentException("unsupported control: " + control); //$NON-NLS-1$
 	}
 
