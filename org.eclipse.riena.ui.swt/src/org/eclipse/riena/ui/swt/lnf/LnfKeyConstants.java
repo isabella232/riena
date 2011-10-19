@@ -416,6 +416,15 @@ public final class LnfKeyConstants {
 	public static final String MODULE_ITEM_TOOLTIP_BACKGROUND = "ModuleItemToolTip.background"; //$NON-NLS-1$
 	public static final String MODULE_ITEM_TOOLTIP_FOREGROUND = "ModuleItemToolTip.foreground"; //$NON-NLS-1$
 
+	/**
+	 * @since 4.0
+	 */
+	public static final String SUB_APPLICATION_ITEM_TOOLTIP_BACKGROUND = "SubApplicationItemToolTip.background"; //$NON-NLS-1$
+	/**
+	 * @since 4.0
+	 */
+	public static final String SUB_APPLICATION_ITEM_TOOLTIP_FOREGROUND = "SubApplicationItemToolTip.foreground"; //$NON-NLS-1$
+
 	public static final String STATUSLINE_BACKGROUND = "statusline.background"; //$NON-NLS-1$
 	public static final String STATUSLINE_UI_PROCESS_LIST_BACKGROUND = "statusline.uiProcessListBackground"; //$NON-NLS-1$
 	/**
@@ -478,6 +487,10 @@ public final class LnfKeyConstants {
 	public static final String TOOLBAR_FONT = "Toolbar.font"; //$NON-NLS-1$
 
 	public static final String SUB_APPLICATION_SWITCHER_FONT = "SubApplicationSwitcher.font"; //$NON-NLS-1$
+	/**
+	 * @since 4.0
+	 */
+	public static final String SUB_APPLICATION_ITEM_TOOLTIP_FONT = "SubApplicationItemToolTip.font"; //$NON-NLS-1$
 
 	public static final String MODULE_ITEM_TOOLTIP_FONT = "ModuleItemToolTip.font"; //$NON-NLS-1$
 
@@ -908,6 +921,11 @@ public final class LnfKeyConstants {
 	public static final String SUB_MODULE_TREE_DISABLED_BACKGROUND_IS_SWT_DEFAULT = "SubModuleTree.disabledBackgroundIsSWTDefault"; //$NON-NLS-1$
 
 	public static final String SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY = "SubModuleItemToolTip.popupDelay"; //$NON-NLS-1$
+
+	/**
+	 * @since 4.0
+	 */
+	public static final String SUB_APPLICATION_ITEM_TOOLTIP_POPUP_DELAY = "SubAppicationItemToolTip.popupDelay"; //$NON-NLS-1$
 
 	/**
 	 * This constant is described in Eclipsepedia.

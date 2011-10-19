@@ -468,6 +468,11 @@ public abstract class SWTFacade {
 	public abstract void createSubModuleToolTip(Tree parent, ILabelProvider labelProvider);
 
 	/**
+	 * @since 4.0
+	 */
+	public abstract void createSubApplicationToolTip(Control parent);
+
+	/**
 	 * Returns an SWT.EraseItem / SWT.PaintItem listener, that will paint all
 	 * tree cells empty when the tree is disabled.
 	 * 

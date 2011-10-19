@@ -12,6 +12,7 @@ package org.eclipse.riena.ui.swt.facades;
 
 import java.util.EventListener;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -30,6 +31,7 @@ import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 
+import org.eclipse.riena.navigation.ui.swt.component.SubApplicationSwitcherWidget;
 import org.eclipse.riena.navigation.ui.swt.views.ModuleNavigationListener;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
@@ -40,6 +42,7 @@ import org.eclipse.riena.ui.swt.facades.internal.DisabledPainter;
 import org.eclipse.riena.ui.swt.facades.internal.EmbeddedTitleBarToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.GrabCornerListenerWithTracker;
 import org.eclipse.riena.ui.swt.facades.internal.InfoFlyoutRCP;
+import org.eclipse.riena.ui.swt.facades.internal.SubApplicationToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.SubModuleToolTip;
 import org.eclipse.riena.ui.swt.facades.internal.TreeItemEraserAndPainter;
 
@@ -155,6 +158,12 @@ public final class SWTFacadeRCP extends SWTFacade {
 	@Override
 	public void createSubModuleToolTip(final Tree parent, final ILabelProvider labelProvider) {
 		new SubModuleToolTip(parent, labelProvider);
+	}
+
+	@Override
+	public void createSubApplicationToolTip(final Control parent) {
+		Assert.isTrue(parent instanceof SubApplicationSwitcherWidget);
+		new SubApplicationToolTip((SubApplicationSwitcherWidget) parent);
 	}
 
 	@Override

@@ -400,7 +400,12 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 		SWTFacade.getDefault().createSubModuleToolTip(subModuleTree, new LabelProvider() {
 			@Override
 			public String getText(final Object element) {
-				return ((INavigationNode<?>) element).getLabel();
+				final INavigationNode<?> node = (INavigationNode<?>) element;
+				String text = node.getToolTipText();
+				if (text == null) {
+					text = node.getLabel();
+				}
+				return text;
 			}
 		});
 		setTreeBackground();

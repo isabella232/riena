@@ -10,14 +10,11 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.swt.facades.internal;
 
-import org.eclipse.jface.window.DefaultToolTip;
-import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 
 import org.eclipse.riena.ui.swt.EmbeddedTitleBar;
@@ -30,7 +27,7 @@ import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
  * ToolTip for {@link EmbeddedTitleBar}s. The ToolTip is only displayed if the
  * title of the {@link EmbeddedTitleBar} is clipped.
  */
-public class EmbeddedTitleBarToolTip extends DefaultToolTip {
+public class EmbeddedTitleBarToolTip extends AbstractNavigationToolTip {
 
 	private final EmbeddedTitleBar embeddedTitleBar;
 
@@ -63,68 +60,50 @@ public class EmbeddedTitleBarToolTip extends DefaultToolTip {
 	////////////////////
 
 	@Override
-	protected Composite createToolTipContentArea(final Event event, final Composite parent) {
-		final CLabel label = new CLabel(parent, getStyle(event));
-		final Color fgColor = getForegroundColor(event);
-		final Color bgColor = getBackgroundColor(event);
-		final Font font = getFont(event);
-
-		if (fgColor != null) {
-			label.setForeground(fgColor);
-		}
-
-		if (bgColor != null) {
-			label.setBackground(bgColor);
-		}
-
-		if (font != null) {
-			label.setFont(font);
-		}
-
-		label.setText(embeddedTitleBar.getTitle());
-
-		return label;
-	}
-
-	@Override
 	protected boolean shouldCreateToolTip(final Event event) {
 		boolean should = super.shouldCreateToolTip(event);
 
 		if (should) {
-			initLookAndFeel();
+			if (embeddedTitleBar.getToolTipText() != null) {
+				return true;
+			}
 			should = embeddedTitleBar.isTextClipped();
 		}
 
 		return should;
 	}
 
+	@Override
+	protected String getToolTipText(final Event event) {
+		String toolTipText = embeddedTitleBar.getToolTipText();
+		if (toolTipText == null) {
+			toolTipText = embeddedTitleBar.getTitle();
+		}
+		return toolTipText;
+	}
+
+	@Override
+	protected Integer getLnfDelay(final RienaDefaultLnf lnf) {
+		return lnf.getIntegerSetting(LnfKeyConstants.MODULE_ITEM_TOOLTIP_POPUP_DELAY);
+	}
+
+	@Override
+	protected Font getLnfFont(final RienaDefaultLnf lnf) {
+		return lnf.getFont(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FONT);
+	}
+
+	@Override
+	protected Color getLnfBackground(final RienaDefaultLnf lnf) {
+		return lnf.getColor(LnfKeyConstants.MODULE_ITEM_TOOLTIP_BACKGROUND);
+	}
+
+	@Override
+	protected Color getLnfForeground(final RienaDefaultLnf lnf) {
+		return lnf.getColor(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FOREGROUND);
+	}
+
 	// helping methods
 	//////////////////
-
-	/**
-	 * Initializes the look (color and font) and feel (popup delay) of the tool
-	 * tip. Uses the settings of the look and feel.
-	 */
-	private void initLookAndFeel() {
-		final RienaDefaultLnf lnf = LnfManager.getLnf();
-
-		final Integer delay = lnf.getIntegerSetting(LnfKeyConstants.MODULE_ITEM_TOOLTIP_POPUP_DELAY);
-		if (delay != null) {
-			setPopupDelay(delay);
-		}
-		Color color = lnf.getColor(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FOREGROUND);
-		if (color != null) {
-			setForegroundColor(color);
-		}
-		color = lnf.getColor(LnfKeyConstants.MODULE_ITEM_TOOLTIP_BACKGROUND);
-		if (color != null) {
-			setBackgroundColor(color);
-		}
-		final Font font = lnf.getFont(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FONT);
-		if (color != null) {
-			setFont(font);
-		}
-	}
 
 	/**
 	 * Returns the renderer of the title bar.
@@ -137,4 +116,5 @@ public class EmbeddedTitleBarToolTip extends DefaultToolTip {
 		}
 		return renderer;
 	}
+
 }

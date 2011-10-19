@@ -100,6 +100,7 @@ public class SwtExampleApplication extends SwtApplication {
 		// Playground SubApplication
 		subApplication = new SubApplicationNode(new NavigationNodeId("playground"), "Pla&yground"); //$NON-NLS-1$ //$NON-NLS-2$
 		subApplication.setIcon(ExampleIcons.ICON_SAMPLE);
+		subApplication.setToolTipText("Tool Tip of\nPlayground"); //$NON-NLS-1$
 		//		presentation.present(subApplication, "subapplication.2"); //$NON-NLS-1$
 		WorkareaManager.getInstance().registerDefinition(subApplication, "subapplication.2", false); //$NON-NLS-1$
 

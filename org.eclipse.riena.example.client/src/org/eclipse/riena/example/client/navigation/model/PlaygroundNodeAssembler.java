@@ -205,6 +205,7 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
 		final ISubModuleNode dialogSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.dialog"), "Dialog"); //$NON-NLS-1$ //$NON-NLS-2$
+		dialogSubModule.setToolTipText("Tool Tip of\nthe sub-module \"dialog\""); //$NON-NLS-1$
 		workarea.registerDefinition(dialogSubModule, DialogSubModuleController.class, DialogSubModuleView.ID, false);
 		playgroundModule.addChild(dialogSubModule);
 
@@ -456,8 +457,8 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 		markerModule.addChild(markerSubModule2);
 		markerSubModule2.addMarker(new AttentionMarker());
 
-		final ISubModuleNode markerSubModuleAlternativeBackground = new SubModuleNode(new NavigationNodeId(
-				"org.eclipse.riena.example.markerAlternativeBackground"), "Marker with alternative background (used with alternative LnF)"); //$NON-NLS-1$ //$NON-NLS-2$
+		final ISubModuleNode markerSubModuleAlternativeBackground = new SubModuleNode(
+				new NavigationNodeId("org.eclipse.riena.example.markerAlternativeBackground"), "Marker with alternative background (used with alternative LnF)"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(markerSubModuleAlternativeBackground, MarkerSubModuleController.class,
 				MarkerSubModuleWithAlternativeBackgroundView.ID, true);
 		markerModule.addChild(markerSubModuleAlternativeBackground);

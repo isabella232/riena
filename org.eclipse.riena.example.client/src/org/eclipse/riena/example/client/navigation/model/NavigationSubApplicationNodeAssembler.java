@@ -106,6 +106,7 @@ public class NavigationSubApplicationNodeAssembler extends AbstractNavigationAss
 		module = new ModuleNode(new NavigationNodeId("module121"), "Module 1.2.1 (not closeable)"); //$NON-NLS-1$ //$NON-NLS-2$
 		module.setClosable(false);
 		module.setIcon(ExampleIcons.ICON_RED_LED);
+		module.setToolTipText("You can't close this module!"); //$NON-NLS-1$
 		moduleGroup.addChild(module);
 		subModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail", "1.2.1.1"), "SubModule 1.2.1.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

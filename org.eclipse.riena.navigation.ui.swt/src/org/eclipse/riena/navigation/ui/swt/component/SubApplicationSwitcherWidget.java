@@ -72,6 +72,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 		applicationListener = new ApplicationListener();
 		subApplicationListener = new SubApplicationListener();
 		registerItems(application);
+		SWTFacade.getDefault().createSubApplicationToolTip(this);
 
 		addListeners();
 
@@ -174,7 +175,7 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	 *            point over sub-application item
 	 * @return module item; or null, if not item was found
 	 */
-	private SubApplicationItem getItem(final Point point) {
+	public SubApplicationItem getItem(final Point point) {
 
 		for (final SubApplicationItem item : getItems()) {
 			if (item.getBounds().contains(point)) {
@@ -267,8 +268,6 @@ public class SubApplicationSwitcherWidget extends Canvas {
 	private void registerSubApplication(final ISubApplicationNode subApp) {
 		subApp.addListener(subApplicationListener);
 		final SubApplicationItem item = new SubApplicationItem(this, subApp);
-		item.setIcon(subApp.getIcon());
-		item.setLabel(subApp.getLabel());
 		getItems().add(item);
 		final IApplicationNode applicationNode = findApplicationNode(getItems());
 		if (applicationNode != null) {

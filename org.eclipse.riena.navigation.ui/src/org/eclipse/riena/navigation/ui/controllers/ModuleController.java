@@ -88,6 +88,7 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	public void afterBind() {
 		super.afterBind();
 		updateLabel();
+		updateToolTipText();
 		updateIcon();
 		updateCloseable();
 		updateActive();
@@ -100,6 +101,12 @@ public class ModuleController extends NavigationNodeController<IModuleNode> {
 	private void updateLabel() {
 		if (getWindowRidget() != null) {
 			getWindowRidget().setTitle(getNavigationNode().getLabel());
+		}
+	}
+
+	private void updateToolTipText() {
+		if (getWindowRidget() != null) {
+			getWindowRidget().setToolTipText(getNavigationNode().getToolTipText());
 		}
 	}
 

@@ -12,25 +12,22 @@ package org.eclipse.riena.ui.swt.facades.internal;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.window.DefaultToolTip;
-import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
-import org.eclipse.riena.ui.swt.lnf.LnfManager;
 import org.eclipse.riena.ui.swt.lnf.rienadefault.RienaDefaultLnf;
 
 /**
  * ToolTip for the tree items in the tree of the sub-modules. ToolTip is only
- * displayed if the text of the tree item was clipped.
+ * displayed if the text of the tree item was clipped or the navigation node of
+ * the sub-module has a tool tip.
  */
-public class SubModuleToolTip extends DefaultToolTip {
+public class SubModuleToolTip extends AbstractNavigationToolTip {
 
 	private final Tree tree;
 	private final ILabelProvider labelProvider;
@@ -69,42 +66,41 @@ public class SubModuleToolTip extends DefaultToolTip {
 	////////////////////
 
 	@Override
-	protected Composite createToolTipContentArea(final Event event, final Composite parent) {
-		final CLabel label = new CLabel(parent, getStyle(event));
-
-		final Color fgColor = getForegroundColor(event);
-		final Color bgColor = getBackgroundColor(event);
-		final Font font = getFont(event);
-
-		if (fgColor != null) {
-			label.setForeground(fgColor);
-		}
-
-		if (bgColor != null) {
-			label.setBackground(bgColor);
-		}
-
-		if (font != null) {
-			label.setFont(font);
-		}
-
-		label.setText(getItemLongText(event));
-
-		return label;
-	}
-
-	@Override
 	protected boolean shouldCreateToolTip(final Event event) {
 		boolean should = super.shouldCreateToolTip(event);
 
 		if (should) {
-			initLookAndFeel();
 			final String text = getItemText(event);
 			final String longText = getItemLongText(event);
 			should = !text.equals(longText);
 		}
 
 		return should;
+	}
+
+	@Override
+	protected String getToolTipText(final Event event) {
+		return getItemLongText(event);
+	}
+
+	@Override
+	protected Integer getLnfDelay(final RienaDefaultLnf lnf) {
+		return lnf.getIntegerSetting(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY);
+	}
+
+	@Override
+	protected Font getLnfFont(final RienaDefaultLnf lnf) {
+		return lnf.getFont(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FONT);
+	}
+
+	@Override
+	protected Color getLnfBackground(final RienaDefaultLnf lnf) {
+		return lnf.getColor(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_BACKGROUND);
+	}
+
+	@Override
+	protected Color getLnfForeground(final RienaDefaultLnf lnf) {
+		return lnf.getColor(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FOREGROUND);
 	}
 
 	// helping methods
@@ -160,28 +156,4 @@ public class SubModuleToolTip extends DefaultToolTip {
 		return tree.getItem(point);
 	}
 
-	/**
-	 * Initializes the look (color and font) and feel (popup delay) of the tool
-	 * tip. Uses the settings of the look and feel.
-	 */
-	private void initLookAndFeel() {
-		final RienaDefaultLnf lnf = LnfManager.getLnf();
-
-		final Integer delay = lnf.getIntegerSetting(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY);
-		if (delay != null) {
-			setPopupDelay(delay);
-		}
-		Color color = lnf.getColor(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FOREGROUND);
-		if (color != null) {
-			setForegroundColor(color);
-		}
-		color = lnf.getColor(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_BACKGROUND);
-		if (color != null) {
-			setBackgroundColor(color);
-		}
-		final Font font = lnf.getFont(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_FONT);
-		if (font != null) {
-			setFont(font);
-		}
-	}
 }

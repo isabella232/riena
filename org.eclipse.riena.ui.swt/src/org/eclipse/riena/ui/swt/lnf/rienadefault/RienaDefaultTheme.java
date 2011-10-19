@@ -184,8 +184,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_DISABLED_BORDER_BOTTOM_LEFT_COLOR,
 				new ColorLnfResource(203, 203, 203));
 
-		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_BACKGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_ITEM_TOOLTIP_BACKGROUND, getPrimaryBackground());
 		lnf.putLnfResource(LnfKeyConstants.MODULE_ITEM_TOOLTIP_BACKGROUND, getPrimaryBackground());
+		lnf.putLnfResource(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_BACKGROUND, getPrimaryBackground());
 
 		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_BACKGROUND, getPrimaryBackground());
 		lnf.putLnfResource(LnfKeyConstants.STATUSLINE_UI_PROCESS_LIST_BACKGROUND, new ColorLnfResource(183, 216, 236));
@@ -294,6 +295,7 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfResource(LnfKeyConstants.TOOLBAR_FONT, getPrimaryFont());
 
 		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_SWITCHER_FONT, getPrimaryFont());
+		lnf.putLnfResource(LnfKeyConstants.SUB_APPLICATION_ITEM_TOOLTIP_FONT, getPrimaryFont());
 
 		lnf.putLnfResource(LnfKeyConstants.MODULE_ITEM_TOOLTIP_FONT, getPrimaryFont());
 
@@ -475,8 +477,9 @@ public class RienaDefaultTheme implements ILnfTheme {
 		lnf.putLnfSetting(LnfKeyConstants.SUB_MODULE_TREE_SHOW_ONE_SUB_TREE, false);
 		lnf.putLnfSetting(LnfKeyConstants.SUB_MODULE_TREE_DISABLED_BACKGROUND_IS_SWT_DEFAULT, false);
 
-		lnf.putLnfSetting(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY, 0);
+		lnf.putLnfSetting(LnfKeyConstants.SUB_APPLICATION_ITEM_TOOLTIP_POPUP_DELAY, 500);
 		lnf.putLnfSetting(LnfKeyConstants.MODULE_ITEM_TOOLTIP_POPUP_DELAY, 500);
+		lnf.putLnfSetting(LnfKeyConstants.SUB_MODULE_ITEM_TOOLTIP_POPUP_DELAY, 0);
 
 		lnf.putLnfSetting(LnfKeyConstants.EMBEDDED_TITLEBAR_HOVER_BORDER_MARGIN, 0);
 

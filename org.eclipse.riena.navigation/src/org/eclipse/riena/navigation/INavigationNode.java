@@ -34,6 +34,10 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 		IDisposable, INavigationHistory {
 
 	String PROPERTY_LABEL = "label"; //$NON-NLS-1$
+	/**
+	 * @since 4.0
+	 */
+	String PROPERTY_TOOLTIPTEXT = "toolTipText"; //$NON-NLS-1$
 
 	/**
 	 * The states of the navigation node.
@@ -770,5 +774,26 @@ public interface INavigationNode<C extends INavigationNode<?>> extends ITypecast
 	 * @return the NavigationArgument
 	 */
 	NavigationArgument getNavigationArgument();
+
+	/**
+	 * Sets the text of the tool tip.
+	 * 
+	 * @param text
+	 *            text of tool tip or {@code null} if no tool tip or the default
+	 *            tool tip text should be displayed
+	 * 
+	 * @since 4.0
+	 */
+	void setToolTipText(String text);
+
+	/**
+	 * Returns the text of the tool tip.
+	 * 
+	 * @return text of tool tip or {@code null} if no tool tip or the default
+	 *         tool tip text should be displayed
+	 * 
+	 * @since 4.0
+	 */
+	String getToolTipText();
 
 }

@@ -49,6 +49,7 @@ public class EmbeddedTitleBar extends Canvas {
 	private boolean closeable;
 	private Image image;
 	private String title;
+	private String toolTipText;
 	private Collection<? extends IMarker> markers;
 
 	protected ListenerList<IEmbeddedTitleBarListener> titleBarListeners;
@@ -273,6 +274,16 @@ public class EmbeddedTitleBar extends Canvas {
 			this.title = title;
 			redraw();
 		}
+	}
+
+	@Override
+	public void setToolTipText(final String text) {
+		toolTipText = text;
+	}
+
+	@Override
+	public String getToolTipText() {
+		return toolTipText;
 	}
 
 	/**

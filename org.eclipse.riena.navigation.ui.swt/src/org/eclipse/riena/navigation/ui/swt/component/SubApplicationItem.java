@@ -28,6 +28,7 @@ public class SubApplicationItem {
 	private Rectangle bounds;
 	private String label;
 	private String icon;
+	private String toolTipText;
 
 	/**
 	 * Constructs a new instance of this class.
@@ -42,6 +43,9 @@ public class SubApplicationItem {
 		this.parent = parent;
 		this.subApplicationNode = subApplicationNode;
 		bounds = new Rectangle(0, 0, 0, 0);
+		setLabel(subApplicationNode.getLabel());
+		setToolTipText(subApplicationNode.getToolTipText());
+		setIcon(subApplicationNode.getIcon());
 	}
 
 	/**
@@ -104,7 +108,7 @@ public class SubApplicationItem {
 	 * @param label
 	 *            the label to set
 	 */
-	public void setLabel(final String label) {
+	private void setLabel(final String label) {
 		this.label = label;
 	}
 
@@ -119,7 +123,7 @@ public class SubApplicationItem {
 	 * @param icon
 	 *            the icon to set
 	 */
-	public void setIcon(final String icon) {
+	private void setIcon(final String icon) {
 		this.icon = icon;
 	}
 
@@ -141,6 +145,27 @@ public class SubApplicationItem {
 	 */
 	public <T extends IMarker> Collection<T> getMarkersOfType(final Class<T> type) {
 		return getSubApplicationNode().getMarkersOfType(type);
+	}
+
+	/**
+	 * Returns the text to display in the tool tip.
+	 * 
+	 * @return the text of the tool tip or {@code null} if no text has to be
+	 *         displayed
+	 */
+	public String getToolTipText() {
+		return toolTipText;
+	}
+
+	/**
+	 * Sets the text to display in the tool tip.
+	 * 
+	 * @param text
+	 *            the text of the tool tip or {@code null} if no text has to be
+	 *            displayed
+	 */
+	private void setToolTipText(final String text) {
+		this.toolTipText = text;
 	}
 
 }

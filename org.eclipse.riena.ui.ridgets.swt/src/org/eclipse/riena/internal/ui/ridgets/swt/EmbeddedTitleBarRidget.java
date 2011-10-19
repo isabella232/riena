@@ -108,6 +108,7 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 	@Override
 	protected void bindUIControl() {
 		updateTextInControl();
+		updateToolTipTextInControl();
 		if (getUIControl() != null) {
 			getUIControl().addEmbeddedTitleBarListener(titleBarListener);
 		}
@@ -194,6 +195,16 @@ public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindow
 		final EmbeddedTitleBar control = getUIControl();
 		if (control != null) {
 			control.setTitle(this.text);
+		}
+	}
+
+	/**
+	 * Updates the text of the UI control.
+	 */
+	private void updateToolTipTextInControl() {
+		final EmbeddedTitleBar control = getUIControl();
+		if (control != null) {
+			control.setToolTipText(getToolTipText());
 		}
 	}
 

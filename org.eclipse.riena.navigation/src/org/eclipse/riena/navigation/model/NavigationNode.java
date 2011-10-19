@@ -68,6 +68,7 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 	private State state;
 	private String label;
 	private String icon;
+	private String toolTipText;
 	private boolean expanded;
 	private INavigationNodeController navigationNodeController;
 	private INavigationProcessor navigationProcessor;
@@ -1249,6 +1250,26 @@ public abstract class NavigationNode<S extends INavigationNode<C>, C extends INa
 			return getParent().getNavigationArgument();
 		}
 		return navigationArgument;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 4.0
+	 */
+	public String getToolTipText() {
+		return toolTipText;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 4.0
+	 */
+	public void setToolTipText(final String text) {
+		final String oldText = toolTipText;
+		toolTipText = text;
+		propertyChangeSupport.firePropertyChange(INavigationNode.PROPERTY_TOOLTIPTEXT, oldText, toolTipText);
 	}
 
 }
