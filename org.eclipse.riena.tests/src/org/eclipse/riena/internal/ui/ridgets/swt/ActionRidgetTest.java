@@ -68,15 +68,13 @@ public class ActionRidgetTest extends AbstractSWTRidgetTest {
 	}
 
 	public void testSetUIControl() {
-		// FIXME TODO Temporarily commented because build server stops here
+		final IActionRidget ridget = getRidget();
 
-		//		final IActionRidget ridget = getRidget();
-		//
-		//		ridget.setUIControl(null);
-		//		assertNull(ridget.getUIControl());
-		//
-		//		ridget.setUIControl(getWidget());
-		//		assertSame(getWidget(), ridget.getUIControl());
+		ridget.setUIControl(null);
+		assertNull(ridget.getUIControl());
+
+		ridget.setUIControl(getWidget());
+		assertSame(getWidget(), ridget.getUIControl());
 	}
 
 	public void testSetUIControlInvalid() {
