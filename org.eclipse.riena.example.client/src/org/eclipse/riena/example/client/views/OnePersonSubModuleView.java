@@ -53,7 +53,7 @@ public class OnePersonSubModuleView extends SubModuleView {
 		final Label personLabel = new Label(parent, SWT.NONE);
 		final GridData gdPersonLabel = new GridData(75, SWT.DEFAULT);
 		personLabel.setLayoutData(gdPersonLabel);
-		personLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		personLabel.setData(UIControlsFactory.KEY_LNF_STYLE, "sectionLabel"); //$NON-NLS-1$
 		personLabel.setText("Person"); //$NON-NLS-1$
 
 		final Label customerNumberLabel = new Label(parent, SWT.NONE);
@@ -143,7 +143,7 @@ public class OnePersonSubModuleView extends SubModuleView {
 
 		final Label addressLabel = new Label(parent, SWT.NONE);
 		addressLabel.setLayoutData(new GridData());
-		addressLabel.setForeground(SWTResourceManager.getColor(128, 128, 128));
+		addressLabel.setData(UIControlsFactory.KEY_LNF_STYLE, "sectionLabel"); //$NON-NLS-1$
 		addressLabel.setText("Address"); //$NON-NLS-1$
 
 		final Label streetAndNumberLabel = new Label(parent, SWT.NONE);
@@ -223,7 +223,7 @@ public class OnePersonSubModuleView extends SubModuleView {
 		new Label(parent, SWT.NONE);
 		new Label(parent, SWT.NONE);
 
-		final Button jumpBackButton = UIControlsFactory.createButton(parent, "Jump Back", "jumpBack");
+		final Button jumpBackButton = UIControlsFactory.createButton(parent, "Jump Back", "jumpBack"); //$NON-NLS-1$ //$NON-NLS-2$
 		jumpBackButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
 
 	}
