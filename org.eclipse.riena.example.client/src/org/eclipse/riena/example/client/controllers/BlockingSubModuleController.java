@@ -121,11 +121,16 @@ public class BlockingSubModuleController extends SubModuleController {
 		private final ILabelRidget labelRidget;
 		private boolean disable;
 		private boolean block;
+		private String subAppToolTip;
 
 		public BlockerUIProcess(final INavigationNode<?> node, final ILabelRidget labelRidget) {
 			super("block", false); //$NON-NLS-1$
 			this.node = node;
 			this.labelRidget = labelRidget;
+		}
+
+		private ISubApplicationNode getSubApplication() {
+			return node.getParentOfType(ISubApplicationNode.class);
 		}
 
 		public void setBlock(final boolean doBlock) {
@@ -138,6 +143,8 @@ public class BlockingSubModuleController extends SubModuleController {
 
 		@Override
 		public void initialUpdateUI(final int totalWork) {
+			subAppToolTip = getSubApplication().getToolTipText();
+			getSubApplication().setToolTipText(String.format("Node '%s' is blocked", node.getLabel())); //$NON-NLS-1$
 			labelRidget.setText(String.format("Changing '%s' for 10s", node.getLabel())); //$NON-NLS-1$
 			if (block) {
 				node.setBlocked(true);
@@ -157,6 +164,7 @@ public class BlockingSubModuleController extends SubModuleController {
 				node.setEnabled(true);
 				node.activate();
 			}
+			getSubApplication().setToolTipText(subAppToolTip);
 		}
 
 		@Override

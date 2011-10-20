@@ -26,9 +26,6 @@ public class SubApplicationItem {
 	private final Composite parent;
 	private final ISubApplicationNode subApplicationNode;
 	private Rectangle bounds;
-	private String label;
-	private String icon;
-	private String toolTipText;
 
 	/**
 	 * Constructs a new instance of this class.
@@ -43,9 +40,6 @@ public class SubApplicationItem {
 		this.parent = parent;
 		this.subApplicationNode = subApplicationNode;
 		bounds = new Rectangle(0, 0, 0, 0);
-		setLabel(subApplicationNode.getLabel());
-		setToolTipText(subApplicationNode.getToolTipText());
-		setIcon(subApplicationNode.getIcon());
 	}
 
 	/**
@@ -101,30 +95,14 @@ public class SubApplicationItem {
 	 * @return the label
 	 */
 	public String getLabel() {
-		return label;
-	}
-
-	/**
-	 * @param label
-	 *            the label to set
-	 */
-	private void setLabel(final String label) {
-		this.label = label;
+		return getSubApplicationNode().getLabel();
 	}
 
 	/**
 	 * @return the icon
 	 */
 	public String getIcon() {
-		return icon;
-	}
-
-	/**
-	 * @param icon
-	 *            the icon to set
-	 */
-	private void setIcon(final String icon) {
-		this.icon = icon;
+		return getSubApplicationNode().getIcon();
 	}
 
 	/**
@@ -154,18 +132,7 @@ public class SubApplicationItem {
 	 *         displayed
 	 */
 	public String getToolTipText() {
-		return toolTipText;
-	}
-
-	/**
-	 * Sets the text to display in the tool tip.
-	 * 
-	 * @param text
-	 *            the text of the tool tip or {@code null} if no text has to be
-	 *            displayed
-	 */
-	private void setToolTipText(final String text) {
-		this.toolTipText = text;
+		return getSubApplicationNode().getToolTipText();
 	}
 
 }
