@@ -31,16 +31,21 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.beans.common.WordNode;
 import org.eclipse.riena.example.client.views.TableSubModuleView;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.ui.controllers.ApplicationController;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
+import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
 import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
 import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
+import org.eclipse.riena.ui.ridgets.marker.StatuslineMessageMarkerViewer;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.ridgets.swt.NumberColumnFormatter;
 import org.eclipse.riena.ui.swt.StatusMeter;
@@ -93,7 +98,7 @@ public class TableSubModuleController extends SubModuleController {
 			}
 		});
 		table.setColumnSortable(3, false);
-		table.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
+		table.setSelectionType(ISelectableRidget.SelectionType.MULTI);
 		table.setSelection(0);
 
 		table.setColumnFormatter(0, new ColumnFormatter() {
@@ -143,6 +148,16 @@ public class TableSubModuleController extends SubModuleController {
 				}
 			}
 		});
+
+		// Show error messages in the status line
+		final IApplicationNode application = getNavigationNode().getParentOfType(IApplicationNode.class);
+		final ApplicationController applicationController = (ApplicationController) application
+				.getNavigationNodeController();
+		final IStatuslineRidget statuslineRidget = applicationController.getStatusline();
+		final StatuslineMessageMarkerViewer statuslineMessageMarkerViewer = new StatuslineMessageMarkerViewer(
+				statuslineRidget);
+		statuslineMessageMarkerViewer.addMarkerType(RowErrorMessageMarker.class);
+		statuslineMessageMarkerViewer.addRidget(table);
 	}
 
 	/**
@@ -164,6 +179,16 @@ public class TableSubModuleController extends SubModuleController {
 					final boolean isUpperCase = !node.isUpperCase();
 					node.setUpperCase(isUpperCase);
 				}
+				for (final RowErrorMessageMarker marker : table.getMarkersOfType(RowErrorMessageMarker.class)) {
+					if (node.equals(marker.getRowValue())) {
+						table.removeMarker(marker);
+						return;
+					}
+				}
+				final RowErrorMessageMarker remm = new RowErrorMessageMarker(node.getWord()
+						+ " hat " + node.getACount() //$NON-NLS-1$
+						+ " \"a\"", node); //$NON-NLS-1$
+				table.addMarker(remm);
 			}
 		});
 

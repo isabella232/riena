@@ -13,13 +13,20 @@ package org.eclipse.riena.ui.ridgets.marker;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
+import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.listener.FocusEvent;
 import org.eclipse.riena.ui.ridgets.listener.IFocusListener;
+import org.eclipse.riena.ui.ridgets.listener.ISelectionListener;
+import org.eclipse.riena.ui.ridgets.listener.SelectionEvent;
 
 /**
  * Visualizes certain types of message markers by displaying the message in the
@@ -58,6 +65,14 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	@Override
 	public void addRidget(final IBasicMarkableRidget markableRidget) {
 		super.addRidget(markableRidget);
+		if (markableRidget instanceof ITableRidget) {
+			((ITableRidget) markableRidget).addSelectionListener(new ISelectionListener() {
+
+				public void ridgetSelected(final SelectionEvent event) {
+					showMessages(markableRidget);
+				}
+			});
+		}
 		markableRidget.addPropertyChangeListener(markerPropertyChangeListener);
 		markableRidget.addFocusListener(ridgetFocusListener);
 	}
@@ -65,7 +80,14 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	@Override
 	protected void showMessages(final IBasicMarkableRidget markableRidget) {
 		if (markableRidget.hasFocus()) {
-			final Collection<IMessageMarker> messageMarker = this.getMessageMarker(markableRidget);
+			Collection<IMessageMarker> messageMarker = this.getMessageMarker(markableRidget);
+
+			// for tableRidgets MessageMarkers will be filtered
+			if (markableRidget instanceof ITableRidget) {
+				messageMarker = new HashSet<IMessageMarker>(messageMarker);
+				filterRowErrorMessageMarker((ITableRidget) markableRidget, messageMarker);
+			}
+
 			final String message = constructMessage(messageMarker, getMessageSeparator());
 			final Severity severity = getMaxSeverity(messageMarker);
 			// show the message only if there is something to show
@@ -87,6 +109,32 @@ public class StatuslineMessageMarkerViewer extends AbstractMessageMarkerViewer {
 	@Override
 	protected String getMessageSeparator() {
 		return " "; //$NON-NLS-1$
+	}
+
+	/**
+	 * @param messageMarker
+	 */
+	private void filterRowErrorMessageMarker(final ITableRidget tableRidget,
+			final Collection<IMessageMarker> messageMarker) {
+
+		final List<Object> selection = tableRidget.getSelection();
+		for (final IMessageMarker marker : this.getMessageMarker(tableRidget)) {
+			if (marker instanceof RowErrorMessageMarker) {
+				if (!selection.contains(((RowErrorMessageMarker) marker).getRowValue())) {
+					messageMarker.remove(marker);
+				}
+			}
+		}
+
+		// filter markers with equal messages
+		final Set<String> seenMessages = new HashSet<String>();
+		for (final IMessageMarker marker : messageMarker) {
+			if (seenMessages.contains(marker.getMessage())) {
+				messageMarker.remove(marker);
+			}
+			seenMessages.add(marker.getMessage());
+		}
+
 	}
 
 	private void setStatuslineMessage(final String message, final Severity severity) {
