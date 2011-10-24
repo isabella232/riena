@@ -13,9 +13,9 @@ package org.eclipse.riena.internal.ui.ridgets.annotation.handler;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.eclipse.riena.ui.ridgets.IClickableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
-import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.annotation.OnClick;
 import org.eclipse.riena.ui.ridgets.annotation.handler.AbstractRidgetContainerAnnotationHandler;
 import org.eclipse.riena.ui.ridgets.annotation.processor.AnnotatedOverriddenMethodsGuard;
@@ -34,10 +34,9 @@ public class ClickAnnotationHandler extends AbstractRidgetContainerAnnotationHan
 		if (annotation instanceof OnClick) {
 			final IRidget ridget = getRidget(annotation, targetMethod, ridgetContainer,
 					((OnClick) annotation).ridgetId());
-			final IClickListener clickListener = createListener(IClickListener.class, "callback", target, //$NON-NLS-1$
-					targetMethod);
-			if (ridget instanceof ITableRidget) {
-				((ITableRidget) ridget).addClickListener(clickListener);
+			if (ridget instanceof IClickableRidget) {
+				((IClickableRidget) ridget).addClickListener(createListener(IClickListener.class, "callback", target, //$NON-NLS-1$
+						targetMethod));
 			} else {
 				errorUnsupportedRidgetType(annotation, ridget);
 			}
