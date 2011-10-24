@@ -559,11 +559,11 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 			final List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites(getShell());
 			for (final MenuCoolBarComposite menuBarComp : menuCoolBarComposites) {
 				final List<ToolItem> changedItems = menuBarComp.updateMenuItems();
-				if (!changedItems.isEmpty()) {
-					final IController controller = (IController) getNavigationNode().getNavigationNodeController();
-					createRidgets(controller);
-					menuItemBindingManager.bind(controller, getUIControls());
-				}
+				//				if (!changedItems.isEmpty()) {
+				final IController controller = (IController) getNavigationNode().getNavigationNodeController();
+				createRidgets(controller);
+				menuItemBindingManager.bind(controller, getUIControls());
+				//				}
 			}
 		}
 

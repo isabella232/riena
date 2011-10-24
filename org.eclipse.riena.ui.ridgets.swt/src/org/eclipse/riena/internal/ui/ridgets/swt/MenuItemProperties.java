@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
 /**
  * This class stores the properties of a menu item ridget.
@@ -69,6 +70,9 @@ public class MenuItemProperties extends AbstractItemProperties {
 
 		int index = 0;
 
+		if (SwtUtilities.isDisposed(parent)) {
+			return index;
+		}
 		final Item[] siblings = parent.getItems();
 		for (final Item sibling : siblings) {
 			final String id = SWTBindingPropertyLocator.getInstance().locateBindingProperty(sibling);

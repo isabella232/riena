@@ -10,11 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.swt.component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
@@ -28,6 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -45,12 +44,15 @@ import org.eclipse.riena.ui.swt.lnf.LnfManager;
  */
 public class MenuCoolBarComposite extends Composite {
 
+	private static final String MENU_DATA_KEY = "Menu"; //$NON-NLS-1$
+
 	private final IWorkbenchWindow window;
 
 	private CoolItem menuCoolItem;
 	private ToolBar menuToolBar;
 	private CoolBar menuCoolBar;
-	private final Map<MenuManager, MenuManagerState> menuManagerOldState;
+
+	// private final Map<MenuManager, MenuManagerState> menuManagerOldState;
 
 	/**
 	 * Creates an new instance of {@code MenuCoolBarComposite} given its parent
@@ -70,7 +72,7 @@ public class MenuCoolBarComposite extends Composite {
 		super(parent, style);
 		setLayout(new FillLayout());
 		this.window = window;
-		menuManagerOldState = new HashMap<MenuManager, MenuManagerState>();
+		// menuManagerOldState = new HashMap<MenuManager, MenuManagerState>();
 		create();
 	}
 
@@ -105,7 +107,8 @@ public class MenuCoolBarComposite extends Composite {
 			final ToolItem toolItem = new ToolItem(menuToolBar, SWT.CHECK);
 			toolItem.setText(menuManager.getMenuText());
 			final MenuManagerHelper helper = new MenuManagerHelper();
-			helper.createMenu(menuToolBar, toolItem, menuManager);
+			final Menu menu = helper.createMenu(menuToolBar, toolItem, menuManager);
+			toolItem.setData(MENU_DATA_KEY, menu);
 			calcSize(menuCoolItem);
 			return toolItem;
 		}
@@ -128,8 +131,8 @@ public class MenuCoolBarComposite extends Composite {
 		for (final IContributionItem contribItem : getTopLevelMenuEntries()) {
 			if (contribItem instanceof MenuManager) {
 				final MenuManager topMenuManager = (MenuManager) contribItem;
-				menuManagerOldState.put(topMenuManager, new MenuManagerState(topMenuManager));
 				createAndAddMenu(topMenuManager);
+				// menuManagerOldState.put(topMenuManager, new MenuManagerState(topMenuManager));
 			}
 		}
 	}
@@ -184,59 +187,94 @@ public class MenuCoolBarComposite extends Composite {
 	}
 
 	public List<ToolItem> updateMenuItems() {
-		final List<MenuManager> changedTopMenuManager = getChangedVisibilityItems();
-		final List<ToolItem> changedMenus = new ArrayList<ToolItem>();
-		if (!changedTopMenuManager.isEmpty()) {
-			if (menuCoolBar != null) {
-				menuCoolBar.dispose();
-			}
-			create();
-			layout();
 
-			for (final ToolItem contribItem : getTopLevelItems()) {
-				for (final MenuManager manager : changedTopMenuManager) {
-					if (manager.getMenuText().equals(contribItem.getText())) {
-						changedMenus.add(contribItem);
-					}
-				}
-			}
+		if (menuCoolBar != null) {
+			menuCoolBar.dispose();
 		}
-		return changedMenus;
+		create();
+		layout();
+		return Collections.emptyList();
+
+		//		final List<MenuManager> changedTopMenuManager = getChangedVisibilityItems();
+		//		final List<ToolItem> changedMenus = new ArrayList<ToolItem>();
+		//		if (!changedTopMenuManager.isEmpty()) {
+		//			if (menuCoolBar != null) {
+		//				menuCoolBar.dispose();
+		//			}
+		//			create();
+		//			layout();
+		//
+		//			for (final ToolItem contribItem : getTopLevelItems()) {
+		//				for (final MenuManager manager : changedTopMenuManager) {
+		//					if (manager.getMenuText().equals(contribItem.getText())) {
+		//						changedMenus.add(contribItem);
+		//					}
+		//				}
+		//			}
+		//		}
+		//		return changedMenus;
 	}
 
-	private List<MenuManager> getChangedVisibilityItems() {
-		final List<MenuManager> changedItems = new ArrayList<MenuManager>();
-		for (final IContributionItem contribItem : getTopLevelMenuEntries()) {
-			if (contribItem instanceof MenuManager) {
-				final MenuManager topMenuManager = (MenuManager) contribItem;
-				topMenuManager.updateAll(true);
-				final MenuManagerState oldState = menuManagerOldState.get(topMenuManager);
-				if (oldState.isChanged(topMenuManager)) {
-					changedItems.add(topMenuManager);
-				}
-			}
-		}
-		return changedItems;
-	}
+	//	private List<MenuManager> getChangedVisibilityItems() {
+	//		final List<MenuManager> changedItems = new ArrayList<MenuManager>();
+	//		for (final IContributionItem contribItem : getTopLevelMenuEntries()) {
+	//			if (contribItem instanceof MenuManager) {
+	//				final MenuManager topMenuManager = (MenuManager) contribItem;
+	//				String oldToString = null;
+	//				final Menu menu = getMenu(topMenuManager);
+	//				if (!SwtUtilities.isDisposed(menu)) {
+	//					oldToString = getMenu(topMenuManager).toString();
+	//				}
+	//				topMenuManager.updateAll(true);
+	//				String newToString = null;
+	//				if (!SwtUtilities.isDisposed(getMenu(topMenuManager))) {
+	//					newToString = getMenu(topMenuManager).toString();
+	//				}
+	//				final MenuManagerState oldState = menuManagerOldState.get(topMenuManager);
+	//				if (oldState.isChanged(topMenuManager) || !StringUtils.equals(oldToString, newToString)) {
+	//					changedItems.add(topMenuManager);
+	//				}
+	//			}
+	//		}
+	//		return changedItems;
+	//	}
 
-	private class MenuManagerState {
-		private final String menuText;
-		private final boolean visible;
-		private final boolean enabled;
-		private final int itemCount;
-
-		public MenuManagerState(final MenuManager menuManager) {
-			this.menuText = menuManager.getMenuText();
-			this.visible = menuManager.isVisible();
-			this.enabled = menuManager.isEnabled();
-			this.itemCount = menuManager.getMenu() != null ? menuManager.getMenu().getItemCount() : -1;
-		}
-
-		private boolean isChanged(final MenuManager menuManager) {
-			return itemCount == -1 || itemCount != menuManager.getMenu().getItemCount() || //
-					menuManager.getMenu() == null || //
-					visible != menuManager.isVisible() || enabled != menuManager.isEnabled() || //
-					!menuManager.getMenuText().equals(menuText);
-		}
-	}
+	//	private Menu getMenu(final MenuManager topMenuManager) {
+	//
+	//		if (SwtUtilities.isDisposed(menuCoolBar)) {
+	//			return null;
+	//		}
+	//		for (final Control menuBarChild : menuCoolBar.getChildren()) {
+	//			if (menuBarChild instanceof ToolBar) {
+	//				for (final ToolItem item : ((ToolBar) menuBarChild).getItems()) {
+	//					if (item.getData().equals(topMenuManager)) {
+	//						return (Menu) item.getData(MENU_DATA_KEY);
+	//					}
+	//				}
+	//			}
+	//		}
+	//
+	//		return null;
+	//	}
+	//
+	//	private class MenuManagerState {
+	//		private final String menuText;
+	//		private final boolean visible;
+	//		private final boolean enabled;
+	//		private final int itemCount;
+	//
+	//		public MenuManagerState(final MenuManager menuManager) {
+	//			this.menuText = menuManager.getMenuText();
+	//			this.visible = menuManager.isVisible();
+	//			this.enabled = menuManager.isEnabled();
+	//			this.itemCount = menuManager.getMenu() != null ? menuManager.getMenu().getItemCount() : -1;
+	//		}
+	//
+	//		private boolean isChanged(final MenuManager menuManager) {
+	//			return menuManager.getMenu() == null || //
+	//					itemCount == -1 || itemCount != menuManager.getMenu().getItemCount() || //
+	//					visible != menuManager.isVisible() || enabled != menuManager.isEnabled() || //
+	//					!menuManager.getMenuText().equals(menuText);
+	//		}
+	//	}
 }
