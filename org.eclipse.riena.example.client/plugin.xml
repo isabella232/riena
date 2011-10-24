@@ -1181,6 +1181,10 @@
                marker="disabled">
          </ruleMarkerMenuItem>
          <ruleMarkerMenuItem
+               itemId="org.eclipse.riena.example.client.closeModuleCommand"
+               marker="disabled">
+         </ruleMarkerMenuItem>
+         <ruleMarkerMenuItem
                itemId="org.eclipse.riena.example.client.exitToolBarItem"
                marker="disabled">
          </ruleMarkerMenuItem>

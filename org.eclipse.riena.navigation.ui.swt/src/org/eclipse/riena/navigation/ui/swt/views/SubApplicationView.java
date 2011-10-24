@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.ui.swt.views;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.osgi.service.log.LogService;
@@ -43,6 +44,7 @@ import org.eclipse.ui.internal.WorkbenchPage;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.internal.navigation.ui.swt.Activator;
+import org.eclipse.riena.internal.ui.ridgets.swt.AbstractItemRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.uiprocess.UIProcessRidget;
 import org.eclipse.riena.navigation.ApplicationModelFailure;
 import org.eclipse.riena.navigation.IModuleGroupNode;
@@ -262,6 +264,15 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 	 * @param controller
 	 */
 	private void createRidgets(final IController controller) {
+
+		final List<IRidget> ridgetsToRemove = new ArrayList<IRidget>();
+		final Collection<? extends IRidget> ridgets = controller.getRidgets();
+		for (final IRidget ridget : ridgets) {
+			if (ridget instanceof AbstractItemRidget) {
+				ridgetsToRemove.add(ridget);
+			}
+		}
+		ridgets.removeAll(ridgetsToRemove);
 
 		// items of Riena "menu bar"
 		final List<MenuCoolBarComposite> menuCoolBarComposites = getMenuCoolBarComposites(getShell());
