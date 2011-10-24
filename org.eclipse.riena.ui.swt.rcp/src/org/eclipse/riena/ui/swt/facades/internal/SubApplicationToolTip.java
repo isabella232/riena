@@ -16,6 +16,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Event;
 
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationItem;
 import org.eclipse.riena.navigation.ui.swt.component.SubApplicationSwitcherWidget;
 import org.eclipse.riena.ui.swt.lnf.LnfKeyConstants;
@@ -54,6 +55,18 @@ public class SubApplicationToolTip extends AbstractNavigationToolTip {
 			toolTipText = item.getToolTipText();
 		}
 		return toolTipText;
+	}
+
+	@Override
+	protected boolean shouldCreateToolTip(final Event event) {
+		final boolean should = super.shouldCreateToolTip(event);
+
+		if (should) {
+			final String text = getToolTipText(event);
+			return !StringUtils.isEmpty(text);
+		}
+
+		return should;
 	}
 
 	@Override
