@@ -34,8 +34,13 @@ public class SelectionChangedAnnotationHandler extends AbstractRidgetContainerAn
 		if (annotation instanceof OnSelectionChange) {
 			final IRidget ridget = getRidget(annotation, targetMethod, ridgetContainer,
 					((OnSelectionChange) annotation).ridgetId());
-			((ISelectionObservable) ridget).addSelectionListener(createListener(ISelectionListener.class,
-					"ridgetSelected", target, targetMethod)); //$NON-NLS-1$
+			if (ridget instanceof ISelectionObservable) {
+				((ISelectionObservable) ridget).addSelectionListener(createListener(ISelectionListener.class,
+						"ridgetSelected", target, targetMethod)); //$NON-NLS-1$
+			} else {
+				errorUnsupportedRidgetType(annotation, ridget);
+			}
+
 		}
 	}
 }
