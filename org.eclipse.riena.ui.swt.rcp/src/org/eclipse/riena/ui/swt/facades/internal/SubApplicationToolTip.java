@@ -50,23 +50,15 @@ public class SubApplicationToolTip extends AbstractNavigationToolTip {
 	@Override
 	protected String getToolTipText(final Event event) {
 		final SubApplicationItem item = control.getItem(new Point(event.x, event.y));
-		String toolTipText = null;
-		if (item != null) {
-			toolTipText = item.getToolTipText();
-		}
-		return toolTipText;
+		return item != null ? item.getToolTipText() : null;
 	}
 
 	@Override
 	protected boolean shouldCreateToolTip(final Event event) {
-		final boolean should = super.shouldCreateToolTip(event);
-
-		if (should) {
-			final String text = getToolTipText(event);
-			return !StringUtils.isEmpty(text);
+		if (super.shouldCreateToolTip(event)) {
+			return StringUtils.isGiven(getToolTipText(event));
 		}
-
-		return should;
+		return false;
 	}
 
 	@Override
