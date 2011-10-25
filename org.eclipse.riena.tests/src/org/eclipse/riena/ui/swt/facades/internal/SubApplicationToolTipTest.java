@@ -67,11 +67,13 @@ public class SubApplicationToolTipTest extends TestCase {
 		final Event event = new Event();
 		event.x = 5;
 		event.y = 5;
+		assertTrue(toolTip.shouldCreateToolTip(event));
 		String text = toolTip.getToolTipText(event);
 		assertEquals(node.getToolTipText(), text);
 
 		event.x = 500;
 		event.y = 500;
+		assertFalse(toolTip.shouldCreateToolTip(event));
 		text = toolTip.getToolTipText(event);
 		assertNull(text);
 
@@ -88,6 +90,10 @@ public class SubApplicationToolTipTest extends TestCase {
 			return super.getToolTipText(event);
 		}
 
+		@Override
+		public boolean shouldCreateToolTip(final Event event) {
+			return super.shouldCreateToolTip(event);
+		}
 	}
 
 }
