@@ -22,6 +22,13 @@ public class SingletonFailure extends Failure {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * @since 4.0
+	 */
+	public SingletonFailure(final String msg) {
+		super(msg);
+	}
+
 	public SingletonFailure(final String msg, final Throwable cause) {
 		super(msg, cause);
 	}
