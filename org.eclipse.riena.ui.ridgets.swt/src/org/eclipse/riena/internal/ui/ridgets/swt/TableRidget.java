@@ -281,7 +281,7 @@ public class TableRidget extends AbstractTableRidget {
 	}
 
 	@Override
-	protected final AbstractTableViewer createTableViewer() {
+	protected AbstractTableViewer createTableViewer() {
 		return new TableRidgetTableViewer(this);
 	}
 
