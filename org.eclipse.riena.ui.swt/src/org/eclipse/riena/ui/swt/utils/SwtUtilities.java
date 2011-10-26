@@ -14,7 +14,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
@@ -32,7 +32,8 @@ import org.eclipse.riena.ui.swt.facades.GCFacade;
 public final class SwtUtilities {
 
 	private static final String THREE_DOTS = "..."; //$NON-NLS-1$
-	private static final Map<GCString, Integer> TEXT_WIDTH_CACHE = LRUHashMap.createLRUHashMap(512);
+	private static final Map<GCString, Integer> TEXT_WIDTH_CACHE = LRUHashMap.createLRUHashMap(2048);
+	private static final Map<GCChar, Integer> CHAR_WIDTH_CACHE = LRUHashMap.createLRUHashMap(1024);
 
 	/**
 	 * This class contains only static methods. So it is not necessary to create
@@ -108,11 +109,11 @@ public final class SwtUtilities {
 	 * @return width of character
 	 */
 	public static int calcCharWidth(final GC gc, final char ch) {
-		final GCString lookupKey = new GCString(gc, Character.toString(ch));
-		Integer width = TEXT_WIDTH_CACHE.get(lookupKey);
+		final GCChar lookupKey = new GCChar(gc, ch);
+		Integer width = CHAR_WIDTH_CACHE.get(lookupKey);
 		if (width == null) {
 			width = GCFacade.getDefault().getAdvanceWidth(gc, ch);
-			TEXT_WIDTH_CACHE.put(lookupKey, width);
+			CHAR_WIDTH_CACHE.put(lookupKey, width);
 		}
 		return width;
 	}
@@ -166,7 +167,7 @@ public final class SwtUtilities {
 			final int idx = colOrder[i];
 			columns[i] = table.getColumn(idx);
 		}
-		// find the column under Point pt\
+		// find the column under Point pt
 		for (final TableColumn col : columns) {
 			final int colWidth = col.getWidth();
 			if (width < pt.x && pt.x < width + colWidth) {
@@ -252,24 +253,25 @@ public final class SwtUtilities {
 		return new Color(color.getDevice(), rgb);
 	}
 
-	private final static class GCString {
-		private final String text;
-		private final FontMetrics fontMetrics;
+	private final static class GCChar {
+		private final char ch;
+		private final Font font;
 
-		private GCString(final GC gc, final CharSequence seq) {
-			this.fontMetrics = gc.getFontMetrics();
-			this.text = seq.toString();
+		private GCChar(final GC gc, final char ch) {
+			this.font = gc.getFont();
+			this.ch = ch;
 		}
 
 		@Override
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((fontMetrics == null) ? 0 : fontMetrics.hashCode());
-			result = prime * result + ((text == null) ? 0 : text.hashCode());
+			result = prime * result + ch;
+			result = prime * result + ((font == null) ? 0 : font.hashCode());
 			return result;
 		}
 
+		// Note: There is no type check here because we do not mix types in the map!! (performance) 
 		@Override
 		public boolean equals(final Object obj) {
 			if (this == obj) {
@@ -278,15 +280,55 @@ public final class SwtUtilities {
 			if (obj == null) {
 				return false;
 			}
-			if (getClass() != obj.getClass()) {
+			final GCChar other = (GCChar) obj;
+			if (ch != other.ch) {
+				return false;
+			}
+			if (font == null) {
+				if (other.font != null) {
+					return false;
+				}
+			} else if (!font.equals(other.font)) {
+				return false;
+			}
+			return true;
+		}
+
+	}
+
+	private final static class GCString {
+		private final String text;
+		private final Font font;
+
+		private GCString(final GC gc, final CharSequence seq) {
+			this.font = gc.getFont();
+			this.text = seq.toString();
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((font == null) ? 0 : font.hashCode());
+			result = prime * result + ((text == null) ? 0 : text.hashCode());
+			return result;
+		}
+
+		// Note: There is no type check here because we do not mix types in the map!! (performance) 
+		@Override
+		public boolean equals(final Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
 				return false;
 			}
 			final GCString other = (GCString) obj;
-			if (fontMetrics == null) {
-				if (other.fontMetrics != null) {
+			if (font == null) {
+				if (other.font != null) {
 					return false;
 				}
-			} else if (!fontMetrics.equals(other.fontMetrics)) {
+			} else if (!font.equals(other.font)) {
 				return false;
 			}
 			if (text == null) {
