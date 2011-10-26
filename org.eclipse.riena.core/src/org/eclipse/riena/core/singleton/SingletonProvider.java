@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.singleton;
 
-import java.lang.reflect.Constructor;
-
-import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.internal.core.singleton.RCPSingletonProvider;
 
 /**
  * A singleton provider that creates <i>true</i> singletons.
@@ -29,22 +27,41 @@ import org.eclipse.riena.core.wire.Wire;
 public class SingletonProvider<S> {
 
 	protected final Class<S> singletonClass;
+	/**
+	 * @since 4.0
+	 */
+	protected final ISingletonInitializer<S> initializer;
 	private volatile S singleton;
 
 	/**
-	 * Create {@code SingletonProvider} that creates a singleton for the
-	 * specified {@code singletonClass}. This constructor creates a <i>true</i>
-	 * singleton, i.e. it will occur only once.
+	 * Create a {@code SingletonProvider} that creates a singleton for the
+	 * specified {@code singletonClass}. The singleton will be wired.
 	 * 
 	 * @param singletonClass
 	 *            the class of the requested singleton
 	 */
 	public SingletonProvider(final Class<S> singletonClass) {
-		this.singletonClass = singletonClass;
+		this(singletonClass, null);
 	}
 
 	/**
-	 * Return the requested singleton.
+	 * Create a {@code SingletonProvider} that creates a singleton for the
+	 * specified {@code singletonClass}. The singleton can be initialized with
+	 * the given 'call back' and will wired.
+	 * 
+	 * @param singletonClass
+	 *            the class of the requested singleton
+	 * @param initializer
+	 *            a initializer 'call back'
+	 * @since 4.0
+	 */
+	public SingletonProvider(final Class<S> singletonClass, final ISingletonInitializer<S> initializer) {
+		this.singletonClass = singletonClass;
+		this.initializer = initializer;
+	}
+
+	/**
+	 * Return the requested probably initialized and wired singleton.
 	 * 
 	 * @return the singleton
 	 */
@@ -55,31 +72,11 @@ public class SingletonProvider<S> {
 			synchronized (this) {
 				result = singleton;
 				if (result == null) {
-					singleton = result = newWiredInstance();
+					singleton = result = RCPSingletonProvider.getInstance(singletonClass, initializer);
 				}
 			}
 		}
 		return result;
 	}
 
-	private S newWiredInstance() {
-		boolean isAccessible = true;
-		Constructor<S> constructor = null;
-		try {
-			constructor = singletonClass.getDeclaredConstructor();
-			isAccessible = constructor.isAccessible();
-			if (!isAccessible) {
-				constructor.setAccessible(true);
-			}
-			final S result = constructor.newInstance();
-			Wire.instance(result).andStart();
-			return result;
-		} catch (final Exception e) {
-			throw new SingletonFailure("Could not instantiate RCP controlled singleton.", e); //$NON-NLS-1$
-		} finally {
-			if (!isAccessible && constructor != null) {
-				constructor.setAccessible(false);
-			}
-		}
-	}
 }
