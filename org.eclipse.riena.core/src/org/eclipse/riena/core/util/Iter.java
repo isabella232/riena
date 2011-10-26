@@ -195,8 +195,7 @@ public final class Iter {
 			reversed = new Iterator<T>() {
 
 				public boolean hasNext() {
-					final boolean has = iterator.hasPrevious();
-					return has;
+					return iterator.hasPrevious();
 				}
 
 				public T next() {
