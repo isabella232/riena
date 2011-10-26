@@ -10,15 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.core.singleton;
 
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.osgi.framework.Bundle;
-
-import org.eclipse.riena.core.util.Nop;
-import org.eclipse.riena.core.util.RAPDetector;
-import org.eclipse.riena.core.wire.Wire;
+import org.eclipse.riena.internal.core.singleton.RAPSingletonProvider;
 
 /**
  * A generic (RCP/RAP) singleton provider.
@@ -39,46 +31,30 @@ import org.eclipse.riena.core.wire.Wire;
  */
 public class SessionSingletonProvider<S> extends SingletonProvider<S> {
 
-	private static final boolean IS_RAP_AVAILABLE;
-	private static Class<?> sessionSingletonBaseClass;
-	private static Method getInstanceMethod;
-	private static final Set<Object> RAP_SINGLETONS = new HashSet<Object>();
-
-	private static final String SESSION_SINGLETON_BASE = "org.eclipse.rwt.SessionSingletonBase"; //$NON-NLS-1$
-	private static final String GET_INSTANCE = "getInstance"; //$NON-NLS-1$
-
-	static {
-		IS_RAP_AVAILABLE = RAPDetector.isRAPavailable() && loadSessionSingletonBase();
-	}
-
 	/**
-	 * Create {@code SessionSingletonProvider} that creates (a) singleton(s) for
-	 * the specified {@code singletonClass}.
+	 * Create a {@code SessionSingletonProvider} that creates (a) singleton(s)
+	 * for the specified {@code singletonClass}.
 	 * 
 	 * @param singletonClass
 	 *            the class of the requested singleton
 	 */
 	public SessionSingletonProvider(final Class<S> singletonClass) {
-		super(singletonClass);
+		this(singletonClass, null);
 	}
 
 	/**
-	 * Load the RAP {@code SessionSingletonBase} class and the
-	 * {@code getInstance} method as a side effect.
+	 * Create {@code SessionSingletonProvider} that creates (a) singleton(s) for
+	 * the specified {@code singletonClass}.The singleton can be initialized
+	 * with the given 'call back' and will wired.
 	 * 
-	 * @return {@code true} if class and method have been found; otherwise
-	 *         {@code false}
+	 * @param singletonClass
+	 *            the class of the requested singleton
+	 * @param initializer
+	 *            a initializer 'call back'
+	 * @since 4.0
 	 */
-	private static boolean loadSessionSingletonBase() {
-		final Bundle rapBundle = RAPDetector.getRWTBundle();
-		try {
-			sessionSingletonBaseClass = rapBundle.loadClass(SESSION_SINGLETON_BASE);
-			getInstanceMethod = sessionSingletonBaseClass.getMethod(GET_INSTANCE, Class.class);
-			return true;
-		} catch (final Exception e) {
-			Nop.reason("There seems to be no RAP available."); //$NON-NLS-1$
-			return false;
-		}
+	public SessionSingletonProvider(final Class<S> singletonClass, final ISingletonInitializer<S> initializer) {
+		super(singletonClass, initializer);
 	}
 
 	/**
@@ -88,22 +64,8 @@ public class SessionSingletonProvider<S> extends SingletonProvider<S> {
 	 */
 	@Override
 	public S getInstance() {
-		return IS_RAP_AVAILABLE ? getRAPInstance() : super.getInstance();
-	}
-
-	private S getRAPInstance() {
-		try {
-			final S rapSingleton = (S) getInstanceMethod.invoke(sessionSingletonBaseClass, singletonClass);
-			synchronized (RAP_SINGLETONS) {
-				if (!RAP_SINGLETONS.contains(rapSingleton)) {
-					RAP_SINGLETONS.add(rapSingleton);
-					Wire.instance(rapSingleton).andStart();
-				}
-			}
-			return rapSingleton;
-		} catch (final Exception e) {
-			throw new SingletonFailure("Could not instantiate RAP controlled singleton.", e); //$NON-NLS-1$
-		}
+		return RAPSingletonProvider.isAvailable() ? RAPSingletonProvider.getInstance(singletonClass, initializer)
+				: super.getInstance();
 	}
 
 }
