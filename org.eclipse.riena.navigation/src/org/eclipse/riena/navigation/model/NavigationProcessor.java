@@ -29,6 +29,7 @@ import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.marker.IMarker;
+import org.eclipse.riena.core.util.Iter;
 import org.eclipse.riena.core.util.Nop;
 import org.eclipse.riena.core.util.Trace;
 import org.eclipse.riena.internal.navigation.Activator;
@@ -1155,7 +1156,7 @@ public class NavigationProcessor implements INavigationProcessor {
 			nextToActivate.activate(context);
 			setAsSelectedChild(nextToActivate);
 		}
-		for (final INavigationNode<?> nextToActivate : copyReverse(nextNodesToActivate)) {
+		for (final INavigationNode<?> nextToActivate : Iter.ableReverse(nextNodesToActivate)) {
 			if (DEBUG_NAVIGATION_PROCESSOR) {
 				LOGGER.log(LogService.LOG_DEBUG, "NaviProc: - onAfterActivate: " + nextToActivate.getNodeId()); //$NON-NLS-1$
 			}
@@ -1165,7 +1166,7 @@ public class NavigationProcessor implements INavigationProcessor {
 
 	private void deactivate(final INavigationContext context) {
 		final Collection<INavigationNode<?>> previouslyActivatedNodes = new ArrayList<INavigationNode<?>>();
-		for (final INavigationNode<?> nextToDeactivate : copyReverse(context.getToDeactivate())) {
+		for (final INavigationNode<?> nextToDeactivate : Iter.ableReverse(context.getToDeactivate())) {
 			if (nextToDeactivate.isActivated()) {
 				previouslyActivatedNodes.add(nextToDeactivate);
 				if (DEBUG_NAVIGATION_PROCESSOR) {
@@ -1194,7 +1195,7 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	private void dispose(final INavigationContext context) {
-		for (final INavigationNode<?> nextToDispose : copyReverse(context.getToDeactivate())) {
+		for (final INavigationNode<?> nextToDispose : Iter.ableReverse(context.getToDeactivate())) {
 			nextToDispose.onBeforeDispose(context);
 		}
 		for (final INavigationNode<?> nextToDispose : context.getToDeactivate()) {
@@ -1470,14 +1471,6 @@ public class NavigationProcessor implements INavigationProcessor {
 			}
 		}
 		return null;
-	}
-
-	private List<INavigationNode<?>> copyReverse(final List<INavigationNode<?>> list) {
-
-		final List<INavigationNode<?>> listReverse = list.subList(0, list.size());
-		Collections.reverse(listReverse);
-
-		return listReverse;
 	}
 
 	public void historyBack() {
