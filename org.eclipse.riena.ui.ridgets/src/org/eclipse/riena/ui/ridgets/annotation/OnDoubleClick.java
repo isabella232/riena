@@ -17,8 +17,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.eclipse.riena.ui.ridgets.IActionListener;
-import org.eclipse.riena.ui.ridgets.ITableRidget;
-import org.eclipse.riena.ui.ridgets.ITreeRidget;
+import org.eclipse.riena.ui.ridgets.IClickableRidget;
 
 /**
  * This annotation is used to mark a method as target for an automatically
@@ -33,8 +32,7 @@ import org.eclipse.riena.ui.ridgets.ITreeRidget;
  * <p>
  * Currently supported ridgets:
  * <ul>
- * <li>{@link ITableRidget}</li>
- * <li>{@link ITreeRidget}</li>
+ * <li>{@link IClickableRidget}</li>
  * </ul>
  * 
  * @since 3.0

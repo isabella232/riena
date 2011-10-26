@@ -16,7 +16,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.eclipse.riena.ui.ridgets.ITableRidget;
+import org.eclipse.riena.ui.ridgets.IClickableRidget;
 import org.eclipse.riena.ui.ridgets.listener.IClickListener;
 
 /**
@@ -32,7 +32,7 @@ import org.eclipse.riena.ui.ridgets.listener.IClickListener;
  * <p>
  * Currently supported ridgets:
  * <ul>
- * <li>{@link ITableRidget}</li>
+ * <li>{@link IClickableRidget}</li>
  * </ul>
  * 
  * @since 4.0
