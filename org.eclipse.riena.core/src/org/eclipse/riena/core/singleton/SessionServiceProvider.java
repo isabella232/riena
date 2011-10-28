@@ -29,6 +29,21 @@ import org.eclipse.riena.internal.core.singleton.RCPSingletonProvider;
  * {@code Class.newInstance()}.<br>
  * However, in both cases an optional initializer may be executed and the
  * service instance will be wired.
+ * <p>
+ * Its intended usage is like this, where {@code IServiceInterface} is the
+ * services interface and {@code ServiceImplementation} is the services
+ * implementation:
+ * 
+ * <pre>
+ * public void start(final BundleContext context) throws Exception {
+ * 	super.start(context);
+ * 	Activator.plugin = this;
+ * 
+ * 	IServiceInterface service = SessionServiceProvider.createService(IServiceInterface.class,
+ * 			ServiceImplementation.class);
+ * 	context.registerService(IServiceInterface.class.getName(), service, null);
+ * }
+ * </pre>
  * 
  * @since 4.0
  */
