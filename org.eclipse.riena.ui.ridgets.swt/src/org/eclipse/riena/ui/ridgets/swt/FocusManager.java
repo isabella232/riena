@@ -12,13 +12,16 @@ package org.eclipse.riena.ui.ridgets.swt;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.swt.ChoiceComposite;
@@ -50,6 +53,7 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 	private final AbstractSWTRidget ridget;
 
 	private boolean clickToFocus;
+	private boolean showComboList;
 
 	/**
 	 * Create a new instance.
@@ -75,6 +79,7 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 	}
 
 	public void focusGained(final FocusEvent e) {
+		updateShowComboListFlag(e.widget);
 		if (isFocusable()) {
 			// trace("## focus gained: %s %d", e.widget, e.widget.hashCode());
 			ridget.fireFocusGained();
@@ -97,6 +102,46 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 				ridget.fireFocusGained();
 			}
 		}
+	}
+
+	/**
+	 * Detects if the list of the combo box should be shown after a output-only
+	 * combo box gained the focus.
+	 * 
+	 * @param widget
+	 *            the widget that gained the focus
+	 */
+	private void updateShowComboListFlag(final Widget widget) {
+		if (isFocusable()) {
+			showComboList = false;
+		} else {
+			showComboList = (widget instanceof Combo) || (widget instanceof CCombo);
+		}
+	}
+
+	/**
+	 * Shows the list of the combo box after the combo box gained the focus.
+	 * 
+	 * @param widget
+	 *            the widget that gained the focus
+	 */
+	private void showComboList(final Widget widget) {
+
+		if (!showComboList) {
+			return;
+		}
+		showComboList = false;
+
+		if (SwtUtilities.isDisposed(widget)) {
+			return;
+		}
+
+		if (widget instanceof Combo) {
+			((Combo) widget).setListVisible(true);
+		} else if (widget instanceof CCombo) {
+			((CCombo) widget).setListVisible(true);
+		}
+
 	}
 
 	/**
@@ -133,11 +178,35 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 
 	@Override
 	public void mouseDown(final MouseEvent e) {
+		if (!(e.widget instanceof CCombo)) {
+			handleMouseEvent(e);
+		}
+	}
+
+	@Override
+	public void mouseUp(final MouseEvent e) {
+		if (e.widget instanceof CCombo) {
+			handleMouseEvent(e);
+		}
+	}
+
+	/**
+	 * This method ensures that the output-only widget gets the focus when the
+	 * user clicks the widget with the mouse pointer.
+	 * <p>
+	 * <i>Note: For combo boxes ensures that the list is visible.</i>
+	 * 
+	 * @param e
+	 *            an event containing information about the mouse button press
+	 */
+	private void handleMouseEvent(final MouseEvent e) {
 		if (ridget.isFocusable() && ridget.isOutputOnly()) {
 			// trace("## mouse DOWN: %s %d", e.widget, e.widget.hashCode());
 			clickToFocus = true;
+			showComboList(e.widget);
 			((Control) e.widget).setFocus();
 		}
+
 	}
 
 	/**
@@ -239,6 +308,7 @@ public final class FocusManager extends MouseAdapter implements FocusListener {
 	}
 
 	private boolean isFocusable(final AbstractSWTRidget ridget) {
+		Assert.isNotNull(ridget);
 		return (ridget.isFocusable() && !ridget.isOutputOnly()) || ridget.getFocusManager().isClickToFocus();
 	}
 
