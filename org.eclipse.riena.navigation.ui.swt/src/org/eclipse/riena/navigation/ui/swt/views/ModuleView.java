@@ -890,7 +890,9 @@ public class ModuleView implements INavigationNodeView<ModuleNode> {
 
 		@Override
 		public void childRemoved(final ISubModuleNode source, final ISubModuleNode childRemoved) {
-			resize();
+			if (source.getParentOfType(ISubApplicationNode.class).isActivated()) {
+				resize();
+			}
 		}
 
 		@Override
