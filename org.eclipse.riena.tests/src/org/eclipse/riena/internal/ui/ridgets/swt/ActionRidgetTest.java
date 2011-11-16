@@ -26,7 +26,7 @@ import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
- * Tests of the class {@link ComboRidget}.
+ * Tests of the class {@link ActionRidget}.
  */
 public class ActionRidgetTest extends AbstractSWTRidgetTest {
 
