@@ -92,6 +92,13 @@ public class BasicMarkerSupportTest extends TestCase {
 		txt.setEnabled(false);
 		support.bind();
 		assertFalse(support.isInitialEnabled());
+		shell.setEnabled(false);
+		txt.setEnabled(true);
+		assertFalse(txt.isEnabled());
+		assertTrue(txt.getEnabled());
+		support.bind();
+		assertTrue(support.isInitialEnabled());
+		shell.setEnabled(true);
 	}
 
 	public void testUnbind() throws Exception {

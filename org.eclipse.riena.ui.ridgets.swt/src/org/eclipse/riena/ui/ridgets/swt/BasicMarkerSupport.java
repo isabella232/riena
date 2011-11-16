@@ -138,7 +138,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	 * @since 3.0
 	 */
 	protected void saveState() {
-		this.initialEnabled = getUIControl().isEnabled();
+		this.initialEnabled = getUIControl().getEnabled();
 	}
 
 	/**
