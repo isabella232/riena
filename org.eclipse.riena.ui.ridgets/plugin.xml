@@ -65,5 +65,12 @@
       </annotationHandler>
 
    </extension>
+    <extension
+          point="org.eclipse.riena.core.logCatchers">
+       <logCatcher
+             class="org.eclipse.riena.internal.ui.ridgets.databinding.DatabindingLogCatcher"
+             name="Databinding LogCatcher">
+       </logCatcher>
+    </extension>
    
 </plugin>
