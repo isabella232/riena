@@ -122,6 +122,7 @@ public final class GrabCornerListenerWithTracker extends MouseAdapter implements
 		final Rectangle bounds = getTrackerBounds(tracker);
 		if (bounds != null) {
 			control.getShell().setBounds(bounds);
+			control.getShell().redraw(bounds.x, bounds.y, bounds.width, bounds.height, true);
 		}
 	}
 

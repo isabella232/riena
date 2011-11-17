@@ -46,6 +46,7 @@ public class ShellHelper {
 			if (isShellMaximzed()) {
 				if (restoreBounds != null) {
 					shell.setBounds(restoreBounds);
+					shell.redraw(restoreBounds.x, restoreBounds.y, restoreBounds.width, restoreBounds.height, true);
 				} else {
 					LOGGER.log(LogService.LOG_WARNING, "No restore bounds exists! Restore of shell canceled."); //$NON-NLS-1$
 				}
@@ -53,6 +54,7 @@ public class ShellHelper {
 				restoreBounds = shell.getBounds();
 				final Rectangle clientBounds = calcMaxBounds(shell);
 				shell.setBounds(clientBounds);
+				shell.redraw(clientBounds.x, clientBounds.y, clientBounds.width, clientBounds.height, true);
 			}
 		} else {
 			shell.setMaximized(shell.getMaximized());
