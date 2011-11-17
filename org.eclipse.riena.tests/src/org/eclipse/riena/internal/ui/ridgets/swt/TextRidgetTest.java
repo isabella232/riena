@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.swt.SWT;
@@ -199,6 +202,38 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(oldBg, control.getBackground());
 	}
 
+	/**
+	 * Tests if all nested properties of a <b>bean</b> will be observed by the
+	 * JFace data binding.
+	 * <p>
+	 * Note: All involved value holder must be beans. With pojos a rebind to the
+	 * model will be necessary.
+	 * 
+	 * @throws Exception
+	 *             handled by JUnit
+	 */
+	public void testBindToModelNestedPropertyName() throws Exception {
+		final ITextRidget ridget = getRidget();
+
+		final TextBeanHolder modelHolder = new TextBeanHolder();
+		final TextBean model = new TextBean();
+		modelHolder.setBean(model);
+		ridget.bindToModel(modelHolder, "bean.text2");
+
+		assertEquals("", ridget.getText());
+
+		ridget.updateFromModel();
+
+		assertEquals(modelHolder.getBean().getText2(), ridget.getText());
+
+		final TextBean model2 = new TextBean();
+		model2.setText2("three");
+		modelHolder.setBean(model2);
+		ridget.updateFromModel();
+
+		assertEquals(modelHolder.getBean().getText2(), ridget.getText());
+	}
+
 	// helping classes
 	//////////////////
 
@@ -206,6 +241,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	 * An object holding two strings.
 	 */
 	private static class TextPojo {
+
 		private String text1;
 		private String text2;
 
@@ -229,6 +265,72 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 
 		public void setText2(final String text2) {
 			this.text2 = text2;
+		}
+
+	}
+
+	/**
+	 * A bean holding two strings.
+	 */
+	private static class TextBean {
+
+		private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+
+		private String text1;
+		private String text2;
+
+		public TextBean() {
+			text1 = "one";
+			text2 = "two";
+		}
+
+		public String getText1() {
+			return text1;
+		}
+
+		@SuppressWarnings("unused")
+		public void setText1(final String text1) {
+			propertyChangeSupport.firePropertyChange("text1", this.text1, this.text1 = text1);
+		}
+
+		public String getText2() {
+			return text2;
+		}
+
+		public void setText2(final String text2) {
+			propertyChangeSupport.firePropertyChange("text2", this.text2, this.text2 = text2);
+		}
+
+		public void removePropertyChangeListener(final PropertyChangeListener listener) {
+			propertyChangeSupport.removePropertyChangeListener(listener);
+		}
+
+		public void addPropertyChangeListener(final PropertyChangeListener listener) {
+			propertyChangeSupport.addPropertyChangeListener(listener);
+		}
+
+	}
+
+	private class TextBeanHolder {
+
+		private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+
+		private TextBean bean;
+
+		public TextBean getBean() {
+			return bean;
+		}
+
+		public void setBean(final TextBean bean) {
+			propertyChangeSupport.firePropertyChange("bean", this.bean, this.bean = bean);
+		}
+
+		public void removePropertyChangeListener(final PropertyChangeListener listener) {
+			propertyChangeSupport.removePropertyChangeListener(listener);
+		}
+
+		public void addPropertyChangeListener(final PropertyChangeListener listener) {
+			propertyChangeSupport.addPropertyChangeListener(listener);
 		}
 	}
 
