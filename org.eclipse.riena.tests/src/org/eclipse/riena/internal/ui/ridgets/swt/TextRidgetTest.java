@@ -214,6 +214,7 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testBindToModelNestedPropertyName() throws Exception {
 		final ITextRidget ridget = getRidget();
+		ridget.setText("");
 
 		final TextBeanHolder modelHolder = new TextBeanHolder();
 		final TextBean model = new TextBean();
