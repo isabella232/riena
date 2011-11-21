@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.swt.SWT;
@@ -28,6 +25,8 @@ import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 
 /**
  * Tests for the class {@link TextRidget}.
+ * <p>
+ * <i>For this test class extensions can be possible.</i>
  * 
  * @see TextRidgetTest2
  */
@@ -124,19 +123,6 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(model.getText1(), ridget.getText());
 	}
 
-	public void testBindToModelPropertyName() throws Exception {
-		final ITextRidget ridget = getRidget();
-
-		final TextPojo model = new TextPojo();
-		ridget.bindToModel(model, "text2");
-
-		assertEquals("", ridget.getText());
-
-		ridget.updateFromModel();
-
-		assertEquals(model.getText2(), ridget.getText());
-	}
-
 	public void testUpdateFromModel() throws Exception {
 		final ITextRidget ridget = getRidget();
 
@@ -202,74 +188,17 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(oldBg, control.getBackground());
 	}
 
-	/**
-	 * Tests if all nested properties of a <b>bean</b> will be observed by the
-	 * JFace data binding.
-	 * <p>
-	 * Note: All involved value holder must be beans. With pojos a rebind to the
-	 * model will be necessary.
-	 * 
-	 * @throws Exception
-	 *             handled by JUnit
-	 */
-	public void testBindToModelBeanWithNestedProperties() throws Exception {
-
+	public void testBindToModelPropertyName() throws Exception {
 		final ITextRidget ridget = getRidget();
-		ridget.setText("");
 
-		final TextBeanHolder modelHolder = new TextBeanHolder();
-		final TextBean model = new TextBean();
-		modelHolder.setBean(model);
-		ridget.bindToModel(modelHolder, "bean.text2");
-
-		assertEquals("", ridget.getText());
-
-		ridget.updateFromModel();
-
-		assertEquals(modelHolder.getBean().getText2(), ridget.getText());
-
-		final TextBean model2 = new TextBean();
-		model2.setText2("three");
-		modelHolder.setBean(model2);
-		ridget.updateFromModel();
-
-		assertEquals(modelHolder.getBean().getText2(), ridget.getText());
-
-	}
-
-	/**
-	 * Tests if all nested properties of a <b>pojo</b> will be observed by the
-	 * JFace data binding.
-	 * <p>
-	 * Note: All involved value holder must be beans. With pojos a rebind to the
-	 * model will be necessary.
-	 * 
-	 * @throws Exception
-	 *             handled by JUnit
-	 */
-	public void testBindToModelPojoWithNestedProperties() throws Exception {
-
-		final ITextRidget ridget = getRidget();
-		ridget.setText("");
-
-		final TextPojoHolder modelHolder = new TextPojoHolder();
 		final TextPojo model = new TextPojo();
-		modelHolder.setPojo(model);
-		ridget.bindToModel(modelHolder, "pojo.text2");
+		ridget.bindToModel(model, "text2");
 
 		assertEquals("", ridget.getText());
 
 		ridget.updateFromModel();
 
-		assertEquals(modelHolder.getPojo().getText2(), ridget.getText());
-
-		final TextPojo model2 = new TextPojo();
-		model2.setText2("three");
-		modelHolder.setPojo(model2);
-		ridget.updateFromModel();
-
-		assertEquals(modelHolder.getPojo().getText2(), ridget.getText());
-
+		assertEquals(model.getText2(), ridget.getText());
 	}
 
 	// helping classes
@@ -305,85 +234,6 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 			this.text2 = text2;
 		}
 
-	}
-
-	private class TextPojoHolder {
-
-		private TextPojo pojo;
-
-		public TextPojo getPojo() {
-			return pojo;
-		}
-
-		public void setPojo(final TextPojo pojo) {
-			this.pojo = pojo;
-		}
-
-	}
-
-	/**
-	 * A bean holding two strings.
-	 */
-	private static class TextBean {
-
-		private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-
-		private String text1;
-		private String text2;
-
-		public TextBean() {
-			text1 = "one";
-			text2 = "two";
-		}
-
-		public String getText1() {
-			return text1;
-		}
-
-		@SuppressWarnings("unused")
-		public void setText1(final String text1) {
-			propertyChangeSupport.firePropertyChange("text1", this.text1, this.text1 = text1);
-		}
-
-		public String getText2() {
-			return text2;
-		}
-
-		public void setText2(final String text2) {
-			propertyChangeSupport.firePropertyChange("text2", this.text2, this.text2 = text2);
-		}
-
-		public void removePropertyChangeListener(final PropertyChangeListener listener) {
-			propertyChangeSupport.removePropertyChangeListener(listener);
-		}
-
-		public void addPropertyChangeListener(final PropertyChangeListener listener) {
-			propertyChangeSupport.addPropertyChangeListener(listener);
-		}
-
-	}
-
-	private class TextBeanHolder {
-
-		private final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-
-		private TextBean bean;
-
-		public TextBean getBean() {
-			return bean;
-		}
-
-		public void setBean(final TextBean bean) {
-			propertyChangeSupport.firePropertyChange("bean", this.bean, this.bean = bean);
-		}
-
-		public void removePropertyChangeListener(final PropertyChangeListener listener) {
-			propertyChangeSupport.removePropertyChangeListener(listener);
-		}
-
-		public void addPropertyChangeListener(final PropertyChangeListener listener) {
-			propertyChangeSupport.addPropertyChangeListener(listener);
-		}
 	}
 
 }
