@@ -212,7 +212,8 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 	 * @throws Exception
 	 *             handled by JUnit
 	 */
-	public void testBindToModelNestedPropertyName() throws Exception {
+	public void testBindToModelBeanWithNestedProperties() throws Exception {
+
 		final ITextRidget ridget = getRidget();
 		ridget.setText("");
 
@@ -233,6 +234,42 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 		ridget.updateFromModel();
 
 		assertEquals(modelHolder.getBean().getText2(), ridget.getText());
+
+	}
+
+	/**
+	 * Tests if all nested properties of a <b>pojo</b> will be observed by the
+	 * JFace data binding.
+	 * <p>
+	 * Note: All involved value holder must be beans. With pojos a rebind to the
+	 * model will be necessary.
+	 * 
+	 * @throws Exception
+	 *             handled by JUnit
+	 */
+	public void testBindToModelPojoWithNestedProperties() throws Exception {
+
+		final ITextRidget ridget = getRidget();
+		ridget.setText("");
+
+		final TextPojoHolder modelHolder = new TextPojoHolder();
+		final TextPojo model = new TextPojo();
+		modelHolder.setPojo(model);
+		ridget.bindToModel(modelHolder, "pojo.text2");
+
+		assertEquals("", ridget.getText());
+
+		ridget.updateFromModel();
+
+		assertEquals(modelHolder.getPojo().getText2(), ridget.getText());
+
+		final TextPojo model2 = new TextPojo();
+		model2.setText2("three");
+		modelHolder.setPojo(model2);
+		ridget.updateFromModel();
+
+		assertEquals(modelHolder.getPojo().getText2(), ridget.getText());
+
 	}
 
 	// helping classes
@@ -266,6 +303,20 @@ public class TextRidgetTest extends AbstractSWTRidgetTest {
 
 		public void setText2(final String text2) {
 			this.text2 = text2;
+		}
+
+	}
+
+	private class TextPojoHolder {
+
+		private TextPojo pojo;
+
+		public TextPojo getPojo() {
+			return pojo;
+		}
+
+		public void setPojo(final TextPojo pojo) {
+			this.pojo = pojo;
 		}
 
 	}

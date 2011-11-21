@@ -25,6 +25,7 @@ import org.eclipse.riena.beans.common.Person;
 import org.eclipse.riena.beans.common.TestBean;
 import org.eclipse.riena.core.marker.IMarkable;
 import org.eclipse.riena.core.marker.Markable;
+import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
@@ -77,81 +78,81 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	public void testUpdateFromModelOnRequest() throws Exception {
 		assertNull(target.getValue());
 
-		bean.setProperty("TestValue");
+		bean.setProperty("TestValue"); //$NON-NLS-1$
 
 		assertNull(target.getValue());
 
 		valueBindingSupport.updateFromModel();
 
-		assertEquals("TestValue", target.getValue());
+		assertEquals("TestValue", target.getValue()); //$NON-NLS-1$
 	}
 
 	public void testUpdateFromTargetImmediately() throws Exception {
 		assertNull(bean.getProperty());
 
-		target.setValue("TestValue");
+		target.setValue("TestValue"); //$NON-NLS-1$
 
-		assertEquals("TestValue", bean.getProperty());
+		assertEquals("TestValue", bean.getProperty()); //$NON-NLS-1$
 	}
 
 	public void testValidationMessagesAddAndRemove() throws Exception {
 		valueBindingSupport.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UPDATE_TO_MODEL);
-		valueBindingSupport.addValidationMessage("TestMessage1");
-		valueBindingSupport.addValidationMessage("TestMessage2");
-		final ErrorMessageMarker messageMarker1 = new ErrorMessageMarker("TestMessage3");
+		valueBindingSupport.addValidationMessage("TestMessage1"); //$NON-NLS-1$
+		valueBindingSupport.addValidationMessage("TestMessage2"); //$NON-NLS-1$
+		final ErrorMessageMarker messageMarker1 = new ErrorMessageMarker("TestMessage3"); //$NON-NLS-1$
 		valueBindingSupport.addValidationMessage(messageMarker1);
-		final MessageMarker messageMarker2 = new MessageMarker("TestMessage4");
+		final MessageMarker messageMarker2 = new MessageMarker("TestMessage4"); //$NON-NLS-1$
 		valueBindingSupport.addValidationMessage(messageMarker2);
 
 		assertEquals(0, markable.getMarkers().size());
 
-		target.setValue("odd");
+		target.setValue("odd"); //$NON-NLS-1$
 
 		assertEquals(5, markable.getMarkers().size());
-		assertMessageMarkers("TestMessage1", "TestMessage2", "TestMessage3", "TestMessage4");
+		assertMessageMarkers("TestMessage1", "TestMessage2", "TestMessage3", "TestMessage4"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-		target.setValue("even");
+		target.setValue("even"); //$NON-NLS-1$
 
 		assertEquals(0, markable.getMarkers().size());
 
-		valueBindingSupport.removeValidationMessage("TestMessage1");
+		valueBindingSupport.removeValidationMessage("TestMessage1"); //$NON-NLS-1$
 		valueBindingSupport.removeValidationMessage(messageMarker1);
 
-		target.setValue("odd");
+		target.setValue("odd"); //$NON-NLS-1$
 
 		assertEquals(3, markable.getMarkers().size());
-		assertMessageMarkers("TestMessage2", "TestMessage4");
+		assertMessageMarkers("TestMessage2", "TestMessage4"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		target.setValue("even");
+		target.setValue("even"); //$NON-NLS-1$
 
 		assertEquals(0, markable.getMarkers().size());
 
-		valueBindingSupport.removeValidationMessage("TestMessage2");
+		valueBindingSupport.removeValidationMessage("TestMessage2"); //$NON-NLS-1$
 		valueBindingSupport.removeValidationMessage(messageMarker2);
 
-		target.setValue("odd");
+		target.setValue("odd"); //$NON-NLS-1$
 
 		assertEquals(1, markable.getMarkers().size());
 		assertTrue(markable.getMarkers().iterator().next() instanceof ErrorMarker);
 
-		target.setValue("even");
+		target.setValue("even"); //$NON-NLS-1$
 
 		assertEquals(0, markable.getMarkers().size());
 	}
 
 	public void testAddValidationMessageForUnknownRule() {
 		final AlwaysWrongValidator rule = new AlwaysWrongValidator();
-		valueBindingSupport.addValidationMessage("foo", rule);
+		valueBindingSupport.addValidationMessage("foo", rule); //$NON-NLS-1$
 
 		assertEquals(0, markable.getMarkers().size());
 	}
 
 	public void testRemoveValidationMessageWhenRemovingRule() {
 		final IValidator rule = new AlwaysWrongValidator();
-		valueBindingSupport.addValidationMessage("foo", rule);
+		valueBindingSupport.addValidationMessage("foo", rule); //$NON-NLS-1$
 		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
 
-		target.setValue("value");
+		target.setValue("value"); //$NON-NLS-1$
 
 		assertEquals(1, markable.getMarkersOfType(ValidationMessageMarker.class).size());
 
@@ -166,50 +167,50 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	public void testAddSameValidationMessage() {
 		final EvenNumberOfCharacters rule = new EvenNumberOfCharacters();
 		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
-		valueBindingSupport.addValidationMessage("TestMessage1");
-		valueBindingSupport.addValidationMessage("TestMessage1");
-		valueBindingSupport.addValidationMessage("TestMessage2", rule);
-		valueBindingSupport.addValidationMessage("TestMessage2", rule);
-		final MessageMarker messageMarker = new MessageMarker("TestMessage3");
+		valueBindingSupport.addValidationMessage("TestMessage1"); //$NON-NLS-1$
+		valueBindingSupport.addValidationMessage("TestMessage1"); //$NON-NLS-1$
+		valueBindingSupport.addValidationMessage("TestMessage2", rule); //$NON-NLS-1$
+		valueBindingSupport.addValidationMessage("TestMessage2", rule); //$NON-NLS-1$
+		final MessageMarker messageMarker = new MessageMarker("TestMessage3"); //$NON-NLS-1$
 		valueBindingSupport.addValidationMessage(messageMarker);
 		valueBindingSupport.addValidationMessage(messageMarker);
-		final MessageMarker messageMarker2 = new MessageMarker("TestMessage4");
+		final MessageMarker messageMarker2 = new MessageMarker("TestMessage4"); //$NON-NLS-1$
 		valueBindingSupport.addValidationMessage(messageMarker2, rule);
 		valueBindingSupport.addValidationMessage(messageMarker2, rule);
 
 		assertEquals(0, markable.getMarkers().size());
 
-		target.setValue("odd");
+		target.setValue("odd"); //$NON-NLS-1$
 
 		assertEquals(4, markable.getMarkersOfType(ValidationMessageMarker.class).size());
 
-		target.setValue("even");
+		target.setValue("even"); //$NON-NLS-1$
 
 		assertEquals(0, markable.getMarkers().size());
 	}
 
 	public void testValidationMessagesAddAndRemoveWhileActive() throws Exception {
 		valueBindingSupport.addValidationRule(new EvenNumberOfCharacters(), ValidationTime.ON_UPDATE_TO_MODEL);
-		target.setValue("odd");
+		target.setValue("odd"); //$NON-NLS-1$
 
 		assertEquals(1, markable.getMarkers().size());
 		assertTrue(markable.getMarkers().iterator().next() instanceof ErrorMarker);
 
-		valueBindingSupport.addValidationMessage("TestMessage1");
+		valueBindingSupport.addValidationMessage("TestMessage1"); //$NON-NLS-1$
 
 		assertEquals(2, markable.getMarkers().size());
-		assertMessageMarkers("TestMessage1");
+		assertMessageMarkers("TestMessage1"); //$NON-NLS-1$
 
-		final MessageMarker messageMarker = new MessageMarker("TestMessage2");
+		final MessageMarker messageMarker = new MessageMarker("TestMessage2"); //$NON-NLS-1$
 		valueBindingSupport.addValidationMessage(messageMarker);
 
 		assertEquals(3, markable.getMarkers().size());
-		assertMessageMarkers("TestMessage1", "TestMessage2");
+		assertMessageMarkers("TestMessage1", "TestMessage2"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		valueBindingSupport.removeValidationMessage("TestMessage1");
+		valueBindingSupport.removeValidationMessage("TestMessage1"); //$NON-NLS-1$
 
 		assertEquals(2, markable.getMarkers().size());
-		assertMessageMarkers("TestMessage2");
+		assertMessageMarkers("TestMessage2"); //$NON-NLS-1$
 
 		valueBindingSupport.removeValidationMessage(messageMarker);
 
@@ -222,28 +223,28 @@ public class ValueBindingSupportTest extends RienaTestCase {
 		final NotEndingWithDisaster notEndingWithDisaster = new NotEndingWithDisaster();
 		valueBindingSupport.addValidationRule(evenNumberOfCharacters, ValidationTime.ON_UPDATE_TO_MODEL);
 		valueBindingSupport.addValidationRule(notEndingWithDisaster, ValidationTime.ON_UPDATE_TO_MODEL);
-		valueBindingSupport.addValidationMessage("TestNotEvenMessage1", evenNumberOfCharacters);
-		valueBindingSupport.addValidationMessage(new MessageMarker("TestNotEvenMessage2"), evenNumberOfCharacters);
-		valueBindingSupport.addValidationMessage("TestDisasterMessage", notEndingWithDisaster);
+		valueBindingSupport.addValidationMessage("TestNotEvenMessage1", evenNumberOfCharacters); //$NON-NLS-1$
+		valueBindingSupport.addValidationMessage(new MessageMarker("TestNotEvenMessage2"), evenNumberOfCharacters); //$NON-NLS-1$
+		valueBindingSupport.addValidationMessage("TestDisasterMessage", notEndingWithDisaster); //$NON-NLS-1$
 
 		assertEquals(0, markable.getMarkers().size());
 
-		target.setValue("Disaster");
+		target.setValue("Disaster"); //$NON-NLS-1$
 
 		assertEquals(2, markable.getMarkers().size());
-		assertMessageMarkers("TestDisasterMessage");
+		assertMessageMarkers("TestDisasterMessage"); //$NON-NLS-1$
 
-		target.setValue("Disaster Area");
+		target.setValue("Disaster Area"); //$NON-NLS-1$
 
 		assertEquals(3, markable.getMarkers().size());
-		assertMessageMarkers("TestNotEvenMessage1", "TestNotEvenMessage2");
+		assertMessageMarkers("TestNotEvenMessage1", "TestNotEvenMessage2"); //$NON-NLS-1$ //$NON-NLS-2$
 
-		target.setValue("We are teetering on the brink of disaster");
+		target.setValue("We are teetering on the brink of disaster"); //$NON-NLS-1$
 
 		assertEquals(5, markable.getMarkers().size());
-		assertMessageMarkers("TestNotEvenMessage1", "TestNotEvenMessage2", "TestDisasterMessage");
+		assertMessageMarkers("TestNotEvenMessage1", "TestNotEvenMessage2", "TestDisasterMessage"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-		target.setValue("Save again");
+		target.setValue("Save again"); //$NON-NLS-1$
 
 		assertEquals(0, markable.getMarkers().size());
 	}
@@ -286,13 +287,13 @@ public class ValueBindingSupportTest extends RienaTestCase {
 
 		final MinLength rule = new MinLength(3);
 		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
-		valueBindingSupport.addValidationMessage("too short", rule);
-		target.setValue("a");
+		valueBindingSupport.addValidationMessage("too short", rule); //$NON-NLS-1$
+		target.setValue("a"); //$NON-NLS-1$
 
 		assertEquals(1, markable.getMarkersOfType(ValidationMessageMarker.class).size());
-		assertMessageMarkers("too short");
+		assertMessageMarkers("too short"); //$NON-NLS-1$
 
-		valueBindingSupport.removeValidationMessage("too short", rule);
+		valueBindingSupport.removeValidationMessage("too short", rule); //$NON-NLS-1$
 
 		assertEquals(0, markable.getMarkersOfType(ValidationMessageMarker.class).size());
 	}
@@ -302,13 +303,13 @@ public class ValueBindingSupportTest extends RienaTestCase {
 
 		final MinLength rule = new MinLength(3);
 		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
-		valueBindingSupport.addValidationMessage("too short");
-		target.setValue("a");
+		valueBindingSupport.addValidationMessage("too short"); //$NON-NLS-1$
+		target.setValue("a"); //$NON-NLS-1$
 
 		assertEquals(1, markable.getMarkersOfType(ValidationMessageMarker.class).size());
-		assertMessageMarkers("too short");
+		assertMessageMarkers("too short"); //$NON-NLS-1$
 
-		valueBindingSupport.removeValidationMessage("too short");
+		valueBindingSupport.removeValidationMessage("too short"); //$NON-NLS-1$
 
 		assertEquals(0, markable.getMarkersOfType(ValidationMessageMarker.class).size());
 	}
@@ -319,7 +320,7 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	public void testShowErrorAfterValidationOnUpdateWithBlock() {
 		final ValidRange rule = new ValidRange(18, 80);
 		valueBindingSupport.addValidationRule(rule, ValidationTime.ON_UPDATE_TO_MODEL);
-		final IStatus errorStatus = rule.validate("81");
+		final IStatus errorStatus = rule.validate("81"); //$NON-NLS-1$
 		assertEquals(ValidationRuleStatus.ERROR_BLOCK_WITH_FLASH, errorStatus.getCode());
 
 		assertEquals(0, markable.getMarkersOfType(ErrorMarker.class).size());
@@ -328,7 +329,7 @@ public class ValueBindingSupportTest extends RienaTestCase {
 
 		assertEquals(1, markable.getMarkersOfType(ErrorMarker.class).size());
 
-		final IStatus okStatus = rule.validate("80");
+		final IStatus okStatus = rule.validate("80"); //$NON-NLS-1$
 		valueBindingSupport.updateValidationStatus(rule, okStatus);
 
 		assertEquals(0, markable.getMarkersOfType(ErrorMarker.class).size());
@@ -345,44 +346,44 @@ public class ValueBindingSupportTest extends RienaTestCase {
 
 		valueBindingSupport.bindToModel(person, "address.streetAndNumber"); //$NON-NLS-1$
 
-		assertEquals("pdx", person.getAddress().getStreetAndNumber());
-		assertEquals("pdx", pdx.getStreetAndNumber());
+		assertEquals("pdx", person.getAddress().getStreetAndNumber()); //$NON-NLS-1$
+		assertEquals("pdx", pdx.getStreetAndNumber()); //$NON-NLS-1$
 
-		target.setValue("new 1");
+		target.setValue("new 1"); //$NON-NLS-1$
 
-		assertEquals("new 1", person.getAddress().getStreetAndNumber());
-		assertEquals("new 1", pdx.getStreetAndNumber());
+		assertEquals("new 1", person.getAddress().getStreetAndNumber()); //$NON-NLS-1$
+		assertEquals("new 1", pdx.getStreetAndNumber()); //$NON-NLS-1$
 
 		person.setAddress(fra);
-		target.setValue("new 2");
+		target.setValue("new 2"); //$NON-NLS-1$
 
-		assertEquals("new 2", person.getAddress().getStreetAndNumber());
-		assertEquals("new 2", fra.getStreetAndNumber());
-		assertEquals("new 1", pdx.getStreetAndNumber());
+		assertEquals("new 2", person.getAddress().getStreetAndNumber()); //$NON-NLS-1$
+		assertEquals("new 2", fra.getStreetAndNumber()); //$NON-NLS-1$
+		assertEquals("new 1", pdx.getStreetAndNumber()); //$NON-NLS-1$
 	}
 
 	public void testUpdateFromModelOnRequest2() {
 		final Person person = new Person("muster", "max"); //$NON-NLS-1$ //$NON-NLS-2$
-		valueBindingSupport.bindToModel(person, "firstname");
+		valueBindingSupport.bindToModel(person, "firstname"); //$NON-NLS-1$
 		valueBindingSupport.updateFromModel();
 
-		assertEquals("max", person.getFirstname());
-		assertEquals("max", target.getValue());
+		assertEquals("max", person.getFirstname()); //$NON-NLS-1$
+		assertEquals("max", target.getValue()); //$NON-NLS-1$
 
-		target.setValue("moritz");
+		target.setValue("moritz"); //$NON-NLS-1$
 
-		assertEquals("moritz", person.getFirstname());
-		assertEquals("moritz", target.getValue());
+		assertEquals("moritz", person.getFirstname()); //$NON-NLS-1$
+		assertEquals("moritz", target.getValue()); //$NON-NLS-1$
 
-		person.setFirstname("michel");
+		person.setFirstname("michel"); //$NON-NLS-1$
 
-		assertEquals("michel", person.getFirstname());
-		assertEquals("moritz", target.getValue());
+		assertEquals("michel", person.getFirstname()); //$NON-NLS-1$
+		assertEquals("moritz", target.getValue()); //$NON-NLS-1$
 
 		valueBindingSupport.updateFromModel();
 
-		assertEquals("michel", person.getFirstname());
-		assertEquals("michel", target.getValue());
+		assertEquals("michel", person.getFirstname()); //$NON-NLS-1$
+		assertEquals("michel", target.getValue()); //$NON-NLS-1$
 	}
 
 	/**
@@ -391,22 +392,41 @@ public class ValueBindingSupportTest extends RienaTestCase {
 	public void testRebindToModelNoPerfomanceDegratation() {
 		assertNotNull(target);
 		assertNotNull(model);
-		final ValueBindingSupport valueBindingSupport = new ValueBindingSupport(target, model);
+		final ValueBindingSupport secondValueBindingSupport = new ValueBindingSupport(target, model);
 
 		final long start1 = System.currentTimeMillis();
 		for (int i = 0; i < 100; i++) {
-			valueBindingSupport.rebindToModel();
+			secondValueBindingSupport.rebindToModel();
 		}
 		final long time1 = System.currentTimeMillis() - start1;
 
 		final long start2 = System.currentTimeMillis();
 		for (int i = 0; i < 100; i++) {
-			valueBindingSupport.rebindToModel();
+			secondValueBindingSupport.rebindToModel();
 		}
 		final long time2 = System.currentTimeMillis() - start2;
 
-		final String msg = String.format("1st iteration: %d, 2nd iteration: %d", time1, time2);
+		final String msg = String.format("1st iteration: %d, 2nd iteration: %d", time1, time2); //$NON-NLS-1$
 		assertTrue(msg, (time2 / 2) <= time1);
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code isNestedProperty(String)}.
+	 */
+	public void testIsNestedProperty() {
+
+		boolean ret = ReflectionUtils.invokeHidden(valueBindingSupport, "isNestedProperty", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse(ret);
+
+		ret = ReflectionUtils.invokeHidden(valueBindingSupport, "isNestedProperty", "prop"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertFalse(ret);
+
+		ret = ReflectionUtils.invokeHidden(valueBindingSupport, "isNestedProperty", "prop1.prop2"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(ret);
+
+		ret = ReflectionUtils.invokeHidden(valueBindingSupport, "isNestedProperty", "."); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(ret);
+
 	}
 
 	// helping methods
@@ -419,7 +439,7 @@ public class ValueBindingSupportTest extends RienaTestCase {
 			missingMessages.remove(messageMarker.getMessage());
 		}
 
-		assertTrue("missing MessageMarker for " + missingMessages, missingMessages.isEmpty());
+		assertTrue("missing MessageMarker for " + missingMessages, missingMessages.isEmpty()); //$NON-NLS-1$
 	}
 
 	public static Address createAddress(final String str, final String city, final String zip, final String cc) {
@@ -444,9 +464,9 @@ public class ValueBindingSupportTest extends RienaTestCase {
 				if (string.length() % 2 == 0) {
 					return ValidationRuleStatus.ok();
 				}
-				return ValidationRuleStatus.error(false, "Odd number of characters.");
+				return ValidationRuleStatus.error(false, "Odd number of characters."); //$NON-NLS-1$
 			}
-			throw new ValidationFailure(getClass().getName() + " can only validate objects of type "
+			throw new ValidationFailure(getClass().getName() + " can only validate objects of type " //$NON-NLS-1$
 					+ String.class.getName());
 		}
 
@@ -459,12 +479,12 @@ public class ValueBindingSupportTest extends RienaTestCase {
 			}
 			if (value instanceof String) {
 				final String string = (String) value;
-				if (!string.toLowerCase().endsWith("disaster")) {
+				if (!string.toLowerCase().endsWith("disaster")) { //$NON-NLS-1$
 					return ValidationRuleStatus.ok();
 				}
-				return ValidationRuleStatus.error(false, "It ends with disaster.");
+				return ValidationRuleStatus.error(false, "It ends with disaster."); //$NON-NLS-1$
 			}
-			throw new ValidationFailure(getClass().getName() + " can only validate objects of type "
+			throw new ValidationFailure(getClass().getName() + " can only validate objects of type " //$NON-NLS-1$
 					+ String.class.getName());
 		}
 	}

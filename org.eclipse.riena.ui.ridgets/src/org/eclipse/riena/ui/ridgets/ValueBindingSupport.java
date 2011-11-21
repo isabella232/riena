@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,6 +36,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 import org.eclipse.riena.core.marker.IMarkable;
+import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.ErrorMessageMarker;
 import org.eclipse.riena.ui.core.marker.IMessageMarker;
@@ -76,6 +78,8 @@ public class ValueBindingSupport {
 	private DataBindingContext context;
 	private IObservableValue targetOV;
 	private IObservableValue modelOV;
+	private String valuePropertyName;
+	private Object valueHolder;
 
 	private Binding modelBinding;
 	private IConverter uiControlToModelConverter;
@@ -111,7 +115,7 @@ public class ValueBindingSupport {
 	}
 
 	public Collection<IValidator> getValidationRules() {
-		final ArrayList<IValidator> allValidationRules = new ArrayList<IValidator>(onEditValidators.getValidators());
+		final List<IValidator> allValidationRules = new ArrayList<IValidator>(onEditValidators.getValidators());
 		allValidationRules.addAll(afterGetValidators.getValidators());
 		return allValidationRules;
 	}
@@ -215,6 +219,8 @@ public class ValueBindingSupport {
 	 *      .databinding.observable.value.IObservableValue)
 	 */
 	public void bindToModel(final IObservableValue observableValue) {
+		this.valuePropertyName = null;
+		this.valueHolder = null;
 		modelOV = observableValue;
 		rebindToModel();
 	}
@@ -224,6 +230,8 @@ public class ValueBindingSupport {
 	 *      java.lang.String)
 	 */
 	public void bindToModel(final Object valueHolder, final String valuePropertyName) {
+		this.valueHolder = valueHolder;
+		this.valuePropertyName = valuePropertyName;
 		if (isBean(valueHolder.getClass())) {
 			modelOV = BeansObservables.observeValue(valueHolder, valuePropertyName);
 		} else {
@@ -304,9 +312,28 @@ public class ValueBindingSupport {
 	}
 
 	public void updateFromModel() {
+		if (valueHolder != null) {
+			if (!isBean(valueHolder.getClass()) && isNestedProperty(valuePropertyName)) {
+				bindToModel(valueHolder, valuePropertyName);
+			}
+		}
 		if (modelBinding != null) {
 			modelBinding.updateModelToTarget();
 		}
+	}
+
+	/**
+	 * Returns whether the given name for the property is a conjunction of
+	 * properties. The nested properties must be separated with a dot (e.g.
+	 * "parent.name").
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @return {@code true} if the property name contains nested properties;
+	 *         otherwise {@code false}
+	 */
+	private boolean isNestedProperty(final String propertyName) {
+		return StringUtils.isGiven(propertyName) && (propertyName.indexOf('.') != -1);
 	}
 
 	public void updateFromTarget() {
