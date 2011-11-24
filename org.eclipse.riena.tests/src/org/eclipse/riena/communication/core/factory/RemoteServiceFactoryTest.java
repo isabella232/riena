@@ -16,7 +16,8 @@ import org.osgi.framework.ServiceRegistration;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
-import org.eclipse.riena.core.injector.Inject;
+import org.eclipse.riena.core.service.Service;
+import org.eclipse.riena.core.util.Companion;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.communication.core.registry.RemoteServiceRegistry;
 import org.eclipse.riena.internal.core.test.RienaTestCase;
@@ -29,27 +30,8 @@ import org.eclipse.riena.internal.tests.Activator;
 @NonUITestCase
 public class RemoteServiceFactoryTest extends RienaTestCase {
 
-	private RemoteServiceRegistry remoteServiceRegistry = null;
-
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		Inject.service(IRemoteServiceRegistry.class).into(this).andStart(Activator.getDefault().getContext());
-	}
-
-	/**
-	 * We assume here that we get the concrete RemoteServiceRegistry
-	 * implementation that Riena supplies
-	 * 
-	 * @param rsf
-	 */
-	public void bind(final IRemoteServiceRegistry rsf) {
-		remoteServiceRegistry = (RemoteServiceRegistry) rsf;
-	}
-
-	public void unbind(final IRemoteServiceRegistry rsf) {
-		remoteServiceRegistry = null;
-	}
+	private final RemoteServiceRegistry remoteServiceRegistry = (RemoteServiceRegistry) Service
+			.get(IRemoteServiceRegistry.class);
 
 	@Override
 	protected void tearDown() throws Exception {
@@ -66,8 +48,8 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 
 	public void testUnregister() throws Exception {
 		final BundleContext context = Activator.getDefault().getContext();
-		final IRemoteServiceRegistration createAndRegisterProxy = new RemoteServiceFactory().createAndRegisterProxy(
-				IRSFTest.class, "http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
+		final IRemoteServiceRegistration createAndRegisterProxy = Companion.per(RemoteServiceFactory.class)
+				.createAndRegisterProxy(IRSFTest.class, "http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
 		final Object service = context.getService(context.getServiceReference(IRSFTest.class.getName()));
 		assertNotNull(service);
 		createAndRegisterProxy.unregister();
@@ -80,8 +62,8 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 	public void testUnregisterForOtherBundle() throws Exception {
 		final BundleContext context = org.eclipse.riena.internal.communication.console.Activator.getDefault()
 				.getContext();
-		final IRemoteServiceRegistration createAndRegisterProxy = new RemoteServiceFactory().createAndRegisterProxy(
-				IRSFTest.class, "http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
+		final IRemoteServiceRegistration createAndRegisterProxy = Companion.per(RemoteServiceFactory.class)
+				.createAndRegisterProxy(IRSFTest.class, "http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
 		final Object service = context.getService(context.getServiceReference(IRSFTest.class.getName()));
 		assertNotNull(service);
 		createAndRegisterProxy.unregister();
@@ -95,7 +77,8 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 		super.startBundle("org.eclipse.riena.communication.console"); //$NON-NLS-1$
 		final BundleContext context = org.eclipse.riena.internal.communication.console.Activator.getDefault()
 				.getContext();
-		new RemoteServiceFactory().createAndRegisterProxy(IRSFTest.class, "http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
+		Companion.per(RemoteServiceFactory.class).createAndRegisterProxy(IRSFTest.class,
+				"http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
 		final Object service = context.getService(context.getServiceReference(IRSFTest.class.getName()));
 		assertNotNull(service);
 		context.getBundle().stop();
@@ -110,8 +93,8 @@ public class RemoteServiceFactoryTest extends RienaTestCase {
 		super.startBundle("org.eclipse.riena.communication.console"); //$NON-NLS-1$
 		final BundleContext context = org.eclipse.riena.internal.communication.console.Activator.getDefault()
 				.getContext();
-		final IRemoteServiceRegistration createAndRegisterProxy = new RemoteServiceFactory().createAndRegisterProxy(
-				IRSFTest.class, "http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
+		final IRemoteServiceRegistration createAndRegisterProxy = Companion.per(RemoteServiceFactory.class)
+				.createAndRegisterProxy(IRSFTest.class, "http://localhost", "hessian", context); //$NON-NLS-1$ //$NON-NLS-2$
 		final Object service = context.getService(context.getServiceReference(IRSFTest.class.getName()));
 		assertNotNull(service);
 		context.getBundle().stop();
