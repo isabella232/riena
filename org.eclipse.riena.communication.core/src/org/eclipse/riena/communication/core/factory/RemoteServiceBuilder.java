@@ -17,6 +17,7 @@ import org.osgi.service.component.ComponentContext;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.publisher.RSDPublisherProperties;
+import org.eclipse.riena.core.util.Companion;
 import org.eclipse.riena.internal.communication.core.Activator;
 
 /**
@@ -83,8 +84,8 @@ public class RemoteServiceBuilder {
 			final String path = (String) context.getProperties().get(RSDPublisherProperties.PROP_REMOTE_PATH);
 			final String protocol = (String) context.getProperties().get(RSDPublisherProperties.PROP_REMOTE_PROTOCOL);
 
-			final RemoteServiceFactory factory = new RemoteServiceFactory();
-			rsReg = factory.createAndRegisterProxy(serviceClass, path, protocol, Activator.getDefault().getContext());
+			rsReg = Companion.per(RemoteServiceFactory.class).createAndRegisterProxy(serviceClass, path, protocol,
+					Activator.getDefault().getContext());
 
 		} catch (final ClassNotFoundException e) {
 			throw new RemoteFailure("RemoteServiceBuilder could not load class '" + serviceClassName + "'", e); //$NON-NLS-1$ //$NON-NLS-2$

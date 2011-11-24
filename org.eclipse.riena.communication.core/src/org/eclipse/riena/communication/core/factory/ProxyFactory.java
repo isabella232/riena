@@ -15,6 +15,7 @@ import org.osgi.framework.BundleContext;
 import org.eclipse.core.runtime.Assert;
 
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
+import org.eclipse.riena.core.util.Companion;
 
 /**
  * ProxyFactory used in the fluent API of Register to allow easy registration of
@@ -75,6 +76,6 @@ public class ProxyFactory {
 	public IRemoteServiceRegistration andStart(final BundleContext context) {
 		Assert.isNotNull(url);
 		Assert.isNotNull(protocol);
-		return new RemoteServiceFactory().createAndRegisterProxy(clazz, url, protocol, context);
+		return Companion.per(RemoteServiceFactory.class).createAndRegisterProxy(clazz, url, protocol, context);
 	}
 }
