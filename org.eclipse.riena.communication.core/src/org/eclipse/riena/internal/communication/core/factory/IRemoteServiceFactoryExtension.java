@@ -8,8 +8,9 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.communication.core.factory;
+package org.eclipse.riena.internal.communication.core.factory;
 
+import org.eclipse.riena.communication.core.factory.IRemoteServiceFactory;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 
 /**
