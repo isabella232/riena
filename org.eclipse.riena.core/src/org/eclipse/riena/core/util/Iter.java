@@ -11,7 +11,6 @@
 package org.eclipse.riena.core.util;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -33,14 +32,15 @@ public final class Iter {
 	}
 
 	/**
-	 * Create an Iterable for the given iterator.
+	 * Create an {@code Iterable} for the given iterator.
 	 * 
 	 * @param <T>
-	 *            generic type for the Iterable
+	 *            generic type for the {@code Iterable}
 	 * @param iterator
 	 *            the iterator (might be null!)
 	 * 
-	 * @return the Iterable
+	 * @return the {@code Iterable}
+	 * @since 4.0
 	 */
 	public static <T> Iterable<T> able(final Iterator<T> iterator) {
 		if (iterator == null) {
@@ -50,14 +50,14 @@ public final class Iter {
 	}
 
 	/**
-	 * Create an Iterable for the given iterator.
+	 * Create an {@code Iterable} for the given iterator.
 	 * 
 	 * @param <T>
 	 *            generic type for the Iterable
 	 * @param enumeration
 	 *            the enumeration (might be null!)
 	 * 
-	 * @return the Iterable
+	 * @return the {@code Iterable}
 	 */
 	public static <T> Iterable<T> able(final Enumeration<T> enumeration) {
 		if (enumeration == null) {
@@ -67,20 +67,20 @@ public final class Iter {
 	}
 
 	/**
-	 * Create an Iterable for the given collection.
+	 * Create an {@code Iterable} for the given iterable.
 	 * 
 	 * @param <T>
-	 *            generic type for the Collection
-	 * @param collection
-	 *            the collection (might be null!)
+	 *            generic type for the {@code Iterable}
+	 * @param iterable
+	 *            the iterable (might be null!)
 	 * 
-	 * @return the collection
+	 * @return the {@code Iterable}
 	 */
-	public static <T> Iterable<T> able(final Collection<T> collection) {
-		if (collection == null) {
+	public static <T> Iterable<T> able(final Iterable<T> iterable) {
+		if (iterable == null) {
 			return Collections.emptyList();
 		}
-		return collection;
+		return iterable;
 	}
 
 	/**
@@ -89,7 +89,7 @@ public final class Iter {
 	 * 
 	 * @param list
 	 *            the list that should be iterated over in reverse order
-	 * @return the iterable
+	 * @return the {@code Iterable}
 	 */
 	public static <T> Iterable<T> ableReverse(final List<T> list) {
 		if (list == null) {
@@ -99,14 +99,14 @@ public final class Iter {
 	}
 
 	/**
-	 * Create an Iterable for the given array.
+	 * Create an {@code Iterable} for the given array.
 	 * 
 	 * @param <T>
-	 *            generic type for the Iterable
+	 *            generic type for the {@code Iterable}
 	 * @param array
 	 *            the array (might be null!)
 	 * 
-	 * @return the Iterable
+	 * @return the {@code Iterable}
 	 */
 	public static <T> Iterable<T> able(final T... array) {
 		if (array == null) {
@@ -116,17 +116,17 @@ public final class Iter {
 	}
 
 	/**
-	 * Create an Iterable for the given iterator. This method´s intended use is
-	 * for ´pre generic´ apis.
+	 * Create an {@code Iterable} for the given iterator. This method´s intended
+	 * use is for ´pre generic´ apis.
 	 * 
 	 * @param <T>
-	 *            generic type for the Iterable
+	 *            generic type for the {@code Iterable}
 	 * @param iterator
 	 *            the iterator (might be null!)
 	 * @param t
 	 *            the type of the iterator
 	 * 
-	 * @return the Iterable
+	 * @return the {@code Iterable}
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <T> Iterable<T> able(final Iterator iterator, final Class<T> t) {
@@ -134,17 +134,17 @@ public final class Iter {
 	}
 
 	/**
-	 * Create an Iterable for the given iterator. This method´s intended use is
-	 * for ´pre generic´ apis.
+	 * Create an {@code Iterable} for the given iterator. This method´s intended
+	 * use is for ´pre generic´ apis.
 	 * 
 	 * @param <T>
-	 *            generic type for the Iterable
+	 *            generic type for the {@code Iterable}
 	 * @param enumeration
 	 *            the enumeration (might be null!)
 	 * @param t
 	 *            the type of the iterator
 	 * 
-	 * @return the Iterable
+	 * @return the {@code Iterable}
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <T> Iterable<T> able(final Enumeration enumeration, final Class<T> t) {
