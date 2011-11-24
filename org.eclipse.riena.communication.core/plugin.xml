@@ -5,6 +5,7 @@
    <extension-point id="remoteServiceFactories" name="Remote Service Factories" schema="schema/remoteServiceFactories.exsd"/>
    <extension-point id="proxySelectors" name="ProxySelector configuration" schema="schema/proxySelectors.exsd"/>
    <extension-point id="callHooks" name="Call Hooks" schema="schema/callHooks.exsd"/>
+   <extension-point id="callInterceptors" name="Call interceptors" schema="schema/callInterceptors.exsd"/>
    
    <!-- Exemplary proxy selector 
    <extension
