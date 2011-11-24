@@ -10,30 +10,38 @@
  *******************************************************************************/
 package org.eclipse.riena.communication.core.factory;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.log.LogService;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.communication.core.IRemoteServiceReference;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistration;
 import org.eclipse.riena.communication.core.IRemoteServiceRegistry;
+import org.eclipse.riena.communication.core.RemoteFailure;
 import org.eclipse.riena.communication.core.RemoteServiceDescription;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.RienaStatus;
+import org.eclipse.riena.core.util.Iter;
+import org.eclipse.riena.core.util.Orderer;
 import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.core.wire.InjectService;
-import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.internal.communication.core.Activator;
 import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
+import org.eclipse.riena.internal.communication.core.factory.ICallInterceptorExtension;
+import org.eclipse.riena.internal.communication.core.factory.IRemoteServiceFactoryExtension;
 
 /**
  * The IRemoteServiceFactory creates a {@link IRemoteServiceReference} for given
@@ -57,18 +65,24 @@ import org.eclipse.riena.internal.communication.core.factory.CallHooksProxy;
  * object instantiation or delegates this behavior to other Riena communication
  * bundles. Riena supports Eclipse-BuddyPolicy concept.
  * 
+ * @noinstantiate
+ * 
  * @see <a
  *      href="http://wiki.eclipse.org/Riena_Getting_started_remoteservices">Riena
  *      Wiki</a>
  */
 public class RemoteServiceFactory {
 
-	private static boolean wired;
-	private static IRemoteServiceRegistry registry;
-	private static HashMap<String, IRemoteServiceFactory> remoteServiceFactoryImplementations = null;
-	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RemoteServiceFactory.class);
+	private IRemoteServiceRegistry registry;
+	private HashMap<String, IRemoteServiceFactory> remoteServiceFactoryImplementations = null;
+	private ICallInterceptorExtension[] callInterceptorExtensions;
+	private Map<Class<?>, Iterable<Class<?>>> callInterceptors = null;
+
+	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RemoteServiceFactory.class);
 
 	/**
+	 * This class should only be used via the {@code Companion}.
+	 * <p>
 	 * Creates a RemoteServiceFactory instance with the default bundle context.
 	 * Prerequisite: application bundle should registered as
 	 * Eclipse-RegisterBuddy. Sample Manifest.mf of foo.myapplication.api:
@@ -76,14 +90,8 @@ public class RemoteServiceFactory {
 	 * Eclipse-RegisterBuddy: org.eclipse.riena.communication.core
 	 * 
 	 */
-	public RemoteServiceFactory() {
-		synchronized (RemoteServiceFactory.class) {
-			if (!wired) {
-				wired = true;
-				Assert.isNotNull(Wire.instance(this).andStart(), "Wiring of " + RemoteServiceFactory.class.getName() //$NON-NLS-1$
-						+ " was not possible because this bundle has not been started."); //$NON-NLS-1$
-			}
-		}
+	protected RemoteServiceFactory() {
+		// prevent direct usage - almost! Sub classing should be allowed
 	}
 
 	@InjectService(useRanking = true)
@@ -98,7 +106,16 @@ public class RemoteServiceFactory {
 	}
 
 	/**
-	 * @since 1.2
+	 * @since 4.0
+	 */
+	@InjectExtension
+	public synchronized void update(final ICallInterceptorExtension[] callInterceptorExtensions) {
+		this.callInterceptorExtensions = callInterceptorExtensions;
+		callInterceptors = null;
+	}
+
+	/**
+	 * @since 4.0
 	 */
 	@InjectExtension
 	public void update(final IRemoteServiceFactoryExtension[] factories) {
@@ -230,20 +247,77 @@ public class RemoteServiceFactory {
 		final CallHooksProxy callHooksProxy = new CallHooksProxy(rsr.getServiceInstance());
 		callHooksProxy.setRemoteServiceDescription(rsd);
 		callHooksProxy.setMessageContextAccessor(factory.getMessageContextAccessor());
-		rsr.setServiceInstance(Proxy.newProxyInstance(rsd.getServiceInterfaceClass().getClassLoader(),
-				new Class[] { rsd.getServiceInterfaceClass() }, callHooksProxy));
+		final Object serviceProxy = Proxy.newProxyInstance(rsd.getServiceInterfaceClass().getClassLoader(),
+				new Class[] { rsd.getServiceInterfaceClass() }, callHooksProxy);
+		rsr.setServiceInstance(createInterceptorChain(rsd.getServiceInterfaceClass(), serviceProxy));
 		return rsr;
 	}
 
+	private Object createInterceptorChain(final Class<?> serviceInterface, final Object serviceProxy) {
+		Object delegate = serviceProxy;
+		for (final Class<?> interceptorClass : getInterceptorClasses(serviceInterface)) {
+			delegate = createInterceptor(serviceInterface, interceptorClass, delegate);
+		}
+		return delegate;
+	}
+
+	private Object createInterceptor(final Class<?> serviceInterface, final Class<?> interceptorClass,
+			final Object delegate) {
+		try {
+			if (!serviceInterface.isAssignableFrom(interceptorClass)) {
+				throw new RemoteFailure("Could not create call-interceptor class " + interceptorClass.getName() //$NON-NLS-1$
+						+ " because it does not implement " + serviceInterface.getName()); //$NON-NLS-1$
+			}
+			final Constructor<?> constructor = interceptorClass.getConstructor(serviceInterface);
+			final Object interceptor = constructor.newInstance(delegate);
+			return interceptor;
+		} catch (final NoSuchMethodException e) {
+			throw new RemoteFailure("Could not create call-interceptor class " + interceptorClass.getName() //$NON-NLS-1$
+					+ " because it does not have a public constructor with a single " + serviceInterface.getName() //$NON-NLS-1$
+					+ " parameter.", e); //$NON-NLS-1$
+		} catch (final Exception e) {
+			throw new RemoteFailure("Could not create call-interceptor class " + interceptorClass.getName(), e); //$NON-NLS-1$
+		}
+	}
+
+	private Iterable<Class<?>> getInterceptorClasses(final Class<?> serviceInterface) {
+		reifyCallInterceptors();
+		return Iter.able(callInterceptors.get(serviceInterface));
+	}
+
+	private synchronized void reifyCallInterceptors() {
+		if (callInterceptors != null) {
+			return;
+		}
+		final Map<Class<?>, List<ICallInterceptorExtension>> precursor = new HashMap<Class<?>, List<ICallInterceptorExtension>>();
+		for (final ICallInterceptorExtension callInterceptorExtension : callInterceptorExtensions) {
+			List<ICallInterceptorExtension> list = precursor.get(callInterceptorExtension.getServiceInterface());
+			if (list == null) {
+				list = new ArrayList<ICallInterceptorExtension>();
+				precursor.put(callInterceptorExtension.getServiceInterface(), list);
+			}
+			list.add(callInterceptorExtension);
+		}
+
+		callInterceptors = new HashMap<Class<?>, Iterable<Class<?>>>();
+		for (final Entry<Class<?>, List<ICallInterceptorExtension>> entry : precursor.entrySet()) {
+			final Orderer<Class<?>> orderer = new Orderer<Class<?>>();
+			for (final ICallInterceptorExtension extension : entry.getValue()) {
+				orderer.add(extension.getCallInterceptorClass(), extension.getName(), extension.getPreInterceptors(),
+						extension.getPostInterceptors());
+			}
+			callInterceptors.put(entry.getKey(), Iter.ableReverse(orderer.getOrderedObjects()));
+		}
+	}
+
 	private IRemoteServiceReference createLazyProxy(final RemoteServiceDescription rsd) {
-		//		try {
-		final LazyProxyHandler lazyProxyHandler = new LazyProxyHandler(rsd);
 		final Class<?> serviceClass = rsd.getServiceInterfaceClass();
 		if (serviceClass == null) {
 			LOGGER.log(LogService.LOG_ERROR, "Could not load service interface class '" //$NON-NLS-1$
 					+ rsd.getServiceInterfaceClassName() + "'."); //$NON-NLS-1$
 			return null;
 		}
+		final LazyProxyHandler lazyProxyHandler = new LazyProxyHandler(rsd);
 		final Object serviceInstance = Proxy.newProxyInstance(rsd.getServiceClassLoader(),
 				new Class[] { serviceClass }, lazyProxyHandler);
 		final LazyRemoteServiceReference ref = new LazyRemoteServiceReference(serviceInstance,
@@ -261,7 +335,6 @@ public class RemoteServiceFactory {
 	 * @throws ClassNotFoundException
 	 */
 	public Class<?> loadClass(final String interfaceClassName) throws ClassNotFoundException {
-
 		return getClass().getClassLoader().loadClass(interfaceClassName);
 	}
 
