@@ -11,10 +11,19 @@
 package org.eclipse.riena.core.exception;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import junit.framework.Assert;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobManager;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.equinox.log.Logger;
+
 import org.eclipse.riena.core.injector.InjectionFailure;
+import org.eclipse.riena.core.service.Service;
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.exceptionmanager.IExceptionHandlerExtension;
 import org.eclipse.riena.internal.core.exceptionmanager.SimpleExceptionHandlerManager;
@@ -126,6 +135,36 @@ public class SimpleExceptionHandlerManagerTest extends RienaTestCase {
 		}
 	}
 
+	public void testFailingJob() throws InterruptedException {
+		final CountDownLatch latch = new CountDownLatch(1);
+		manager.update(new IExceptionHandlerExtension[] { createLatchedHandlerExtension(latch) });
+		manager.bind(Service.get(IJobManager.class));
+
+		new Job("NPE") {
+			@Override
+			protected IStatus run(final IProgressMonitor monitor) {
+				throw new NullPointerException("Ahh!");
+			}
+		}.schedule();
+		latch.await();
+		Assert.assertEquals(NullPointerException.class, TestLatchedExceptionHandler.caught.getClass());
+	}
+
+	public void testNoneFailingJob() throws InterruptedException {
+		final CountDownLatch latch = new CountDownLatch(0);
+		manager.update(new IExceptionHandlerExtension[] { createLatchedHandlerExtension(latch) });
+		manager.bind(Service.get(IJobManager.class));
+
+		new Job("NPE") {
+			@Override
+			protected IStatus run(final IProgressMonitor monitor) {
+				return Status.OK_STATUS;
+			}
+		}.schedule();
+		latch.await();
+		Assert.assertNull(TestLatchedExceptionHandler.caught);
+	}
+
 	private IExceptionHandlerExtension createHandlerExtension(final String name, final String exceptionMessageTrigger,
 			final String before, final String postHandlers, final String preHandlers) {
 		return new IExceptionHandlerExtension() {
@@ -160,18 +199,51 @@ public class SimpleExceptionHandlerManagerTest extends RienaTestCase {
 		return (List<IExceptionHandler>) ReflectionUtils.getHidden(manager, "handlers");
 	}
 
-	//	private static class TestExceptionHandler implements IExceptionHandler {
-	//
-	//		private final String name;
-	//
-	//		TestExceptionHandler(final String name) {
-	//			this.name = name;
-	//		}
-	//
-	//		public Action handleException(final Throwable t, final String msg, final Logger logger) {
-	//			return null;
-	//		}
-	//
-	//	}
+	private IExceptionHandlerExtension createLatchedHandlerExtension(final CountDownLatch latch) {
+		return new IExceptionHandlerExtension() {
+
+			public IExceptionHandler createExceptionHandler() {
+				return new TestLatchedExceptionHandler(latch);
+			}
+
+			public String getBefore() {
+				return null;
+			}
+
+			public String getExceptionHandler() {
+				return "Latcher";
+			}
+
+			public String getName() {
+				return null;
+			}
+
+			public String getPreHandlers() {
+				return null;
+			}
+
+			public String getPostHandlers() {
+				return null;
+			}
+		};
+	}
+
+	private static class TestLatchedExceptionHandler implements IExceptionHandler {
+
+		private final CountDownLatch latch;
+		static Throwable caught;
+
+		TestLatchedExceptionHandler(final CountDownLatch latch) {
+			this.latch = latch;
+			caught = null;
+		}
+
+		public Action handleException(final Throwable t, final String msg, final Logger logger) {
+			caught = t;
+			latch.countDown();
+			return Action.OK;
+		}
+
+	}
 
 }

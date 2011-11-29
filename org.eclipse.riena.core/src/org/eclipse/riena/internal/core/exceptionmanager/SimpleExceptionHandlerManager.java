@@ -14,6 +14,11 @@ import java.util.List;
 
 import org.osgi.service.log.LogService;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.IJobChangeListener;
+import org.eclipse.core.runtime.jobs.IJobManager;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.equinox.log.Logger;
 
 import org.eclipse.riena.core.Log4r;
@@ -23,17 +28,22 @@ import org.eclipse.riena.core.injector.InjectionFailure;
 import org.eclipse.riena.core.util.Orderer;
 import org.eclipse.riena.core.util.StringUtils;
 import org.eclipse.riena.core.wire.InjectExtension;
+import org.eclipse.riena.core.wire.InjectService;
 import org.eclipse.riena.internal.core.Activator;
 
 /**
  * A simple implementation of a {@code IExceptionHandlerManager}.<br>
  * This exception handler manager asks the configured {@code IExceptionHandler}s
  * whether they can handle a given exception, e.g. display the exception in
- * dialog or log it.
+ * dialog or log it.<br>
+ * Additionally it listens for exceptions thrown within {@code Job}s and handles
+ * them.
  */
 public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 
 	private List<IExceptionHandler> handlers;
+
+	private final IJobChangeListener jobChangeListener = new JobChangeListener();
 
 	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SimpleExceptionHandlerManager.class);
 
@@ -45,6 +55,15 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 					getPostHandler(extension));
 		}
 		handlers = orderer.getOrderedObjects();
+	}
+
+	@InjectService
+	public void bind(final IJobManager jobManager) {
+		jobManager.addJobChangeListener(jobChangeListener);
+	}
+
+	public void unbind(final IJobManager jobManager) {
+		jobManager.removeJobChangeListener(jobChangeListener);
 	}
 
 	/**
@@ -89,9 +108,23 @@ public class SimpleExceptionHandlerManager implements IExceptionHandlerManager {
 				}
 			} catch (final Throwable t2) {
 				// if an exception handler throws an exception there is nothing we can do, log problem and try the next exception handler
-				LOGGER.log(LogService.LOG_ERROR, "exception handler 'handle' method throws exception", t2); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_ERROR, "exception handler " + handler.getClass() //$NON-NLS-1$
+						+ "#handleException() throws an exception", t2); //$NON-NLS-1$
 			}
 		}
 		return IExceptionHandler.Action.NOT_HANDLED;
 	}
+
+	private class JobChangeListener extends JobChangeAdapter {
+
+		@Override
+		public void done(final IJobChangeEvent event) {
+			final IStatus result = event.getResult();
+			if (result != null && result.getSeverity() == IStatus.ERROR && result.getException() != null) {
+				handleException(result.getException(), result.getMessage());
+			}
+		}
+
+	}
+
 }
