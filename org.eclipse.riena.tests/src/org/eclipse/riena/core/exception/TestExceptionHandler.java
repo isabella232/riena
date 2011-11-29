@@ -43,14 +43,6 @@ public class TestExceptionHandler implements IExceptionHandler {
 		return action;
 	}
 
-	public IExceptionHandler.Action handleUncaught(final Throwable t, final String msg, final Logger logger) {
-		action = StringUtils.equals(t.getMessage(), exceptionMessageTrigger) ? Action.OK : Action.NOT_HANDLED;
-		if (action == Action.OK) {
-			handledName = name;
-		}
-		return action;
-	}
-
 	@Override
 	public String toString() {
 		return name;
