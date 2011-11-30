@@ -34,7 +34,6 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
-import org.eclipse.riena.internal.ui.swt.utils.ShellHelper;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
@@ -57,7 +56,7 @@ import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 public class TableRidgetLabelProvider extends ObservableMapLabelProvider implements ITableColorProvider,
 		ITableFontProvider {
 
-	private final static Logger LOGGER = Log4r.getLogger(ShellHelper.class);
+	private final static Logger LOGGER = Log4r.getLogger(TableRidgetLabelProvider.class);
 
 	private final int numColumns;
 	private final IObservableMap[] attributeMap;
