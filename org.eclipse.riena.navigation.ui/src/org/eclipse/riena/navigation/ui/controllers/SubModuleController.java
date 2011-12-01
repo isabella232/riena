@@ -21,6 +21,7 @@ import org.eclipse.equinox.log.Logger;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.internal.ui.ridgets.Activator;
 import org.eclipse.riena.navigation.ApplicationNodeManager;
+import org.eclipse.riena.navigation.IApplicationNode;
 import org.eclipse.riena.navigation.IModuleNode;
 import org.eclipse.riena.navigation.INavigationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
@@ -33,6 +34,7 @@ import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IStatuslineRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 
@@ -374,6 +376,21 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 		} else {
 			super.updateIcon(windowRidget);
 		}
+	}
+
+	/**
+	 * Returns the status line ridget.
+	 * 
+	 * @return the status line ridget.
+	 * @since 4.0
+	 */
+	protected IStatuslineRidget getStatusLine() {
+		return getApplicationController().getStatusline();
+	}
+
+	private ApplicationController getApplicationController() {
+		return (ApplicationController) getNavigationNode().getParentOfType(IApplicationNode.class)
+				.getNavigationNodeController();
 	}
 
 	/**
