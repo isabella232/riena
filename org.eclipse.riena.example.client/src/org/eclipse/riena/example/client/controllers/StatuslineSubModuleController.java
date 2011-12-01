@@ -163,19 +163,19 @@ public class StatuslineSubModuleController extends SubModuleController {
 		 * @see org.eclipse.riena.ui.ridgets.IActionListener#callback()
 		 */
 		public void callback() {
-			getStatusLine().clear();
+			getStatusline().clear();
 			switch (getModel().getSeverity()) {
 			case INFO:
-				getStatusLine().info(getMessageText().getText());
+				getStatusline().info(getMessageText().getText());
 				break;
 			case WARNING:
-				getStatusLine().warning(getMessageText().getText());
+				getStatusline().warning(getMessageText().getText());
 				break;
 			case ERROR:
-				getStatusLine().error(getMessageText().getText());
+				getStatusline().error(getMessageText().getText());
 				break;
 			default:
-				getStatusLine().setMessage(getMessageText().getText());
+				getStatusline().setMessage(getMessageText().getText());
 				break;
 			}
 		}
@@ -194,9 +194,9 @@ public class StatuslineSubModuleController extends SubModuleController {
 			final String text = getModel().getNumberText();
 			try {
 				final int intValue = Integer.parseInt(text);
-				getStatusLine().getStatuslineNumberRidget().setNumber(intValue);
+				getStatusline().getStatuslineNumberRidget().setNumber(intValue);
 			} catch (final NumberFormatException e) {
-				getStatusLine().getStatuslineNumberRidget().setNumberString(text);
+				getStatusline().getStatuslineNumberRidget().setNumberString(text);
 			}
 		}
 

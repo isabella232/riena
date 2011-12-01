@@ -384,7 +384,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @return the status line ridget.
 	 * @since 4.0
 	 */
-	protected IStatuslineRidget getStatusLine() {
+	protected IStatuslineRidget getStatusline() {
 		return getApplicationController().getStatusline();
 	}
 
