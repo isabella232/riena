@@ -55,8 +55,8 @@ public class CallHooksProxy extends AbstractHooksProxy {
 		final CallContext context = new CallContext(rsd, method.getName(), mc);
 		if (callHooks.size() > 0) {
 			// call before service hook
-			for (final ICallHook sHook : callHooks) {
-				sHook.beforeCall(context);
+			for (final ICallHook callHook : callHooks) {
+				callHook.beforeCall(context);
 			}
 		}
 
@@ -98,8 +98,8 @@ public class CallHooksProxy extends AbstractHooksProxy {
 			context.getMessageContext().fireEndCall();
 			// call hooks after the call
 			if (callHooks.size() > 0) {
-				for (final ICallHook sHook : callHooks) {
-					sHook.afterCall(context);
+				for (final ICallHook callHook : callHooks) {
+					callHook.afterCall(context);
 				}
 			}
 		}
