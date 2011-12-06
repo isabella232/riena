@@ -70,10 +70,10 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		if (isWorkbenchShutdown()) {
 			return;
 		}
-		if (!RcpUtilities.hasDisplay()) {
+		if (!hasDisplay()) {
 			waitForDisplay(15000);
 		}
-		final Display currentDisplay = RcpUtilities.getDisplay();
+		final Display currentDisplay = getDisplay();
 		if (executeOnDisplay(executor, runnable, currentDisplay)) {
 			return;
 		}
@@ -203,7 +203,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 			return display;
 		}
 
-		return PlatformUI.getWorkbench().getDisplay();
+		return RcpUtilities.getDisplay();
 	}
 
 	private Logger getLogger() {
@@ -211,7 +211,7 @@ public class SwtUISynchronizer implements IUISynchronizer {
 	}
 
 	protected boolean hasDisplay() {
-		return display != null || PlatformUI.isWorkbenchRunning() && PlatformUI.getWorkbench().getDisplay() != null;
+		return display != null || RcpUtilities.hasDisplay();
 	}
 
 	/**
