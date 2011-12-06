@@ -11,6 +11,7 @@
 package org.eclipse.riena.internal.core.injector.extension;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -63,7 +64,11 @@ final class LazyExecutableExtension implements InvocationHandler {
 				}
 			}
 		}
-		return method.invoke(delegate, args);
+		try {
+			return method.invoke(delegate, args);
+		} catch (final InvocationTargetException e) {
+			throw e.getTargetException();
+		}
 	}
 
 	private static BundleContext getBundleContext(final Class<?> returnType) {
