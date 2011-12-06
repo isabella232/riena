@@ -28,6 +28,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.core.exception.IExceptionHandlerManager;
 import org.eclipse.riena.core.service.Service;
+import org.eclipse.riena.internal.ui.swt.utils.RcpUtilities;
 import org.eclipse.riena.ui.core.uiprocess.IUISynchronizer;
 
 /**
@@ -69,10 +70,10 @@ public class SwtUISynchronizer implements IUISynchronizer {
 		if (isWorkbenchShutdown()) {
 			return;
 		}
-		if (!hasDisplay()) {
+		if (!RcpUtilities.hasDisplay()) {
 			waitForDisplay(15000);
 		}
-		final Display currentDisplay = getDisplay();
+		final Display currentDisplay = RcpUtilities.getDisplay();
 		if (executeOnDisplay(executor, runnable, currentDisplay)) {
 			return;
 		}
