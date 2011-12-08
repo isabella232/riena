@@ -71,7 +71,7 @@ public class TextNumericSubModuleController extends SubModuleController {
 		final INumericTextRidget txtRange = getRidget(INumericTextRidget.class, "inRange"); //$NON-NLS-1$
 		txtRange.addValidationRule(new ValidRange(Integer.valueOf(100), Integer.valueOf(1000)),
 				ValidationTime.ON_UPDATE_TO_MODEL);
-		txtRange.bindToModel(new IntegerBean(100), "value"); //$NON-NLS-1$
+		txtRange.bindToModel(new IntegerBean(1), "value"); //$NON-NLS-1$
 		txtRange.updateFromModel();
 
 		final INumericTextRidget txtMaxEight = getRidget(INumericTextRidget.class, "inMaxEight"); //$NON-NLS-1$
@@ -82,7 +82,7 @@ public class TextNumericSubModuleController extends SubModuleController {
 		final INumericTextRidget txtMinThree = getRidget(INumericTextRidget.class, "inMinThree"); //$NON-NLS-1$
 		txtMinThree.setGrouping(false);
 		txtMinThree.addValidationRule(new MinLength(4), ValidationTime.ON_UI_CONTROL_EDIT);
-		txtMinThree.bindToModel(new IntegerBean(1234), "value"); //$NON-NLS-1$
+		txtMinThree.bindToModel(new IntegerBean(1), "value"); //$NON-NLS-1$
 		txtMinThree.updateFromModel();
 	}
 
@@ -90,7 +90,12 @@ public class TextNumericSubModuleController extends SubModuleController {
 	//////////////////
 
 	private void bind(final DataBindingContext dbc, final String id) {
-		final IRidget inputRidget = getRidget("in" + id); //$NON-NLS-1$
+		IRidget inputRidget;
+		if (id.equals("StringDec") || id.equals("Double") || id.equals("Float") || id.equals("BigDecimal")) {
+			inputRidget = getRidget(IDecimalTextRidget.class, "in" + id); //$NON-NLS-1$
+		} else {
+			inputRidget = getRidget(INumericTextRidget.class, "in" + id); //$NON-NLS-1$
+		}
 		final ITextRidget outputRidget = getRidget(ITextRidget.class, "out" + id); //$NON-NLS-1$
 		outputRidget.setOutputOnly(true);
 		dbc.bindValue(BeansObservables.observeValue(inputRidget, ITextRidget.PROPERTY_TEXT), BeansObservables
@@ -99,7 +104,7 @@ public class TextNumericSubModuleController extends SubModuleController {
 	}
 
 	private void bindToModel(final String id, final TypedBean<?> value, final boolean signed) {
-		final INumericTextRidget inputRidget = getRidget("in" + id); //$NON-NLS-1$
+		final INumericTextRidget inputRidget = getRidget(INumericTextRidget.class, "in" + id); //$NON-NLS-1$
 		inputRidget.setSigned(signed);
 		inputRidget.bindToModel(value, TypedBean.PROP_VALUE);
 		inputRidget.updateFromModel();

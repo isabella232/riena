@@ -64,7 +64,7 @@ public class TextDateSubModuleController extends SubModuleController {
 		bindToModel("MM.yyyy", new StringBean("10.2008")); //$NON-NLS-1$ //$NON-NLS-2$
 		bindToModel("yyyy", new StringBean("2008")); //$NON-NLS-1$ //$NON-NLS-2$
 
-		final IDateTextRidget txtDatePicker = getRidget("indd.MM.yyyyPicker"); //$NON-NLS-1$
+		final IDateTextRidget txtDatePicker = getRidget(IDateTextRidget.class, "indd.MM.yyyyPicker"); //$NON-NLS-1$
 		txtDatePicker.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		txtDatePicker.setFocusable(true);
 		txtDatePicker.setMandatory(true);
@@ -77,13 +77,13 @@ public class TextDateSubModuleController extends SubModuleController {
 		bindToModel("HH:mm", new StringBean("23:55")); //$NON-NLS-1$ //$NON-NLS-2$
 		bindToModel("dd.MM.yyyy_HH:mm", new StringBean("01.10.2008 23:55")); //$NON-NLS-1$ //$NON-NLS-2$
 
-		justEights = getRidget("inJustEights"); //$NON-NLS-1$
+		justEights = getRidget(IDateTextRidget.class, "inJustEights"); //$NON-NLS-1$
 		justEights.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		justEights.setOutputOnly(true);
 		justEights.bindToModel(new StringBean("88.88.8888"), StringBean.PROP_VALUE); //$NON-NLS-1$
 		justEights.updateFromModel();
 
-		final IDateTextRidget justSpaces = getRidget("inJustSpaces"); //$NON-NLS-1$
+		final IDateTextRidget justSpaces = getRidget(IDateTextRidget.class, "inJustSpaces"); //$NON-NLS-1$
 		justSpaces.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
 		justSpaces.setOutputOnly(true);
 		justSpaces.bindToModel(new StringBean("  .  .    "), StringBean.PROP_VALUE); //$NON-NLS-1$
@@ -93,7 +93,7 @@ public class TextDateSubModuleController extends SubModuleController {
 		fontManager.addRidget(justEights);
 		fontManager.addRidget(justSpaces);
 
-		final IComboRidget comboFonts = getRidget("comboFonts"); //$NON-NLS-1$
+		final IComboRidget comboFonts = getRidget(IComboRidget.class, "comboFonts"); //$NON-NLS-1$
 		final SingleSelectionListBean fonts = new SingleSelectionListBean(new Object[] {
 				"Arial", "Courier New", "Verdana" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		fonts.setSelection("Arial"); //$NON-NLS-1$
@@ -110,7 +110,7 @@ public class TextDateSubModuleController extends SubModuleController {
 		final SingleSelectionListBean sizes = new SingleSelectionListBean(new Object[] {
 				"6", "7", "8", "9", "10", "11", "12" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 		sizes.setSelection("9"); //$NON-NLS-1$
-		final IComboRidget comboSizes = getRidget("comboSizes"); //$NON-NLS-1$
+		final IComboRidget comboSizes = getRidget(IComboRidget.class, "comboSizes"); //$NON-NLS-1$
 		comboSizes.bindToModel(sizes, SingleSelectionListBean.PROPERTY_VALUES, String.class, null, sizes,
 				SingleSelectionListBean.PROPERTY_SELECTION);
 		comboSizes.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
@@ -126,22 +126,24 @@ public class TextDateSubModuleController extends SubModuleController {
 	public void afterBind() {
 		super.afterBind();
 		// dispose fontManager when the text control is disposed
-		((Control) justEights.getUIControl()).addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(final DisposeEvent e) {
-				if (fontManager != null) {
-					fontManager.dispose();
-					fontManager = null;
+		if (justEights.getUIControl() != null) {
+			((Control) justEights.getUIControl()).addDisposeListener(new DisposeListener() {
+				public void widgetDisposed(final DisposeEvent e) {
+					if (fontManager != null) {
+						fontManager.dispose();
+						fontManager = null;
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	// helping methods
 	//////////////////
 
 	private void bind(final DataBindingContext dbc, final String id) {
-		final IRidget inputRidget = getRidget("in" + id); //$NON-NLS-1$
-		final ITextRidget outputRidget = getRidget("out" + id); //$NON-NLS-1$
+		final IDateTextRidget inputRidget = getRidget(IDateTextRidget.class, "in" + id); //$NON-NLS-1$
+		final ITextRidget outputRidget = getRidget(ITextRidget.class, "out" + id); //$NON-NLS-1$
 		outputRidget.setOutputOnly(true);
 		dbc.bindValue(BeansObservables.observeValue(inputRidget, ITextRidget.PROPERTY_TEXT), BeansObservables
 				.observeValue(outputRidget, ITextRidget.PROPERTY_TEXT), new UpdateValueStrategy(
@@ -149,7 +151,7 @@ public class TextDateSubModuleController extends SubModuleController {
 	}
 
 	private void bindToModel(final String id, final StringBean value) {
-		final IDateTextRidget ridget = getRidget("in" + id); //$NON-NLS-1$
+		final IDateTextRidget ridget = getRidget(IDateTextRidget.class, "in" + id); //$NON-NLS-1$
 		ridget.setFormat(id.replace('_', ' '));
 		ridget.bindToModel(value, TypedBean.PROP_VALUE);
 		ridget.updateFromModel();
