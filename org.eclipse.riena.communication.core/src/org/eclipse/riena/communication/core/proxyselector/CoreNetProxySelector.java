@@ -57,16 +57,7 @@ public class CoreNetProxySelector extends ProxySelector {
 		}
 		final List<Proxy> proxies = new ArrayList<Proxy>(proxyDatas.length);
 		for (final IProxyData proxyData : proxyDatas) {
-			Type type = null;
-			if (proxyData.getType().equals(ProxyData.HTTP_PROXY_TYPE)
-					|| proxyData.getType().equals(ProxyData.HTTPS_PROXY_TYPE)) {
-				type = Type.HTTP;
-			} else if (proxyData.getType().equals(ProxyData.SOCKS_PROXY_TYPE)) {
-				type = Type.SOCKS;
-			} else {
-				LOGGER.log(LogService.LOG_WARNING, "Yet unknown proxy type: " + proxyData.getType() + ". " //$NON-NLS-1$ //$NON-NLS-2$
-						+ CoreNetProxySelector.class.getName() + " needs to be extended!"); //$NON-NLS-1$
-			}
+			final Type type = getProxyType(proxyData);
 			if (type != null) {
 				final InetSocketAddress address = InetSocketAddress.createUnresolved(proxyData.getHost(),
 						proxyData.getPort());
@@ -75,6 +66,18 @@ public class CoreNetProxySelector extends ProxySelector {
 		}
 		proxies.add(Proxy.NO_PROXY);
 		return proxies;
+	}
+
+	private Type getProxyType(final IProxyData proxyData) {
+		if (proxyData.getType().equals(ProxyData.HTTP_PROXY_TYPE)
+				|| proxyData.getType().equals(ProxyData.HTTPS_PROXY_TYPE)) {
+			return Type.HTTP;
+		} else if (proxyData.getType().equals(ProxyData.SOCKS_PROXY_TYPE)) {
+			return Type.SOCKS;
+		}
+		LOGGER.log(LogService.LOG_WARNING, "Yet unknown proxy type: " + proxyData.getType() + ". " //$NON-NLS-1$ //$NON-NLS-2$
+				+ CoreNetProxySelector.class.getName() + " needs to be extended!"); //$NON-NLS-1$
+		return null;
 	}
 
 	@Override
