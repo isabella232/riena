@@ -55,7 +55,10 @@ public abstract class AbstractValueRidget extends AbstractSWTRidget implements I
 		valueBindingSupport.updateFromModel();
 	}
 
-	protected final ValueBindingSupport getValueBindingSupport() {
+	/**
+	 * @since 4.0
+	 */
+	public final ValueBindingSupport getValueBindingSupport() {
 		return valueBindingSupport;
 	}
 
