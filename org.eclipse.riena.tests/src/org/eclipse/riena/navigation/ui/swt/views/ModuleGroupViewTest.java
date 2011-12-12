@@ -62,15 +62,15 @@ public class ModuleGroupViewTest extends TestCase {
 	}
 
 	/**
-	 * Tests the method {@code calculateBounds(int)}.
+	 * Tests the method {@code calculateHeight()}.
 	 */
-	public void testCalculateBounds() {
+	public void testCalculateHeight() {
 		final RienaDefaultLnf originalLnf = LnfManager.getLnf();
 
 		try {
 			LnfManager.setLnf(new MyLnF());
 
-			int y = view.calculateBounds(10);
+			int y = view.calculateHeight(SWT.DEFAULT, 10);
 			assertEquals(10, y);
 
 			final ModuleView moduleView = new ModuleView(shell);
@@ -80,14 +80,14 @@ public class ModuleGroupViewTest extends TestCase {
 			moduleView.bind(moduleNode);
 
 			view.registerModuleView(moduleView);
-			y = view.calculateBounds(10);
+			y = view.calculateHeight(SWT.DEFAULT, 10);
 			assertTrue(y > 10);
 			final FormData data = (FormData) view.getLayoutData();
 			assertEquals(10, data.top.offset);
 			assertTrue((data.bottom.offset > 10) && (data.bottom.offset < y));
 
 			node.setVisible(false);
-			y = view.calculateBounds(10);
+			y = view.calculateHeight(SWT.DEFAULT, 10);
 			assertEquals(10, y);
 		} finally {
 			LnfManager.setLnf(originalLnf);

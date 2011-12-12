@@ -23,6 +23,7 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -120,7 +121,7 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		navigationMainComposite = new Composite(parent, SWT.DOUBLE_BUFFERED);
 		navigationMainComposite.setLayout(new FormLayout());
 		navigationMainComposite.setBackground(NAVIGATION_BACKGROUND);
-		navigationCompositeDelegation = createNavigationCompositeDelegation(parent, navigationMainComposite);
+		navigationCompositeDelegation = createNavigationCompositeDelegation(navigationMainComposite);
 		final boolean fastView = ApplicationUtility.isNavigationFastViewEnabled();
 		final FormData formData = new FormData();
 		formData.top = new FormAttachment(0, fastView ? AbstractNavigationCompositeDeligation.BORDER_MARGIN : 0);
@@ -154,13 +155,12 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	 *            composite of the navigation
 	 * @return delegation
 	 */
-	private INavigationCompositeDelegation createNavigationCompositeDelegation(final Composite superParent,
-			final Composite parent) {
+	private INavigationCompositeDelegation createNavigationCompositeDelegation(final Composite parent) {
 		final boolean scrollBar = LnfManager.getLnf().getBooleanSetting(LnfKeyConstants.NAVIGATION_SCROLL_BAR, false);
 		if (scrollBar) {
-			return new ScrollBarNavigationCompositeDeligation(superParent, parent, this);
+			return new ScrollBarNavigationCompositeDeligation(parent.getParent(), parent, this);
 		} else {
-			return new ScrollButtonsNavigationCompositeDeligation(superParent, parent, this);
+			return new ScrollButtonsNavigationCompositeDeligation(parent.getParent(), parent, this);
 		}
 	}
 
@@ -472,21 +472,28 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	}
 
 	public void updateNavigationSize() {
-		int height = calculateBounds();
-		navigationCompositeDelegation.getNavigationComposite().layout();
+		final int height = updateNavigationHeight();
+		final boolean widthChanged = updateModuleGroupWidth(height);
+		//navigationMainComposite.layout(true, true);
+		if (widthChanged) {
+			updateNavigationHeight();
+		}
+		navigationMainComposite.getParent().layout(true, true);
+		navigationCompositeDelegation.scroll();
+	}
+
+	/**
+	 * @return the new height
+	 */
+	private int updateNavigationHeight() {
+		int height = calculateHeight();
 		navigationMainComposite.layout();
+		navigationCompositeDelegation.getNavigationComposite().layout();
 		if (navigationMainComposite.getBounds().height == 0) {
 			height = 0;
 		}
 		navigationCompositeDelegation.updateSize(height);
-		final boolean widthChanged = updateModuleGroupWidth(height);
-		if (widthChanged) {
-			updateNavigationSize();
-		} else {
-			navigationMainComposite.layout(true, true);
-			navigationMainComposite.getParent().layout(true, true);
-		}
-		navigationCompositeDelegation.scroll();
+		return height;
 	}
 
 	/**
@@ -500,10 +507,19 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 	private boolean updateModuleGroupWidth(final int height) {
 		boolean widthChanged = false;
 		int scrollbarWidth = 0;
-		if (height > navigationMainComposite.getBounds().height) {
+		final Point mainSize = navigationMainComposite.getSize();
+		if (height > mainSize.x) {
 			scrollbarWidth = navigationCompositeDelegation.getVerticalScrollBarSize().x;
 		}
+
 		for (final ModuleGroupView moduleGroupView : moduleGroupViews) {
+			if (!moduleGroupView.isDisposed()) {
+				final Point size = moduleGroupView.getSize();
+				if (mainSize.x > size.x) {
+					moduleGroupView.setSize(mainSize.x, size.y);
+					widthChanged = true;
+				}
+			}
 			if (moduleGroupView.getScrollbarWidth() != scrollbarWidth) {
 				moduleGroupView.setScrollbarWidth(scrollbarWidth);
 				widthChanged = true;
@@ -522,13 +538,14 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		return null;
 	}
 
-	public int calculateBounds() {
-		int yPosition = 0;
+	public int calculateHeight() {
+		int height = 0;
+		final int widthHint = navigationMainComposite.getSize().x;
 		Collections.sort(moduleGroupViews, new ModuleGroupViewComparator());
 		for (final ModuleGroupView moduleGroupView : moduleGroupViews) {
-			yPosition = moduleGroupView.calculateBounds(yPosition);
+			height = moduleGroupView.calculateHeight(widthHint, height);
 		}
-		return yPosition;
+		return height;
 	}
 
 	/**

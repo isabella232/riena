@@ -227,7 +227,7 @@ public class ScrollBarSupportTest extends TestCase {
 			return null;
 		}
 
-		public int calculateBounds() {
+		public int calculateHeight() {
 			return 0;
 		}
 

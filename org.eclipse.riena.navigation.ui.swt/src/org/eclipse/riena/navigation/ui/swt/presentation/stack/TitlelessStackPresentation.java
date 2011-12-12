@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Sash;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.IWorkbenchPage;
@@ -135,15 +136,17 @@ public class TitlelessStackPresentation extends StackPresentation {
 	private final Set<IPresentablePart> knownParts = new HashSet<IPresentablePart>();
 	private IPresentablePart current;
 	private IPresentablePart navigation;
+	private final Sash sash;
 	private final Composite parent;
-	private Composite placeHolder;
+	private final Composite placeHolder;
 	private SubModuleViewRenderer renderer;
 	private boolean hasListener;
 
 	public TitlelessStackPresentation(final Composite parent, final IStackPresentationSite stackSite) {
 		super(stackSite);
 		this.parent = new Composite(parent, SWT.DOUBLE_BUFFERED);
-		createPlaceHolder(parent);
+		placeHolder = createPlaceHolder(this.parent);
+		sash = createSash(this.parent);
 		createSubModuleViewArea();
 		if (isNavigationFastViewEnabled()) {
 			final CloseNavigationMouseListener closeNavigationMouseListener = new CloseNavigationMouseListener();
@@ -151,11 +154,22 @@ public class TitlelessStackPresentation extends StackPresentation {
 		}
 	}
 
-	private void createPlaceHolder(final Composite parent) {
-		placeHolder = new Composite(parent, SWT.NONE);
+	private Composite createPlaceHolder(final Composite parent) {
+		final Composite placeHolder = new Composite(parent, SWT.NONE);
 		placeHolder.setLayout(new FormLayout());
 		placeHolder.setBounds(0, 0, 0, 0);
 		placeHolder.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
+		return placeHolder;
+	}
+
+	private Sash createSash(final Composite parent) {
+		Sash sash = null;
+		if (isNavigationResizable()) {
+			sash = new Sash(parent, SWT.SMOOTH | SWT.VERTICAL);
+			sash.addListener(SWT.Selection, new SashMoveListener());
+			sash.setBackground(LnfManager.getLnf().getColor(LnfKeyConstants.SUB_MODULE_BACKGROUND));
+		}
+		return sash;
 	}
 
 	@Override
@@ -190,7 +204,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 
 		@Override
 		public void afterActivated(final ISubModuleNode source) {
-			current.setBounds(calcSubModuleInnerBounds());
+			current.setBounds(calcSubModuleInnerBounds(null));
 			current.setVisible(true);
 			if (ApplicationUtility.isNavigationFastViewEnabled()) {
 				setNavigationVisible(navigationVisible);
@@ -219,7 +233,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	private Rectangle calcPlaceHolderBounds() {
-		final Rectangle tmp = calcSubModuleInnerBounds();
+		final Rectangle tmp = calcSubModuleInnerBounds(null);
 		Rectangle placeHolderBounds = null;
 		final EmbeddedTitleBar tb = (EmbeddedTitleBar) locateControl(current.getControl(),
 				StackPresentationControlFilter.TITLE_BAR_FILTER);
@@ -296,7 +310,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 */
 	private void selectNavigation(final IPresentablePart toSelect) {
 		observeNavigation();
-		final Rectangle navi = calcNavigationBounds(parent);
+		final Rectangle navi = calcNavigationBounds(false);
 		toSelect.setBounds(navi);
 		redrawSubModuleTitle();
 		if (!isNavigationFastViewEnabled()) {
@@ -316,20 +330,35 @@ public class TitlelessStackPresentation extends StackPresentation {
 	@Override
 	public void setBounds(final Rectangle bounds) {
 		parent.setBounds(bounds);
+		Rectangle naviBounds = null;
 		if (navigation != null) {
-			final Rectangle navi = calcNavigationBounds(parent);
-			navigation.setBounds(navi);
+			naviBounds = calcNavigationBounds(true);
+			navigation.setBounds(naviBounds);
+			if (sash != null) {
+				final Rectangle sashRect = calcSashBounds(naviBounds);
+				sash.setBounds(sashRect);
+			}
 		}
 		if (current != null) {
-			final Rectangle innerBounds = calcSubModuleInnerBounds();
-			for (final IPresentablePart part : knownParts) {
-				if (part != current && !isNavigation(part)) {
-					part.setBounds(new Rectangle(0, 0, 0, 0));
-				}
-			}
-			current.setBounds(innerBounds);
+			updateSubModuleBounds(naviBounds);
 		}
-		parent.setVisible(true);
+	}
+
+	/**
+	 * Update the bounds of all @see knownParts based on the size auf the
+	 * navigation area
+	 * 
+	 * @param naviBounds
+	 *            the bounds of the navigation area
+	 */
+	private void updateSubModuleBounds(final Rectangle naviBounds) {
+		final Rectangle innerBounds = calcSubModuleInnerBounds(naviBounds);
+		for (final IPresentablePart part : knownParts) {
+			if (part != current && !isNavigation(part)) {
+				part.setBounds(new Rectangle(0, 0, 0, 0));
+			}
+		}
+		current.setBounds(innerBounds);
 	}
 
 	@Override
@@ -418,12 +447,13 @@ public class TitlelessStackPresentation extends StackPresentation {
 	/**
 	 * Calculates the inner (i.e. usable) bounds of the sub-module view.
 	 * 
-	 * @param part
+	 * @param naviBounds
+	 *            the bounds of the navigation area or null for the defaults
 	 * 
 	 * @return inner bounds sub-module view
 	 */
-	private Rectangle calcSubModuleInnerBounds() {
-		return getSubModuleViewRenderer().computeInnerBounds(calcSubModuleOuterBounds());
+	private Rectangle calcSubModuleInnerBounds(final Rectangle naviBounds) {
+		return getSubModuleViewRenderer().computeInnerBounds(calcSubModuleOuterBounds(naviBounds));
 	}
 
 	/**
@@ -431,8 +461,8 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 * 
 	 * @return outer bounds sub-module view
 	 */
-	private Rectangle calcSubModuleOuterBounds() {
-		final Rectangle naviBounds = calcNavigationBounds(parent);
+	private Rectangle calcSubModuleOuterBounds(final Rectangle defaultNaviBounds) {
+		final Rectangle naviBounds = defaultNaviBounds != null ? defaultNaviBounds : calcNavigationBounds(false);
 
 		final int x = isNavigationFastViewEnabled() ? getShellSubModuleGap() : naviBounds.x + naviBounds.width
 				+ getNavigationSubModuleGap();
@@ -447,25 +477,43 @@ public class TitlelessStackPresentation extends StackPresentation {
 	/**
 	 * Calculates the bounds of the navigation on the left side.
 	 * 
+	 * @param forcedCalc
+	 *            if true the bounds are calculated from the renderer
 	 * @return bounds of navigation
 	 */
-	public static Rectangle calcNavigationBounds(final Composite parent) {
-		final GC gc = new GC(parent);
-		try {
-			final Point size = getModuleGroupRenderer().computeSize(gc, SWT.DEFAULT, SWT.DEFAULT);
-			final int x = getShellNavigationGap();
-			final int width = size.x
-					+ (isNavigationFastViewEnabled() ? 2 * AbstractNavigationCompositeDeligation.BORDER_MARGIN : 0);
-			final int height = parent.getBounds().height - PADDING_BOTTOM
-					- LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
-			return new Rectangle(x, 0, width, height);
-		} finally {
-			gc.dispose();
+	private Rectangle calcNavigationBounds(final boolean forcedCalc) {
+		final Rectangle naviBounds = navigation.getControl().getBounds();
+		int baseWidth = naviBounds.width;
+		if (naviBounds.isEmpty() || forcedCalc) {
+			final int defaultWidth = (baseWidth <= 0 || forcedCalc) ? SWT.DEFAULT : baseWidth;
+			final GC gc = new GC(parent);
+			try {
+				baseWidth = getModuleGroupRenderer().computeSize(gc, defaultWidth, SWT.DEFAULT).x;
+			} finally {
+				gc.dispose();
+			}
 		}
+		final int x = getShellNavigationGap();
+		final int width = baseWidth
+				+ (isNavigationFastViewEnabled() ? 2 * AbstractNavigationCompositeDeligation.BORDER_MARGIN : 0);
+		final int height = parent.getBounds().height - PADDING_BOTTOM
+				- LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
+		return new Rectangle(x, 0, width, height);
 	}
 
 	private static boolean isNavigationFastViewEnabled() {
 		return ApplicationUtility.isNavigationFastViewEnabled();
+	}
+
+	/**
+	 * Calculates the bounds of the sash between navigation and content.
+	 * 
+	 * @param naviBounds
+	 *            the bounds of the navigation
+	 * @return bounds of the sash
+	 */
+	private Rectangle calcSashBounds(final Rectangle naviBounds) {
+		return new Rectangle(naviBounds.x + naviBounds.width, 0, getShellSubModuleGap(), naviBounds.height);
 	}
 
 	/**
@@ -482,7 +530,7 @@ public class TitlelessStackPresentation extends StackPresentation {
 				if (current != null) {
 					final SubModuleViewRenderer viewRenderer = getRenderer();
 					if (viewRenderer != null) {
-						final Rectangle bounds = calcSubModuleOuterBounds();
+						final Rectangle bounds = calcSubModuleOuterBounds(null);
 						viewRenderer.setBounds(bounds);
 						viewRenderer.paint(e.gc, null);
 					}
@@ -599,14 +647,37 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	/**
+	 * Returns the minimum width of the navigation area.
+	 * 
+	 * @return gap
+	 */
+	private static int getNavigationMinWidth() {
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
+		final int defaultWidth = lnf.getIntegerSetting(LnfKeyConstants.NAVIGATION_WIDTH);
+		return lnf.getIntegerSetting(LnfKeyConstants.NAVIGATION_MIN_WIDTH, defaultWidth);
+	}
+
+	/**
+	 * Returns the maximum width of the navigation area.
+	 * 
+	 * @return gap
+	 */
+	private static int getNavigationMaxWidth() {
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
+		final int defaultWidth = lnf.getIntegerSetting(LnfKeyConstants.NAVIGATION_WIDTH);
+		return lnf.getIntegerSetting(LnfKeyConstants.NAVIGATION_MAX_WIDTH, defaultWidth);
+	}
+
+	/**
 	 * Returns the gap between the border of the shell and the left side of the
 	 * navigation.<br>
 	 * <i>Note: The shell has also a padding (
 	 * {@linkplain LnfKeyConstants.TITLELESS_SHELL_PADDING}).</i>
 	 * 
 	 * @return gap
+	 * @since 4.0
 	 */
-	private static int getShellNavigationGap() {
+	public static int getShellNavigationGap() {
 		final RienaDefaultLnf lnf = LnfManager.getLnf();
 		return lnf.getIntegerSetting(LnfKeyConstants.TITLELESS_SHELL_NAVIGATION_HORIZONTAL_GAP, DEFAULT_PADDING_LEFT);
 	}
@@ -625,6 +696,20 @@ public class TitlelessStackPresentation extends StackPresentation {
 	}
 
 	/**
+	 * Returns the gap between the right side of the navigation and the left
+	 * side of the active sub module.
+	 * 
+	 * @return gap
+	 */
+	private boolean isNavigationResizable() {
+		if (isNavigationFastViewEnabled()) {
+			return false;
+		}
+		final RienaDefaultLnf lnf = LnfManager.getLnf();
+		return lnf.getBooleanSetting(LnfKeyConstants.NAVIGATION_RESIZEABLE, false);
+	}
+
+	/**
 	 * Sets the visibility of the navigation, if the Property
 	 * {@link LnfKeyConstants#NAVIGATION_FAST_VIEW} is set to true.
 	 * 
@@ -632,6 +717,9 @@ public class TitlelessStackPresentation extends StackPresentation {
 	 */
 	public void setNavigationVisible(final boolean visible) {
 		if (isNavigationFastViewEnabled()) {
+			if (current != null) {
+				navigation.getControl().moveAbove(current.getControl());
+			}
 			navigation.setVisible(visible);
 		}
 	}
@@ -674,6 +762,38 @@ public class TitlelessStackPresentation extends StackPresentation {
 		private boolean isSelectedWidgetAllowedToCloseNavigation(final Widget widget) {
 			return widget instanceof Control && !(widget instanceof ToolBar)
 					&& !(widget instanceof SubApplicationSwitcherWidget);
+		}
+	}
+
+	private final class SashMoveListener implements Listener {
+		private final int MIN_WIDTH = getNavigationMinWidth();
+		private final int MAX_WIDTH = getNavigationMaxWidth();
+
+		public void handleEvent(final Event e) {
+			if (navigation == null) {
+				e.doit = false;
+				return;
+			}
+			final Rectangle naviBounds = calcNavigationBounds(false);
+			final int width = e.x - naviBounds.x;
+			if (isResizeAllowed(width)) {
+				naviBounds.width = width;
+				navigation.setBounds(naviBounds);
+				if (current != null) {
+					current.setBounds(calcSubModuleInnerBounds(naviBounds));
+					current.getControl().update();
+				}
+				navigation.getControl().update();
+				parent.redraw();
+			} else {
+				// prevent sash from being moved beyond the limits
+				e.x = naviBounds.x + naviBounds.width;
+				e.doit = false;
+			}
+		}
+
+		private boolean isResizeAllowed(final int width) {
+			return width >= MIN_WIDTH && width <= MAX_WIDTH;
 		}
 	}
 }

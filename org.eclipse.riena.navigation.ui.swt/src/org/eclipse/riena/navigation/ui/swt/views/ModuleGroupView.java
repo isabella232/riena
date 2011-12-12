@@ -258,31 +258,33 @@ public class ModuleGroupView extends Composite implements INavigationNodeView<Mo
 	}
 
 	/**
-	 * @see org.eclipse.riena.navigation.ui.swt.views.INavigationNodeView#calculateBounds(int)
+	 * {@inheritDoc}
+	 * 
+	 * @since 4.0
 	 */
-	public int calculateBounds(int positionHint) {
+	public int calculateHeight(final int widthHint, int heightHint) {
 		if (isDisposed()) {
-			return positionHint;
+			return heightHint;
 		}
 
 		Point p = new Point(0, 0);
 		if (getNavigationNode() != null && getNavigationNode().isVisible()) {
-			p = computeSize(SWT.DEFAULT, SWT.DEFAULT);
+			p = computeSize(widthHint, SWT.DEFAULT);
 		}
 		final FormData fd = new FormData();
-		fd.top = new FormAttachment(0, positionHint);
+		fd.top = new FormAttachment(0, heightHint);
 		fd.left = new FormAttachment(0, 0);
-		positionHint += p.y;
+		heightHint += p.y;
 		fd.width = p.x - getScrollbarWidth();
-		fd.bottom = new FormAttachment(0, positionHint);
+		fd.bottom = new FormAttachment(0, heightHint);
 		if (!equals(fd, getCurrentFormData())) {
 			setLayoutData(fd);
 			layout();
 		}
 		if (p.y > 0) {
-			positionHint += MODULE_GROUP_GAP;
+			heightHint += MODULE_GROUP_GAP;
 		}
-		return positionHint;
+		return heightHint;
 	}
 
 	/**

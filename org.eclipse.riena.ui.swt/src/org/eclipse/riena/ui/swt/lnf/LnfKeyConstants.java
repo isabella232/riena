@@ -962,6 +962,32 @@ public final class LnfKeyConstants {
 	public static final String NAVIGATION_FAST_VIEW = "navigation.fast.view"; //$NON-NLS-1$
 
 	/**
+	 * Defines if the user can change the size of the navigation.
+	 * <p>
+	 * <i>A combination of fast view (see NAVIGATION_FAST_VIEW) and resizeable
+	 * navigation is not supported.</i>
+	 * 
+	 * @since 4.0
+	 */
+	public static final String NAVIGATION_RESIZEABLE = "navigation.resizeable"; //$NON-NLS-1$
+
+	/**
+	 * Defines the minimum width of the navigation, if the navigatin is
+	 * resizable.
+	 * 
+	 * @since 4.0
+	 */
+	public static final String NAVIGATION_MIN_WIDTH = "navigation.minWidth"; //$NON-NLS-1$
+
+	/**
+	 * Defines the maximium width of the navigation, if the navigatin is
+	 * resizable.
+	 * 
+	 * @since 4.0
+	 */
+	public static final String NAVIGATION_MAX_WIDTH = "navigation.maxWidth"; //$NON-NLS-1$
+
+	/**
 	 * This constant is described in Eclipsepedia.
 	 * 
 	 * @see <a href=

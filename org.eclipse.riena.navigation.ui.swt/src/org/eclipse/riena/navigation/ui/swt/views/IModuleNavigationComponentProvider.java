@@ -37,11 +37,12 @@ public interface IModuleNavigationComponentProvider {
 	Composite getScrolledComponent();
 
 	/**
-	 * Calculate the bounds of the the main navigation component.
+	 * Calculate the height of the the main navigation component.
 	 * 
-	 * @return the calculated bounds.
+	 * @return the calculated height.
+	 * @since 4.0
 	 */
-	int calculateBounds();
+	int calculateHeight();
 
 	/**
 	 * @param moduleGroupNode

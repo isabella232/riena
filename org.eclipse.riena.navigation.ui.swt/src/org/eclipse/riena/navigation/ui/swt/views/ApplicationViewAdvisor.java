@@ -409,8 +409,8 @@ public class ApplicationViewAdvisor extends WorkbenchWindowAdvisor {
 		final Statusline statusLine = new Statusline(shell, SWT.None, StatuslineSpacer.class, statusLineFactory);
 		final FormData fd = new FormData();
 		fd.height = LnfManager.getLnf().getIntegerSetting(LnfKeyConstants.STATUSLINE_HEIGHT);
-		final Rectangle navigationBounds = TitlelessStackPresentation.calcNavigationBounds(shell);
-		fd.left = new FormAttachment(0, navigationBounds.x);
+		final int navigationX = TitlelessStackPresentation.getShellNavigationGap();
+		fd.left = new FormAttachment(0, navigationX);
 		if (grabCorner != null) {
 			fd.right = new FormAttachment(grabCorner, 0);
 		} else {
