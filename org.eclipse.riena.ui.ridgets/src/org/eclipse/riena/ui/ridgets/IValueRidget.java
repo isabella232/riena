@@ -59,4 +59,14 @@ public interface IValueRidget extends IRidget {
 	 *            new converter model to UI-control
 	 */
 	void setModelToUIControlConverter(IConverter converter);
+
+	/**
+	 * Get the value property name that has been specified with the
+	 * <i>bindToModel</i> method.
+	 * 
+	 * @return the value property name
+	 * 
+	 * @since 4.0
+	 */
+	String getValuePropertyName();
 }

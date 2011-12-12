@@ -59,4 +59,10 @@ public abstract class AbstractValueRidget extends AbstractSWTRidget implements I
 		return valueBindingSupport;
 	}
 
+	/**
+	 * @since 4.0
+	 */
+	public String getValuePropertyName() {
+		return valueBindingSupport.getValuePropertyName();
+	}
 }

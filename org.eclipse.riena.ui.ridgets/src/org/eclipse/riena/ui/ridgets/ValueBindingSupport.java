@@ -307,6 +307,18 @@ public class ValueBindingSupport {
 		return modelBinding;
 	}
 
+	/**
+	 * Get the value property name that has been specified with the
+	 * <i>bindToModel</i> method.
+	 * 
+	 * @return the value property name
+	 * 
+	 * @since 4.0
+	 */
+	public String getValuePropertyName() {
+		return valuePropertyName;
+	}
+
 	public void setMarkable(final IMarkable markable) {
 		this.markable = markable;
 	}
