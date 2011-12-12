@@ -213,6 +213,11 @@
             name="org.eclipse.riena.example.client.views.TableSubModuleView">
       </view>
       <view allowMultiple="true"
+            class="org.eclipse.riena.example.client.views.CarCatalogSubModuleView"
+            id="org.eclipse.riena.example.client.views.CarCatalogSubModuleView"
+            name="org.eclipse.riena.example.client.views.CarCatalogSubModuleView">
+      </view>
+      <view allowMultiple="true"
             class="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             id="org.eclipse.riena.example.client.views.NavigationSubModuleView"
             name="org.eclipse.riena.example.client.views.NavigationSubModuleView">

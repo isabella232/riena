@@ -19,6 +19,9 @@ import javax.swing.ToolTipManager;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.AbstractTableViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.ViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -171,6 +174,11 @@ public class TableRidget extends AbstractTableRidget {
 	}
 
 	@Override
+	protected TableViewer getTableViewer() {
+		return (TableViewer) super.getTableViewer();
+	}
+
+	@Override
 	protected final void applyColumns() {
 		final Table control = getUIControl();
 		if (control == null) {
@@ -185,6 +193,11 @@ public class TableRidget extends AbstractTableRidget {
 				new TableColumn(control, SWT.NONE);
 			}
 			applyColumnWidths();
+		}
+		final TableColumn[] columns = control.getColumns();
+		for (int columnIndex = 0; columnIndex < columns.length; columnIndex++) {
+			final ViewerColumn viewerColumn = new TableViewerColumn(getTableViewer(), columns[columnIndex]);
+			applyEditingSupport(viewerColumn, columnIndex);
 		}
 	}
 
@@ -201,7 +214,7 @@ public class TableRidget extends AbstractTableRidget {
 
 	@Override
 	protected final void applyComparator(final Map<Integer, Comparator<?>> comparatorMap) {
-		if (viewer != null) {
+		if (getTableViewer() != null) {
 			Comparator<?> compi = null;
 			if (getSortedColumn() != -1) {
 				final Integer key = Integer.valueOf(getSortedColumn());
@@ -214,9 +227,9 @@ public class TableRidget extends AbstractTableRidget {
 				final int direction = getSortDirection();
 				table.setSortDirection(direction);
 				final SortableComparator sortableComparator = new SortableComparator(this, compi);
-				viewer.setComparator(new TableComparator(sortableComparator));
+				getTableViewer().setComparator(new TableComparator(sortableComparator));
 			} else {
-				viewer.setComparator(null);
+				getTableViewer().setComparator(null);
 				table.setSortColumn(null);
 				table.setSortDirection(SWT.NONE);
 			}
@@ -243,6 +256,17 @@ public class TableRidget extends AbstractTableRidget {
 				columns[i].setToolTipText(tooltip);
 			}
 		}
+	}
+
+	@Override
+	protected int getColumnStyle(final int columnIndex) {
+		checkColumnRange(columnIndex);
+		final Table control = getUIControl();
+		if (control == null) {
+			return SWT.DEFAULT;
+		}
+		final TableColumn[] columns = control.getColumns();
+		return columns[columnIndex].getStyle();
 	}
 
 	/**
@@ -274,8 +298,8 @@ public class TableRidget extends AbstractTableRidget {
 				facade.removeMouseTrackListener(getUIControl(), tooltipManager);
 				facade.removeMouseMoveListener(getUIControl(), tooltipManager);
 			}
-			if (viewer instanceof TableRidgetTableViewer) {
-				TableRidgetToolTipSupportFacade.getDefault().enableFor(viewer);
+			if (getTableViewer() instanceof TableRidgetTableViewer) {
+				TableRidgetToolTipSupportFacade.getDefault().enableFor(getTableViewer());
 			}
 		}
 	}
@@ -416,7 +440,7 @@ public class TableRidget extends AbstractTableRidget {
 			String result = null;
 			final int column = SwtUtilities.findColumn(item.getParent(), mousePt);
 			if (column != -1) {
-				final IBaseLabelProvider labelProvider = viewer.getLabelProvider();
+				final IBaseLabelProvider labelProvider = getTableViewer().getLabelProvider();
 				if (labelProvider != null) {
 					final Object element = item.getData();
 					result = ((TableRidgetLabelProvider) labelProvider).getToolTipText(element, column);

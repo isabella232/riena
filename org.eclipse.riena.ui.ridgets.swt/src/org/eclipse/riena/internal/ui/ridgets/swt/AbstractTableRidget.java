@@ -10,14 +10,22 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyDescriptor;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.osgi.service.log.LogService;
 
 import org.eclipse.core.databinding.Binding;
 import org.eclipse.core.databinding.DataBindingContext;
@@ -33,15 +41,22 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.observable.value.IObservableValue;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.equinox.log.Logger;
+import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.jface.databinding.viewers.IViewerObservableList;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.jface.databinding.viewers.ViewersObservables;
 import org.eclipse.jface.viewers.AbstractTableViewer;
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TextCellEditor;
+import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.viewers.ViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -49,11 +64,13 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Widget;
 
+import org.eclipse.riena.core.Log4r;
 import org.eclipse.riena.ui.common.ISortableByColumn;
 import org.eclipse.riena.ui.core.marker.RowErrorMessageMarker;
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
@@ -63,24 +80,28 @@ import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTWidgetRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSelectableIndexedRidget;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
+import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
  * Abstract Ridget of a table widget.
  */
 public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidget implements ITableRidget {
 
-	protected AbstractTableViewer viewer;
+	private final static Logger LOGGER = Log4r.getLogger(AbstractTableRidget.class);
+
+	private AbstractTableViewer viewer;
 	private ColumnLayoutData[] columnWidths;
 	private ITableTreeWrapper tableWrapper;
 	protected final SelectionListener selectionTypeEnforcer;
 	protected SelectionListener sortListener;
 	protected String[] columnHeaders;
 	protected DataBindingContext dbc;
-	private String[] renderingMethods;
+	protected String[] renderingMethods;
 	private boolean nativeToolTip = true;
 	private boolean isSortedAscending;
 	private int sortedColumn;
 	private final Map<Integer, Boolean> sortableColumnsMap;
+	private final Map<Integer, Boolean> editableColumnsMap;
 	private final Map<Integer, Comparator<?>> comparatorMap;
 	private final Map<Integer, IColumnFormatter> formatterMap;
 	private final TableKeyListener keyListener;
@@ -110,6 +131,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		// maps
 		formatterMap = new HashMap<Integer, IColumnFormatter>();
 		sortableColumnsMap = new HashMap<Integer, Boolean>();
+		editableColumnsMap = new HashMap<Integer, Boolean>();
 		comparatorMap = new HashMap<Integer, Comparator<?>>();
 		// listener
 		keyListener = new TableKeyListener();
@@ -232,6 +254,8 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 
 	protected abstract ITableTreeWrapper createTableWrapper();
 
+	protected abstract int getColumnStyle(int columnIndex);
+
 	/**
 	 * {@inheritDoc}
 	 * <p>
@@ -253,7 +277,38 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		ColumnUtils.applyColumnWidths(tableWrapper, columnWidths);
 	}
 
-	private void checkColumnRange(final int columnIndex) {
+	protected void applyEditingSupport(final ViewerColumn viewerColumn, final int columnIndex) {
+		final Boolean editable = editableColumnsMap.get(columnIndex);
+		EditingSupport editingSupport = null;
+		if (Boolean.TRUE.equals(editable)) {
+			final PropertyDescriptor property = getPropertyDescriptor(renderingMethods[columnIndex]);
+			final int columnStyle = getColumnStyle(columnIndex);
+			// editingSupport = new InlineEditingSupport0(this, dbc, property, columnStyle);
+			editingSupport = new TableRidgetEditingSupport(this, property, columnStyle);
+		}
+		viewerColumn.setEditingSupport(editingSupport);
+	}
+
+	private PropertyDescriptor getPropertyDescriptor(final String propertyName) {
+
+		PropertyDescriptor[] descriptors;
+		try {
+			descriptors = Introspector.getBeanInfo(rowClass).getPropertyDescriptors();
+			for (final PropertyDescriptor descriptor : descriptors) {
+				if (descriptor.getName().equals(propertyName)) {
+					return descriptor;
+				}
+			}
+		} catch (final IntrospectionException e) {
+			final String msg = "Could not detect descriptor of the property " + propertyName; //$NON-NLS-1$
+			LOGGER.log(LogService.LOG_ERROR, msg, e);
+		}
+
+		return null;
+
+	}
+
+	protected void checkColumnRange(final int columnIndex) {
 		final int range = getColumnCount();
 		if (range != -1) {
 			final String msg = "columnIndex out of range (0 - " + range + " ): " + columnIndex; //$NON-NLS-1$ //$NON-NLS-2$
@@ -311,13 +366,13 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	protected void bindUIControl() {
 		final Control control = getUIControl();
 		if (control != null) {
+			dbc = new DataBindingContext();
 			tableWrapper = createTableWrapper();
 			viewer = createTableViewer();
 			configureControl();
 			if (getObservableList() != null) {
 				configureViewer(viewer);
 			}
-			dbc = new DataBindingContext();
 			// viewer to single selection binding
 			final IObservableValue viewerSelection = ViewersObservables.observeSingleSelection(viewer);
 			dbc.bindValue(viewerSelection, getSingleSelectionObservable(), new UpdateValueStrategy(
@@ -565,6 +620,16 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		}
 	}
 
+	public void setColumnEditable(final int columnIndex, final boolean editable) {
+		checkColumnRange(columnIndex);
+		final Integer key = Integer.valueOf(columnIndex);
+		final Boolean newValue = Boolean.valueOf(editable);
+		Boolean oldValue = editableColumnsMap.put(key, newValue);
+		if (oldValue == null) {
+			oldValue = Boolean.TRUE;
+		}
+	}
+
 	public void setSortedAscending(final boolean ascending) {
 		if (isSortedAscending != ascending) {
 			final boolean oldSortedAscending = isSortedAscending;
@@ -584,6 +649,10 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 			applyComparator(comparatorMap);
 			firePropertyChange(ISortableByColumn.PROPERTY_SORTED_COLUMN, oldSortedColumn, sortedColumn);
 		}
+	}
+
+	protected AbstractTableViewer getTableViewer() {
+		return viewer;
 	}
 
 	/**
@@ -640,7 +709,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		public void widgetSelected(final SelectionEvent e) {
 			if (isOutputOnly()) {
 				// undo user selection when "output only"
-				viewer.setSelection(new StructuredSelection(getSelection()));
+				getTableViewer().setSelection(new StructuredSelection(getSelection()));
 			} else if (SelectionType.SINGLE.equals(getSelectionType())) {
 				if (getUiSelectionCount() > 1) {
 					Assert.isTrue(e.widget == getUIControl());
@@ -669,6 +738,82 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 			if (e.character == ' ' || e.character == SWT.CR) {
 				// the passed event (null) will not be read by the ClickForwarder 
 				getClickForwarder().mouseDoubleClick(null);
+			}
+		}
+	}
+
+	private static class InlineEditingSupport0 extends TableRidgetEditingSupport0 {
+
+		private final CellEditor cellEditor;
+		private final PropertyDescriptor property;
+
+		/**
+		 * @param viewer
+		 * @param dbc
+		 */
+		public InlineEditingSupport0(final AbstractTableRidget ridget, final DataBindingContext dbc,
+				final PropertyDescriptor property, final int columnStyle) {
+			super(ridget, ridget.getTableViewer(), dbc);
+			this.property = property;
+			cellEditor = createCellEditort(columnStyle);
+		}
+
+		private CellEditor createCellEditort(final int style) {
+			if (property == null) {
+				return null;
+			}
+			final Composite table = (Composite) getViewer().getControl();
+			final Class<?> type = property.getPropertyType();
+
+			if (Boolean.class.equals(type) || Boolean.TYPE.equals(type)) {
+				final BooleanCellEditor editor = new BooleanCellEditor(table, style);
+				editor.setChangeOnActivation(true);
+				return editor;
+			} else {
+				final TextCellEditor editor = new TextCellEditor(table, style);
+				if (Integer.class.equals(type) || Integer.TYPE.equals(type)) {
+					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_NUMERIC);
+				} else if (Short.class.equals(type) || Short.TYPE.equals(type)) {
+					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_NUMERIC);
+				} else if (Long.class.equals(type) || Long.TYPE.equals(type)) {
+					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_NUMERIC);
+				} else if (BigInteger.class.equals(type)) {
+					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_NUMERIC);
+				} else if (Float.class.equals(type) || Float.TYPE.equals(type)) {
+					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DECIMAL);
+				} else if (Double.class.equals(type) || Double.TYPE.equals(type)) {
+					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DECIMAL);
+				} else if (BigDecimal.class.equals(type)) {
+					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DECIMAL);
+				} else if (Date.class.equals(type)) {
+					editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DECIMAL);
+				}
+				return editor;
+
+			}
+
+		}
+
+		@Override
+		protected CellEditor getCellEditor(final Object element) {
+			return cellEditor;
+		}
+
+		@Override
+		protected IObservableValue doCreateCellEditorObservable(final CellEditor cellEditor) {
+			if (cellEditor instanceof BooleanCellEditor) {
+				return SWTObservables.observeSelection(cellEditor.getControl());
+			} else {
+				return SWTObservables.observeText(cellEditor.getControl(), SWT.Modify);
+			}
+		}
+
+		@Override
+		protected IObservableValue doCreateElementObservable(final Object valueHolder, final ViewerCell cell) {
+			if (isBean(valueHolder.getClass())) {
+				return BeansObservables.observeValue(valueHolder, property.getName());
+			} else {
+				return PojoObservables.observeValue(valueHolder, property.getName());
 			}
 		}
 	}

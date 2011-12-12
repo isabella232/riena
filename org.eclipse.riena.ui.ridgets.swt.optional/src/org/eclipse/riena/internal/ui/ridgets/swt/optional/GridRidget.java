@@ -16,6 +16,9 @@ import java.util.Map;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.AbstractTableViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.ViewerColumn;
+import org.eclipse.nebula.jface.gridviewer.GridTableViewer;
+import org.eclipse.nebula.jface.gridviewer.GridViewerColumn;
 import org.eclipse.nebula.widgets.grid.Grid;
 import org.eclipse.nebula.widgets.grid.GridCellRenderer;
 import org.eclipse.nebula.widgets.grid.GridColumn;
@@ -123,6 +126,11 @@ public class GridRidget extends AbstractTableRidget {
 	}
 
 	@Override
+	protected GridTableViewer getTableViewer() {
+		return (GridTableViewer) super.getTableViewer();
+	}
+
+	@Override
 	protected final void bindUIControl() {
 		super.bindUIControl();
 		final Grid control = getUIControl();
@@ -164,6 +172,11 @@ public class GridRidget extends AbstractTableRidget {
 			}
 			applyColumnWidths();
 		}
+		final GridColumn[] columns = control.getColumns();
+		for (int columnIndex = 0; columnIndex < columns.length; columnIndex++) {
+			final ViewerColumn viewerColumn = new GridViewerColumn(getTableViewer(), columns[columnIndex]);
+			applyEditingSupport(viewerColumn, columnIndex);
+		}
 	}
 
 	@Override
@@ -199,7 +212,7 @@ public class GridRidget extends AbstractTableRidget {
 
 	@Override
 	protected final void applyComparator(final Map<Integer, Comparator<?>> comparatorMap) {
-		if (viewer != null) {
+		if (getTableViewer() != null) {
 			Comparator<?> compi = null;
 			if (getSortedColumn() != -1) {
 				final Integer key = Integer.valueOf(getSortedColumn());
@@ -212,11 +225,22 @@ public class GridRidget extends AbstractTableRidget {
 				final int direction = getSortDirection();
 				column.setSort(direction);
 				final SortableComparator sortableComparator = new SortableComparator(this, compi);
-				viewer.setComparator(new TableComparator(sortableComparator));
+				getTableViewer().setComparator(new TableComparator(sortableComparator));
 			} else {
-				viewer.setComparator(null);
+				getTableViewer().setComparator(null);
 			}
 		}
+	}
+
+	@Override
+	protected int getColumnStyle(final int columnIndex) {
+		checkColumnRange(columnIndex);
+		final Grid control = getUIControl();
+		if (control == null) {
+			return SWT.DEFAULT;
+		}
+		final GridColumn[] columns = control.getColumns();
+		return columns[columnIndex].getStyle();
 	}
 
 	private void clearSortIndicator() {
@@ -262,7 +286,7 @@ public class GridRidget extends AbstractTableRidget {
 
 	private String getToolTipText(final GridItem item, final int column) {
 		String result = null;
-		final IBaseLabelProvider labelProvider = viewer.getLabelProvider();
+		final IBaseLabelProvider labelProvider = getTableViewer().getLabelProvider();
 		if (labelProvider != null) {
 			final Object element = item.getData();
 			result = ((TableRidgetLabelProvider) labelProvider).getToolTipText(element, column);

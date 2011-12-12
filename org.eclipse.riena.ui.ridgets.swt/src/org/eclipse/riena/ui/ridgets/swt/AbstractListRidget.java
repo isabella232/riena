@@ -442,6 +442,19 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 		return new ClickEvent(AbstractListRidget.this, e.button, 0, rowData);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @throws UnsupportedOperationException
+	 *             is always throw because the ListRidget doesn't support
+	 *             editing.
+	 * 
+	 * @since 4.0
+	 */
+	public void setColumnEditable(final int columnIndex, final boolean editable) {
+		throw new UnsupportedOperationException("not supported"); //$NON-NLS-1$
+	}
+
 	protected abstract void updateEnabled(boolean isEnabled);
 
 	// helping methods

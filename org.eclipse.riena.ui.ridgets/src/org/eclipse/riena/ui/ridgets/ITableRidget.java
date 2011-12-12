@@ -139,6 +139,24 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	void setColumnWidths(Object[] widths);
 
 	/**
+	 * Sets whether the cells of the given column are editable or not.
+	 * 
+	 * @param editable
+	 *            {@code true} if the cells are editable; otherwise
+	 *            {@code false}
+	 * 
+	 * @param columnIndex
+	 *            a columnIndex in the allowed range: ( 0 &lt;= columnIndex &lt;
+	 *            numColumns )
+	 * 
+	 * @throws RuntimeException
+	 *             if columnIndex is out of range
+	 * 
+	 * @since 4.0
+	 */
+	void setColumnEditable(int columnIndex, boolean editable);
+
+	/**
 	 * Set the {@link Comparator} to be used when sorting column at columnIndex.
 	 * 
 	 * @param columnIndex
