@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.eclipse.riena.example.client.controllers.BlockingSubModuleController;
 import org.eclipse.riena.example.client.controllers.CComboSubModuleController;
+import org.eclipse.riena.example.client.controllers.CarCatalogSubModuleController;
 import org.eclipse.riena.example.client.controllers.ChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboAndChoiceSubModuleController;
 import org.eclipse.riena.example.client.controllers.ComboSubModuleController;
@@ -55,6 +56,7 @@ import org.eclipse.riena.example.client.controllers.TreeTableSubModuleController
 import org.eclipse.riena.example.client.controllers.ValidationSubModuleController;
 import org.eclipse.riena.example.client.views.BlockingSubModuleView;
 import org.eclipse.riena.example.client.views.CComboSubModuleView;
+import org.eclipse.riena.example.client.views.CarCatalogSubModuleView;
 import org.eclipse.riena.example.client.views.ChoiceSubModuleView;
 import org.eclipse.riena.example.client.views.ComboAndChoiceSubModuleView;
 import org.eclipse.riena.example.client.views.ComboSubModuleView;
@@ -261,6 +263,12 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 				new NavigationNodeId("org.eclipse.riena.example.table"), "Table"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(tableSubModule, TableSubModuleController.class, TableSubModuleView.ID, false);
 		playgroundModule.addChild(tableSubModule);
+
+		final ISubModuleNode carCatalogSubModule = new SubModuleNode(new NavigationNodeId(
+				"org.eclipse.riena.example.edtiableTable"), "Editable Table"); //$NON-NLS-1$ //$NON-NLS-2$
+		workarea.registerDefinition(carCatalogSubModule, CarCatalogSubModuleController.class,
+				CarCatalogSubModuleView.ID, false);
+		playgroundModule.addChild(carCatalogSubModule);
 
 		final ISubModuleNode textFolderSubModule = buildTextNodes();
 		playgroundModule.addChild(textFolderSubModule);
