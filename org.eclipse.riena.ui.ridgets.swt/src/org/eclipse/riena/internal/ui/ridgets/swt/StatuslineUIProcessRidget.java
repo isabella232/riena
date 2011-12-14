@@ -208,6 +208,20 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 			return pending;
 		}
 
+		boolean hasPending() {
+			try {
+				for (final ProcessDetail pDetail : processDetails) {
+					if (pDetail.isPending()) {
+						return true;
+					}
+				}
+			} catch (final Throwable e) {
+				// ignore exception like concurrentmodificationexception
+			}
+			return false;
+
+		}
+
 		void updatePending() {
 			// be carful: we are not on the ui thread! sync!
 			for (final ProcessDetail pendingDetail : getPending()) {
@@ -456,7 +470,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	 * This method should be called by a timer thread
 	 */
 	public void triggerTimedUpdate() {
-		if (getProcessManager().getPending().size() > 0) {
+		if (getProcessManager().hasPending()) {
 			getProcessManager().updatePending();
 			updateUserInterface();
 		}
