@@ -53,7 +53,7 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 
 	public StatuslineUIProcessRidget() {
 		Wire.instance(processManager).andStart(Activator.getDefault().getContext());
-		buildTrigger();
+		timedTrigger = null;
 	}
 
 	/**
@@ -209,24 +209,25 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 		}
 
 		boolean hasPending() {
-			try {
+			synchronized (processDetails) {
 				for (final ProcessDetail pDetail : processDetails) {
 					if (pDetail.isPending()) {
 						return true;
 					}
 				}
-			} catch (final Throwable e) {
-				// ignore exception like concurrentmodificationexception
 			}
 			return false;
-
 		}
 
 		void updatePending() {
 			// be carful: we are not on the ui thread! sync!
-			for (final ProcessDetail pendingDetail : getPending()) {
-				// force a step
-				pendingDetail.triggerPending();
+			synchronized (processDetails) {
+				for (final ProcessDetail pendingDetail : processDetails) {
+					// force a step
+					if (pendingDetail.isPending()) {
+						pendingDetail.triggerPending();
+					}
+				}
 			}
 		}
 
@@ -351,10 +352,9 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	}
 
 	private void checkTrigger() {
-		if (getProcessManager().getPending().size() == 0) {
+		if (!getProcessManager().hasPending() && timedTrigger != null) {
 			TimerUtil.stop(timedTrigger);
-			// we need a new instance to be able to restart the task later 
-			buildTrigger();
+			timedTrigger = null;
 		}
 
 	}
@@ -445,7 +445,8 @@ public class StatuslineUIProcessRidget extends AbstractRidget implements IStatus
 	public synchronized void initialUpdateUI(final IProgressVisualizer visualizer, final int totalWork) {
 		createAndRegisterProcessDetail(visualizer);
 		// register timed updater if first time called
-		if (getProcessManager().getPending().size() == 1) {
+		if (getProcessManager().hasPending() && timedTrigger == null) {
+			buildTrigger();
 			TimerUtil.schedule(timedTrigger, 0, 200);
 		}
 	}
