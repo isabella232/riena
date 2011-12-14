@@ -115,13 +115,14 @@ public class DateToStringConverterTest extends TestCase {
 		calendarInstance.setTimeZone(TimeZone.getDefault());
 		final Date date = calendarInstance.getTime();
 
-		final DateToStringConverter dateToStringConverter = new DateToStringConverter("dd.MM.yyyy HH:mm:ss zzz");
+		final DateToStringConverter dateToStringConverter = new DateToStringConverter("dd.MM.yyyy HH:mm:ss"); //$NON-NLS-1$
 		final String dateAsString = (String) dateToStringConverter.convert(date);
-		if ("America/Los_Angeles".equals(TimeZone.getDefault().getID())) {
-			assertEquals("12.11.2010 00:00:00 PST", dateAsString);
-		} else {
-			assertEquals("12.11.2010 00:00:00 CET", dateAsString);
-		}
+		//		if ("America/Los_Angeles".equals(TimeZone.getDefault().getID())) { //$NON-NLS-1$
+		//			assertEquals("12.11.2010 00:00:00 PST", dateAsString);
+		//		} else {
+		//			assertEquals("12.11.2010 00:00:00 CET", dateAsString);
+		//		}
+		assertEquals("12.11.2010 00:00:00", dateAsString);
 	}
 
 	// helping methods
