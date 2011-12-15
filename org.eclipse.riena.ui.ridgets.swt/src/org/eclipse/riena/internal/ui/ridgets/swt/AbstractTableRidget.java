@@ -47,7 +47,6 @@ import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.ViewerColumn;
 import org.eclipse.swt.SWT;
@@ -448,7 +447,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		final TableRidgetLabelProvider labelProvider = new TableRidgetLabelProvider(attrMap, formatters);
 		viewerObservables.addListChangeListener(new IListChangeListener() {
 			public void handleListChange(final ListChangeEvent event) {
-				if ((event.diff == null) && (!event.diff.isEmpty())) {
+				if ((event.diff != null) && (!event.diff.isEmpty())) {
 					for (final ListDiffEntry diffEntry : event.diff.getDifferences()) {
 						if (!diffEntry.isAddition()) {
 							// an element of the table was removed, 
@@ -466,16 +465,15 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	}
 
 	private void refreshViewer(final AbstractTableViewer viewer) {
-		final IBaseLabelProvider labelProvider = viewer.getLabelProvider();
-		if (labelProvider != null) {
-			((TableRidgetLabelProvider) labelProvider).disposeImages();
-		}
 		viewer.getControl().setRedraw(false); // prevent flicker during update
 		final StructuredSelection currentSelection = new StructuredSelection(getSelection());
 		try {
-			final TableRidgetLabelProvider tableLabelProvider = (TableRidgetLabelProvider) labelProvider;
-			final IColumnFormatter[] formatters = getColumnFormatters(tableLabelProvider.getColumnCount());
-			tableLabelProvider.setFormatters(formatters);
+			TableRidgetLabelProvider tableLabelProvider = null;
+			if (viewer.getLabelProvider() instanceof TableRidgetLabelProvider) {
+				tableLabelProvider = (TableRidgetLabelProvider) viewer.getLabelProvider();
+				final IColumnFormatter[] formatters = getColumnFormatters(tableLabelProvider.getColumnCount());
+				tableLabelProvider.setFormatters(formatters);
+			}
 			viewer.setInput(viewerObservables);
 		} finally {
 			viewer.setSelection(currentSelection);
