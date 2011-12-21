@@ -94,11 +94,11 @@ public class LogCollectorSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		logLevelCombo = getRidget("logLevelCombo"); //$NON-NLS-1$
-		logMessage = getRidget("logMessage"); //$NON-NLS-1$
-		logException = getRidget("logException"); //$NON-NLS-1$
+		logLevelCombo = getRidget(IComboRidget.class, "logLevelCombo"); //$NON-NLS-1$
+		logMessage = getRidget(ITextRidget.class, "logMessage"); //$NON-NLS-1$
+		logException = getRidget(ITextRidget.class, "logException"); //$NON-NLS-1$
 
-		final IActionRidget logButtonSave = getRidget("logButton"); //$NON-NLS-1$
+		final IActionRidget logButtonSave = getRidget(IActionRidget.class, "logButton"); //$NON-NLS-1$
 		logButtonSave.setText("&Log"); //$NON-NLS-1$
 		logButtonSave.addListener(new IActionListener() {
 			public void callback() {
@@ -115,10 +115,10 @@ public class LogCollectorSubModuleController extends SubModuleController {
 			}
 		});
 
-		customLevelCombo = getRidget("customLevelCombo"); //$NON-NLS-1$
-		customMessage = getRidget("customMessage"); //$NON-NLS-1$
+		customLevelCombo = getRidget(IComboRidget.class, "customLevelCombo"); //$NON-NLS-1$
+		customMessage = getRidget(ITextRidget.class, "customMessage"); //$NON-NLS-1$
 
-		final IActionRidget customButtonSave = getRidget("customButton"); //$NON-NLS-1$
+		final IActionRidget customButtonSave = getRidget(IActionRidget.class, "customButton"); //$NON-NLS-1$
 		customButtonSave.setText("&CustomLog"); //$NON-NLS-1$
 		customButtonSave.addListener(new IActionListener() {
 			public void callback() {

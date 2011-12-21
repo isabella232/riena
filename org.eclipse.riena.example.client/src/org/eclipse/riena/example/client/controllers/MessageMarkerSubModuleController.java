@@ -49,18 +49,18 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 
 		final MessageMarkerExampleBean bean = new MessageMarkerExampleBean();
 
-		final ITextRidget alwaysMarked = getRidget("alwaysMarked"); //$NON-NLS-1$
+		final ITextRidget alwaysMarked = getRidget(ITextRidget.class, "alwaysMarked"); //$NON-NLS-1$
 		alwaysMarked.addMarker(new ErrorMessageMarker("This textfield is inadequate in every way.")); //$NON-NLS-1$
 		alwaysMarked.bindToModel(bean, "alwaysMarkedText"); //$NON-NLS-1$
 		alwaysMarked.updateFromModel();
 
-		final ITextRidget sometimesMarked = getRidget("sometimesMarked"); //$NON-NLS-1$
+		final ITextRidget sometimesMarked = getRidget(ITextRidget.class, "sometimesMarked"); //$NON-NLS-1$
 		sometimesMarked.addValidationRule(new MinLength(3), ValidationTime.ON_UPDATE_TO_MODEL);
 		sometimesMarked.addValidationMessage("Textfield contains less than 3 characters."); //$NON-NLS-1$
 		sometimesMarked.bindToModel(bean, "sometimesMarkedText"); //$NON-NLS-1$
 		sometimesMarked.updateFromModel();
 
-		final ITextRidget sometimesMarkedMultipleRules = getRidget("sometimesMarkedMultipleRules"); //$NON-NLS-1$
+		final ITextRidget sometimesMarkedMultipleRules = getRidget(ITextRidget.class, "sometimesMarkedMultipleRules"); //$NON-NLS-1$
 		final StartsWithA startsWithA = new StartsWithA();
 		final EndsWithZ endsWithZ = new EndsWithZ();
 		sometimesMarkedMultipleRules.addValidationRule(startsWithA, ValidationTime.ON_UPDATE_TO_MODEL);
@@ -88,7 +88,7 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 		tooltipMessageMarkerViewer.addRidget(sometimesMarkedMultipleRules);
 
 		// Show error messages in a message box
-		final IMessageBoxRidget messageBoxRidget = getRidget("messageBox"); //$NON-NLS-1$
+		final IMessageBoxRidget messageBoxRidget = getRidget(IMessageBoxRidget.class, "messageBox"); //$NON-NLS-1$
 		messageBoxRidget.setType(IMessageBoxRidget.Type.ERROR);
 		messageBoxRidget.setTitle("Problems Summary"); //$NON-NLS-1$
 		messageBoxRidget.setOptions(IMessageBoxRidget.OPTIONS_OK);
@@ -104,7 +104,7 @@ public class MessageMarkerSubModuleController extends SubModuleController {
 		viewers.setSelectedViewers(Arrays.asList(new IMessageMarkerViewer[] { statuslineMessageMarkerViewer,
 				tooltipMessageMarkerViewer }));
 
-		activeViewers = getRidget("activeViewers"); //$NON-NLS-1$
+		activeViewers = getRidget(IMultipleChoiceRidget.class, "activeViewers"); //$NON-NLS-1$
 		activeViewers.bindToModel(viewers.getViewers(), viewers.getViewerLabels(), viewers, "selectedViewers"); //$NON-NLS-1$
 		activeViewers.updateFromModel();
 	}

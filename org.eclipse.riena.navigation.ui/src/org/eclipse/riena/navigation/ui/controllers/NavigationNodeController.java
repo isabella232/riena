@@ -22,7 +22,6 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
 
-import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -103,6 +102,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		}
 		this.navigationNode = navigationNode;
 		navigationNode.setNavigationNodeController(this);
+		updateNavigationNodeMarkers();
 		if (getNavigationNode() instanceof INavigationNodeListenerable) {
 			((INavigationNodeListenerable) getNavigationNode()).addListener(nodeListener);
 		}
@@ -226,28 +226,28 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		if (ridget != null) {
 			return ridget;
 		}
-		if (RienaStatus.isTest()) {
-			try {
-				if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
-					final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(
-							ridgetClazz);
-					if (mappedRidgetClazz != null) {
-						ridget = mappedRidgetClazz.newInstance();
-					}
-					Assert.isNotNull(
-							ridget,
-							"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
-				} else {
-					ridget = ridgetClazz.newInstance();
+		// if (RienaStatus.isTest()) {
+		try {
+			if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
+				final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(
+						ridgetClazz);
+				if (mappedRidgetClazz != null) {
+					ridget = mappedRidgetClazz.newInstance();
 				}
-			} catch (final InstantiationException e) {
-				throw new RuntimeException(e);
-			} catch (final IllegalAccessException e) {
-				throw new RuntimeException(e);
+				Assert.isNotNull(
+						ridget,
+						"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+			} else {
+				ridget = ridgetClazz.newInstance();
 			}
-
-			addRidget(id, ridget);
+		} catch (final InstantiationException e) {
+			throw new RuntimeException(e);
+		} catch (final IllegalAccessException e) {
+			throw new RuntimeException(e);
 		}
+
+		addRidget(id, ridget);
+		// }
 
 		return ridget;
 	}

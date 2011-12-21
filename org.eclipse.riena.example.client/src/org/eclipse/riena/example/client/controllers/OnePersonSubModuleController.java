@@ -80,16 +80,6 @@ public class OnePersonSubModuleController extends SubModuleController {
 		person.getAddress().setTown("München"); //$NON-NLS-1$
 	}
 
-	@Override
-	public void afterBind() {
-
-		super.afterBind();
-
-		updateAllRidgetsFromModel();
-		updateTitle();
-
-	}
-
 	/**
 	 * Returns a list of countries.
 	 * 
@@ -130,26 +120,26 @@ public class OnePersonSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		customerNumber = getRidget("customerNumber"); //$NON-NLS-1$
+		customerNumber = getRidget(INumericTextRidget.class, "customerNumber"); //$NON-NLS-1$
 		customerNumber.addMarker(new OutputMarker());
 		customerNumber.setGrouping(false);
-		lastName = getRidget("lastName"); //$NON-NLS-1$
+		lastName = getRidget(ITextRidget.class, "lastName"); //$NON-NLS-1$
 		lastName.setMandatory(true);
-		firstName = getRidget("firstName"); //$NON-NLS-1$
+		firstName = getRidget(ITextRidget.class, "firstName"); //$NON-NLS-1$
 		firstName.setMandatory(true);
-		birthday = getRidget("birthday"); //$NON-NLS-1$
+		birthday = getRidget(IDateTextRidget.class, "birthday"); //$NON-NLS-1$
 		birthday.setFormat(IDateTextRidget.FORMAT_DDMMYYYY);
-		birthplace = getRidget("birthplace"); //$NON-NLS-1$
-		gender = getRidget("gender"); //$NON-NLS-1$
-		street = getRidget("street"); //$NON-NLS-1$
-		country = getRidget("country"); //$NON-NLS-1$
-		postalcode = getRidget("postalCode"); //$NON-NLS-1$
+		birthplace = getRidget(ITextRidget.class, "birthplace"); //$NON-NLS-1$
+		gender = getRidget(ISingleChoiceRidget.class, "gender"); //$NON-NLS-1$
+		street = getRidget(ITextRidget.class, "street"); //$NON-NLS-1$
+		country = getRidget(IComboRidget.class, "country"); //$NON-NLS-1$
+		postalcode = getRidget(INumericTextRidget.class, "postalCode"); //$NON-NLS-1$
 		postalcode.setGrouping(false);
 		postalcode.addValidationRule(new MaxLength(5), ValidationTime.ON_UI_CONTROL_EDIT);
-		town = getRidget("town"); //$NON-NLS-1$
-		final IActionRidget show = getRidget("show"); //$NON-NLS-1$
-		final IActionRidget next = getRidget("next"); //$NON-NLS-1$
-		final IActionRidget jumpBack = getRidget("jumpBack"); //$NON-NLS-1$
+		town = getRidget(ITextRidget.class, "town"); //$NON-NLS-1$
+		final IActionRidget show = getRidget(IActionRidget.class, "show"); //$NON-NLS-1$
+		final IActionRidget next = getRidget(IActionRidget.class, "next"); //$NON-NLS-1$
+		final IActionRidget jumpBack = getRidget(IActionRidget.class, "jumpBack"); //$NON-NLS-1$
 
 		createPerson();
 		person.addPropertyChangeListener(new NameChangeListener());
@@ -178,6 +168,9 @@ public class OnePersonSubModuleController extends SubModuleController {
 				jumpBack.setEnabled(getNavigationNode().isJumpTarget());
 			}
 		});
+
+		updateAllRidgetsFromModel();
+		updateTitle();
 
 	}
 

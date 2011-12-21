@@ -39,7 +39,7 @@ public class TextSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		final ITextRidget textModel1 = getRidget("textModel1"); //$NON-NLS-1$
+		final ITextRidget textModel1 = getRidget(ITextRidget.class, "textModel1"); //$NON-NLS-1$
 		textModel1.setText("type something"); //$NON-NLS-1$
 		textModel1.setOutputOnly(true);
 		textModel1.addClickListener(new IClickListener() {
@@ -53,25 +53,25 @@ public class TextSubModuleController extends SubModuleController {
 			}
 		});
 
-		final ITextRidget textField = getRidget("textField"); //$NON-NLS-1$
+		final ITextRidget textField = getRidget(ITextRidget.class, "textField"); //$NON-NLS-1$
 		textField.bindToModel(textModel1, ITextRidget.PROPERTY_TEXT);
 		textField.updateFromModel();
 
-		final ITextRidget textModel2 = getRidget("textModel2"); //$NON-NLS-1$
+		final ITextRidget textModel2 = getRidget(ITextRidget.class, "textModel2"); //$NON-NLS-1$
 		textModel2.setText("type something"); //$NON-NLS-1$
 		textModel2.setOutputOnly(true);
-		final ITextRidget textDirectWrite = getRidget("textDirectWrite"); //$NON-NLS-1$
+		final ITextRidget textDirectWrite = getRidget(ITextRidget.class, "textDirectWrite"); //$NON-NLS-1$
 		textDirectWrite.setDirectWriting(true);
 		textDirectWrite.bindToModel(textModel2, ITextRidget.PROPERTY_TEXT);
 		textDirectWrite.updateFromModel();
 
-		((IActionRidget) getRidget("setlabel")).addListener(new IActionListener() { //$NON-NLS-1$
+		getRidget(IActionRidget.class, "setlabel").addListener(new IActionListener() { //$NON-NLS-1$
 
 					public void callback() {
 						getNavigationNode().setLabel("new Label " + System.currentTimeMillis()); //$NON-NLS-1$
 					}
 				});
-		((IActionRidget) getRidget("setparentlabel")).addListener(new IActionListener() { //$NON-NLS-1$
+		getRidget(IActionRidget.class, "setparentlabel").addListener(new IActionListener() { //$NON-NLS-1$
 
 					public void callback() {
 						getNavigationNode().getParent().setLabel("new ParentLabel " + System.currentTimeMillis()); //$NON-NLS-1$

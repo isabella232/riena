@@ -73,12 +73,12 @@ public class CComboSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		comboOne = getRidget("comboOne"); //$NON-NLS-1$
+		comboOne = getRidget(IComboRidget.class, "comboOne"); //$NON-NLS-1$
 
 		value.setPerson(manager.getSelectedPerson());
 
-		textFirst = getRidget("textFirst"); //$NON-NLS-1$
-		textLast = getRidget("textLast"); //$NON-NLS-1$
+		textFirst = getRidget(ITextRidget.class, "textFirst"); //$NON-NLS-1$
+		textLast = getRidget(ITextRidget.class, "textLast"); //$NON-NLS-1$
 
 		comboOne.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
@@ -89,7 +89,7 @@ public class CComboSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IActionRidget buttonSave = getRidget("buttonSave"); //$NON-NLS-1$
+		final IActionRidget buttonSave = getRidget(IActionRidget.class, "buttonSave"); //$NON-NLS-1$
 		buttonSave.setText("&Save"); //$NON-NLS-1$
 		buttonSave.addListener(new IActionListener() {
 			public void callback() {
@@ -99,7 +99,7 @@ public class CComboSubModuleController extends SubModuleController {
 			}
 		});
 
-		final IToggleButtonRidget buttonSecondValue = getRidget("buttonSecondValue"); //$NON-NLS-1$
+		final IToggleButtonRidget buttonSecondValue = getRidget(IToggleButtonRidget.class, "buttonSecondValue"); //$NON-NLS-1$
 		if (buttonSecondValue != null) {
 			buttonSecondValue.setText("Always use second person!"); //$NON-NLS-1$
 			buttonSecondValue.addListener(new IActionListener() {
@@ -120,7 +120,7 @@ public class CComboSubModuleController extends SubModuleController {
 			});
 		}
 
-		final IActionRidget buttonClear = getRidget("buttonClear"); //$NON-NLS-1$
+		final IActionRidget buttonClear = getRidget(IActionRidget.class, "buttonClear"); //$NON-NLS-1$
 		buttonClear.setText("&Clear"); //$NON-NLS-1$
 		buttonClear.addListener(new IActionListener() {
 			public void callback() {

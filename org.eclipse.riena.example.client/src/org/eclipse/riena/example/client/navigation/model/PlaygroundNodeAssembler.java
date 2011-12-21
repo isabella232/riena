@@ -373,19 +373,20 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
 		final ISubModuleNode textSubModule = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.text"), "Text"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(textSubModule, TextSubModuleController.class, TextSubModuleView.ID, false);
+		workarea.registerDefinition(textSubModule, TextSubModuleController.class, TextSubModuleView.ID, false)
+				.setRequiredPreparation(true);
 		result.addChild(textSubModule);
 
 		final ISubModuleNode textNumbersSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.text.numeric"), "Text (Numeric)"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(textNumbersSubModule, TextNumericSubModuleController.class,
-				TextNumericSubModuleView.ID, false);
+				TextNumericSubModuleView.ID, false).setRequiredPreparation(true);
 		result.addChild(textNumbersSubModule);
 
 		final ISubModuleNode textDateSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.text.date"), "Text (Date)"); //$NON-NLS-1$ //$NON-NLS-2$
 		workarea.registerDefinition(textDateSubModule, TextDateSubModuleController.class, TextDateSubModuleView.ID,
-				false);
+				false).setRequiredPreparation(true);
 		result.addChild(textDateSubModule);
 
 		return result;

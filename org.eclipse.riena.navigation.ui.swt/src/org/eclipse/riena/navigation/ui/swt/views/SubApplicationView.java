@@ -57,6 +57,7 @@ import org.eclipse.riena.navigation.listener.SubApplicationNodeListener;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubApplicationNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.ui.SubModuleUtils;
 import org.eclipse.riena.navigation.ui.controllers.SubApplicationController;
 import org.eclipse.riena.navigation.ui.swt.binding.DelegatingRidgetMapper;
 import org.eclipse.riena.navigation.ui.swt.binding.InjectSwtViewBindingDelegate;
@@ -556,13 +557,15 @@ public class SubApplicationView implements INavigationNodeView<SubApplicationNod
 
 		@Override
 		public void prepared(final ISubModuleNode source) {
-			checkBaseStructure();
+			if (SubModuleUtils.isPrepareView()) {
+				checkBaseStructure();
 
-			final SwtViewId id = getViewId(source);
-			final SwtViewProvider viewProvider = SwtViewProvider.getInstance();
-			viewProvider.setCurrentPrepared(source);
-			prepareView(id, source);
-			viewProvider.setCurrentPrepared(null);
+				final SwtViewId id = getViewId(source);
+				final SwtViewProvider viewProvider = SwtViewProvider.getInstance();
+				viewProvider.setCurrentPrepared(source);
+				prepareView(id, source);
+				viewProvider.setCurrentPrepared(null);
+			}
 		}
 
 		@Override

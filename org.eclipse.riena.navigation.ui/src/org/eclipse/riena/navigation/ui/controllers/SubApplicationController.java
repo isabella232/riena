@@ -10,15 +10,29 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
+import org.osgi.service.log.LogService;
+
+import org.eclipse.equinox.log.Logger;
+
+import org.eclipse.riena.core.Log4r;
+import org.eclipse.riena.internal.navigation.ui.Activator;
 import org.eclipse.riena.navigation.ISubApplicationNode;
+import org.eclipse.riena.navigation.ISubModuleNode;
+import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
+import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
+import org.eclipse.riena.navigation.ui.SubModuleUtils;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
+import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
+import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
  * Implements the Controller for a Module Sub Application
  */
 public class SubApplicationController extends NavigationNodeController<ISubApplicationNode> {
+
+	private final static Logger LOGGER = Log4r.getLogger(Activator.getDefault(), SubApplicationController.class);
 
 	private IUIProcessRidget uiProcessRidget;
 	private final NodeEventDelegation contextUpdater = new NodeEventDelegation();
@@ -35,7 +49,9 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 	 * @see org.eclipse.riena.ui.internal.ridgets.IRidgetContainer#configureRidgets()
 	 */
 	public void configureRidgets() {
-		// nothing to do
+		final NavigationTreeObserver navigationTreeObserver = new NavigationTreeObserver();
+		navigationTreeObserver.addListener(new MySubModuleNodeListener());
+		navigationTreeObserver.addListenerTo(getNavigationNode());
 	}
 
 	@Override
@@ -116,4 +132,43 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 		this.uiProcessRidget = uiProcessRidget;
 	}
 
+	/**
+	 * Prepares the controller for the given sub-module node.
+	 * <p>
+	 * Controller is created and the ridgets are configured. So the logic of the
+	 * controller works without a binded view.
+	 * 
+	 * @param source
+	 *            node of the sub-module.
+	 */
+	private void prepareController(final ISubModuleNode source) {
+		final IWorkareaDefinition definition = WorkareaManager.getInstance().getDefinition(source);
+		if (definition == null) {
+			final String message = String.format("cannnot find definition for %s", source); //$NON-NLS-1$ 
+			LOGGER.log(LogService.LOG_ERROR, message);
+			return;
+		}
+		try {
+			final SubModuleController controller = (SubModuleController) definition.createController();
+			controller.setNavigationNode(source);
+			source.setNavigationNodeController(controller);
+			controller.configureRidgets();
+		} catch (final Exception ex) {
+			final String message = String.format(
+					"cannnot create controller for class %s", definition.getControllerClass()); //$NON-NLS-1$ 
+			LOGGER.log(LogService.LOG_ERROR, message, ex);
+		}
+	}
+
+	private class MySubModuleNodeListener extends SubModuleNodeListener {
+		@Override
+		public void prepared(final ISubModuleNode source) {
+
+			if (!SubModuleUtils.isPrepareView() && (source.getNavigationNodeController() == null)) {
+				// create only the controller and no view
+				prepareController(source);
+			}
+
+		}
+	}
 }
