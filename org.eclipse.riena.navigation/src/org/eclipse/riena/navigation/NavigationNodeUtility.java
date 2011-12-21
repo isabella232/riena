@@ -163,7 +163,7 @@ public final class NavigationNodeUtility {
 
 	}
 
-	private static interface IIdClosure {
+	private interface IIdClosure {
 		String getId(INavigationNode<?> node);
 	}
 
