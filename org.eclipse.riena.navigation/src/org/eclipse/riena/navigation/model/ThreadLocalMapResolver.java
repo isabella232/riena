@@ -15,6 +15,8 @@ import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.variables.IDynamicVariable;
+import org.eclipse.core.variables.IDynamicVariableResolver;
 
 /**
  * A resolver for dynamic variables. The map provided to the configure method
