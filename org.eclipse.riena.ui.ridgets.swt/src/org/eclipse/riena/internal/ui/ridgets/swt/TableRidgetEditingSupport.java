@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.ColumnViewerEditorDeactivationEvent;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 import org.eclipse.riena.ui.ridgets.IEditableRidget;
@@ -30,39 +31,61 @@ import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
- * Editing support fpr tables with data binding and Ridgets.
+ * Editing support for tables with data binding and Ridgets.
  */
 public class TableRidgetEditingSupport extends EditingSupport {
 
 	private final AbstractTableRidget tableRidget;
 	private final PropertyDescriptor property;
-	private final CellEditor cellEditor;
 	private final ColumnViewerEditorActivationListenerHelper activationListener;
+	private final CellEditor cellEditor;
 	private IValueRidget valueRidget;
 
+	/**
+	 * Creates the editing support for the given table and property.
+	 * 
+	 * @param tableRidget
+	 *            Ridget of the table
+	 * @param property
+	 *            property of the column
+	 * @param columnStyle
+	 *            style of the table column
+	 */
 	public TableRidgetEditingSupport(final AbstractTableRidget tableRidget, final PropertyDescriptor property,
 			final int columnStyle) {
 		super(tableRidget.getTableViewer());
 		this.tableRidget = tableRidget;
 		this.property = property;
-		cellEditor = createCellEditort(columnStyle);
 		activationListener = new ColumnViewerEditorActivationListenerHelper();
+		cellEditor = createCellEditort(property, columnStyle);
 	}
 
-	private CellEditor createCellEditort(final int style) {
+	/**
+	 * Creates a proper cell editor for the given property.
+	 * <p>
+	 * According to the property type a cell editor is created.
+	 * 
+	 * @param style
+	 *            style of the table column
+	 * @return cell editor or {@code null} if no cell editor was created
+	 */
+	private CellEditor createCellEditort(final PropertyDescriptor property, final int style) {
+
 		if (property == null) {
 			return null;
 		}
-		final Composite table = (Composite) getViewer().getControl();
+
 		final Class<?> type = property.getPropertyType();
+		final Composite table = (Composite) getViewer().getControl();
+		final int editorStyle = getAlignment(style);
 
 		if (Boolean.class.equals(type) || Boolean.TYPE.equals(type)) {
-			// final BooleanCellEditor editor = new BooleanCellEditor(table, style);
+			// final BooleanCellEditor editor = new BooleanCellEditor(table, editorStyle);
 			// editor.setChangeOnActivation(true);
 			// return editor;
 			return null;
 		} else {
-			final TextCellEditor editor = new TextCellEditor(table, style);
+			final TextCellEditor editor = new TextCellEditor(table, editorStyle);
 			if (Integer.class.equals(type) || Integer.TYPE.equals(type)) {
 				editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_NUMERIC);
 			} else if (Short.class.equals(type) || Short.TYPE.equals(type)) {
@@ -78,7 +101,7 @@ public class TableRidgetEditingSupport extends EditingSupport {
 			} else if (BigDecimal.class.equals(type)) {
 				editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DECIMAL);
 			} else if (Date.class.equals(type)) {
-				editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DECIMAL);
+				editor.getControl().setData(UIControlsFactory.KEY_TYPE, UIControlsFactory.TYPE_DATE);
 			}
 			return editor;
 
@@ -86,14 +109,37 @@ public class TableRidgetEditingSupport extends EditingSupport {
 
 	}
 
+	/**
+	 * Extras the alignment form the given style.
+	 * 
+	 * @param style
+	 * @return alignment
+	 */
+	private int getAlignment(final int style) {
+		if ((style & SWT.LEFT) == SWT.LEFT) {
+			return SWT.LEFT;
+		}
+		if ((style & SWT.RIGHT) == SWT.RIGHT) {
+			return SWT.RIGHT;
+		}
+		if ((style & SWT.CENTER) == SWT.CENTER) {
+			return SWT.CENTER;
+		}
+		return SWT.DEFAULT;
+	}
+
 	@Override
 	protected CellEditor getCellEditor(final Object element) {
 		return cellEditor;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * Binds the cell editor with a Ridget and the property.
+	 */
 	@Override
 	protected void initializeCellEditorValue(final CellEditor cellEditor, final ViewerCell cell) {
-
 		valueRidget = (IValueRidget) SwtRidgetFactory.createRidget(cellEditor.getControl());
 
 		final Object valueHolder = cell.getElement();
