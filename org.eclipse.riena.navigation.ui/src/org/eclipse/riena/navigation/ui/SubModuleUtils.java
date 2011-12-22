@@ -14,6 +14,8 @@ import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 
 /**
  * Utility to check system properties for sub-modules.
+ * 
+ * @since 4.0
  */
 public final class SubModuleUtils {
 

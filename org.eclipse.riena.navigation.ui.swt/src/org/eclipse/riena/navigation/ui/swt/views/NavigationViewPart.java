@@ -538,6 +538,9 @@ public class NavigationViewPart extends ViewPart implements IModuleNavigationCom
 		return null;
 	}
 
+	/**
+	 * @since 4.0
+	 */
 	public int calculateHeight() {
 		int height = 0;
 		final int widthHint = navigationMainComposite.getSize().x;

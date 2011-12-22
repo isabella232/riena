@@ -15,8 +15,6 @@ import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.variables.IDynamicVariable;
-import org.eclipse.core.variables.IDynamicVariableResolver;
 
 /**
  * A resolver for dynamic variables. The map provided to the configure method
@@ -47,6 +45,9 @@ public class ThreadLocalMapResolver implements IDynamicVariableResolver {
 	 * @see
 	 * org.eclipse.core.variables.IDynamicVariableResolver#resolveValue(org.
 	 * eclipse.core.variables.IDynamicVariable, java.lang.String)
+	 */
+	/**
+	 * @since 4.0
 	 */
 	public String resolveValue(final IDynamicVariable variable, final String argument) throws CoreException {
 
