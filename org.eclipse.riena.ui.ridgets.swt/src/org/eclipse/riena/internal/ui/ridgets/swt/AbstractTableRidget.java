@@ -78,6 +78,7 @@ import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidget implements ITableRidget {
 
 	private final static Logger LOGGER = Log4r.getLogger(AbstractTableRidget.class);
+	private final static String TABLE_VIEWER_DATA_KEY = "TBL.VIEWER"; //$NON-NLS-1$
 
 	private AbstractTableViewer viewer;
 	private ColumnLayoutData[] columnWidths;
@@ -87,6 +88,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	protected String[] columnHeaders;
 	protected DataBindingContext dbc;
 	protected String[] renderingMethods;
+	private boolean viewConfigured;
 	private boolean nativeToolTip = true;
 	private boolean isSortedAscending;
 	private int sortedColumn;
@@ -329,7 +331,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	}
 
 	private boolean isViewerConfigured() {
-		return viewer.getLabelProvider() instanceof TableRidgetLabelProvider;
+		return (viewer.getLabelProvider() instanceof TableRidgetLabelProvider) && viewConfigured;
 	}
 
 	@Override
@@ -358,7 +360,12 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		if (control != null) {
 			dbc = new DataBindingContext();
 			tableWrapper = createTableWrapper();
-			viewer = createTableViewer();
+			// try to reuse the table viewer 
+			viewer = (AbstractTableViewer) control.getData(TABLE_VIEWER_DATA_KEY);
+			if ((viewer == null) || (viewer.getControl() != control)) {
+				viewer = createTableViewer();
+				control.setData(TABLE_VIEWER_DATA_KEY, viewer);
+			}
 			configureControl();
 			if (getObservableList() != null) {
 				configureViewer(viewer);
@@ -389,6 +396,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		if (control != null) {
 			control.removeKeyListener(keyListener);
 		}
+		viewConfigured = false;
 		viewer = null;
 		tableWrapper = null;
 	}
@@ -428,6 +436,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		viewer.setLabelProvider(labelProvider);
 		viewer.setContentProvider(viewerCP);
 		viewer.setInput(viewerObservables);
+		viewConfigured = true;
 	}
 
 	/**

@@ -23,6 +23,7 @@ import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.TableLayout;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -102,6 +103,22 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 		assertEquals(person1.getLastname(), control.getItem(0).getText(1));
 		assertEquals(person2.getLastname(), control.getItem(1).getText(1));
 		assertEquals(person3.getLastname(), control.getItem(2).getText(1));
+
+		final TableViewer viewer = ReflectionUtils.invokeHidden(getRidget(), "getTableViewer"); //$NON-NLS-1$
+		assertNotNull(viewer);
+		// table viewer reused?
+		bindRidgetToModel();
+		final TableViewer viewer2 = ReflectionUtils.invokeHidden(getRidget(), "getTableViewer"); //$NON-NLS-1$
+		assertSame(viewer, viewer2);
+		// new table viewer created?
+		final Table table = new Table(control.getParent(), SWT.MULTI);
+		getRidget().setUIControl(table);
+		bindRidgetToModel();
+		final TableViewer viewer3 = ReflectionUtils.invokeHidden(getRidget(), "getTableViewer"); //$NON-NLS-1$
+		assertNotSame(viewer, viewer3);
+		assertNotSame(viewer2, viewer3);
+		table.dispose();
+
 	}
 
 	public void testTableColumnsNumAndHeader() {
