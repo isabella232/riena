@@ -76,7 +76,9 @@ public class RemoteServiceFactory {
 	private IRemoteServiceRegistry registry;
 	private HashMap<String, IRemoteServiceFactory> remoteServiceFactoryImplementations = null;
 	private ICallInterceptorExtension[] callInterceptorExtensions;
-	private Map<Class<?>, Iterable<Class<?>>> callInterceptors = null;
+	private Map<Class<?>, List<ICallInterceptorExtension>> callInterceptorsRaw;
+	private Map<Class<?>, Iterable<Class<?>>> callInterceptors;
+	private boolean callInterceptorsReified;
 
 	private static final Logger LOGGER = Log4r.getLogger(Activator.getDefault(), RemoteServiceFactory.class);
 
@@ -103,15 +105,6 @@ public class RemoteServiceFactory {
 		if (registry == registryParm) {
 			registry = null;
 		}
-	}
-
-	/**
-	 * @since 4.0
-	 */
-	@InjectExtension
-	public synchronized void update(final ICallInterceptorExtension[] callInterceptorExtensions) {
-		this.callInterceptorExtensions = callInterceptorExtensions;
-		callInterceptors = null;
 	}
 
 	/**
@@ -255,7 +248,7 @@ public class RemoteServiceFactory {
 
 	private Object createInterceptorChain(final Class<?> serviceInterface, final Object serviceProxy) {
 		Object delegate = serviceProxy;
-		for (final Class<?> interceptorClass : getInterceptorClasses(serviceInterface)) {
+		for (final Class<?> interceptorClass : getCallInterceptors(serviceInterface)) {
 			delegate = createInterceptor(serviceInterface, interceptorClass, delegate);
 		}
 		return delegate;
@@ -280,34 +273,54 @@ public class RemoteServiceFactory {
 		}
 	}
 
-	private Iterable<Class<?>> getInterceptorClasses(final Class<?> serviceInterface) {
-		reifyCallInterceptors();
+	// Note: This method might get called recursively. This can happen due to the class loading when loading the interceptor class.
+	//       This can than activate another bundle which also registers a remote service and thus enters this method again. 
+	private synchronized Iterable<Class<?>> getCallInterceptors(final Class<?> serviceInterface) {
+		if (!callInterceptorsReified) {
+
+			if (callInterceptorsRaw == null) {
+				// create a new map and fill it only if necessary, i.e. when extension points have changed (see methods comment)
+				callInterceptorsRaw = new HashMap<Class<?>, List<ICallInterceptorExtension>>();
+				for (final ICallInterceptorExtension callInterceptorExtension : callInterceptorExtensions) {
+					List<ICallInterceptorExtension> list = callInterceptorsRaw.get(callInterceptorExtension
+							.getServiceInterface());
+					if (list == null) {
+						list = new ArrayList<ICallInterceptorExtension>();
+						callInterceptorsRaw.put(callInterceptorExtension.getServiceInterface(), list);
+					}
+					list.add(callInterceptorExtension);
+				}
+			}
+
+			if (callInterceptors == null) {
+				// create a new map only if necessary, i.e. when extension points have changed (see methods comment)
+				callInterceptors = new HashMap<Class<?>, Iterable<Class<?>>>();
+			}
+			for (final Entry<Class<?>, List<ICallInterceptorExtension>> entry : callInterceptorsRaw.entrySet()) {
+				if (!callInterceptors.containsKey(entry.getKey())) {
+					final Orderer<Class<?>> orderer = new Orderer<Class<?>>();
+					for (final ICallInterceptorExtension extension : entry.getValue()) {
+						orderer.add(extension.getCallInterceptorClass(), extension.getName(),
+								extension.getPreInterceptors(), extension.getPostInterceptors());
+						// extension.getCallInterceptorClass() might cause a recursion! 
+					}
+					callInterceptors.put(entry.getKey(), Iter.ableReverse(orderer.getOrderedObjects()));
+				}
+			}
+			callInterceptorsReified = true;
+		}
 		return Iter.able(callInterceptors.get(serviceInterface));
 	}
 
-	private synchronized void reifyCallInterceptors() {
-		if (callInterceptors != null) {
-			return;
-		}
-		final Map<Class<?>, List<ICallInterceptorExtension>> precursor = new HashMap<Class<?>, List<ICallInterceptorExtension>>();
-		for (final ICallInterceptorExtension callInterceptorExtension : callInterceptorExtensions) {
-			List<ICallInterceptorExtension> list = precursor.get(callInterceptorExtension.getServiceInterface());
-			if (list == null) {
-				list = new ArrayList<ICallInterceptorExtension>();
-				precursor.put(callInterceptorExtension.getServiceInterface(), list);
-			}
-			list.add(callInterceptorExtension);
-		}
-
-		callInterceptors = new HashMap<Class<?>, Iterable<Class<?>>>();
-		for (final Entry<Class<?>, List<ICallInterceptorExtension>> entry : precursor.entrySet()) {
-			final Orderer<Class<?>> orderer = new Orderer<Class<?>>();
-			for (final ICallInterceptorExtension extension : entry.getValue()) {
-				orderer.add(extension.getCallInterceptorClass(), extension.getName(), extension.getPreInterceptors(),
-						extension.getPostInterceptors());
-			}
-			callInterceptors.put(entry.getKey(), Iter.ableReverse(orderer.getOrderedObjects()));
-		}
+	/**
+	 * @since 4.0
+	 */
+	@InjectExtension
+	public synchronized void update(final ICallInterceptorExtension[] callInterceptorExtensions) {
+		this.callInterceptorExtensions = callInterceptorExtensions;
+		callInterceptors = null;
+		callInterceptorsRaw = null;
+		callInterceptorsReified = false;
 	}
 
 	private IRemoteServiceReference createLazyProxy(final RemoteServiceDescription rsd) {
