@@ -698,7 +698,10 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		public void widgetSelected(final SelectionEvent e) {
 			if (isOutputOnly()) {
 				// undo user selection when "output only"
-				getTableViewer().setSelection(new StructuredSelection(getSelection()));
+				final AbstractTableViewer tableViewer = getTableViewer();
+				if (tableViewer != null) {
+					tableViewer.setSelection(new StructuredSelection(getSelection()));
+				}
 			} else if (SelectionType.SINGLE.equals(getSelectionType())) {
 				if (getUiSelectionCount() > 1) {
 					Assert.isTrue(e.widget == getUIControl());
