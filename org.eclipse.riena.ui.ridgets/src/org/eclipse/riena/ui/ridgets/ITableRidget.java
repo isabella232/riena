@@ -106,7 +106,8 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	void refresh(Object node);
 
 	/**
-	 * Set the {@link ColumnFormatter} to be used for the column at columnIndex.
+	 * Set the {@link IColumnFormatter} to be used for the column at
+	 * columnIndex.
 	 * <p>
 	 * Note: changing column formatters on a table ridget that is already bound
 	 * to a model, requires calling {@link #updateFromModel()} to apply the new
@@ -120,6 +121,13 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 *            formatter from the selected column
 	 */
 	void setColumnFormatter(int columnIndex, IColumnFormatter formatter);
+
+	/**
+	 * Remove the {@link IColumnFormatter} of all columns.
+	 * 
+	 * @see #setColumnFormatter
+	 */
+	void clearColumnFormatters();
 
 	/**
 	 * Adjust the column widths of the ridget's table control according to the

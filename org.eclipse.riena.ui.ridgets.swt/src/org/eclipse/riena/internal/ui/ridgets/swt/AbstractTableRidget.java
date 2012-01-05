@@ -318,6 +318,10 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		formatterMap.put(key, formatter);
 	}
 
+	public void clearColumnFormatters() {
+		formatterMap.clear();
+	}
+
 	private IColumnFormatter[] getColumnFormatters(final int numColumns) {
 		Assert.isLegal(numColumns >= 0);
 		final IColumnFormatter[] result = new IColumnFormatter[numColumns];
