@@ -812,6 +812,38 @@ public class TableRidgetTest extends AbstractTableListRidgetTest {
 		assertEquals(lastName, table.getItem(0).getText(1));
 	}
 
+	/**
+	 * Tests the method {@code clearColumnFormatters()}.
+	 */
+	public void testClearColumnFormatters() {
+
+		final TableRidget ridget = getRidget();
+		final IColumnFormatter formatter = new ColumnFormatter() {
+			@Override
+			public String getText(final Object element) {
+				return "dummy"; //$NON-NLS-1$
+			}
+		};
+
+		ridget.setColumnFormatter(1, formatter);
+
+		IColumnFormatter[] retFormatters = ReflectionUtils.invokeHidden(ridget,
+				"getColumnFormatters", ridget.getColumnCount()); //$NON-NLS-1$
+		assertNotNull(retFormatters);
+		assertEquals(ridget.getColumnCount(), retFormatters.length);
+		assertNull(retFormatters[0]);
+		assertNotNull(retFormatters[1]);
+		assertSame(formatter, retFormatters[1]);
+
+		ridget.clearColumnFormatters();
+		retFormatters = ReflectionUtils.invokeHidden(ridget, "getColumnFormatters", ridget.getColumnCount()); //$NON-NLS-1$
+		assertNotNull(retFormatters);
+		assertEquals(ridget.getColumnCount(), retFormatters.length);
+		assertNull(retFormatters[0]);
+		assertNull(retFormatters[1]);
+
+	}
+
 	public void testAddSelectionListener() {
 		final TableRidget ridget = getRidget();
 		final Table control = getWidget();
