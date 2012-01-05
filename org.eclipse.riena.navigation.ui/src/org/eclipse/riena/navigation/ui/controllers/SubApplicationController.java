@@ -149,6 +149,11 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 			return;
 		}
 		try {
+			if (!definition.isRequiredPreparation()) {
+				final String message = String
+						.format("controller for class %s will be prepared, although required preparation flag is not set", definition.getControllerClass()); //$NON-NLS-1$ 
+				LOGGER.log(LogService.LOG_WARNING, message);
+			}
 			final SubModuleController controller = (SubModuleController) definition.createController();
 			controller.setNavigationNode(source);
 			source.setNavigationNodeController(controller);

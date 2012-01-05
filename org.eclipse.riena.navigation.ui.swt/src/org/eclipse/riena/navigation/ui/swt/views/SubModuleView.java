@@ -490,16 +490,18 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		Assert.isNotNull(node.getNodeId().getTypeId(), "navigation node type id must not be null"); //$NON-NLS-1$
 
 		// consult workarea manager
-		SubModuleController controller = null;
-		final IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(node);
-		if (def != null) {
-			try {
-				controller = (SubModuleController) def.createController();
-			} catch (final Exception ex) {
-				final String message = String
-						.format("cannnot create controller for class %s", def.getControllerClass()); //$NON-NLS-1$ 
-				LOGGER.log(LogService.LOG_ERROR, message, ex);
-				throw new InvocationTargetFailure(message, ex);
+		SubModuleController controller = getController();
+		if (controller == null) {
+			final IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(node);
+			if (def != null) {
+				try {
+					controller = (SubModuleController) def.createController();
+				} catch (final Exception ex) {
+					final String message = String.format(
+							"cannnot create controller for class %s", def.getControllerClass()); //$NON-NLS-1$ 
+					LOGGER.log(LogService.LOG_ERROR, message, ex);
+					throw new InvocationTargetFailure(message, ex);
+				}
 			}
 		}
 		if (controller != null) {
