@@ -126,6 +126,7 @@ public interface ITableRidget extends ISelectableIndexedRidget, ISortableByColum
 	 * Remove the {@link IColumnFormatter} of all columns.
 	 * 
 	 * @see #setColumnFormatter
+	 * @since 4.0
 	 */
 	void clearColumnFormatters();
 

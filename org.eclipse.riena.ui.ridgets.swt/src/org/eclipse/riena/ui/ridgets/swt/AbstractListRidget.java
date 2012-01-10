@@ -262,6 +262,7 @@ public abstract class AbstractListRidget extends AbstractSelectableIndexedRidget
 	 * 
 	 * @throws UnsupportedOperationException
 	 *             this is not supported by this ridget
+	 * @since 4.0
 	 */
 	public void clearColumnFormatters() {
 		throw new UnsupportedOperationException();
