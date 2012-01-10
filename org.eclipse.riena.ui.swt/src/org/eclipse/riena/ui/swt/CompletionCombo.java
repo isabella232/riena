@@ -1418,6 +1418,7 @@ public abstract class CompletionCombo extends Composite {
 			setImage(index);
 			text.setText(getItem(list, index));
 			defaultTextSelection();
+			//setSelection(list, index);
 			Event e = new Event();
 			e.time = event.time;
 			e.stateMask = event.stateMask;
