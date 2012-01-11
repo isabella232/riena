@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.ui.workarea;
 
+import org.eclipse.riena.core.wire.Wire;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 import org.eclipse.riena.ui.ridgets.controller.IControllerFactory;
 
@@ -63,9 +64,6 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 		this.viewId = viewId;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Class<? extends IController> getControllerClass() {
 		return controllerClass;
 	}
@@ -79,32 +77,25 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	public IController createController() throws IllegalAccessException, InstantiationException {
 
 		if (getControllerClass() != null) {
-			return getControllerClass().newInstance();
-		} else {
-			if (controllerFactory != null) {
-				return controllerFactory.createController();
-			}
-			return null;
+			final IController controller = getControllerClass().newInstance();
+			// It is necessary to explicitly wire the controller here, because the controller is not created from an extension interface, which would do the wiring by default.
+			Wire.instance(controller).andStart();
+			return controller;
+		} else if (controllerFactory != null) {
+			return controllerFactory.createController();
 		}
+		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Object getViewId() {
 		return viewId;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public boolean isViewShared() {
 		return viewShared;
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
 	 * @since 2.0
 	 */
 	public boolean isRequiredPreparation() {
@@ -112,8 +103,6 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
 	 * @since 2.0
 	 */
 	public void setViewShared(final boolean shared) {
@@ -121,8 +110,6 @@ public class WorkareaDefinition implements IWorkareaDefinition {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * 
 	 * @since 2.0
 	 */
 	public void setRequiredPreparation(final boolean required) {
