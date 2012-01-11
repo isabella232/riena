@@ -52,7 +52,7 @@
 
 
 	<properties>
-		<orbit-target>http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/</orbit-target>
+		<orbit-target>http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository</orbit-target>
 		<indigo-site>http://download.eclipse.org/releases/indigo/</indigo-site>
 		<prebuild-site>file:/${basedir}/../org.eclipse.riena.build3/prebuild</prebuild-site>
 		<project-build-sourceEncoding>UTF-8</project-build-sourceEncoding>
