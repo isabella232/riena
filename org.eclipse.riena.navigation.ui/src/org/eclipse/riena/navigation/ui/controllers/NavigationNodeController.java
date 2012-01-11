@@ -30,6 +30,7 @@ import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.annotation.processor.NavigationNodeControllerAnnotationProcessor;
 import org.eclipse.riena.navigation.common.TypecastingObject;
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
+import org.eclipse.riena.navigation.ui.SubModuleUtils;
 import org.eclipse.riena.ui.core.context.IContext;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
@@ -227,26 +228,28 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 			return ridget;
 		}
 		// if (RienaStatus.isTest()) {
-		try {
-			if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
-				final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(
-						ridgetClazz);
-				if (mappedRidgetClazz != null) {
-					ridget = mappedRidgetClazz.newInstance();
+		if (!SubModuleUtils.isPrepareView()) {
+			try {
+				if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
+					final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(
+							ridgetClazz);
+					if (mappedRidgetClazz != null) {
+						ridget = mappedRidgetClazz.newInstance();
+					}
+					Assert.isNotNull(
+							ridget,
+							"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+				} else {
+					ridget = ridgetClazz.newInstance();
 				}
-				Assert.isNotNull(
-						ridget,
-						"Could not find a corresponding implementation for " + ridgetClazz.getName() + " in " + ClassRidgetMapper.class.getName()); //$NON-NLS-1$ //$NON-NLS-2$
-			} else {
-				ridget = ridgetClazz.newInstance();
+			} catch (final InstantiationException e) {
+				throw new RuntimeException(e);
+			} catch (final IllegalAccessException e) {
+				throw new RuntimeException(e);
 			}
-		} catch (final InstantiationException e) {
-			throw new RuntimeException(e);
-		} catch (final IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
 
-		addRidget(id, ridget);
+			addRidget(id, ridget);
+		}
 		// }
 
 		return ridget;
