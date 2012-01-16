@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
 
+import org.eclipse.riena.core.RienaStatus;
 import org.eclipse.riena.core.marker.IMarker;
 import org.eclipse.riena.navigation.INavigationContext;
 import org.eclipse.riena.navigation.INavigationNode;
@@ -227,8 +228,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 		if (ridget != null) {
 			return ridget;
 		}
-		// if (RienaStatus.isTest()) {
-		if (!SubModuleUtils.isPrepareView()) {
+		if (!SubModuleUtils.isPrepareView() || RienaStatus.isTest()) {
 			try {
 				if (ridgetClazz.isInterface() || Modifier.isAbstract(ridgetClazz.getModifiers())) {
 					final Class<R> mappedRidgetClazz = (Class<R>) ClassRidgetMapper.getInstance().getRidgetClass(
@@ -250,7 +250,6 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 
 			addRidget(id, ridget);
 		}
-		// }
 
 		return ridget;
 	}
