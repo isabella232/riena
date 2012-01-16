@@ -14,6 +14,7 @@ import org.eclipse.riena.core.injector.extension.DefaultValue;
 import org.eclipse.riena.core.injector.extension.DoNotReplaceSymbols;
 import org.eclipse.riena.core.injector.extension.ExtensionInterface;
 import org.eclipse.riena.core.injector.extension.MapName;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
  * Interface for a SubModuleNode extension that defines how to create a node or
@@ -39,13 +40,14 @@ public interface ISubModuleNodeExtension extends INodeExtension {
 	String getIcon();
 
 	/**
-	 * Returns the controller that controls the UI widgets in the view through
-	 * Ridgets.
+	 * Returns the controller factory that creates the control for the UI
+	 * widgets in the view through Ridgets.
 	 * 
-	 * @return controller of the sub module
+	 * @since 4.0
+	 * 
+	 * @return controller factory of the sub module
 	 */
-	@SuppressWarnings("rawtypes")
-	Class getController();
+	IController createController();
 
 	/**
 	 * Returns (for the SWT-based Riena UI) the ID of the view associated with

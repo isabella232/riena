@@ -12,6 +12,7 @@ package org.eclipse.riena.navigation.extension;
 
 import org.eclipse.riena.navigation.ISubModuleNodeExtension;
 import org.eclipse.riena.ui.ridgets.controller.IController;
+import org.eclipse.riena.ui.ridgets.controller.IControllerFactory;
 
 /**
  * Implementation of the interface {@code ISubModuleNode2Extension}. This is
@@ -23,7 +24,7 @@ import org.eclipse.riena.ui.ridgets.controller.IController;
 public class SubModuleNode2Extension extends Node2Extension implements ISubModuleNode2Extension {
 
 	private String viewId;
-	private Class<? extends IController> controller;
+	private IControllerFactory controllerFactory;
 	private boolean sharedView;
 	private boolean selectable;
 	private boolean requiresPreparation;
@@ -56,8 +57,11 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 		return viewId;
 	}
 
-	public Class<? extends IController> getController() {
-		return controller;
+	/**
+	 * @since 4.0
+	 */
+	public IControllerFactory getControllerFactory() {
+		return controllerFactory;
 	}
 
 	/**
@@ -66,7 +70,7 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	 * @since 3.0
 	 */
 	public IController createController() throws InstantiationException, IllegalAccessException {
-		return controller.newInstance();
+		return controllerFactory.createController();
 	}
 
 	public boolean isSharedView() {
@@ -101,9 +105,10 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	 * 
 	 * @param controller
 	 *            controller of the sub module
+	 * @since 4.0
 	 */
-	public void setController(final Class<? extends IController> controller) {
-		this.controller = controller;
+	public void setControllerFactory(final IControllerFactory controllerFactory) {
+		this.controllerFactory = controllerFactory;
 	}
 
 	/**
