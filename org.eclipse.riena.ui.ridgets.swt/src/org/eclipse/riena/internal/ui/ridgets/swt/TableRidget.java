@@ -84,10 +84,12 @@ public class TableRidget extends AbstractTableRidget {
 
 	@Override
 	protected final void bindUIControl() {
-		super.bindUIControl();
 		final Table control = getUIControl();
 		if (control != null) {
-
+			control.removeAll();
+		}
+		super.bindUIControl();
+		if (control != null) {
 			columnResizeListener = new ControlListener() {
 				public void controlResized(final ControlEvent e) {
 					applyTableColumnHeaders();
@@ -123,7 +125,6 @@ public class TableRidget extends AbstractTableRidget {
 				facade.removeMouseTrackListener(control, tooltipManager);
 				facade.removeMouseMoveListener(control, tooltipManager);
 			}
-			control.removeAll();
 		}
 	}
 
