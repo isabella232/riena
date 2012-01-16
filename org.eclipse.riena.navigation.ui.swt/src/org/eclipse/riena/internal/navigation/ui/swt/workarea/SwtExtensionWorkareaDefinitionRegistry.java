@@ -186,15 +186,8 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 
 		// create and register view definition
 		final WorkareaDefinition def = new WorkareaDefinition(new IControllerFactory() {
-
 			public IController createController() {
-				try {
-					return subModuleExt.createController();
-				} catch (final InstantiationException e) {
-					throw new RuntimeException(e);
-				} catch (final IllegalAccessException e) {
-					throw new RuntimeException(e);
-				}
+				return subModuleExt.createController();
 			}
 		}, subModuleExt.getViewId());
 		def.setViewShared(subModuleExt.isSharedView());

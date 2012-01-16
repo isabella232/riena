@@ -54,11 +54,10 @@ public interface ISubModuleNode2Extension extends INode2Extension {
 	 * is called.
 	 * 
 	 * @return instance of sub module controller
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
+	 * 
 	 * @since 3.0
 	 */
-	IController createController() throws InstantiationException, IllegalAccessException;
+	IController createController();
 
 	/**
 	 * Indicates whether the view is shared i.e. whether one instance of the
