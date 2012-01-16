@@ -123,6 +123,7 @@ public class TableRidget extends AbstractTableRidget {
 				facade.removeMouseTrackListener(control, tooltipManager);
 				facade.removeMouseMoveListener(control, tooltipManager);
 			}
+			control.removeAll();
 		}
 	}
 
