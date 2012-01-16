@@ -24,6 +24,7 @@ import org.eclipse.riena.navigation.extension.IModuleGroupNode2Extension;
 import org.eclipse.riena.navigation.extension.IModuleNode2Extension;
 import org.eclipse.riena.navigation.extension.INavigationAssembly2Extension;
 import org.eclipse.riena.navigation.extension.ISubApplicationNode2Extension;
+import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
  * Tests of the class {@code AssembliesConverter}.
@@ -281,11 +282,6 @@ public class AssembliesConverterTest extends TestCase {
 						return null;
 					}
 
-					@SuppressWarnings("rawtypes")
-					public Class getController() {
-						return null;
-					}
-
 					public String getViewId() {
 						return null;
 					}
@@ -319,6 +315,10 @@ public class AssembliesConverterTest extends TestCase {
 					}
 
 					public INavigationAssemblyExtension[] getAssemblies() {
+						return null;
+					}
+
+					public IController createController() {
 						return null;
 					}
 				} };

@@ -25,6 +25,8 @@ import org.eclipse.riena.navigation.extension.ModuleNode2Extension;
 import org.eclipse.riena.navigation.extension.NavigationAssembly2Extension;
 import org.eclipse.riena.navigation.extension.SubApplicationNode2Extension;
 import org.eclipse.riena.navigation.extension.SubModuleNode2Extension;
+import org.eclipse.riena.ui.ridgets.controller.IController;
+import org.eclipse.riena.ui.ridgets.controller.IControllerFactory;
 
 /**
  * This utility class converts legacy assembly extension into new assembly(2).
@@ -142,7 +144,11 @@ public final class AssembliesConverter {
 
 	private static SubModuleNode2Extension convert(final ISubModuleNodeExtension nodeExt) {
 		final SubModuleNode2Extension node2Ext = new SubModuleNode2Extension();
-		node2Ext.setController(nodeExt.getController());
+		node2Ext.setControllerFactory(new IControllerFactory() {
+			public IController createController() {
+				return nodeExt.createController();
+			}
+		});
 		node2Ext.setRequiresPreparation(nodeExt.isRequiresPreparation());
 		node2Ext.setSelectable(nodeExt.isSelectable());
 		node2Ext.setSharedView(nodeExt.isShared());
@@ -153,5 +159,4 @@ public final class AssembliesConverter {
 		node2Ext.setChildNodes(convert(nodeExt.getChildNodes()));
 		return node2Ext;
 	}
-
 }
