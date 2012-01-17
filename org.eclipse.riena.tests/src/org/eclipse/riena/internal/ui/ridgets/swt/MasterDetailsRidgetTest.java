@@ -146,6 +146,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final Table table2 = mdComposite2.getTable();
 
 		assertEquals(0, table.getItemCount());
+		assertEquals(0, table2.getItemCount());
 
 		bindToModel(true);
 
