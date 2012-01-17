@@ -65,11 +65,9 @@ public class SubModuleNode2Extension extends Node2Extension implements ISubModul
 	}
 
 	/**
-	 * @throws IllegalAccessException
-	 * @throws InstantiationException
 	 * @since 3.0
 	 */
-	public IController createController() throws InstantiationException, IllegalAccessException {
+	public IController createController() {
 		return controllerFactory.createController();
 	}
 

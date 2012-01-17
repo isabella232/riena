@@ -72,12 +72,12 @@ public class SwtExtensionWorkareaDefinitionRegistryTest extends RienaTestCase {
 
 		workareaDefinitionRegistry.register(TEST_TYPE_ID, workareaDefinition);
 
-		final IWorkareaDefinition otherWorkareaDefinition = new WorkareaDefinition(TestSubModuleController.class,
+		final IWorkareaDefinition newWorkareaDefinition = new WorkareaDefinition(TestSubModuleController.class,
 				TEST_VIEW_ID);
-		workareaDefinitionRegistry.register(TEST_TYPE_ID, otherWorkareaDefinition);
+		workareaDefinitionRegistry.register(TEST_TYPE_ID, newWorkareaDefinition);
 
-		assertSame(workareaDefinition, workareaDefinitionRegistry.getDefinition(TEST_TYPE_ID));
-		assertNotSame(otherWorkareaDefinition, workareaDefinitionRegistry.getDefinition(TEST_TYPE_ID));
+		assertNotSame(workareaDefinition, workareaDefinitionRegistry.getDefinition(TEST_TYPE_ID));
+		assertSame(newWorkareaDefinition, workareaDefinitionRegistry.getDefinition(TEST_TYPE_ID));
 	}
 
 	public void testRegisterDifferentDefinitionSameTypeId() throws Exception {
