@@ -431,7 +431,6 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		}
 		applyColumnsMovable();
 		applyTableColumnHeaders();
-		applyComparator(comparatorMap);
 	}
 
 	private void configureViewer(final AbstractTableViewer viewer) {
@@ -440,6 +439,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		viewer.setLabelProvider(labelProvider);
 		viewer.setContentProvider(viewerCP);
 		viewer.setInput(viewerObservables);
+		applyComparator(comparatorMap);
 		viewConfigured = true;
 	}
 
