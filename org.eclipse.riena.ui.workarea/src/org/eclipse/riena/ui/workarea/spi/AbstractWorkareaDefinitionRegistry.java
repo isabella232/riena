@@ -21,18 +21,12 @@ import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
  */
 public abstract class AbstractWorkareaDefinitionRegistry implements IWorkareaDefinitionRegistry {
 
-	protected Map<Object, IWorkareaDefinition> workareas = new HashMap<Object, IWorkareaDefinition>();
+	protected final Map<Object, IWorkareaDefinition> workareas = new HashMap<Object, IWorkareaDefinition>();
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public IWorkareaDefinition getDefinition(final Object id) {
 		return workareas.get(id);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public IWorkareaDefinition register(final Object id, final IWorkareaDefinition definition) {
 		return internalRegister(id, definition);
 	}
@@ -48,8 +42,8 @@ public abstract class AbstractWorkareaDefinitionRegistry implements IWorkareaDef
 	 */
 	protected IWorkareaDefinition internalRegister(final Object id, final IWorkareaDefinition definition) {
 
-		if (getDefinition(id) != null) {
-			final IWorkareaDefinition existingDefinition = getDefinition(id);
+		final IWorkareaDefinition existingDefinition = getDefinition(id);
+		if (existingDefinition != null) {
 			if ((existingDefinition.getControllerClass() == null && definition.getControllerClass() != null)
 					|| (existingDefinition.getControllerClass() != null && !existingDefinition.getControllerClass()
 							.equals(definition.getControllerClass()))) {
@@ -72,13 +66,11 @@ public abstract class AbstractWorkareaDefinitionRegistry implements IWorkareaDef
 						"Inconsistent workarea definition: a definition for submodules with typeId=\"" + id //$NON-NLS-1$
 								+ "\" already exists and it has a different shared value."); //$NON-NLS-1$
 			}
-			return existingDefinition;
 		}
 
 		workareas.put(id, definition);
 
 		return definition;
-
 	}
 
 }

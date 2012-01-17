@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.navigation.ui.swt.workarea;
 
+import org.eclipse.riena.core.wire.InjectExtension;
 import org.eclipse.riena.navigation.INavigationAssemblyExtension;
 import org.eclipse.riena.navigation.extension.IModuleGroupNode2Extension;
 import org.eclipse.riena.navigation.extension.IModuleNode2Extension;
@@ -35,8 +36,8 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 	 * @param data
 	 *            extension of assemblies
 	 */
+	@InjectExtension(id = "assemblies")
 	public void update(final INavigationAssemblyExtension[] data) {
-		// workareas.clear();
 		for (final INavigationAssemblyExtension nodeDefinition : data) {
 			register(nodeDefinition);
 		}
@@ -50,10 +51,8 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 	 *            (legacy) assembly to register
 	 */
 	private void register(final INavigationAssemblyExtension assembly) {
-
 		final INavigationAssembly2Extension assembly2 = AssembliesConverter.convert(assembly);
 		register(assembly2);
-
 	}
 
 	/**
@@ -62,8 +61,8 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 	 * @param data
 	 *            extension of assemblies
 	 */
+	@InjectExtension(id = "assemblies2")
 	public void update(final INavigationAssembly2Extension[] data) {
-		//workareas.clear();
 		for (final INavigationAssembly2Extension nodeDefinition : data) {
 			register(nodeDefinition);
 		}
@@ -112,9 +111,6 @@ public class SwtExtensionWorkareaDefinitionRegistry extends AbstractWorkareaDefi
 				return;
 			}
 		}
-
-		//		throw new ExtensionPointFailure(
-		//				"'modulegroup', 'module' or 'submodule' element expected. ID=" + nodeDefinition.getTypeId()); //$NON-NLS-1$
 	}
 
 	/**
