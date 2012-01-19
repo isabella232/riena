@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.riena.internal.ui.ridgets.swt;
 
+import org.eclipse.riena.ui.ridgets.IModuleTitleBarRidget;
 import org.eclipse.riena.ui.swt.ModuleTitleBar;
 
 /**
  * Ridget for {@link ModuleTitleBarRidget}.
  */
-public class ModuleTitleBarRidget extends EmbeddedTitleBarRidget {
+public class ModuleTitleBarRidget extends EmbeddedTitleBarRidget implements IModuleTitleBarRidget {
 
 	/**
 	 * @see org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget#checkUIControl
