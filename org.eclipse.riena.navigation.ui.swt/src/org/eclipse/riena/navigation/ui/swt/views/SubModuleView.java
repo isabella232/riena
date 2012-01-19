@@ -52,6 +52,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.navigation.ui.SubModuleUtils;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.navigation.ui.swt.presentation.SwtViewProvider;
 import org.eclipse.riena.navigation.ui.swt.presentation.stack.TitlelessStackPresentation;
@@ -489,9 +490,12 @@ public abstract class SubModuleView extends ViewPart implements INavigationNodeV
 		Assert.isNotNull(node.getNodeId(), "navigation node id must not be null"); //$NON-NLS-1$
 		Assert.isNotNull(node.getNodeId().getTypeId(), "navigation node type id must not be null"); //$NON-NLS-1$
 
-		// consult workarea manager
-		SubModuleController controller = getController();
+		SubModuleController controller = null;
+		if (!SubModuleUtils.isPrepareView()) {
+			controller = getController();
+		}
 		if (controller == null) {
+			// consult workarea manager
 			final IWorkareaDefinition def = WorkareaManager.getInstance().getDefinition(node);
 			if (def != null) {
 				try {
