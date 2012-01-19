@@ -24,6 +24,7 @@ import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IRidget;
+import org.eclipse.riena.ui.ridgets.IShellRidget;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
 
 /**
@@ -196,7 +197,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	public IWindowRidget getWindowRidget() {
 		if (RienaStatus.isTest() && windowRidget == null) {
 			final Class<IWindowRidget> mappedRidgetClazz = (Class<IWindowRidget>) ClassRidgetMapper.getInstance()
-					.getRidgetClass(IWindowRidget.class);
+					.getRidgetClass(IShellRidget.class);
 			try {
 				if (mappedRidgetClazz != null) {
 					windowRidget = mappedRidgetClazz.newInstance();

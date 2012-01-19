@@ -361,7 +361,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @since 1.2
 	 */
 	protected void layout() {
-		final IWindowRidget ridget = getRidget(IWindowRidget.class, WINDOW_RIDGET);
+		final IWindowRidget ridget = getRidget(IEmbeddedTitleBarRidget.class, WINDOW_RIDGET);
 		ridget.layout();
 	}
 
