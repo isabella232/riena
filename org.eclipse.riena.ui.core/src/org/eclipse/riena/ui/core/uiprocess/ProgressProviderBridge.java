@@ -151,6 +151,7 @@ public class ProgressProviderBridge extends ProgressProvider {
 		public void done(final IJobChangeEvent event) {
 			final Job job = event.getJob();
 			jobToVisualizer.remove(job);
+			unregisterMapping(job);
 		}
 
 	}
