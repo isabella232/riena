@@ -31,6 +31,7 @@ import org.eclipse.riena.ui.ridgets.AbstractRidget;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IComplexRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
+import org.eclipse.riena.ui.ridgets.IEmbeddedTitleBarRidget;
 import org.eclipse.riena.ui.ridgets.IInfoFlyoutRidget;
 import org.eclipse.riena.ui.ridgets.IMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
@@ -178,7 +179,7 @@ public class SubModuleController extends NavigationNodeController<ISubModuleNode
 	 * @return the windowRidget
 	 */
 	public IWindowRidget getWindowRidget() {
-		return getRidget(IWindowRidget.class, WINDOW_RIDGET);
+		return getRidget(IEmbeddedTitleBarRidget.class, WINDOW_RIDGET);
 	}
 
 	/**

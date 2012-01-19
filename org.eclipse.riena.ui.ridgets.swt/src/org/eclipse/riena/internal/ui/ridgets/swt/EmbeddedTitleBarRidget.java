@@ -17,9 +17,9 @@ import org.eclipse.riena.core.util.ListenerList;
 import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
+import org.eclipse.riena.ui.ridgets.IEmbeddedTitleBarRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.IWindowRidget;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
 import org.eclipse.riena.ui.ridgets.swt.AbstractSWTRidget;
 import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
@@ -29,7 +29,7 @@ import org.eclipse.riena.ui.swt.IEmbeddedTitleBarListener;
 /**
  * Ridget for {@link EmbeddedTitleBar}.
  */
-public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IWindowRidget {
+public class EmbeddedTitleBarRidget extends AbstractSWTRidget implements IEmbeddedTitleBarRidget {
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 

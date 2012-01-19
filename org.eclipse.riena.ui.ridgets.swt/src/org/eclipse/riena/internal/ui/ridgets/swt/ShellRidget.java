@@ -22,7 +22,7 @@ import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
 import org.eclipse.riena.ui.ridgets.IDefaultActionManager;
 import org.eclipse.riena.ui.ridgets.IRidget;
-import org.eclipse.riena.ui.ridgets.IWindowRidget;
+import org.eclipse.riena.ui.ridgets.IShellRidget;
 import org.eclipse.riena.ui.ridgets.UIBindingFailure;
 import org.eclipse.riena.ui.ridgets.controller.AbstractWindowController;
 import org.eclipse.riena.ui.ridgets.listener.IWindowRidgetListener;
@@ -32,7 +32,7 @@ import org.eclipse.riena.ui.ridgets.swt.BasicMarkerSupport;
 /**
  * The ridget for a Shell control.
  */
-public class ShellRidget extends AbstractSWTWidgetRidget implements IWindowRidget {
+public class ShellRidget extends AbstractSWTWidgetRidget implements IShellRidget {
 
 	private boolean closeable;
 	private boolean titleAlreadyInitialized;
