@@ -307,6 +307,28 @@ public class TableRidget extends AbstractTableRidget {
 	}
 
 	@Override
+	protected void configureViewer(final AbstractTableViewer viewer) {
+		/**
+		 * As the viewer can be shared between multiple ridgets,
+		 * super.configureViewer will partly work on a dirty viewer state till
+		 * the whole new model is transferred to the viewer. (labelprovider,
+		 * attributeMap, contentProvider, ..). In the meantime the viewer should
+		 * not be refreshed to prevent errors as the consequence of this
+		 * inconsistency. Therefore we set a flag on the viewer signaling to
+		 * ignore refresh events. After the update of the viewer the flag is
+		 * erased.
+		 */
+		if (viewer instanceof TableRidgetTableViewer) {
+			((TableRidgetTableViewer) viewer).setAllowRefresh(false);
+		}
+		super.configureViewer(viewer);
+		if (viewer instanceof TableRidgetTableViewer) {
+			((TableRidgetTableViewer) viewer).setAllowRefresh(true);
+		}
+		viewer.refresh();
+	}
+
+	@Override
 	protected AbstractTableViewer createTableViewer() {
 		return new TableRidgetTableViewer(this);
 	}

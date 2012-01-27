@@ -113,9 +113,16 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 	 * Data the viewer is bound to. It is updated from modelObservables on
 	 * updateFromModel().
 	 */
-	private IObservableList viewerObservables;
+	protected IObservableList viewerObservables;
 	private Class<?> rowClass;
 	private boolean moveableColumns;
+
+	/**
+	 * @return the viewConfigured
+	 */
+	protected boolean isViewConfigured() {
+		return viewConfigured;
+	}
 
 	public AbstractTableRidget() {
 		isSortedAscending = true;
@@ -433,7 +440,7 @@ public abstract class AbstractTableRidget extends AbstractSelectableIndexedRidge
 		applyTableColumnHeaders();
 	}
 
-	private void configureViewer(final AbstractTableViewer viewer) {
+	protected void configureViewer(final AbstractTableViewer viewer) {
 		final ObservableListContentProvider viewerCP = new ObservableListContentProvider();
 		final TableRidgetLabelProvider labelProvider = createLabelProvider(viewerCP);
 		viewer.setLabelProvider(labelProvider);

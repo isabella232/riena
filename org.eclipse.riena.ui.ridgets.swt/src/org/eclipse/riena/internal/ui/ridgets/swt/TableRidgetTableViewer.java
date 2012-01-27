@@ -23,6 +23,8 @@ public class TableRidgetTableViewer extends TableViewer {
 
 	private final TableRidget tableRidget;
 
+	private boolean allowRefresh = true;
+
 	/**
 	 * Creates a table viewer on the SWT table that's binded with the given
 	 * Ridget.
@@ -42,6 +44,22 @@ public class TableRidgetTableViewer extends TableViewer {
 
 	public TableRidget getTableRidget() {
 		return tableRidget;
+	}
+
+	public void setAllowRefresh(final boolean allowRefresh) {
+		this.allowRefresh = allowRefresh;
+	}
+
+	@Override
+	public void refresh() {
+		if (!allowRefresh()) {
+			return;
+		}
+		super.refresh();
+	}
+
+	private boolean allowRefresh() {
+		return allowRefresh;
 	}
 
 }
