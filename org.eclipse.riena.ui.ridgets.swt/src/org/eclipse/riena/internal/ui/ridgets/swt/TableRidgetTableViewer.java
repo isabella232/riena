@@ -15,6 +15,8 @@ import org.eclipse.jface.viewers.ViewerRow;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Table;
 
+import org.eclipse.riena.ui.ridgets.ITableRidget;
+
 /**
  * A viewer of a SWT {@link Table} control that also know the corresponding
  * Ridget.
@@ -46,6 +48,18 @@ public class TableRidgetTableViewer extends TableViewer {
 		return tableRidget;
 	}
 
+	/**
+	 * Configures refresh behavior. If set to false, refresh requests will be
+	 * denied, otherwise allowed. This is useful if the viewer is shared between
+	 * different {@link ITableRidget} instances as bind/unbind logic can put the
+	 * viewer in a dirty state for a short period of time. While in dirty state,
+	 * there should happen no refreshing in the direction of the user interface.
+	 * This is when you would set the flag to false. After cleaning up (
+	 * reaching clean viewer state ) you should call this method with
+	 * allowRefresh=true and then explicitly call {@link TableViewer#refresh()}.
+	 * 
+	 * @param allowRefresh
+	 */
 	public void setAllowRefresh(final boolean allowRefresh) {
 		this.allowRefresh = allowRefresh;
 	}
@@ -58,7 +72,7 @@ public class TableRidgetTableViewer extends TableViewer {
 		super.refresh();
 	}
 
-	private boolean allowRefresh() {
+	protected boolean allowRefresh() {
 		return allowRefresh;
 	}
 
