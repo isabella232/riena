@@ -16,7 +16,8 @@ Require-Bundle: org.apache.log4j;resolution:=optional,
  org.eclipse.riena.security.server,
  org.eclipse.riena.security.services,
  org.eclipse.riena.security.ui,
- org.eclipse.nebula.widgets.grid
+ org.eclipse.nebula.widgets.grid,
+ org.eclipse.riena.navigation.ui
 Bundle-ActivationPolicy: lazy
 Eclipse-RegisterBuddy: org.eclipse.riena.security.common
 Export-Package: org.eclipse.riena,
