@@ -24,6 +24,7 @@ import org.eclipse.riena.ui.ridgets.IComplexRidget;
 import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
+import org.eclipse.riena.ui.ridgets.SubModuleUtils;
 
 /**
  * This class manages the binding between UI-control and ridget. In contrast to
@@ -67,7 +68,13 @@ public class DefaultBindingManager implements IBindingManager {
 		for (final Object control : uiControls) {
 			final String bindingProperty = propertyStrategy.locateBindingProperty(control);
 			if (bindingProperty != null) {
-				final IRidget ridget = createRidget(control);
+				IRidget ridget = null;
+				if (!SubModuleUtils.isPrepareView()) {
+					ridget = ridgetContainer.getRidget(bindingProperty);
+				}
+				if (ridget == null) {
+					ridget = createRidget(control);
+				}
 				injectRidget(ridgetContainer, bindingProperty, ridget);
 
 				//because the ridgets are not bound yet, we have to save the bindingProperty separately
@@ -96,7 +103,11 @@ public class DefaultBindingManager implements IBindingManager {
 			Wire.instance(ridgetContainer).andStart(Activator.getDefault().getContext());
 		}
 
-		ridgetContainer.configureRidgets();
+		if (!ridgetContainer.isConfigured() || SubModuleUtils.isPrepareView()) {
+			ridgetContainer.configureRidgets();
+			ridgetContainer.setConfigured(true);
+		}
+
 	}
 
 	/**

@@ -18,6 +18,8 @@ import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.navigation.ui.swt.views.SubModuleView;
@@ -61,6 +63,14 @@ public class SharedViewDemoSubModuleView extends SubModuleView {
 		GridDataFactory.fillDefaults().hint(200, SWT.DEFAULT).applyTo(txtLast);
 
 		UIControlsFactory.createButton(parent, "Default Button", "btnDefault"); //$NON-NLS-1$ //$NON-NLS-2$
+
+		final Table tablePersons = UIControlsFactory.createTable(parent,
+				SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION, "tablePersons"); //$NON-NLS-1$
+		tablePersons.setLinesVisible(true);
+		final TableColumn tac1 = new TableColumn(tablePersons, SWT.NONE);
+		tac1.setWidth(100);
+		final TableColumn tac2 = new TableColumn(tablePersons, SWT.NONE);
+		tac2.setWidth(70);
 	}
 
 	@Override

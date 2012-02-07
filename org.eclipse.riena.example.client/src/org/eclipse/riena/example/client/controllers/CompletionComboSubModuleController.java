@@ -23,6 +23,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.riena.beans.common.ListBean;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
+import org.eclipse.riena.ui.ridgets.ICompletionComboRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.swt.ColumnFormatter;
 import org.eclipse.riena.ui.swt.utils.ImageStore;
@@ -66,7 +67,7 @@ public class CompletionComboSubModuleController extends SubModuleController {
 		final ITextRidget textRidget = getRidget(ITextRidget.class, textId);
 		textRidget.setOutputOnly(true);
 
-		final IComboRidget result = getRidget(IComboRidget.class, comboId);
+		final IComboRidget result = getRidget(ICompletionComboRidget.class, comboId);
 		final WritableValue selection = new WritableValue() {
 			@Override
 			public void doSetValue(final Object value) {

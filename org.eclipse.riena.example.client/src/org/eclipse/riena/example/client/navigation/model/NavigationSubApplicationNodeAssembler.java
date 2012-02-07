@@ -62,18 +62,21 @@ public class NavigationSubApplicationNodeAssembler extends AbstractNavigationAss
 		ISubModuleNode subModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.customerDetail", "1.1.1.1"), "SubModule 1.1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		subModule.setIcon(ExampleIcons.ICON_FILE);
+		subModule.setClosable(true);
 		WorkareaManager.getInstance().registerDefinition(subModule, CustomerDetailSubModuleController.class,
 				CustomerDetailSubModuleView.ID, false);
 		module.addChild(subModule);
 
 		ISubModuleNode subModule2 = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.customerDetail", "1.1.1.1.1"), "SubModule 1.1.1.1.1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		subModule2.setClosable(true);
 		WorkareaManager.getInstance().registerDefinition(subModule2, CustomerDetailSubModuleController.class,
 				CustomerDetailSubModuleView.ID, false);
 		subModule.addChild(subModule2);
 
 		subModule2 = new SubModuleNode(
 				new NavigationNodeId("org.eclipse.riena.example.customerDetail", "1.1.1.1.2"), "SubModule 1.1.1.1.2"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		subModule2.setClosable(true);
 		WorkareaManager.getInstance().registerDefinition(subModule2, CustomerDetailSubModuleController.class,
 				CustomerDetailSubModuleView.ID, false);
 		subModule.addChild(subModule2);

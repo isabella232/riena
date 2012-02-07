@@ -10,13 +10,20 @@
  *******************************************************************************/
 package org.eclipse.riena.example.client.controllers;
 
+import org.eclipse.core.databinding.observable.list.WritableList;
+
 import org.eclipse.riena.beans.common.Person;
+import org.eclipse.riena.beans.common.PersonFactory;
+import org.eclipse.riena.beans.common.TypedComparator;
 import org.eclipse.riena.example.client.views.SharedViewDemoSubModuleView;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.ICompositeRidget;
+import org.eclipse.riena.ui.ridgets.ISelectableRidget;
+import org.eclipse.riena.ui.ridgets.ITableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 
 /**
@@ -45,11 +52,25 @@ public class SharedViewDemoSubModuleController extends SubModuleController {
 		txtLast.bindToModel(personBean, Person.PROPERTY_LASTNAME);
 
 		final IActionRidget btnDefault = getRidget(IActionRidget.class, "btnDefault"); //$NON-NLS-1$
-		addDefaultAction(getRidget("view"), btnDefault); //$NON-NLS-1$
+		addDefaultAction(getRidget(ICompositeRidget.class, "view"), btnDefault); //$NON-NLS-1$
 		btnDefault.addListener(new IActionListener() {
 			public void callback() {
 				System.out.println(btnDefault.getText() + " pushed."); //$NON-NLS-1$
 			}
 		});
+		final ITableRidget table = getRidget(ITableRidget.class, "tablePersons"); //$NON-NLS-1$
+		table.setSelectionType(ISelectableRidget.SelectionType.SINGLE);
+		final String[] colValues = new String[] { "lastname", "firstname" }; //$NON-NLS-1$ //$NON-NLS-2$
+		final String[] colHeaders = new String[] { "Last Name", "First Name" }; //$NON-NLS-1$ //$NON-NLS-2$
+		table.bindToModel(createPersonList(), Person.class, colValues, colHeaders);
+		table.updateFromModel();
+		table.setComparator(0, new TypedComparator<String>());
+		table.setComparator(1, new TypedComparator<String>());
+		table.setSortedColumn(1);
 	}
+
+	private WritableList createPersonList() {
+		return new WritableList(PersonFactory.createPersonList(), Person.class);
+	}
+
 }

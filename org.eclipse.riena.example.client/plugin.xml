@@ -434,6 +434,8 @@
             name="org.eclipse.riena.example.client.views.MarkerSubModuleWithAlternativeBackgroundView"
             restorable="true">
       </view>
+       <view allowMultiple="true" class="org.eclipse.riena.example.client.views.NodeView" id="org.eclipse.riena.example.client.views.NodeView" name="org.eclipse.riena.example.client.views.NodeView"/>
+       <view allowMultiple="true" class="org.eclipse.riena.example.client.views.DynamicSubmoduleView" id="org.eclipse.riena.example.client.views.DynamicSubmoduleView" name="org.eclipse.riena.example.client.views.DynamicSubmoduleView"/>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -1453,6 +1455,16 @@
                viewId="org.eclipse.riena.example.client.views.OnePersonSubModuleView">
          </subModule>
       </assembly2>
+        <assembly2 id="org.eclipse.riena.example.client.submoduleNavigationSubmodule.assembly" parentNodeId="application">
+            <subModule controller="org.eclipse.riena.example.client.controllers.DynamicSubmoduleController" expanded="false" name="DynamicSubmodule" nodeId="org.eclipse.riena.example.client.dynamicsubmodule.submodule" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.DynamicSubmoduleView" visible="true"/>
+        </assembly2>
+        <assembly2 id="org.eclipse.riena.example.playground.submoduleNavigation" name="org.eclipse.riena.example.playground.submoduleNavigation" parentNodeId="playground" startOrder="500">
+            <moduleGroup name="SubmoduleNavigationModuleGroup" nodeId="org.eclipse.riena.example.client.submoduleNavigationModuleGroup">
+                <module closable="true" name="Submodule with Submodules" nodeId="org.eclipse.riena.example.client.submoduleNavigationModule">
+                    <subModule controller="org.eclipse.riena.example.client.controllers.NodeController" expanded="true" name="Node" nodeId="org.eclipse.riena.example.client.subModuleNode" requiresPreparation="false" selectable="true" sharedView="false" viewId="org.eclipse.riena.example.client.views.NodeView" visible="true"/>
+                </module>
+            </moduleGroup>
+        </assembly2>
     </extension>
 <!--
     <extension

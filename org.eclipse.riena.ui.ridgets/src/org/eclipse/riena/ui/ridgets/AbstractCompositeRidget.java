@@ -36,6 +36,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	private Object uiControl;
 	private boolean markedHidden;
 	private boolean enabled;
+	private boolean configured = false;
 
 	private String toolTip = null;
 
@@ -116,7 +117,7 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 	 * @since 3.0
 	 */
 	protected boolean allowRidgetCreation() {
-		return RienaStatus.isTest();
+		return RienaStatus.isTest() || !SubModuleUtils.isPrepareView();
 	}
 
 	public Collection<? extends IRidget> getRidgets() {
@@ -361,6 +362,20 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		public void propertyChange(final PropertyChangeEvent evt) {
 			propertyChangeSupport.firePropertyChange(evt);
 		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setConfigured(final boolean configured) {
+		this.configured = configured;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isConfigured() {
+		return configured;
 	}
 
 }

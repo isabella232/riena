@@ -28,6 +28,7 @@ import org.eclipse.riena.navigation.NavigationNodeId;
 import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
+import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 public class SharedViewsNodeAssembler extends AbstractNavigationAssembler {
@@ -51,20 +52,23 @@ public class SharedViewsNodeAssembler extends AbstractNavigationAssembler {
 
 		final ISubModuleNode sharedViewSm1 = new SubModuleNode(
 				new NavigationNodeId(TYPE_ID_SHARED_VIEW, "1"), "Node 1 (shared)"); //$NON-NLS-1$ //$NON-NLS-2$ 
-		WorkareaManager.getInstance().registerDefinition(sharedViewSm1, SharedViewDemoSubModuleController.class,
-				SharedViewDemoSubModuleView.ID, true);
+		IWorkareaDefinition reg = WorkareaManager.getInstance().registerDefinition(sharedViewSm1,
+				SharedViewDemoSubModuleController.class, SharedViewDemoSubModuleView.ID, true);
+		reg.setRequiredPreparation(true);
 		sharedViewModule.addChild(sharedViewSm1);
 
 		final ISubModuleNode sharedViewSm2 = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.sharedViewNotShared", "2"), "Node 2 (not shared)"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		WorkareaManager.getInstance().registerDefinition(sharedViewSm2, SharedViewDemoSubModuleController.class,
+		reg = WorkareaManager.getInstance().registerDefinition(sharedViewSm2, SharedViewDemoSubModuleController.class,
 				SharedViewDemoSubModuleView.ID + "NotShared", false); //$NON-NLS-1$
+		reg.setRequiredPreparation(true);
 		sharedViewModule.addChild(sharedViewSm2);
 
 		final ISubModuleNode sharedViewSm3 = new SubModuleNode(
 				new NavigationNodeId(TYPE_ID_SHARED_VIEW, "3"), "Node 3 (shared)"); //$NON-NLS-1$ //$NON-NLS-2$ 
-		WorkareaManager.getInstance().registerDefinition(sharedViewSm3, SharedViewDemoSubModuleController.class,
+		reg = WorkareaManager.getInstance().registerDefinition(sharedViewSm3, SharedViewDemoSubModuleController.class,
 				SharedViewDemoSubModuleView.ID, true);
+		reg.setRequiredPreparation(true);
 		sharedViewModule.addChild(sharedViewSm3);
 
 		return new IModuleGroupNode[] { moduleGroup };

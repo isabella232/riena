@@ -187,6 +187,13 @@ public class InjectBindingManagerTest extends TestCase {
 		public void configureRidgets() {
 		}
 
+		public boolean isConfigured() {
+			return false;
+		}
+
+		public void setConfigured(final boolean configured) {
+		}
+
 	}
 
 }

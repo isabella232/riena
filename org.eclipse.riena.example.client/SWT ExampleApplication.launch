@@ -20,7 +20,7 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -clean -console -consolelog"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.registry.nulltoken=true -Driena.defaultlogging=true -Driena.application.height=800 -Driena.lnf.update.view=true"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.registry.nulltoken=true -Driena.defaultlogging=true -Driena.application.height=800 -Driena.lnf.update.view=true -Driena.prepare.view=false"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.eclipse.riena.sample.app.client.mail.product"/>
 <stringAttribute key="selectedPlugin" value="org.eclipse.ui.workbench"/>

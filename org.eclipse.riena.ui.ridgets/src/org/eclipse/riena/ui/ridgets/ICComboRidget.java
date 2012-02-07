@@ -11,10 +11,8 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * Ridget for a Shell.
- *
- * @since 4.0
+ * Ridget for a CCombo.
  */
-public interface IShellRidget extends IWindowRidget {
+public interface ICComboRidget extends IComboRidget {
 
 }

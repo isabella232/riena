@@ -107,6 +107,7 @@ import org.eclipse.riena.navigation.model.ModuleGroupNode;
 import org.eclipse.riena.navigation.model.ModuleNode;
 import org.eclipse.riena.navigation.model.SubModuleNode;
 import org.eclipse.riena.ui.core.marker.AttentionMarker;
+import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
 /**
@@ -399,6 +400,8 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 	 * @return folder sub-module
 	 */
 	private ISubModuleNode buildMasterDetailsNodes() {
+
+		final boolean prepare = true;
 		final WorkareaManager workarea = WorkareaManager.getInstance();
 
 		final ISubModuleNode result = new SubModuleNode(new NavigationNodeId(
@@ -407,32 +410,34 @@ public class PlaygroundNodeAssembler extends AbstractNavigationAssembler {
 
 		final ISubModuleNode mdSubModule = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.masterdetails"), "Master/Details"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(mdSubModule, MasterDetailsSubModuleController.class, MasterDetailsSubModuleView.ID,
-				false);
+		IWorkareaDefinition regDef = workarea.registerDefinition(mdSubModule, MasterDetailsSubModuleController.class,
+				MasterDetailsSubModuleView.ID, false);
+		regDef.setRequiredPreparation(prepare);
 		result.addChild(mdSubModule);
 
 		final ISubModuleNode mdSubModule2 = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.masterdetails2"), "Master/Details II"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(mdSubModule2, MasterDetailsSubModuleController2.class,
+		regDef = workarea.registerDefinition(mdSubModule2, MasterDetailsSubModuleController2.class,
 				MasterDetailsSubModuleView2.ID, false);
 		result.addChild(mdSubModule2);
 
 		final ISubModuleNode mdSubModule3 = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.masterdetails3"), "Master/Details III"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(mdSubModule3, MasterDetailsSubModuleController3.class,
+		regDef = workarea.registerDefinition(mdSubModule3, MasterDetailsSubModuleController3.class,
 				MasterDetailsSubModuleView3.ID, false);
 		result.addChild(mdSubModule3);
 
 		final ISubModuleNode mdSubModule4 = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.masterdetails4"), "Master/Details IV"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(mdSubModule4, MasterDetailsSubModuleController4.class,
+		regDef = workarea.registerDefinition(mdSubModule4, MasterDetailsSubModuleController4.class,
 				MasterDetailsSubModuleView4.ID, false);
 		result.addChild(mdSubModule4);
 
 		final ISubModuleNode mdSubModule5 = new SubModuleNode(new NavigationNodeId(
 				"org.eclipse.riena.example.masterdetails5"), "Master/Details V"); //$NON-NLS-1$ //$NON-NLS-2$
-		workarea.registerDefinition(mdSubModule5, MasterDetailsSubModuleController5.class,
+		regDef = workarea.registerDefinition(mdSubModule5, MasterDetailsSubModuleController5.class,
 				MasterDetailsSubModuleView5.ID, false);
+		regDef.setRequiredPreparation(prepare);
 		result.addChild(mdSubModule5);
 
 		return result;

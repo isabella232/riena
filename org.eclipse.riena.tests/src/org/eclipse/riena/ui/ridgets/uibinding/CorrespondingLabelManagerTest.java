@@ -230,5 +230,12 @@ public class CorrespondingLabelManagerTest extends TestCase {
 		public <R extends IRidget> R getRidget(final Class<R> ridgetClazz, final String id) {
 			return getRidget(id);
 		}
+
+		public boolean isConfigured() {
+			return false;
+		}
+
+		public void setConfigured(final boolean configured) {
+		}
 	}
 }
