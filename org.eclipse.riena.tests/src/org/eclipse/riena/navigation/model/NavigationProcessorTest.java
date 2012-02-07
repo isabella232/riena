@@ -49,7 +49,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 @NonUITestCase
 public class NavigationProcessorTest extends RienaTestCase {
 
-	private static final String TARGET_MODULE_GROUP = "org.eclipse.riena.navigation.model.test.moduleGroup.2";
+	private static final String TARGET_MODULE_GROUP = "org.eclipse.riena.navigation.model.test.moduleGroup.2"; //$NON-NLS-1$
 	private NavigationProcessor navigationProcessor;
 	private IApplicationNode applicationNode;
 	private ISubApplicationNode subApplication;
@@ -71,29 +71,29 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	private void initializeNavigationStructure() {
 		applicationNode = new ApplicationNode(new NavigationNodeId(
-				"org.eclipse.riena.navigation.model.test.application"));
+				"org.eclipse.riena.navigation.model.test.application")); //$NON-NLS-1$
 		navigationProcessor = new NavigationProcessor();
 		applicationNode.setNavigationProcessor(navigationProcessor);
 
 		subApplication = new SubApplicationNode(new NavigationNodeId(
-				"org.eclipse.riena.navigation.model.test.subApplication"));
+				"org.eclipse.riena.navigation.model.test.subApplication")); //$NON-NLS-1$
 		applicationNode.addChild(subApplication);
-		moduleGroup = new ModuleGroupNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.moduleGroup"));
+		moduleGroup = new ModuleGroupNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.moduleGroup")); //$NON-NLS-1$
 		subApplication.addChild(moduleGroup);
 		moduleGroup2 = new ModuleGroupNode(new NavigationNodeId(TARGET_MODULE_GROUP));
 		subApplication.addChild(moduleGroup2);
 
-		module = new ModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.module"));
+		module = new ModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.module")); //$NON-NLS-1$
 		moduleGroup.addChild(module);
-		module2 = new ModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.module.2"));
+		module2 = new ModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.module.2")); //$NON-NLS-1$
 		moduleGroup.addChild(module2);
-		subModule1 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule"));
+		subModule1 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule")); //$NON-NLS-1$
 		module.addChild(subModule1);
-		subModule2 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2"));
+		subModule2 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2")); //$NON-NLS-1$
 		module.addChild(subModule2);
-		subModule3 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule3"));
+		subModule3 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule3")); //$NON-NLS-1$
 		module.addChild(subModule3);
-		subModule4 = new TestSubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule4"));
+		subModule4 = new TestSubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule4")); //$NON-NLS-1$
 		module2.addChild(subModule4);
 	}
 
@@ -115,7 +115,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		EasyMock.expect(ridgetStub.hasFocus()).andReturn(true);
 		EasyMock.replay(ridgetStub);
 
-		final String ridgetId = "myRidget";
+		final String ridgetId = "myRidget"; //$NON-NLS-1$
 
 		// create a NavigationNodeControllerStub that returns the IRidgetMock
 		final NavigationNodeController<ISubModuleNode> nodeControllerStub = new NavigationNodeController<ISubModuleNode>() {
@@ -132,7 +132,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 		navigationProcessor.activate(subApplication);
 		navigationProcessor.navigate(subApplication, new NavigationNodeId(
-				"org.eclipse.riena.navigation.model.test.subModule"), new NavigationArgument(null, ridgetId));
+				"org.eclipse.riena.navigation.model.test.subModule"), new NavigationArgument(null, ridgetId)); //$NON-NLS-1$
 		//		assertTrue(subModule.isActivated());
 		//		assertTrue(ridgetStub.hasFocus());
 		//
@@ -174,8 +174,8 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	class DummyJumpTargetListener implements IJumpTargetListener {
 
-		IJumpTargetListener.JumpTargetState jumpTargetState;
-		INavigationNode<?> node;
+		private IJumpTargetListener.JumpTargetState jumpTargetState;
+		private INavigationNode<?> node;
 
 		DummyJumpTargetListener() {
 			reset();
@@ -198,7 +198,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		final DummyJumpTargetListener listener = new DummyJumpTargetListener();
 		subModule1.activate();
 		subModule2.addJumpTargetListener(listener);
-		subModule1.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2"));
+		subModule1.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2")); //$NON-NLS-1$
 		assertSame(subModule2, listener.node);
 		assertSame(IJumpTargetListener.JumpTargetState.ENABLED, listener.jumpTargetState);
 		listener.reset();
@@ -209,20 +209,20 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertSame(IJumpTargetListener.JumpTargetState.DISABLED, listener.jumpTargetState);
 		assertFalse(subModule2.isJumpTarget());
 		assertTrue(subModule1.isActivated());
-		subModule1.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2"));
-		subModule2.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule3"));
+		subModule1.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2")); //$NON-NLS-1$
+		subModule2.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule3")); //$NON-NLS-1$
 		assertTrue(subModule3.isActivated());
 		subModule2.dispose();
 		subModule3.jumpBack();
 		assertTrue(subModule3.isActivated());
 
-		subModule2 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2"));
+		subModule2 = new SubModuleNode(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2")); //$NON-NLS-1$
 		module.addChild(subModule2);
 
 		subModule1.activate();
-		subModule1.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2"));
-		subModule2.navigate(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule3"));
-		subModule3.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2"));
+		subModule1.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2")); //$NON-NLS-1$
+		subModule2.navigate(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule3")); //$NON-NLS-1$
+		subModule3.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.subModule2")); //$NON-NLS-1$
 		subModule2.jumpBack();
 		assertTrue(subModule3.isActivated());
 
@@ -230,7 +230,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 	public void testDeepJump() throws Exception {
 		subModule1.activate();
-		subModule1.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.module.2"));
+		subModule1.jump(new NavigationNodeId("org.eclipse.riena.navigation.model.test.module.2")); //$NON-NLS-1$
 		assertTrue(module2.isJumpTarget());
 		assertTrue(subModule4.isJumpTarget());
 		assertTrue(subModule4.isActivated());
@@ -243,19 +243,18 @@ public class NavigationProcessorTest extends RienaTestCase {
 	/**
 	 * Tests the <i>private</i> method {@code getActivatableNodes}.
 	 */
-
 	public void testGetActivatableNodes() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
+		NavigationNodeId id = new NavigationNodeId("4711"); //$NON-NLS-1$
 		final SubModuleNode node = new SubModuleNode(id);
 		node.setNavigationProcessor(navigationProcessor);
-		id = new NavigationNodeId("0815");
+		id = new NavigationNodeId("0815"); //$NON-NLS-1$
 		final SubModuleNode node2 = new SubModuleNode(id);
 		node2.setNavigationProcessor(navigationProcessor);
-		id = new NavigationNodeId("node3");
+		id = new NavigationNodeId("node3"); //$NON-NLS-1$
 		final SubModuleNode node3 = new SubModuleNode(id);
 		node3.setNavigationProcessor(navigationProcessor);
-		id = new NavigationNodeId("node4");
+		id = new NavigationNodeId("node4"); //$NON-NLS-1$
 		final SubModuleNode node4 = new SubModuleNode(id);
 		node4.setNavigationProcessor(navigationProcessor);
 		final List<INavigationNode<?>> nodes = new ArrayList<INavigationNode<?>>();
@@ -265,7 +264,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		nodes.add(node4);
 
 		List<INavigationNode<?>> activateableNodes = ReflectionUtils.invokeHidden(navigationProcessor,
-				"getActivatableNodes", nodes);
+				"getActivatableNodes", nodes); //$NON-NLS-1$
 		assertTrue(activateableNodes.size() == 4);
 		assertTrue(activateableNodes.contains(node));
 		assertTrue(activateableNodes.contains(node2));
@@ -275,7 +274,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		node2.addMarker(new DisabledMarker());
 		node3.addMarker(new HiddenMarker());
 		node3.addMarker(new OutputMarker());
-		activateableNodes = ReflectionUtils.invokeHidden(navigationProcessor, "getActivatableNodes", nodes);
+		activateableNodes = ReflectionUtils.invokeHidden(navigationProcessor, "getActivatableNodes", nodes); //$NON-NLS-1$
 		assertTrue(activateableNodes.size() == 2);
 		assertTrue(activateableNodes.contains(node));
 		assertFalse(activateableNodes.contains(node2));
@@ -285,55 +284,102 @@ public class NavigationProcessorTest extends RienaTestCase {
 	}
 
 	/**
+	 * Tests the <i>private</i> method
+	 * {@code getNodesToActivateOnDispose(INavigationNode<?>)}.
+	 */
+	public void testGetNodesToActivateOnDispose() {
+
+		final ModuleGroupNode mg1 = new ModuleGroupNode(new NavigationNodeId("mg1")); //$NON-NLS-1$
+		final ModuleNode m1 = new ModuleNode(new NavigationNodeId("m1")); //$NON-NLS-1$
+		final SubModuleNode sm1 = new SubModuleNode(new NavigationNodeId("sm1")); //$NON-NLS-1$
+		final SubModuleNode sm11 = new SubModuleNode(new NavigationNodeId("sm11")); //$NON-NLS-1$
+		final SubModuleNode sm12 = new SubModuleNode(new NavigationNodeId("sm12")); //$NON-NLS-1$
+
+		mg1.addChild(m1);
+		m1.addChild(sm1);
+		sm1.addChild(sm11);
+		sm1.addChild(sm12);
+
+		List<INavigationNode<?>> nodes = ReflectionUtils.invokeHidden(navigationProcessor,
+				"getNodesToActivateOnDispose", sm12); //$NON-NLS-1$
+		assertEquals(0, nodes.size());
+
+		sm12.activate();
+		nodes = ReflectionUtils.invokeHidden(navigationProcessor, "getNodesToActivateOnDispose", sm12); //$NON-NLS-1$
+		assertNotNull(nodes);
+		assertEquals(1, nodes.size());
+		assertSame(sm11, nodes.get(0));
+
+		sm11.activate();
+		nodes = ReflectionUtils.invokeHidden(navigationProcessor, "getNodesToActivateOnDispose", sm11); //$NON-NLS-1$
+		assertNotNull(nodes);
+		assertEquals(1, nodes.size());
+		assertSame(sm12, nodes.get(0));
+
+		sm1.removeChild(sm12);
+		nodes = ReflectionUtils.invokeHidden(navigationProcessor, "getNodesToActivateOnDispose", sm11); //$NON-NLS-1$
+		assertNotNull(nodes);
+		assertEquals(1, nodes.size());
+		assertSame(sm1, nodes.get(0));
+
+		// TODO
+		sm1.setSelectable(false);
+		nodes = ReflectionUtils.invokeHidden(navigationProcessor, "getNodesToActivateOnDispose", sm11); //$NON-NLS-1$
+		assertNotNull(nodes);
+		assertEquals(0, nodes.size());
+
+	}
+
+	/**
 	 * Tests the <i>private</i> method {@code getChildToActivate}.
 	 */
 	public void testGetChildToActivate() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
+		NavigationNodeId id = new NavigationNodeId("4711"); //$NON-NLS-1$
 		final SubModuleNode node = new SubModuleNode(id);
 
-		INavigationNode<?> toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", node);
+		INavigationNode<?> toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", node); //$NON-NLS-1$
 		assertNull(toActivate);
 
-		id = new NavigationNodeId("m1");
+		id = new NavigationNodeId("m1"); //$NON-NLS-1$
 		final ModuleNode moduleNode = new ModuleNode(id);
 
-		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleNode);
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleNode); //$NON-NLS-1$
 		assertNull(toActivate);
 
 		moduleNode.addChild(node);
-		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleNode);
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleNode); //$NON-NLS-1$
 		assertSame(node, toActivate);
 
-		id = new NavigationNodeId("sm2");
+		id = new NavigationNodeId("sm2"); //$NON-NLS-1$
 		final SubModuleNode node2 = new SubModuleNode(id);
 		moduleNode.addChild(node2);
-		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleNode);
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleNode); //$NON-NLS-1$
 		assertSame(node, toActivate);
 
 		node2.setSelected(true);
-		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleNode);
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleNode); //$NON-NLS-1$
 		assertSame(node2, toActivate);
 
-		id = new NavigationNodeId("mg1");
+		id = new NavigationNodeId("mg1"); //$NON-NLS-1$
 		final ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
 		moduleGroupNode.setNavigationProcessor(navigationProcessor);
 		moduleGroupNode.addChild(moduleNode);
-		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleGroupNode);
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleGroupNode); //$NON-NLS-1$
 		assertSame(moduleNode, toActivate);
 
 		final DisabledMarker disabledMarker = new DisabledMarker();
 		moduleNode.addMarker(disabledMarker);
-		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleGroupNode);
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleGroupNode); //$NON-NLS-1$
 		assertNull(toActivate);
 
 		moduleNode.removeAllMarkers();
 		moduleNode.addMarker(new OutputMarker());
-		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleGroupNode);
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleGroupNode); //$NON-NLS-1$
 		assertSame(moduleNode, toActivate);
 
 		moduleNode.addMarker(new HiddenMarker());
-		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleGroupNode);
+		toActivate = ReflectionUtils.invokeHidden(navigationProcessor, "getChildToActivate", moduleGroupNode); //$NON-NLS-1$
 		assertNull(toActivate);
 
 	}
@@ -343,21 +389,21 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testDispose() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
+		NavigationNodeId id = new NavigationNodeId("4711"); //$NON-NLS-1$
 		final TestSubModuleNode node = new TestSubModuleNode(id);
 
-		id = new NavigationNodeId("0815");
+		id = new NavigationNodeId("0815"); //$NON-NLS-1$
 		final TestSubModuleNode node2 = new TestSubModuleNode(id);
 
-		id = new NavigationNodeId("m1");
+		id = new NavigationNodeId("m1"); //$NON-NLS-1$
 		final ModuleNode moduleNode = new ModuleNode(id);
 		moduleNode.addChild(node);
 		moduleNode.addChild(node2);
 
-		id = new NavigationNodeId("m2");
+		id = new NavigationNodeId("m2"); //$NON-NLS-1$
 		final ModuleNode moduleNode2 = new ModuleNode(id);
 
-		id = new NavigationNodeId("mg1");
+		id = new NavigationNodeId("mg1"); //$NON-NLS-1$
 		final ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
 		moduleGroupNode.addChild(moduleNode);
 		moduleGroupNode.addChild(moduleNode2);
@@ -403,31 +449,31 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testGetNodeToDispose() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
+		NavigationNodeId id = new NavigationNodeId("4711"); //$NON-NLS-1$
 		final SubModuleNode node = new SubModuleNode(id);
 
-		id = new NavigationNodeId("m1");
+		id = new NavigationNodeId("m1"); //$NON-NLS-1$
 		final ModuleNode moduleNode = new ModuleNode(id);
 		moduleNode.addChild(node);
 
-		id = new NavigationNodeId("m2");
+		id = new NavigationNodeId("m2"); //$NON-NLS-1$
 		final ModuleNode moduleNode2 = new ModuleNode(id);
 
-		id = new NavigationNodeId("mg1");
+		id = new NavigationNodeId("mg1"); //$NON-NLS-1$
 		final ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
 		moduleGroupNode.addChild(moduleNode);
 		moduleGroupNode.addChild(moduleNode2);
 
-		INavigationNode<?> toDispose = ReflectionUtils.invokeHidden(navigationProcessor, "getNodeToDispose", node);
+		INavigationNode<?> toDispose = ReflectionUtils.invokeHidden(navigationProcessor, "getNodeToDispose", node); //$NON-NLS-1$
 		assertSame(node, toDispose);
 
-		toDispose = ReflectionUtils.invokeHidden(navigationProcessor, "getNodeToDispose", moduleNode);
+		toDispose = ReflectionUtils.invokeHidden(navigationProcessor, "getNodeToDispose", moduleNode); //$NON-NLS-1$
 		assertSame(moduleGroupNode, toDispose);
 
-		toDispose = ReflectionUtils.invokeHidden(navigationProcessor, "getNodeToDispose", moduleNode2);
+		toDispose = ReflectionUtils.invokeHidden(navigationProcessor, "getNodeToDispose", moduleNode2); //$NON-NLS-1$
 		assertSame(moduleNode2, toDispose);
 
-		toDispose = ReflectionUtils.invokeHidden(navigationProcessor, "getNodeToDispose", moduleGroupNode);
+		toDispose = ReflectionUtils.invokeHidden(navigationProcessor, "getNodeToDispose", moduleGroupNode); //$NON-NLS-1$
 		assertSame(moduleGroupNode, toDispose);
 
 	}
@@ -443,13 +489,13 @@ public class NavigationProcessorTest extends RienaTestCase {
 
 		navigationProcessor.addMarker(null, disabledMarker);
 
-		NavigationNodeId id = new NavigationNodeId("4711");
+		NavigationNodeId id = new NavigationNodeId("4711"); //$NON-NLS-1$
 		final TestSubModuleNode node = new TestSubModuleNode(id);
 
-		id = new NavigationNodeId("0815");
+		id = new NavigationNodeId("0815"); //$NON-NLS-1$
 		final TestSubModuleNode node2 = new TestSubModuleNode(id);
 
-		id = new NavigationNodeId("m1");
+		id = new NavigationNodeId("m1"); //$NON-NLS-1$
 		final ModuleNode moduleNode = new ModuleNode(id);
 		moduleNode.addChild(node);
 		moduleNode.addChild(node2);
@@ -532,37 +578,37 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testGetTopParent() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
+		NavigationNodeId id = new NavigationNodeId("4711"); //$NON-NLS-1$
 		final TestSubModuleNode node = new TestSubModuleNode(id);
 
-		id = new NavigationNodeId("0815");
+		id = new NavigationNodeId("0815"); //$NON-NLS-1$
 		final TestSubModuleNode node2 = new TestSubModuleNode(id);
 
-		id = new NavigationNodeId("m1");
+		id = new NavigationNodeId("m1"); //$NON-NLS-1$
 		final ModuleNode moduleNode = new ModuleNode(id);
 		moduleNode.addChild(node);
 		moduleNode.addChild(node2);
 
-		id = new NavigationNodeId("m2");
+		id = new NavigationNodeId("m2"); //$NON-NLS-1$
 		final ModuleNode moduleNode2 = new ModuleNode(id);
 
-		id = new NavigationNodeId("mg1");
+		id = new NavigationNodeId("mg1"); //$NON-NLS-1$
 		final ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
 		moduleGroupNode.addChild(moduleNode);
 
-		INavigationNode<?> top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", node);
+		INavigationNode<?> top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", node); //$NON-NLS-1$
 		assertSame(moduleGroupNode, top);
 
-		top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", node2);
+		top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", node2); //$NON-NLS-1$
 		assertSame(moduleGroupNode, top);
 
-		top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", moduleNode);
+		top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", moduleNode); //$NON-NLS-1$
 		assertSame(moduleGroupNode, top);
 
-		top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", moduleGroupNode);
+		top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", moduleGroupNode); //$NON-NLS-1$
 		assertSame(moduleGroupNode, top);
 
-		top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", moduleNode2);
+		top = ReflectionUtils.invokeHidden(navigationProcessor, "getTopParent", moduleNode2); //$NON-NLS-1$
 		assertSame(moduleNode2, top);
 
 	}
@@ -572,39 +618,39 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testGetNextActiveParent() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
+		NavigationNodeId id = new NavigationNodeId("4711"); //$NON-NLS-1$
 		final TestSubModuleNode node = new TestSubModuleNode(id);
 
-		id = new NavigationNodeId("0815");
+		id = new NavigationNodeId("0815"); //$NON-NLS-1$
 		final TestSubModuleNode node2 = new TestSubModuleNode(id);
 		node.addChild(node2);
 
-		id = new NavigationNodeId("m1");
+		id = new NavigationNodeId("m1"); //$NON-NLS-1$
 		final ModuleNode moduleNode = new ModuleNode(id);
 		moduleNode.addChild(node);
 
-		id = new NavigationNodeId("m2");
+		id = new NavigationNodeId("m2"); //$NON-NLS-1$
 		final ModuleNode moduleNode2 = new ModuleNode(id);
 
-		id = new NavigationNodeId("mg1");
+		id = new NavigationNodeId("mg1"); //$NON-NLS-1$
 		final ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
 		moduleGroupNode.addChild(moduleNode);
 		moduleGroupNode.addChild(moduleNode2);
 		moduleGroupNode.setNavigationProcessor(navigationProcessor);
 
-		INavigationNode<?> parent = ReflectionUtils.invokeHidden(navigationProcessor, "getNextActiveParent", node2);
+		INavigationNode<?> parent = ReflectionUtils.invokeHidden(navigationProcessor, "getNextActiveParent", node2); //$NON-NLS-1$
 		assertNull(parent);
 
 		node.activate();
-		parent = ReflectionUtils.invokeHidden(navigationProcessor, "getNextActiveParent", node2);
+		parent = ReflectionUtils.invokeHidden(navigationProcessor, "getNextActiveParent", node2); //$NON-NLS-1$
 		assertSame(moduleNode, parent);
 
 		node.deactivate(null);
-		parent = ReflectionUtils.invokeHidden(navigationProcessor, "getNextActiveParent", node2);
+		parent = ReflectionUtils.invokeHidden(navigationProcessor, "getNextActiveParent", node2); //$NON-NLS-1$
 		assertSame(moduleNode, parent);
 
 		moduleNode.deactivate(null);
-		parent = ReflectionUtils.invokeHidden(navigationProcessor, "getNextActiveParent", node2);
+		parent = ReflectionUtils.invokeHidden(navigationProcessor, "getNextActiveParent", node2); //$NON-NLS-1$
 		assertSame(moduleGroupNode, parent);
 
 	}
@@ -614,58 +660,58 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testGetActiveChild() {
 
-		NavigationNodeId id = new NavigationNodeId("4711");
+		NavigationNodeId id = new NavigationNodeId("4711"); //$NON-NLS-1$
 		final TestSubModuleNode node = new TestSubModuleNode(id);
 
-		id = new NavigationNodeId("0815");
+		id = new NavigationNodeId("0815"); //$NON-NLS-1$
 		final TestSubModuleNode node2 = new TestSubModuleNode(id);
 		node.addChild(node2);
 
-		id = new NavigationNodeId("m1");
+		id = new NavigationNodeId("m1"); //$NON-NLS-1$
 		final ModuleNode moduleNode = new ModuleNode(id);
 		moduleNode.addChild(node);
 
-		id = new NavigationNodeId("m2");
+		id = new NavigationNodeId("m2"); //$NON-NLS-1$
 		final ModuleNode moduleNode2 = new ModuleNode(id);
 
-		id = new NavigationNodeId("mg1");
+		id = new NavigationNodeId("mg1"); //$NON-NLS-1$
 		final ModuleGroupNode moduleGroupNode = new ModuleGroupNode(id);
 		moduleGroupNode.addChild(moduleNode);
 		moduleGroupNode.addChild(moduleNode2);
 		moduleGroupNode.setNavigationProcessor(navigationProcessor);
 
-		INavigationNode<?> child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", node);
+		INavigationNode<?> child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", node); //$NON-NLS-1$
 		assertNull(child);
 
-		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleNode);
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleNode); //$NON-NLS-1$
 		assertNull(child);
 
 		node.setSelected(true);
 
-		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", node);
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", node); //$NON-NLS-1$
 		assertNull(child);
 
-		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleNode);
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleNode); //$NON-NLS-1$
 		assertNull(child);
 
 		node.activate();
 
-		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", node);
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", node); //$NON-NLS-1$
 		assertNull(child);
 
-		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleNode);
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleNode); //$NON-NLS-1$
 		assertSame(node, child);
 
 		node2.setSelected(true);
 		node2.activate();
 
-		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", node);
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", node); //$NON-NLS-1$
 		assertNull(child);
 
-		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleNode);
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleNode); //$NON-NLS-1$
 		assertSame(node2, child);
 
-		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleGroupNode);
+		child = ReflectionUtils.invokeHidden(navigationProcessor, "getActiveChild", moduleGroupNode); //$NON-NLS-1$
 		assertSame(moduleNode, child);
 
 	}
@@ -723,7 +769,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testPrepare() {
 
-		final TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
+		final TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711")); //$NON-NLS-1$
 		navigationProcessor.prepare(node);
 		final INavigationContext context = node.getNaviContext();
 		assertNotNull(context);
@@ -740,7 +786,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testHistoryBack() {
 
-		final TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
+		final TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711")); //$NON-NLS-1$
 		module.addChild(node);
 		subModule1.activate();
 		node.activate();
@@ -768,7 +814,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testHistoryForeward() {
 
-		final TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
+		final TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711")); //$NON-NLS-1$
 		module.addChild(node);
 		subModule1.activate();
 		node.activate();
@@ -802,7 +848,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testGetHistory() {
 
-		TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
+		TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711")); //$NON-NLS-1$
 		module.addChild(node);
 		subModule1.activate();
 		node.activate();
@@ -814,7 +860,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertEquals(subModule1, navigationProcessor.getHistory().get(0));
 		assertEquals(node, navigationProcessor.getHistory().get(1));
 
-		node = new TestSubModuleNode(new NavigationNodeId("0815"));
+		node = new TestSubModuleNode(new NavigationNodeId("0815")); //$NON-NLS-1$
 		try {
 			navigationProcessor.getHistory().add(node);
 			fail();
@@ -837,17 +883,17 @@ public class NavigationProcessorTest extends RienaTestCase {
 	 */
 	public void testFindSelectableChildNode() {
 
-		ISubModuleNode selectableChild = ReflectionUtils.invokeHidden(navigationProcessor, "findSelectableChildNode",
+		ISubModuleNode selectableChild = ReflectionUtils.invokeHidden(navigationProcessor, "findSelectableChildNode", //$NON-NLS-1$
 				subModule1);
 		assertSame(subModule1, selectableChild);
 
 		subModule1.setSelectable(false);
-		selectableChild = ReflectionUtils.invokeHidden(navigationProcessor, "findSelectableChildNode", subModule1);
+		selectableChild = ReflectionUtils.invokeHidden(navigationProcessor, "findSelectableChildNode", subModule1); //$NON-NLS-1$
 		assertNull(selectableChild);
 
-		final TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711"));
+		final TestSubModuleNode node = new TestSubModuleNode(new NavigationNodeId("4711")); //$NON-NLS-1$
 		subModule1.addChild(node);
-		selectableChild = ReflectionUtils.invokeHidden(navigationProcessor, "findSelectableChildNode", subModule1);
+		selectableChild = ReflectionUtils.invokeHidden(navigationProcessor, "findSelectableChildNode", subModule1); //$NON-NLS-1$
 		assertSame(node, selectableChild);
 
 	}
@@ -868,24 +914,24 @@ public class NavigationProcessorTest extends RienaTestCase {
 		final ModuleGroupNode mg = new ModuleGroupNode();
 		subApp.addChild(mg);
 
-		final ModuleNode m1 = new ModuleNode(new NavigationNodeId("m1"));
+		final ModuleNode m1 = new ModuleNode(new NavigationNodeId("m1")); //$NON-NLS-1$
 		mg.addChild(m1);
-		final ModuleNode m2 = new ModuleNode(new NavigationNodeId("m2"));
+		final ModuleNode m2 = new ModuleNode(new NavigationNodeId("m2")); //$NON-NLS-1$
 		mg.addChild(m2);
 
-		final SubModuleNode m1s1 = new SubModuleNode(new NavigationNodeId("m1s1"));
+		final SubModuleNode m1s1 = new SubModuleNode(new NavigationNodeId("m1s1")); //$NON-NLS-1$
 		m1.addChild(m1s1);
 
-		final SubModuleNode m1s2 = new SubModuleNode(new NavigationNodeId("m1s2"));
+		final SubModuleNode m1s2 = new SubModuleNode(new NavigationNodeId("m1s2")); //$NON-NLS-1$
 		m1.addChild(m1s2);
 
-		final SubModuleNode m1s1s1 = new SubModuleNode(new NavigationNodeId("m1s1s1"));
+		final SubModuleNode m1s1s1 = new SubModuleNode(new NavigationNodeId("m1s1s1")); //$NON-NLS-1$
 		m1s1.addChild(m1s1s1);
 
-		final SubModuleNode m2s1 = new SubModuleNode(new NavigationNodeId("m2s1"));
+		final SubModuleNode m2s1 = new SubModuleNode(new NavigationNodeId("m2s1")); //$NON-NLS-1$
 		m2.addChild(m2s1);
 
-		final SubModuleNode m2s2 = new SubModuleNode(new NavigationNodeId("m2s2"));
+		final SubModuleNode m2s2 = new SubModuleNode(new NavigationNodeId("m2s2")); //$NON-NLS-1$
 		m2.addChild(m2s2);
 
 		app.activate();
@@ -896,7 +942,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		EasyMock.replay(listenerMock);
 		m1.addJumpTargetListener(listenerMock);
 
-		m1s2.jump(new NavigationNodeId("m1s1s1"));
+		m1s2.jump(new NavigationNodeId("m1s1s1")); //$NON-NLS-1$
 		assertTrue(m1s1s1.isActivated());
 		assertTrue(m1s1s1.isJumpTarget());
 		assertTrue(m1.isJumpTarget());
@@ -922,10 +968,10 @@ public class NavigationProcessorTest extends RienaTestCase {
 		EasyMock.reset(listenerMock);
 		assertTrue(m1s2.isActivated());
 
-		m1s2.jump(new NavigationNodeId("m1s1"));
+		m1s2.jump(new NavigationNodeId("m1s1")); //$NON-NLS-1$
 		assertTrue(m1s1.isActivated());
 
-		m1s1.jump(new NavigationNodeId("m2s1"));
+		m1s1.jump(new NavigationNodeId("m2s1")); //$NON-NLS-1$
 		assertTrue(m2s1.isActivated());
 		m2s1.jumpBack();
 		assertTrue(m1s1.isJumpTarget());
@@ -939,7 +985,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		m1.jumpBack();
 		//clean state / no jump targets registered
 
-		m1.jump(new NavigationNodeId("m2s1"));
+		m1.jump(new NavigationNodeId("m2s1")); //$NON-NLS-1$
 
 		EasyMock.reset(listenerMock);
 		listenerMock.jumpTargetStateChanged(m1, JumpTargetState.DISABLED);
@@ -953,7 +999,7 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertFalse(m1.isJumpTarget());
 		assertFalse(m2.isJumpTarget());
 
-		m1s1.jump(new NavigationNodeId("m2s2"));
+		m1s1.jump(new NavigationNodeId("m2s2")); //$NON-NLS-1$
 		EasyMock.reset(listenerMock);
 		listenerMock.jumpTargetStateChanged(m1, JumpTargetState.DISABLED);
 		EasyMock.expectLastCall().times(1);

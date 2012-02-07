@@ -865,9 +865,10 @@ public class NavigationProcessor implements INavigationProcessor {
 		final IModuleNode moduleNode = toDispose.getTypecastedAdapter(IModuleNode.class);
 		if (moduleNode != null) {
 			final INavigationNode<?> parent = moduleNode.getParent();
-			if (parent != null) {
+			if (parent instanceof ModuleGroupNode) {
 				final int ind = parent.getIndexOfChild(moduleNode);
 				if (ind == 0) {
+					// first module of a module group
 					return parent;
 				}
 			}
@@ -924,8 +925,8 @@ public class NavigationProcessor implements INavigationProcessor {
 				final List<?> childrenOfParentOfToDispose = parentOfToDispose.getChildren();
 				final List<INavigationNode<?>> activatableNode = getActivatableNodes(childrenOfParentOfToDispose);
 				if (childrenOfParentOfToDispose.size() > 1) {
-					// there must be a least 2 children: the disposed will be
-					// removed
+					// there must be a least 2 children: 
+					// the disposed will be removed from the list
 					// get the first child which is not the one to remove
 					for (final INavigationNode<?> nextChild : activatableNode) {
 						if (!nextChild.equals(toDispose)) {
@@ -937,6 +938,14 @@ public class NavigationProcessor implements INavigationProcessor {
 			}
 			if (brotherToActivate != null) {
 				return getNodesToActivateOnActivation(brotherToActivate);
+			}
+			if (parentOfToDispose instanceof ISubModuleNode) {
+				final ISubModuleNode subModule = (ISubModuleNode) parentOfToDispose;
+				if (subModule.isSelectable() && subModule.isVisible() && subModule.isEnabled()) {
+					return getNodesToActivateOnActivation(subModule);
+				} else {
+					// TODO
+				}
 			}
 		}
 		return new LinkedList<INavigationNode<?>>();
@@ -1333,8 +1342,8 @@ public class NavigationProcessor implements INavigationProcessor {
 	}
 
 	private ISubModuleNode findSelectableChildNode(final ISubModuleNode startNode) {
-		// if node is not visible, return null (note: this method is recursive, see below)
-		if (!startNode.isVisible()) {
+		// if node is not visible or not enabled, return null (note: this method is recursive, see below)
+		if (!startNode.isVisible() && !startNode.isEnabled()) {
 			return null;
 		}
 		// selectable node found
