@@ -11,7 +11,8 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- *
+ * @since 4.0
+ * 
  */
 public interface IShellRidget extends IWindowRidget {
 
