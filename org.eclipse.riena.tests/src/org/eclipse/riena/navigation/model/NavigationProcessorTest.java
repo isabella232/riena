@@ -142,6 +142,90 @@ public class NavigationProcessorTest extends RienaTestCase {
 		//		EasyMock.reset(ridgetStub);
 	}
 
+	/**
+	 * Tests the <i>private</i> method {@code isSelectable}.
+	 */
+	public void testIsSelectable() {
+
+		final NavigationNodeId id = new NavigationNodeId("4711"); //$NON-NLS-1$
+		final TestSubModuleNode node = new TestSubModuleNode(id);
+
+		boolean ret = ReflectionUtils.invokeHidden(navigationProcessor, "isSelectable", node); //$NON-NLS-1$
+		assertTrue(ret);
+
+		node.setSelectable(false);
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "isSelectable", node); //$NON-NLS-1$
+		assertFalse(ret);
+
+		node.setSelectable(true);
+		node.setEnabled(false);
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "isSelectable", node); //$NON-NLS-1$
+		assertFalse(ret);
+
+		node.setEnabled(true);
+		node.setVisible(false);
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "isSelectable", node); //$NON-NLS-1$
+		assertFalse(ret);
+
+		node.setVisible(true);
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "isSelectable", node); //$NON-NLS-1$
+		assertTrue(ret);
+
+		IMarker marker = new HiddenMarker(false);
+		node.addMarker(marker);
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "isSelectable", node); //$NON-NLS-1$
+		assertFalse(ret);
+
+		node.removeMarker(marker);
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "isSelectable", node); //$NON-NLS-1$
+		assertTrue(ret);
+
+		marker = new DisabledMarker(false);
+		node.addMarker(marker);
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "isSelectable", node); //$NON-NLS-1$
+		assertFalse(ret);
+
+		node.removeMarker(marker);
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "isSelectable", node); //$NON-NLS-1$
+		assertTrue(ret);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code getSelectableChild}.
+	 */
+	public void testGetSelectableChild() {
+
+		final ModuleGroupNode mg1 = new ModuleGroupNode(new NavigationNodeId("mg1")); //$NON-NLS-1$
+		final ModuleNode m1 = new ModuleNode(new NavigationNodeId("m1")); //$NON-NLS-1$
+		final SubModuleNode sm1 = new SubModuleNode(new NavigationNodeId("sm1")); //$NON-NLS-1$
+		final SubModuleNode sm11 = new SubModuleNode(new NavigationNodeId("sm11")); //$NON-NLS-1$
+		final SubModuleNode sm12 = new SubModuleNode(new NavigationNodeId("sm12")); //$NON-NLS-1$
+
+		mg1.addChild(m1);
+		m1.addChild(sm1);
+		sm1.addChild(sm11);
+		sm1.addChild(sm12);
+
+		INavigationNode<?> ret = ReflectionUtils.invokeHidden(navigationProcessor, "getSelectableChild", mg1); //$NON-NLS-1$
+		assertSame(m1, ret);
+
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "getSelectableChild", m1); //$NON-NLS-1$
+		assertSame(sm1, ret);
+
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "getSelectableChild", sm1); //$NON-NLS-1$
+		assertSame(sm11, ret);
+
+		sm11.setSelectable(false);
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "getSelectableChild", sm1); //$NON-NLS-1$
+		assertSame(sm12, ret);
+
+		sm1.setSelectable(false);
+		ret = ReflectionUtils.invokeHidden(navigationProcessor, "getSelectableChild", m1); //$NON-NLS-1$
+		assertSame(sm12, ret);
+
+	}
+
 	public void testActivateChildren() throws Exception {
 
 		assertFalse(subApplication.isActivated());
@@ -321,12 +405,6 @@ public class NavigationProcessorTest extends RienaTestCase {
 		assertNotNull(nodes);
 		assertEquals(1, nodes.size());
 		assertSame(sm1, nodes.get(0));
-
-		// TODO
-		sm1.setSelectable(false);
-		nodes = ReflectionUtils.invokeHidden(navigationProcessor, "getNodesToActivateOnDispose", sm11); //$NON-NLS-1$
-		assertNotNull(nodes);
-		assertEquals(0, nodes.size());
 
 	}
 

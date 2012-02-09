@@ -280,7 +280,24 @@ public class NavigationProcessor implements INavigationProcessor {
 			final State nodeStartState = nodeToDispose.getState();
 			handleJumpsOnDispose(nodeToDispose);
 			final List<INavigationNode<?>> toDeactivateList = getNodesToDeactivateOnDispose(nodeToDispose);
-			final List<INavigationNode<?>> toActivateList = getNodesToActivateOnDispose(nodeToDispose);
+			Boolean oldSelectable = null;
+			if (toDispose instanceof ISubModuleNode) {
+				oldSelectable = ((ISubModuleNode) toDispose).isSelectable();
+				((ISubModuleNode) toDispose).setSelectable(false);
+			}
+			List<INavigationNode<?>> toActivateList = null;
+			try {
+				toActivateList = getNodesToActivateOnDispose(nodeToDispose);
+			} catch (final NavigationModelFailure ex) {
+				String msg = "Dispose is not allowed for: " + toDispose.toString(); //$NON-NLS-1$
+				msg += "\n" + ex.getMessage(); //$NON-NLS-1$
+				LOGGER.log(LogService.LOG_ERROR, msg);
+				return;
+			} finally {
+				if (toDispose instanceof ISubModuleNode && oldSelectable != null) {
+					((ISubModuleNode) toDispose).setSelectable(oldSelectable);
+				}
+			}
 			final INavigationContext navigationContext = new NavigationContext(null, toActivateList, toDeactivateList);
 			if (allowsDeactivate(navigationContext)) {
 				if (allowsDispose(navigationContext)) {
@@ -920,7 +937,6 @@ public class NavigationProcessor implements INavigationProcessor {
 		// while dispose of a node, the next brother node must be activated
 		if (toDispose.isActivated()) {
 			final INavigationNode<?> parentOfToDispose = getParentToActivate(toDispose);
-			INavigationNode<?> brotherToActivate = null;
 			if (parentOfToDispose != null) {
 				final List<?> childrenOfParentOfToDispose = parentOfToDispose.getChildren();
 				final List<INavigationNode<?>> activatableNode = getActivatableNodes(childrenOfParentOfToDispose);
@@ -930,25 +946,74 @@ public class NavigationProcessor implements INavigationProcessor {
 					// get the first child which is not the one to remove
 					for (final INavigationNode<?> nextChild : activatableNode) {
 						if (!nextChild.equals(toDispose)) {
-							brotherToActivate = nextChild;
-							break;
+							if (isSelectable(nextChild)) {
+								return getNodesToActivateOnActivation(nextChild);
+							} else {
+								final INavigationNode<?> selectableChild = getSelectableChild(nextChild);
+								if (selectableChild != null) {
+									return getNodesToActivateOnActivation(selectableChild);
+								}
+								continue;
+							}
 						}
 					}
+					if (!(parentOfToDispose instanceof ISubModuleNode)) {
+						throw new NavigationModelFailure("No sibling of node can be selected!"); //$NON-NLS-1$
+					}
 				}
-			}
-			if (brotherToActivate != null) {
-				return getNodesToActivateOnActivation(brotherToActivate);
-			}
-			if (parentOfToDispose instanceof ISubModuleNode) {
-				final ISubModuleNode subModule = (ISubModuleNode) parentOfToDispose;
-				if (subModule.isSelectable() && subModule.isVisible() && subModule.isEnabled()) {
-					return getNodesToActivateOnActivation(subModule);
-				} else {
-					// TODO
+				if (parentOfToDispose instanceof ISubModuleNode) {
+					final INavigationNode<?> selectable = getSelectableParent(parentOfToDispose);
+					if (selectable != null) {
+						return getNodesToActivateOnActivation(selectable);
+					} else {
+						throw new NavigationModelFailure("No parent of node can be selected!"); //$NON-NLS-1$
+					}
 				}
 			}
 		}
 		return new LinkedList<INavigationNode<?>>();
+	}
+
+	private INavigationNode<?> getSelectableParent(final INavigationNode<?> node) {
+		if (node == null) {
+			return null;
+		}
+		if (isSelectable(node)) {
+			return node;
+		}
+		final INavigationNode<?> parent = getSelectableParent(node.getParent());
+		if (getChildToActivate(parent) == null) {
+			return null;
+		}
+		return parent;
+	}
+
+	private INavigationNode<?> getSelectableChild(final INavigationNode<?> node) {
+		if (node == null) {
+			return null;
+		}
+		for (final INavigationNode<?> child : node.getChildren()) {
+			if (isSelectable(child)) {
+				return child;
+			}
+		}
+		for (final INavigationNode<?> child : node.getChildren()) {
+			final INavigationNode<?> selectableChild = getSelectableChild(child);
+			if (selectableChild != null) {
+				return selectableChild;
+			}
+		}
+		return null;
+	}
+
+	private boolean isSelectable(final INavigationNode<?> node) {
+		if (!node.isVisible() || !node.isEnabled()) {
+			return false;
+		}
+		if (node instanceof ISubModuleNode) {
+			return ((ISubModuleNode) node).isSelectable();
+		}
+		return true;
 	}
 
 	private INavigationNode<?> getParentToActivate(final INavigationNode<?> node) {
@@ -1303,7 +1368,7 @@ public class NavigationProcessor implements INavigationProcessor {
 		final IModuleNode moduleNode = pNode.getTypecastedAdapter(IModuleNode.class);
 		if (moduleNode != null) {
 			ISubModuleNode nextChild = getSelectedChild(moduleNode);
-			if (nextChild != null) {
+			if (nextChild != null && nextChild.isSelectable()) {
 				while (true) {
 					final ISubModuleNode nextTmp = getSelectedChild(nextChild);
 					if (nextTmp != null) {
@@ -1343,7 +1408,7 @@ public class NavigationProcessor implements INavigationProcessor {
 
 	private ISubModuleNode findSelectableChildNode(final ISubModuleNode startNode) {
 		// if node is not visible or not enabled, return null (note: this method is recursive, see below)
-		if (!startNode.isVisible() && !startNode.isEnabled()) {
+		if (!startNode.isVisible() || !startNode.isEnabled()) {
 			return null;
 		}
 		// selectable node found
