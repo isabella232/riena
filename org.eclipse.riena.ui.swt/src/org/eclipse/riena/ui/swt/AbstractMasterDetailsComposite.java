@@ -83,6 +83,7 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	private Control table;
 	private Composite details;
 	private final Composite master;
+	private Composite buttonComposite;
 
 	/**
 	 * Create an instance of MasterDetailsComposite with the details area at the
@@ -251,7 +252,16 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	}
 
 	public final List<Object> getUIControls() {
-		final SWTControlFinder finder = new SWTControlFinder(details) {
+		registerControls(details);
+		registerControls(buttonComposite);
+		return Collections.unmodifiableList(controls);
+	}
+
+	private void registerControls(final Composite cmp) {
+		if (null == cmp) {
+			return;
+		}
+		final SWTControlFinder finder = new SWTControlFinder(cmp) {
 			@Override
 			public boolean skip(final Control control) {
 				return controls.contains(control);
@@ -263,7 +273,6 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 			}
 		};
 		finder.run();
-		return Collections.unmodifiableList(controls);
 	}
 
 	/**
@@ -409,7 +418,6 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	 */
 	protected Composite createButtons(final Composite parent) {
 		final Composite result = UIControlsFactory.createComposite(parent);
-		// result.setBackground(getDisplay().getSystemColor(SWT.COLOR_GREEN));
 		final RowLayout buttonLayout = new RowLayout(SWT.VERTICAL);
 		buttonLayout.marginTop = 0;
 		buttonLayout.marginLeft = 3;
@@ -523,17 +531,24 @@ public abstract class AbstractMasterDetailsComposite extends Composite implement
 	private void createMaster(final Composite parent) {
 		GridLayoutFactory.fillDefaults().numColumns(2).equalWidth(false).spacing(0, 0).applyTo(parent);
 		final Composite compTable = createTableComposite(parent);
-		final Composite compButton = createButtons(parent);
-		if (compButton != null) {
-			if (compButton.getLayoutData() == null) {
-				GridDataFactory.fillDefaults().applyTo(compButton);
+		buttonComposite = createButtons(parent);
+		if (buttonComposite != null) {
+			if (buttonComposite.getLayoutData() == null) {
+				GridDataFactory.fillDefaults().applyTo(buttonComposite);
 			}
-			if ((compButton.getStyle() & SWT.BORDER) == 0) {
-				SWTFacade.getDefault().addPaintListener(compButton, new LinePaintListener());
+			if ((buttonComposite.getStyle() & SWT.BORDER) == 0) {
+				SWTFacade.getDefault().addPaintListener(buttonComposite, new LinePaintListener());
 			}
 		} else {
 			((GridData) compTable.getLayoutData()).horizontalSpan = 2;
 		}
+	}
+
+	/**
+	 * @return the buttonComposite
+	 */
+	public Composite getButtonComposite() {
+		return buttonComposite;
 	}
 
 	private Composite createTableComposite(final Composite parent) {

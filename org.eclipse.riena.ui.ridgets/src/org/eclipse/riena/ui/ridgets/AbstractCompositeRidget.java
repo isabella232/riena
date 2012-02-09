@@ -54,6 +54,15 @@ public abstract class AbstractCompositeRidget extends AbstractRidget implements 
 		ridgets.put(id, ridget);
 	}
 
+	protected String idOfRidget(final IRidget ridget) {
+		for (final String ridgetId : ridgets.keySet()) {
+			if (ridgets.get(ridgetId) == ridget) {
+				return ridgetId;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 * <p>
