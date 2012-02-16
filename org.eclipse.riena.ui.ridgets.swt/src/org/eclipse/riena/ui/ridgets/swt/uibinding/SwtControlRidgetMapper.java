@@ -146,9 +146,9 @@ public final class SwtControlRidgetMapper implements IControlRidgetMapper<Object
 		addMapping(ChoiceComposite.class, MultipleChoiceRidget.class, new MultipleChoiceCondition());
 		addMapping(Composite.class, CompositeRidget.class, new CompositeWithBindingIdCondition());
 		addMapping(Group.class, CompositeRidget.class, new CompositeWithBindingIdCondition());
-		addMapping(Combo.class, ComboRidget.class);
 		addMapping(CCombo.class, CComboRidget.class);
 		addMapping(CompletionCombo.class, CompletionComboRidget.class);
+		addMapping(Combo.class, ComboRidget.class);
 		addMapping(DateTime.class, DateTimeRidget.class);
 		addMapping(org.eclipse.swt.widgets.List.class, ListRidget.class);
 		addMapping(Link.class, LinkRidget.class);

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.riena.navigation.ui.controllers;
 
+import java.util.Collection;
+
 import org.osgi.service.log.LogService;
 
 import org.eclipse.equinox.log.Logger;
@@ -20,10 +22,11 @@ import org.eclipse.riena.navigation.ISubApplicationNode;
 import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.listener.NavigationTreeObserver;
 import org.eclipse.riena.navigation.listener.SubModuleNodeListener;
-import org.eclipse.riena.navigation.ui.SubModuleUtils;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.IComplexRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IUIProcessRidget;
+import org.eclipse.riena.ui.ridgets.SubModuleUtils;
 import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
 import org.eclipse.riena.ui.workarea.WorkareaManager;
 
@@ -158,6 +161,15 @@ public class SubApplicationController extends NavigationNodeController<ISubAppli
 			controller.setNavigationNode(source);
 			source.setNavigationNodeController(controller);
 			controller.configureRidgets();
+			controller.setConfigured(true);
+			final Collection<? extends IRidget> ridgets = controller.getRidgets();
+			for (final IRidget ridget : ridgets) {
+				if (ridget instanceof IComplexRidget) {
+					final IComplexRidget complexRidget = (IComplexRidget) ridget;
+					complexRidget.configureRidgets();
+					complexRidget.setConfigured(true);
+				}
+			}
 		} catch (final Exception ex) {
 			final String message = String.format(
 					"cannnot create controller for class %s", definition.getControllerClass()); //$NON-NLS-1$ 

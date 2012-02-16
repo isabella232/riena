@@ -68,6 +68,7 @@ public abstract class AbstractWindowController implements IController, IContext 
 	private IWindowRidget windowRidget;
 	private boolean blocked;
 	private int returnCode;
+	private boolean configured = false;
 
 	private IDefaultActionManager actionManager;
 
@@ -278,4 +279,19 @@ public abstract class AbstractWindowController implements IController, IContext 
 		setReturnCode(returnCode);
 		getWindowRidget().dispose();
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setConfigured(final boolean configured) {
+		this.configured = configured;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isConfigured() {
+		return configured;
+	}
+
 }

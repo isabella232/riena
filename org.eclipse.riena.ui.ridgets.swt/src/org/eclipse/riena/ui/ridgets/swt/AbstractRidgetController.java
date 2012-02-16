@@ -61,6 +61,7 @@ public abstract class AbstractRidgetController implements IController {
 
 	private final Map<String, IRidget> map;
 	private boolean isBlocked;
+	private boolean configured = false;
 
 	public AbstractRidgetController() {
 		map = new HashMap<String, IRidget>();
@@ -94,6 +95,20 @@ public abstract class AbstractRidgetController implements IController {
 
 	public void setBlocked(final boolean blocked) {
 		isBlocked = blocked;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setConfigured(final boolean configured) {
+		this.configured = configured;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isConfigured() {
+		return configured;
 	}
 
 }

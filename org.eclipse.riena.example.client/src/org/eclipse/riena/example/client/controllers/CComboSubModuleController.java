@@ -25,6 +25,7 @@ import org.eclipse.riena.navigation.ISubModuleNode;
 import org.eclipse.riena.navigation.ui.controllers.SubModuleController;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.ICComboRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.ridgets.IToggleButtonRidget;
@@ -73,14 +74,14 @@ public class CComboSubModuleController extends SubModuleController {
 	@Override
 	public void configureRidgets() {
 
-		comboOne = getRidget(IComboRidget.class, "comboOne"); //$NON-NLS-1$
+		comboOne = getRidget(ICComboRidget.class, "comboOne"); //$NON-NLS-1$
 
 		value.setPerson(manager.getSelectedPerson());
 
 		textFirst = getRidget(ITextRidget.class, "textFirst"); //$NON-NLS-1$
 		textLast = getRidget(ITextRidget.class, "textLast"); //$NON-NLS-1$
 
-		comboOne.addPropertyChangeListener(IComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
+		comboOne.addPropertyChangeListener(ICComboRidget.PROPERTY_SELECTION, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				final Person selectedPerson = (Person) evt.getNewValue();
 				value.setPerson(selectedPerson);

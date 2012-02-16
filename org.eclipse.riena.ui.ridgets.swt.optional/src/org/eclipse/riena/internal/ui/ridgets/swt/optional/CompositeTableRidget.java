@@ -659,6 +659,7 @@ public class CompositeTableRidget extends AbstractSelectableIndexedRidget implem
 				final IRowRidget rowRidget = (IRowRidget) row.getData("rowRidget"); //$NON-NLS-1$
 				rowRidget.setData(rowBean);
 				rowRidget.configureRidgets();
+				rowRidget.setConfigured(true);
 				refreshRowStyle(row, isEnabled(), isOutputOnly(), table.getBackground());
 			}
 		}

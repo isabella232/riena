@@ -70,4 +70,20 @@ public interface IRidgetContainer {
 	 */
 	void configureRidgets();
 
+	/**
+	 * Returns whether the Rdigets of this container are configured or not.
+	 * 
+	 * @return {@code true} all Ridgets are configured; otherwise {@code false}
+	 */
+	boolean isConfigured();
+
+	/**
+	 * Sets whether the Rdigets of this container are configured or not.
+	 * 
+	 * @param configured
+	 *            {@code true} all Ridgets are configured; otherwise
+	 *            {@code false}
+	 */
+	void setConfigured(boolean configured);
+
 }

@@ -208,6 +208,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 
 	@Override
 	public void configureRidgets() {
+
 		configureTableRidget();
 
 		if (hasNewButton()) {
@@ -244,7 +245,6 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			});
 		}
 
-		detailRidgets = new DetailRidgetContainer();
 		setEnabled(false, false);
 
 		final IObservableValue viewerSelection = getSelectionObservable();
@@ -261,9 +261,16 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 
 		final PropertyChangeListener directWritingPCL = new DirectWritingPropertyChangeListener();
-		for (final IRidget ridget : detailRidgets.getRidgets()) {
+		for (final IRidget ridget : getDetailRidgetContainer().getRidgets()) {
 			ridget.addPropertyChangeListener(directWritingPCL);
 		}
+	}
+
+	private IRidgetContainer getDetailRidgetContainer() {
+		if (detailRidgets == null) {
+			detailRidgets = new DetailRidgetContainer();
+		}
+		return detailRidgets;
 	}
 
 	public final IMasterDetailsDelegate getDelegate() {
@@ -342,8 +349,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		Assert.isLegal(this.delegate == null, "setDelegate can only be called once"); //$NON-NLS-1$
 		Assert.isLegal(delegate != null, "delegate cannot be null"); //$NON-NLS-1$
 		this.delegate = delegate;
-		delegate.configureRidgets(detailRidgets);
-		RidgetContainerAnnotationProcessor.getInstance().processAnnotations(detailRidgets, delegate);
+		delegate.configureRidgets(getDetailRidgetContainer());
+		RidgetContainerAnnotationProcessor.getInstance().processAnnotations(getDetailRidgetContainer(), delegate);
 	}
 
 	public void setDirectWriting(final boolean directWriting) {
@@ -439,7 +446,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	 * 
 	 */
 	private boolean setFocusToFirstDetailsRidget() {
-		final Collection<? extends IRidget> ridgets = detailRidgets.getRidgets();
+		final Collection<? extends IRidget> ridgets = getDetailRidgetContainer().getRidgets();
 		final IRidget[] ridgetArray = ridgets.toArray(new IRidget[ridgets.size()]);
 
 		if (!ridgets.isEmpty()) {
@@ -465,9 +472,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		if (applyRequiresNoErrors || applyRequiresNoMandatories) {
 			// inlined for performance
 			// isEnabled = areDetailsChanged() && noErrors && noMandatories
-			final boolean isEnabled = (areDetailsChanged())
-					&& (applyRequiresNoErrors ? !hasErrors(detailRidgets) : true)
-					&& (applyRequiresNoMandatories ? !hasMandatories(detailRidgets) : true);
+			final boolean isEnabled = areDetailsChanged()
+					&& (applyRequiresNoErrors ? !hasErrors(getDetailRidgetContainer()) : true)
+					&& (applyRequiresNoMandatories ? !hasMandatories(getDetailRidgetContainer()) : true);
 			getApplyButtonRidget().setEnabled(isEnabled);
 		} else {
 			getApplyButtonRidget().setEnabled(areDetailsChanged());
@@ -620,7 +627,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	private boolean canApply() {
-		final String reason = delegate.isValid(detailRidgets);
+		final String reason = delegate.isValid(getDetailRidgetContainer());
 		if (reason != null) {
 			getUIControl().warnApplyFailed(reason);
 		}
@@ -628,9 +635,9 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	}
 
 	private boolean canApplyDirectly() {
-		final boolean noErrors = applyRequiresNoErrors ? !hasErrors(detailRidgets) : true;
-		final boolean noMandatories = applyRequiresNoMandatories ? !hasMandatories(detailRidgets) : true;
-		return noErrors && noMandatories && (delegate.isValid(detailRidgets) == null);
+		final boolean noErrors = applyRequiresNoErrors ? !hasErrors(getDetailRidgetContainer()) : true;
+		final boolean noMandatories = applyRequiresNoMandatories ? !hasMandatories(getDetailRidgetContainer()) : true;
+		return noErrors && noMandatories && (delegate.isValid(getDetailRidgetContainer()) == null);
 	}
 
 	private boolean canCancel() {
@@ -789,7 +796,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 				isSuggestedEditable = false;
 			}
 			this.detailsEnabled = detailsEnabled;
-			for (final IRidget ridget : detailRidgets.getRidgets()) {
+			for (final IRidget ridget : getDetailRidgetContainer().getRidgets()) {
 				ridget.setEnabled(detailsEnabled);
 			}
 		} finally {
@@ -856,7 +863,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		ignoreChanges = true;
 		try {
 			delegate.copyMasterEntry(masterEntry, delegate.getWorkingCopy());
-			delegate.updateDetails(detailRidgets);
+			delegate.updateDetails(getDetailRidgetContainer());
 		} finally {
 			ignoreChanges = false;
 		}
@@ -866,7 +873,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	private synchronized void updateMarkers(final boolean hideMarkers, final boolean showGlobalMarker) {
 		if (isHidingMarkersOnNew != hideMarkers) {
 			isHidingMarkersOnNew = hideMarkers;
-			for (final IRidget ridget : detailRidgets.getRidgets()) {
+			for (final IRidget ridget : getDetailRidgetContainer().getRidgets()) {
 				if (ridget instanceof IBasicMarkableRidget) {
 					final IBasicMarkableRidget markableRidget = (IBasicMarkableRidget) ridget;
 					if (isHidingMarkersOnNew) {
@@ -883,7 +890,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		}
 		if (isShowingGlobalMarker != showGlobalMarker) {
 			isShowingGlobalMarker = showGlobalMarker;
-			for (final IRidget ridget : detailRidgets.getRidgets()) {
+			for (final IRidget ridget : getDetailRidgetContainer().getRidgets()) {
 				if (!(ridget instanceof IMarkable)) {
 					continue;
 				}
@@ -1031,6 +1038,7 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 	private final class DetailRidgetContainer implements IRidgetContainer {
 
 		private final List<IRidget> detailRidgets;
+		private boolean configured = false;
 
 		public DetailRidgetContainer() {
 			detailRidgets = getDetailRidgets();
@@ -1063,6 +1071,20 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 			result.remove(getApplyButtonRidget());
 			result.remove(getTableRidget());
 			return result;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void setConfigured(final boolean configured) {
+			this.configured = configured;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public boolean isConfigured() {
+			return configured;
 		}
 
 	}

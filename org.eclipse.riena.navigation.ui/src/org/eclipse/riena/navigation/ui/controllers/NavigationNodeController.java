@@ -31,7 +31,6 @@ import org.eclipse.riena.navigation.NavigationArgument;
 import org.eclipse.riena.navigation.annotation.processor.NavigationNodeControllerAnnotationProcessor;
 import org.eclipse.riena.navigation.common.TypecastingObject;
 import org.eclipse.riena.navigation.listener.INavigationNodeListenerable;
-import org.eclipse.riena.navigation.ui.SubModuleUtils;
 import org.eclipse.riena.ui.core.context.IContext;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
@@ -41,6 +40,7 @@ import org.eclipse.riena.ui.ridgets.IBasicMarkableRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.IWindowRidget;
+import org.eclipse.riena.ui.ridgets.SubModuleUtils;
 import org.eclipse.riena.ui.ridgets.controller.IController;
 
 /**
@@ -57,6 +57,7 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	private Map<String, IRidget> ridgets;
 	private NavigationUIFilterApplier<N> nodeListener;
 	private PropertyChangeListener propertyChangeListener;
+	private boolean configured = false;
 
 	/**
 	 * Create a new Navigation Node view Controller. Set the navigation node
@@ -390,6 +391,20 @@ public abstract class NavigationNodeController<N extends INavigationNode<?>> ext
 	}
 
 	public void navigationArgumentChanged(final NavigationArgument argument) {
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setConfigured(final boolean configured) {
+		this.configured = configured;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isConfigured() {
+		return configured;
 	}
 
 }

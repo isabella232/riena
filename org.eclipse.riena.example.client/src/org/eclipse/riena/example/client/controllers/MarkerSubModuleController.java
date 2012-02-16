@@ -39,7 +39,9 @@ import org.eclipse.riena.ui.core.marker.ValidationTime;
 import org.eclipse.riena.ui.ridgets.AbstractCompositeRidget;
 import org.eclipse.riena.ui.ridgets.IActionListener;
 import org.eclipse.riena.ui.ridgets.IActionRidget;
+import org.eclipse.riena.ui.ridgets.ICComboRidget;
 import org.eclipse.riena.ui.ridgets.IComboRidget;
+import org.eclipse.riena.ui.ridgets.ICompletionComboRidget;
 import org.eclipse.riena.ui.ridgets.ICompositeTableRidget;
 import org.eclipse.riena.ui.ridgets.IDateTextRidget;
 import org.eclipse.riena.ui.ridgets.IDateTimeRidget;
@@ -107,7 +109,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		comboAge.setEmptySelectionItem("<none>"); //$NON-NLS-1$
 		comboAge.setSelection(1);
 
-		final IComboRidget comboStyle = getRidget(IComboRidget.class, "comboStyle"); //$NON-NLS-1$
+		final ICompletionComboRidget comboStyle = getRidget(ICompletionComboRidget.class, "comboStyle"); //$NON-NLS-1$
 		final List<String> styles = Arrays.asList(new String[] {
 				"<none>", "Bordeaux", "Beaujolaix", "Merlot", "Pinot Noire", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 				"Syrah" }); //$NON-NLS-1$
@@ -116,7 +118,7 @@ public class MarkerSubModuleController extends SubModuleController {
 		comboStyle.setEmptySelectionItem("<none>"); //$NON-NLS-1$
 		comboStyle.setSelection(1);
 
-		final IComboRidget comboSize = getRidget(IComboRidget.class, "ccomboSize"); //$NON-NLS-1$
+		final ICComboRidget comboSize = getRidget(ICComboRidget.class, "ccomboSize"); //$NON-NLS-1$
 		final List<String> sizes = Arrays.asList(new String[] { "<none>", "xs", "s", "m", "l", "xl" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 		comboSize.bindToModel(new WritableList(sizes, String.class), String.class, null, new WritableValue());
 		comboSize.updateFromModel();

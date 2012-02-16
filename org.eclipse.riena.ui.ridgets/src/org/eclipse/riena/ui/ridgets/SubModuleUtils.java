@@ -8,9 +8,7 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui;
-
-import org.eclipse.riena.ui.workarea.IWorkareaDefinition;
+package org.eclipse.riena.ui.ridgets;
 
 /**
  * Utility to check system properties for sub-modules.

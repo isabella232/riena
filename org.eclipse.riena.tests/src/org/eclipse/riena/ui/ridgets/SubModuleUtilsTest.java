@@ -8,11 +8,12 @@
  * Contributors:
  *    compeople AG - initial API and implementation
  *******************************************************************************/
-package org.eclipse.riena.navigation.ui;
+package org.eclipse.riena.ui.ridgets;
 
 import junit.framework.TestCase;
 
 import org.eclipse.riena.internal.core.test.collect.NonUITestCase;
+import org.eclipse.riena.ui.ridgets.SubModuleUtils;
 
 /**
  * Tests of the class {@link SubModuleUtils}.

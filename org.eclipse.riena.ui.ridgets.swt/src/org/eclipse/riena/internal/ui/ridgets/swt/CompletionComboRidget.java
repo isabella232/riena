@@ -20,6 +20,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.riena.ui.ridgets.IColumnFormatter;
+import org.eclipse.riena.ui.ridgets.ICompletionComboRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 import org.eclipse.riena.ui.swt.CompletionCombo;
 import org.eclipse.riena.ui.swt.IFlashDelegate;
@@ -27,7 +28,7 @@ import org.eclipse.riena.ui.swt.IFlashDelegate;
 /**
  * Ridget for {@link CompletionCombo} widgets.
  */
-public class CompletionComboRidget extends AbstractComboRidget {
+public class CompletionComboRidget extends AbstractComboRidget implements ICompletionComboRidget {
 
 	private final ModifyListener modifyListener = new ModifyListener() {
 		public void modifyText(final ModifyEvent e) {
