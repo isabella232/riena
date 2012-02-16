@@ -465,7 +465,8 @@ public abstract class AbstractMasterDetailsRidget extends AbstractCompositeRidge
 		if (applyRequiresNoErrors || applyRequiresNoMandatories) {
 			// inlined for performance
 			// isEnabled = areDetailsChanged() && noErrors && noMandatories
-			final boolean isEnabled = areDetailsChanged() && (applyRequiresNoErrors ? !hasErrors(detailRidgets) : true)
+			final boolean isEnabled = (areDetailsChanged())
+					&& (applyRequiresNoErrors ? !hasErrors(detailRidgets) : true)
 					&& (applyRequiresNoMandatories ? !hasMandatories(detailRidgets) : true);
 			getApplyButtonRidget().setEnabled(isEnabled);
 		} else {
