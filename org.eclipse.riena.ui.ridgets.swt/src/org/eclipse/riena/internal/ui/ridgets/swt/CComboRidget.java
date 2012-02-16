@@ -24,13 +24,14 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 
+import org.eclipse.riena.ui.ridgets.ICComboRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.swt.AbstractComboRidget;
 
 /**
  * Ridget for {@link CCombo} widgets.
  */
-public class CComboRidget extends AbstractComboRidget {
+public class CComboRidget extends AbstractComboRidget implements ICComboRidget {
 
 	private static final String ORIGINAL_BACKGROUND_KEY = "CCR.orBaKe"; //$NON-NLS-1$
 

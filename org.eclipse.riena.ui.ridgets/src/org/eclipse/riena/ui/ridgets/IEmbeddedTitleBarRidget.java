@@ -11,8 +11,9 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * @since 4.0
+ * Ridget for an embedded title bat.
  * 
+ * @since 4.0
  */
 public interface IEmbeddedTitleBarRidget extends IWindowRidget {
 

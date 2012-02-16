@@ -43,9 +43,9 @@ import org.eclipse.riena.ui.swt.utils.SWTBindingPropertyLocator;
  */
 public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
-	private final static String ICON_ECLIPSE = "eclipse.gif";
-	private final static String LABEL = "testlabel";
-	private final static String LABEL2 = "testlabel2";
+	private final static String ICON_ECLIPSE = "eclipse.gif"; //$NON-NLS-1$
+	private final static String LABEL = "testlabel"; //$NON-NLS-1$
+	private final static String LABEL2 = "testlabel2"; //$NON-NLS-1$
 
 	@Override
 	protected IToggleButtonRidget createRidget() {
@@ -96,7 +96,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		final IToggleButtonRidget ridget = getRidget();
 		final Button button = getWidget();
 		final BooleanTestPojo model = new BooleanTestPojo();
-		final IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
+		final IObservableValue modelOV = PojoObservables.observeValue(model, "selected"); //$NON-NLS-1$
 		ridget.bindToModel(modelOV);
 
 		ridget.setSelected(true);
@@ -115,7 +115,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		final BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
-		final IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
+		final IObservableValue modelOV = PojoObservables.observeValue(model, "selected"); //$NON-NLS-1$
 		ridget.bindToModel(modelOV);
 		ridget.updateFromModel();
 
@@ -127,7 +127,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		final BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
-		final IObservableValue modelOV = PojoObservables.observeValue(model, "selected");
+		final IObservableValue modelOV = PojoObservables.observeValue(model, "selected"); //$NON-NLS-1$
 		ridget.bindToModel(modelOV);
 
 		assertNotNull(BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED));
@@ -145,7 +145,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		final BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
-		ridget.bindToModel(model, "selected");
+		ridget.bindToModel(model, "selected"); //$NON-NLS-1$
 
 		assertNotNull(BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED));
 		assertEquals(boolean.class, BeansObservables.observeValue(ridget, IToggleButtonRidget.PROPERTY_SELECTED)
@@ -163,7 +163,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		final BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
-		ridget.bindToModel(model, "selected");
+		ridget.bindToModel(model, "selected"); //$NON-NLS-1$
 		ridget.updateFromModel();
 
 		assertTrue(button.getSelection());
@@ -209,10 +209,10 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		final IToggleButtonRidget ridget = getRidget();
 		final Button button = getWidget();
 
-		ridget.setText("");
+		ridget.setText(""); //$NON-NLS-1$
 
-		assertEquals("", ridget.getText());
-		assertEquals("", button.getText());
+		assertEquals("", ridget.getText()); //$NON-NLS-1$
+		assertEquals("", button.getText()); //$NON-NLS-1$
 
 		try {
 			ridget.setText(null);
@@ -255,10 +255,10 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		assertNull(ridget.getIcon());
 		assertNull(control.getImage());
 
-		ridget.setIcon("nonsense");
+		ridget.setIcon("nonsense"); //$NON-NLS-1$
 
 		final Image missingImage = ImageStore.getInstance().getMissingImage();
-		assertEquals("nonsense", ridget.getIcon());
+		assertEquals("nonsense", ridget.getIcon()); //$NON-NLS-1$
 		assertEquals(missingImage, control.getImage());
 
 		Button button = createWidget(getShell());
@@ -296,19 +296,19 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		final IToggleButtonRidget ridget = getRidget();
 		final Button control = getWidget();
 
-		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false);
-		ReflectionUtils.setHidden(ridget, "text", null);
-		control.setText("Hello!");
+		ReflectionUtils.setHidden(ridget, "textAlreadyInitialized", false); //$NON-NLS-1$
+		ReflectionUtils.setHidden(ridget, "text", null); //$NON-NLS-1$
+		control.setText("Hello!"); //$NON-NLS-1$
 
-		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {});
-		assertEquals("Hello!", ridget.getText());
-		assertEquals("Hello!", control.getText());
-		assertTrue((Boolean) ReflectionUtils.getHidden(ridget, "textAlreadyInitialized"));
+		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {}); //$NON-NLS-1$
+		assertEquals("Hello!", ridget.getText()); //$NON-NLS-1$
+		assertEquals("Hello!", control.getText()); //$NON-NLS-1$
+		assertTrue((Boolean) ReflectionUtils.getHidden(ridget, "textAlreadyInitialized")); //$NON-NLS-1$
 
-		control.setText("World");
-		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {});
-		assertEquals("Hello!", ridget.getText());
-		assertEquals("World", control.getText());
+		control.setText("World"); //$NON-NLS-1$
+		ReflectionUtils.invokeHidden(ridget, "initText", new Object[] {}); //$NON-NLS-1$
+		assertEquals("Hello!", ridget.getText()); //$NON-NLS-1$
+		assertEquals("World", control.getText()); //$NON-NLS-1$
 
 	}
 
@@ -379,7 +379,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		final IToggleButtonRidget ridget = getRidget();
 		final Button control = getWidget();
 		final BooleanTestPojo model = new BooleanTestPojo();
-		ridget.bindToModel(model, "selected");
+		ridget.bindToModel(model, "selected"); //$NON-NLS-1$
 
 		ridget.setSelected(false);
 		ridget.setEnabled(false);
@@ -413,7 +413,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		final IToggleButtonRidget ridget = getRidget();
 		final Button control = getWidget();
 		final BooleanTestPojo model = new BooleanTestPojo();
-		ridget.bindToModel(model, "selected");
+		ridget.bindToModel(model, "selected"); //$NON-NLS-1$
 		ridget.setEnabled(false);
 
 		model.setSelected(false);
@@ -487,7 +487,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.addPropertyChangeListener(IToggleButtonRidget.PROPERTY_SELECTED, new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent evt) {
-				fail("Unexpected property change event: " + evt);
+				fail("Unexpected property change event: " + evt); //$NON-NLS-1$
 			}
 		});
 
@@ -533,7 +533,7 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		final BooleanTestPojo model = new BooleanTestPojo();
 		model.setSelected(true);
-		ridget.bindToModel(PojoObservables.observeValue(model, "selected"));
+		ridget.bindToModel(PojoObservables.observeValue(model, "selected")); //$NON-NLS-1$
 		ridget.updateFromModel();
 
 		assertTrue(ridget.isSelected());
@@ -849,16 +849,16 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 		final Button button = new Button(getShell(), SWT.RADIO);
 		final IToggleButtonRidget ridget = new ToggleButtonRidget();
 		ridget.setUIControl(button);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, "radio1");
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(button, "radio1"); //$NON-NLS-1$
 		ridget.setController(controller);
-		controller.addRidget("radio1", ridget);
+		controller.addRidget("radio1", ridget); //$NON-NLS-1$
 
 		final Button button2 = new Button(getShell(), SWT.RADIO);
 		final IToggleButtonRidget ridget2 = new ToggleButtonRidget();
 		ridget2.setUIControl(button2);
-		SWTBindingPropertyLocator.getInstance().setBindingProperty(button2, "radio2");
+		SWTBindingPropertyLocator.getInstance().setBindingProperty(button2, "radio2"); //$NON-NLS-1$
 		ridget2.setController(controller);
-		controller.addRidget("radio2", ridget2);
+		controller.addRidget("radio2", ridget2); //$NON-NLS-1$
 
 		ridget2.setSelected(true);
 		assertFalse(ridget.isSelected());
@@ -921,7 +921,6 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 			// nothing
 		}
 
-		@SuppressWarnings("unchecked")
 		public <R extends IRidget> R getRidget(final String id) {
 			return (R) ridgets.get(id);
 		}
@@ -932,6 +931,13 @@ public class ToggleButtonRidgetTest extends AbstractSWTRidgetTest {
 
 		public Collection<? extends IRidget> getRidgets() {
 			return ridgets.values();
+		}
+
+		public boolean isConfigured() {
+			return false;
+		}
+
+		public void setConfigured(final boolean configured) {
 		}
 	}
 
