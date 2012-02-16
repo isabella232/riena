@@ -11,7 +11,7 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- *
+ * Ridget of a title bar of a module.
  */
 public interface IModuleTitleBarRidget extends IEmbeddedTitleBarRidget {
 

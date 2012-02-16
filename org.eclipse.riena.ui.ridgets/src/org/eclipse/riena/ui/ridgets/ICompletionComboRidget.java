@@ -11,10 +11,8 @@
 package org.eclipse.riena.ui.ridgets;
 
 /**
- * Ridget for a Shell.
- *
- * @since 4.0
+ * Ridget for a CompletionCombo.
  */
-public interface IShellRidget extends IWindowRidget {
+public interface ICompletionComboRidget extends IComboRidget {
 
 }

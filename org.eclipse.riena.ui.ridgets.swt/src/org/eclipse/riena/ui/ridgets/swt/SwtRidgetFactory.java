@@ -84,6 +84,7 @@ public final class SwtRidgetFactory {
 	private static final class DummyContainer implements IRidgetContainer {
 		private final Map<String, IRidget> ridgets = new HashMap<String, IRidget>();
 		private IRidget ridget;
+		private boolean configured = false;
 
 		public void addRidget(final String id, final IRidget ridget) {
 			if (id != null && !"dummy".equals(id)) { //$NON-NLS-1$
@@ -114,6 +115,20 @@ public final class SwtRidgetFactory {
 
 		void clear() {
 			this.ridget = null;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public void setConfigured(final boolean configured) {
+			this.configured = configured;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		public boolean isConfigured() {
+			return configured;
 		}
 
 	}
