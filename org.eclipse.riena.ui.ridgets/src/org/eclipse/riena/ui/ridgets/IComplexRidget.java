@@ -32,4 +32,10 @@ import org.eclipse.riena.ui.common.IComplexComponent;
  * @see IComplexComponent
  */
 public interface IComplexRidget extends IRidget, IRidgetContainer {
+
+	/**
+	 * 
+	 * @return the id of the given {@link IRidget} if registered
+	 */
+	String idOfRidget(final IRidget ridget);
 }
