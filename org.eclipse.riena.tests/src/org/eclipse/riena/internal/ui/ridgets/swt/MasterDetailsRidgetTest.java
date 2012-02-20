@@ -49,6 +49,7 @@ import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ISelectableRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.SubModuleUtils;
 import org.eclipse.riena.ui.ridgets.swt.AbstractMasterDetailsRidget;
 import org.eclipse.riena.ui.ridgets.swt.uibinding.SwtControlRidgetMapper;
 import org.eclipse.riena.ui.ridgets.uibinding.DefaultBindingManager;
@@ -1144,8 +1145,10 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testApplyTriggersNewWhenNewButtonDoesNotExist() {
 		final boolean isTesting = RienaStatus.isTest();
+		final boolean isPrepareView = SubModuleUtils.isPrepareView();
 		// disable the ridget "auto-creation" for this test
 		System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false");
+		System.setProperty(SubModuleUtils.RIENA_PREPARE_VIEW_SYSTEM_PROPERTY, "true");
 		try {
 			final IMasterDetailsRidget ridget = (IMasterDetailsRidget) createRidget();
 			ridget.setUIControl(new MDWidget(getShell(), SWT.NONE) {
@@ -1159,6 +1162,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			assertFalse(ridget.isApplyTriggersNew());
 		} finally {
 			System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, String.valueOf(isTesting));
+			System.setProperty(SubModuleUtils.RIENA_PREPARE_VIEW_SYSTEM_PROPERTY, String.valueOf(isPrepareView));
 		}
 	}
 
@@ -1433,8 +1437,10 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testRemoveCancelsNewWhenRemoveButtonDoesNotExist() {
 		final boolean isTesting = RienaStatus.isTest();
+		final boolean isPrepareView = SubModuleUtils.isPrepareView();
 		// disable the ridget "auto-creation" for this test
 		System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false");
+		System.setProperty(SubModuleUtils.RIENA_PREPARE_VIEW_SYSTEM_PROPERTY, "true");
 		try {
 			final IMasterDetailsRidget ridget = (IMasterDetailsRidget) createRidget();
 			ridget.setUIControl(new MDWidget(getShell(), SWT.NONE) {
@@ -1448,6 +1454,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			assertFalse(ridget.isRemoveCancelsNew());
 		} finally {
 			System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, String.valueOf(isTesting));
+			System.setProperty(SubModuleUtils.RIENA_PREPARE_VIEW_SYSTEM_PROPERTY, String.valueOf(isPrepareView));
 		}
 	}
 
@@ -1555,8 +1562,10 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testRemoveTriggersNewWhenRemoveButtonDoesNotExist() {
 		final boolean isTesting = RienaStatus.isTest();
+		final boolean isPrepareView = SubModuleUtils.isPrepareView();
 		// disable the ridget "auto-creation" for this test
 		System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false");
+		System.setProperty(SubModuleUtils.RIENA_PREPARE_VIEW_SYSTEM_PROPERTY, "true");
 		try {
 			final IMasterDetailsRidget ridget = (IMasterDetailsRidget) createRidget();
 			ridget.setUIControl(new MDWidget(getShell(), SWT.NONE) {
@@ -1570,6 +1579,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			assertFalse(ridget.isRemoveTriggersNew());
 		} finally {
 			System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, String.valueOf(isTesting));
+			System.setProperty(SubModuleUtils.RIENA_PREPARE_VIEW_SYSTEM_PROPERTY, String.valueOf(isPrepareView));
 		}
 	}
 
