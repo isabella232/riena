@@ -24,7 +24,9 @@ import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.IRidget;
 import org.eclipse.riena.ui.ridgets.IRidgetContainer;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
+import org.eclipse.riena.ui.ridgets.SubModuleUtils;
 import org.eclipse.riena.ui.ridgets.swt.SwtRidgetFactory;
+import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 import org.eclipse.riena.ui.swt.utils.UIControlsFactory;
 
 /**
@@ -35,14 +37,14 @@ public class CorrespondingLabelManagerTest extends TestCase {
 
 	private CorrespondingLabelMapper labelMapper;
 
-	private final static String FIRSTNAME_LABEL_ID = "labelfirstName";
-	private final static String FIRSTNAME_TEXT_ID = "firstName";
+	private final static String FIRSTNAME_LABEL_ID = "labelfirstName"; //$NON-NLS-1$
+	private final static String FIRSTNAME_TEXT_ID = "firstName"; //$NON-NLS-1$
 
-	private final static String LASTNAME_LABEL_ID = "lbllastName";
-	private final static String LASTNAME_TEXT_ID = "lastName";
+	private final static String LASTNAME_LABEL_ID = "lbllastName"; //$NON-NLS-1$
+	private final static String LASTNAME_TEXT_ID = "lastName"; //$NON-NLS-1$
 
-	private final static String AGE_LABEL_ID = "fooage";
-	private final static String AGE_TEXT_ID = "age";
+	private final static String AGE_LABEL_ID = "fooage"; //$NON-NLS-1$
+	private final static String AGE_TEXT_ID = "age"; //$NON-NLS-1$
 
 	private ILabelRidget lblFirstName;
 
@@ -60,6 +62,8 @@ public class CorrespondingLabelManagerTest extends TestCase {
 
 	private Shell shell;
 
+	private boolean isPrepareView;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -69,26 +73,30 @@ public class CorrespondingLabelManagerTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
+		isPrepareView = SubModuleUtils.isPrepareView();
+		// disable the ridget "auto-creation" for this test
+		System.setProperty(SubModuleUtils.RIENA_PREPARE_VIEW_SYSTEM_PROPERTY, "true"); //$NON-NLS-1$
+
 		final IRidgetContainer ridgetContainer = new StubRidgetContainer();
 
 		shell = new Shell();
 
-		lblFirstName = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "FirstName",
+		lblFirstName = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "FirstName", //$NON-NLS-1$
 				SWT.None, FIRSTNAME_LABEL_ID));
 		txtFirstName = (ITextRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createText(shell, SWT.NONE,
 				FIRSTNAME_TEXT_ID));
 
-		lblLastName = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "LastName",
+		lblLastName = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "LastName", //$NON-NLS-1$
 				SWT.None, LASTNAME_LABEL_ID));
 		txtLastName = (ITextRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createText(shell, SWT.NONE,
 				LASTNAME_TEXT_ID));
 
-		lblLastName = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "LastName",
+		lblLastName = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "LastName", //$NON-NLS-1$
 				SWT.None, LASTNAME_LABEL_ID));
 		txtLastName = (ITextRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createText(shell, SWT.NONE,
 				LASTNAME_TEXT_ID));
 
-		lblAge = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "Age", SWT.None,
+		lblAge = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "Age", SWT.None, //$NON-NLS-1$
 				AGE_LABEL_ID));
 		txtAge = (ITextRidget) SwtRidgetFactory
 				.createRidget(UIControlsFactory.createText(shell, SWT.NONE, AGE_TEXT_ID));
@@ -115,10 +123,9 @@ public class CorrespondingLabelManagerTest extends TestCase {
 	 */
 	@Override
 	protected void tearDown() throws Exception {
-		if (null != shell && !shell.isDisposed()) {
-			shell.dispose();
-			shell = null;
-		}
+		SwtUtilities.dispose(shell);
+		shell = null;
+		System.setProperty(SubModuleUtils.RIENA_PREPARE_VIEW_SYSTEM_PROPERTY, String.valueOf(isPrepareView));
 		super.tearDown();
 	}
 
@@ -143,7 +150,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 	}
 
 	public void testCustomLabelFinderStrategy() throws Exception {
-		lblDummyFinder = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "Dummy",
+		lblDummyFinder = (ILabelRidget) SwtRidgetFactory.createRidget(UIControlsFactory.createLabel(shell, "Dummy", //$NON-NLS-1$
 				SWT.BORDER, LASTNAME_TEXT_ID));
 		CorrespondingLabelMapper.setLabelFinderStrategy(new StubLabelFinderStrategyProperties());
 
@@ -165,7 +172,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 	public void testCustomLabelPrefix() throws Exception {
 		CorrespondingLabelMapper.setCorrespondingLabelConfig(new ICorrespondingLabelExtension() {
 			public String getLabelPrefix() {
-				return "foo";
+				return "foo"; //$NON-NLS-1$
 			}
 		});
 
@@ -186,7 +193,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 	private class StubLabelFinderStrategyProperties implements ILabelFinderStrategyExtension {
 
 		public String getClassName() {
-			return "org.eclipse.riena.ui.ridgets.uibinding.CorrespondingLabelManagerTest.DummyLabelFinderStrategy";
+			return "org.eclipse.riena.ui.ridgets.uibinding.CorrespondingLabelManagerTest.DummyLabelFinderStrategy"; //$NON-NLS-1$
 		}
 
 		public ILabelFinderStrategy createFinderStrategy() {
@@ -197,7 +204,7 @@ public class CorrespondingLabelManagerTest extends TestCase {
 
 	private class DummyLabelFinderStrategy implements ILabelFinderStrategy {
 		public ILabelRidget findLabelRidget(final IRidgetContainer ridgetContainer, final String ridgetID) {
-			System.out.println("CorrespondingLabelManagerTest.DummyLabelFinderStrategy.findLabelRidget()");
+			System.out.println("CorrespondingLabelManagerTest.DummyLabelFinderStrategy.findLabelRidget()"); //$NON-NLS-1$
 			return lblDummyFinder;
 		}
 
@@ -215,7 +222,6 @@ public class CorrespondingLabelManagerTest extends TestCase {
 
 		}
 
-		@SuppressWarnings("unchecked")
 		public <R extends IRidget> R getRidget(final String id) {
 			return (R) ridgets.get(id);
 		}
