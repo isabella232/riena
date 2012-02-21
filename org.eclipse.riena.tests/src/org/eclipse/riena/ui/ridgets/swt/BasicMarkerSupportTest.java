@@ -15,15 +15,19 @@ import junit.framework.TestCase;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import org.eclipse.riena.core.util.ReflectionUtils;
 import org.eclipse.riena.internal.core.test.collect.UITestCase;
 import org.eclipse.riena.internal.ui.ridgets.swt.DisabledMarkerVisualizer;
+import org.eclipse.riena.internal.ui.ridgets.swt.LabelRidget;
 import org.eclipse.riena.internal.ui.ridgets.swt.TextRidget;
 import org.eclipse.riena.ui.core.marker.ErrorMarker;
 import org.eclipse.riena.ui.core.marker.MandatoryMarker;
+import org.eclipse.riena.ui.ridgets.AbstractMarkerSupport;
+import org.eclipse.riena.ui.ridgets.ILabelRidget;
 import org.eclipse.riena.ui.ridgets.ITextRidget;
 import org.eclipse.riena.ui.swt.utils.SwtUtilities;
 
@@ -103,8 +107,8 @@ public class BasicMarkerSupportTest extends TestCase {
 
 	public void testUnbind() throws Exception {
 		final Boolean[] x = new Boolean[2];
-		final DisabledMarkerVisualizer v_Mock = new DisabledMarkerVisualizer(null) {
-			int i = 0;
+		final DisabledMarkerVisualizer vMock = new DisabledMarkerVisualizer(null) {
+			private int i = 0;
 
 			@Override
 			public void updateDisabled(final Control control, final boolean enabled) {
@@ -120,7 +124,7 @@ public class BasicMarkerSupportTest extends TestCase {
 				return txt;
 			}
 		};
-		ReflectionUtils.setHidden(support, "disabledMarkerVisualizer", v_Mock);
+		ReflectionUtils.setHidden(support, "disabledMarkerVisualizer", vMock); //$NON-NLS-1$
 		support.bind();
 		support.unbind();
 		assertTrue(x[0]);
@@ -128,6 +132,34 @@ public class BasicMarkerSupportTest extends TestCase {
 		support.bind();
 		support.unbind();
 		assertFalse(x[1]);
+
+	}
+
+	/**
+	 * Tests the <i>private</i> method {@code clearVisible(Control)}.
+	 */
+	public void testClearVisible() {
+
+		final DefaultRealm realm = new DefaultRealm();
+		try {
+			final Label control = new Label(shell, SWT.NONE);
+			final ILabelRidget ridget = new LabelRidget();
+			ridget.setUIControl(control);
+			final boolean isVisible = control.getVisible();
+
+			assertTrue(control.getVisible());
+
+			ridget.setVisible(false);
+			assertFalse(control.getVisible());
+
+			final AbstractMarkerSupport markerSupport = ReflectionUtils.getHidden(ridget, "markerSupport"); //$NON-NLS-1$
+			assertTrue(markerSupport instanceof BasicMarkerSupport);
+			ReflectionUtils.invokeHidden(markerSupport, "clearVisible", control); //$NON-NLS-1$
+			assertEquals(isVisible, control.getVisible());
+
+		} finally {
+			realm.dispose();
+		}
 
 	}
 

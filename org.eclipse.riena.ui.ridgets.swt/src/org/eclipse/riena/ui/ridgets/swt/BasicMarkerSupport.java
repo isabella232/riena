@@ -38,10 +38,8 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 
 	private static boolean alwaysSkipRedraw = false;
 	private static boolean osChecked = false;
-	/**
-	 * @since 3.0
-	 */
-	protected boolean initialEnabled = true;
+	private boolean initialEnabled = true;
+	private boolean initialVisible;
 
 	/**
 	 * @since 3.0
@@ -50,10 +48,12 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 
 	public BasicMarkerSupport() {
 		super();
+		initialVisible = true;
 	}
 
 	public BasicMarkerSupport(final IBasicMarkableRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
+		initialVisible = true;
 	}
 
 	/**
@@ -106,10 +106,15 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	 */
 	protected void clearAllMarkers(final Control control) {
 		clearDisabled(control);
+		clearVisible(control);
 	}
 
 	private void clearDisabled(final Control control) {
 		disabledMarkerVisualizer.updateDisabled(control, initialEnabled);
+	}
+
+	private void clearVisible(final Control control) {
+		control.setVisible(initialVisible);
 	}
 
 	/**
@@ -139,6 +144,7 @@ public class BasicMarkerSupport extends AbstractMarkerSupport {
 	 */
 	protected void saveState() {
 		this.initialEnabled = getUIControl().getEnabled();
+		this.initialVisible = getUIControl().getVisible();
 	}
 
 	/**

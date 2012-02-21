@@ -86,7 +86,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 	private static Boolean hideDisabledRidgetContent;
 
 	private IControlDecoration errorDecoration;
-	private boolean initialVisible;
 	private boolean isFlashInProgress;
 
 	// internal data of the control
@@ -110,13 +109,11 @@ public class MarkerSupport extends BasicMarkerSupport {
 	public MarkerSupport() {
 		super();
 		internalData = new HashMap<String, Object>();
-		initialVisible = true;
 	}
 
 	public MarkerSupport(final IBasicMarkableRidget ridget, final PropertyChangeSupport propertyChangeSupport) {
 		super(ridget, propertyChangeSupport);
 		internalData = new HashMap<String, Object>();
-		initialVisible = true;
 	}
 
 	/**
@@ -230,7 +227,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 	@Override
 	protected void clearAllMarkers(final Control control) {
 		super.clearAllMarkers(control);
-		clearVisible(control);
 		clearError(control);
 		clearMandatory(control);
 		clearNegative(control);
@@ -281,12 +277,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 		return (IMarkableRidget) super.getRidget();
 	}
 
-	@Override
-	protected void saveState() {
-		super.saveState();
-		this.initialVisible = getUIControl().getVisible();
-	}
-
 	/**
 	 * Precedence of visibility and marker states for a ridget:
 	 * <ol>
@@ -322,10 +312,6 @@ public class MarkerSupport extends BasicMarkerSupport {
 			control.setForeground((Color) getData(PRE_NEGATIVE_FOREGROUND_KEY));
 			setData(PRE_NEGATIVE_FOREGROUND_KEY, null);
 		}
-	}
-
-	private void clearVisible(final Control control) {
-		control.setVisible(initialVisible);
 	}
 
 	private Object getData(final String key) {
