@@ -67,7 +67,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	private static final IBindingManager BINDING_MAN = new DefaultBindingManager(
 			SWTBindingPropertyLocator.getInstance(), SwtControlRidgetMapper.getInstance());
 	private final String[] columnProperties = { MDBean.PROPERTY_COLUMN_1, MDBean.PROPERTY_COLUMN_2 };
-	private final String[] columnHeaders = { "TestColumn1Header", "TestColumn2Header" };
+	private final String[] columnHeaders = { "TestColumn1Header", "TestColumn2Header" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	private List<MDBean> input;
 	private MDDelegate delegate;
@@ -135,8 +135,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(2, table.getColumnCount());
 		assertEquals(3, table.getItemCount());
-		assertEquals("TestColumn1Header", table.getColumn(0).getText());
-		assertEquals("TestColumn2Header", table.getColumn(1).getText());
+		assertEquals("TestColumn1Header", table.getColumn(0).getText()); //$NON-NLS-1$
+		assertEquals("TestColumn2Header", table.getColumn(1).getText()); //$NON-NLS-1$
 		assertContent(table, 3);
 	}
 
@@ -171,15 +171,15 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setUIControl(new Table(getShell(), SWT.MULTI));
 			fail();
 		} catch (final RuntimeException rex) {
-			ok("does not allow Table-Widget");
+			ok("does not allow Table-Widget"); //$NON-NLS-1$
 		}
 	}
 
 	public void testAddBean() {
 		final MasterDetailsRidget ridget = getRidget();
 		final MDWidget widget = getWidget();
-		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
-		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1"); //$NON-NLS-1$
+		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2"); //$NON-NLS-1$
 
 		ridget.setApplyTriggersNew(false);
 		bindToModel(true);
@@ -187,8 +187,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setSelection(input.get(0));
 
-		assertEquals("TestR0C1", widget.txtColumn1.getText());
-		assertEquals("TestR0C2", widget.txtColumn2.getText());
+		assertEquals("TestR0C1", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("TestR0C2", widget.txtColumn2.getText()); //$NON-NLS-1$
 
 		ridget.handleAdd();
 		assertTrue(txtColumn1.isEnabled());
@@ -197,34 +197,34 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(widget.txtColumn1.isFocusControl());
 
 		assertEquals(oldSize, input.size());
-		assertEquals("", widget.txtColumn1.getText());
-		assertEquals("", widget.txtColumn2.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 
 		widget.txtColumn1.setFocus();
-		UITestHelper.sendString(widget.getDisplay(), "A\r");
+		UITestHelper.sendString(widget.getDisplay(), "A\r"); //$NON-NLS-1$
 		widget.txtColumn2.setFocus();
-		UITestHelper.sendString(widget.getDisplay(), "B\r");
+		UITestHelper.sendString(widget.getDisplay(), "B\r"); //$NON-NLS-1$
 
 		ridget.handleApply();
 
 		final MDBean newEntry = input.get(oldSize);
 		assertEquals(oldSize + 1, input.size());
-		assertEquals("A", newEntry.column1);
-		assertEquals("B", newEntry.column2);
+		assertEquals("A", newEntry.column1); //$NON-NLS-1$
+		assertEquals("B", newEntry.column2); //$NON-NLS-1$
 
 		// apply triggers 'New' = false
 		assertEquals(newEntry, ridget.getSelection());
 		assertFalse(txtColumn1.isEnabled());
 		assertFalse(txtColumn2.isEnabled());
-		assertEquals("", widget.txtColumn1.getText());
-		assertEquals("", widget.txtColumn2.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 	}
 
 	public void testAddBeanAndApplyTriggersNew() {
 		final MasterDetailsRidget ridget = getRidget();
 		final MDWidget widget = getWidget();
-		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
-		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1"); //$NON-NLS-1$
+		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2"); //$NON-NLS-1$
 
 		ridget.setApplyTriggersNew(true);
 		bindToModel(true);
@@ -232,8 +232,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setSelection(input.get(0));
 
-		assertEquals("TestR0C1", widget.txtColumn1.getText());
-		assertEquals("TestR0C2", widget.txtColumn2.getText());
+		assertEquals("TestR0C1", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("TestR0C2", widget.txtColumn2.getText()); //$NON-NLS-1$
 
 		ridget.handleAdd();
 		assertTrue(txtColumn1.isEnabled());
@@ -242,35 +242,35 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(widget.txtColumn1.isFocusControl());
 
 		assertEquals(oldSize, input.size());
-		assertEquals("", widget.txtColumn1.getText());
-		assertEquals("", widget.txtColumn2.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 
 		widget.txtColumn1.setFocus();
-		UITestHelper.sendString(widget.getDisplay(), "A\r");
+		UITestHelper.sendString(widget.getDisplay(), "A\r"); //$NON-NLS-1$
 		widget.txtColumn2.setFocus();
-		UITestHelper.sendString(widget.getDisplay(), "B\r");
+		UITestHelper.sendString(widget.getDisplay(), "B\r"); //$NON-NLS-1$
 
 		ridget.handleApply();
 
 		final MDBean newEntry = input.get(oldSize);
 		assertEquals(oldSize + 1, input.size());
-		assertEquals("A", newEntry.column1);
-		assertEquals("B", newEntry.column2);
+		assertEquals("A", newEntry.column1); //$NON-NLS-1$
+		assertEquals("B", newEntry.column2); //$NON-NLS-1$
 
 		// apply triggers 'New' = true
 		assertNull(ridget.getSelection());
 		assertTrue(txtColumn1.isEnabled());
 		assertTrue(txtColumn2.isEnabled());
-		assertEquals("", widget.txtColumn1.getText());
-		assertEquals("", widget.txtColumn2.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 	}
 
 	public void testDeleteBean() {
 		final MasterDetailsRidget ridget = getRidget();
 		final MDWidget widget = getWidget();
 		final Table table = widget.getTable();
-		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
-		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1"); //$NON-NLS-1$
+		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2"); //$NON-NLS-1$
 
 		bindToModel(true);
 
@@ -302,14 +302,14 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		ridget.setSelection(input.get(1));
 		widget.txtColumn1.setFocus();
-		UITestHelper.sendString(widget.getDisplay(), "A\r");
+		UITestHelper.sendString(widget.getDisplay(), "A\r"); //$NON-NLS-1$
 		widget.txtColumn2.setFocus();
-		UITestHelper.sendString(widget.getDisplay(), "B\r");
+		UITestHelper.sendString(widget.getDisplay(), "B\r"); //$NON-NLS-1$
 		ridget.handleApply();
 
 		assertEquals(3, input.size());
-		assertEquals("A", input.get(1).getColumn1());
-		assertEquals("B", input.get(1).getColumn2());
+		assertEquals("A", input.get(1).getColumn1()); //$NON-NLS-1$
+		assertEquals("B", input.get(1).getColumn2()); //$NON-NLS-1$
 	}
 
 	public void testSetSelection() {
@@ -335,14 +335,14 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSelection(input.get(1));
 
 		assertEquals(1, widget.getTable().getSelectionCount());
-		assertEquals("TestR1C1", widget.txtColumn1.getText());
-		assertEquals("TestR1C2", widget.txtColumn2.getText());
+		assertEquals("TestR1C1", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("TestR1C2", widget.txtColumn2.getText()); //$NON-NLS-1$
 
 		ridget.setSelection(null);
 
 		assertEquals(0, widget.getTable().getSelectionCount());
-		assertEquals("", widget.txtColumn1.getText());
-		assertEquals("", widget.txtColumn2.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 	}
 
 	public void testSetSelectionRevealsSelection() {
@@ -405,15 +405,15 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSelection(input.get(0));
 
 		assertEquals(0, widget.getTable().getSelectionCount());
-		assertEquals("", widget.txtColumn1.getText());
-		assertEquals("", widget.txtColumn2.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 
 		final MDWidget widget2 = (MDWidget) createWidget(getShell());
 		bindUIControl(ridget, widget2);
 
 		assertEquals(1, widget2.getTable().getSelectionCount());
-		assertEquals("TestR0C1", widget2.txtColumn1.getText());
-		assertEquals("TestR0C2", widget2.txtColumn2.getText());
+		assertEquals("TestR0C1", widget2.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("TestR0C2", widget2.txtColumn2.getText()); //$NON-NLS-1$
 	}
 
 	public void testSetSelectionFiresEvents() {
@@ -450,8 +450,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	public void testHandleSelectionChange() {
 		final IMasterDetailsRidget ridget = getRidget();
 		bindToModel(true);
-		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
-		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1"); //$NON-NLS-1$
+		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2"); //$NON-NLS-1$
 
 		final MDBean item0 = input.get(0);
 		ridget.setSelection(item0);
@@ -524,18 +524,18 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final MDBean row0 = input.get(0);
 		ridget.setSelection(row0);
 
-		assertEquals("TestR0C1", row0.column1);
-		assertEquals("TestR0C2", row0.column2);
-		assertEquals("TestR0C1", widget.txtColumn1.getText());
-		assertEquals("TestR0C2", widget.txtColumn2.getText());
+		assertEquals("TestR0C1", row0.column1); //$NON-NLS-1$
+		assertEquals("TestR0C2", row0.column2); //$NON-NLS-1$
+		assertEquals("TestR0C1", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("TestR0C2", widget.txtColumn2.getText()); //$NON-NLS-1$
 
 		widget.txtColumn1.setFocus();
-		UITestHelper.sendString(widget.getDisplay(), "A\r");
+		UITestHelper.sendString(widget.getDisplay(), "A\r"); //$NON-NLS-1$
 		widget.txtColumn2.setFocus();
-		UITestHelper.sendString(widget.getDisplay(), "B\r");
+		UITestHelper.sendString(widget.getDisplay(), "B\r"); //$NON-NLS-1$
 
-		assertEquals("A", row0.column1);
-		assertEquals("B", row0.column2);
+		assertEquals("A", row0.column1); //$NON-NLS-1$
+		assertEquals("B", row0.column2); //$NON-NLS-1$
 	}
 
 	public void testDirectWritingAddsToTableWithoutApply() {
@@ -555,8 +555,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		final MDBean row4 = (MDBean) ridget.getSelection();
 
-		assertEquals("", row4.column1);
-		assertEquals("", row4.column2);
+		assertEquals("", row4.column1); //$NON-NLS-1$
+		assertEquals("", row4.column2); //$NON-NLS-1$
 	}
 
 	public void testDirectWritingWithRequiresNoErrors() {
@@ -569,19 +569,19 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.handleAdd();
 		final MDBean bean = (MDBean) ridget.getSelection();
 
-		assertEquals("", bean.column1);
-		assertEquals("", bean.column2);
+		assertEquals("", bean.column1); //$NON-NLS-1$
+		assertEquals("", bean.column2); //$NON-NLS-1$
 
 		// should not update bean, col1 is not valid
-		delegate.txtColumn2.setText("beta");
+		delegate.txtColumn2.setText("beta"); //$NON-NLS-1$
 
-		assertEquals("", bean.column1);
-		assertEquals("", bean.column2);
+		assertEquals("", bean.column1); //$NON-NLS-1$
+		assertEquals("", bean.column2); //$NON-NLS-1$
 
-		delegate.txtColumn1.setText("alpha");
+		delegate.txtColumn1.setText("alpha"); //$NON-NLS-1$
 
-		assertEquals("alpha", bean.column1);
-		assertEquals("beta", bean.column2);
+		assertEquals("alpha", bean.column1); //$NON-NLS-1$
+		assertEquals("beta", bean.column2); //$NON-NLS-1$
 	}
 
 	public void testDirectWritingWithRequiresNoMandatories() {
@@ -595,18 +595,18 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.handleAdd();
 		final MDBean bean = (MDBean) ridget.getSelection();
 
-		assertEquals("", bean.column1);
-		assertEquals("", bean.column2);
+		assertEquals("", bean.column1); //$NON-NLS-1$
+		assertEquals("", bean.column2); //$NON-NLS-1$
 
-		delegate.txtColumn1.setText("alpha");
+		delegate.txtColumn1.setText("alpha"); //$NON-NLS-1$
 
-		assertEquals("", bean.column1);
-		assertEquals("", bean.column2);
+		assertEquals("", bean.column1); //$NON-NLS-1$
+		assertEquals("", bean.column2); //$NON-NLS-1$
 
-		delegate.txtColumn2.setText("beta");
+		delegate.txtColumn2.setText("beta"); //$NON-NLS-1$
 
-		assertEquals("alpha", bean.column1);
-		assertEquals("beta", bean.column2);
+		assertEquals("alpha", bean.column1); //$NON-NLS-1$
+		assertEquals("beta", bean.column2); //$NON-NLS-1$
 	}
 
 	public void testDirectWritingValidationCheck() {
@@ -614,24 +614,24 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setApplyRequiresNoMandatories(true);
 		ridget.setDirectWriting(true);
 		bindToModel(true);
-		delegate.validationResult = "error";
+		delegate.validationResult = "error"; //$NON-NLS-1$
 
 		ridget.handleAdd();
 		final MDBean bean = (MDBean) ridget.getSelection();
 
-		assertEquals("", bean.column1);
-		assertEquals("", bean.column2);
+		assertEquals("", bean.column1); //$NON-NLS-1$
+		assertEquals("", bean.column2); //$NON-NLS-1$
 
-		delegate.txtColumn1.setText("alpha");
+		delegate.txtColumn1.setText("alpha"); //$NON-NLS-1$
 
-		assertEquals("", bean.column1);
-		assertEquals("", bean.column2);
+		assertEquals("", bean.column1); //$NON-NLS-1$
+		assertEquals("", bean.column2); //$NON-NLS-1$
 
 		delegate.validationResult = null;
-		delegate.txtColumn2.setText("beta");
+		delegate.txtColumn2.setText("beta"); //$NON-NLS-1$
 
-		assertEquals("alpha", bean.column1);
-		assertEquals("beta", bean.column2);
+		assertEquals("alpha", bean.column1); //$NON-NLS-1$
+		assertEquals("beta", bean.column2); //$NON-NLS-1$
 	}
 
 	/**
@@ -644,12 +644,12 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(0, table.getColumnCount());
 
 		final WritableList list = new WritableList(input, MDBean.class);
-		final String[] colProps = { "column1" };
-		final String[] colHeaders = { "The Header" };
+		final String[] colProps = { "column1" }; //$NON-NLS-1$
+		final String[] colHeaders = { "The Header" }; //$NON-NLS-1$
 		getRidget().bindToModel(list, MDBean.class, colProps, colHeaders);
 
 		assertEquals(1, table.getColumnCount());
-		assertEquals("The Header", table.getColumn(0).getText());
+		assertEquals("The Header", table.getColumn(0).getText()); //$NON-NLS-1$
 		assertEquals(table.getClientArea().width, table.getColumn(0).getWidth());
 	}
 
@@ -663,13 +663,13 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(0, table.getColumnCount());
 
 		final WritableList list = new WritableList(input, MDBean.class);
-		final String[] columnProperties3 = { "column1", "column2", "column1" };
+		final String[] columnProperties3 = { "column1", "column2", "column1" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		ridget.bindToModel(list, MDBean.class, columnProperties3, null);
 
 		assertEquals(3, table.getColumnCount());
 		assertTrue(table.getParent().getLayout() instanceof TableColumnLayout);
 
-		final String[] columnProperties1 = { "column2" };
+		final String[] columnProperties1 = { "column2" }; //$NON-NLS-1$
 		ridget.bindToModel(list, MDBean.class, columnProperties1, null);
 
 		assertEquals(1, table.getColumnCount());
@@ -725,7 +725,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(1, delegate.selectionCount);
 
 		widget.txtColumn1.setFocus();
-		UITestHelper.sendString(widget.getDisplay(), "A\r");
+		UITestHelper.sendString(widget.getDisplay(), "A\r"); //$NON-NLS-1$
 		ridget.handleApply();
 
 		assertEquals(1, delegate.prepareAppliedCount);
@@ -757,7 +757,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertEquals(1, delegate.selectionCount);
 
 		widget.txtColumn1.setFocus();
-		UITestHelper.sendString(widget.getDisplay(), "abc\t");
+		UITestHelper.sendString(widget.getDisplay(), "abc\t"); //$NON-NLS-1$
 
 		assertEquals(1, delegate.prepareAppliedCount);
 		assertEquals(1, delegate.applyCount);
@@ -790,7 +790,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertNull(delegate.lastItem);
 
 		final Table table = widget.getTable();
-		final SelectionAdapter dirtyDetailsChecker = ReflectionUtils.getHidden(getRidget(), "dirtyDetailsChecker");
+		final SelectionAdapter dirtyDetailsChecker = ReflectionUtils.getHidden(getRidget(), "dirtyDetailsChecker"); //$NON-NLS-1$
 		table.addSelectionListener(dirtyDetailsChecker);
 		table.setSelection(0);
 		final Event event1 = createSelectionEvent(widget, first);
@@ -808,16 +808,16 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final MasterDetailsRidget ridget = getRidget();
 		final MDWidget widget = getWidget();
 
-		assertEquals("", widget.txtColumn1.getText());
-		assertEquals("", widget.txtColumn2.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 		assertFalse(widget.getButtonApply().isEnabled());
 		assertFalse(areDetailsChanged(ridget));
 
-		final MDBean newEntry = new MDBean("col1", "col2");
+		final MDBean newEntry = new MDBean("col1", "col2"); //$NON-NLS-1$ //$NON-NLS-2$
 		ridget.suggestNewEntry(newEntry);
 
-		assertEquals("col1", widget.txtColumn1.getText());
-		assertEquals("col2", widget.txtColumn2.getText());
+		assertEquals("col1", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("col2", widget.txtColumn2.getText()); //$NON-NLS-1$
 		assertTrue(widget.getButtonApply().isEnabled());
 		assertFalse(input.contains(newEntry));
 		assertTrue(areDetailsChanged(ridget));
@@ -833,7 +833,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		assertFalse(areDetailsChanged(ridget));
 
-		final MDBean newEntry = new MDBean("col1", "col2");
+		final MDBean newEntry = new MDBean("col1", "col2"); //$NON-NLS-1$ //$NON-NLS-2$
 		ridget.suggestNewEntry(newEntry);
 
 		assertTrue(areDetailsChanged(ridget));
@@ -889,8 +889,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final MDBean newEntry = new MDBean("col1", "col2"); //$NON-NLS-1$ //$NON-NLS-2$
 		ridget.suggestNewEntry(newEntry, false);
 
-		assertEquals("col1", widget.txtColumn1.getText());
-		assertEquals("col2", widget.txtColumn2.getText());
+		assertEquals("col1", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("col2", widget.txtColumn2.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.txtColumn2.isEnabled());
 		assertFalse(widget.getButtonApply().isEnabled());
@@ -907,11 +907,11 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertFalse(widget.getButtonApply().isEnabled());
 		assertFalse(areDetailsChanged(ridget));
 
-		final MDBean newEntry = new MDBean("col1", "col2");
+		final MDBean newEntry = new MDBean("col1", "col2"); //$NON-NLS-1$ //$NON-NLS-2$
 		ridget.suggestNewEntry(newEntry, true);
 
-		assertEquals("col1", widget.txtColumn1.getText());
-		assertEquals("col2", widget.txtColumn2.getText());
+		assertEquals("col1", widget.txtColumn1.getText()); //$NON-NLS-1$
+		assertEquals("col2", widget.txtColumn2.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.txtColumn2.isEnabled());
 		assertTrue(widget.getButtonApply().isEnabled());
@@ -928,7 +928,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		assertFalse(widget.getButtonApply().isEnabled());
 
-		first.column1 = "col1";
+		first.column1 = "col1"; //$NON-NLS-1$
 		ridget.updateApplyButton();
 
 		assertTrue(widget.getButtonApply().isEnabled());
@@ -978,11 +978,11 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final MDBean first = input.get(0);
 		ridget.setSelection(first);
 		final Control applyButton = getWidget().getButtonApply();
-		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1"); //$NON-NLS-1$
 		txtColumn1.addValidationRule(new MinLength(5), ValidationTime.ON_UPDATE_TO_MODEL);
-		txtColumn1.setText("abc");
-		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
-		txtColumn2.setText("efg");
+		txtColumn1.setText("abc"); //$NON-NLS-1$
+		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2"); //$NON-NLS-1$
+		txtColumn2.setText("efg"); //$NON-NLS-1$
 
 		assertTrue(txtColumn1.isErrorMarked());
 		assertFalse(ridget.isApplyRequiresNoErrors());
@@ -994,13 +994,13 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(ridget.isApplyRequiresNoErrors());
 		assertFalse(applyButton.isEnabled());
 
-		txtColumn1.setText("abcdef");
+		txtColumn1.setText("abcdef"); //$NON-NLS-1$
 
 		assertFalse(txtColumn1.isErrorMarked());
 		assertTrue(ridget.isApplyRequiresNoErrors());
 		assertTrue(applyButton.isEnabled());
 
-		txtColumn1.setText("abc");
+		txtColumn1.setText("abc"); //$NON-NLS-1$
 		ridget.setApplyRequiresNoErrors(false);
 
 		assertTrue(txtColumn1.isErrorMarked());
@@ -1019,8 +1019,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSelection(first);
 		ridget.setApplyRequiresNoErrors(true);
 
-		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
-		txtColumn1.setText("abc");
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1"); //$NON-NLS-1$
+		txtColumn1.setText("abc"); //$NON-NLS-1$
 
 		final Control applyButton = getWidget().getButtonApply();
 
@@ -1042,10 +1042,10 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final MDBean first = input.get(0);
 		ridget.setSelection(first);
 		final Control applyButton = getWidget().getButtonApply();
-		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1"); //$NON-NLS-1$
 		final MandatoryMarker marker = new MandatoryMarker();
 		txtColumn1.addMarker(marker);
-		txtColumn1.setText("");
+		txtColumn1.setText(""); //$NON-NLS-1$
 
 		assertTrue(txtColumn1.isMandatory());
 		assertFalse(marker.isDisabled());
@@ -1059,14 +1059,14 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(ridget.isApplyRequiresNoMandatories());
 		assertFalse(applyButton.isEnabled());
 
-		txtColumn1.setText("abc");
+		txtColumn1.setText("abc"); //$NON-NLS-1$
 
 		assertTrue(txtColumn1.isMandatory());
 		assertTrue(marker.isDisabled());
 		assertTrue(ridget.isApplyRequiresNoMandatories());
 		assertTrue(applyButton.isEnabled());
 
-		txtColumn1.setText("");
+		txtColumn1.setText(""); //$NON-NLS-1$
 		ridget.setApplyRequiresNoMandatories(false);
 
 		assertTrue(txtColumn1.isMandatory());
@@ -1086,8 +1086,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSelection(first);
 		ridget.setApplyRequiresNoMandatories(true);
 
-		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
-		txtColumn1.setText("");
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1"); //$NON-NLS-1$
+		txtColumn1.setText(""); //$NON-NLS-1$
 
 		final Control applyButton = getWidget().getButtonApply();
 
@@ -1121,8 +1121,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		assertTrue(mdTable.getTopIndex() > 0);
 
-		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
-		txtColumn1.setText("abc");
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1"); //$NON-NLS-1$
+		txtColumn1.setText("abc"); //$NON-NLS-1$
 		ridget.handleApply();
 
 		// apply should reveal edited editem
@@ -1147,8 +1147,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final boolean isTesting = RienaStatus.isTest();
 		final boolean isPrepareView = SubModuleUtils.isPrepareView();
 		// disable the ridget "auto-creation" for this test
-		System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false");
-		System.setProperty(SubModuleUtils.RIENA_PREPARE_VIEW_SYSTEM_PROPERTY, "true");
+		System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false"); //$NON-NLS-1$
+		System.setProperty(SubModuleUtils.RIENA_PREPARE_VIEW_SYSTEM_PROPERTY, "true"); //$NON-NLS-1$
 		try {
 			final IMasterDetailsRidget ridget = (IMasterDetailsRidget) createRidget();
 			ridget.setUIControl(new MDWidget(getShell(), SWT.NONE) {
@@ -1170,33 +1170,33 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final IMasterDetailsRidget ridget = getRidget();
 		final ICompositeRidget details = new CompositeRidget();
 		final ITextRidget textRidget = new TextRidget();
-		details.addRidget("textRidget", textRidget);
+		details.addRidget("textRidget", textRidget); //$NON-NLS-1$
 
-		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details)); //$NON-NLS-1$
 
 		textRidget.setErrorMarked(true);
 
-		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details)); //$NON-NLS-1$
 
 		textRidget.setErrorMarked(false);
 
-		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details)); //$NON-NLS-1$
 	}
 
 	public void testHasErrosConsidersEnablement() {
 		final IMasterDetailsRidget ridget = getRidget();
 		final ICompositeRidget details = new CompositeRidget();
 		final ITextRidget textRidget = new TextRidget();
-		details.addRidget("textRidget", textRidget);
+		details.addRidget("textRidget", textRidget); //$NON-NLS-1$
 
 		textRidget.setErrorMarked(true);
 		textRidget.setEnabled(false);
 
-		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details)); //$NON-NLS-1$
 
 		textRidget.setEnabled(true);
 
-		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details)); //$NON-NLS-1$
 	}
 
 	/**
@@ -1208,66 +1208,66 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final ICompositeRidget cRidget1 = new CompositeRidget();
 		final ICompositeRidget cRidget2 = new CompositeRidget();
 		final TextRidget textRidget = new TextRidget();
-		details.addRidget("cRidget1", cRidget1);
-		details.addRidget("cRidget2", cRidget2);
-		cRidget2.addRidget("textRidget", textRidget);
+		details.addRidget("cRidget1", cRidget1); //$NON-NLS-1$
+		details.addRidget("cRidget2", cRidget2); //$NON-NLS-1$
+		cRidget2.addRidget("textRidget", textRidget); //$NON-NLS-1$
 
-		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details)); //$NON-NLS-1$
 		assertTrue(textRidget.isEnabled());
 
 		textRidget.setErrorMarked(true);
 
-		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details)); //$NON-NLS-1$
 
 		textRidget.setErrorMarked(false);
 
-		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details)); //$NON-NLS-1$
 
 		textRidget.setErrorMarked(true);
 		textRidget.setEnabled(false);
 
-		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details));
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasErrors", details)); //$NON-NLS-1$
 	}
 
 	public void testHasMandatories() {
 		final IMasterDetailsRidget ridget = getRidget();
 		final ICompositeRidget details = new CompositeRidget();
 		final ITextRidget textRidget = new TextRidget();
-		details.addRidget("textRidget", textRidget);
+		details.addRidget("textRidget", textRidget); //$NON-NLS-1$
 
-		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details)); //$NON-NLS-1$
 
 		textRidget.setMandatory(true);
 
-		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details)); //$NON-NLS-1$
 
-		textRidget.setText("abc");
+		textRidget.setText("abc"); //$NON-NLS-1$
 
-		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details)); //$NON-NLS-1$
 
-		textRidget.setText("");
+		textRidget.setText(""); //$NON-NLS-1$
 
-		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details)); //$NON-NLS-1$
 
 		textRidget.setMandatory(false);
 
-		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details)); //$NON-NLS-1$
 	}
 
 	public void testHasMandatoriesConsidersEnablement() {
 		final IMasterDetailsRidget ridget = getRidget();
 		final ICompositeRidget details = new CompositeRidget();
 		final ITextRidget textRidget = new TextRidget();
-		details.addRidget("textRidget", textRidget);
+		details.addRidget("textRidget", textRidget); //$NON-NLS-1$
 
 		textRidget.setMandatory(true);
 		textRidget.setEnabled(false);
 
-		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details)); //$NON-NLS-1$
 
 		textRidget.setEnabled(true);
 
-		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details)); //$NON-NLS-1$
 	}
 
 	/**
@@ -1279,25 +1279,25 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final ICompositeRidget cRidget1 = new CompositeRidget();
 		final ICompositeRidget cRidget2 = new CompositeRidget();
 		final TextRidget textRidget = new TextRidget();
-		details.addRidget("cRidget1", cRidget1);
-		details.addRidget("cRidget2", cRidget2);
-		cRidget2.addRidget("textRidget", textRidget);
+		details.addRidget("cRidget1", cRidget1); //$NON-NLS-1$
+		details.addRidget("cRidget2", cRidget2); //$NON-NLS-1$
+		cRidget2.addRidget("textRidget", textRidget); //$NON-NLS-1$
 
-		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details)); //$NON-NLS-1$
 		assertTrue(textRidget.isEnabled());
 
 		textRidget.setMandatory(true);
 
-		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+		assertEquals(Boolean.TRUE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details)); //$NON-NLS-1$
 
 		textRidget.setMandatory(false);
 
-		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details)); //$NON-NLS-1$
 
 		textRidget.setMandatory(true);
 		textRidget.setEnabled(false);
 
-		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details));
+		assertEquals(Boolean.FALSE, ReflectionUtils.invokeHidden(ridget, "hasMandatories", details)); //$NON-NLS-1$
 	}
 
 	/**
@@ -1330,21 +1330,21 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSelection(first);
 
 		assertSame(first, ridget.getSelection());
-		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertEquals("TestR0C1", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.getButtonRemove().isEnabled());
 
 		ridget.handleAdd();
 
 		assertNull(ridget.getSelection());
-		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.getButtonRemove().isEnabled());
 
 		clickRemove(ridget);
 
 		assertSame(first, ridget.getSelection());
-		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertEquals("TestR0C1", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.getButtonRemove().isEnabled());
 
@@ -1366,21 +1366,21 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSelection(null);
 
 		assertNull(ridget.getSelection());
-		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertFalse(widget.txtColumn1.isEnabled());
 		assertFalse(widget.getButtonRemove().isEnabled());
 
 		ridget.handleAdd();
 
 		assertNull(ridget.getSelection());
-		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.getButtonRemove().isEnabled());
 
 		clickRemove(ridget);
 
 		assertNull(ridget.getSelection());
-		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertFalse(widget.txtColumn1.isEnabled());
 		assertFalse(widget.getButtonRemove().isEnabled());
 	}
@@ -1398,7 +1398,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSelection(first);
 
 		assertSame(first, ridget.getSelection());
-		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertEquals("TestR0C1", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.getButtonRemove().isEnabled());
 
@@ -1406,14 +1406,14 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.handleAdd();
 
 		assertNull(ridget.getSelection());
-		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.getButtonRemove().isEnabled());
 
 		clickRemove(ridget);
 
 		assertSame(first, ridget.getSelection());
-		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertEquals("TestR0C1", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.getButtonRemove().isEnabled());
 	}
@@ -1439,8 +1439,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final boolean isTesting = RienaStatus.isTest();
 		final boolean isPrepareView = SubModuleUtils.isPrepareView();
 		// disable the ridget "auto-creation" for this test
-		System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false");
-		System.setProperty(SubModuleUtils.RIENA_PREPARE_VIEW_SYSTEM_PROPERTY, "true");
+		System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false"); //$NON-NLS-1$
+		System.setProperty(SubModuleUtils.RIENA_PREPARE_VIEW_SYSTEM_PROPERTY, "true"); //$NON-NLS-1$
 		try {
 			final IMasterDetailsRidget ridget = (IMasterDetailsRidget) createRidget();
 			ridget.setUIControl(new MDWidget(getShell(), SWT.NONE) {
@@ -1482,7 +1482,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSelection(first);
 
 		assertSame(first, ridget.getSelection());
-		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertEquals("TestR0C1", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.getButtonRemove().isEnabled());
 
@@ -1491,7 +1491,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 		assertEquals(oldSize, input.size() + 1);
 		assertNull(ridget.getSelection());
-		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertFalse(widget.getButtonRemove().isEnabled());
 	}
@@ -1507,21 +1507,21 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSelection(first);
 
 		assertSame(first, ridget.getSelection());
-		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertEquals("TestR0C1", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.getButtonRemove().isEnabled());
 
 		ridget.handleAdd();
 
 		assertNull(ridget.getSelection());
-		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.getButtonRemove().isEnabled());
 
 		clickRemove(ridget);
 
 		assertSame(first, ridget.getSelection());
-		assertEquals("TestR0C1", widget.txtColumn1.getText());
+		assertEquals("TestR0C1", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.getButtonRemove().isEnabled());
 
@@ -1541,21 +1541,21 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setSelection(null);
 
 		assertNull(ridget.getSelection());
-		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertFalse(widget.txtColumn1.isEnabled());
 		assertFalse(widget.getButtonRemove().isEnabled());
 
 		ridget.handleAdd();
 
 		assertNull(ridget.getSelection());
-		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.getButtonRemove().isEnabled());
 
 		clickRemove(ridget);
 
 		assertNull(ridget.getSelection());
-		assertEquals("", widget.txtColumn1.getText());
+		assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 		assertTrue(widget.txtColumn1.isEnabled());
 		assertTrue(widget.getButtonRemove().isEnabled());
 	}
@@ -1564,8 +1564,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final boolean isTesting = RienaStatus.isTest();
 		final boolean isPrepareView = SubModuleUtils.isPrepareView();
 		// disable the ridget "auto-creation" for this test
-		System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false");
-		System.setProperty(SubModuleUtils.RIENA_PREPARE_VIEW_SYSTEM_PROPERTY, "true");
+		System.setProperty(RienaStatus.RIENA_TEST_SYSTEM_PROPERTY, "false"); //$NON-NLS-1$
+		System.setProperty(SubModuleUtils.RIENA_PREPARE_VIEW_SYSTEM_PROPERTY, "true"); //$NON-NLS-1$
 		try {
 			final IMasterDetailsRidget ridget = (IMasterDetailsRidget) createRidget();
 			ridget.setUIControl(new MDWidget(getShell(), SWT.NONE) {
@@ -1589,8 +1589,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	public void testShowGlobalMandatoryMarkerOnNew() {
 		final MasterDetailsRidget ridget = getRidget();
 		final MDWidget widget = getWidget();
-		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
-		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1"); //$NON-NLS-1$
+		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2"); //$NON-NLS-1$
 		txtColumn2.setMandatory(true);
 		delegate.setValidMaster(false);
 		bindToModel(true);
@@ -1601,7 +1601,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(hasMandatory(txtColumn2));
 
 		widget.txtColumn1.setFocus();
-		UITestHelper.sendString(widget.getDisplay(), "abc\t");
+		UITestHelper.sendString(widget.getDisplay(), "abc\t"); //$NON-NLS-1$
 
 		assertFalse(hasMandatory(txtColumn1));
 		assertTrue(hasMandatory(txtColumn2));
@@ -1613,8 +1613,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	public void testShowGlobalMandatoryMarkerOnSuggestNewEntry() {
 		final MasterDetailsRidget ridget = getRidget();
 		final MDWidget widget = getWidget();
-		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
-		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1"); //$NON-NLS-1$
+		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2"); //$NON-NLS-1$
 		txtColumn2.setMandatory(true);
 		delegate.setValidMaster(false);
 		bindToModel(true);
@@ -1626,7 +1626,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(hasMandatory(txtColumn2));
 
 		widget.txtColumn1.setFocus();
-		UITestHelper.sendString(widget.getDisplay(), "abc\t");
+		UITestHelper.sendString(widget.getDisplay(), "abc\t"); //$NON-NLS-1$
 
 		assertFalse(hasMandatory(txtColumn1));
 		assertTrue(hasMandatory(txtColumn2));
@@ -1638,8 +1638,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	public void testShowGlobalMandatoryMarkerOnSuggestNewEntryWithDirectWriting() {
 		final MasterDetailsRidget ridget = getRidget();
 		final MDWidget widget = getWidget();
-		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
-		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1"); //$NON-NLS-1$
+		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2"); //$NON-NLS-1$
 		txtColumn2.setMandatory(true);
 		delegate.setValidMaster(false);
 		bindToModel(true);
@@ -1651,7 +1651,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		assertTrue(hasMandatory(txtColumn2));
 
 		widget.txtColumn1.setFocus();
-		UITestHelper.sendString(widget.getDisplay(), "abc\t");
+		UITestHelper.sendString(widget.getDisplay(), "abc\t"); //$NON-NLS-1$
 
 		assertFalse(hasMandatory(txtColumn1));
 		assertTrue(hasMandatory(txtColumn2));
@@ -1662,8 +1662,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	public void testHideGlobalMandatoryMarkerOnSelect() {
 		final MasterDetailsRidget ridget = getRidget();
-		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1");
-		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2");
+		final ITextRidget txtColumn1 = ridget.getRidget(ITextRidget.class, "txtColumn1"); //$NON-NLS-1$
+		final ITextRidget txtColumn2 = ridget.getRidget(ITextRidget.class, "txtColumn2"); //$NON-NLS-1$
 		delegate.setValidMaster(false);
 		bindToModel(true);
 
@@ -1710,13 +1710,13 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final Color whiteBg = widget.getDisplay().getSystemColor(SWT.COLOR_WHITE);
 
 		try {
-			assertEquals("", widget.txtColumn1.getText());
+			assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn1.getBackground());
-			assertEquals("", widget.txtColumn2.getText());
+			assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn2.getBackground());
 
 			widget.txtColumn1.setFocus();
-			UITestHelper.sendString(widget.getDisplay(), "a\t");
+			UITestHelper.sendString(widget.getDisplay(), "a\t"); //$NON-NLS-1$
 
 			assertEquals(whiteBg, widget.txtColumn1.getBackground());
 			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
@@ -1736,19 +1736,19 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setHideMandatoryAndErrorMarkersOnNewEntries(true);
 		delegate.txtColumn1.setMandatory(true);
 		delegate.txtColumn2.setMandatory(true);
-		ridget.suggestNewEntry(new MDBean("", ""));
+		ridget.suggestNewEntry(new MDBean("", "")); //$NON-NLS-1$ //$NON-NLS-2$
 
 		final Color mandatoryMarkerBg = new Color(widget.getDisplay(), 255, 255, 175);
 		final Color whiteBg = widget.getDisplay().getSystemColor(SWT.COLOR_WHITE);
 
 		try {
-			assertEquals("", widget.txtColumn1.getText());
+			assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn1.getBackground());
-			assertEquals("", widget.txtColumn2.getText());
+			assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn2.getBackground());
 
 			widget.txtColumn1.setFocus();
-			UITestHelper.sendString(widget.getDisplay(), "b\t");
+			UITestHelper.sendString(widget.getDisplay(), "b\t"); //$NON-NLS-1$
 
 			assertEquals(whiteBg, widget.txtColumn1.getBackground());
 			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
@@ -1768,7 +1768,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setHideMandatoryAndErrorMarkersOnNewEntries(true);
 		delegate.txtColumn1.setMandatory(true);
 		delegate.txtColumn2.setMandatory(true);
-		final MDBean first = new MDBean("first", "");
+		final MDBean first = new MDBean("first", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		input.add(0, first);
 		ridget.updateFromModel();
 
@@ -1776,18 +1776,18 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final Color whiteBg = widget.getDisplay().getSystemColor(SWT.COLOR_WHITE);
 
 		try {
-			ridget.suggestNewEntry(new MDBean("", ""));
+			ridget.suggestNewEntry(new MDBean("", "")); //$NON-NLS-1$ //$NON-NLS-2$
 
-			assertEquals("", widget.txtColumn1.getText());
+			assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn1.getBackground());
-			assertEquals("", widget.txtColumn2.getText());
+			assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn2.getBackground());
 
 			ridget.setSelection(first);
 
-			assertEquals("first", widget.txtColumn1.getText());
+			assertEquals("first", widget.txtColumn1.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn1.getBackground());
-			assertEquals("", widget.txtColumn2.getText());
+			assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
 		} finally {
 			mandatoryMarkerBg.dispose();
@@ -1810,22 +1810,22 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final Color whiteBg = widget.getDisplay().getSystemColor(SWT.COLOR_WHITE);
 
 		try {
-			final MDBean value = new MDBean("", "");
+			final MDBean value = new MDBean("", ""); //$NON-NLS-1$ //$NON-NLS-2$
 			ridget.suggestNewEntry(value);
 
 			assertTrue(ridget.isHideMandatoryAndErrorMarkersOnNewEntries());
-			assertEquals("", widget.txtColumn1.getText());
+			assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn1.getBackground());
-			assertEquals("", widget.txtColumn2.getText());
+			assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn2.getBackground());
 
 			ridget.handleApply();
 			ridget.setSelection(value);
 
 			assertTrue(ridget.isHideMandatoryAndErrorMarkersOnNewEntries());
-			assertEquals("", widget.txtColumn1.getText());
+			assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 			assertEquals(mandatoryMarkerBg, widget.txtColumn1.getBackground());
-			assertEquals("", widget.txtColumn2.getText());
+			assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
 
 			ridget.suggestNewEntry(value);
@@ -1846,7 +1846,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		ridget.setHideMandatoryAndErrorMarkersOnNewEntries(true);
 		delegate.txtColumn1.setMandatory(true);
 		delegate.txtColumn2.setMandatory(true);
-		final MDBean first = new MDBean("first", "");
+		final MDBean first = new MDBean("first", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		input.add(0, first);
 		ridget.updateFromModel();
 
@@ -1857,16 +1857,16 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 			ridget.setSelection(first);
 			ridget.handleAdd();
 
-			assertEquals("", widget.txtColumn1.getText());
+			assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn1.getBackground());
-			assertEquals("", widget.txtColumn2.getText());
+			assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn2.getBackground());
 
 			ridget.handleCancel();
 
-			assertEquals("first", widget.txtColumn1.getText());
+			assertEquals("first", widget.txtColumn1.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn1.getBackground());
-			assertEquals("", widget.txtColumn2.getText());
+			assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
 		} finally {
 			mandatoryMarkerBg.dispose();
@@ -1892,17 +1892,17 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		try {
 			ridget.handleAdd();
 
-			assertEquals("", widget.txtColumn1.getText());
+			assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn1.getBackground());
-			assertEquals("", widget.txtColumn2.getText());
+			assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn2.getBackground());
 
 			widget.txtColumn1.setFocus();
-			UITestHelper.sendString(widget.getDisplay(), "b\t");
+			UITestHelper.sendString(widget.getDisplay(), "b\t"); //$NON-NLS-1$
 
-			assertEquals("b", widget.txtColumn1.getText());
+			assertEquals("b", widget.txtColumn1.getText()); //$NON-NLS-1$
 			assertEquals(whiteBg, widget.txtColumn1.getBackground());
-			assertEquals("", widget.txtColumn2.getText());
+			assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
 		} finally {
 			mandatoryMarkerBg.dispose();
@@ -1925,13 +1925,13 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		final Color whiteBg = widget.getDisplay().getSystemColor(SWT.COLOR_WHITE);
 
 		try {
-			assertEquals("", widget.txtColumn1.getText());
+			assertEquals("", widget.txtColumn1.getText()); //$NON-NLS-1$
 			assertEquals(mandatoryMarkerBg, widget.txtColumn1.getBackground());
-			assertEquals("", widget.txtColumn2.getText());
+			assertEquals("", widget.txtColumn2.getText()); //$NON-NLS-1$
 			assertEquals(mandatoryMarkerBg, widget.txtColumn2.getBackground());
 
 			widget.txtColumn1.setFocus();
-			UITestHelper.sendString(widget.getDisplay(), "a\t");
+			UITestHelper.sendString(widget.getDisplay(), "a\t"); //$NON-NLS-1$
 
 			assertEquals(whiteBg, widget.txtColumn1.getBackground());
 			assertEquals(whiteBg, widget.txtColumn2.getBackground());
@@ -1942,10 +1942,10 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 	public void testUpdateMasterDetailsActionRidgets() {
 		final MasterDetailsRidget ridget = getRidget();
-		final MDBean first = new MDBean("first", "");
+		final MDBean first = new MDBean("first", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		input.add(0, first);
 		bindToModel(true);
-		final MDBean second = new MDBean("second", "");
+		final MDBean second = new MDBean("second", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		input.add(0, second);
 		bindToModel(true);
 		delegate.updateActionsCalled = false;
@@ -1962,7 +1962,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		delegate.updateActionsCalled = false;
 		ridget.setSelection(second);
 		getWidget().txtColumn1.setFocus();
-		UITestHelper.sendString(getWidget().getDisplay(), "dirty\t");
+		UITestHelper.sendString(getWidget().getDisplay(), "dirty\t"); //$NON-NLS-1$
 		assertTrue(delegate.updateActionsCalled);
 		delegate.updateActionsCalled = false;
 	}
@@ -1971,14 +1971,14 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	//////////////////
 
 	private boolean areDetailsChanged(final MasterDetailsRidget ridget) {
-		final Boolean result = ReflectionUtils.invokeHidden(ridget, "areDetailsChanged", (Object[]) null);
+		final Boolean result = ReflectionUtils.invokeHidden(ridget, "areDetailsChanged", (Object[]) null); //$NON-NLS-1$
 		return result.booleanValue();
 	}
 
 	private void assertContent(final Table table, final int items) {
 		for (int i = 0; i < items; i++) {
-			final String label0 = String.format("TestR%dC1", i);
-			final String label1 = String.format("TestR%dC2", i);
+			final String label0 = String.format("TestR%dC1", i); //$NON-NLS-1$
+			final String label1 = String.format("TestR%dC2", i); //$NON-NLS-1$
 			assertEquals(label0, table.getItem(i).getText(0));
 			assertEquals(label1, table.getItem(i).getText(1));
 		}
@@ -1988,7 +1988,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	private void assertPropertyChangeEvent(final int count, final Object oldValue, final Object newValue,
 			final FTPropertyChangeListener listener) {
 		assertEquals(count, listener.count);
-		assertEquals("selection", listener.event.getPropertyName());
+		assertEquals("selection", listener.event.getPropertyName()); //$NON-NLS-1$
 		assertEquals(oldValue, listener.event.getOldValue());
 		assertEquals(newValue, listener.event.getNewValue());
 	}
@@ -2013,8 +2013,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	private List<MDBean> createInput(final int numItems) {
 		final List<MDBean> result = new ArrayList<MDBean>();
 		for (int i = 0; i < numItems; i++) {
-			final String c1 = String.format("TestR%dC1", i);
-			final String c2 = String.format("TestR%dC2", i);
+			final String c1 = String.format("TestR%dC1", i); //$NON-NLS-1$
+			final String c2 = String.format("TestR%dC2", i); //$NON-NLS-1$
 			result.add(new MDBean(c1, c2));
 		}
 		return result;
@@ -2054,8 +2054,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 	 */
 	private static final class MDBean extends AbstractBean {
 
-		private static final String PROPERTY_COLUMN_1 = "column1";
-		private static final String PROPERTY_COLUMN_2 = "column2";
+		private static final String PROPERTY_COLUMN_1 = "column1"; //$NON-NLS-1$
+		private static final String PROPERTY_COLUMN_2 = "column2"; //$NON-NLS-1$
 
 		private String column1;
 		private String column2;
@@ -2074,16 +2074,16 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		}
 
 		public void setColumn1(final String column1) {
-			firePropertyChanged("column1", this.column1, this.column1 = column1);
+			firePropertyChanged("column1", this.column1, this.column1 = column1); //$NON-NLS-1$
 		}
 
 		public void setColumn2(final String column2) {
-			firePropertyChanged("column2", this.column2, this.column2 = column2);
+			firePropertyChanged("column2", this.column2, this.column2 = column2); //$NON-NLS-1$
 		}
 
 		@Override
 		public String toString() {
-			return String.format("[%s, %s]", column1, column2);
+			return String.format("[%s, %s]", column1, column2); //$NON-NLS-1$
 		}
 
 		@Override
@@ -2118,11 +2118,11 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 
 			txtColumn1 = UIControlsFactory.createText(parent);
 			hFill.applyTo(txtColumn1);
-			addUIControl(txtColumn1, "txtColumn1");
+			addUIControl(txtColumn1, "txtColumn1"); //$NON-NLS-1$
 
 			txtColumn2 = UIControlsFactory.createText(parent);
 			hFill.applyTo(txtColumn2);
-			addUIControl(txtColumn2, "txtColumn2");
+			addUIControl(txtColumn2, "txtColumn2"); //$NON-NLS-1$
 		}
 
 		@Override
@@ -2156,11 +2156,11 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		public void configureRidgets(final IRidgetContainer container) {
 			checkContainer(container);
 
-			txtColumn1 = (ITextRidget) container.getRidget("txtColumn1");
+			txtColumn1 = (ITextRidget) container.getRidget("txtColumn1"); //$NON-NLS-1$
 			txtColumn1.bindToModel(workingCopy, MDBean.PROPERTY_COLUMN_1);
 			txtColumn1.updateFromModel();
 
-			txtColumn2 = (ITextRidget) container.getRidget("txtColumn2");
+			txtColumn2 = (ITextRidget) container.getRidget("txtColumn2"); //$NON-NLS-1$
 			txtColumn2.bindToModel(workingCopy, MDBean.PROPERTY_COLUMN_2);
 			txtColumn2.updateFromModel();
 		}
@@ -2174,7 +2174,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		}
 
 		public MDBean createWorkingCopy() {
-			return new MDBean("", "");
+			return new MDBean("", ""); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		public MDBean getWorkingCopy() {
@@ -2196,7 +2196,7 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		public void updateDetails(final IRidgetContainer container) {
 			checkContainer(container);
 
-			final ITextRidget txtCol1 = (ITextRidget) container.getRidget("txtColumn1");
+			final ITextRidget txtCol1 = (ITextRidget) container.getRidget("txtColumn1"); //$NON-NLS-1$
 			txtCol1.setEnabled(isTxtColumn1IsEnabled);
 			for (final IRidget ridget : container.getRidgets()) {
 				ridget.updateFromModel();
@@ -2251,8 +2251,8 @@ public class MasterDetailsRidgetTest extends AbstractSWTRidgetTest {
 		}
 
 		private void checkContainer(final IRidgetContainer container) {
-			assertNotNull(container.getRidget("txtColumn1"));
-			assertNotNull(container.getRidget("txtColumn2"));
+			assertNotNull(container.getRidget("txtColumn1")); //$NON-NLS-1$
+			assertNotNull(container.getRidget("txtColumn2")); //$NON-NLS-1$
 			assertEquals(2, container.getRidgets().size());
 		}
 

@@ -115,6 +115,7 @@ public final class SwtRidgetFactory {
 
 		void clear() {
 			this.ridget = null;
+			ridgets.clear();
 		}
 
 		/**
